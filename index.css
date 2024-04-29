@@ -50,3 +50,13 @@
     margin-left: 92%;
     position: absolute;
   }
+
+  .Texto {
+    text-decoration: none;
+    text-decoration-line: none;
+    margin-left: 10%;
+  }
+
+  .titulo {
+    color: white;
+  }

@@ -94,18 +94,23 @@
     margin-left: -20%;
     position: absolute;
   }
-  .Texto {
+  .Titulo {
     text-decoration: none;
     text-decoration-line: none;
     text-align: center;
   }
+  .Texto {
+    text-decoration: none;
+    text-decoration-line: none;
+    text-align: left;
+  }
 
   .titulo {
-    color: white;
+    color: rgb(70, 224, 224);
   }
 
   a {
-    color: white
+    color: white;
   }
 
   body {

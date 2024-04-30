@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tu Página</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script> 
+    $(function(){
+      $("#header").load("header.html"); 
+    });
+    </script> 
+</head>
+<body>
+    <div id="header"></div>
+    <!-- El resto de tu contenido HTML aquí -->
+</body>
+</html>

@@ -94,19 +94,16 @@
     margin-left: -20%;
     position: absolute;
   }
-  .Titulo {
+  .titulo {
     text-decoration: none;
     text-decoration-line: none;
     text-align: center;
+    color: rgb(70, 224, 224);
   }
-  .Texto {
+  .texto {
     text-decoration: none;
     text-decoration-line: none;
     text-align: left;
-  }
-
-  .titulo {
-    color: rgb(70, 224, 224);
   }
 
   a {
@@ -117,3 +114,6 @@
     overflow: hidden;
   }
 
+  footer {
+    text-align: center;
+ }

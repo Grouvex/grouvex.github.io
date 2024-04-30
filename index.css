@@ -51,7 +51,9 @@
     border-radius: 50%;
     position: absolute;
   }
-
+  .menuT{
+      margin-left: 5%;
+  }
   .red1 {
     width: 30px;
     height: 30px;

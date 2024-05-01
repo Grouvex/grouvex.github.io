@@ -43,7 +43,7 @@
     .sidenav a {font-size: 18px;}
   }
   .titleHead {
-    margin-left: 7%;
+    margin-left: 17%;
   }
   .avatar {
     width: 50px;
@@ -55,8 +55,8 @@
       margin-left: 10%;
   }
   .red1 {
-    width: 100%;
-    height: 100%;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     margin-top: 1%;
     margin-left: 0%;

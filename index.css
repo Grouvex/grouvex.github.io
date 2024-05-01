@@ -112,7 +112,7 @@
 
   body {
     overflow: hidden;
-    background-color: lightblue;
+    background-color: #222;
   }
 
   footer {
@@ -121,7 +121,10 @@
 
 @media (min-width: 600px) {
   body {
-    background-color: orange;
+    background-color: #222;
   }
 }
 
+  Atencion {
+background-color: blue
+} 

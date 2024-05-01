@@ -125,6 +125,14 @@ header {
     width: 100%;
     text-align: center;
 }
+mainTop {
+    flex: 1;
+    width: 80%;
+    margin: 60px;
+    padding: 25px;
+    background-color: white;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+}
 main {
     flex: 1;
     width: 80%;

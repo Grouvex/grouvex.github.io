@@ -112,7 +112,7 @@
 
   body {
     overflow: hidden;
-    background-color: #222;
+    background-color: #818181;
   }
 
   footer {
@@ -121,7 +121,7 @@
 
 @media (min-width: 600px) {
   body {
-    background-color: #222;
+    background-color: #818181;
   }
 }
 

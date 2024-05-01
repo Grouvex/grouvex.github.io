@@ -112,8 +112,16 @@
 
   body {
     overflow: hidden;
+    background-color: lightblue;
   }
 
   footer {
     text-align: center;
  }
+
+@media (min-width: 600px) {
+  body {
+    background-color: orange;
+  }
+}
+

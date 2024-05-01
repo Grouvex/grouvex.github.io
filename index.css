@@ -51,6 +51,12 @@
     border-radius: 50%;
     position: absolute;
   }
+  .avatar1 {
+    width: 1920px;
+    height: 540px;
+    border-radius: 0%;
+    position: absolute;
+  }
   .menuT{
       margin-left: 10%;
   }

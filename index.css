@@ -16,24 +16,6 @@
     transition: 0.5s;
     padding-top: 60px;
   }
-  n {
-    font-weight: bold;
-  }
-  ig {
-    color: fuchsia;
-  }
-  yt {
-    color: red;
-  }
-  tt {
-    color: aqua;
-  }
-  ds {
-    color: blue;
-  }
-  sp {
-    color: green;
-  }
   .sidenav a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
@@ -68,13 +50,13 @@
     border-radius: 50%;
     position: absolute;
   }
-  .avatar1 {
+.avatar1 {
     width: 220px;
     border-radius: 0%;
-    margin-top: 1.3%;
+    margin-top: -0.7%;
     margin-left: 4%;
     position: absolute;
-  }
+}
   .menuT{
       margin-left: 10%;
   }
@@ -143,12 +125,12 @@ header {
     text-align: center;
 }
 news {
-    flex: 1;
+    flex: 0;
     width: 100%;
     margin: 2px;
 }
 mainTop {
-    flex: 1;
+    flex: 0;
     width: 100%;
     margin: 2px;
     padding: 25px;
@@ -156,7 +138,7 @@ mainTop {
     box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
 }
 main {
-    flex: 1;
+    flex: 0;
     width: 90%;
     margin: 35px;
     padding: 15px;
@@ -187,3 +169,21 @@ footer {
     color: white;
     width: 100%;
 }
+  n {
+    font-weight: bold;
+  }
+  ig {
+    color: fuchsia;
+  }
+  yt {
+    color: red;
+  }
+  tt {
+    color: aqua;
+  }
+  ds {
+    color: blue;
+  }
+  sp {
+    color: green;
+  }

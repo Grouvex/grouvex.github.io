@@ -6,8 +6,27 @@
 <script src="index.js"></script>
 <style>
 </style>
-<span class="Atencion">
-  <h1>🚧 Página web de Grouvex en mantenimiento 🚧</h1>
-</span>
+    <style>
+        #notification {
+            display: none;
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            position: fixed;
+            z-index: 1;
+            width: 100%;
+            top: 0;
+        }
+    </style>
+<div id="notification">
+ 🚧 Página web de Grouvex en mantenimiento 🚧
+</div>
+<script>
+function showNotification() {
+  document.getElementById("notification").style.display = "block";
+}
+window.onload = showNotification;
+</script>
 <span><a href="https://grouvex.gitbook.io"><img src="img/Grouvex1.png" alt="Avatar" class="avatar1"></a></span>
 </head>

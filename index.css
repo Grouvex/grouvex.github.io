@@ -112,18 +112,11 @@
 
   body {
     overflow: hidden;
-    background-color: #818181;
   }
 
   footer {
     text-align: center;
  }
-
-@media (min-width: 600px) {
-  body {
-    background-color: #818181;
-  }
-}
 
   Atencion {
 background-color: blue

@@ -146,11 +146,6 @@ mainTop {
     box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
 }
 
-footer {
-    width: 100%;
-    text-align: center;
-}
-
 .Atencion {
     color: white;
     text-align: center;
@@ -250,10 +245,8 @@ article, section, aside {
 
 /* Estilo para el pie de página */
 footer {
-    background-color: #333; /* Gris oscuro */
-    color: white;
+    width: 100%;
     text-align: center;
-    padding: 10px 0;
 }
 
 /* Estilo para las direcciones y texto pequeño */

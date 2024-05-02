@@ -201,3 +201,83 @@ footer {
     color: black; /* Texto en color negro para contraste */
     /* Añade más estilos según necesites */
   }
+
+
+
+
+/* Establece el fondo de toda la página a gris */
+body {
+    background-color: #f0f0f0; /* Gris claro */
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilo para el encabezado */
+header {
+    background-color: #333; /* Gris oscuro */
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+/* Estilo para la navegación */
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav li {
+    display: inline;
+    margin-right: 10px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Estilo para el contenido principal */
+main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Estilo para los artículos, secciones y barras laterales */
+article, section, aside {
+    background-color: white;
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 20px;
+    width: calc(33% - 40px); /* Tres cajas por fila */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+}
+
+/* Estilo para el pie de página */
+footer {
+    background-color: #333; /* Gris oscuro */
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+
+/* Estilo para las direcciones y texto pequeño */
+address, small {
+    display: block;
+}
+
+/* Ajustes de respuesta para pantallas más pequeñas */
+@media (max-width: 768px) {
+    article, section, aside {
+        width: calc(50% - 40px); /* Dos cajas por fila */
+    }
+}
+
+@media (max-width: 480px) {
+    article, section, aside {
+        width: calc(100% - 40px); /* Una caja por fila */
+    }
+}

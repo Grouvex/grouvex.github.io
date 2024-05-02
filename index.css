@@ -245,7 +245,6 @@ article, section, aside {
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;
     padding: 10px;
-    width: calc(33% - 40px); /* Tres cajas por fila */
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
 }
 
@@ -260,22 +259,4 @@ footer {
 /* Estilo para las direcciones y texto pequeño */
 address, small {
     display: block;
-}
-
-/* Ajustes de respuesta para pantallas más pequeñas */
-@media (max-width: 768px) {
-    article, section, aside {
-        width: calc(50% - 40px); /* Dos cajas por fila */
-    }
-}
-
-@media (max-width: 480px) {
-    article, section, aside {
-        width: calc(100% - 40px); /* Una caja por fila */
-    }
-}
-@media (max-width: 480px) {
-    article, section, aside {
-        width: calc(100% - 40px); /* Una caja por fila */
-    }
 }

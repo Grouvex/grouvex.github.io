@@ -253,8 +253,8 @@ footer {
 
 .footer-imagenes img {
   margin: 10px;
-  width: auto; /* Ajusta la anchura automáticamente para mantener la proporción */
-  height: auto; /* Ajusta la altura automáticamente para mantener la proporción */
+  width: 30px;
+  height: 30px;
   max-width: 100%; /* Asegura que la imagen no exceda su contenedor */
   max-height: 100%; /* Asegura que la imagen no exceda su contenedor */
 }

@@ -1,6 +1,40 @@
-<html>
-<script src="../jquery-3.5.1.min.js"></script>
- <script> 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../index.css">
+  <link rel="icon" href="../img/GROUVEX.png">
+  <script src="../jquery-3.5.1.min.js"></script>
+  <script src="../index.js"></script>
+</head>
+<body>
+  <div id="menu"></div>
+  <mainTop>
+    <div class="avatar1">
+      <a href="https://grouvex.github.io">
+        <img src="../img/Grouvex1.png" alt="Avatar" class="avatar1">
+      </a>
+    </div>
+    <span style="font-size:30px;cursor:pointer" onclick="openNav()">☰</span>
+  </mainTop>
+  <news>
+    <div id="notification">
+      <div id="news"></div>
+    </div>
+  </news>
+  <main>
+    <!-- Título & Texto -->
+    <div class="Titulo">
+      <h1>Privavidad</h1>
+    </div>
+    <!--Texto -->
+    <div class="Texto">
+      <a>Configurando...</a><a href="/a">a</a>
+    </div>
+  </main>
+  <div id="footer"></div>
+
+  <script> 
     $(function(){
       $("#header").load("../header.html"); 
     });
@@ -10,36 +44,9 @@
     $(function(){
       $("#footer").load("footer.html"); 
     });
-     $(function(){
+    $(function(){
       $("#news").load("news.html"); 
     });
- </script>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="../index.css">
-<link rel="icon" href="../img/GROUVEX.png">
-<script src="../index.js"></script>
-<news>
-<div id="notification">
-<div id="news"></div>
-</div>
-</news>
-<mainTop>
-<div class="avatar1"><a href="https://grouvex.github.io"><img src="../img/Grouvex1.png" alt="Avatar" class="avatar1"></a></div>
-<span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
-</mainTop>
-</head>
-<div id="menu"></div>
-<main>
-<body>
-  <!-- Título & Texto -->
-<div class="Titulo">
- <h1>Privavidad</h1>
-</div>
- <!--Texto -->
- <div class="Texto">
-  <a>Configurando...</a> <a href="/a">a</a>
- </div>
-  <div id="footer"></div>
+  </script>
 </body>
 </html>

@@ -188,3 +188,8 @@ footer {
   sp {
     color: green;
   }
+#selector-idioma {
+    background-color: white; /* Fondo blanco */
+    color: black; /* Texto en color negro para contraste */
+    /* Añade más estilos según necesites */
+  }

@@ -247,15 +247,18 @@ footer {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   justify-content: center;
-  align-items: center;
+  align-items: start; /* Alinea los elementos al inicio del contenedor */
   grid-gap: 10px; /* Añade espacio entre las imágenes */
 }
 
 .footer-imagenes img {
   margin: 10px;
+  width: auto; /* Ajusta la anchura automáticamente para mantener la proporción */
+  height: auto; /* Ajusta la altura automáticamente para mantener la proporción */
   max-width: 100%; /* Asegura que la imagen no exceda su contenedor */
-  height: auto; /* Mantiene la proporción de la imagen */
+  max-height: 100%; /* Asegura que la imagen no exceda su contenedor */
 }
+
 
 /* Estilo para las direcciones y texto pequeño */
 address, small {

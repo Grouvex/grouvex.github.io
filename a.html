@@ -42,6 +42,7 @@
     </style>
 </head>
 <body>
+var stars = 50;
     <div class="cielo">
         <!-- Aquí va el contenido existente de tu página -->
         <!-- Las estrellas fugaces se añaden dinámicamente con JavaScript -->
@@ -49,7 +50,7 @@
     <script>
         // Función para generar estrellas fugaces de manera aleatoria
         function generarEstrellas() {
-            for (let i = 0; i < 10; i++) { // Genera 10 estrellas
+            for (let i = 0; i < stars; i++) { // Genera 10 estrellas
                 const estrella = document.createElement('div');
                 estrella.classList.add('estrella');
                 estrella.style.left = Math.random() * 100 + 'vw';

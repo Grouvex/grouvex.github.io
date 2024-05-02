@@ -1,3 +1,9 @@
+#notification {
+    text-align: center;
+    background-color: red;
+    color: white;
+    width: 100%;
+}
 * {
     background-color: #222;
     background-repeat: no-repeat;
@@ -151,12 +157,6 @@ mainTop {
     text-align: center;
     background-color: blue;
 } 
-#notification {
-    text-align: center;
-    background-color: red;
-    color: white;
-    width: 100%;
-}
   n {
     font-weight: bold;
   }
@@ -224,11 +224,11 @@ nav a {
 /* Estilo para el contenido principal */
 main {
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    padding: 0px;
+    padding: 20px;
     flex: 0;
-    width: 100%;
     margin: 35px;
 }
 

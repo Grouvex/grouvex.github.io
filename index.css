@@ -145,14 +145,6 @@ mainTop {
     background-color: white;
     box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
 }
-main {
-    flex: 0;
-    width: 95%;
-    margin: 35px;
-    padding: 10px;
-    background-color: white;
-    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
-}
 
 footer {
     width: 100%;
@@ -194,13 +186,13 @@ footer {
     /* Añade más estilos según necesites */
   }
 
-
+/* Diseño de la Web */
 
 
 /* Establece el fondo de toda la página a gris */
 body {
-        display: flex;
-        flex-direction: column;
+    display: flex;
+    flex-direction: column;
     background-color: #f0f0f0; /* Gris claro */
     font-family: Arial, sans-serif; /* Tipo de letra */
     margin: 0;
@@ -209,6 +201,8 @@ body {
 
 /* Estilo para el encabezado */
 header {
+    margin-top: 20px;
+    width: 100%;
     background-color: #333; /* Gris oscuro */
     color: white;
     padding: 10px 0;
@@ -240,6 +234,9 @@ main {
     flex-wrap: wrap;
     justify-content: center;
     padding: 20px;
+    flex: 0;
+    width: 100%;
+    margin: 35px;
 }
 
 /* Estilo para los artículos, secciones y barras laterales */
@@ -247,7 +244,7 @@ article, section, aside {
     background-color: white;
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;
-    padding: 20px;
+    padding: 10px;
     width: calc(33% - 40px); /* Tres cajas por fila */
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
 }
@@ -272,6 +269,11 @@ address, small {
     }
 }
 
+@media (max-width: 480px) {
+    article, section, aside {
+        width: calc(100% - 40px); /* Una caja por fila */
+    }
+}
 @media (max-width: 480px) {
     article, section, aside {
         width: calc(100% - 40px); /* Una caja por fila */

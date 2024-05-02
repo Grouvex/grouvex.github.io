@@ -1,11 +1,18 @@
 <div id="mySidenav" class="sidenav">
 <div>
- <select id="selector-idioma" onchange="redirigir()">
-        <option href="es/grouvex">Español</option>
-        <option href="en/grouvex">English</option>
-        <option href="fr/grouvex">Français</option>
-        <!-- Añade más opciones de idioma según sea necesario -->
- </select>
+<script>
+function redirigir() {
+  var selector = document.getElementById('selector-idioma');
+  var url = selector.value;
+  window.location.href = url;
+}
+</script>
+<select id="selector-idioma" onchange="redirigir()">
+  <option value="es/grouvex.html">Español</option>
+  <option value="en/grouvex.html">English</option>
+  <option value="fr/grouvex.html">Français</option>
+  <!-- Añade más opciones de idioma según sea necesario -->
+</select>
 </div>
  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
   <span><img src="https://github.com/Grouvex/grouvex.github.io/tree/main/img/GROUVEX.png" alt="Grouvex" class="red1"></span>

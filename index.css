@@ -188,7 +188,6 @@ mainTop {
 body {
     display: flex;
     flex-direction: column;
-    background-color: #f0f0f0; /* Gris claro */
     font-family: Arial, sans-serif; /* Tipo de letra */
     margin: 0;
     padding: 0;

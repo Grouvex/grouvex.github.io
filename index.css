@@ -189,6 +189,17 @@ body {
     font-family: Arial, sans-serif; /* Tipo de letra */
     margin: 0;
     padding: 0;
+/* Añade la imagen de fondo al body */
+    background-image: url('https://images.app.goo.gl/xsMZE2bfz2YJ8o5r7');
+
+    /* Asegura que la imagen de fondo cubra todo el espacio disponible */
+    background-size: cover;
+
+    /* La imagen de fondo no se repite */
+    background-repeat: no-repeat;
+
+    /* La imagen de fondo está centrada en la página */
+    background-position: center;
 }
 
 /* Estilo para el encabezado */

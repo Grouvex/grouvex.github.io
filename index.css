@@ -245,14 +245,18 @@ footer {
 }
 .footer-imagenes {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Ajusta el ancho de las columnas */
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   justify-content: center;
   align-items: center;
+  grid-gap: 10px; /* Añade espacio entre las imágenes */
 }
 
 .footer-imagenes img {
   margin: 10px;
+  max-width: 100%; /* Asegura que la imagen no exceda su contenedor */
+  height: auto; /* Mantiene la proporción de la imagen */
 }
+
 /* Estilo para las direcciones y texto pequeño */
 address, small {
     display: block;

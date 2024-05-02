@@ -243,7 +243,16 @@ footer {
     width: 100%;
     text-align: center;
 }
+.footer-imagenes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Ajusta el ancho de las columnas */
+  justify-content: center;
+  align-items: center;
+}
 
+.footer-imagenes img {
+  margin: 10px;
+}
 /* Estilo para las direcciones y texto pequeño */
 address, small {
     display: block;

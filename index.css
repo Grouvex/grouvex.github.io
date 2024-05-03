@@ -299,8 +299,8 @@ address, small {
 
 .post-description {
     font-size: 16px;
+    color: white;
 }
-
 /* Estilos para el acordeón */
 .accordion {
     background-color: #000000;

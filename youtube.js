@@ -34,7 +34,7 @@ window.onload = function() {
         var videoDiv = document.createElement('div');
         videoDiv.innerHTML = '<h2 class="post-title">' + video.title + '</h2>' +
                             '<p class="post-description">' + video.description + '</p>' +
-                            '<iframe width="560" height="315" src="' + video.url + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+                            '<iframe width="560" height="315" src="' + video.url + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>' + '<footer>' + video.footer + '</footer>';
         carousel.appendChild(videoDiv);
     });
   // Segunda Seccion

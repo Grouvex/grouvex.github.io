@@ -126,8 +126,10 @@ text-decoration-line: none;
 text-align: left;
 }
 
-a {
-    color: white;
+p {
+  color: white;
+  display: block;
+  text-align: start;
 }
 
 header {

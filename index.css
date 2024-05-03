@@ -181,6 +181,7 @@ mainTop {
 /* Diseño de la Web */
 h1,h2,h3,h4,h5,h6,h7,h8 {
   text-align: center;
+  color: white;
 }
 /* Establece el fondo de toda la página a gris */
 body {

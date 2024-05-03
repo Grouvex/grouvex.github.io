@@ -56,14 +56,7 @@
     border-radius: 50%;
     position: absolute;
   }
-.avatar1 {
-    width: 220px;
-    border-radius: 0%;
-    margin-top: -0.7%;
-    margin-left: 4%;
-    position: absolute;
-    background: linear-gradient(red, white, cyan);
-}
+
   .menuT{
       margin-left: 10%;
   }
@@ -145,12 +138,6 @@ news {
     width: 100%;
     margin: 2px;
 }
-mainTop {
-    flex: 0;
-    margin: 2px;
-    padding: 25px;
-    background: linear-gradient(10deg, red, white, blue);
-}
 
 .Atencion {
     color: white;
@@ -180,13 +167,13 @@ mainTop {
     color: black; /* Texto en color negro para contraste */
     /* Añade más estilos según necesites */
   }
-
+#themeSelect {
+    background-color: white; /* Fondo blanco */
+    color: black; /* Texto en color negro para contraste */
+    /* Añade más estilos según necesites */
+  }
 /* Diseño de la Web */
-h1,h2,h3,h4,h5,h6,h7,h8 {
-  background: linear-gradient(to bottom, green, rgb(99, 99, 168), black);
-  text-align: center;
-  color: white;
-}
+/*Default Theme*/
 /* Establece el fondo de toda la página a gris */
 body {
     display: flex;
@@ -195,35 +182,6 @@ body {
     margin: 0;
     padding: 0;
 }
-
-
-/* Estilo para el encabezado */
-header {
-    margin-top: 20px;
-    width: 100%;
-    background-color: #333; /* Gris oscuro */
-    color: white;
-    padding: 10px 0;
-    text-align: center;
-}
-
-/* Estilo para la navegación */
-nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-nav li {
-    display: inline;
-    margin-right: 10px;
-}
-
-nav a {
-    color: white;
-    text-decoration: none;
-}
-
 /* Estilo para el contenido principal */
 main {
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
@@ -236,7 +194,25 @@ main {
     margin: 10px;
     background: radial-gradient(circle, red, rgb(99, 99, 168), black);
 }
-
+h1,h2,h3,h4,h5,h6,h7,h8 {
+  background: linear-gradient(to bottom, green, rgb(99, 99, 168), black);
+  text-align: center;
+  color: white;
+}
+mainTop {
+    flex: 0;
+    margin: 2px;
+    padding: 25px;
+    background: linear-gradient(10deg, red, white, blue);
+}
+.avatar1 {
+    width: 220px;
+    border-radius: 0%;
+    margin-top: -0.7%;
+    margin-left: 4%;
+    position: absolute;
+    background: linear-gradient(red, white, cyan);
+}
 /* Estilo para los artículos, secciones y barras laterales */
 article {
     background: linear-gradient(to bottom, pink, rgb(99, 99, 168), black);
@@ -253,6 +229,68 @@ section {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
 }
 aside {
+    background: radial-gradient(circle, rgb(200, 71, 226), rgb(99, 99, 168), black);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+}
+/*Theme 1*/
+/* Establece el fondo de toda la página a gris */
+body.theme1 {
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    margin: 0;
+    padding: 0;
+}
+/* Estilo para el contenido principal */
+main.theme1 {
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin: 10px;
+    background: radial-gradient(circle, pink, rgb(99, 99, 168), black);
+}
+h1.theme1,h2.theme1,h3.theme1,h4.theme1,h5.theme1,h6.theme1,h7.theme1,h8.theme1 {
+  background: linear-gradient(to bottom, cyan, rgb(99, 99, 168), black);
+  text-align: center;
+  color: white;
+}
+mainTop.theme1 {
+    flex: 0;
+    margin: 2px;
+    padding: 25px;
+    background: linear-gradient(10deg, red, white, blue);
+}
+.avatar1.theme1 {
+    width: 220px;
+    border-radius: 0%;
+    margin-top: -0.7%;
+    margin-left: 4%;
+    position: absolute;
+    background: linear-gradient(red, white, cyan);
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.theme1 {
+    background: linear-gradient(to bottom, pink, rgb(99, 99, 168), black);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+}
+section.theme1 {
+    background: linear-gradient(to bottom, yellow, rgb(99, 99, 168), black);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+}
+aside.theme1 {
     background: radial-gradient(circle, rgb(200, 71, 226), rgb(99, 99, 168), black);
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;
@@ -284,6 +322,32 @@ footer {
 /* Estilo para las direcciones y texto pequeño */
 address, small {
     display: block;
+}
+/* Estilo para el encabezado */
+header {
+    margin-top: 20px;
+    width: 100%;
+    background-color: #333; /* Gris oscuro */
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+/* Estilo para la navegación */
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav li {
+    display: inline;
+    margin-right: 10px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
 }
 
 .carousel {

@@ -1,4 +1,3 @@
-
 window.onload = function() {
     var instagramPosts = [
         {
@@ -37,20 +36,4 @@ window.onload = function() {
     var instaScript = document.createElement('script');
     instaScript.setAttribute('src', 'https://www.instagram.com/embed.js');
     document.getElementsByTagName('head')[0].appendChild(instaScript);
-
-    // Código para el acordeón
-    var acc = document.getElementsByClassName("accordion");
-    var i;
-
-    for (i = 0; i < acc.length; i++) {
-        acc[i].addEventListener("click", function() {
-            this.classList.toggle("active");
-            var panel = this.nextElementSibling;
-            if (panel.style.display === "block") {
-                panel.style.display = "none";
-            } else {
-                panel.style.display = "block";
-            }
-        });
-    }
 }

@@ -3,12 +3,26 @@ window.onload = function() {
         {
             url: 'https://www.youtube.com/embed/x09D-9ZpF_o',
             title: 'Stars In The Starry Sky',
-            description: 'Stars In The Starry Sky by Grouvex | 2023 - Grouvex Studio'
+            description: 'Stars In The Starry Sky by Grouvex',
+            footer: '©2023 - Grouvex Studio'
         },
         {
-            url: 'https://www.youtube.com/embed/3tmd-ClpJxA',
-            title: 'Título del Video 2',
-            description: 'Descripción del Video 2'
+            url: 'https://www.youtube.com/watch?v=mk7h9tN6aPQ',
+            title: 'Gemini',
+            description: 'Gemini by Grouvex',
+            footer: '©2025 - Grouvex Studio'
+        },
+        {
+            url: 'https://www.youtube.com/watch?v=C3s4POyHvXc',
+            title: 'Aries',
+            description: 'Aries by Grouvex',
+            footer: '©2025 - Grouvex Studio'
+        },
+        {
+            url: 'https://www.youtube.com/watch?v=kRGcSJ6qrxE',
+            title: 'Taurus',
+            description: 'taurus by Grouvex',
+            footer: '©2025 - Grouvex Studio'
         },
         // Añade más objetos de videos de YouTube aquí
     ];

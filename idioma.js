@@ -1,4 +1,0 @@
-function cambiarIdioma() {
-    var idiomaSeleccionado = document.getElementById('selector-idioma').value;
-    window.location.href = idiomaSeleccionado + '/grouvex';
-  }

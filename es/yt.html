@@ -53,46 +53,15 @@ aside {
     </article>
  </div>
  <!-- Aquí va tu sección de videos -->
-  <div class="video-slider">
-    <!-- Asegúrate de reemplazar 'VIDEO_ID', 'Título del video' y 'Descripción del video' con los datos correspondientes -->
-<div class="video" onclick="openVideo('https://www.youtube.com/embed/x09D-9ZpF_o')">
-  <h2>Stars In The Starry Sky</h2>
-  <p>Stars In The Starry Sky by Grouvex
-2023 - Grouvex Studio</p>
-  <img src="https://img.youtube.com/vi/x09D-9ZpF_o/0.jpg" alt="Miniatura del video">
-</div>
-    <!-- Nuevo video -->
-    <div class="video" onclick="openVideo('https://www.youtube.com/embed/x09D-9ZpF_o')">
-      <h2>Título del video</h2>
-      <p>Descripción del video</p>
-      <img src="https://img.youtube.com/vi/x09D-9ZpF_o/0.jpg" alt="Miniatura del video">
+  <button class="accordion">Título del Acordeón</button>
+    <div class="panel">
+        <p>Descripción del Acordeón</p>
+        <div id="youtube-carousel" class="carousel">
+            <!-- Los videos de YouTube se añadirán aquí -->
+        </div>
     </div>
-        <!-- Nuevo video -->
-    <div class="video" onclick="openVideo('https://www.youtube.com/embed/x09D-9ZpF_o')">
-      <h2>Título del video</h2>
-      <p>Descripción del video</p>
-      <img src="https://img.youtube.com/vi/x09D-9ZpF_o/0.jpg" alt="Miniatura del video">
-    </div>
-        <!-- Nuevo video -->
-    <div class="video" onclick="openVideo('https://www.youtube.com/embed/x09D-9ZpF_o')">
-      <h2>Título del video</h2>
-      <p>Descripción del video</p>
-      <img src="https://img.youtube.com/vi/x09D-9ZpF_o/0.jpg" alt="Miniatura del video">
-    </div>
-        <!-- Nuevo video -->
-    <div class="video" onclick="openVideo('https://www.youtube.com/embed/x09D-9ZpF_o')">
-      <h2>Título del video</h2>
-      <p>Descripción del video</p>
-      <img src="https://img.youtube.com/vi/x09D-9ZpF_o/0.jpg" alt="Miniatura del video">
-    </div>
-    <!-- Repite el div de arriba para cada video que quieras añadir -->
-  </div>
-  <div id="videoModal" class="modal">
-  <span class="close" onclick="closeVideo()">×</span>
-  <div class="modal-content">
-    <iframe id="videoFrame" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-  </div>
-</div>
+    <script src="script.js"></script>
+    <div id="footer"></div>
  </main>
  <div id="footer"></div>
 </body>

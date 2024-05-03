@@ -28,10 +28,10 @@ document.getElementById('themeSelect').addEventListener('change', function() {
         element.classList.remove('theme1', 'theme2', 'theme3', 'theme4', 'theme5');
     });
     // Si la opción seleccionada no es "default", añade la clase de la opción seleccionada
-    if (this.value !== 'default') {
+   if (this.value !== 'default') {
         elements.forEach(function(element) {
             element.classList.add(this.value);
-        });
+        }.bind(this)); // Asegúrate de vincular 'this' a la función
     }
     // Guarda la selección del usuario en el almacenamiento local
     localStorage.setItem('selectedTheme', this.value);

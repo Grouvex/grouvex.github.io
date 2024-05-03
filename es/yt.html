@@ -1,27 +1,47 @@
-<html>
-<script src="/jquery-3.5.1.min.js"></script>
+<!DOCTYPE html>
+<html lang="es">
+<script src="../jquery-3.5.1.min.js"></script>
  <script> 
     $(function(){
-      $("#header").load("header.html"); 
-    });
-    $(function(){
-      $("#menu").load("menu.html"); 
+      $("#menu").load("../menu.html"); 
     });
     $(function(){
       $("#footer").load("footer.html"); 
     });
+     $(function(){
+      $("#news").load("news.html"); 
+    });
  </script>
-<div id="header"></div>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8"> 
+<link rel="stylesheet" href="../index.css">
+<link rel="icon" href="../img/GROUVEX.png">
+<script src="../index.js"></script>
+<news>
+<div id="notification">
+<div id="news"></div>
+</div>
+</news>
+<mainTop>
+<div class="avatar1"><a href="https://grouvex.github.io/en/grouvex"><img src="../img/Grouvex1.png" alt="Avatar" class="avatar1"></a></div>
+<span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+</mainTop>
+</head>
+<div id="menu"></div>
+<main>
 <body>
- <div id="menu"></div>
   <!-- Título & Texto -->
 <div class="Titulo">
- <h1>YouTube Grouvex</h1>
+ <h1>YouTubeGrouvex</h1>
 </div>
  <!--Texto -->
  <div class="Texto">
-  <a>Configurando...</a> <a href="/a">a</a>
+  <section id="Intro">
+   <h2><a href="#Intro">Introducción</a></h2>
+    <a>Configurando...</a>
+  </section>
  </div>
-  <div id="footer"></div>
+ </main>
+ <div id="footer"></div>
 </body>
 </html>

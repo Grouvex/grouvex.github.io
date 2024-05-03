@@ -7,19 +7,19 @@ window.onload = function() {
             footer: '©2023 - Grouvex Studio'
         },
         {
-            url: 'https://www.youtube.com/watch?v=mk7h9tN6aPQ',
+            url: 'https://www.youtube.com/embed/mk7h9tN6aPQ',
             title: 'Gemini',
             description: 'Gemini by Grouvex',
             footer: '©2025 - Grouvex Studio'
         },
         {
-            url: 'https://www.youtube.com/watch?v=C3s4POyHvXc',
+            url: 'https://www.youtube.com/embed/C3s4POyHvXc',
             title: 'Aries',
             description: 'Aries by Grouvex',
             footer: '©2025 - Grouvex Studio'
         },
         {
-            url: 'https://www.youtube.com/watch?v=kRGcSJ6qrxE',
+            url: 'https://www.youtube.com/embed/kRGcSJ6qrxE',
             title: 'Taurus',
             description: 'taurus by Grouvex',
             footer: '©2025 - Grouvex Studio'

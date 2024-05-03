@@ -1,7 +1,20 @@
-<!DOCTYPE html>
-<html lang="es">
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../index.css">
+<link rel="icon" href="../img/GROUVEX.png">
 <script src="../jquery-3.5.1.min.js"></script>
- <script> 
+<script src="../index.js"></script>
+<style>
+aside {
+  background-color: red;
+}
+</style>
+</head>
+<script> 
+    $(function(){
+      $("#header").load("../header.html"); 
+    });
     $(function(){
       $("#menu").load("../menu.html"); 
     });
@@ -12,35 +25,54 @@
       $("#news").load("news.html"); 
     });
  </script>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8"> 
-<link rel="stylesheet" href="../index.css">
-<link rel="icon" href="../img/GROUVEX.png">
-<script src="../index.js"></script>
 <news>
 <div id="notification">
 <div id="news"></div>
 </div>
 </news>
 <mainTop>
-<div class="avatar1"><a href="https://grouvex.github.io/en/grouvex"><img src="../img/Grouvex1.png" alt="Avatar" class="avatar1"></a></div>
-<span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+<div class="avatar1"><a href="https://grouvex.github.io"><img src="../img/Grouvex1.png" alt="Avatar" class="avatar1"></a></div>
+<span style="font-size:30px;cursor:pointer" onclick="openNav()">☰</span>
 </mainTop>
-</head>
 <div id="menu"></div>
-<main>
 <body>
+<main>
   <!-- Título & Texto -->
-<div class="Titulo">
- <h1>YouTubeGrouvex</h1>
+<div class="titulo">
+ <h1>YouTube Grouvex</h1>
 </div>
  <!--Texto -->
  <div class="Texto">
-  <section id="Intro">
-   <h2><a href="#Intro">Introducción</a></h2>
-    <a>Configurando...</a>
+  <main id="Intro">
+   <h1><a href="#Intro">Introducción</a></h1>
+  <article id="Presentacion">
+    <section>
+   <h2><a href="#Presentacion">Presentación</h2>
+    <a>Gsssssssssssssssssssssssss</a>
   </section>
+    </article>
  </div>
+ <!-- Aquí va tu sección de videos -->
+  <div class="video-slider">
+    <!-- Asegúrate de reemplazar 'VIDEO_ID', 'Título del video' y 'Descripción del video' con los datos correspondientes -->
+<div class="video" onclick="openVideo('https://www.youtube.com/embed/x09D-9ZpF_o')">
+  <h2>Stars In The Starry Sky</h2>
+  <p>Stars In The Starry Sky by Grouvex
+2023 - Grouvex Studio</p>
+  <img src="https://img.youtube.com/vi/x09D-9ZpF_o/0.jpg" alt="Miniatura del video">
+</div>
+
+    <div class="video" onclick="openVideo('https://www.youtube.com/embed/x09D-9ZpF_o')">
+      <h2>Título del video</h2>
+      <p>Descripción del video</p>
+      <img src="https://img.youtube.com/vi/x09D-9ZpF_o/0.jpg" alt="Miniatura del video">
+    </div>
+    <!-- Repite el div de arriba para cada video que quieras añadir -->
+  </div>
+  <div id="videoModal" class="modal">
+    <span class="close" onclick="closeVideo()">&times;</span>
+    <iframe id="videoFrame" width="560" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
  </main>
  <div id="footer"></div>
 </body>

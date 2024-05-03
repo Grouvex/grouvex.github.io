@@ -13,7 +13,7 @@ window.onload = function() {
         {
             url: 'https://www.instagram.com/p/C6BPR5kooq0/',
             title: '<a href="https://www.youtube.com/watch?v=WluFCmb6PmA">The Eras Tour</a>',
-            description: 'The Eras Tour (<a href="https://www.taylorswift.com/">Taylor Swift</a>) - Grouvex Studio'
+            description: 'The Eras Tour (<a href="https://www.taylorswift.com/">Taylor Swift</a><a>) - Grouvex Studio</a>'
         },
         // Añade más objetos de publicaciones de Instagram aquí
     ];

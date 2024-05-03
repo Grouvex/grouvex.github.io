@@ -1,0 +1,71 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../index.css">
+<link rel="icon" href="../img/GROUVEX.png">
+<script src="../jquery-3.5.1.min.js"></script>
+<script src="../index.js"></script>
+<script src="../youtube.js"></script>
+</head>
+<script> 
+    $(function(){
+      $("#header").load("../header.html"); 
+    });
+    $(function(){
+      $("#menu").load("../menu.html"); 
+    });
+    $(function(){
+      $("#footer").load("footer.html"); 
+    });
+     $(function(){
+      $("#news").load("news.html"); 
+    });
+ </script>
+<news>
+<div id="notification">
+<div id="news"></div>
+</div>
+</news>
+<mainTop>
+<div class="avatar1"><a href="https://grouvex.github.io"><img src="../img/Grouvex1.png" alt="Avatar" class="avatar1"></a></div>
+<span style="font-size:30px;cursor:pointer" onclick="openNav()">☰</span>
+</mainTop>
+<div id="menu"></div>
+<body>
+<main>
+  <!-- Título & Texto -->
+<div class="titulo">
+ <h1>YouTube Grouvex</h1>
+</div>
+ <!--Texto -->
+ <div class="Texto">
+  <main id="Intro">
+   <h1><a href="#Intro">Introductionn</a></h1>
+  <article id="Presentacion">
+    <section>
+   <h2><a href="#Presentacion">Presentation</h2>
+    <a>Gsssssssssssssssssssssssss</a>
+  </section>
+    </article>
+ </div>
+ <!-- Aquí va tu sección 1 de videos -->
+  <button class="accordion"><h3>Releases</h3></button>
+    <div class="panel">
+        <a>Grouvex Official Releases</a>
+        <div id="youtube-carousel" class="carousel">
+            <!-- Los videos de YouTube se añadirán aquí -->
+        </div>
+    </div>
+<!-- Aquí va tu sección 2 de videos -->
+  <button class="accordion"><h3>Live Grouvex Studio</h3></button>
+    <div class="panel">
+        <a>Official Grouvex Studio Live Streams</a>
+        <div id="youtube-carousel1" class="carousel">
+            <!-- Los videos de YouTube se añadirán aquí -->
+        </div>
+    </div>
+    <div id="footer"></div>
+ </main>
+ <div id="footer"></div>
+</body>
+</html>

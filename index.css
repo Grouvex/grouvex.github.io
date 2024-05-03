@@ -157,7 +157,6 @@ mainTop {
 } 
   n {
     font-weight: bold;
-    color: white;
   }
   ig {
     color: fuchsia;
@@ -182,6 +181,7 @@ mainTop {
 
 /* Diseño de la Web */
 h1,h2,h3,h4,h5,h6,h7,h8 {
+  background: linear-gradient(to bottom, green, rgb(99, 99, 168), black);
   text-align: center;
   color: white;
 }
@@ -192,18 +192,8 @@ body {
     font-family: Arial, sans-serif; /* Tipo de letra */
     margin: 0;
     padding: 0;
-/* Añade la imagen de fondo al body */
-    background-image: url('https://es.m.wikipedia.org/wiki/Universo#/media/Archivo%3AHubble_ultra_deep_field.jpg');
-
-    /* Asegura que la imagen de fondo cubra todo el espacio disponible */
-    background-size: cover;
-
-    /* La imagen de fondo no se repite */
-    background-repeat: no-repeat;
-
-    /* La imagen de fondo está centrada en la página */
-    background-position: center;
 }
+
 
 /* Estilo para el encabezado */
 header {
@@ -242,17 +232,31 @@ main {
     flex: 0;
     color: white;
     margin: 10px;
+    background: radial-gradient(circle, red, rgb(99, 99, 168), black);
 }
 
 /* Estilo para los artículos, secciones y barras laterales */
-article, section, aside {
-    background-color: white;
+article {
+    background: linear-gradient(to bottom, pink, rgb(99, 99, 168), black);
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
 }
-
+section {
+    background: linear-gradient(to bottom, yellow, rgb(99, 99, 168), black);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+}
+aside {
+    background: radial-gradient(circle, rgb(200, 71, 226), rgb(99, 99, 168), black);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+}
 /* Estilo para el pie de página */
 footer {
     width: 100%;

@@ -1,7 +1,15 @@
-<!DOCTYPE html>
-<html lang="es">
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../index.css">
+<link rel="icon" href="../img/GROUVEX.png">
 <script src="../jquery-3.5.1.min.js"></script>
- <script> 
+<script src="../index.js"></script>
+</head>
+<script> 
+    $(function(){
+      $("#header").load("../header.html"); 
+    });
     $(function(){
       $("#menu").load("../menu.html"); 
     });
@@ -12,36 +20,40 @@
       $("#news").load("news.html"); 
     });
  </script>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8"> 
-<link rel="stylesheet" href="../index.css">
-<link rel="icon" href="../img/GROUVEX.png">
-<script src="../index.js"></script>
 <news>
 <div id="notification">
 <div id="news"></div>
 </div>
 </news>
 <mainTop>
-<div class="avatar1"><a href="https://grouvex.github.io/es/grouvex"><img src="../img/Grouvex1.png" alt="Avatar" class="avatar1"></a></div>
-<span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+<div class="avatar1"><a href="https://grouvex.github.io"><img src="../img/Grouvex1.png" alt="Avatar" class="avatar1"></a></div>
+<span style="font-size:30px;cursor:pointer" onclick="openNav()">☰</span>
 </mainTop>
-</head>
 <div id="menu"></div>
-<main>
 <body>
+<main>
   <!-- Título & Texto -->
-<div class="Titulo">
- <h1 href="https://www.instagram.com/grouvex"><ig>Instagram Grouvex</ig></h1>
+<div class="titulo">
+ <h1>Instagram Grouvex</h1>
 </div>
  <!--Texto -->
  <div class="Texto">
-  <section id="Intro">
-   <h2><a href="#Intro">Introducción</a></h2>
-    <a>Configurando...</a>
+  <main id="Intro">
+   <h1><a href="#Intro">Introducción</a></h1>
+  <article id="Presentacion">
+    <section>
+   <h2><a href="#Presentacion">Presentación</h2>
+    <a>Se está configurando</a>
   </section>
+    </article>
  </div>
- </main>
- <div id="footer"></div>
+    <button class="accordion"><h3>Título del Acordeón</h3></button>
+    <div class="panel">
+        <a>Publicaciones de la cuenta oficial de Instagram</a>
+        <div id="instagram-carousel" class="carousel">
+            <!-- Los posts de Instagram se añadirán aquí -->
+        </div>
+    </div>
+<script src="../instagram.js"></script>
 </body>
 </html>

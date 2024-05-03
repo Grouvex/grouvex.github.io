@@ -20,31 +20,40 @@ function closeVideo() {
     document.getElementById('videoFrame').src = '';
 }
 
-document.getElementById('themeSelect').addEventListener('change', function() {
-    // Obtiene los elementos body, main, article, section y h1
-    var elements = document.querySelectorAll('body, main,h1,h2,h3,h4,h5,h6,h7,h8,mainTop,.avatar1, article, section, aside');
-    // Elimina las clases de las opciones antiguas
-    elements.forEach(function(element) {
-        element.classList.remove('theme1', 'theme2', 'theme3', 'theme4', 'theme5');
-    });
-    // Si la opción seleccionada no es "default", añade la clase de la opción seleccionada
-   if (this.value !== 'default') {
-        elements.forEach(function(element) {
-            element.classList.add(this.value);
-        }.bind(this)); // Asegúrate de vincular 'this' a la función
-    }
-    // Guarda la selección del usuario en el almacenamiento local
-    localStorage.setItem('selectedTheme', this.value);
-});
+var themeSelect = document.getElementById('themeSelect');
 
-window.addEventListener('load', function() {
-    // Obtiene la selección del usuario del almacenamiento local
-    var selectedTheme = localStorage.getItem('selectedTheme');
-    // Si hay una selección guardada y no es "default", aplica el tema seleccionado
-    if (selectedTheme && selectedTheme !== 'default') {
-        var elements = document.querySelectorAll('body, main,h1,h2,h3,h4,h5,h6,h7,h8,mainTop,.avatar1, article, section, aside');
-        elements.forEach(function(element) {
-            element.classList.add(selectedTheme);
+        // Cuando se cambia el tema
+        themeSelect.addEventListener('change', function() {
+            // Obtiene todos los elementos a los que se les aplicará el cambio de tema
+            var elements = document.querySelectorAll('body, main, h1, h2, h3, h4, h5, h6, h7, h8, .mainTop, .avatar1, article, section, aside');
+
+            // Elimina las clases de las opciones antiguas
+            elements.forEach(function(element) {
+                element.classList.remove('theme1', 'theme2');
+            });
+
+            // Si la opción seleccionada no es "default", añade la clase de la opción seleccionada
+            if (this.value !== 'default') {
+                elements.forEach(function(element) {
+                    element.classList.add(this.value);
+                }.bind(this));
+            }
+
+            // Guarda la selección del usuario en el almacenamiento local
+            localStorage.setItem('selectedTheme', this.value);
         });
-    }
-});
+
+        // Cuando se carga la página
+        window.addEventListener('load', function() {
+            // Obtiene la selección del usuario del almacenamiento local
+            var selectedTheme = localStorage.getItem('selectedTheme');
+
+            // Si hay una selección guardada y no es "default", aplica el tema seleccionado
+            if (selectedTheme && selectedTheme !== 'default') {
+                var elements = document.querySelectorAll('body, main, h1, h2, h3, h4, h5, h6, h7, h8, .mainTop, .avatar1, article, section, aside');
+                elements.forEach(function(element) {
+                    element.classList.add(selectedTheme);
+                });
+                themeSelect.value = selectedTheme; // Asegúrate de que el menú desplegable muestre el tema correcto
+            }
+        });

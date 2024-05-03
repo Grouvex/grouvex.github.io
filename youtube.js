@@ -4,25 +4,25 @@ window.onload = function() {
         {
             url: 'https://www.youtube.com/embed/x09D-9ZpF_o',
             title: 'Stars In The Starry Sky',
-            description: 'Stars In The Starry Sky by Grouvex',
+            description: '<p>Stars In The Starry Sky by Grouvex</p>',
             footer: '©2023 - Grouvex Studio'
         },
         {
             url: 'https://www.youtube.com/embed/mk7h9tN6aPQ',
             title: 'Gemini',
-            description: 'Gemini by Grouvex',
+            description: '<p>Gemini by Grouvex</p>',
             footer: '©2025 - Grouvex Studio'
         },
         {
             url: 'https://www.youtube.com/embed/C3s4POyHvXc',
             title: 'Aries',
-            description: 'Aries by Grouvex',
+            description: '<p>Aries by Grouvex</p>',
             footer: '©2025 - Grouvex Studio'
         },
         {
             url: 'https://www.youtube.com/embed/kRGcSJ6qrxE',
             title: 'Taurus',
-            description: 'taurus by Grouvex',
+            description: '<p>Taurus by Grouvex</p>',
             footer: '©2025 - Grouvex Studio'
         },
         // Añade más objetos de videos de YouTube aquí
@@ -41,8 +41,8 @@ window.onload = function() {
     var youtubeVideos = [
         {
             url: 'https://www.youtube.com/embed/WluFCmb6PmA',
-            title: '<a href="#TheErasTour">The Eras Tour</a>',
-            description: '<a>The Eras Tour (</a><a href="https://www.taylorswift.com/">Taylor Swift</a><a>) - Grouvex Studio</a>',
+            title: '<p id="TheErasTour"><a href="#TheErasTour">The Eras Tour</a></p>',
+            description: '<p>The Eras Tour (<a href="https://www.taylorswift.com/">Taylor Swift</a><p>) - Grouvex Studio</a>',
             footer: '©2024 - Grouvex Studio'
         },
         // Añade más objetos de videos de YouTube aquí

@@ -70,9 +70,11 @@ aside {
     <!-- Repite el div de arriba para cada video que quieras añadir -->
   </div>
   <div id="videoModal" class="modal">
-    <span class="close" onclick="closeVideo()">&times;</span>
-    <iframe id="videoFrame" width="560" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <span class="close" onclick="closeVideo()">×</span>
+  <div class="modal-content">
+    <iframe id="videoFrame" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
   </div>
+</div>
  </main>
  <div id="footer"></div>
 </body>

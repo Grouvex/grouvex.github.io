@@ -237,9 +237,10 @@ main {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    padding: 20px;
+    padding: 10px;
     flex: 0;
-    margin: 35px;
+    color: white;
+    margin: 10px;
 }
 
 /* Estilo para los artículos, secciones y barras laterales */

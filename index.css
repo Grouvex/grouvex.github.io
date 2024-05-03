@@ -192,12 +192,10 @@ main {
     flex: 0;
     color: white;
     margin: 10px;
-    background-color: #222;
 }
 h1,h2,h3,h4,h5,h6,h7,h8 {
   text-align: center;
   color: white;
-  background-color: aqua;
 }
 mainTop {
     flex: 0;
@@ -217,21 +215,18 @@ article {
     margin: 10px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
-    background-color:#3d3c3c;
 }
 section {
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
-    background-color:#757474;
 }
 aside {
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
-    background-color:#2e2323;
 }
 /*Theme 1*/
 /* Establece el fondo de toda la página a gris */

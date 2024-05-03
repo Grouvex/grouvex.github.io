@@ -11,15 +11,10 @@ window.onload = function() {
             description: 'A new universe is approaching at the speed of light, from a place far, far away. Do you want it to come to us as soon as possible? What do you think the universe can bring with him? Is it a good thing or a bad thing?'
         },
         {
-            url: 'https://www.instagram.com/p/C5aqm3SI89l/',
-            title: 'Título del Post 2',
-            description: 'Descripción del Post 2'
+            url: 'https://www.instagram.com/p/C6BPR5kooq0/',
+            title: '<a href="https://www.youtube.com/watch?v=WluFCmb6PmA">The Eras Tour</a>',
+            description: 'The Eras Tour (<a href="https://www.taylorswift.com/">Taylor Swift</a>) - Grouvex Studio'
         },
-        {
-              url: 'https://www.instagram.com/p/C5aqm3SI89l/',
-              title: 'Título del Post 2',
-              description: 'Descripción del Post 2'
-          },
         // Añade más objetos de publicaciones de Instagram aquí
     ];
 
@@ -28,7 +23,7 @@ window.onload = function() {
     instagramPosts.forEach(function(post) {
         var postDiv = document.createElement('div');
         postDiv.innerHTML = '<h2 class="post-title">' + post.title + '</h2>' +
-                            '<p class="post-description">' + post.description + '</p>' +
+                            '<a class="post-description">' + post.description + '</a>' +
                             '<blockquote class="instagram-media" data-instgrm-permalink="' + post.url + '" data-instgrm-version="13"></blockquote>';
         carousel.appendChild(postDiv);
     });

@@ -263,7 +263,7 @@ mainTop.theme1 {
     flex: 0;
     margin: 2px;
     padding: 25px;
-    background: linear-gradient(10deg, red, white, blue);
+    background: linear-gradient(45deg, red, white, blue
 }
 .avatar1.theme1 {
     width: 220px;

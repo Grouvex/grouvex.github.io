@@ -559,7 +559,7 @@ nav a {
     overflow: hidden;
 }
 
-/* CSS */
+/*Etiquetas*/
 .status {
   display: inline-block;
   padding: 2px 10px;
@@ -570,9 +570,9 @@ nav a {
 
 }
 
-/*Etiquetas*/
 .new {
   background-color: green;
+  animation: rotate 2s infinite linear; /* Esto hace que la etiqueta "Nuevo" tenga un efecto de rotación */
 }
 .maintenance {
   background-color: orange;
@@ -588,8 +588,35 @@ nav a {
   background-image: url('https://usagif.com/wp-content/uploads/gif/outerspace-76.gif'); /* Asegúrate de reemplazar esto con la ruta a tu imagen de estrellas */
   background-size: cover;
   box-shadow: 0 0 10px rgb(230, 6, 6);
+  
 }
 .upcoming {
   background-color: yellow;
   color: black;
+}
+.exclusive {
+  background-color: purple;
+  box-shadow: 0 0 10px rgb(0, 0, 0); /* Esto hace que la etiqueta "Exclusivo" destaque */
+  animation: pulse 2s infinite; /* Esto hace que la etiqueta "Exclusivo" tenga un efecto de pulso */
+}
+.recommended {
+  background-color: rgb(15, 122, 122);
+}
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+.classic {
+  box-shadow: 0 0 10px grey;
+  background-color: grey;
+  animation: pulse 1.5s infinite;
+}
+.on-sale {
+  background-color: red;
+}
+.limited-edition {
+  background-color: gold;
+  color: black; /* As the background is light, we use black for the text */
+  box-shadow: 0 0 10px gold; /* Esto hace que la etiqueta "Edición limitada" destaque */
 }

@@ -4,11 +4,6 @@
     color: white;
     width: 100%;
 }
-* {
-    background-color: #222;
-    background-repeat: no-repeat;
-    background-size: auto;
-  }
   
   .sidenav {
     height: 100%;
@@ -120,11 +115,6 @@ text-decoration-line: none;
 text-align: left;
 }
 
-p {
-  color: white;
-  display: block;
-}
-
 header {
     background-color: #000000;
     color: rgb(226, 42, 42);
@@ -173,62 +163,87 @@ news {
     /* Añade más estilos según necesites */
   }
 /* Diseño de la Web */
+* {
+    background-color: #222;
+    background-repeat: no-repeat;
+    background-size: auto;
+  }
 /*Default Theme*/
+p {
+  color: rgb(255, 255, 255);
+  text-shadow: white;
+  display: block;
+}
 /* Establece el fondo de toda la página a gris */
 body {
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
     margin: 0;
-    padding: 0;
+    padding: 0;    
 }
+
 /* Estilo para el contenido principal */
 main {
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     padding: 10px;
     flex: 0;
-    color: white;
     margin: 10px;
+    background-color: #000000;
 }
 h1,h2,h3,h4,h5,h6,h7,h8 {
+   box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
   text-align: center;
-  color: white;
+  background-color: #000000;
+  color: rgb(255, 255, 255);
 }
 mainTop {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
     flex: 0;
     margin: 2px;
     padding: 25px;
+    background: #000000;
 }
 .avatar1 {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
     width: 220px;
     border-radius: 0%;
     margin-top: -0.7%;
     margin-left: 4%;
     position: absolute;
+    background: #000000;
 }
 /* Estilo para los artículos, secciones y barras laterales */
 article {
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;
     padding: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1); /* Sombra suave */
+    background-color: rgb(255, 0, 0);
 }
 section {
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;
     padding: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    box-shadow: 0 2px 5px rgba(51, 255, 0, 0.1); /* Sombra suave */
+    background-color: rgb(255, 255, 255);
 }
 aside {
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-color: rgb(255, 255, 255);
 }
 /*Theme 1*/
+p.theme1 {
+  color: rgb(255, 255, 255);
+  text-shadow: white;
+  display: block;
+}
 /* Establece el fondo de toda la página a gris */
 body.theme1 {
     display: flex;
@@ -290,7 +305,12 @@ aside.theme1 {
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
 }
-/*Theme 1*/
+/*Theme 2*/
+p.theme2 {
+  color: rgb(255, 255, 255);
+  text-shadow: white;
+  display: block;
+}
 /* Establece el fondo de toda la página a gris */
 body.theme2 {
     display: flex;
@@ -298,6 +318,7 @@ body.theme2 {
     font-family: Arial, sans-serif; /* Tipo de letra */
     margin: 0;
     padding: 0;
+    background-color: aqua;
 }
 /* Estilo para el contenido principal */
 main.theme2 {
@@ -351,6 +372,90 @@ aside.theme2 {
     margin: 10px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+}
+/*Theme 3 Space*/
+p.theme3 {
+  color: rgb(255, 255, 255);
+  text-shadow: white;
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.theme3 {
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    margin: 0;
+    padding: 0;
+    background-image: url(https://th.bing.com/th/id/R.2233dd9dbbdc72fd46d1ae218bae965d?rik=mlwKyBXXRrJU6A&pid=ImgRaw&r=0);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para el contenido principal */
+main.theme3 {
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin: 10px;
+    background-image: url(https://th.bing.com/th/id/OIP.NdcwLYq7n6iTiiu1IUHLFAHaEv?rs=1&pid=ImgDetMain);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+h1.theme3,h2.theme3,h3.theme3,h4.theme3,h5.theme3,h6.theme3,h7.theme3,h8.theme3 {
+  text-align: center;
+  color: white;
+  background-image: url(https://th.bing.com/th/id/R.bbc58b224e5d27d5648d8ae74e01bc2a?rik=MtYc%2bepoyXyjrw&pid=ImgRaw&r=0);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.theme3 {
+    flex: 0;
+    margin: 2px;
+    padding: 25px;
+    background-image: url(https://live.staticflickr.com/7060/6971643495_05dc317572_b.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.avatar1.theme3 {
+    width: 220px;
+    border-radius: 0%;
+    margin-top: -0.7%;
+    margin-left: 4%;
+    position: absolute;
+    background-image: url(https://live.staticflickr.com/7060/6971643495_05dc317572_b.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.theme3 {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://th.bing.com/th/id/OIP.kBY4LxAeo1gzY_un8PIWJAHaEb?rs=1&pid=ImgDetMain);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+section.theme3 {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://th.bing.com/th/id/OIP.XhSnvyZ7S0hRkD_erqTc0QHaEo?rs=1&pid=ImgDetMain);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+aside.theme3 {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://i.pinimg.com/originals/a5/d0/67/a5d0672466ca12f67241a1dc99171b75.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 /* Estilo para el pie de página */
 footer {
@@ -452,4 +557,39 @@ nav a {
     display: none;
     background-color: white;
     overflow: hidden;
+}
+
+/* CSS */
+.status {
+  display: inline-block;
+  padding: 2px 10px;
+  margin-left: 10px;
+  border-radius: 50px; /* Esto hace que la etiqueta sea ovalada */
+  color: white;
+  font-size: 0.5em;
+
+}
+
+/*Etiquetas*/
+.new {
+  background-color: green;
+}
+.maintenance {
+  background-color: orange;
+}
+.updating {
+  background-color: blue;
+}
+.featured {
+  background-color: purple;
+  box-shadow: 0 0 10px rgb(255, 255, 255); /* Esto hace que la etiqueta "Destacado" destaque */
+}
+.popular {
+  background-image: url('https://usagif.com/wp-content/uploads/gif/outerspace-76.gif'); /* Asegúrate de reemplazar esto con la ruta a tu imagen de estrellas */
+  background-size: cover;
+  box-shadow: 0 0 10px rgb(230, 6, 6);
+}
+.upcoming {
+  background-color: yellow;
+  color: black;
 }

@@ -1,3 +1,54 @@
+/*Primavera*/
+.flower {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  background: pink;
+  border-radius: 50%;
+  animation: fall linear infinite;
+}
+/*Verano*/
+.sun {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  background: yellow;
+  border-radius: 50%;
+  animation: fall linear infinite;
+}
+/*Verano*/
+.leaf {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  background: orange;
+  border-radius: 50%;
+  animation: fall linear infinite;
+}
+/*Navidad*/
+.snowflake {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 50%;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(500vh);
+  }
+}
+/*Página*/
 #notification {
     text-align: center;
     background-color: red;
@@ -176,6 +227,9 @@ p {
 }
 /* Establece el fondo de toda la página a gris */
 body {
+  height: 100vh;
+  
+  background: #000;
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
@@ -559,7 +613,7 @@ nav a {
     overflow: hidden;
 }
 
-/*Etiquetas*/
+/* CSS */
 .status {
   display: inline-block;
   padding: 2px 10px;
@@ -569,7 +623,7 @@ nav a {
   font-size: 0.5em;
 
 }
-
+/*Etiquetas*/
 .new {
   background-color: green;
   animation: rotate 2s infinite linear; /* Esto hace que la etiqueta "Nuevo" tenga un efecto de rotación */

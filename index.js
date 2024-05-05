@@ -1,8 +1,13 @@
 // Llama a todas las funciones que quieres ejecutar cuando se carga la página
-showNotification();
-flower();
-flower();
-nieve();
+window.addEventListener('load', function() {
+    // Llama a todas las funciones que quieres ejecutar cuando se carga la página
+    showNotification();
+    flower();
+    sol();
+    leaf();
+    nieve();
+});
+
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
 }
@@ -41,6 +46,46 @@ function flower() {
       flower.style.opacity = Math.random();
       flower.style.transform = 'scale(' + Math.random() + ')';
       document.body.appendChild(flower);
+    }
+  }
+}
+
+function sol() {
+  var today = new Date();
+  var month = today.getMonth();
+  var day = today.getDate();
+
+  // Comprueba si es verano (21 de junio - 22 de septiembre)
+  if ((month == 5 && day >= 20) || (month == 5 && day <= 30)) {
+    for (var i = 0; i < 200; i++) {
+      var sun = document.createElement('div');
+      sun.className = 'sun';
+      sun.style.left = Math.random() * window.innerWidth + 'px';
+      sun.style.animationDuration = Math.random() * 3 + 2 + 's';
+      sun.style.animationDelay = Math.random() * 7 + 's';
+      sun.style.opacity = Math.random();
+      sun.style.transform = 'scale(' + Math.random() + ')';
+      document.body.appendChild(sun);
+    }
+  }
+}
+
+function leaf() {
+  var today = new Date();
+  var month = today.getMonth();
+  var day = today.getDate();
+
+  // Comprueba si es la primera semana de otoño (20 de septiembre - 27 de septiembre)
+  if ((month == 8 && day >= 20) || (month == 8 && day <= 30)) {
+    for (var i = 0; i < 200; i++) {
+      var leaf = document.createElement('div');
+      leaf.className = 'leaf';
+      leaf.style.left = Math.random() * window.innerWidth + 'px';
+      leaf.style.animationDuration = Math.random() * 3 + 2 + 's';
+      leaf.style.animationDelay = Math.random() * 7 + 's';
+      leaf.style.opacity = Math.random();
+      leaf.style.transform = 'scale(' + Math.random() + ')';
+      document.body.appendChild(leaf);
     }
   }
 }
@@ -101,4 +146,5 @@ window.addEventListener('load', function() {
         });
         themeSelect.value = selectedTheme; // Asegúrate de que el menú desplegable muestre el tema correcto
     }
+    
 });

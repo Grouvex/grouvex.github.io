@@ -11,21 +11,26 @@ function redirigir() {
   <option value="">Select</option>
   <option value="https://grouvex.github.io/es/grouvex">Español</option>
   <option value="https://grouvex.github.io/en/grouvex">English</option>
-  <option value="https://grouvex.github.io/fr/grouvex">Français</option>
+  <option value="https://grouvex.github.io/fr/grouvex" disabled>Français</option>
   <!-- Añade más opciones de idioma según sea necesario -->
 </select>
   <script src="../index.js"></script>
 <span class="status new">New</span>
 <select id="themeSelect">
   <option value="default">Default Theme</option>
-  <option value="theme1">Theme 1: Color</option>
-  <option value="theme2">Theme 2: Color</option>
-  <option value="theme3">Theme 3: Space <span class="status exclusive">Exclusive</span></option>
-  <option value="theme4">Theme 4</option>
-  <option value="theme5">Theme 5</option>
+  <option value="theme1" disabled>Theme 1: Color</option>
+  <option value="theme2" disabled>Theme 2: Color</option>
+  <option value="space" disabled>Theme Space</option>
+  <option value="theme4" class="hiddenOption">Theme Star Wars</option>
+  <option value="jurassicworld" class="hiddenOption">Theme Jurassic World</option>
+  <option value="taylorswift" class="hiddenOption">Theme Taylor Swift</option>
   <!-- Añade tantas opciones como diseños tengas -->
 </select>
-
+<style>
+  .hiddenOption {
+    display: none;
+  }
+</style>
 </div>
  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
   <span><img src="../img/GROUVEX.png" alt="Grouvex" class="red1"></span>

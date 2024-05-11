@@ -427,14 +427,15 @@ aside.theme2 {
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
 }
+
 /*Theme 3 Space*/
-p.theme3 {
+p.space {
   color: rgb(255, 255, 255);
   text-shadow: white;
   display: block;
 }
 /* Establece el fondo de toda la página a gris */
-body.theme3 {
+body.space {
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
@@ -445,7 +446,7 @@ body.theme3 {
     background-repeat: no-repeat;
 }
 /* Estilo para el contenido principal */
-main.theme3 {
+main.space {
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
     display: flex;
     flex-wrap: wrap;
@@ -458,14 +459,14 @@ main.theme3 {
     background-size: cover;
     background-repeat: no-repeat;
 }
-h1.theme3,h2.theme3,h3.theme3,h4.theme3,h5.theme3,h6.theme3,h7.theme3,h8.theme3 {
+h1.space,h2.space,h3.space,h4.space,h5.space,h6.space,h7.space,h8.space {
   text-align: center;
   color: white;
   background-image: url(https://th.bing.com/th/id/R.bbc58b224e5d27d5648d8ae74e01bc2a?rik=MtYc%2bepoyXyjrw&pid=ImgRaw&r=0);
   background-size: cover;
   background-repeat: no-repeat;
 }
-mainTop.theme3 {
+mainTop.space {
     flex: 0;
     margin: 2px;
     padding: 25px;
@@ -473,7 +474,7 @@ mainTop.theme3 {
     background-size: cover;
     background-repeat: no-repeat;
 }
-.avatar1.theme3 {
+.avatar1.space {
     width: 220px;
     border-radius: 0%;
     margin-top: -0.7%;
@@ -484,7 +485,7 @@ mainTop.theme3 {
     background-repeat: no-repeat;
 }
 /* Estilo para los artículos, secciones y barras laterales */
-article.theme3 {
+article.space {
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;
     padding: 10px;
@@ -493,7 +494,7 @@ article.theme3 {
     background-size: cover;
     background-repeat: no-repeat;
 }
-section.theme3 {
+section.space {
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;
     padding: 10px;
@@ -502,7 +503,7 @@ section.theme3 {
     background-size: cover;
     background-repeat: no-repeat;
 }
-aside.theme3 {
+aside.space {
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;
     padding: 10px;
@@ -511,6 +512,266 @@ aside.theme3 {
     background-size: cover;
     background-repeat: no-repeat;
 }
+
+/*Theme 4 Star Wars*/
+p.starwars {
+  color: rgb(255, 255, 255);
+  text-shadow: white;
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.starwars {
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    margin: 0;
+    padding: 0;
+    background-image: url(https://th.bing.com/th/id/R.2233dd9dbbdc72fd46d1ae218bae965d?rik=mlwKyBXXRrJU6A&pid=ImgRaw&r=0);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para el contenido principal */
+main.starwars {
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin: 10px;
+    background-image: url(https://th.bing.com/th/id/OIP.npOsomw2bikOEQXahXpM0QHaEK?w=329&h=185&c=7&r=0&o=5&pid=1.7);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+h1.starwars,h2.starwars,h3.starwars,h4.starwars,h5.starwars,h6.starwars,h7.starwars,h8.starwars {
+  text-align: center;
+  color: white;
+  background-image: url(https://th.bing.com/th/id/OIP.fXzET8932QEAPm2_VL9h2wHaEK?w=316&h=180&c=7&r=0&o=5&pid=1.7);
+  background-position: 0px;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.starwars {
+    flex: 0;
+    margin: 2px;
+    padding: 40px;
+    background-image: url(https://images.squarespace-cdn.com/content/v1/531630f6e4b0fa5080a5596f/1845bb78-5fb1-4250-a2b9-e959c995cef9/Star+Wars+v2.jpg);
+    background-position: 0px;
+    background-size:cover;
+    background-repeat: no-repeat;
+}
+.avatar1.starwars {
+    width: 220px;
+    border-radius: 0%;
+    margin-top: 1.5%;
+    margin-left: 4%;
+    position: absolute;
+    background-image: url(https://images.squarespace-cdn.com/content/v1/531630f6e4b0fa5080a5596f/1845bb78-5fb1-4250-a2b9-e959c995cef9/Star+Wars+v2.jpg?format=1000w);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.starwars {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://th.bing.com/th/id/OIP.Q0rcMIyko5F5ado-TefV6wHaEK?w=316&h=180&c=7&r=0&o=5&pid=1.7);
+    background-position: 0px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+section.starwars {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://th.bing.com/th/id/OIP.fXzET8932QEAPm2_VL9h2wHaEK?w=316&h=180&c=7&r=0&o=5&pid=1.7);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+aside.starwars {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://th.bing.com/th/id/OIP.JsQzo18AdsLv04LuKo4-9AHaEK?w=313&h=180&c=7&r=0&o=5&pid=1.7);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/*Theme 5 Jurassic World*/
+p.jurassicworld {
+  color: rgb(255, 255, 255);
+  text-shadow: white;
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.jurassicworld {
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    margin: 0;
+    padding: 0;
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8k6I58I0r2yWS20ImbGZO2viw0K_ncxugsA&s);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para el contenido principal */
+main.jurassicworld {
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin: 10px;
+    background-image: url(https://th.bing.com/th/id/OIP.J_Epz6FeCHuiohqcJU72oQHaDs?w=349&h=174&c=7&r=0&o=5&pid=1.7);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+h1.jurassicworld,h2.jurassicworld,h3.jurassicworld,h4.jurassicworld,h5.jurassicworld,h6.jurassicworld,h7.jurassicworld,h8.jurassicworld {
+  text-align: center;
+  color: white;
+  background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTspVYXunQxW8ToCzewEXHfrD74p2QtILTTZw&s);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.jurassicworld {
+    flex: 0;
+    margin: 2px;
+    padding: 25px;
+    background-image: url(https://th.bing.com/th/id/OIP.TJK__-FIvQRNVUIPkvJQ9QHaEd);
+    background-position-y: -50px;
+    background-size:cover;
+    background-repeat: no-repeat;
+}
+.avatar1.jurassicworld {
+    width: 220px;
+    border-radius: 0%;
+    margin-top: 1.3%;
+    margin-left: 4%;
+    position: absolute;
+    background-image: url(https://images.squarespace-cdn.com/content/v1/531630f6e4b0fa5080a5596f/1845bb78-5fb1-4250-a2b9-e959c995cef9/Star+Wars+v2.jpg?format=1000w);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.jurassicworld {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNG2bTMhZUu7owtd-3a6dDjM6yeB_p3DpzYA&s);
+    background-position: 0px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+section.jurassicworld {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgUBGAIO4J6icDD29q9HqP7MA4Nae4IAwLsQ&s);
+    background-size: cover;
+    background-position: 0px;
+    background-repeat: no-repeat;
+}
+aside.jurassicworld {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCwwbTxxtBwVBs6rK7GigiCwkcIha0VOezXg&s);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/*Theme 5 Taylor Swifr*/
+p.taylorswift {
+  color: rgb(238, 13, 152);
+  text-shadow: white;
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.taylorswift {
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    margin: 0;
+    padding: 0;
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8k6I58I0r2yWS20ImbGZO2viw0K_ncxugsA&s);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para el contenido principal */
+main.taylorswift {
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin: 10px;
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHXyi8v9iFgQH_K_GH-JjUeqsmWcx-VCHhMdze264y2n2iLDjjDekdF-QVIYYBgUcTxXE&usqp=CAU);
+    background-repeat: repeat;
+}
+h1.taylorswift,h2.taylorswift,h3.taylorswift,h4.taylorswift,h5.taylorswift,h6.taylorswift,h7.taylorswift,h8.taylorswift {
+  text-align: center;
+  color: white;
+  background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJlo5xIOwnn-TWiURYLAg1mJ9Fo54oUBVsVw&s);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.taylorswift {
+    flex: 0;
+    margin: 2px;
+    padding: 25px;
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgbFt-ngiiBOWghZHp8cO2TbaIPic31Wv6Qg&s);
+    background-position-y: -10px;
+    background-repeat: repeat;
+}
+.avatar1.taylorswift {
+    width: 220px;
+    border-radius: 0%;
+    margin-top: 1.3%;
+    margin-left: 4%;
+    position: absolute;
+    background-image: url(https://images.squarespace-cdn.com/content/v1/531630f6e4b0fa5080a5596f/1845bb78-5fb1-4250-a2b9-e959c995cef9/Star+Wars+v2.jpg?format=1000w);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.taylorswift {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUSPNVF4QDrgiHN2AWmeWfis6Yts175pbWLQ&s);
+    background-position: 0px;
+    background-repeat: repeat;
+}
+section.taylorswift {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1ukN6qhXGOeh062E3_z3RH9o4WxyqFZS2oA&s);
+    background-repeat: repeat;
+}
+aside.taylorswift {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTN8YN7Ve2FszAe_VElFp4ep6F_7Aof7Gv1HQ&s);
+    background-position-y: -10px;
+    background-repeat: repeat;
+}
+
 /* Estilo para el pie de página */
 footer {
     width: 100%;
@@ -612,6 +873,10 @@ nav a {
     background-color: white;
     overflow: hidden;
 }
+
+  .hiddenOption {
+    display: none;
+  }
 
 /* CSS */
 .status {

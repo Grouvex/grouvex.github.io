@@ -564,7 +564,7 @@ mainTop.starwars {
 .avatar1.starwars {
     width: 220px;
     border-radius: 0%;
-    margin-top: 1.5%;
+    margin-top: -0.7%;
     margin-left: 4%;
     position: absolute;
     background-image: url(https://images.squarespace-cdn.com/content/v1/531630f6e4b0fa5080a5596f/1845bb78-5fb1-4250-a2b9-e959c995cef9/Star+Wars+v2.jpg?format=1000w);
@@ -651,7 +651,7 @@ mainTop.jurassicworld {
 .avatar1.jurassicworld {
     width: 220px;
     border-radius: 0%;
-    margin-top: 1.3%;
+    margin-top: -0.7%;
     margin-left: 4%;
     position: absolute;
     background-image: url(https://images.squarespace-cdn.com/content/v1/531630f6e4b0fa5080a5596f/1845bb78-5fb1-4250-a2b9-e959c995cef9/Star+Wars+v2.jpg?format=1000w);
@@ -737,7 +737,7 @@ mainTop.taylorswift {
 .avatar1.taylorswift {
     width: 220px;
     border-radius: 0%;
-    margin-top: 1.3%;
+    margin-top: -0.7%;
     margin-left: 4%;
     position: absolute;
     background-image: url(https://images.squarespace-cdn.com/content/v1/531630f6e4b0fa5080a5596f/1845bb78-5fb1-4250-a2b9-e959c995cef9/Star+Wars+v2.jpg?format=1000w);

@@ -2,10 +2,13 @@
 window.addEventListener('load', function() {
     // Llama a todas las funciones que quieres ejecutar cuando se carga la página
     showNotification();
-    flower();
+    flower()
     sol();
     leaf();
-    nieve();
+    nieve()
+    jurassicworld()
+    starwars()
+    taylorswift()
 });
 
 function openNav() {
@@ -30,6 +33,41 @@ function closeVideo() {
     document.getElementById('videoFrame').src = '';
 }
 
+function starwars() {
+      var date = new Date();
+      var startStarWarsWeek = new Date(date.getFullYear(), 4, 4); // 4 de mayo
+      var endStarWarsWeek = new Date(date.getFullYear(), 4, 14); // 14 de mayo
+
+      if (date >= startStarWarsWeek && date <= endStarWarsWeek) {
+        document.querySelector('#themeSelect option[value="starwars"]').classList.remove('hiddenOption');
+      } else {
+        document.querySelector('#themeSelect option[value="starwars"]').classList.add('hiddenOption');
+      }
+    };
+function jurassicworld() {
+      var date = new Date();
+      var startJurassicWorldWeek = new Date(date.getFullYear(), 5, 10); // 10 de Junio
+      var endJurassicWorldWeek = new Date(date.getFullYear(), 5, 20); // 20 de Junio
+
+      if (date >= startJurassicWorldWeek && date <= endJurassicWorldWeek) {
+        document.querySelector('#themeSelect option[value="jurassicworld"]').classList.remove('hiddenOption');
+      } else {
+        document.querySelector('#themeSelect option[value="jurassicworld"]').classList.add('hiddenOption');
+      }
+    };
+    
+function taylorswift() {
+      var date = new Date();
+      var startTaylorSwiftWeek = new Date(date.getFullYear(), 11, 13); // 13 de Diciembre
+      var endTaylorSwiftWeek = new Date(date.getFullYear(), 11, 23); // 23 de Diciembre
+
+      if (date >= startTaylorSwiftWeek && date <= endTaylorSwiftWeek) {
+        document.querySelector('#themeSelect option[value="taylorswift"]').classList.remove('hiddenOption');
+      } else {
+        document.querySelector('#themeSelect option[value="taylorswift"]').classList.add('hiddenOption');
+      }
+    };
+
 function flower() {
   var today = new Date();
   var month = today.getMonth();
@@ -49,14 +87,13 @@ function flower() {
     }
   }
 }
-
 function sol() {
   var today = new Date();
   var month = today.getMonth();
   var day = today.getDate();
 
-  // Comprueba si es verano (21 de junio - 22 de septiembre)
-  if ((month == 5 && day >= 20) || (month == 5 && day <= 30)) {
+  // Comprueba si es verano (21 de junio - 28 de junio)
+  if ((month == 5 && day >= 21) || (month == 5 && day <= 28)) {
     for (var i = 0; i < 200; i++) {
       var sun = document.createElement('div');
       sun.className = 'sun';
@@ -69,7 +106,6 @@ function sol() {
     }
   }
 }
-
 function leaf() {
   var today = new Date();
   var month = today.getMonth();
@@ -96,7 +132,7 @@ function nieve() {
   var day = today.getDate();
 
   // Comprueba si es Navidad (24 de diciembre - 5 de enero)
-  if ((month == 11 && day >= 24) || (month == 0 && day <= 5)) {
+  if ((month >= 2 && day >= 24) || (month == 0 && day <= 5)) {
     for (var i = 0; i < 250; i++) {
       var snowflake = document.createElement('div');
       snowflake.className = 'snowflake';
@@ -109,7 +145,6 @@ function nieve() {
     }
   }
 }
-
 var themeSelect = document.getElementById('themeSelect');
 
 // Cuando se cambia el tema
@@ -119,7 +154,7 @@ themeSelect.addEventListener('change', function() {
 
     // Elimina las clases de las opciones antiguas
     elements.forEach(function(element) {
-        element.classList.remove('theme1', 'theme2', 'space', 'startwars', 'jurasicworld', 'taylorswift');
+        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift');
     });
 
     // Si la opción seleccionada no es "default", añade la clase de la opción seleccionada

@@ -218,7 +218,7 @@ news {
   }/* 
 /*Default Theme*/
 p {
-  color: rgb(255, 255, 255);
+  color: black;
   text-shadow: white;
   display: block;
 }

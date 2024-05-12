@@ -805,6 +805,8 @@ nav a {
 #videoCarousel {
             display: flex;
             overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-padding: 50%;
         }
         .video {
             flex: 0 0 auto;

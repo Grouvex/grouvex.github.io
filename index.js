@@ -192,20 +192,22 @@ var videos = [
             var div = document.createElement('div');
             div.className = 'video';
             div.innerHTML = `
-                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${video.id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 <h2>${video.title}</h2>
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${video.id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 <section>
                 <p>${video.description}</p>
-                <section>
+                </section>
                 <div class="credits"><strong>Créditos:</strong> ${video.credits}</div> 
             `;
             div.onclick = function() {
                 modal.style.display = "block";
                 modalContent.innerHTML = `
-                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${video.id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    <h2>${video.title}</h2>
-                    <p>${video.description}</p>
-                    <div class="credits"><strong>Créditos:</strong> ${video.credits}</div>
+                <h2>${video.title}</h2>
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${video.id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <section>
+                <p>${video.description}</p>
+                </section>
+                <div class="credits"><strong>Créditos:</strong> ${video.credits}</div> 
                 `;
             };
             carousel.appendChild(div);

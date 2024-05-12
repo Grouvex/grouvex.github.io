@@ -44,9 +44,8 @@
 }
 
 @keyframes fall {
-  to {
-    transform: translateY(500vh);
-  }
+  0% { top: -10px; }
+  100% { top: 100%; }
 }
 /*Página*/
 #notification {

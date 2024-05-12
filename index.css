@@ -210,12 +210,12 @@ news {
     /* Añade más estilos según necesites */
   }
 /* Diseño de la Web */
-* {
+/* {
     background-color: #222;
     background-repeat: no-repeat;
     background-size: auto;
 
-  }
+  }/* 
 /*Default Theme*/
 p {
   color: rgb(255, 255, 255);

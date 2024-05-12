@@ -806,7 +806,7 @@ nav a {
             display: flex;
             overflow-x: scroll;
             margin-left: 0px;
-            width: 80%;
+            width: 1080px;
             height: 270px;
         }
         .video {

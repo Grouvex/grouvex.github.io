@@ -822,7 +822,9 @@ nav a {
             bottom: 0;
             background: rgba(0, 0, 0, 0.5);
             color: white;
-            padding: 100px;
+            width: 100%;
+            height: 100%;
+            text-align: left;
         }
         .video:hover .credits {
             display: block;

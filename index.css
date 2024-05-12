@@ -242,7 +242,7 @@ main {
     padding: 10px;
     flex: 0;
     color: white;
-    margin-top: 100px;
+    margin-top: 175px;
     background-color: #000000;
 }
 h1,h2,h3,h4,h5,h6,h7,h8 {
@@ -311,7 +311,7 @@ main.theme1 {
     padding: 10px;
     flex: 0;
     color: white;
-    margin-top: 100px;
+    margin-top: 175px;
     background: radial-gradient(circle, red, rgb(99, 99, 168), black);
 }
 h1.theme1,h2.theme1,h3.theme1,h4.theme1,h5.theme1,h6.theme1,h7.theme1,h8.theme1 {
@@ -377,7 +377,7 @@ main.theme2 {
     padding: 10px;
     flex: 0;
     color: white;
-    margin-top: 100px;
+    margin-top: 175px;
     background: radial-gradient(circle, pink, rgb(99, 99, 168), black);
 }
 h1.theme2,h2.theme2,h3.theme2,h4.theme2,h5.theme2,h6.theme2,h7.theme2,h8.theme2 {
@@ -445,7 +445,7 @@ main.space {
     padding: 10px;
     flex: 0;
     color: white;
-    margin-top: 100px;
+    margin-top: 175px;
     background-image: url(https://th.bing.com/th/id/OIP.NdcwLYq7n6iTiiu1IUHLFAHaEv?rs=1&pid=ImgDetMain);
     background-size: cover;
     background-repeat: no-repeat;
@@ -527,7 +527,7 @@ main.starwars {
     padding: 10px;
     flex: 0;
     color: white;
-    margin-top: 100px;
+    margin-top: 175px;
     background-image: url(https://th.bing.com/th/id/OIP.npOsomw2bikOEQXahXpM0QHaEK?w=329&h=185&c=7&r=0&o=5&pid=1.7);
     background-size: cover;
     background-repeat: no-repeat;
@@ -612,7 +612,7 @@ main.jurassicworld {
     padding: 10px;
     flex: 0;
     color: white;
-    margin-top: 100px;
+    margin-top: 175px;
     background-image: url(https://th.bing.com/th/id/OIP.J_Epz6FeCHuiohqcJU72oQHaDs?w=349&h=174&c=7&r=0&o=5&pid=1.7);
     background-size: cover;
     background-repeat: no-repeat;
@@ -697,7 +697,7 @@ main.taylorswift {
     padding: 10px;
     flex: 0;
     color: white;
-    margin-top: 100px;
+    margin-top: 175px;
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHXyi8v9iFgQH_K_GH-JjUeqsmWcx-VCHhMdze264y2n2iLDjjDekdF-QVIYYBgUcTxXE&usqp=CAU);
     background-repeat: repeat;
 }

@@ -802,7 +802,29 @@ nav a {
     color: white;
     text-decoration: none;
 }
-
+#videoCarousel {
+            display: flex;
+            overflow-x: auto;
+        }
+        .video {
+            flex: 0 0 auto;
+            width: 300px;
+            height: 200px;
+            margin-right: 10px;
+            position: relative;
+        }
+        .video .credits {
+            display: none;
+            position: absolute;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            width: 100%;
+            padding: 10px;
+        }
+        .video:hover .credits {
+            display: block;
+        }
 .carousel {
     display: flex;
     overflow-x: auto;

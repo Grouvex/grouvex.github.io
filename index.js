@@ -1,21 +1,18 @@
+// Cuando se carga la página
 window.addEventListener('load', function() {
     // Llama a todas las funciones que quieres ejecutar cuando se carga la página
-    showNotification();
-    flower();
-    sol();
-    leaf();
-    nieve();
-    jurassicworld();
-    starwars();
-    taylorswift();
-    cookies()
-    acceptCookies()
-    declineCookies()
+    showNotification();openNav();closeNav();
+    flower();sol();leaf();nieve();
+    jurassicworld();starwars();taylorswift();
+    cookies();
 });
+
 function cookies() {
     var acceptedCookies = localStorage.getItem('acceptedCookies');
     if (!acceptedCookies) {
         document.getElementById('cookieBanner').style.display = 'block';
+    } else {
+        acceptCookies();
     }
 };
 
@@ -28,12 +25,15 @@ function declineCookies() {
     // Aquí puedes redirigir al usuario a una página diferente o cambiar el comportamiento de tu sitio según sea necesario
     document.getElementById('cookieBanner').style.display = 'none';
 }
+
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
 }
+
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
 }
+
 function showNotification() {
     document.getElementById("notification").style.display = "block";
 }
@@ -202,84 +202,76 @@ var videos = [
                 <p>2023 Grouvex Studio</p>`},
             // Añade más videos aquí
         ];
+    var carousel = document.getElementById('videoCarousel');
+    var modal = document.getElementById('modal');
+    var modalContent = document.getElementById('modalContent');
 
-        var carousel = document.getElementById('videoCarousel');
-        var modal = document.getElementById('modal');
-        var modalContent = document.getElementById('modalContent');
-
-        videos.forEach(function(video) {
-            var div = document.createElement('div');
-            div.className = 'video';
-            div.innerHTML = `
-                <h2>${video.title}</h2>
-                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${video.id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                <section>
-                <p>${video.description}</p>
-                </section>
-                <div class="credits"><strong>Créditos:</strong> ${video.credits}</div> 
+    videos.forEach(function(video) {
+        var div = document.createElement('div');
+        div.className = 'video';
+        div.innerHTML = `
+            <h2>${video.title}</h2>
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${video.id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <section>
+            <p>${video.description}</p>
+            </section>
+            <div class="credits"><strong>Créditos:</strong> ${video.credits}</div> 
+        `;
+        div.onclick = function() {
+            modal.style.display = "block";
+            modalContent.innerHTML = `
+            <h2>${video.title}</h2>
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${video.id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <section>
+            <p>${video.description}</p>
+            </section>
+            <div class="credits"><strong>Créditos:</strong> ${video.credits}</div> 
             `;
-            div.onclick = function() {
-                modal.style.display = "block";
-                modalContent.innerHTML = `
-                <h2>${video.title}</h2>
-                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${video.id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                <section>
-                <p>${video.description}</p>
-                </section>
-                <div class="credits"><strong>Créditos:</strong> ${video.credits}</div> 
-                `;
-            };
-            carousel.appendChild(div);
-        });
-
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
         };
-var selectedTheme = localStorage.getItem('selectedTheme');
-
-    // Si hay una selección guardada y no es "default", aplica el tema seleccionado
-    if (selectedTheme && selectedTheme !== 'default') {
-        applyTheme(selectedTheme);
-        themeSelect.value = selectedTheme; // Asegúrate de que el menú desplegable muestre el tema correcto
-    }
-
-    // Muestra el banner de cookies si el usuario no ha aceptado las cookies
-    var acceptedCookies = localStorage.getItem('acceptedCookies');
-    if (!acceptedCookies) {
-        document.getElementById('cookieBanner').style.display = 'block';
-    }
-});
-
-// Aplica el tema seleccionado
-function applyTheme(theme) {
-    var elements = document.querySelectorAll('p, body, main, mainTop, h1, h2, h3, h4, h5, h6, h7, h8, .avatar1, article, section, aside, panel');
-    elements.forEach(function(element) {
-        element.classList.add(theme);
-    });
-}
-
-// Cuando se cambia el tema
-themeSelect.addEventListener('change', function() {
-    // Obtiene todos los elementos a los que se les aplicará el cambio de tema
-    var elements = document.querySelectorAll('p, body, main, mainTop, h1, h2, h3, h4, h5, h6, h7, h8, .avatar1, article, section, aside, panel');
-
-    // Elimina las clases de las opciones antiguas
-    elements.forEach(function(element) {
-        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift');
+        carousel.appendChild(div);
     });
 
-    // Si la opción seleccionada no es "default", añade la clase de la opción seleccionada
-    if (this.value !== 'default') {
-        applyTheme(this.value);
-    }
-
-    // Comprueba si el usuario ha aceptado las cookies
-    var acceptedCookies = localStorage.getItem('acceptedCookies');
-
-    // Si el usuario ha aceptado las cookies, guarda la selección del tema
-    if (acceptedCookies) {
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    };
+    var themeSelect = document.getElementById('themeSelect');
+    
+    // Cuando se cambia el tema
+    themeSelect.addEventListener('change', function() {
+        // Obtiene todos los elementos a los que se les aplicará el cambio de tema
+        var elements = document.querySelectorAll('p, body, main, mainTop, h1, h2, h3, h4, h5, h6, h7, h8, .avatar1, article, section, aside, panel');
+    
+        // Elimina las clases de las opciones antiguas
+        elements.forEach(function(element) {
+            element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift');
+        });
+    
+        // Si la opción seleccionada no es "default", añade la clase de la opción seleccionada
+        if (this.value !== 'default') {
+            elements.forEach(function(element) {
+                element.classList.add(this.value);
+            }.bind(this));
+        }
+    
+        // Guarda la selección del usuario en el almacenamiento local
         localStorage.setItem('selectedTheme', this.value);
-    }
-});
+    });
+    
+    // Cuando se carga la página
+    window.addEventListener('load', function() {
+        // Obtiene la selección del usuario del almacenamiento local
+        var selectedTheme = localStorage.getItem('selectedTheme');
+    
+        // Si hay una selección guardada y no es "default", aplica el tema seleccionado
+        if (selectedTheme && selectedTheme !== 'default') {
+            var elements = document.querySelectorAll('p, body, main, mainTop, h1, h2, h3, h4, h5, h6, h7, h8, .avatar1, article, section, aside, panel');
+            elements.forEach(function(element) {
+                element.classList.add(selectedTheme);
+            });
+            themeSelect.value = selectedTheme; // Asegúrate de que el menú desplegable muestre el tema correcto
+        }
+        // Informa al usuario de que su selección se ha guardado
+        alert('Tu selección de tema se ha guardado y se aplicará la próxima vez que visites esta página.');
+    });

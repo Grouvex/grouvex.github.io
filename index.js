@@ -237,7 +237,28 @@ var videos = [
                 modal.style.display = "none";
             }
         };
-var themeSelect = document.getElementById('themeSelect');
+var selectedTheme = localStorage.getItem('selectedTheme');
+
+    // Si hay una selección guardada y no es "default", aplica el tema seleccionado
+    if (selectedTheme && selectedTheme !== 'default') {
+        applyTheme(selectedTheme);
+        themeSelect.value = selectedTheme; // Asegúrate de que el menú desplegable muestre el tema correcto
+    }
+
+    // Muestra el banner de cookies si el usuario no ha aceptado las cookies
+    var acceptedCookies = localStorage.getItem('acceptedCookies');
+    if (!acceptedCookies) {
+        document.getElementById('cookieBanner').style.display = 'block';
+    }
+});
+
+// Aplica el tema seleccionado
+function applyTheme(theme) {
+    var elements = document.querySelectorAll('p, body, main, mainTop, h1, h2, h3, h4, h5, h6, h7, h8, .avatar1, article, section, aside, panel');
+    elements.forEach(function(element) {
+        element.classList.add(theme);
+    });
+}
 
 // Cuando se cambia el tema
 themeSelect.addEventListener('change', function() {
@@ -251,10 +272,9 @@ themeSelect.addEventListener('change', function() {
 
     // Si la opción seleccionada no es "default", añade la clase de la opción seleccionada
     if (this.value !== 'default') {
-        elements.forEach(function(element) {
-            element.classList.add(this.value);
-        }.bind(this));
+        applyTheme(this.value);
     }
+
     // Comprueba si el usuario ha aceptado las cookies
     var acceptedCookies = localStorage.getItem('acceptedCookies');
 
@@ -262,21 +282,4 @@ themeSelect.addEventListener('change', function() {
     if (acceptedCookies) {
         localStorage.setItem('selectedTheme', this.value);
     }
-});
-
-// Cuando se carga la página
-window.addEventListener('load', function() {
-    // Obtiene la selección del usuario del almacenamiento local
-    var selectedTheme = localStorage.getItem('selectedTheme');
-
-    // Si hay una selección guardada y no es "default", aplica el tema seleccionado
-    if (selectedTheme && selectedTheme !== 'default') {
-        var elements = document.querySelectorAll('p, body, main, mainTop, h1, h2, h3, h4, h5, h6, h7, h8, .avatar1, article, section, aside, panel');
-        elements.forEach(function(element) {
-            element.classList.add(selectedTheme);
-        });
-        themeSelect.value = selectedTheme; // Asegúrate de que el menú desplegable muestre el tema correcto
-    }
-    // Informa al usuario de que su selección se ha guardado
-    alert('Tu selección de tema se ha guardado y se aplicará la próxima vez que visites esta página.');
 });

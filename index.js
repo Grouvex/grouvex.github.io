@@ -1,4 +1,3 @@
-// Llama a todas las funciones que quieres ejecutar cuando se carga la página
 window.addEventListener('load', function() {
     // Llama a todas las funciones que quieres ejecutar cuando se carga la página
     showNotification();
@@ -10,7 +9,6 @@ window.addEventListener('load', function() {
     starwars()
     taylorswift()
 });
-
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
 }
@@ -145,6 +143,28 @@ function nieve() {
     }
   }
 }
+var videos = [
+            {id: 'x09D-9ZpF_o', title: 'Título 1', description: 'Descripción 1', credits: 'Créditos 1'},
+            {id: 'x09D-9ZpF_o', title: 'Título 2', description: 'Descripción 2', credits: 'Grouvex Studio'},
+            {id: 'x09D-9ZpF_o', title: 'Título 2', description: 'Descripción 2', credits: 'Grouvex Studio'},
+            {id: 'x09D-9ZpF_o', title: 'Título 2', description: 'Descripción 2', credits: 'Grouvex Studio'},
+            {id: 'x09D-9ZpF_o', title: 'Título 2', description: 'Descripción 2', credits: 'Grouvex Studio'},
+            // Añade más videos aquí
+        ];
+
+        var carousel = document.getElementById('videoCarousel');
+
+        videos.forEach(function(video) {
+            var div = document.createElement('div');
+            div.className = 'video';
+            div.innerHTML = `
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${video.id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <h2>${video.title}</h2>
+                <p>${video.description}</p>
+                <div class="credits"><strong>Créditos:</strong> ${video.credits}</div>
+            `;
+            carousel.appendChild(div);
+        });
 var themeSelect = document.getElementById('themeSelect');
 
 // Cuando se cambia el tema

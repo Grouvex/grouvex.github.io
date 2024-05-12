@@ -252,4 +252,6 @@ window.addEventListener('load', function() {
         });
         themeSelect.value = selectedTheme; // Asegúrate de que el menú desplegable muestre el tema correcto
     }
+    // Informa al usuario de que su selección se ha guardado
+    alert('Tu selección de tema se ha guardado y se aplicará la próxima vez que visites esta página.');
 });

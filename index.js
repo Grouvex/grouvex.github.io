@@ -144,15 +144,55 @@ function nieve() {
   }
 }
 var videos = [
-            {id: 'x09D-9ZpF_o', title: 'Título 1', description: 'Descripción 1', credits: 'Créditos 1'},
-            {id: 'x09D-9ZpF_o', title: 'Título 2', description: 'Descripción 2', credits: 'Créditos 2'},
-            {id: 'x09D-9ZpF_o', title: 'Título 2', description: 'Descripción 2', credits: 'Créditos 2'},
-            {id: 'x09D-9ZpF_o', title: 'Título 2', description: 'Descripción 2', credits: 'Créditos 2'},
-            {id: 'x09D-9ZpF_o', title: 'Título 1', description: 'Descripción 1', credits: 'Créditos 1'},
-            {id: 'x09D-9ZpF_o', title: 'Título 2', description: 'Descripción 2', credits: 'Créditos 2'},
-            {id: 'x09D-9ZpF_o', title: 'Título 2', description: 'Descripción 2', credits: 'Créditos 2'},
-            {id: 'x09D-9ZpF_o', title: 'Título 2', description: 'Descripción 2', credits: 'Créditos 2'},
-            
+            {id: 'x09D-9ZpF_o',
+             title: `Stars In The Starry Sky`,
+             description: 'Descripción 1',
+             credits:
+                `<p>Director: Grouvex</p>
+                 <p>Productor: Grouvex Studio</p>
+                <p>2023 Grouvex Studio</p>`},
+            {id: 'x09D-9ZpF_o',
+             title: `Stars In The Starry Sky`,
+             description: 'Descripción 1',
+             credits:
+                `<p>Director: Grouvex</p>
+                 <p>Productor: Grouvex Studio</p>
+                <p>2023 Grouvex Studio</p>`},
+            {id: 'x09D-9ZpF_o',
+             title: `Stars In The Starry Sky`,
+             description: 'Descripción 1',
+             credits:
+                `<p>Director: Grouvex</p>
+                 <p>Productor: Grouvex Studio</p>
+                <p>2023 Grouvex Studio</p>`},
+            {id: 'x09D-9ZpF_o',
+             title: `Stars In The Starry Sky`,
+             description: 'Descripción 1',
+             credits:
+                `<p>Director: Grouvex</p>
+                 <p>Productor: Grouvex Studio</p>
+                <p>2023 Grouvex Studio</p>`},
+            {id: 'x09D-9ZpF_o',
+             title: `Stars In The Starry Sky`,
+             description: 'Descripción 1',
+             credits:
+                `<p>Director: Grouvex</p>
+                 <p>Productor: Grouvex Studio</p>
+                <p>2023 Grouvex Studio</p>`},
+           {id: 'x09D-9ZpF_o',
+             title: `Stars In The Starry Sky`,
+             description: 'Descripción 1',
+             credits:
+                `<p>Director: Grouvex</p>
+                 <p>Productor: Grouvex Studio</p>
+                <p>2023 Grouvex Studio</p>`},
+            {id: 'x09D-9ZpF_o',
+             title: `Stars In The Starry Sky`,
+             description: 'Descripción 1',
+             credits:
+                `<p>Director: Grouvex</p>
+                 <p>Productor: Grouvex Studio</p>
+                <p>2023 Grouvex Studio</p>`},
             // Añade más videos aquí
         ];
 
@@ -166,7 +206,9 @@ var videos = [
             div.innerHTML = `
                 <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${video.id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 <h2>${video.title}</h2>
+                <section>
                 <p>${video.description}</p>
+                <section>
                 <div class="credits"><strong>Créditos:</strong> ${video.credits}</div> 
             `;
             div.onclick = function() {

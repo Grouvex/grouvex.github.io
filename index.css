@@ -294,6 +294,7 @@ p.theme1 {
 }
 /* Establece el fondo de toda la página a gris */
 body.theme1 {
+    height: 100%;
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
@@ -359,6 +360,7 @@ p.theme2 {
 }
 /* Establece el fondo de toda la página a gris */
 body.theme2 {
+    height: 100%;
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
@@ -424,6 +426,7 @@ p.space {
 }
 /* Establece el fondo de toda la página a gris */
 body.space {
+    height: 100%;
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
@@ -505,6 +508,7 @@ p.starwars {
 }
 /* Establece el fondo de toda la página a gris */
 body.starwars {
+    height: 100%;
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
@@ -589,6 +593,7 @@ p.jurassicworld {
 }
 /* Establece el fondo de toda la página a gris */
 body.jurassicworld {
+    height: 100%;
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
@@ -673,6 +678,7 @@ p.taylorswift {
 }
 /* Establece el fondo de toda la página a gris */
 body.taylorswift {
+    height: 100%;
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */

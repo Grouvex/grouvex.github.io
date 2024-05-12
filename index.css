@@ -803,9 +803,12 @@ nav a {
     text-decoration: none;
 }
 #videoCarousel {
-            display: flex;
-            overflow-x: auto;
-        }
+    display: flex;
+    overflow-x: scroll;
+    margin: 20px;
+    width: 1000px;
+    height: 270px;
+}
         .video {
             flex: 0 0 auto;
             width: 300px;

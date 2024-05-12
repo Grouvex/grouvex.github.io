@@ -8,7 +8,26 @@ window.addEventListener('load', function() {
     jurassicworld();
     starwars();
     taylorswift();
+    cookies()
+    acceptCookies()
+    declineCookies()
 });
+function cookies() {
+    var acceptedCookies = localStorage.getItem('acceptedCookies');
+    if (!acceptedCookies) {
+        document.getElementById('cookieBanner').style.display = 'block';
+    }
+};
+
+function acceptCookies() {
+    localStorage.setItem('acceptedCookies', true);
+    document.getElementById('cookieBanner').style.display = 'none';
+}
+
+function declineCookies() {
+    // Aquí puedes redirigir al usuario a una página diferente o cambiar el comportamiento de tu sitio según sea necesario
+    document.getElementById('cookieBanner').style.display = 'none';
+}
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
 }
@@ -236,9 +255,13 @@ themeSelect.addEventListener('change', function() {
             element.classList.add(this.value);
         }.bind(this));
     }
+    // Comprueba si el usuario ha aceptado las cookies
+    var acceptedCookies = localStorage.getItem('acceptedCookies');
 
-    // Guarda la selección del usuario en el almacenamiento local
-    localStorage.setItem('selectedTheme', this.value);
+    // Si el usuario ha aceptado las cookies, guarda la selección del tema
+    if (acceptedCookies) {
+        localStorage.setItem('selectedTheme', this.value);
+    }
 });
 
 // Cuando se carga la página

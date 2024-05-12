@@ -804,10 +804,10 @@ nav a {
 }
 #videoCarousel {
             display: flex;
-            overflow-x: auto;
+            overflow-x: scroll;
             margin-left: 0px;
             width: 80%;
-            height: 100px;
+            height: 270px;
         }
         .video {
             flex: 0 0 auto;
@@ -821,8 +821,8 @@ nav a {
             position: absolute;
             bottom: 0;
             background: rgba(0, 0, 0, 0.5);
-            color: rgb(0, 0, 0);
-            padding: 50px;
+            color: white;
+            padding: 100px;
         }
         .video:hover .credits {
             display: block;

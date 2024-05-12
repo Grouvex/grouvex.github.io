@@ -1,34 +1,22 @@
 window.addEventListener('load', function() {
     // Llama a todas las funciones que quieres ejecutar cuando se carga la página
     showNotification();
-    flower()
+    flower();
     sol();
     leaf();
-    nieve()
-    jurassicworld()
-    starwars()
-    taylorswift()
+    nieve();
+    jurassicworld();
+    starwars();
+    taylorswift();
 });
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
 }
-  
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
 }
-
 function showNotification() {
     document.getElementById("notification").style.display = "block";
-}
-
-function openVideo(url) {
-    document.getElementById('videoModal').style.display = 'block';
-    document.getElementById('videoFrame').src = url;
-}
-
-function closeVideo() {
-    document.getElementById('videoModal').style.display = 'none';
-    document.getElementById('videoFrame').src = '';
 }
 
 function starwars() {

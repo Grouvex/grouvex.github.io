@@ -218,7 +218,7 @@ news {
   }/* 
 /*Default Theme*/
 p {
-  color: black;
+  color: white;
   text-shadow: white;
   display: block;
 }
@@ -270,21 +270,21 @@ article {
     margin: 10px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1); /* Sombra suave */
-    background-color: rgb(255, 0, 0);
+    background-color: rgb(77, 199, 221);
 }
 section {
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(51, 255, 0, 0.1); /* Sombra suave */
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(202, 105, 105);
 }
 aside {
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(48, 185, 66);
 }
 /*Theme 1*/
 p.theme1 {

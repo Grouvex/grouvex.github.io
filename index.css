@@ -67,14 +67,14 @@
     transition: 0.5s;
     padding-top: 60px;
   }
-  .sidenav a {
-    padding: 8px 8px 8px 32px;
+.sidenav a {
+    padding: 3px 3px 3px 1px;
     text-decoration: none;
     font-size: 25px;
     color: #818181;
     display: block;
     transition: 0.3s;
-  }
+}
   
   .sidenav a:hover {
     color: #818181;
@@ -103,6 +103,13 @@
   .menuT{
       margin-left: 10%;
   }
+.red {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    position: relative;
+    margin: 1px;
+}
   .red1 {
     width: 30px;
     height: 30px;

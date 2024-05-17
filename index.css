@@ -253,8 +253,6 @@ h1,h2,h3,h4,h5,h6,h7,h8 {
 mainTop {
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
     flex: 0;
-    margin-top:0px;
-    padding: 20px;
     background: #000000;
     position: fixed;
     width: 100%;
@@ -320,8 +318,6 @@ h1.theme1,h2.theme1,h3.theme1,h4.theme1,h5.theme1,h6.theme1,h7.theme1,h8.theme1 
 }
 mainTop.theme1 {
     flex: 0;
-    margin: 2px;
-    padding: 25px;
     background: linear-gradient(45deg, red, white, blue);
 }
 .avatar1.theme1 {
@@ -386,8 +382,6 @@ h1.theme2,h2.theme2,h3.theme2,h4.theme2,h5.theme2,h6.theme2,h7.theme2,h8.theme2 
 }
 mainTop.theme2 {
     flex: 0;
-    margin: 2px;
-    padding: 25px;
     background: linear-gradient(45deg, green, yellow, blue, red, pink, cyan);
 }
 .avatar1.theme2 {
@@ -458,8 +452,6 @@ h1.space,h2.space,h3.space,h4.space,h5.space,h6.space,h7.space,h8.space {
 }
 mainTop.space {
     flex: 0;
-    margin: 2px;
-    padding: 25px;
     background-image: url(https://live.staticflickr.com/7060/6971643495_05dc317572_b.jpg);
     background-size: cover;
     background-repeat: no-repeat;
@@ -541,8 +533,6 @@ h1.starwars,h2.starwars,h3.starwars,h4.starwars,h5.starwars,h6.starwars,h7.starw
 }
 mainTop.starwars {
     flex: 0;
-    margin: 2px;
-    padding: 40px;
     background-image: url(https://images.squarespace-cdn.com/content/v1/531630f6e4b0fa5080a5596f/1845bb78-5fb1-4250-a2b9-e959c995cef9/Star+Wars+v2.jpg);
     background-position: 0px;
     background-size:cover;
@@ -625,8 +615,6 @@ h1.jurassicworld,h2.jurassicworld,h3.jurassicworld,h4.jurassicworld,h5.jurassicw
 }
 mainTop.jurassicworld {
     flex: 0;
-    margin: 2px;
-    padding: 25px;
     background-image: url(https://th.bing.com/th/id/OIP.TJK__-FIvQRNVUIPkvJQ9QHaEd);
     background-position-y: -50px;
     background-size:cover;
@@ -709,8 +697,6 @@ h1.taylorswift,h2.taylorswift,h3.taylorswift,h4.taylorswift,h5.taylorswift,h6.ta
 }
 mainTop.taylorswift {
     flex: 0;
-    margin: 2px;
-    padding: 25px;
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgbFt-ngiiBOWghZHp8cO2TbaIPic31Wv6Qg&s);
     background-position-y: -10px;
     background-repeat: repeat;

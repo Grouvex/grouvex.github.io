@@ -1,4 +1,8 @@
 // Cuando se carga la página
+window.addEventListener('error', function(e) {
+    window.location.href = 'https://grouvex.github.io/404.html';
+}, true);
+
 window.addEventListener('load', function() {
     // Llama a todas las funciones que quieres ejecutar cuando se carga la página
     showNotification();openNav();closeNav();

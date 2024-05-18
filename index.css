@@ -67,14 +67,14 @@
     transition: 0.5s;
     padding-top: 60px;
   }
-.sidenav a {
-    padding: 3px 3px 3px 1px;
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
     color: #818181;
     display: block;
     transition: 0.3s;
-}
+  }
   
   .sidenav a:hover {
     color: #818181;
@@ -103,13 +103,6 @@
   .menuT{
       margin-left: 10%;
   }
-.red {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    position: relative;
-    margin: 1px;
-}
   .red1 {
     width: 30px;
     height: 30px;
@@ -230,13 +223,9 @@ p {
 }
 /* Establece el fondo de toda la página a gris */
 body {
-  height: 100%;
   background: #000;
     display: flex;
     flex-direction: column;
-    font-family: Arial, sans-serif; /* Tipo de letra */
-    margin: 0px;
-    padding: 0;    
 }
 
 /* Estilo para el contenido principal */
@@ -260,6 +249,8 @@ h1,h2,h3,h4,h5,h6,h7,h8 {
 mainTop {
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
     flex: 0;
+    margin-top:0px;
+    padding: 20px;
     background: #000000;
     position: fixed;
     width: 100%;
@@ -325,6 +316,8 @@ h1.theme1,h2.theme1,h3.theme1,h4.theme1,h5.theme1,h6.theme1,h7.theme1,h8.theme1 
 }
 mainTop.theme1 {
     flex: 0;
+    margin: 2px;
+    padding: 25px;
     background: linear-gradient(45deg, red, white, blue);
 }
 .avatar1.theme1 {
@@ -389,6 +382,8 @@ h1.theme2,h2.theme2,h3.theme2,h4.theme2,h5.theme2,h6.theme2,h7.theme2,h8.theme2 
 }
 mainTop.theme2 {
     flex: 0;
+    margin: 2px;
+    padding: 25px;
     background: linear-gradient(45deg, green, yellow, blue, red, pink, cyan);
 }
 .avatar1.theme2 {
@@ -459,6 +454,8 @@ h1.space,h2.space,h3.space,h4.space,h5.space,h6.space,h7.space,h8.space {
 }
 mainTop.space {
     flex: 0;
+    margin: 2px;
+    padding: 25px;
     background-image: url(https://live.staticflickr.com/7060/6971643495_05dc317572_b.jpg);
     background-size: cover;
     background-repeat: no-repeat;
@@ -540,6 +537,8 @@ h1.starwars,h2.starwars,h3.starwars,h4.starwars,h5.starwars,h6.starwars,h7.starw
 }
 mainTop.starwars {
     flex: 0;
+    margin: 2px;
+    padding: 40px;
     background-image: url(https://images.squarespace-cdn.com/content/v1/531630f6e4b0fa5080a5596f/1845bb78-5fb1-4250-a2b9-e959c995cef9/Star+Wars+v2.jpg);
     background-position: 0px;
     background-size:cover;
@@ -622,6 +621,8 @@ h1.jurassicworld,h2.jurassicworld,h3.jurassicworld,h4.jurassicworld,h5.jurassicw
 }
 mainTop.jurassicworld {
     flex: 0;
+    margin: 2px;
+    padding: 25px;
     background-image: url(https://th.bing.com/th/id/OIP.TJK__-FIvQRNVUIPkvJQ9QHaEd);
     background-position-y: -50px;
     background-size:cover;
@@ -704,6 +705,8 @@ h1.taylorswift,h2.taylorswift,h3.taylorswift,h4.taylorswift,h5.taylorswift,h6.ta
 }
 mainTop.taylorswift {
     flex: 0;
+    margin: 2px;
+    padding: 25px;
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgbFt-ngiiBOWghZHp8cO2TbaIPic31Wv6Qg&s);
     background-position-y: -10px;
     background-repeat: repeat;
@@ -740,6 +743,169 @@ aside.taylorswift {
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTN8YN7Ve2FszAe_VElFp4ep6F_7Aof7Gv1HQ&s);
     background-position-y: -10px;
     background-repeat: repeat;
+}
+
+/*Theme 6 Super Heroes*/
+p.superheroes {
+  color: rgb(243, 255, 248);
+  background-color: rgb(0, 0, 0);
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.superheroes {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    margin: 0;
+    padding: 0;
+    background-image: url(https://th.bing.com/th/id/R.6c83f52b1da153957504285959058b46?rik=5kwxZeA0BsJG%2fA&pid=ImgRaw&r=0);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para el contenido principal */
+main.superheroes {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin-top: 175px;
+    background-image: url(https://www.tuexpertomovil.com/wp-content/uploads/2019/04/fondos-de-pantalla-vengadores-endgame-para-movil-01.jpg);
+    background-repeat: repeat;
+}
+h1.superheroes,h2.superheroes,h3.superheroes,h4.superheroes,h5.superheroes,h6.superheroes,h7.superheroes,h8.superheroes {
+  text-align: center;
+  color: white;
+  background-image: url(https://dam.smashmexico.com.mx/wp-content/uploads/2018/04/24160210/lo-que-debes-recordar-avengers-infinity-war.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.superheroes {
+    flex: 0;
+    margin: 2px;
+    padding: 25px;
+    background-image: url(https://cdn2.mediotiempo.com/uploads/media/2019/05/05/avengers-internet.jpg);
+    background-position-y: -10px;
+    background-repeat: no-repeat;
+}
+.avatar1.superheroes {
+    width: 220px;
+    background-image: url();
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.superheroes {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://images.hdqwalls.com/download/avengers-infinity-war-movie-bill-poster-7e-1440x900.jpg);
+    background-position: 0px;
+    background-repeat: no-repeat;
+}
+section.superheroes {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://th.bing.com/th/id/OIP.PtMZcfKCKBDrm5mTDmzHHgHaEW?rs=1&pid=ImgDetMain);
+    background-size:cover;
+    background-repeat: no-repeat;
+}
+aside.superheroes {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://static1.moviewebimages.com/wordpress/wp-content/uploads/article/vXIntIpv5EJCrh2WncQ634QBbOLsG3.jpg);
+    background-position-y: -10px;
+    background-repeat: repeat;
+}
+
+/*Theme 7 Naturaleza: Atardecer/Amanecer*/
+p.naturaleza1 {
+  color: rgb(255, 255, 255);
+  background: linear-gradient(transparent, rgb(0, 0, 0), transparent);
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.naturaleza1 {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    margin: 0;
+    padding: 0;
+    background-image: url(https://th.bing.com/th/id/R.33f8b44abef5e982eba52a061e75528c?rik=A%2fDnI88HMj5p3Q&pid=ImgRaw&r=0);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para el contenido principal */
+main.naturaleza1 {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin-top: 175px;
+    background-image: url(https://th.bing.com/th/id/OIP.4XAJOA0-q2Aay_f3VfscXwHaEo?w=1920&h=1200&rs=1&pid=ImgDetMain);
+    background-repeat: repeat;
+}
+h1.naturaleza1,h2.naturaleza1,h3.naturaleza1,h4.naturaleza1,h5.naturaleza1,h6.naturaleza1,h7.naturaleza1,h8.naturaleza1 {
+  text-align: center;
+  color: white;
+  background-image: url(https://s1.1zoom.me/b5050/892/432626-svetik_1366x768.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.naturaleza1 {
+    flex: 0;
+    margin: 2px;
+    padding: 25px;
+    background-image: url(https://th.bing.com/th/id/OIP.T5PqdU-B6jYYqzBPelW2EwHaFj?rs=1&pid=ImgDetMain);
+    background-position-y: -100px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.avatar1.naturaleza1 {
+    width: 220px;
+    background-image: url(https://th.bing.com/th/id/OIP.n-M40oDPAqiNy2sFZoDZeAHaEK?rs=1&pid=ImgDetMain);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.naturaleza1 {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://th.bing.com/th/id/R.efa3563dc34b39d6f6b087c20e014608?rik=rR0bIEpvuiFOwQ&pid=ImgRaw&r=0);
+    background-position: 0px;
+    background-repeat: no-repeat;
+}
+section.naturaleza1 {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://w0.peakpx.com/wallpaper/1007/584/HD-wallpaper-nature-nature.jpg);
+    background-size:cover;
+    background-repeat: no-repeat;
+}
+aside.naturaleza1 {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://th.bing.com/th/id/R.d630144c16d6ca1072900d57415a2d72?rik=mZmAuzQBo4Ip9g&pid=ImgRaw&r=0);
+    background-position-y: -400px;
+    background-repeat: no-repeat;
 }
 
 /* Estilo para el pie de página */
@@ -815,7 +981,7 @@ nav a {
             background: rgba(0, 0, 0, 0.5);
             color: white;
             width: 100%;
-            height: 100%;
+            height: 120px;
             text-align: left;
         }
         .video:hover .credits {
@@ -830,7 +996,7 @@ nav a {
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.4);
+            background-color: rgba(124, 10, 255, 0.4);
         }
         #modalContent {
             background-color: #1e4f53;

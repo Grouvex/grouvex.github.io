@@ -780,6 +780,7 @@ main.superheroes {
     flex: 0;
     color: white;
     margin-top: 175px;
+  background-size: cover;
     background-image: url(https://www.tuexpertomovil.com/wp-content/uploads/2019/04/fondos-de-pantalla-vengadores-endgame-para-movil-01.jpg);
     background-repeat: repeat;
 }
@@ -801,7 +802,6 @@ mainTop.superheroes {
 }
 .avatar1.superheroes {
     width: 220px;
-    background-image: url();
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -814,6 +814,7 @@ article.superheroes {
     background-image: url(https://images.hdqwalls.com/download/avengers-infinity-war-movie-bill-poster-7e-1440x900.jpg);
     background-position: 0px;
     background-repeat: no-repeat;
+  background-size: cover;
 }
 section.superheroes {
     border: 1px solid #ddd; /* Borde gris */
@@ -832,6 +833,7 @@ aside.superheroes {
     background-image: url(https://static1.moviewebimages.com/wordpress/wp-content/uploads/article/vXIntIpv5EJCrh2WncQ634QBbOLsG3.jpg);
     background-position-y: -10px;
     background-repeat: repeat;
+    background-size: cover;
 }
 
 /*Theme 7 Naturaleza: Atardecer/Amanecer*/
@@ -895,6 +897,7 @@ article.naturaleza1 {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
     background-image: url(https://th.bing.com/th/id/R.efa3563dc34b39d6f6b087c20e014608?rik=rR0bIEpvuiFOwQ&pid=ImgRaw&r=0);
     background-position: 0px;
+    background-size: cover;
     background-repeat: no-repeat;
 }
 section.naturaleza1 {
@@ -914,6 +917,7 @@ aside.naturaleza1 {
     background-image: url(https://th.bing.com/th/id/R.d630144c16d6ca1072900d57415a2d72?rik=mZmAuzQBo4Ip9g&pid=ImgRaw&r=0);
     background-position-y: -400px;
     background-repeat: no-repeat;
+    background-size: cover;
 }
 
 /* Estilo para el pie de página */

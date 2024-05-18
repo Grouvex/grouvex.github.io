@@ -714,6 +714,7 @@ mainTop.taylorswift {
     margin: 2px;
     padding: 25px;
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgbFt-ngiiBOWghZHp8cO2TbaIPic31Wv6Qg&s);
+    background-size: cover;
     background-position-y: -10px;
     background-repeat: repeat;
 }
@@ -795,6 +796,7 @@ mainTop.superheroes {
     padding: 25px;
     background-image: url(https://cdn2.mediotiempo.com/uploads/media/2019/05/05/avengers-internet.jpg);
     background-position-y: -10px;
+    background-size: cover;
     background-repeat: no-repeat;
 }
 .avatar1.superheroes {

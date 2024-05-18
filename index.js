@@ -4,7 +4,7 @@ window.addEventListener('load', function() {
     showNotification();openNav();closeNav();
     flower();sol();leaf();nieve();
     cookies();acceptCookies();declineCookies();
-    jurassicworld();starwars();taylorswift();
+    jurassicworld();starwars();taylorswift();superheroes();
 });
 
 function openNav() {
@@ -156,7 +156,7 @@ themeSelect.addEventListener('change', function() {
 
     // Elimina las clases de las opciones antiguas
     elements.forEach(function(element) {
-        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift');
+        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'pokemon');
     });
 
     // Si la opción seleccionada no es "default", añade la clase de la opción seleccionada
@@ -229,4 +229,3 @@ var videos = [
                 modal.style.display = "none";
             }
         };
-   

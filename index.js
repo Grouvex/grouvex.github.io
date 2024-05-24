@@ -81,7 +81,7 @@ function nieve() {
   var day = today.getDate();
 
   // Comprueba si es Navidad (24 de diciembre - 5 de enero)
-  if ((month >= 2 && day >= 24) || (month == 0 && day <= 5)) {
+  if ((month >= 11 && day >= 24) || (month == 0 && day <= 5)) {
     for (var i = 0; i < 250; i++) {
       var snowflake = document.createElement('div');
       snowflake.className = 'snowflake';

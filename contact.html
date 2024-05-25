@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .contact-form {
+            width: 300px;
+            margin: 0 auto;
+            padding: 15px;
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .contact-form h2 {
+            text-align: center;
+            color: #333;
+        }
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        .contact-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #0091ea;
+            border: none;
+            color: white;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+  <p><a href="grouvex">Home</a></p>
+    <div class="contact-form">
+        <h2>Contacta con soporte</h2>
+        <form id="support-form">
+            <input type="text" id="name" name="name" placeholder="Tu nombre" required>
+            <input type="email" id="email" name="email" placeholder="Tu correo electrónico" required>
+            <input type="tel" id="phone" name="phone" placeholder="Tu número de teléfono (opcional)">
+            <textarea id="message" name="message" placeholder="Tu mensaje" required></textarea>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('support-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var name = document.getElementById('name').value;
+            var email = document.getElementById('email').value;
+            var phone = document.getElementById('phone').value;
+            var message = document.getElementById('message').value;
+            var data = { 'name': name, 'email': email, 'phone': phone, 'message': message };
+        fetch('https://script.google.com/macros/s/AKfycbxs1CGmrubKHBAyrJPTJOeIulH-ae-PCObdAKvi-oKt3lSqwa8-Gp44TIzg3nROwWp4kg/exec', {  // Reemplaza esto con la URL de tu script
+            method: 'POST',
+            payload: JSON.stringify(data)
+        })
+        .then(function(response) {
+            if (response.ok) {
+                alert('Tu mensaje ha sido enviado. ¡Gracias por contactar con nosotros!');
+            } else {
+                alert('Hubo un error al enviar tu mensaje. Por favor, inténtalo de nuevo.');
+            }
+        });
+    });
+</script>
+</body>
+</html>

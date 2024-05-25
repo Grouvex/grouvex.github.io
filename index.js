@@ -1,25 +1,3 @@
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "${{ secrets.apiKey }}",
-    authDomain: "grouvex-a17b0.firebaseapp.com",
-    projectId: "grouvex-a17b0",
-    storageBucket: "grouvex-a17b0.appspot.com",
-    messagingSenderId: "901396364006",
-    appId: "1:901396364006:web:47731b37f05ba62c09d927",
-    measurementId: "G-RG6DE8NJJ7"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-
 // Cuando se carga la página
 window.addEventListener('load', function() {
     // Llama a todas las funciones que quieres ejecutar cuando se carga la página

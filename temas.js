@@ -8,35 +8,35 @@ function checkThemes() {
     const month = date.getMonth();
 
     // Superhéroes
-    if (month === 0) {
+    if (month == 0) {
         toggleThemeOption('superheroes', false);
     } else {
         toggleThemeOption('superheroes', true);
     }
 
     // Naturaleza 1
-    if (month === 1) {
+    if (month == 1) {
         toggleThemeOption('naturaleza1', false);
     } else {
         toggleThemeOption('naturaleza1', true);
     }
 
     // Naturaleza 2
-    if (month === 2) {
+    if (month == 2) {
         toggleThemeOption('naturaleza2', false);
     } else {
         toggleThemeOption('naturaleza2', true);
     }
 
     // Naturaleza 3
-    if (month === 3) {
+    if (month == 3) {
         toggleThemeOption('naturaleza3', false);
     } else {
         toggleThemeOption('naturaleza3', true);
     }
 
     // Naturaleza 4
-    if (month === 4) {
+    if (month == 4) {
         toggleThemeOption('naturaleza4', false);
     } else {
         toggleThemeOption('naturaleza4', true);

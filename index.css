@@ -1,3 +1,21 @@
+.confeti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #e74c3c;
+            border-radius: 50%;
+            animation: explode 2s infinite;
+        }
+  @keyframes explode {
+    0% {
+      transform: translateY(1) ;
+        opacity: 1;
+      }
+    100% {
+      transform: translateY(100vh) rotate(720deg);
+      opacity: 0;
+      }
+  }
 /*Primavera*/
 .flower {
   position: absolute;
@@ -44,8 +62,10 @@
 }
 
 @keyframes fall {
-  0% { top: -10px; }
-  100% { top: 100%; }
+  0% { top: 0px; 
+   opacity: 1;}
+  100% { top:  100%; 
+      opacity: 0;}
 }
 /*Página*/
 #notification {

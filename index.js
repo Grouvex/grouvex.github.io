@@ -2,11 +2,15 @@
 window.addEventListener('load', function() {
     // Llama a todas las funciones que quieres ejecutar cuando se carga la página
     createConfeti();
-    flower();sol();leaf();nieve();
-    showNotification();openNav();closeNav();
-    cookies();acceptCookies();declineCookies();
-    jurassicworld();starwars();taylorswift();superheroes();
+    flower();
+    sol();
+    leaf();
+    nieve();
+    showNotification();
+    openNav();
+    closeNav();
 });
+
 function createConfeti() {
             var today = new Date();
             var month = today.getMonth();
@@ -91,7 +95,7 @@ function nieve() {
   var day = today.getDate();
 
   // Comprueba si es Navidad (24 de diciembre - 5 de enero)
-  if ((month >= 11 && day >= 24) || (month == 0 && day <= 5)) {
+  if ((month >= 4 && day >= 24) || (month == 0 && day <= 5)) {
     for (var i = 0; i < 250; i++) {
       var snowflake = document.createElement('div');
       snowflake.className = 'snowflake';
@@ -113,96 +117,8 @@ function closeNav() {
 function showNotification() {
     document.getElementById("notification").style.display = "block";
 }
-function cookies() {
-    var acceptedCookies = localStorage.getItem('acceptedCookies');
-    if (!acceptedCookies) {
-        document.getElementById('cookieBanner').style.display = 'block';
-    }
-};
 
-function acceptCookies() {
-    localStorage.setItem('acceptedCookies', true);
-    document.getElementById('cookieBanner').style.display = 'none';
-}
 
-function declineCookies() {
-    // Aquí puedes redirigir al usuario a una página diferente o cambiar el comportamiento de tu sitio según sea necesario
-    document.getElementById('cookieBanner').style.display = 'none';
-}
-
-function starwars() {
-    var date = new Date();
-    var startStarWarsWeek = new Date(date.getFullYear(), 4, 4); // 4 de mayo
-    var endStarWarsWeek = new Date(date.getFullYear(), 4, 14); // 14 de mayo
-
-    if (date >= startStarWarsWeek && date <= endStarWarsWeek) {
-      document.querySelector('#themeSelect option[value="starwars"]').classList.remove('hiddenOption');
-    } else {
-      document.querySelector('#themeSelect option[value="starwars"]').classList.add('hiddenOption');
-    }
-}
-
-function jurassicworld() {
-    var date = new Date();
-    var startJurassicWorldWeek = new Date(date.getFullYear(), 5, 10); // 10 de Junio
-    var endJurassicWorldWeek = new Date(date.getFullYear(), 5, 20); // 20 de Junio
-
-    if (date >= startJurassicWorldWeek && date <= endJurassicWorldWeek) {
-      document.querySelector('#themeSelect option[value="jurassicworld"]').classList.remove('hiddenOption');
-    } else {
-      document.querySelector('#themeSelect option[value="jurassicworld"]').classList.add('hiddenOption');
-    }
-}
-
-function taylorswift() {
-    var date = new Date();
-    var startTaylorSwiftWeek = new Date(date.getFullYear(), 11, 13); // 13 de Diciembre
-    var endTaylorSwiftWeek = new Date(date.getFullYear(), 11, 23); // 23 de Diciembre
-
-    if (date >= startTaylorSwiftWeek && date <= endTaylorSwiftWeek) {
-      document.querySelector('#themeSelect option[value="taylorswift"]').classList.remove('hiddenOption');
-    } else {
-      document.querySelector('#themeSelect option[value="taylorswift"]').classList.add('hiddenOption');
-    }
-}
-
-var themeSelect = document.getElementById('themeSelect');
-
-// Cuando se cambia el tema
-themeSelect.addEventListener('change', function() {
-    // Obtiene todos los elementos a los que se les aplicará el cambio de tema
-    var elements = document.querySelectorAll('p, body, main, mainTop, h1, h2, h3, h4, h5, h6, h7, h8, .avatar1, article, section, aside, panel');
-
-    // Elimina las clases de las opciones antiguas
-    elements.forEach(function(element) {
-        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'pokemon');
-    });
-
-    // Si la opción seleccionada no es "default", añade la clase de la opción seleccionada
-    if (this.value !== 'default') {
-        elements.forEach(function(element) {
-            element.classList.add(this.value);
-        }.bind(this));
-    }
-
-    // Guarda la selección del usuario en el almacenamiento local
-    localStorage.setItem('selectedTheme', this.value);
-});
-
-// Cuando se carga la página
-window.addEventListener('load', function() {
-    // Obtiene la selección del usuario del almacenamiento local
-    var selectedTheme = localStorage.getItem('selectedTheme');
-
-    // Si hay una selección guardada y no es "default", aplica el tema seleccionado
-    if (selectedTheme && selectedTheme !== 'default') {
-        var elements = document.querySelectorAll('p, body, main, mainTop, h1, h2, h3, h4, h5, h6, h7, h8, .avatar1, article, section, aside, panel');
-        elements.forEach(function(element) {
-            element.classList.add(selectedTheme);
-        });
-        themeSelect.value = selectedTheme; // Asegúrate de que el menú desplegable muestre el tema correcto
-    }
-});
 
 var videos = [
             {id: 'x09D-9ZpF_o', title: 'Título 1', description: 'Descripción 1', credits: 'Créditos 1'},

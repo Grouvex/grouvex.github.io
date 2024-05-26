@@ -347,7 +347,6 @@ mainTop.theme1 {
 }
 .avatar1.theme1 {
     width: 220px;
-    margin-left: 25%;
     background: linear-gradient(red, white, cyan);
 }
 /* Estilo para los artículos, secciones y barras laterales */

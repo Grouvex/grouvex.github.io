@@ -74,7 +74,6 @@
     color: white;
     width: 100%;
 }
-  
   .sidenav {
     height: 100%;
     width: 0;
@@ -241,16 +240,6 @@ news {
     /* Añade más estilos según necesites */
   }
 
-.markdown-alert.markdown-alert-caution {
-    border-left-color: var(--borderColor-danger-emphasis, var(--color-danger-emphasis));
-}
-.markdown-alert {
-    padding: var(--base-size-8) var(--base-size-16);
-    margin-bottom: var(--base-size-16);
-    color: inherit;
-    border-left: .25em solid var(--borderColor-default, var(--color-border-default));
-}
-
 /* Diseño de la Web */
 /* {
     background-color: #222;
@@ -266,21 +255,22 @@ p {
 }
 /* Establece el fondo de toda la página a gris */
 body {
-  background: #000;
-    display: flex;
+    height: 100%;
     flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    background-size: cover;
+    background-repeat: no-repeat;
+  background: black;
 }
 
 /* Estilo para el contenido principal */
 main {
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
-    display: flex;
     flex-wrap: wrap;
     justify-content: center;
     padding: 10px;
-    flex: 0;
     color: white;
-    margin-top: 175px;
+    margin-top: 30px;
     background-color: #000000;
 }
 h1,h2,h3,h4,h5,h6,h7,h8 {
@@ -290,16 +280,9 @@ h1,h2,h3,h4,h5,h6,h7,h8 {
   color: rgb(255, 255, 255);
 }
 mainTop {
+  width: 100%;
+    padding: 10px;
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
-    flex: 0;
-    margin-top:0px;
-    padding: 20px;
-    background: #000000;
-    position: fixed;
-    width: 100%;
-}
-.avatar1 {
-    width: 220px;
     background: #000000;
 }
 /* Estilo para los artículos, secciones y barras laterales */
@@ -333,23 +316,18 @@ p.theme1 {
 /* Establece el fondo de toda la página a gris */
 body.theme1 {
     height: 100%;
-    display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    margin: 0;
-    padding: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 /* Estilo para el contenido principal */
 
 main.theme1 {
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
     padding: 10px;
-    flex: 0;
     color: white;
-    margin-top: 175px;
+    margin-top: 10px;
     background: radial-gradient(circle, red, rgb(99, 99, 168), black);
 }
 h1.theme1,h2.theme1,h3.theme1,h4.theme1,h5.theme1,h6.theme1,h7.theme1,h8.theme1 {
@@ -358,7 +336,6 @@ h1.theme1,h2.theme1,h3.theme1,h4.theme1,h5.theme1,h6.theme1,h7.theme1,h8.theme1 
   color: white;
 }
 mainTop.theme1 {
-    flex: 0;
     margin: 2px;
     padding: 25px;
     background: linear-gradient(45deg, red, white, blue);
@@ -398,23 +375,20 @@ p.theme2 {
 /* Establece el fondo de toda la página a gris */
 body.theme2 {
     height: 100%;
-    display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    margin: 0;
-    padding: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
     background-color: aqua;
 }
 /* Estilo para el contenido principal */
 main.theme2 {
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
-    display: flex;
     flex-wrap: wrap;
     justify-content: center;
     padding: 10px;
-    flex: 0;
     color: white;
-    margin-top: 175px;
+    margin-top: 30px;
     background: radial-gradient(circle, pink, rgb(99, 99, 168), black);
 }
 h1.theme2,h2.theme2,h3.theme2,h4.theme2,h5.theme2,h6.theme2,h7.theme2,h8.theme2 {
@@ -427,6 +401,7 @@ mainTop.theme2 {
     margin: 2px;
     padding: 25px;
     background: linear-gradient(45deg, green, yellow, blue, red, pink, cyan);
+        background-size: cover;
 }
 .avatar1.theme2 {
     width: 220px;
@@ -464,19 +439,15 @@ p.space {
 /* Establece el fondo de toda la página a gris */
 body.space {
     height: 100%;
-    display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    margin: 0;
-    padding: 0;
-    background-image: url(https://th.bing.com/th/id/R.2233dd9dbbdc72fd46d1ae218bae965d?rik=mlwKyBXXRrJU6A&pid=ImgRaw&r=0);
     background-size: cover;
     background-repeat: no-repeat;
+    background-image: url(https://th.bing.com/th/id/R.2233dd9dbbdc72fd46d1ae218bae965d?rik=mlwKyBXXRrJU6A&pid=ImgRaw&r=0);
 }
 /* Estilo para el contenido principal */
 main.space {
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
-    display: flex;
     flex-wrap: wrap;
     justify-content: center;
     padding: 10px;
@@ -558,7 +529,6 @@ body.starwars {
 /* Estilo para el contenido principal */
 main.starwars {
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
-    display: flex;
     flex-wrap: wrap;
     justify-content: center;
     padding: 10px;
@@ -643,7 +613,6 @@ body.jurassicworld {
 /* Estilo para el contenido principal */
 main.jurassicworld {
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
-    display: flex;
     flex-wrap: wrap;
     justify-content: center;
     padding: 10px;
@@ -728,7 +697,6 @@ body.taylorswift {
 /* Estilo para el contenido principal */
 main.taylorswift {
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
-    display: flex;
     flex-wrap: wrap;
     justify-content: center;
     padding: 10px;
@@ -809,7 +777,6 @@ body.superheroes {
 /* Estilo para el contenido principal */
 main.superheroes {
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
-    display: flex;
     flex-wrap: wrap;
     justify-content: center;
     padding: 10px;
@@ -893,7 +860,6 @@ body.naturaleza1 {
 /* Estilo para el contenido principal */
 main.naturaleza1 {
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
-    display: flex;
     flex-wrap: wrap;
     justify-content: center;
     padding: 10px;

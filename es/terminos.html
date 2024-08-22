@@ -28,22 +28,58 @@
 <meta name="keywords" content="Grouvex, Música, Grouvex Studio, Grouvex Projects">
 <meta property="og:title" content="Grouvex - Página Oficial">
 <meta property="og:description" content="Página oficial de Grouvex">
-<meta property="og:image" href="../img/GROUVEX.png">
+<meta property="og:image" href="../img/GROUVEX.png"">
   <!-- Clarity tracking code for https://grouvex.github.io/ --><script>    (function(c,l,a,r,i,t,y){        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);    })(window, document, "clarity", "script", "mdkjlz9c01");</script>
 <link rel="stylesheet" href="../index.css">
 <script src="../index.js"></script>
 <mainTop>
-<news>
-<div id="notification">
-<div id="news"></div>
-</div>
-</news>
-<div class="avatar1"><a href="https://grouvex.github.io"><img src="../img/Grouvex1.png" alt="Avatar" class="avatar1"></a></div>
-<div style="color:blue;font-size:40px;cursor:pointer" onclick="openNav()">☰</div>
+<a href="https://grouvex.github.io"><span style="font-family: Times New Roman; sans-serif; font-size: 30px;color:white">Grouvex Studios</span></a>
 </mainTop>
+<hr>
+<script>
+function redirigir() {
+  var selector = document.getElementById('selector-idioma');
+  var url = selector.value;
+  window.location.href = url;
+}
+</script>
+<script src="../index.js"></script>  <script src="../temas.js"></script>
+<span style="font-family: Times New Roman;color:white">   <u style="color: blue"><span style="color: green"><a>Inicio</a></span></u> | <span><a>Nuevo</a></span> | <span><a>Música</a></span> | <span><a>Regristro</a></span> | <span><a>Releases</a></span>  | <span><a>Temas</a></span>
+<hr>
+<span><select id="selector-idioma" onchange="redirigir()">
+  <option value="">Idioma</option>
+  <option value="../es/grouvex.html">Español</option>
+  <option value="../en/grouvex.html">English</option>
+  <option value="../fr/grouvex.html" disabled>Français</option>
+  <!-- Añade más opciones de idioma según sea necesario -->
+</select></span> | <span><select id="themeSelect">
+  <option value="default">Default Theme</option>
+  <option value="theme1">Theme 1: Color</option>
+  <option value="theme2">Theme 2: Color</option>
+  <option value="space">Theme Space</option>
+  <option value="starwars">Theme Star Wars</option>
+  <option value="jurassicworld">Theme Jurassic World</option>
+  <option value="taylorswift">Theme Taylor Swift</option>
+  <option value="superheroes">Theme Super Heroes</option>
+  <option value="naturaleza1">Theme Naturaleza: Atardecer/Amanecer</option>
+  <option value="naturaleza2">Theme Naturaleza: Polo Norte/Sur</option>
+  <option value="naturaleza3">Theme Naturaleza: Mar</option>
+  <option value="naturaleza4">Theme Naturaleza: Selva</option>
+  <option value="pokemon">Theme Pokemon</option>
+  <!-- Añade tantas opciones como diseños tengas -->
+</select></span>
+</span>
 </head>
 <div id="menu"></div>
+<body>
 <main>
+  <div style="background-color: white;border-left: 10px solid red;color: #000000;padding: 5px;display: flex; box-shadow: 0 0 20px red">
+    <div style="font-size: 20px; margin-right: 10px">⚠️</div>
+    <div style="flex-grow: 1">
+        <p style="color: white; background-color: black;font-size: 18px; margin: 0">Actualización 3.1</p>
+        <t style="font-size: 14px; margin: 0;">La página web se está actualizando para mejorar la presentación y el orden de esta</t>
+    </div>
+</div>
   <!-- Título & Texto -->
 <div class="titulo">
  <h1>Términos</h1>

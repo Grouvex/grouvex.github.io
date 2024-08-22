@@ -46,13 +46,13 @@ function redirigir() {
 <script src="../index.js"></script>  <script src="../temas.js"></script>
 <span style="font-family: Times New Roman;color:white">   <u style="color: blue"><span style="color: green"><a>Inicio</a></span></u> | <span><a>Nuevo</a></span> | <span><a>Música</a></span> | <span><a>Regristro</a></span> | <span><a>Releases</a></span>  | <span><a>Temas</a></span>
 <hr>
-<span><select id="selector-idioma" onchange="redirigir()">
+<span><select id="selector-idioma" onchange="redirigir()" disabled>
   <option value="">Idioma</option>
   <option value="../es/grouvex.html">Español</option>
-  <option value="../en/grouvex.html">English</option>
+  <option value="../en/grouvex.html" disabled>English</option>
   <option value="../fr/grouvex.html" disabled>Français</option>
   <!-- Añade más opciones de idioma según sea necesario -->
-</select></span> | <span><select id="themeSelect">
+</select></span> | <span><select id="themeSelect" disabled>
   <option value="default">Default Theme</option>
   <option value="theme1">Theme 1: Color</option>
   <option value="theme2">Theme 2: Color</option>

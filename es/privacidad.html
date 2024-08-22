@@ -44,15 +44,15 @@ function redirigir() {
 }
 </script>
 <script src="../index.js"></script>  <script src="../temas.js"></script>
-<span style="font-family: Times New Roman;color:white">   <u style="color: blue"><span style="color: green"><a>Inicio</a></span></u> | <span><a>Nuevo</a></span> | <span><a>Música</a></span> | <span><a>Regristro</a></span> | <span><a>Releases</a></span>  | <span><a>Temas</a></span>
+<span style="font-family: Times New Roman;color:white"> <a href="https://grouvex.github.io/es/grouvex"><u style="color: blue"><span style="color: green">Inicio</span></u></a> | <a href="https://grouvex.github.io/es/nuevos"><u style="color: blue"><span style="color: white">Nuevos</span></u></a> | <a href="https://grouvex.github.io/es/musica"><u style="color: blue"><span style="color: white">Música</span></u></a> | <a href="https://grouvex.github.io/sign-up"><u style="color: blue"><span style="color: white">Registrar</span></u></a> | <a href="https://grouvex.github.io/themes"><u style="color: blue"><span style="color: white">Temas</span></u></a>
 <hr>
 <span><select id="selector-idioma" onchange="redirigir()" disabled>
   <option value="">Idioma</option>
   <option value="../es/grouvex.html">Español</option>
-  <option value="../en/grouvex.html" disabled>English</option>
-  <option value="../fr/grouvex.html" disabled>Français</option>
+  <option value="../en/grouvex.html" disabled>English | Updating</option>
+  <option value="../fr/grouvex.html" disabled>Français | Upcoming</option>
   <!-- Añade más opciones de idioma según sea necesario -->
-</select></span> | <span><select id="themeSelect" disabled>
+</select><span class="status updating">Updating</span></span> | <span><select id="themeSelect" disabled>
   <option value="default">Default Theme</option>
   <option value="theme1">Theme 1: Color</option>
   <option value="theme2">Theme 2: Color</option>
@@ -67,19 +67,12 @@ function redirigir() {
   <option value="naturaleza4">Theme Naturaleza: Selva</option>
   <option value="pokemon">Theme Pokemon</option>
   <!-- Añade tantas opciones como diseños tengas -->
-</select></span>
+</select><span class="status updating">Updating</span></span>
 </span>
 </head>
 <div id="menu"></div>
 <body>
 <main>
-  <div style="background-color: white;border-left: 10px solid red;color: #000000;padding: 5px;display: flex; box-shadow: 0 0 20px red">
-    <div style="font-size: 20px; margin-right: 10px">⚠️</div>
-    <div style="flex-grow: 1">
-        <p style="color: white; background-color: black;font-size: 18px; margin: 0">Actualización 3.1</p>
-        <t style="font-size: 14px; margin: 0;">La página web se está actualizando para mejorar la presentación y el orden de esta</t>
-    </div>
-</div>
   <!-- Título & Texto -->
  <h1>Políticas Generales de Privacidad</h1>
  <!--Texto -->

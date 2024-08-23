@@ -65,7 +65,7 @@ function redirigir() {
         const diferencia = unixTimestamp - fechaUnixTimestamp;
         // Conversión a años, meses, días, horas, minutos y segundos
         const segundos = diferencia % 60;const minutos = Math.floor((diferencia / 60) % 60);const horas = Math.floor((diferencia / 3600) % 24);const dias = Math.floor(diferencia / 86400);
-        const tiempoRestante = `${dias}d, ${horas}h, ${minutos}m y ${segundos}s.`; document.getElementById("tiempo-restante").textContent = tiempoRestante;
+        const tiempoRestante = `Ends in: ${dias}d, ${horas}h, ${minutos}m y ${segundos}s.`; document.getElementById("tiempo-restante").textContent = tiempoRestante;
     </script>
 </div>
 </div>

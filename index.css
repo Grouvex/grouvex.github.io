@@ -242,7 +242,7 @@ select {
     background-color: transparent; /* Fondo blanco */
     color: white; /* Texto en color negro para contraste */
     /* Añade más estilos según necesites */
-    width: 44px;
+    width: 58px;
     height: 20px;
   }
 #selector-idioma option {

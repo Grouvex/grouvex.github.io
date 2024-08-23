@@ -6,9 +6,6 @@
       $("#menu").load("../menu.html"); 
     });
     $(function(){
-      $("#header").load("../header.html"); 
-    });
-    $(function(){
       $("#footer").load("footer.html"); 
     });
  </script>
@@ -56,12 +53,19 @@ function redirigir() {
   <li type="circle">Nueva página: Registrar<span class="status upcoming">Upcoming</span></li>
 </ul>
 <hr>
-<p style="font-size: 10px;color:black;margin:0">La fecha prevista para finalizar es: <n style="color:black"><span id="mantenimiento"></span> UTC</n></p>
+<p style="font-size: 10px;color:black;margin:0">La fecha prevista para finalizar es: <n style="color:black"><span id="mantenimiento"></span> UTC</n> (<span id="tiempo-restante"></span>)</p>
 <p style="font-size: 13px;color:black;margin:0">©Grouvex Studios</p>
       <!-- Tiempo de Mantenimiento -->
    <script>
-       const unixTimestamp = 1724601600; const mantenimiento = new Date(unixTimestamp * 1000).toISOString().slice(0, -5);
-       document.getElementById('mantenimiento').textContent = mantenimiento;
+     const unixTimestamp = 1724601600;
+     const mantenimiento = new Date(unixTimestamp * 1000).toISOString().slice(0, -5);
+    // Tiempo Restante
+     document.getElementById('mantenimiento').textContent = mantenimiento;
+      const fechaUnixTimestamp = Math.floor(Date.now() / 1000);
+        const diferencia = unixTimestamp - fechaUnixTimestamp;
+        // Conversión a años, meses, días, horas, minutos y segundos
+        const segundos = diferencia % 60;const minutos = Math.floor((diferencia / 60) % 60);const horas = Math.floor((diferencia / 3600) % 24);const dias = Math.floor(diferencia / 86400);
+        const tiempoRestante = `${dias}d, ${horas}h, ${minutos}m y ${segundos}s.`; document.getElementById("tiempo-restante").textContent = tiempoRestante;
     </script>
 </div>
 </div>

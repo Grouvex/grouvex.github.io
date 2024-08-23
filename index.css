@@ -1,4 +1,3 @@
-
 .confeti {
             position: absolute;
             width: 10px;
@@ -256,7 +255,7 @@ select {
     background-color: transparent; /* Fondo blanco */
     color: gold; /* Texto en color negro para contraste */
     /* Añade más estilos según necesites */
-    width: 44px;
+    width: 41px;
     height: 20px;
   }
 #themeSelect option {
@@ -349,19 +348,23 @@ body.theme1 {
 
 main.theme1 {
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    flex-wrap: wrap;
+    justify-content: center;
     padding: 10px;
     color: white;
-    margin-top: 10px;
+    margin-top: 30px;
     background: radial-gradient(circle, red, rgb(99, 99, 168), black);
 }
+
 h1.theme1,h2.theme1,h3.theme1,h4.theme1,h5.theme1,h6.theme1,h7.theme1,h8.theme1 {
   background: linear-gradient(to bottom, green, rgb(99, 99, 168), black);
   text-align: center;
   color: white;
 }
+
 mainTop.theme1 {
-    margin: 2px;
-    padding: 25px;
+    width: 100%;
+    padding: 10px;
     background: linear-gradient(45deg, red, white, blue);
 }
 .avatar1.theme1 {
@@ -421,9 +424,8 @@ h1.theme2,h2.theme2,h3.theme2,h4.theme2,h5.theme2,h6.theme2,h7.theme2,h8.theme2 
   color: white;
 }
 mainTop.theme2 {
-    flex: 0;
-    margin: 2px;
-    padding: 25px;
+    width: 100%;
+    padding: 10px;
     background: linear-gradient(45deg, green, yellow, blue, red, pink, cyan);
         background-size: cover;
 }
@@ -477,7 +479,7 @@ main.space {
     padding: 10px;
     flex: 0;
     color: white;
-    margin-top: 175px;
+    margin-top: 30px;
     background-image: url(https://th.bing.com/th/id/OIP.NdcwLYq7n6iTiiu1IUHLFAHaEv?rs=1&pid=ImgDetMain);
     background-size: cover;
     background-repeat: no-repeat;
@@ -490,9 +492,8 @@ h1.space,h2.space,h3.space,h4.space,h5.space,h6.space,h7.space,h8.space {
   background-repeat: no-repeat;
 }
 mainTop.space {
-    flex: 0;
-    margin: 2px;
-    padding: 25px;
+    width: 100%;
+    padding: 10px;
     background-image: url(https://live.staticflickr.com/7060/6971643495_05dc317572_b.jpg);
     background-size: cover;
     background-repeat: no-repeat;

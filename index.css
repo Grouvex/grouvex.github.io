@@ -534,6 +534,7 @@ aside.space {
 }
 
 /*Theme 4 Star Wars*/
+/* Establece el fondo de toda la página a gris */
 p.starwars {
   color: rgb(255, 255, 255);
   text-shadow: white;
@@ -542,14 +543,11 @@ p.starwars {
 /* Establece el fondo de toda la página a gris */
 body.starwars {
     height: 100%;
-    display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    margin: 0;
-    padding: 0;
-    background-image: url(https://th.bing.com/th/id/R.3fbda316a14ddd3aab94262076b8e2a3?rik=3HhcUrtxNNsI0A&riu=http%3a%2f%2fwww.hdwallpaper.nu%2fwp-content%2fuploads%2f2015%2f10%2fstar_wars_wallpaper_4.jpg&ehk=8r8j1xWoA1oe3BDMRVfVZWe2PU2qyQqAMKTweqefYhk%3d&risl=&pid=ImgRaw&r=0);
     background-size: cover;
     background-repeat: no-repeat;
+    background-image: url(https://th.bing.com/th/id/R.3fbda316a14ddd3aab94262076b8e2a3?rik=3HhcUrtxNNsI0A&riu=http%3a%2f%2fwww.hdwallpaper.nu%2fwp-content%2fuploads%2f2015%2f10%2fstar_wars_wallpaper_4.jpg&ehk=8r8j1xWoA1oe3BDMRVfVZWe2PU2qyQqAMKTweqefYhk%3d&risl=&pid=ImgRaw&r=0);
 }
 /* Estilo para el contenido principal */
 main.starwars {
@@ -559,7 +557,7 @@ main.starwars {
     padding: 10px;
     flex: 0;
     color: white;
-    margin-top: 175px;
+    margin-top: 30px;
     background-image: url(https://th.bing.com/th/id/OIP.npOsomw2bikOEQXahXpM0QHaEK?w=329&h=185&c=7&r=0&o=5&pid=1.7);
     background-size: cover;
     background-repeat: no-repeat;
@@ -573,9 +571,8 @@ h1.starwars,h2.starwars,h3.starwars,h4.starwars,h5.starwars,h6.starwars,h7.starw
   background-repeat: no-repeat;
 }
 mainTop.starwars {
-    flex: 0;
-    margin: 2px;
-    padding: 40px;
+    width: 100%;
+    padding: 10px;
     background-image: url(https://images.squarespace-cdn.com/content/v1/531630f6e4b0fa5080a5596f/1845bb78-5fb1-4250-a2b9-e959c995cef9/Star+Wars+v2.jpg);
     background-position: 0px;
     background-size:cover;
@@ -626,11 +623,8 @@ p.jurassicworld {
 /* Establece el fondo de toda la página a gris */
 body.jurassicworld {
     height: 100%;
-    display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    margin: 0;
-    padding: 0;
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8k6I58I0r2yWS20ImbGZO2viw0K_ncxugsA&s);
     background-size: cover;
     background-repeat: no-repeat;
@@ -643,7 +637,7 @@ main.jurassicworld {
     padding: 10px;
     flex: 0;
     color: white;
-    margin-top: 175px;
+    margin-top: 30px;
     background-image: url(https://th.bing.com/th/id/OIP.J_Epz6FeCHuiohqcJU72oQHaDs?w=349&h=174&c=7&r=0&o=5&pid=1.7);
     background-size: cover;
     background-repeat: no-repeat;
@@ -656,9 +650,8 @@ h1.jurassicworld,h2.jurassicworld,h3.jurassicworld,h4.jurassicworld,h5.jurassicw
   background-repeat: no-repeat;
 }
 mainTop.jurassicworld {
-    flex: 0;
-    margin: 2px;
-    padding: 25px;
+    width: 100%;
+    padding: 10px;
     background-image: url(https://th.bing.com/th/id/OIP.TJK__-FIvQRNVUIPkvJQ9QHaEd);
     background-position-y: -50px;
     background-size:cover;
@@ -710,14 +703,9 @@ p.taylorswift {
 /* Establece el fondo de toda la página a gris */
 body.taylorswift {
     height: 100%;
-    display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    margin: 0;
-    padding: 0;
-    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8k6I58I0r2yWS20ImbGZO2viw0K_ncxugsA&s);
-    background-size: cover;
-    background-repeat: no-repeat;
+    background-image: url(https://th.bing.com/th/id/OIP.ZmgHb2BlqKPtoCS_pNH4pwHaQC?w=115&h=180&c=7&r=0&o=5&pid=1.7);
 }
 /* Estilo para el contenido principal */
 main.taylorswift {
@@ -727,7 +715,7 @@ main.taylorswift {
     padding: 10px;
     flex: 0;
     color: white;
-    margin-top: 175px;
+    margin-top: 30px;
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHXyi8v9iFgQH_K_GH-JjUeqsmWcx-VCHhMdze264y2n2iLDjjDekdF-QVIYYBgUcTxXE&usqp=CAU);
     background-repeat: repeat;
 }
@@ -739,9 +727,8 @@ h1.taylorswift,h2.taylorswift,h3.taylorswift,h4.taylorswift,h5.taylorswift,h6.ta
   background-repeat: no-repeat;
 }
 mainTop.taylorswift {
-    flex: 0;
-    margin: 2px;
-    padding: 25px;
+    width: 100%;
+    padding: 10px;
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgbFt-ngiiBOWghZHp8cO2TbaIPic31Wv6Qg&s);
     background-size: cover;
     background-position-y: -10px;

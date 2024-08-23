@@ -39,6 +39,7 @@ function redirigir() {
 </head>
 <body>
 <main>
+ <!-- Anuncio -->
   <div style="background-color: white;border-left: 10px solid red;color: #000000;padding: 5px;display: flex; box-shadow: 0 0 20px red">
     <div style="font-size: 20px; margin-right: 10px">⚠️</div>
     <div style="flex-grow: 1">
@@ -56,7 +57,12 @@ function redirigir() {
   <li type="circle">Nueva página: Registrar<span class="status upcoming">Upcoming</span></li>
 </ul>
 <hr>
-<p style="font-size: 15px;color:black;margin:0">Fecha: <n>22/08/2024</n> - ©Grouvex Studios<p>
+<p style="font-size: 10px;color:black;margin:0">La fecha prevista para finalizar es: <n style="color:black"><span id="mantenimiento"></span> UTC</n></p>
+<p style="font-size: 13px;color:black;margin:0">©Grouvex Studios</p>
+   <script>
+       const unixTimestamp = 1725148920; const mantenimiento = new Date(unixTimestamp * 1000).toISOString().slice(0, -5);
+       document.getElementById('mantenimiento').textContent = mantenimiento;
+    </script>
 </div>
 </div>
   <!-- Título & Texto -->

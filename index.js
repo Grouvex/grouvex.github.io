@@ -6,9 +6,6 @@ window.addEventListener('load', function() {
     sol();
     leaf();
     nieve();
-    showNotification();
-    openNav();
-    closeNav();
 });
 
 function createConfeti() {
@@ -108,17 +105,6 @@ function nieve() {
     }
   }
 }
-function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
-}
-function closeNav() {
-    document.getElementById("mySidenav").style.width = "0px";
-}
-function showNotification() {
-    document.getElementById("notification").style.display = "block";
-}
-
-
 
 var videos = [
             {id: 'x09D-9ZpF_o', title: 'Título 1', description: 'Descripción 1', credits: 'Créditos 1'},

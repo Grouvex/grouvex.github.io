@@ -1,3 +1,4 @@
+
 .confeti {
             position: absolute;
             width: 10px;
@@ -229,15 +230,38 @@ news {
   sp {
     color: green;
   }
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: transparent;
+    border: none;
+  }
 #selector-idioma {
-    background-color: white; /* Fondo blanco */
-    color: black; /* Texto en color negro para contraste */
+    font-size: 14px;
+    font-family: Times New Roman;
+    background-color: transparent; /* Fondo blanco */
+    color: white; /* Texto en color negro para contraste */
     /* Añade más estilos según necesites */
+    width: 44px;
+    height: 20px;
+  }
+#selector-idioma option {
+    background-color: black;
+    color: white;
   }
 #themeSelect {
-    background-color: white; /* Fondo blanco */
-    color: black; /* Texto en color negro para contraste */
+  font-size: 14px;
+  font-family: Times New Roman;
+    background-color: transparent; /* Fondo blanco */
+    color: gold; /* Texto en color negro para contraste */
     /* Añade más estilos según necesites */
+    width: 44px;
+    height: 20px;
+  }
+#themeSelect option {
+    background-color: darkslategrey;
+    color: white;
   }
 
 /* Diseño de la Web */
@@ -1017,6 +1041,7 @@ nav a {
             margin: 15% auto;
             padding: 20px;
             border: 1px solid #888;
+            width: 80%;
         }
 .carousel {
     display: flex;

@@ -999,7 +999,6 @@ nav a {
   display: block;
   margin-bottom: 10px;
   opacity: .8;
-  text-transform: uppercase;
   font-size: 10px;
   line-height: 1.2;
 }
@@ -1011,9 +1010,20 @@ nav a {
   line-height: 1.25;
   hyphens: auto;
 }
+.cajetin-footer {
+  color: white;
+  display: block;
+  padding-right: .8rem;
+  opacity: .9;
+  font-size: 10px;
+  line-height: 1.25;
+  hyphens: auto;
+}
 .cajetines {
-  width: 100%;
   display: flex;
+  overflow-y: scroll; /* Agrega una barra de desplazamiento vertical */
+  max-height: 800px;
+  width: 100%;
   flex-wrap: wrap; /* Muestra los cajetines en varias filas */
   gap: 10px; /* Espacio entre los cajetines */
 }

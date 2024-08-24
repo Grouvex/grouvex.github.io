@@ -32,8 +32,8 @@
 <main>
   <select class="orden-button" id="ordenSelector" onchange="cambiarOrden()" style="margin:5px;margin-left:0px">
         <option value="" disabled selected>Order</option>
-        <option value="desT">⬆ to ⬇</option>
         <option value="ascT">⬇ to ⬆</option>
+        <option value="desT">⬆ to ⬇</option>
     </select>
  <div class="cajetines">
    <script>
@@ -69,7 +69,7 @@
 <script>
 const marcasDeTiempo = [uT1, uT2, uT3];
 // NO tocar
-function cambiarOrden() {if (document.getElementById('ordenSelector').value == 'desT'){marcasDeTiempo.sort((b, a) => b - a)}if (document.getElementById('ordenSelector').value == 'ascT'){marcasDeTiempo.sort((a, b) => b - a)}const cajetinesContainer = document.querySelector('.cajetines');marcasDeTiempo.forEach((uT) => {const cajetin = document.querySelector(`[data-ut="${uT}"]`);cajetinesContainer.appendChild(cajetin); });}
+function cambiarOrden() {if (document.getElementById('ordenSelector').value == 'ascT'){marcasDeTiempo.sort((a, b) => b - a)}if (document.getElementById('ordenSelector').value == 'desT'){marcasDeTiempo.sort((b, a) => b - a)}const cajetinesContainer = document.querySelector('.cajetines');marcasDeTiempo.forEach((uT) => {const cajetin = document.querySelector(`[data-ut="${uT}"]`);cajetinesContainer.appendChild(cajetin); });}
 </script>
 </body>
 <div id="footer"></div>

@@ -1,121 +1,57 @@
-window.addEventListener('load', function() {
-    // Llama a todas las funciones que quieres ejecutar cuando se carga la página
-    checkThemes();
-});
-
-function checkThemes() {
-    const date = new Date();
-    const month = date.getMonth();
-
-    // Superhéroes
-    if (month == 0) {
-        toggleThemeOption('superheroes', false);
-    } else {
-        toggleThemeOption('superheroes', false);
-    }
-
-    // Naturaleza 1
-    if (month == 1) {
-        toggleThemeOption('naturaleza1', false);
-    } else {
-        toggleThemeOption('naturaleza1', false);
-    }
-
-    // Naturaleza 2
-    if (month == 2) {
-        toggleThemeOption('naturaleza2', false);
-    } else {
-        toggleThemeOption('naturaleza2', true);
-    }
-
-    // Naturaleza 3
-    if (month == 3) {
-        toggleThemeOption('naturaleza3', false);
-    } else {
-        toggleThemeOption('naturaleza3', true);
-    }
-
-    // Naturaleza 4
-    if (month == 4) {
-        toggleThemeOption('naturaleza4', false);
-    } else {
-        toggleThemeOption('naturaleza4', true);
-    }
-
-    // Star Wars
-    const startStarWarsWeek = new Date(date.getFullYear(), 4, 4);
-    const endStarWarsWeek = new Date(date.getFullYear(), 4, 14);
-    if (date >= startStarWarsWeek && date <= endStarWarsWeek) {
-        toggleThemeOption('starwars', false);
-    } else {
-        toggleThemeOption('starwars', false);
-    }
-
-    // Jurassic World
-    const startJurassicWorldWeek = new Date(date.getFullYear(), 5, 10);
-    const endJurassicWorldWeek = new Date(date.getFullYear(), 5, 20);
-    if (date >= startJurassicWorldWeek && date <= endJurassicWorldWeek) {
-        toggleThemeOption('jurassicworld', false);
-    } else {
-        toggleThemeOption('jurassicworld', false);
-    }
-
-    // Taylor Swift
-    const startTaylorSwiftWeek = new Date(date.getFullYear(), 11, 13);
-    const endTaylorSwiftWeek = new Date(date.getFullYear(), 11, 23);
-    if (date >= startTaylorSwiftWeek && date <= endTaylorSwiftWeek) {
-        toggleThemeOption('taylorswift', false);
-    } else {
-        toggleThemeOption('taylorswift', false);
-    }
-}
-
-function toggleThemeOption(theme, hide) {
-    const option = document.querySelector(`#themeSelect option[value="${theme}"]`);
-    if (option) {
-        if (hide) {
-            option.classList.add('hiddenOption');
-        } else {
-            option.classList.remove('hiddenOption');
-        }
-    }
-}
-
-
-var themeSelect = document.getElementById('themeSelect');
-
-// Cuando se cambia el tema
-themeSelect.addEventListener('change', function() {
-    // Obtiene todos los elementos a los que se les aplicará el cambio de tema
-    var elements = document.querySelectorAll('p, body, main, mainTop, h1, h2, h3, h4, h5, h6, h7, h8, .avatar1, article, section, aside, panel');
-
-    // Elimina las clases de las opciones antiguas
-    elements.forEach(function(element) {
-        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'pokemon');
+<!DOCTYPE html>
+<html lang="es">
+<script src="../jquery-3.5.1.min.js"></script>
+ <script> 
+    $(function(){
+      $("#menu").load("../menu.html"); 
     });
-
-    // Si la opción seleccionada no es "default", añade la clase de la opción seleccionada
-    if (this.value !== 'default') {
-        elements.forEach(function(element) {
-            element.classList.add(this.value);
-        }.bind(this));
+    $(function(){
+      $("#footer").load("footer.html"); 
+    });
+ </script>
+<body>
+<main>
+  <select class="orden-button" id="ordenSelector" onchange="cambiarOrden()" style="margin:5px;margin-left:0px">
+        <option value="" disabled selected>Order</option>
+        <option value="ascT">⬇ to ⬆</option>
+        <option value="desT">⬆ to ⬇</option>
+    </select>
+ <div class="cajetines">
+   <script>
+    // NO tocar
+    function actualizarFechas(uT, elementoId) {if (uT <= Math.floor(Date.now() / 1000)){const f1 = new Date(uT * 1000).toUTCString();document.getElementById(elementoId).textContent = f1;
+    } else {const fUT = Math.floor(Date.now() / 1000);const diferencia = uT - fUT;const segundos = diferencia % 60;const minutos = Math.floor((diferencia / 60) % 60);const h = Math.floor((diferencia / 3600) % 24);const d = Math.floor(diferencia / 86400);const m = Math.floor(d / 30.24);const a = Math.floor(d / 365.44);const f1 = `Start in: ${a} year, ${m} months, ${d}d, ${h}h, ${minutos}m y ${segundos}s.`;
+    document.getElementById(elementoId).textContent = f1;}
     }
-
-    // Guarda la selección del usuario en el almacenamiento local
-    localStorage.setItem('selectedTheme', this.value);
-});
-
-// Cuando se carga la página
-window.addEventListener('load', function() {
-    // Obtiene la selección del usuario del almacenamiento local
-    var selectedTheme = localStorage.getItem('selectedTheme');
-
-    // Si hay una selección guardada y no es "default", aplica el tema seleccionado
-    if (selectedTheme && selectedTheme !== 'default') {
-        var elements = document.querySelectorAll('p, body, main, mainTop, h1, h2, h3, h4, h5, h6, h7, h8, .avatar1, article, section, aside, panel');
-        elements.forEach(function(element) {
-            element.classList.add(selectedTheme);
-        });
-        themeSelect.value = selectedTheme; // Asegúrate de que el menú desplegable muestre el tema correcto
-    }
-});
+   </script>
+    <a href="alpha_version.html" class="cajetin" data-ut="1703203200">   
+      <img src="../port/Alpha_Version.jpg" alt="" style="width:300px">
+      <p class="cajetin-fechas"><span id="f1_1"></span></p>
+      <p class="cajetin-titulo">Alpha Version</p>
+      <p class="cajetin-footer">©Grouvex Studios Recording, Maiki Dran</p>
+      <script>const uT1 = 1703203200; actualizarFechas(uT1, "f1_1");</script>
+     </a>
+     <a href="a_parallel_universe.html" class="cajetin" data-ut="1703462400">   
+      <img src="../port/A Parallel Universe.jpg" alt="" style="width:300px">
+      <p class="cajetin-fechas"><span id="f1_2"></span></p>
+      <p class="cajetin-titulo">A Parallel Universe</p>
+      <p class="cajetin-footer">©Grouvex Studios Recording, Maiki Dran</p>
+      <script>const uT2 = 1703462400; actualizarFechas(uT2, "f1_2");</script>
+     </a>
+     <a href="otra_pagina.html" class="cajetin" data-ut="1727568000">   
+      <img src="../port/La Perla.jpg" alt="" style="width:300px">
+      <p class="cajetin-fechas"><span id="f1_3"></span></p>
+      <p class="cajetin-titulo">La Perla</p>
+      <p class="cajetin-footer">©Grouvex Studios Recording, Maiki Dran</p>
+      <script>const uT3 = 1727568000; actualizarFechas(uT3, "f1_3");</script>
+     </a>
+    </div>
+ </main>
+<script>
+const marcasDeTiempo = [uT1, uT2, uT3];
+// NO tocar
+function cambiarOrden() {if (document.getElementById('ordenSelector').value == 'ascT'){marcasDeTiempo.sort((b, a) => b - a)}if (document.getElementById('ordenSelector').value == 'desT'){marcasDeTiempo.sort((a, b) => b - a)}const cajetinesContainer = document.querySelector('.cajetines');marcasDeTiempo.forEach((uT) => {const cajetin = document.querySelector(`[data-ut="${uT}"]`);cajetinesContainer.appendChild(cajetin); });}
+</script>
+</body>
+<div id="footer"></div>
+</html>

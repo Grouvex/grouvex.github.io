@@ -30,60 +30,36 @@
 </head>
 <body>
 <main>
-  <!-- Título & Texto -->
- <!--Texto -->
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Página</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Enlaza tu archivo CSS aquí -->
-</head>
-<body>
-    <main>
-        <div class="cajetines">
-          <a href="otra_pagina.html" class="cajetin">   
-            <img src="https:grouvex.github.io/img/GROUVEX.png" alt="" style="width:300px">
-            <p class="cajetin-fechas">Fecha: <span id="f1"></span></p>
-            <p class="cajetin-titulo">Título del cajetín 1</p>
-            <p class="cajetin-footer">©2023</p>
-            <script>
-             const uT1 = 1724601600; const f1 = new Date(uT1 * 1000).toUTCString();document.getElementById('f1').textContent = f1;
-           </script>
-          </a>
-          <a href="otra_pagina.html" class="cajetin">   
-            <img src="https:grouvex.github.io/img/GROUVEX.png" alt="" style="width:300px">
-            <p class="cajetin-fechas">Fecha: <span id="f2"></span></p>
-            <p class="cajetin-titulo">Título del cajetín 2</p>
-            <p class="cajetin-footer">©2023</p>
-            <script>
-             const uT2 = 1724601600; const f2 = new Date(uT2 * 1000).toUTCString();document.getElementById('f2').textContent = f2;
-           </script>
-          </a>
-          <a href="otra_pagina.html" class="cajetin">   
-            <img src="https:grouvex.github.io/img/GROUVEX.png" alt="" style="width:300px">
-            <p class="cajetin-fechas">Fecha: <span id="f3"></span></p>
-            <p class="cajetin-titulo">Título del cajetín 3</p>
-            <p class="cajetin-footer">©2023</p>
-            <script>
-             const uT3 = 1724601600; const f3 = new Date(uT3 * 1000).toUTCString();document.getElementById('f3').textContent = f3;
-           </script>
-          </a>
-          <a href="otra_pagina.html" class="cajetin">   
-            <img src="https:grouvex.github.io/La Perla.jpg" alt="" style="width:300px">
-            <p class="cajetin-fechas">Fecha: <span id="f4"></span></p>
-            <p class="cajetin-titulo">Título del cajetín 4</p>
-            <p class="cajetin-footer">©2023</p>
-            <script>
-             const uT4 = 1724601600; const f4 = new Date(uT4 * 1000).toUTCString();document.getElementById('f4').textContent = f4;
-           </script>
-          </a>
-        </div>
-    </main>
-</body>
-</html>
-
+ <div class="cajetines">
+   <script>
+    // NO tocar
+    function actualizarFechas(uT, elementoId) {if (uT <= Math.floor(Date.now() / 1000)){const f1 = new Date(uT * 1000).toUTCString();document.getElementById(elementoId).textContent = f1;
+    } else {const fUT = Math.floor(Date.now() / 1000);const diferencia = uT - fUT;const segundos = diferencia % 60;const minutos = Math.floor((diferencia / 60) % 60);const h = Math.floor((diferencia / 3600) % 24);const d = Math.floor(diferencia / 86400);const m = Math.floor(d / 30.24);const a = Math.floor(d / 365.44);const f1 = `Start in: ${a} year, ${m} months, ${d}d, ${h}h, ${minutos}m y ${segundos}s.`;
+    document.getElementById(elementoId).textContent = f1;}
+    }
+   </script>
+    <a href="otra_pagina.html" class="cajetin">   
+      <img src="../img/GROUVEX.png" alt="" style="width:300px">
+      <p class="cajetin-fechas"><span id="f1_2"></span></p>
+      <p class="cajetin-titulo">Título del cajetín 1</p>
+      <p class="cajetin-footer">©2023</p>
+      <script>const uT1 = 1714601600; actualizarFechas(uT1, "f1_1");</script>
+     </a>
+     <a href="otra_pagina.html" class="cajetin">   
+      <img src="../img/GROUVEX.png" alt="" style="width:300px">
+      <p class="cajetin-fechas"><span id="f1_1"></span></p>
+      <p class="cajetin-titulo">Título del cajetín 1</p>
+      <p class="cajetin-footer">©2023</p>
+      <script>const uT2 = 1714609600; actualizarFechas(uT2, "f1_2");</script>
+     </a>
+     <a href="otra_pagina.html" class="cajetin">   
+      <img src="../img/GROUVEX.png" alt="" style="width:300px">
+      <p class="cajetin-fechas"><span id="f1_3"></span></p>
+      <p class="cajetin-titulo">Título del cajetín 1</p>
+      <p class="cajetin-footer">©2023</p>
+      <script>const uT3 = 1714611600; actualizarFechas(uT3, "f1_3");</script>
+     </a>
+    </div>
  </main>
 </body>
 <div id="footer"></div>

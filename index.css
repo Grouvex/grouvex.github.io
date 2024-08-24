@@ -68,49 +68,10 @@
       opacity: 0;}
 }
 /*Página*/
-#notification {
-    text-align: center;
-    background-color: red;
-    color: white;
-    width: 100%;
-}
-  .sidenav {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: #222;
-    overflow-x: hidden;
-    transition: 0.5s;
-    padding-top: 60px;
-  }
-  .sidenav a {
-    padding: 8px 8px 8px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-    transition: 0.3s;
-  }
-  
-  .sidenav a:hover {
-    color: #818181;
-  }
-  
-  .sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-  }
-  
-  @media screen and (max-height: 450px) {
+@media screen and (max-height: 450px) {
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}
-  }
+}
 
 @media (max-width: 768px) {
     /* Estilos para pantallas pequeñas (móviles) */
@@ -119,16 +80,6 @@
     /* Estilos para pantallas más grandes (tabletas, computadoras) */
 }
 
-  .avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    position: absolute;
-  }
-
-  .menuT{
-      margin-left: 10%;
-  }
   .red {
     width: 30px;
     height: 30px;
@@ -182,29 +133,6 @@
     margin-left: 24%;
     position: absolute;
   }
-  .titulo {
-    text-decoration: none;
-    text-decoration-line: none;
-    text-align: center;
-    color: rgb(70, 224, 224);
-  }
-.texto {
-text-decoration: none;
-text-decoration-line: none;
-text-align: left;
-}
-
-header {
-    background-color: #000000;
-    color: rgb(226, 42, 42);
-    margin-top: 20px;
-    padding: 10px;
-    width: 100%;
-    text-align: center;
-}
-news {
-    width: 100%;
-}
 
 .Atencion {
     color: white;
@@ -242,7 +170,7 @@ select {
     background-color: transparent; /* Fondo blanco */
     color: white; /* Texto en color negro para contraste */
     /* Añade más estilos según necesites */
-    width: 65px;
+    width: 60px;
     height: 20px;
   }
 #selector-idioma option {
@@ -255,7 +183,7 @@ select {
     background-color: transparent; /* Fondo blanco */
     color: gold; /* Texto en color negro para contraste */
     /* Añade más estilos según necesites */
-    width: 44px;
+    width: 42px;
     height: 20px;
   }
 #themeSelect option {
@@ -952,16 +880,6 @@ footer {
 address, small {
     display: block;
 }
-/* Estilo para el encabezado */
-header {
-    margin-top: 20px;
-    width: 100%;
-    background-color: #333; /* Gris oscuro */
-    color: white;
-    padding: 10px 0;
-    text-align: center;
-}
-
 /* Estilo para la navegación */
 nav ul {
     list-style-type: none;

@@ -1,21 +1,21 @@
 .confeti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: #e74c3c;
-            border-radius: 50%;
-            animation: explode 2s infinite;
-        }
-  @keyframes explode {
-    0% {
-      transform: translateY(1) ;
-        opacity: 1;
-      }
-    100% {
-      transform: translateY(100vh) rotate(720deg);
-      opacity: 0;
-      }
-  }
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #e74c3c;
+  border-radius: 50%;
+  animation: explode 2s infinite;
+}
+@keyframes explode {
+  0% {
+    transform: translateY(1) ;
+      opacity: 1;
+    }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+    }
+}
 /*Primavera*/
 .flower {
   position: absolute;
@@ -355,7 +355,7 @@ mainTop.theme2 {
     display: flex;
     padding: 10px;
     background: linear-gradient(45deg, green, yellow, blue, red, pink, cyan);
-        background-size: cover;
+    background-size: cover;
 }
 .avatar1.theme2 {
     width: 220px;
@@ -993,7 +993,40 @@ nav a {
   .hiddenOption {
     display: none;
   }
-
+/* news */
+.cajetin-fechas {
+  color: black;
+  display: block;
+  margin-bottom: 10px;
+  opacity: .8;
+  text-transform: uppercase;
+  font-size: 10px;
+  line-height: 1.2;
+}
+.cajetin-titulo {
+  color: white;
+  display: inline-block;
+  padding-right: .8rem;
+  font-size: 20px;
+  line-height: 1.25;
+  hyphens: auto;
+}
+.cajetines {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap; /* Muestra los cajetines en varias filas */
+  gap: 10px; /* Espacio entre los cajetines */
+}
+.cajetin {
+  /* Estilos para cada cajetín */
+  padding: 10px;
+  flex-basis: calc(25% - 40px); /* 4 cajetines por fila */
+  background: linear-gradient(0deg, transparent, cyan, blue); /* Fondo del texto */
+}
+.cajetin img {
+  max-width: 100%;
+  vertical-align: middle; /* Alineación vertical con el texto */
+}
 /* CSS */
 .status {
   display: inline-block;

@@ -255,7 +255,7 @@ select {
     background-color: transparent; /* Fondo blanco */
     color: gold; /* Texto en color negro para contraste */
     /* Añade más estilos según necesites */
-    width: 41px;
+    width: 44px;
     height: 20px;
   }
 #themeSelect option {

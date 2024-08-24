@@ -874,8 +874,11 @@ footer {
   max-height: 30px; /* Máximo altura de 30px */
   margin: 5px; /* Margen de 5px para asegurar la separación */
 }
-
-
+.orden-button {
+  background: white;
+  color: black;
+  cursor: pointer;
+}
 /* Estilo para las direcciones y texto pequeño */
 address, small {
     display: block;

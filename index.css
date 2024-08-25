@@ -365,9 +365,15 @@ nav a {
   background: linear-gradient(0deg, transparent, cyan, blue); /* Fondo del texto */
 }
 .cajetin img {
+  margin-top: 0px;
+  width: 100%;
+  height: auto;
   max-width: 100%;
   vertical-align: middle; /* Alineación vertical con el texto */
 }
+.cajetin p {
+  margin: 2px 0;
+} 
 /* CSS */
 .status {
   display: inline-block;

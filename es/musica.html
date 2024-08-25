@@ -70,10 +70,6 @@
 const marcasDeTiempo = [uT1, uT2, uT3];
 // NO tocar
 function cambiarOrden() {if (document.getElementById('ordenSelector').value == 'ascT'){marcasDeTiempo.sort((a, b) => b - a)}if (document.getElementById('ordenSelector').value == 'desT'){marcasDeTiempo.sort((b, a) => b - a)}const cajetinesContainer = document.querySelector('.cajetines');marcasDeTiempo.forEach((uT) => {const cajetin = document.querySelector(`[data-ut="${uT}"]`);cajetinesContainer.appendChild(cajetin); });}
-// Establecer el valor predeterminado y llamar a cambiarOrden
-document.addEventListener('DOMContentLoaded', (event) => {
-    document.getElementById('ordenSelector').value = 'ascT';
-    cambiarOrden();
 </script>
 </body>
 <div id="footer"></div>

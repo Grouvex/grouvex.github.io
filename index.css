@@ -359,6 +359,9 @@ nav a {
   gap: 10px; /* Espacio entre los cajetines */
 }
 .cajetin {
+  widht: 90%;
+  max-widht: 300px;
+  height: auto;
   /* Estilos para cada cajetín */
   padding-top: 0px;
   padding-left: 10px;
@@ -370,13 +373,11 @@ nav a {
   margin-top: 0px;
   width: 100%;
   height: auto;
-  max-width: 100%;
   vertical-align: middle; /* Alineación vertical con el texto */
 }
-@media (min-width: 768px) {
+@media (max-width: 768px) {
  .cajetin {
-   width: 45%; /* Ancho relativo para pantallas más grandes */
-   max-width: 300px; /* Ancho máximo para pantallas grandes */
+   width: 100%;
  }
 } 
 /* CSS */

@@ -6,7 +6,76 @@
       $("#menu").load("../menu.html"); 
     });
     $(function(){
-      $("#footer").load("footer.html"); 
+      $("#footer").load("footer.html"); <!DOCTYPE html>
+<!-- header.html -->
+<head>
+<link rel="stylesheet" href="../index.css"> <script src="../index.js"></script> <script src="../time.js"></script> <link rel="stylesheet" href="../temas.css">
+<link rel="icon" href="../img/GROUVEX.png"> <link rel="icon" href="GROUVEX.png" type="image/x-icon">
+<meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8"> <meta name="author" content="Grouvex Studios"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="copyright" content="Grouvex Studios"> <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"> <meta http-equiv="Content-Security-Policy" content="policy"> <meta http-equiv="Referrer-Policy" content="no-referrer"> <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects"> <meta name="theme-color" content="#hexcode"> <link rel="canonical" href="URL_canónica">
+  <!-- Clarity tracking code for https://grouvex.github.io/ -->
+  <script>    (function(c,l,a,r,i,t,y){        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);    })(window, document, "clarity", "script", "mdkjlz9c01");</script>
+<!-- Editable -->
+<meta property="og:title" content="Inicio - Grouvex Studios"> <meta property="og:description" content="Página inicial de ©Grouvex Studios"> <meta property="og:image" href="../img/GROUVEX.png"">
+<title>Inicio - Grouvex Studios</title>
+<!-- Main Top -->
+<mainTop>
+<a href="https://grouvex.github.io/es/grouvex"><span style="font-family: Times New Roman; sans-serif; font-size: 30px;color:white">Grouvex Studios</span></a>
+<hr style="width: 0px;margin-right: 10px;margin-right: 10px;opacity:0">
+<span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold"> <a href="https://grouvex.github.io/es/grouvex"><u style="color: blue"><span style="color: white">Inicio</span></u></a> | <a href="https://grouvex.github.io/es/musica"><u style="color: blue"><span style="color: white">Música</span></u></a> | <a href="https://grouvex.github.io/sign-up" style="pointer-events: none"><u style="color: blue"><span style="color: white">Registrar</span></u></a> <span id="menu"></span>
+</span>
+</mainTop>
+</head>
+<body>
+<main>
+ <!-- Anuncio -->
+  <div style="background-color: white;border-left: 10px solid red;color: #000000;padding: 5px;display: flex; box-shadow: 0 0 20px red">
+    <div style="font-size: 20px; margin-right: 10px">⚠️</div>
+    <div style="flex-grow: 1">
+        <p style="color: white; background-color: black;font-size: 18px; margin: 0">Update 4</p>
+        <t style="font-size: 14px; margin: 0;">The website is being updated to improve its presentation and order.
+        </t>
+<hr>
+  <p style="color: white; background-color: black;font-size: 14px; margin: 0">Estado de la web</p>
+  <ul>
+  <li type="circle">Terms and Conditions Update<span class="status maintenance">Maintenance</span></li>
+  <li type="circle">Privacy Policy Update<span class="status maintenance">Maintenance</span></li>
+  <li type="circle">Language Update<span class="status updating">Updating</span></li>
+  <li type="circle">Themes Update v2<span class="status updating">Updating</span></li>
+  <li type="circle">New section: Music<span class="status upcoming">Upcoming</span></li>
+  <li type="circle">New section: Register<span class="status upcoming">Upcoming</span></li>
+</ul>
+<hr>
+<p style="background-color: white;font-size: 10px;color:black;margin:0">The expected completion date is: <n style="color:black"><span id="mantenimiento"></span> UTC</n> (<span id="tiempo-restante"></span>)</p>
+<p style="background-color: white;font-size: 13px;color:black;margin:0">©Grouvex Studios</p>
+      <!-- Tiempo de Mantenimiento -->
+   <script>
+     const unixTimestamp = 1724601600;
+     const mantenimiento = new Date(unixTimestamp * 1000).toISOString().slice(0, -5);
+    // Tiempo Restante
+     document.getElementById('mantenimiento').textContent = mantenimiento;
+      const fechaUnixTimestamp = Math.floor(Date.now() / 1000);
+        const diferencia = unixTimestamp - fechaUnixTimestamp;
+        // Conversión a años, meses, días, horas, minutos y segundos
+        const segundos = diferencia % 60;const minutos = Math.floor((diferencia / 60) % 60);const horas = Math.floor((diferencia / 3600) % 24);const dias = Math.floor(diferencia / 86400);
+        const tiempoRestante = `Ends in: ${dias}d, ${horas}h, ${minutos}m y ${segundos}s.`; document.getElementById("tiempo-restante").textContent = tiempoRestante;
+    </script>
+</div>
+</div>
+  <!-- Título & Texto -->
+<article>
+ <h1>Grouvex Studio</h1>
+ <!--Texto -->
+  <section id="Intro">
+   <a href="#Intro"><h2>Introduction</h2></a>
+    <p>Grouvex Studio is a new music community where there are currently 2 artists. Maiki Dran and Tarligth Etherall E. These two artists support and help the Grouvex Studio community.</p>
+  </section>
+ <h1>Grouvex Studios Official Form</h1>
+ <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScg3m1Fz-V2sw_SKfBN-F-fzS1BSGNYiHikzeI9apUpDAGxsg/viewform?embedded=true" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
+</article>
+ </main>
+ <div id="footer"></div>
+</body>
+</html>
     });
  </script>
 <!-- header.html -->

@@ -12,7 +12,7 @@
 <!-- header.html -->
 <div id="header"></div>
 <head>
-<link rel="stylesheet" href="../index.css"> <script src="../index.js"></script>
+<link rel="stylesheet" href="../index.css"> <script src="../index.js"></script> <script src="../time.js"></script>
 <link rel="icon" href="../img/GROUVEX.png"> <link rel="icon" href="GROUVEX.png" type="image/x-icon">
 <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8"> <meta name="author" content="Grouvex Studios"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="copyright" content="Grouvex Studios"> <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"> <meta http-equiv="Content-Security-Policy" content="policy"> <meta http-equiv="Referrer-Policy" content="no-referrer"> <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects"> <meta name="theme-color" content="#hexcode"> <link rel="canonical" href="URL_canónica">
   <!-- Clarity tracking code for https://grouvex.github.io/ -->
@@ -36,11 +36,6 @@
         <option value="desT">⬆ to ⬇</option>
     </select>
  <div class="cajetines">
-   <script>
-    // NO tocar
-    function actualizarFechas(uT, elementoId) {if (uT <= Math.floor(Date.now() / 1000)){const f1 = new Date(uT * 1000).toUTCString();document.getElementById(elementoId).textContent = f1;
-    } else {const fUT = Math.floor(Date.now() / 1000);const diferencia = uT - fUT;const segundos = diferencia % 60;const minutos = Math.floor((diferencia / 60) % 60);const h = Math.floor((diferencia / 3600) % 24);const d = Math.floor(diferencia / 86400);const m = Math.floor(d / 30.24);const a = Math.floor(d / 365.44);const mng = new Date(uT * 1000).toUTCString();const f1 = `Start in: ${a} year, ${m} months, ${d}d, ${h}h, ${minutos}m y ${segundos}s. (Date: ${mng})`;document.getElementById(elementoId).textContent = f1;}}
-   </script>
     <a href="alpha_version.html" class="cajetin" data-ut="1703203200">   
       <img src="../port/Alpha_Version.jpg" alt="" style="width:300px">
       <p class="cajetin-fechas"><span id="f1_1"></span></p>

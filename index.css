@@ -1005,7 +1005,6 @@ nav a {
   margin-bottom: 10px;
   opacity: .8;
   font-size: 10px;
-  line-height: 1.2;
 }
 .cajetin-titulo {
   word-break: keep-all;
@@ -1013,9 +1012,7 @@ nav a {
   color: white;
   display: inline-block;
   padding-right: .8rem;
-  font-size: 20px;
-  line-height: 1.25;
-  hyphens: auto;
+  font-size: 15px;
 }
 .cajetin-footer {
   word-break: keep-all;
@@ -1024,9 +1021,7 @@ nav a {
   display: block;
   padding-right: .8rem;
   opacity: .9;
-  font-size: 10px;
-  line-height: 1.25;
-  hyphens: auto;
+  font-size: 8px;
 }
 .cajetines {
   display: flex;

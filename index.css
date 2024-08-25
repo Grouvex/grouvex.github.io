@@ -359,7 +359,7 @@ nav a {
 }
 .cajetines {
   display: flex;
-  overflow-y: scroll; /* Agrega una barra de desplazamiento vertical */
+  overflow-y: auto; /* Agrega una barra de desplazamiento vertical */
   max-height: 800px;
   width: 100%;
   flex-wrap: wrap; /* Muestra los cajetines en varias filas */

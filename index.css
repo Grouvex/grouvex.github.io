@@ -360,7 +360,9 @@ nav a {
 }
 .cajetin {
   /* Estilos para cada cajetín */
-  padding: 10px;
+  padding-top: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
   flex-basis: calc(25% - 40px); /* 4 cajetines por fila */
   background: linear-gradient(0deg, transparent, cyan, blue); /* Fondo del texto */
 }
@@ -371,9 +373,6 @@ nav a {
   max-width: 100%;
   vertical-align: middle; /* Alineación vertical con el texto */
 }
-.cajetin p {
-  margin: 2px 0;
-} 
 /* CSS */
 .status {
   display: inline-block;

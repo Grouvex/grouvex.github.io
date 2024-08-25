@@ -998,7 +998,8 @@ nav a {
   }
 /* news */
 .cajetin-fechas {
-  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: break-word;-space: nowrap;
   color: black;
   display: block;
   margin-bottom: 10px;
@@ -1007,7 +1008,8 @@ nav a {
   line-height: 1.2;
 }
 .cajetin-titulo {
-  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: break-word;
   color: white;
   display: inline-block;
   padding-right: .8rem;
@@ -1016,7 +1018,8 @@ nav a {
   hyphens: auto;
 }
 .cajetin-footer {
-  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: break-word;-space: nowrap;
   color: white;
   display: block;
   padding-right: .8rem;

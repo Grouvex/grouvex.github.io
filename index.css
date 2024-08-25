@@ -998,8 +998,11 @@ nav a {
   }
 /* news */
 .cajetin-fechas {
-  word-break: keep-all;
-  overflow-wrap: break-word;-space: nowrap;
+  overflow-y: auto;
+  box-sizing: border-box;
+  text-align: left; 
+  word-wrap: break-word; 
+  max-width: 100%;  
   color: black;
   display: block;
   margin-bottom: 10px;
@@ -1007,16 +1010,22 @@ nav a {
   font-size: 10px;
 }
 .cajetin-titulo {
-  word-break: keep-all;
-  overflow-wrap: break-word;
+  overflow-y: auto;
+  box-sizing: border-box;
+  text-align: left; 
+  word-wrap: break-word; 
+  max-width: 100%;  
   color: white;
   display: inline-block;
   padding-right: .8rem;
   font-size: 15px;
 }
 .cajetin-footer {
-  word-break: keep-all;
-  overflow-wrap: break-word;-space: nowrap;
+  overflow-y: auto;
+  box-sizing: border-box;
+  text-align: left; 
+  word-wrap: break-word; 
+  max-width: 100%;  
   color: white;
   display: block;
   padding-right: .8rem;

@@ -373,6 +373,12 @@ nav a {
   max-width: 100%;
   vertical-align: middle; /* Alineación vertical con el texto */
 }
+@media (min-width: 768px) {
+ .cajetin {
+   width: 45%; /* Ancho relativo para pantallas más grandes */
+   max-width: 300px; /* Ancho máximo para pantallas grandes */
+ }
+} 
 /* CSS */
 .status {
   display: inline-block;

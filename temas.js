@@ -41,7 +41,12 @@ function checkThemes() {
     } else {
         toggleThemeOption('naturaleza4', true);
     }
-
+// GStudios
+    if (true == true) {
+        toggleThemeOption('gstudios', false);
+    } else {
+        toggleThemeOption('gstudios', true);
+    }
     // Star Wars
     const startStarWarsWeek = new Date(date.getFullYear(), 4, 4);
     const endStarWarsWeek = new Date(date.getFullYear(), 4, 14);
@@ -91,7 +96,7 @@ themeSelect.addEventListener('change', function() {
 
     // Elimina las clases de las opciones antiguas
     elements.forEach(function(element) {
-        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'pokemon');
+        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'pokemon', 'gstudios');
     });
 
     // Si la opción seleccionada no es "default", añade la clase de la opción seleccionada

@@ -654,6 +654,77 @@ aside.naturaleza1 {
     background-size: cover;
 }
 
+/*Theme Grouvex Studios*/
+p.gstudios {
+  color: rgb(255, 255, 255);
+  text-shadow: white;
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.gstudios{
+    height: 100%;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: url(https://grouvex.github.io/port/Si Fuera.jpg);
+}
+/* Estilo para el contenido principal */
+main.gstudios {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin-top: 30px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+h1.gstudios,h2.gstudios,h3.gstudios,h4.gstudios,h5.gstudios,h6.gstudios,h7.gstudios,h8.gstudios {
+  text-align: center;
+  color: white;
+  background: linear-gradient(45deg, transparent,  yellow, red);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.gstudios {
+    display: flex;
+    padding: 10px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.avatar1.gstudios {
+    width: 220px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.gstudios {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+section.space {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+aside.gstudios {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 /* Estilo para el pie de página */
 footer {
     width: 100%;

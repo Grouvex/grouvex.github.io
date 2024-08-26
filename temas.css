@@ -679,6 +679,7 @@ main.gstudios {
     flex: 0;
     color: white;
     margin-top: 30px;
+    background-color: rgba(0, 0, 0, 0);
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -690,18 +691,21 @@ h1.gstudios,h2.gstudios,h3.gstudios,h4.gstudios,h5.gstudios,h6.gstudios,h7.gstud
   background-repeat: no-repeat;
 }
 mainTop.gstudios {
+    background-color: rgba(0, 0, 0, 0);
     display: flex;
     padding: 10px;
     background-size: cover;
     background-repeat: no-repeat;
 }
 .avatar1.gstudios {
+    background-color: rgba(0, 0, 0, 0);
     width: 220px;
     background-size: cover;
     background-repeat: no-repeat;
 }
 /* Estilo para los artículos, secciones y barras laterales */
 article.gstudios {
+    background-color: rgba(0, 0, 0, 0);
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;
     padding: 10px;
@@ -710,6 +714,7 @@ article.gstudios {
     background-repeat: no-repeat;
 }
 section.space {
+    background-color: rgba(0, 0, 0, 0);
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;
     padding: 10px;
@@ -718,6 +723,7 @@ section.space {
     background-repeat: no-repeat;
 }
 aside.gstudios {
+    background-color: rgba(0, 0, 0, 0);
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;
     padding: 10px;

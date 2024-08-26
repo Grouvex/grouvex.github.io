@@ -441,3 +441,25 @@ nav a {
   color: black; /* As the background is light, we use black for the text */
   box-shadow: 0 0 10px gold; /* Esto hace que la etiqueta "Edición limitada" destaque */
 }
+.left-section {
+  word-wrap: break-word;
+  text-align: left;
+  box-sizing: border-box;
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  max-height: 400px;
+  max-width: 100%;
+}
+
+.right-section{
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.right-section img {
+  max-width: 100%;
+  height: auto;
+}

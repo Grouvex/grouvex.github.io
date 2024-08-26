@@ -315,6 +315,7 @@ nav a {
   }
 /* news */
 .cajetin-fechas {
+  background: transparent;
   overflow-y: auto;
   box-sizing: border-box;
   text-align: left; 
@@ -327,6 +328,7 @@ nav a {
   font-size: 10px;
 }
 .cajetin-titulo {
+  background: transparent;
   overflow-y: auto;
   box-sizing: border-box;
   text-align: left; 
@@ -339,6 +341,7 @@ nav a {
 
 }
 .cajetin-footer {
+  background: transparent;
   overflow-y: auto;
   box-sizing: border-box;
   text-align: left; 

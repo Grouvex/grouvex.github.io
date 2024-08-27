@@ -756,7 +756,7 @@ body.httyd {
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-size: cover;
     background-repeat: no-repeat;
-    background-image: url(https://images.app.goo.gl/qqZRktzCEYsCsSBd8);
+    background-image: url(https://wallpapercave.com/wp/wp1969390.jpg);
 }
 /* Estilo para el contenido principal */
 main.httyd {
@@ -774,7 +774,7 @@ main.httyd {
 h1.httyd,h2.httyd,h3.httyd,h4.httyd,h5.httyd,h6.httyd,h7.httyd, h8.httyd {
   text-align: center;
   color: white;
-  background-image: url(https://images.app.goo.gl/ooWB3LRX7Mh2C6yv5);
+  background-image: url(https://i.pinimg.com/originals/e0/57/52/e05752f2267363b90941967e14efbbdb.jpg);
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -782,7 +782,7 @@ mainTop.httyd {
     justify-content: space-between;
     display: flex;
     padding: 10px;
-    background-image: url(https://images.app.goo.gl/Nx3MtCLbBtzFCZYe8);
+    background-image: url(https://th.bing.com/th/id/OIP.GSPiB_i4DFW__QygF3wa_wHaEK?dpr=1,9&pid=ImgDetMain&PC=EMMX01);
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -798,7 +798,7 @@ article.httyd {
     margin: 10px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
-    background-image: url(https://images.app.goo.gl/knSgfmnLsFig8sgz5);
+    background-image: url(https://wallpapercave.com/wp/wp5280560.jpg);
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -807,7 +807,7 @@ section.httyd {
     margin: 10px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
-    background-color: rgba(0, 0, 0, 0);
+    background-image: url(https://th.bing.com/th/id/OIP.rNJ8l2pKgEYsDHFsVBNJZAHaKM?dpr=1,9&pid=ImgDetMain&PC=EMMX01);
     background-size: cover;
     background-repeat: no-repeat;
 }

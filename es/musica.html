@@ -110,7 +110,7 @@
 <script>
 const marcasDeTiempo = [uT1, uT2, uT3, uT4, uT5, uT6, uT7, uT8, uT9,uT10];
 // NO tocar
-function cambiarOrden() {if (document.getElementById('ordenSelector').value == 'ascT'){marcasDeTiempo.sort((a, b) => b - a)}if (document.getElementById('ordenSelector').value == 'desT'){marcasDeTiempo.sort((b, a) => b - a)}const cajetinesContainer = document.querySelector('.cajetines');marcasDeTiempo.forEach((uT) => {const cajetin = document.querySelector(`[data-ut="${uT}"]`);cajetinesContainer.appendChild(cajetin); });}
+function cambiarOrden() {if (document.getElementById('ordenSelector').value == 'ascT'){marcasDeTiempo.sort((a, b) => b - a)}if (document.getElementById('ordenSelector').value == 'desT'){marcasDeTiempo.sort((a, b) => a - b)}const cajetinesContainer = document.querySelector('.cajetines');marcasDeTiempo.forEach((uT) => {const cajetin = document.querySelector(`[data-ut="${uT}"]`);cajetinesContainer.appendChild(cajetin); });}
 </script>
 </body>
 <div id="footer"></div>

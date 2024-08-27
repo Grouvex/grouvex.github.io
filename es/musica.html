@@ -37,17 +37,31 @@
  <div class="cajetines">
      <a href="la_perla" class="cajetin" data-ut="1727308800">   
       <img src="../port/La Perla.jpg" alt="" style="width:300px">
-      <p class="cajetin-fechas"><span id="f1_10"></span></p>
+      <p class="cajetin-fechas"><span id="f1_12"></span></p>
       <p class="cajetin-titulo">La Perla</p>
       <p class="cajetin-footer">©Grouvex Studios Recording, Maiki Dran</p>
-      <script>const uT10 = 1727308800; actualizarFechas(uT10, "f1_10");</script>
+      <script>const uT12 = 1727308800; actualizarFechas(uT12, "f1_12");</script>
      </a>
      <a href="el_diamante" class="cajetin" data-ut="1727308800">   
       <img src="../port/El Diamante.jpg" alt="" style="width:300px">
-      <p class="cajetin-fechas"><span id="f1_9"></span></p>
+      <p class="cajetin-fechas"><span id="f1_11"></span></p>
       <p class="cajetin-titulo">El Diamante</p>
       <p class="cajetin-footer">©Grouvex Studios Recording, Maiki Dran</p>
-      <script>const uT9 = 1727308800; actualizarFechas(uT9, "f1_9");</script>
+      <script>const uT11 = 1727308800; actualizarFechas(uT11, "f1_11");</script>
+     </a>
+<a href="unforgettable_memories" class="cajetin" data-ut="1704067200">   
+      <img src="../port/Unforgettable Memories.jpg" alt="" style="width:300px">
+      <p class="cajetin-fechas"><span id="f1_10"></span></p>
+      <p class="cajetin-titulo">Unforgettable Memories</p>
+      <p class="cajetin-footer">©Grouvex Studios Recording, Maiki Dran</p>
+      <script>const uT10 = 1704067200; actualizarFechas(uT10, "f1_10");</script>
+     </a>
+<a href="diamonds" class="cajetin" data-ut="1703548800">   
+      <img src="../port/Diamonds.jpg" alt="" style="width:300px">
+      <p class="cajetin-fechas"><span id="f1_9"></span></p>
+      <p class="cajetin-titulo">Diamonds</p>
+      <p class="cajetin-footer">©Grouvex Studios Recording, Maiki Dran</p>
+      <script>const uT9 = 1703548800; actualizarFechas(uT9, "f1_9");</script>
      </a>
 <a href="a_parallel_universe" class="cajetin" data-ut="1703462400">   
       <img src="../port/A Parallel Universe.jpg" alt="" style="width:300px">
@@ -108,7 +122,7 @@
     </div>
  </main>
 <script>
-const marcasDeTiempo = [uT1, uT2, uT3, uT4, uT5, uT6, uT7, uT8, uT9,uT10];
+const marcasDeTiempo = [uT1, uT2, uT3, uT4, uT5, uT6, uT7, uT8, uT9,uT10,uT11,uT12];
 // NO tocar
 function cambiarOrden() {if (document.getElementById('ordenSelector').value == 'ascT'){marcasDeTiempo.sort((a, b) => b - a)}if (document.getElementById('ordenSelector').value == 'desT'){marcasDeTiempo.sort((a, b) => a - b)}const cajetinesContainer = document.querySelector('.cajetines');marcasDeTiempo.forEach((uT) => {const cajetin = document.querySelector(`[data-ut="${uT}"]`);cajetinesContainer.appendChild(cajetin); });}
 </script>

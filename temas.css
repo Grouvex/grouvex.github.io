@@ -31,6 +31,7 @@ h1,h2,h3,h4,h5,h6,h7,h8 {
   color: rgb(255, 255, 255);
 }
 mainTop {
+    justify-content: space-between;
     display: flex;
     padding: 10px;
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
@@ -91,6 +92,7 @@ h1.theme1,h2.theme1,h3.theme1,h4.theme1,h5.theme1,h6.theme1,h7.theme1,h8.theme1 
 }
 
 mainTop.theme1 {
+    justify-content: space-between;
     display: flex;
     padding: 10px;
     background: linear-gradient(45deg, red, white, blue);
@@ -152,6 +154,7 @@ h1.theme2,h2.theme2,h3.theme2,h4.theme2,h5.theme2,h6.theme2,h7.theme2,h8.theme2 
   color: white;
 }
 mainTop.theme2 {
+    justify-content: space-between;
     display: flex;
     padding: 10px;
     background: linear-gradient(45deg, green, yellow, blue, red, pink, cyan);
@@ -220,6 +223,7 @@ h1.space,h2.space,h3.space,h4.space,h5.space,h6.space,h7.space,h8.space {
   background-repeat: no-repeat;
 }
 mainTop.space {
+    justify-content: space-between;
     display: flex;
     padding: 10px;
     background-image: url(https://live.staticflickr.com/7060/6971643495_05dc317572_b.jpg);
@@ -299,6 +303,7 @@ h1.starwars,h2.starwars,h3.starwars,h4.starwars,h5.starwars,h6.starwars,h7.starw
   background-repeat: no-repeat;
 }
 mainTop.starwars {
+    justify-content: space-between;
     display: flex;
     padding: 10px;
     background-image: url(https://images.squarespace-cdn.com/content/v1/531630f6e4b0fa5080a5596f/1845bb78-5fb1-4250-a2b9-e959c995cef9/Star+Wars+v2.jpg);
@@ -376,6 +381,7 @@ h1.jurassicworld,h2.jurassicworld,h3.jurassicworld,h4.jurassicworld,h5.jurassicw
   background-repeat: no-repeat;
 }
 mainTop.jurassicworld {
+    justify-content: space-between;
     display: flex;
     padding: 10px;
     background-image: url(https://th.bing.com/th/id/OIP.TJK__-FIvQRNVUIPkvJQ9QHaEd);
@@ -453,6 +459,7 @@ h1.taylorswift,h2.taylorswift,h3.taylorswift,h4.taylorswift,h5.taylorswift,h6.ta
   background-repeat: no-repeat;
 }
 mainTop.taylorswift {
+    justify-content: space-between;
     display: flex;
     padding: 10px;
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgbFt-ngiiBOWghZHp8cO2TbaIPic31Wv6Qg&s);
@@ -532,6 +539,7 @@ h1.superheroes,h2.superheroes,h3.superheroes,h4.superheroes,h5.superheroes,h6.su
   background-repeat: no-repeat;
 }
 mainTop.superheroes {
+    justify-content: space-between;
     display: flex;
     padding: 10px;
     background-image: url(https://cdn2.mediotiempo.com/uploads/media/2019/05/05/avengers-internet.jpg);
@@ -610,6 +618,7 @@ h1.naturaleza1,h2.naturaleza1,h3.naturaleza1,h4.naturaleza1,h5.naturaleza1,h6.na
   background-repeat: no-repeat;
 }
 mainTop.naturaleza1 {
+    justify-content: space-between;
     display: flex;
     padding: 10px;
     background-image: url(https://th.bing.com/th/id/OIP.T5PqdU-B6jYYqzBPelW2EwHaFj?rs=1&pid=ImgDetMain);
@@ -692,6 +701,7 @@ h1.gstudios,h2.gstudios,h3.gstudios,h4.gstudios,h5.gstudios,h6.gstudios,h7.gstud
   background-repeat: no-repeat;
 }
 mainTop.gstudios {
+    justify-content: space-between;
     background-color: rgba(0, 0, 0, 0);
     display: flex;
     padding: 10px;

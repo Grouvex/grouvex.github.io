@@ -8,6 +8,9 @@
     $(function(){
       $("#footer").load("footer.html"); 
     });
+  $(function(){
+      $("#news").load("news.html"); 
+    });
  </script>
 <!-- header.html -->
 <head>
@@ -15,10 +18,10 @@
 <link rel="icon" href="img/GROUVEX.png"> <link rel="icon" href="GROUVEX.png" type="image/x-icon">
 <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8"> <meta name="author" content="Grouvex Studios"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="copyright" content="Grouvex Studios"> <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"> <meta http-equiv="Content-Security-Policy" content="policy"> <meta http-equiv="Referrer-Policy" content="no-referrer"> <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects"> <meta name="theme-color" content="#hexcode"> <link rel="canonical" href="URL_canónica">
   <!-- Clarity tracking code for https://grouvex.github.io/ -->
-  <script>    (function(c,l,a,r,i,t,y){        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);    })(window, document, "clarity", "script", "mdkjlz9c01");</script>
+  <script>    (function(c,l,a,r,i,t,y){        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "mdkjlz9c01");</script>
 <!-- Editable -->
-<meta property="og:title" content="Inicio - Grouvex Studios"> <meta property="og:description" content="Página inicial de ©Grouvex Studios"> <meta property="og:image" href="img/GROUVEX.png"">
-<title>Inicio - Grouvex Studios</title>
+<meta property="og:title" content="Official Website - Grouvex Studios"> <meta property="og:description" content="Official Website of ©Grouvex Studios"> <meta property="og:image" href="img/GROUVEX.png"">
+<title>Official Website - Grouvex Studios</title>
 <!-- Main Top -->
 <mainTop>
 <a href="https://grouvex.github.io/"><span style="font-family: Times New Roman; sans-serif; font-size: 30px;color:white">Grouvex Studios</span></a>
@@ -28,30 +31,9 @@
 </mainTop>
 </head>
 <body>
-<main>
  <!-- Anuncio -->
-  <div style="background: white;border-left: 10px solid red;color: #000000;padding: 5px;display: flex; box-shadow: 0 0 20px red">
-    <div style="font-size: 20px; margin-right: 10px">⚠️</div>
-    <div style="flex-grow: 1">
-        <p style="color: white; background-color: black;font-size: 18px; margin: 0">Actualización v1.4</p>
-        <p style="background: white;font-size: 14px; margin: 0;color:black">La página web se está actualizando para mejorar la presentación y el orden de esta.
-        </p>
-<hr>
-  <p style="color: white; background: black;font-size: 14px; margin: 0">Estado de la web</p>
-  <ul>
-  <li type="circle">Actualización de Terminos y Condiciones<span class="status maintenance">Maintenance</span></li>
-  <li type="circle">Actualización de Política de Privacidad<span class="status maintenance">Maintenance</span></li>
-  <li type="circle">Actualización de Idiomas<span class="status updating">Updating</span></li>
-  <li type="circle">Actualización de Temas v2<span class="status updating">Updating</span></li>
-  <li type="circle">Nueva página: Música<span class="status upcoming">Upcoming</span></li>
-  <li type="circle">Nueva página: Registrar<span class="status upcoming">Upcoming</span></li>
-</ul>
-<hr>
-<p style="background: white;font-size: 10px;color:black;margin:0">La fecha prevista para finalizar es: <n style="color:black"><span id="mant"></span></n></p>
-<p style="background: white;font-size: 12px;color:black;margin:0">©Grouvex Studios</p>
- <script>const uT1 = 1725382800; actualizarFechas(uT1, "mant");</script>
-</div>
-</div>
+ <div id="news"></div>
+<main>
   <!-- Título -->
 <article>
  <h1>Grouvex Studios</h1>

@@ -28,8 +28,9 @@
 </mainTop>
 </head>
 <body>
-<span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold"> <a href="https://grouvex.github.io/es/music"><u style="color: blue"><span style="color: green">Album</span></u></a> ¦ <a href="https://grouvex.github.io/es/sencillos"><u style="color: blue; pointer-events: none"><span style="color: white">Sencillos</span></u></a> ¦ <a href="https://grouvex.github.io/es/canciones" style="pointer-events: none"><u style="color: blue"><span style="color: white">Canciones</span></u></a></span> 
-<main>
+ <main>
+<span style="font-family: Times New Roman;color:white"> <a href="https://grouvex.github.io/es/music"><u style="color: blue"><span style="color: green">Album</span></u></a> ¦ <a href="https://grouvex.github.io/es/sencillos"><u style="color: blue; pointer-events: none"><span style="color: white">Sencillos</span></u></a> ¦ <a href="https://grouvex.github.io/es/canciones" style="pointer-events: none"><u style="color: blue"><span style="color: white">Canciones</span></u></a></span> 
+ <article>
   <select class="orden-button" id="ordenSelector" onchange="cambiarOrden()" style="margin:5px;margin-left:0px">
         <option value="" disabled selected>Order</option>
         <option value="ascT">⬇ to ⬆</option>
@@ -121,12 +122,13 @@
       <script>const uT1 = 1699315200; actualizarFechas(uT1, "f1_1");</script>
      </a>
     </div>
- </main>
 <script>
 const marcasDeTiempo = [uT1, uT2, uT3, uT4, uT5, uT6, uT7, uT8, uT9, uT10, uT11, uT12];
 // NO tocar
 function cambiarOrden() {if(document.getElementById('ordenSelector').value == 'ascT') {marcasDeTiempo.sort((a, b) => b - a);}if(document.getElementById('ordenSelector').value == 'desT') {marcasDeTiempo.sort((a, b) => a - b);}const cajetinesContainer = document.querySelector('.cajetines');marcasDeTiempo.forEach((uT) => {const cajetin = document.querySelector(`[data-ut="${uT}"]`);cajetinesContainer.appendChild(cajetin);});}
 </script>
+ </article>
+ </main> 
 </body>
 <div id="footer"></div>
 </html>

@@ -743,6 +743,84 @@ aside.gstudios {
     background-repeat: no-repeat;
 }
 
+/*Theme HTTYD*/
+p.httyd {
+  color: rgb(255, 255, 255);
+  text-shadow: white;
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.httyd {
+    height: 100%;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: url(https://images.app.goo.gl/qqZRktzCEYsCsSBd8);
+}
+/* Estilo para el contenido principal */
+main.httyd {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin-top: 30px;
+    background-color: rgba(0, 0, 0, 0);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+h1.httyd,h2.httyd,h3.httyd,h4.httyd,h5.httyd,h6.httyd,h7.httyd, h8.httyd {
+  text-align: center;
+  color: white;
+  background-image: url(https://images.app.goo.gl/ooWB3LRX7Mh2C6yv5);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.httyd {
+    justify-content: space-between;
+    display: flex;
+    padding: 10px;
+    background-image: url(https://images.app.goo.gl/Nx3MtCLbBtzFCZYe8);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.avatar1.httyd {
+    width: 220px;
+    background-image: url(https://live.staticflickr.com/7060/6971643495_05dc317572_b.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.httyd {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://images.app.goo.gl/knSgfmnLsFig8sgz5);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+section.httyd {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-color: rgba(0, 0, 0, 0);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+aside.httyd {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-color: rgba(0, 0, 0, 0);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 /* Estilo para el pie de página */
 footer {
     width: 100%;

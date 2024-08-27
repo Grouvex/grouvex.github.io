@@ -34,7 +34,7 @@
         <option value="ascT">⬇ to ⬆</option>
         <option value="desT">⬆ to ⬇</option>
     </select>
-<select id="order" class="order-button">
+<select id="order" class="order-button" onchange="ordenarElementos()">
     <option value="ascL">A - Z</option>
     <option value="desL">Z - A</option>
   </select>
@@ -126,32 +126,50 @@
     </div>
  </main>
 <script>
-const marcasDeTiempo = [uT1, uT2, uT3, uT4, uT5, uT6, uT7, uT8, uT9,uT10,uT11,uT12];
+const marcasDeTiempo = [uT1, uT2, uT3, uT4, uT5, uT6, uT7, uT8, uT9, uT10, uT11, uT12];
 // NO tocar
-function cambiarOrden() {if (document.getElementById('ordenSelector').value == 'ascT'){marcasDeTiempo.sort((a, b) => b - a)}if (document.getElementById('ordenSelector').value == 'desT'){marcasDeTiempo.sort((a, b) => a - b)}const cajetinesContainer = document.querySelector('.cajetines');marcasDeTiempo.forEach((uT) => {const cajetin = document.querySelector(`[data-ut="${uT}"]`);cajetinesContainer.appendChild(cajetin); });}
-
-function ordenarElementos(order) {
-    const container = document.getElementById('container');
-    const links = Array.from(container.getElementsByTagName('a'));
-
-    links.sort((a, b) => {
-      const titleA = a.querySelector('.cajetin-titulo').textContent.toUpperCase();
-      const titleB = b.querySelector('.cajetin-titulo').textContent.toUpperCase();
-      return order === 'asc' ? titleA.localeCompare(titleB) : titleB.localeCompare(titleA);
-    });
-
-    // Elimina los elementos originales
-    while (container.firstChild) {
-      container.removeChild(container.firstChild);
-    }
-
-    // Añade los elementos ordenados
-    links.forEach(link => container.appendChild(link));
+function cambiarOrden() {
+  if (document.getElementById('ordenSelector').value == 'ascT') {
+    marcasDeTiempo.sort((a, b) => a - b);
   }
-// Evento para cambiar el orden
-  document.getElementById('order').addEventListener('change', function() {
-    ordenarElementos(this.value);
+  if (document.getElementById('ordenSelector').value == 'desT') {
+    marcasDeTiempo.sort((a, b) => b - a);
+  }
+  const cajetinesContainer = document.querySelector('.cajetines');
+  marcasDeTiempo.forEach((uT) => {
+    const cajetin = document.querySelector(`[data-ut="${uT}"]`);
+    cajetinesContainer.appendChild(cajetin);
   });
+}
+
+function ordenarElementos() {
+  const container = document.getElementById('container');
+  const links = Array.from(container.getElementsByTagName('a'));
+
+  links.sort((a, b) => {
+    const titleA = a.querySelector('.cajetin-titulo').textContent.toUpperCase();
+    const titleB = b.querySelector('.cajetin-titulo').textContent.toUpperCase();
+    if (document.getElementById('ordenarElementos').value == 'ascL') {
+      return titleA.localeCompare(titleB);
+    }
+    if (document.getElementById('ordenarElementos').value == 'desL') {
+      return titleB.localeCompare(titleA);
+    }
+  });
+
+  // Elimina los elementos originales
+  while (container.firstChild) {
+    container.removeChild(container.firstChild);
+  }
+
+  // Añade los elementos ordenados
+  links.forEach(link => container.appendChild(link));
+}
+
+// Evento para cambiar el orden
+document.getElementById('ordenarElementos').addEventListener('change', function() {
+  ordenarElementos(this.value);
+});
 
 </script>
 </body>

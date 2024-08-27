@@ -116,7 +116,7 @@ window.addEventListener('load', function() {
     var selectedTheme = localStorage.getItem('selectedTheme');
 
     // Si hay una selección guardada y no es "default", aplica el tema seleccionado
-    if (selectedTheme && selectedTheme !== 'default') {
+    if (selectedTheme && selectedTheme !== 'gstudios') {
         var elements = document.querySelectorAll('p, body, main, mainTop, h1, h2, h3, h4, h5, h6, h7, h8, .avatar1, article, section, aside, panel');
         elements.forEach(function(element) {
             element.classList.add(selectedTheme);

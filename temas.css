@@ -756,7 +756,7 @@ body.httyd {
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-size: cover;
     background-repeat: no-repeat;
-    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDS4X0RKOD7vq2rj-Jksl81CDUz8DJmXh7HA&usqp=CAU);
+    background-image: url(https://wallpapercave.com/wp/wp1969390.jpg);
 }
 /* Estilo para el contenido principal */
 main.httyd {
@@ -782,7 +782,7 @@ mainTop.httyd {
     justify-content: space-between;
     display: flex;
     padding: 10px;
-    background-image: url(https://w0.peakpx.com/wallpaper/485/407/HD-wallpaper-train-your-dragon-how-to-train-your-dragon-the-hidden-world-movie.jpg);
+    background-image: url(https://th.bing.com/th/id/OIP.rNJ8l2pKgEYsDHFsVBNJZAHaKM?dpr=1,9&pid=ImgDetMain&PC=EMMX01);
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -798,7 +798,7 @@ article.httyd {
     margin: 10px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
-    background-image: url(https://w0.peakpx.com/wallpaper/853/286/HD-wallpaper-train-your-dragon-2-how-to-train-your-dragon-anime-movie.jpg);
+    background-color: rgba(0, 0, 0, 0);
     background-size: cover;
     background-repeat: no-repeat;
 }

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="jquery-3.5.1.min.js"></script>
+ <script> 
+    $(function(){
+      $("#menu").load("menu.html"); 
+    });
+    $(function(){
+      $("#footer").load("footer.html"); 
+    });
+  $(function(){
+      $("#news").load("news.html"); 
+    });
+ </script>
+<!-- header.html -->
+<head>
+<link rel="stylesheet" href="temas.css"> <link rel="stylesheet" href="index.css"> <script src="index.js"></script> <script src="time.js"></script>
+<link rel="icon" href="img/GROUVEX.png"> <link rel="icon" href="GROUVEX.png" type="image/x-icon">
+<meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8"> <meta name="author" content="Grouvex Studios"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="copyright" content="Grouvex Studios"> <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"> <meta http-equiv="Content-Security-Policy" content="policy"> <meta http-equiv="Referrer-Policy" content="no-referrer"> <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects"> <meta name="theme-color" content="#hexcode"> <link rel="canonical" href="URL_canónica">
+  <!-- Clarity tracking code for https://grouvex.github.io/ -->
+  <script>    (function(c,l,a,r,i,t,y){        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "mdkjlz9c01");</script>
+<!-- Editable -->
+<meta property="og:title" content="Privacy Policy - Grouvex Studios"> <meta property="og:description" content="Privacy Policy of ©Grouvex Studios"> <meta property="og:image" href="img/GROUVEX.png">
+<title>Privacy Policy - Grouvex Studios</title>
+<!-- Main Top -->
+<mainTop>
+<a href="https://grouvex.github.io/"><span style="font-family: Times New Roman; sans-serif; font-size: 30px;color:white">Grouvex Studios</span></a>
+<hr style="width: 0px;margin-right: 10px;margin-right: 10px;opacity:0">
+<span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold"> <a href="https://grouvex.github.io/"><u style="color: blue"><span style="color: white">Home</span></u></a> | <a href="https://grouvex.github.io/artists"><u style="color: blue"><span style="color: white">Artists</span></u></a> | <a href="https://grouvex.github.io/sign-up" style="pointer-events: none"><u style="color: blue"><span style="color: white">Sign Up</span></u></a> <span id="menu"></span>
+</span>
+</mainTop>
+</head>
+<body>
+ <!-- Anuncio -->
+ <div id="news"></div>
+<main>
+  <!-- Título -->
+ <h1>General Privacy Policy </h1>
+ <!--Texto -->
+  <article id="GeneralPolicies"> 
+   <a href="#GeneralPolicies"><h1>General Policies</h1></a>
+  <article id="Introduction">
+    <section>
+   <a href="#Introduction"><h2>Introduction</h2></a>
+    <p>This privacy policy describes how we collect, use, and protect the personal information of users in our community. By registering for or using our services, you agree to this privacy policy.</p>
+  </section>
+</article>
+      
+<article id="Information_we_collect">
+ <details>
+   <summary href="#Information_we_collect"><h2>Information we collect</h2></summary>
+   <section>
+    <ol>
+     <li><p>Datos de registro: Cuando te pones en contacto con el equipo de Grouvex Studio utilizando el contacto oficial, te registras en nuestra comunidad o te pones en contacto con nosotros a través de una red social, la información de tu perfil se guarda para que podamos ponernos en contacto contigo.</p></li>
+     <li><p>Datos de perfil: Cuando creas o editas tu perfil, puedes agregar información opcional como tu edad, sexo, ubicación, gustos musicales, foto de perfil y biografía. La información que utilices en la plataforma es la que podremos ver, además de la que voluntariamente nos proporciones.</p></li>
+     <li><p>Datos de actividad: Cuando utilizas nuestra comunidad, recopilamos información sobre tu actividad, como el número de veces que escuchas una canción (información anónima), los comentarios que haces, los mensajes que envías y los usuarios que sigues.</p></li>
+     <li><p>Datos de comunicación: Cuando se comunica con nosotros o con otros usuarios de computadoras, recopilamos el contenido y los metadatos de sus comunicaciones, como la fecha, la hora y el destinatario.</p></li>
+     <li><p>Datos de cookies y tecnologías similares: cuando visita nuestro sitio web o página de contacto, utilizamos cookies y otras tecnologías similares para recopilar información sobre su dispositivo, su navegador, su dirección IP y sus preferencias.</p></li>
+    </ol>
+   </section>
+ </details>
+</article>
+      
+<article id="Como_utilizamos_la_información_que_recopilamos">
+<details>
+   <summary href="#Como_utilizamos_la_información_que_recopilamos"><h2>Cómo utilizamos la información que recopilamos</h2></summary>
+   <section>
+   <ol>
+     <li><p>Para proporcionar y mejorar nuestros servicios: Utilizamos la información que recopilamos para proporcionarle los servicios que solicita, personalizar su experiencia, mejorar la calidad y la seguridad de nuestra comunidad y desarrollar nuevas funciones y productos.</p></li>
+     <li><p>Para comunicarnos con usted: Utilizamos la información que recopilamos para enviarle notificaciones, boletines informativos, responder a sus consultas y solicitudes y mantenerlo informado sobre los cambios en nuestra política de privacidad y nuestros términos y condiciones.</p></li>
+     <li><p>Con fines analíticos y publicitarios: Utilizamos la información que recopilamos para analizar el uso y el rendimiento de nuestra comunidad, medir la eficacia de nuestras publicaciones.</p></li>
+     <li><p>Para cumplir con nuestras obligaciones legales: Utilizamos la información que recopilamos para cumplir con las leyes y regulaciones aplicables, cooperar con las autoridades competentes y proteger nuestros derechos e intereses legítimos.</p></li>
+    </ol>
+   </section>
+ </details>
+</article>
+
+<article id="Como_protegemos_la_información_que_recopilamos">
+ <details>
+   <summary href="#Como_protegemos_la_información_que_recopilamos"><h2>Cómo protegemos la información que recopilamos</h2></summary>
+   <section>
+    <ol>
+     <li><p>Implementamos medidas técnicas y organizativas apropiadas para proteger la información que recopilamos del acceso no autorizado, la divulgación, la modificación, la pérdida o el uso indebido. Además de cumplir con los términos de servicio y política de privacidad de la aplicación donde nos encontremos.</p></li>
+     <li><p>Limitamos el acceso a la información que recopilamos a nuestros empleados, contratistas y proveedores de servicios que necesitan conocerla para realizar sus funciones.</p></li>
+     <li><p>Revisamos periódicamente nuestras prácticas de seguridad y actualizamos nuestras medidas de protección según sea necesario.</p></li>
+     <li><p>Sin embargo, tenga en cuenta que ninguna medida de seguridad es perfecta o impenetrable y no podemos garantizar la seguridad absoluta de la información que recopilamos.</p></li>
+    </ol>
+   </section>
+ </details>
+</article>
+
+ <article id="Como_compartimos_la_información_que_recopilamos">
+ <details>
+   <summary href="#Como_compartimos_la_información_que_recopilamos"><h2>Cómo compartimos la información que recopilamos</h2></summary>
+   <section>
+    <ol>
+     <li><p>Con otros usuarios: compartimos la información de tu perfil público y tu actividad en las publicaciones y con otros usuarios de nuestra comunidad si nos das tu consentimiento. Puedes controlar qué información compartes con la comunidad poniéndote en contacto con nosotros.</p></li>
+     <li><p>Con terceros: Compartimos la información que recopilamos con terceros que nos ayudan a proporcionar y mejorar nuestros servicios, como proveedores de alojamiento web, análisis de datos, publicidad y marketing. Estos terceros solo pueden acceder a la información que necesitan para realizar sus funciones y deben tratarla de acuerdo con esta política de privacidad y las leyes aplicables.</p></li>
+     <li><p>Con su consentimiento: Compartimos la información que recopilamos con otros terceros cuando usted nos da su consentimiento expreso para hacerlo. Por ejemplo, si decides vincular tu cuenta con una red social externa o un servicio de música.</p></li>
+     <li><p>Por razones legales: Compartimos la información que recopilamos cuando así lo exige la ley o una orden judicial, o cuando creemos que es necesario para proteger nuestros derechos e intereses legítimos o los de terceros.</p></li>
+    </ol>
+   </section>
+ </details>
+</article>
+
+ <article id="Como_puede_acceder_modificar_o_eliminar_su_información">
+ <details>
+   <summary href="#Como_puede_acceder_modificar_o_eliminar_su_información"><h2>Cómo puede acceder, modificar o eliminar su información</h2></summary>
+   <section>
+    <ol>
+     <li><p>Puedes acceder a tu información personal y modificarla en cualquier momento a través de tu perfil y la configuración de tu cuenta, dependiendo de la aplicación que estés utilizando.</p></li>
+     <li><p>Puedes solicitar la eliminación de tu información personal poniéndote en contacto con el equipo de soporte de esa aplicación. La información que utiliza el equipo de Grouvex Studio puede solicitarse para ser eliminada poniéndose en contacto con nosotros.</p></li>
+     <li><p>Puedes optar por no recibir comunicaciones de marketing de nuestra parte siguiendo las instrucciones incluidas en cada correo electrónico o notificación que te enviamos.</p></li>
+     <li><p>Puedes rechazar el uso de cookies y otras tecnologías similares cambiando la configuración de tu navegador o dispositivo. Sin embargo, ten en cuenta que esto puede afectar el funcionamiento y la disponibilidad de algunos de los servicios de la aplicación que utilizas.</p></li>
+    </ol>
+   </section>
+ </details>
+</article>
+
+ <article id="Cambios_en_nuestra_politica_de_privacidad">
+ <details>
+   <summary href="#Cambios_en_nuestra_politica_de_privacidad"><h2>Cambios en nuestra política de privacidad</h2></summary>
+   <section>
+    <p>Podemos modificar esta política de privacidad de vez en cuando para reflejar cambios en nuestras prácticas o en las leyes y regulaciones aplicables. Te notificaremos cualquier cambio significativo mediante un aviso en nuestro sitio web o aplicación o por correo electrónico a la dirección que nos has proporcionado. Te recomendamos que revises esta política de privacidad periódicamente para estar al tanto de cualquier actualización.</p>
+   </section>
+ </details>
+</article>
+</article>
+ </main>
+</body>
+<div id="footer"></div>
+</html> 

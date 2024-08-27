@@ -56,6 +56,15 @@ function checkThemes() {
         toggleThemeOption('starwars', false);
     }
 
+// HTTYD 
+    const startHTTYDWeek = new Date(date.getFullYear(), 4, 4);
+    const endHTTYDWeek = new Date(date.getFullYear(), 4, 14);
+    if (date >= startHTTYDWeek && date <= endHTTYDWeek) {
+        toggleThemeOption('httyd', false);
+    } else {
+        toggleThemeOption('httyd', false);
+    }
+
     // Jurassic World
     const startJurassicWorldWeek = new Date(date.getFullYear(), 5, 10);
     const endJurassicWorldWeek = new Date(date.getFullYear(), 5, 20);
@@ -96,7 +105,7 @@ themeSelect.addEventListener('change', function() {
 
     // Elimina las clases de las opciones antiguas
     elements.forEach(function(element) {
-        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'pokemon', 'gstudios');
+        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'pokemon', 'gstudios', 'httyd');
     });
 
     // Si la opción seleccionada no es "default", añade la clase de la opción seleccionada

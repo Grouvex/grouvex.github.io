@@ -152,6 +152,26 @@ aside {
  </main>
  <!-- footer.html -->
 <style>
+/* Estilo para el pie de página */
+footer {
+    width: 100%;
+    text-align: center;
+}
+.footer-imagenes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30px, 1fr)); /* Columnas de mínimo 30px y máximo 1fr */
+  justify-content: center; /* Centra los elementos en el eje horizontal */
+  align-items: start; /* Alinea los elementos al inicio en el eje vertical */
+  gap: 10px; /* Espacio de 10px entre elementos */
+}
+
+.footer-imagenes img {
+  width: auto; /* Ancho automático para mantener la proporción */
+  height: auto; /* Altura automática para mantener la proporción */
+  max-width: 30px; /* Máximo ancho de 30px */
+  max-height: 30px; /* Máximo altura de 30px */
+  margin: 5px; /* Margen de 5px para asegurar la separación */
+}
  hr {
   border: none;
   border-top: 1px solid #ccc;

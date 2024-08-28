@@ -22,7 +22,30 @@
 <!-- Main Top -->
 <mainTop>
 <a href="https://grouvex.github.io/"><span style="font-family: Times New Roman; sans-serif; font-size: 30px;color:white">Grouvex Studios</span></a>
-<span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold"> <u style="color: blue"><span style="color: green">Home</span></u> | <u style="color: blue"><span style="color: white">Sign Up</span></u> <span id="menu"></span>
+<span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold"> <u style="color: blue"><span style="color: green">Home</span></u> | <u style="color: blue"><span style="color: white">Sign Up</span></u> | <span><select id="selector-idioma" onchange="redirigir()">
+  <option value="Language" disabled selected>Language</option>
+  <option value="https://grouvex.github.io/es">Spanish</option>
+  <option value="https://grouvex.github.io/en">English | Updating</option>
+  <option value="https://grouvex.github.io/fr" disabled>Français | Upcoming</option>
+  <!-- Añade más opciones de idioma según sea necesario -->
+</select><span class="status updating">Updating</span></span> | <span><select id="themeSelect">
+  <option value="default">Theme</option>
+  <option value="theme1">Theme 1: Color</option>
+  <option value="theme2">Theme 2: Color</option>
+  <option value="space">Theme Space</option>
+  <option value="starwars">Theme Star Wars</option>
+  <option value="jurassicworld">Theme Jurassic World</option>
+  <option value="taylorswift">Theme Taylor Swift</option>
+  <option value="superheroes">Theme Super Heroes</option>
+  <option value="naturaleza1">Theme Nature: Sunset/Sunrise</option>
+  <option value="naturaleza2">Theme Nature: North/South Pole</option>
+  <option value="naturaleza3">Theme Nature: Sea</option>
+  <option value="naturaleza4">Theme Nature: Jungle</option>
+<option value="httyd">Theme How To Train Your Dragon</option>
+  <option value="pokemon">Theme Pokemon</option>
+<option value="gstudios">Theme Grouvex Studios</option>
+  <!-- Añade tantas opciones como diseños tengas -->
+</select></span> 
 </span>
 </mainTop>
 </head>
@@ -103,32 +126,54 @@ aside {
  <div id="news"></div>
 <main>
   <!-- Título -->
+<h1>Themes Grouvex Studios</h1> 
+<article id="Intro">
+   <a href="#Intro"><h2>Introduction</h2></a>
+    <p>This page is where the new theme that will be put on is displayed. It's like a template so you can see how the theme looks on the website. Links don't work here.</p>
+  </article>
 <article>
- <h1>Grouvex Studios</h1>
  <!--Texto -->
   <section id="Intro">
    <a href="#Intro"><h2>Introduction</h2></a>
-    <p>Grouvex Studios is a group that is in charge of creating videos and also a <n>record label</n> that works with two artists currently: Maiki Dran, Tarligth Etherall. </p>
+    <p>A new world, a new place, a new sun.</p>
   </section>
- <h1>Grouvex Studios Official Form </h1>
- <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScg3m1Fz-V2sw_SKfBN-F-fzS1BSGNYiHikzeI9apUpDAGxsg/viewform?embedded=true" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
+</article>
+ <article>
+<h1>Title 1</h1>
+<p>Hello world</p>
+<section>
+<h2>Title 2</h2>
+<p>Hello world</p>
+<aside>
+<p>Hello planet</p>
+</aside>
+</section>
 </article>
  </main>
- <!-- Footer -->
  <!-- footer.html -->
+<style>
+ hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  color: #fff;
+  background-color: #fff;
+  height: 5px;
+  width: 100%;
+  }
+ </style>
  <div class="Texto">
   <footer>
    <div class="footer-imagenes">
-    <a href="https://instagram.com/grouvex"><img src="img/Instagram.png" alt="Instagram"></a>
-    <a href="https://youtube.com/@Grouvex"><img src="img/YouTube.png" alt="YouTube"></a>
-    <a href="https://tiktok.com/@Grouvex"><img src="img/TikTok.png" alt="TikTok"></a>
-    <a href="https://grouvex.gitbook.io"><img src="img/GROUVEX.png" alt="Instagram"></a>
-    <a href="https://musescore.com/user/70786552"><img src="img/MuseScore.png" alt="MuseScore"></a>
-    <a href="https://open.spotify.com/intl-es/artist/0Sz3myYKWtxR1seCT5e7Rx?si=O624cS5UT261AHIjCJDCJw"><img src="img/Spotify.png" alt="Spotify"></a>
-    <a href="https://twitter.com/@grouvex"><img src="../img/X.png" alt="Twitter"></a>
+    <img src="img/Instagram.png" alt="">
+    <img src="img/YouTube.png" alt="">
+    <img src="img/TikTok.png" alt="">
+    <img src="img/GROUVEX.png" alt="">
+    <img src="img/MuseScore.png" alt="">
+    <img src="img/Spotify.png" alt="">
+    <img src="../img/X.png" alt="Twitter">
  </div>
     <div>
-       <p>Official Terms of Service Official Privacy Policies Contact: grouvex@gmail.com</p>
+       <p><a style="color:white" >Official Terms of Service</a> <a style="color:white">Official Privacy Policies</a> Contact: <a style="color:white">grouvex@gmail.com</a></p>
     </div>
      <p>©Grouvex Studios</p>
   </footer>

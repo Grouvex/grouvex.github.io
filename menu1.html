@@ -1,0 +1,34 @@
+<script src="temas.js"></script>
+<script src="../temas.js"></script>
+<script src="../../temas.js"></script>
+<script>
+function redirigir() {
+  var selector = document.getElementById('selector-idioma');
+  var url = selector.value;
+  window.location.href = url;
+}
+</script>
+| <span><select id="selector-idioma" onchange="redirigir()" disabled>
+  <option value="Language" disabled selected>Language</option>
+  <option value="https://grouvex.github.io/es">Spanish</option>
+  <option value="https://grouvex.github.io/en">English | Updating</option>
+  <option value="https://grouvex.github.io/fr" disabled>Français | Upcoming</option>
+  <!-- Añade más opciones de idioma según sea necesario -->
+</select><span class="status updating">Updating</span></span> | <span><select id="themeSelect" style="height:100%; width:100%">
+  <option value="default">Theme</option>
+  <option value="theme1">Theme 1: Color</option>
+  <option value="theme2">Theme 2: Color</option>
+  <option value="space">Theme Space</option>
+  <option value="starwars">Theme Star Wars</option>
+  <option value="jurassicworld">Theme Jurassic World</option>
+  <option value="taylorswift">Theme Taylor Swift</option>
+  <option value="superheroes">Theme Super Heroes</option>
+  <option value="naturaleza1">Theme Nature: Sunset/Sunrise</option>
+  <option value="naturaleza2">Theme Nature: North/South Pole</option>
+  <option value="naturaleza3">Theme Nature: Sea</option>
+  <option value="naturaleza4">Theme Nature: Jungle</option>
+<option value="httyd">Theme How To Train Your Dragon</option>
+  <option value="pokemon" disabled>Theme Pokemon</option>
+<option value="gstudios">Theme Grouvex Studios</option>
+  <!-- Añade tantas opciones como diseños tengas -->
+</select></span>

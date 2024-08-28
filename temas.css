@@ -756,7 +756,7 @@ body.httyd {
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-size: cover;
     background-repeat: no-repeat;
-    background-image: url(https://wallpapercave.com/wp/wp1969390.jpg);
+    background-image: url(https://th.bing.com/th/id/OIP.rNJ8l2pKgEYsDHFsVBNJZAHaKM?dpr=1,9&pid=ImgDetMain&PC=EMMX01);
 }
 /* Estilo para el contenido principal */
 main.httyd {
@@ -782,7 +782,7 @@ mainTop.httyd {
     justify-content: space-between;
     display: flex;
     padding: 10px;
-    background-image: url(https://th.bing.com/th/id/OIP.rNJ8l2pKgEYsDHFsVBNJZAHaKM?dpr=1,9&pid=ImgDetMain&PC=EMMX01);
+    background-image: url(https://th.bing.com/th/id/OIP.GSPiB_i4DFW__QygF3wa_wHaEK?dpr=1,9&pid=ImgDetMain&PC=EMMX01);
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -798,7 +798,7 @@ article.httyd {
     margin: 10px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
-    background-color: rgba(0, 0, 0, 0);
+    background-image: url(https://wallpapercave.com/wp/wp1969390.jpg);
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -807,7 +807,7 @@ section.httyd {
     margin: 10px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
-    background-image: url(https://wallpapers.com/images/hd/how-to-train-your-dragon-best-friends-9r6gamxvzh2y46fu.jpg );
+    background-color: rgba(0, 0, 0, 0);
     background-size: cover;
     background-repeat: no-repeat;
 }

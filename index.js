@@ -1,33 +1,11 @@
 // Cuando se carga la página
 window.addEventListener('load', function() {
-    // Llama a todas las funciones que quieres ejecutar cuando se carga la página
-    createConfeti();
     flower();
     sol();
     leaf();
     nieve();
 });
-
-function createConfeti() {
-            var today = new Date();
-            var month = today.getMonth();
-            var day = today.getDate();
-
-            if ((month >= 6 && day >= 31) || (month == 7 && day <= 7)) {
-                const confeti = document.createElement('div');
-                confeti.className = 'confeti';
-                confeti.style.left = Math.random() * window.innerWidth + 'px';
-                confeti.style.backgroundColor = getRandomColor();
-                document.body.appendChild(confeti);
-            }
-        }
-
-        function getRandomColor() {
-            const colors = ['#e74c3c', '#3498db', '#f1c40f', '#2ecc71', '#9b59b6'];
-            return colors[Math.floor(Math.random() * colors.length)];
-        }
-
-        setInterval(createConfeti, 500); // Agrega confeti cada 500 ms
+
 function flower() {
   var today = new Date();
   var month = today.getMonth();

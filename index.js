@@ -132,7 +132,7 @@ var videos = [
 function googleTranslateElementInit() {
     new google.translate.TranslateElement({
         pageLanguage: 'es',
-        includedLanguages: 'en,fr,de,it,pt',
+        includedLanguages: 'en,fr,de,it,pt,zh-CN,ja,ko,ru,ar',
         layout: google.translate.TranslateElement.InlineLayout.SIMPLE
     }, 'google_translate_element');
 }

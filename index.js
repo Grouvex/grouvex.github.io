@@ -139,7 +139,7 @@ function googleTranslateElementInit() {
 
 // Detectar el idioma del navegador del usuario
 //document.addEventListener('DOMContentLoaded', function() {
-    var userLang = navigator.language || navigator.userLanguage;
+//    var userLang = navigator.language || navigator.userLanguage;
     var langCode = userLang.split('-')[0]; // Obtener el código del idioma
 
     // Configurar el idioma detectado en el widget de Google Translate

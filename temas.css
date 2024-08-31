@@ -714,15 +714,15 @@ aside.naturaleza1 {
     background-size: cover;
 }
 
-/*Theme Grouvex Studios*/
-p.gstudios {
+/*Theme Grouvex Studios 1*/
+p.gstudios1 {
   background-color: rgba(0, 0, 0, 0);
   color: rgb(255, 255, 255);
   text-shadow: white;
   display: block;
 }
 /* Establece el fondo de toda la página a gris */
-body.gstudios{
+body.gstudios1{
     height: 100%;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
@@ -732,7 +732,7 @@ body.gstudios{
     background-image: url(https://grouvex.github.io/port/Si%20Fuera.jpg);
 }
 /* Estilo para el contenido principal */
-main.gstudios {
+main.gstudios1 {
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
     flex-wrap: wrap;
     justify-content: center;
@@ -744,14 +744,14 @@ main.gstudios {
     background-size: cover;
     background-repeat: no-repeat;
 }
-h1.gstudios,h2.gstudios,h3.gstudios,h4.gstudios,h5.gstudios,h6.gstudios,h7.gstudios,h8.gstudios {
+h1.gstudios1,h2.gstudios1,h3.gstudios1,h4.gstudios1,h5.gstudios1,h6.gstudios1 {
   text-align: center;
   color: white;
   background: linear-gradient(45deg, transparent,  yellow, red);
   background-size: cover;
   background-repeat: no-repeat;
 }
-mainTop.gstudios {
+mainTop.gstudios1 {
     justify-content: space-between;
     background-color: rgba(0, 0, 0, 0);
     display: flex;
@@ -759,14 +759,8 @@ mainTop.gstudios {
     background-size: cover;
     background-repeat: no-repeat;
 }
-.avatar1.gstudios {
-    background-color: rgba(0, 0, 0, 0);
-    width: 220px;
-    background-size: cover;
-    background-repeat: no-repeat;
-}
 /* Estilo para los artículos, secciones y barras laterales */
-article.gstudios {
+article.gstudios1 {
     background-color: rgba(0, 0, 0, 0);
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;
@@ -775,7 +769,7 @@ article.gstudios {
     background-size: cover;
     background-repeat: no-repeat;
 }
-section.gstudios {
+section.gstudios1 {
     background-color: rgba(0, 0, 0, 0);
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;
@@ -784,7 +778,7 @@ section.gstudios {
     background-size: cover;
     background-repeat: no-repeat;
 }
-aside.gstudios {
+aside.gstudios1 {
     background-color: rgba(0, 0, 0, 0);
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;

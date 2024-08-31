@@ -4,6 +4,7 @@ window.addEventListener('load', function() {
     sol();
     leaf();
     nieve();
+googleTranslateElementInit()
 });
 
 function flower() {
@@ -128,3 +129,11 @@ var videos = [
                 modal.style.display = "none";
             }
         };
+function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+        pageLanguage: 'es',
+        includedLanguages: 'en,fr,de,it,pt',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    }, 'google_translate_element');
+}
+

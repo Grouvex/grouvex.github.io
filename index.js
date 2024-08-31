@@ -147,5 +147,5 @@ function googleTranslateElementInit() {
   //  if (translateElement) {
   //      translateElement.value = langCode;
    //     translateElement.dispatchEvent(new Event('change'));
-    }
+ //   }
 //});

@@ -41,11 +41,11 @@ function checkThemes() {
     } else {
         toggleThemeOption('naturaleza4', true);
     }
-// GStudios
+// GStudios1
     if (true == true) {
-        toggleThemeOption('gstudios', false);
+        toggleThemeOption('gstudios1', false);
     } else {
-        toggleThemeOption('gstudios', true);
+        toggleThemeOption('gstudios1', true);
     }
     // Star Wars
     const startStarWarsWeek = new Date(date.getFullYear(), 4, 4);
@@ -101,11 +101,11 @@ var themeSelect = document.getElementById('themeSelect');
 // Cuando se cambia el tema
 themeSelect.addEventListener('change', function() {
     // Obtiene todos los elementos a los que se les aplicará el cambio de tema
-    var elements = document.querySelectorAll('p, body, main, mainTop, h1, h2, h3, h4, h5, h6, h7, h8, .avatar1, article, section, aside, panel');
+    var elements = document.querySelectorAll('p, body, main, mainTop, h1, h2, h3, h4, h5, h6, article, section, aside, panel');
 
     // Elimina las clases de las opciones antiguas
     elements.forEach(function(element) {
-        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'pokemon', 'gstudios', 'httyd');
+        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'pokemon', 'gstudios1', 'httyd');
     });
 
     // Si la opción seleccionada no es "default", añade la clase de la opción seleccionada
@@ -126,7 +126,7 @@ window.addEventListener('load', function() {
 
     // Si hay una selección guardada y no es "default", aplica el tema seleccionado
     if (selectedTheme && selectedTheme !== 'gstudios') {
-        var elements = document.querySelectorAll('p, body, main, mainTop, h1, h2, h3, h4, h5, h6, h7, h8, .avatar1, article, section, aside, panel');
+        var elements = document.querySelectorAll('p, body, main, mainTop, h1, h2, h3, h4, h5, h6, article, section, aside, panel');
         elements.forEach(function(element) {
             element.classList.add(selectedTheme);
         });

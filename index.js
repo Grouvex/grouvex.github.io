@@ -137,3 +137,15 @@ function googleTranslateElementInit() {
     }, 'google_translate_element');
 }
 
+// Detectar el idioma del navegador del usuario
+//document.addEventListener('DOMContentLoaded', function() {
+    var userLang = navigator.language || navigator.userLanguage;
+    var langCode = userLang.split('-')[0]; // Obtener el código del idioma
+
+    // Configurar el idioma detectado en el widget de Google Translate
+    var translateElement = document.querySelector('.goog-te-combo');
+    if (translateElement) {
+        translateElement.value = langCode;
+        translateElement.dispatchEvent(new Event('change'));
+    }
+});

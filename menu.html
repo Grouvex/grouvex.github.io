@@ -1,21 +1,8 @@
 <script src="temas.js"></script>
 <script src="../temas.js"></script>
 <script src="../../temas.js"></script>
-<script>
-function redirigir() {
-  var selector = document.getElementById('selector-idioma');
-  var url = selector.value;
-  window.location.href = url;
-}
-</script>
-| <span><select id="selector-idioma" onchange="redirigir()">
-  <option value="Idioma" disabled selected>Idioma</option>
-<option value="https://grouvex.github.io">Oficial</option>
-  <option value="https://grouvex.github.io/es">Español</option>
-  <option value="https://grouvex.github.io/en">English | Updating</option>
-  <option value="https://grouvex.github.io/fr" disabled>Français | Upcoming</option>
-  <!-- Añade más opciones de idioma según sea necesario -->
-</select><span class="status updating">Updating</span></span> | <span><select id="themeSelect">
+| <span id="google_translate_element"><span>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script><span class="status updating">Updating</span></span> | <span><select id="themeSelect">
   <option value="default">Temas</option>
   <option value="theme1">Tema 1: Color</option>
   <option value="theme2">Tema 2: Color</option>

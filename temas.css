@@ -841,17 +841,15 @@ footer {
   margin-inline-start: 5px;
 }
 .footer-imagenes {
-  text-align: center;
   display: block;
-  justify-content: center; /* Centra los elementos en el eje horizontal */
+  justify-content: left; /* Centra los elementos en el eje horizontal */
   align-items: center; /* Alinea los elementos al inicio en el eje vertical */
-  gap: 10px; /* Espacio de 10px entre elementos */
 }
 .footer-imagenes img {
   width: auto; /* Ancho automático para mantener la proporción */
   height: auto; /* Altura automática para mantener la proporción */
-  max-width: 20px; /* Máximo ancho de 30px */
-  max-height: 20px; /* Máximo altura de 30px */
+  max-width: 60px; /* Máximo ancho de 30px */
+  max-height: 30px; /* Máximo altura de 30px */
   margin: 5px; /* Margen de 5px para asegurar la separación */
 }
 

@@ -305,25 +305,52 @@ nav a {
   color: black; /* As the background is light, we use black for the text */
   box-shadow: 0 0 10px gold; /* Esto hace que la etiqueta "Edición limitada" destaque */
 }
+.musica-section {
+display: block; 
+padding: 20px; 
+overflow: hidden;
+align-items: center;
+align-content: center;
+}
 .left-section {
+flex: 1;
+  display: flex;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  justify-content: center;
+  align-items: center;
+}
+.right-section{
   word-wrap: break-word;
   text-align: left;
   box-sizing: border-box;
   flex: 1;
   padding: 20px;
+  margin-right: 10px;
   overflow-y: auto;
-  max-height: 400px;
   max-width: 100%;
 }
-
-.right-section{
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.right-section img {
-  max-width: 100%;
+.left-section img {
+  max-width: 80%;
   height: auto;
 }
+@media (max-width: 768px) {
+.musica-section {
+display: flex;
+padding: 20px; 
+overflow: hidden;
+align-items: center;
+align-content: center;
+}
+.right-section{
+  word-wrap: break-word;
+  text-align: left;
+  box-sizing: border-box;
+  flex: 1;
+  padding: 20px;
+  margin-right: 10px;
+  overflow-y: auto;
+  max-height: 300px;
+  max-width: 100%;
+}
+} 

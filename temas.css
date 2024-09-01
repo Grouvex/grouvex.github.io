@@ -58,10 +58,11 @@ p {
 /* Establece el fondo de toda la página a gris */
 body {
     height: 100%;
-    margin: 0;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    background: black;
+    background-size: cover;
+    background-repeat: no-repeat;
+  background: black;
 }
 
 /* Estilo para el contenido principal */
@@ -118,9 +119,10 @@ p.theme1 {
 /* Establece el fondo de toda la página a gris */
 body.theme1 {
     height: 100%;
-    margin: 0;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 /* Estilo para el contenido principal */
 
@@ -181,9 +183,10 @@ p.theme2 {
 /* Establece el fondo de toda la página a gris */
 body.theme2 {
     height: 100%;
-    margin: 0;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
+    background-size: cover;
+    background-repeat: no-repeat;
     background-color: lightcoral;
 }
 /* Estilo para el contenido principal */
@@ -313,10 +316,10 @@ p.starwars {
 /* Establece el fondo de toda la página a gris */
 body.starwars {
     height: 100%;
-    margin: 0;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
     background-image: url(https://th.bing.com/th/id/R.3fbda316a14ddd3aab94262076b8e2a3?rik=3HhcUrtxNNsI0A&riu=http%3a%2f%2fwww.hdwallpaper.nu%2fwp-content%2fuploads%2f2015%2f10%2fstar_wars_wallpaper_4.jpg&ehk=8r8j1xWoA1oe3BDMRVfVZWe2PU2qyQqAMKTweqefYhk%3d&risl=&pid=ImgRaw&r=0);
 }
 /* Estilo para el contenido principal */
@@ -388,10 +391,8 @@ p.jurassicworld {
 /* Establece el fondo de toda la página a gris */
 body.jurassicworld {
     height: 100%;
-    margin: 0;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    background-position: center;
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8k6I58I0r2yWS20ImbGZO2viw0K_ncxugsA&s);
 }
 /* Estilo para el contenido principal */
@@ -463,10 +464,8 @@ p.taylorswift {
 /* Establece el fondo de toda la página a gris */
 body.taylorswift {
     height: 100%;
-    margin: 0;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    background-position: center;
     background-image: url(https://th.bing.com/th/id/OIP.ZmgHb2BlqKPtoCS_pNH4pwHaQC?w=115&h=180&c=7&r=0&o=5&pid=1.7);
 }
 /* Estilo para el contenido principal */
@@ -534,11 +533,13 @@ p.superheroes {
 /* Establece el fondo de toda la página a gris */
 body.superheroes {
     height: 100%;
-    margin: 0;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    background-position: center;
+    margin: 0;
+    padding: 0;
     background-image: url(https://th.bing.com/th/id/R.6c83f52b1da153957504285959058b46?rik=5kwxZeA0BsJG%2fA&pid=ImgRaw&r=0);
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 /* Estilo para el contenido principal */
 main.superheroes {
@@ -608,13 +609,16 @@ p.naturaleza1 {
 }
 /* Establece el fondo de toda la página a gris */
 body.naturaleza1 {
-    height: 100%;
-    margin: 0;
-    flex-direction: column;
-    font-family: Arial, sans-serif; /* Tipo de letra */
-    background-position: center;
-    background-image: url(https://th.bing.com/th/id/R.33f8b44abef5e982eba52a061e75528c?rik=A%2fDnI88HMj5p3Q&pid=ImgRaw&r=0);
+    height: 100vh; /* Cambiado a 100vh para ocupar toda la altura de la ventana */
+    margin: 0; /* Elimina el margen predeterminado del body */
+    display: flex; /* Flexbox para alinear contenido si es necesario */
+    flex-direction: column; /* Mantiene la dirección del contenido */
+    font-family: Arial, sans-serif; 
+    background-image: url(https://th.bing.com/th/id/R.33f8b44…?rik=A%2fDnI88HMj5p3Q&pid=ImgRaw&r=0);
+    background-size: cover; /* Asegura que la imagen cubra todo el fondo */
+    background-position: center; /* Centra la imagen de fondo */
 }
+
 /* Estilo para el contenido principal */
 main.naturaleza1 {
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
@@ -684,9 +688,10 @@ p.gstudios1 {
 /* Establece el fondo de toda la página a gris */
 body.gstudios1{
     height: 100%;
-    margin: 0;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
+    background-size: cover;
+    background-repeat: no-repeat;
     background-position: center;
     background-image: url(https://grouvex.github.io/port/Si%20Fuera.jpg);
 }
@@ -756,10 +761,10 @@ p.httyd {
 /* Establece el fondo de toda la página a gris */
 body.httyd {
     height: 100%;
-    margin: 0;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
     background-image: url(https://th.bing.com/th/id/OIP.rNJ8l2pKgEYsDHFsVBNJZAHaKM?dpr=1,9&pid=ImgDetMain&PC=EMMX01);
 }
 /* Estilo para el contenido principal */
@@ -822,8 +827,6 @@ aside.httyd {
 /* Estilo para el pie de página */
 footer {
     margin-top: 10px;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.3);
 }
 .footer-text{
   justify-content: left;
@@ -841,16 +844,16 @@ footer {
   margin-inline-start: 5px;
 }
 .footer-imagenes {
-  display: block;
   justify-content: left; /* Centra los elementos en el eje horizontal */
-  align-items: center; /* Alinea los elementos al inicio en el eje vertical */
 }
+
 .footer-imagenes img {
   width: auto; /* Ancho automático para mantener la proporción */
   height: auto; /* Altura automática para mantener la proporción */
   max-width: 60px; /* Máximo ancho de 30px */
   max-height: 30px; /* Máximo altura de 30px */
   margin: 5px; /* Margen de 5px para asegurar la separación */
+  
 }
 
 /* Cajetines*/
@@ -878,7 +881,6 @@ footer {
   display: inline-block;
   padding-right: .8rem;
   font-size: 15px;
-
 }
 .cajetin-description {
   background: transparent;
@@ -935,4 +937,54 @@ footer {
  .cajetin {
    width: 100%;
  }
+} 
+
+.musica-section {
+display: block; 
+padding: 20px; 
+overflow: hidden;
+align-items: center;
+align-content: center;
+}
+.left-section {
+  flex: 1;
+  display: flex;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  justify-content: center;
+  align-items: center;
+}
+.right-section{
+  word-wrap: break-word;
+  text-align: left;
+  box-sizing: border-box;
+  flex: 1;
+  padding: 20px;
+  margin-right: 10px;
+  overflow-y: auto;
+  max-width: 100%;
+}
+.left-section img {
+  max-width: 90%;
+  height: auto;
+}
+@media (max-width: 768px) {
+.musica-section {
+display: flex;
+padding: 20px; 
+overflow: hidden;
+align-items: center;
+align-content: center;
+}
+.right-section{
+  word-wrap: break-word;
+  text-align: left;
+  box-sizing: border-box;
+  flex: 1;
+  padding: 20px;
+  margin-right: 10px;
+  overflow-y: auto;
+  max-height: 300px;
+  max-width: 100%;
+}
 } 

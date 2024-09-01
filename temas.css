@@ -58,11 +58,10 @@ p {
 /* Establece el fondo de toda la página a gris */
 body {
     height: 100%;
+    margin: 0;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    background-size: cover;
-    background-repeat: no-repeat;
-  background: black;
+    background: black;
 }
 
 /* Estilo para el contenido principal */
@@ -119,10 +118,9 @@ p.theme1 {
 /* Establece el fondo de toda la página a gris */
 body.theme1 {
     height: 100%;
+    margin: 0;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    background-size: cover;
-    background-repeat: no-repeat;
 }
 /* Estilo para el contenido principal */
 
@@ -183,10 +181,9 @@ p.theme2 {
 /* Establece el fondo de toda la página a gris */
 body.theme2 {
     height: 100%;
+    margin: 0;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    background-size: cover;
-    background-repeat: no-repeat;
     background-color: lightcoral;
 }
 /* Estilo para el contenido principal */
@@ -243,10 +240,10 @@ p.space {
 /* Establece el fondo de toda la página a gris */
 body.space {
     height: 100%;
+    margin: 0;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    background-size: cover;
-    background-repeat: no-repeat;
+    background-position: center;
     background-image: url(https://th.bing.com/th/id/R.2233dd9dbbdc72fd46d1ae218bae965d?rik=mlwKyBXXRrJU6A&pid=ImgRaw&r=0);
 }
 /* Estilo para el contenido principal */
@@ -316,10 +313,10 @@ p.starwars {
 /* Establece el fondo de toda la página a gris */
 body.starwars {
     height: 100%;
+    margin: 0;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    background-size: cover;
-    background-repeat: no-repeat;
+    background-position: center;
     background-image: url(https://th.bing.com/th/id/R.3fbda316a14ddd3aab94262076b8e2a3?rik=3HhcUrtxNNsI0A&riu=http%3a%2f%2fwww.hdwallpaper.nu%2fwp-content%2fuploads%2f2015%2f10%2fstar_wars_wallpaper_4.jpg&ehk=8r8j1xWoA1oe3BDMRVfVZWe2PU2qyQqAMKTweqefYhk%3d&risl=&pid=ImgRaw&r=0);
 }
 /* Estilo para el contenido principal */
@@ -391,8 +388,10 @@ p.jurassicworld {
 /* Establece el fondo de toda la página a gris */
 body.jurassicworld {
     height: 100%;
+    margin: 0;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8k6I58I0r2yWS20ImbGZO2viw0K_ncxugsA&s);
 }
 /* Estilo para el contenido principal */
@@ -464,8 +463,10 @@ p.taylorswift {
 /* Establece el fondo de toda la página a gris */
 body.taylorswift {
     height: 100%;
+    margin: 0;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
     background-image: url(https://th.bing.com/th/id/OIP.ZmgHb2BlqKPtoCS_pNH4pwHaQC?w=115&h=180&c=7&r=0&o=5&pid=1.7);
 }
 /* Estilo para el contenido principal */
@@ -533,13 +534,11 @@ p.superheroes {
 /* Establece el fondo de toda la página a gris */
 body.superheroes {
     height: 100%;
+    margin: 0;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    margin: 0;
-    padding: 0;
+    background-position: center;
     background-image: url(https://th.bing.com/th/id/R.6c83f52b1da153957504285959058b46?rik=5kwxZeA0BsJG%2fA&pid=ImgRaw&r=0);
-    background-size: cover;
-    background-repeat: no-repeat;
 }
 /* Estilo para el contenido principal */
 main.superheroes {
@@ -610,11 +609,11 @@ p.naturaleza1 {
 /* Establece el fondo de toda la página a gris */
 body.naturaleza1 {
     height: 100%;
+    margin: 0;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
     background-image: url(https://th.bing.com/th/id/R.33f8b44abef5e982eba52a061e75528c?rik=A%2fDnI88HMj5p3Q&pid=ImgRaw&r=0);
-    background-size: cover;
-    background-repeat: no-repeat;
 }
 /* Estilo para el contenido principal */
 main.naturaleza1 {
@@ -685,10 +684,9 @@ p.gstudios1 {
 /* Establece el fondo de toda la página a gris */
 body.gstudios1{
     height: 100%;
+    margin: 0;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    background-size: cover;
-    background-repeat: no-repeat;
     background-position: center;
     background-image: url(https://grouvex.github.io/port/Si%20Fuera.jpg);
 }
@@ -758,10 +756,10 @@ p.httyd {
 /* Establece el fondo de toda la página a gris */
 body.httyd {
     height: 100%;
+    margin: 0;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    background-size: cover;
-    background-repeat: no-repeat;
+    background-position: center;
     background-image: url(https://th.bing.com/th/id/OIP.rNJ8l2pKgEYsDHFsVBNJZAHaKM?dpr=1,9&pid=ImgDetMain&PC=EMMX01);
 }
 /* Estilo para el contenido principal */

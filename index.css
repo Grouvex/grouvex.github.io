@@ -334,20 +334,6 @@ flex: 1;
   max-width: 90%;
   height: auto;
 }
-.video-container {
-  position: relative;
-  width: 100%; /* Ancho del contenedor */
-  padding-bottom: 56.25%; /* Relación de aspecto 16:9 */
-  height: 0; /* Altura inicial 0 */
-  overflow: hidden; /* Oculta el contenido que desborda */
-}
-.video-container iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%; /* Ancho del iframe */
-  height: 100%; /* Altura del iframe */
-}
 @media (max-width: 768px) {
 .musica-section {
 display: flex;

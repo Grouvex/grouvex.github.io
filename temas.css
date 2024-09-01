@@ -823,22 +823,37 @@ aside.httyd {
 
 /* Estilo para el pie de página */
 footer {
+    margin-top: 10px;
     width: 100%;
-    text-align: center;
+    background: rgba(255, 255, 255, 0.3);
+}
+.footer-text{
+  justify-content: left;
+  word-wrap: break-word;
+  text-align: left;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+.footer-text img{
+  width: auto; /* Ancho automático para mantener la proporción */
+  height: auto; /* Altura automática para mantener la proporción */
+  max-width: 100px; /* Máximo ancho de 30px */
+  margin-right: 10px;
+  margin-inline-start: 5px;
 }
 .footer-imagenes {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(30px, 1fr)); /* Columnas de mínimo 30px y máximo 1fr */
+  text-align: center;
+  display: block;
   justify-content: center; /* Centra los elementos en el eje horizontal */
-  align-items: start; /* Alinea los elementos al inicio en el eje vertical */
+  align-items: center; /* Alinea los elementos al inicio en el eje vertical */
   gap: 10px; /* Espacio de 10px entre elementos */
 }
-
 .footer-imagenes img {
   width: auto; /* Ancho automático para mantener la proporción */
   height: auto; /* Altura automática para mantener la proporción */
-  max-width: 30px; /* Máximo ancho de 30px */
-  max-height: 30px; /* Máximo altura de 30px */
+  max-width: 20px; /* Máximo ancho de 30px */
+  max-height: 20px; /* Máximo altura de 30px */
   margin: 5px; /* Margen de 5px para asegurar la separación */
 }
 
@@ -866,7 +881,8 @@ footer {
   color: white;
   display: inline-block;
   padding-right: .8rem;
-  font-size: 15px;
+  font-size: 15px;
+
 }
 .cajetin-description {
   background: transparent;

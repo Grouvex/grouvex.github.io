@@ -47,21 +47,21 @@
  <div class="cajetines">
      <a href="lanzamientos/spheres_of_life" class="cajetin" data-ut="1727308800">   
       <img src="../port/Spheres of Life.jpg" alt="" style="width:300px">
-      <p class="cajetin-fechas"><span id="f1_12"></span></p>
+      <p class="cajetin-fechas"><span id="f1_2"></span></p>
       <p class="cajetin-titulo">Spheres of Life</p>
       <p class="cajetin-footer">©Grouvex Studios Recording</p>
-      <script>const uT12 = 1727308800; actualizarFechas(uT12, "f1_12");</script>
+      <script>const uT2 = 1727308800; actualizarFechas(uT12, "f1_2");</script>
      </a>
 <a href="lanzamientos/alpha_version" class="cajetin" data-ut="1703203200">   
       <img src="../port/Alpha_Version.jpg" alt="" style="width:300px">
-      <p class="cajetin-fechas"><span id="f1_6"></span></p>
+      <p class="cajetin-fechas"><span id="f1_1"></span></p>
       <p class="cajetin-titulo">Alpha Version</p>
       <p class="cajetin-footer">©Grouvex Studios Recording</p>
-      <script>const uT6 = 1703203200; actualizarFechas(uT6, "f1_6");</script>
+      <script>const uT1 = 1703203200; actualizarFechas(uT1 "f1_1");</script>
      </a>
     </div>
 <script>
-const marcasDeTiempo = [uT1, uT2, uT3, uT4, uT5, uT6, uT7, uT8, uT9, uT10, uT11, uT12];
+const marcasDeTiempo = [uT1, uT2];
 // NO tocar
 function cambiarOrden() {if(document.getElementById('ordenSelector').value == 'ascT') {marcasDeTiempo.sort((a, b) => b - a);}if(document.getElementById('ordenSelector').value == 'desT') {marcasDeTiempo.sort((a, b) => a - b);}const cajetinesContainer = document.querySelector('.cajetines');marcasDeTiempo.forEach((uT) => {const cajetin = document.querySelector(`[data-ut="${uT}"]`);cajetinesContainer.appendChild(cajetin);});}
 </script>

@@ -940,7 +940,7 @@ footer {
 } 
 
 .musica-section {
-display: block; 
+display: flex;
 padding: 20px; 
 overflow: hidden;
 align-items: center;
@@ -954,27 +954,9 @@ align-content: center;
   justify-content: center;
   align-items: center;
 }
-.right-section{
-  word-wrap: break-word;
-  text-align: left;
-  box-sizing: border-box;
-  flex: 1;
-  padding: 20px;
-  margin-right: 10px;
-  overflow-y: auto;
-  max-width: 100%;
-}
 .left-section img {
-  max-width: 90%;
+  max-width: 60%;
   height: auto;
-}
-@media (max-width: 768px) {
-.musica-section {
-display: flex;
-padding: 20px; 
-overflow: hidden;
-align-items: center;
-align-content: center;
 }
 .right-section{
   word-wrap: break-word;
@@ -985,6 +967,34 @@ align-content: center;
   margin-right: 10px;
   overflow-y: auto;
   max-height: 300px;
+  max-width: 100%;
+}
+@media (max-width: 768px) {
+.musica-section {
+display: block; 
+padding: 20px; 
+overflow: hidden;
+align-items: center;
+align-content: center;
+}
+.left-section {
+  display: flex;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  justify-content: center;
+  align-items: center;
+}
+.left-section img {
+  max-width: 80%;
+  height: auto;
+}
+.right-section{
+  word-wrap: break-word;
+  text-align: left;
+  box-sizing: border-box;
+  padding: 20px;
+  margin-right: 10px;
+  max-height: 100%;
   max-width: 100%;
 }
 } 

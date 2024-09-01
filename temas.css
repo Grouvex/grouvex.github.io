@@ -932,12 +932,7 @@ footer {
   width: 100%;
   height: auto;
   vertical-align: middle; /* Alineación vertical con el texto */
-}
-@media (max-width: 768px) {
- .cajetin {
-   width: 100%;
- }
-} 
+}
 
 .musica-section {
 display: flex;
@@ -970,6 +965,9 @@ align-content: center;
   max-width: 100%;
 }
 @media (max-width: 768px) {
+.cajetin {
+   width: 100%;
+ } 
 .musica-section {
 display: block; 
 padding: 20px; 
@@ -996,5 +994,36 @@ align-content: center;
   margin-right: 10px;
   max-height: 100%;
   max-width: 100%;
+}
+/* Estilo para el pie de página */
+footer {
+    margin-top: 10px;
+}
+.footer-text{
+  justify-content: left;
+  word-wrap: break-word;
+  text-align: left;
+  box-sizing: border-box;
+  display: block;
+  align-items: center;
+}
+.footer-text img{
+  width: auto; /* Ancho automático para mantener la proporción */
+  height: auto; /* Altura automática para mantener la proporción */
+  max-width: 100px; /* Máximo ancho de 30px */
+  margin-right: 10px;
+  margin-inline-start: 5px;
+}
+.footer-imagenes {
+  justify-content: left; /* Centra los elementos en el eje horizontal */
+}
+
+.footer-imagenes img {
+  width: auto; /* Ancho automático para mantener la proporción */
+  height: auto; /* Altura automática para mantener la proporción */
+  max-width: 60px; /* Máximo ancho de 30px */
+  max-height: 30px; /* Máximo altura de 30px */
+  margin: 5px; /* Margen de 5px para asegurar la separación */
+  
 }
 } 

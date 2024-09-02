@@ -843,7 +843,6 @@ footer {
   justify-content: left;
   word-wrap: break-word;
   text-align: left;
-  box-sizing: border-box;
   display: flex;
   align-items: center;
 }
@@ -1012,9 +1011,6 @@ footer {
 }
 .footer-text{
   justify-content: left;
-  word-wrap: break-word;
-  text-align: left;
-  box-sizing: border-box;
   display: block;
   align-items: center;
 }

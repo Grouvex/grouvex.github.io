@@ -849,7 +849,6 @@ footer {
   height: auto; /* Altura automática para mantener la proporción */
   max-width: 100px; /* Máximo ancho de 30px */
   margin-right: 10px;
-  margin-inline-start: 5px;
 }
 .footer-imagenes {
   justify-content: left; /* Centra los elementos en el eje horizontal */
@@ -1021,7 +1020,6 @@ footer {
   height: auto; /* Altura automática para mantener la proporción */
   max-width: 100px; /* Máximo ancho de 30px */
   margin-right: 10px;
-  margin-inline-start: 5px;
 }
 .footer-imagenes {
   justify-content: left; /* Centra los elementos en el eje horizontal */
@@ -1033,6 +1031,5 @@ footer {
   max-width: 60px; /* Máximo ancho de 30px */
   max-height: 30px; /* Máximo altura de 30px */
   margin: 5px; /* Margen de 5px para asegurar la separación */
-  
-}
+ }
 } 

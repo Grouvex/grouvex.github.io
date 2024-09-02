@@ -59,6 +59,7 @@ p {
 body {
     height: 100%;
     flex-direction: column;
+    margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-size: cover;
     background-repeat: no-repeat;
@@ -120,6 +121,7 @@ p.theme1 {
 body.theme1 {
     height: 100%;
     flex-direction: column;
+  margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-size: cover;
     background-repeat: no-repeat;
@@ -184,6 +186,7 @@ p.theme2 {
 body.theme2 {
     height: 100%;
     flex-direction: column;
+  margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-size: cover;
     background-repeat: no-repeat;
@@ -317,6 +320,7 @@ p.starwars {
 body.starwars {
     height: 100%;
     flex-direction: column;
+    margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-size: cover;
     background-repeat: no-repeat;
@@ -392,6 +396,7 @@ p.jurassicworld {
 body.jurassicworld {
     height: 100%;
     flex-direction: column;
+    margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8k6I58I0r2yWS20ImbGZO2viw0K_ncxugsA&s);
 }
@@ -465,6 +470,7 @@ p.taylorswift {
 body.taylorswift {
     height: 100%;
     flex-direction: column;
+    margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-image: url(https://th.bing.com/th/id/OIP.ZmgHb2BlqKPtoCS_pNH4pwHaQC?w=115&h=180&c=7&r=0&o=5&pid=1.7);
 }
@@ -609,7 +615,7 @@ p.naturaleza1 {
 }
 /* Establece el fondo de toda la página a gris */
 body.naturaleza1 {
-    height: 100vh; /* Cambiado a 100vh para ocupar toda la altura de la ventana */
+    height: 100%; /* Cambiado a 100vh para ocupar toda la altura de la ventana */
     margin: 0; /* Elimina el margen predeterminado del body */
     display: flex; /* Flexbox para alinear contenido si es necesario */
     flex-direction: column; /* Mantiene la dirección del contenido */
@@ -689,6 +695,7 @@ p.gstudios1 {
 body.gstudios1{
     height: 100%;
     flex-direction: column;
+    margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-size: cover;
     background-repeat: no-repeat;
@@ -761,6 +768,7 @@ p.httyd {
 /* Establece el fondo de toda la página a gris */
 body.httyd {
     height: 100%;
+    margin: 0px;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-size: cover;
@@ -932,7 +940,8 @@ footer {
   width: 100%;
   height: auto;
   vertical-align: middle; /* Alineación vertical con el texto */
-}
+}
+
 
 .musica-section {
 display: flex;

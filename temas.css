@@ -250,6 +250,7 @@ body.space {
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-position: center;
+    background-size: cover;
     background-image: url(https://th.bing.com/th/id/R.2233dd9dbbdc72fd46d1ae218bae965d?rik=mlwKyBXXRrJU6A&pid=ImgRaw&r=0);
 }
 /* Estilo para el contenido principal */
@@ -322,8 +323,8 @@ body.starwars {
     flex-direction: column;
     margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
     background-size: cover;
-    background-repeat: no-repeat;
     background-image: url(https://th.bing.com/th/id/R.3fbda316a14ddd3aab94262076b8e2a3?rik=3HhcUrtxNNsI0A&riu=http%3a%2f%2fwww.hdwallpaper.nu%2fwp-content%2fuploads%2f2015%2f10%2fstar_wars_wallpaper_4.jpg&ehk=8r8j1xWoA1oe3BDMRVfVZWe2PU2qyQqAMKTweqefYhk%3d&risl=&pid=ImgRaw&r=0);
 }
 /* Estilo para el contenido principal */
@@ -398,6 +399,8 @@ body.jurassicworld {
     flex-direction: column;
     margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
+    background-size: cover;
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8k6I58I0r2yWS20ImbGZO2viw0K_ncxugsA&s);
 }
 /* Estilo para el contenido principal */
@@ -472,6 +475,8 @@ body.taylorswift {
     flex-direction: column;
     margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
+    background-size: cover;
     background-image: url(https://th.bing.com/th/id/OIP.ZmgHb2BlqKPtoCS_pNH4pwHaQC?w=115&h=180&c=7&r=0&o=5&pid=1.7);
 }
 /* Estilo para el contenido principal */
@@ -544,8 +549,8 @@ body.superheroes {
     margin: 0;
     padding: 0;
     background-image: url(https://th.bing.com/th/id/R.6c83f52b1da153957504285959058b46?rik=5kwxZeA0BsJG%2fA&pid=ImgRaw&r=0);
+    background-position: center;
     background-size: cover;
-    background-repeat: no-repeat;
 }
 /* Estilo para el contenido principal */
 main.superheroes {
@@ -697,9 +702,8 @@ body.gstudios1{
     flex-direction: column;
     margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    background-size: cover;
-    background-repeat: no-repeat;
     background-position: center;
+    background-size: cover;
     background-image: url(https://grouvex.github.io/port/Si%20Fuera.jpg);
 }
 /* Estilo para el contenido principal */
@@ -771,8 +775,8 @@ body.httyd {
     margin: 0px;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
     background-size: cover;
-    background-repeat: no-repeat;
     background-image: url(https://th.bing.com/th/id/OIP.rNJ8l2pKgEYsDHFsVBNJZAHaKM?dpr=1,9&pid=ImgDetMain&PC=EMMX01);
 }
 /* Estilo para el contenido principal */

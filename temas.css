@@ -59,11 +59,10 @@ p {
 body {
     height: 100%;
     flex-direction: column;
-    margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-size: cover;
     background-repeat: no-repeat;
-  background: black;
+    background: black;
 }
 
 /* Estilo para el contenido principal */

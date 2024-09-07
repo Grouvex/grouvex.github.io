@@ -50,7 +50,7 @@
       <p class="cajetin-fechas"><span id="f1_3"></span></p>
       <p class="cajetin-titulo">The Night Sky</p>
       <p class="cajetin-footer">©Grouvex Studios Recording</p>
-      <script>const uT2 = 1735689600; actualizarFechas(uT3, "f1_3");</script>
+      <script>const uT3 = 1735689600; actualizarFechas(uT3, "f1_3");</script>
      </a>
      <a href="lanzamientos/spheres_of_life" class="cajetin" data-ut="1727308800">   
       <img src="../port/Spheres of Life.jpg" alt="" style="width:300px">
@@ -68,7 +68,7 @@
      </a>
     </div>
 <script>
-const marcasDeTiempo = [uT1, uT2];
+const marcasDeTiempo = [uT1, uT2, uT3];
 // NO tocar
 function cambiarOrden() {if(document.getElementById('ordenSelector').value == 'ascT') {marcasDeTiempo.sort((a, b) => b - a);}if(document.getElementById('ordenSelector').value == 'desT') {marcasDeTiempo.sort((a, b) => a - b);}const cajetinesContainer = document.querySelector('.cajetines');marcasDeTiempo.forEach((uT) => {const cajetin = document.querySelector(`[data-ut="${uT}"]`);cajetinesContainer.appendChild(cajetin);});}
 </script>

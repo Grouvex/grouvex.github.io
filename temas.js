@@ -11,14 +11,14 @@ function checkThemes() {
     if (month == 0) {
         toggleThemeOption('superheroes', false);
     } else {
-        toggleThemeOption('superheroes', false);
+        toggleThemeOption('superheroes', true);
     }
 
     // Naturaleza 1
     if (month == 1) {
         toggleThemeOption('naturaleza1', false);
     } else {
-        toggleThemeOption('naturaleza1', false);
+        toggleThemeOption('naturaleza1', true);
     }
 
     // Naturaleza 2
@@ -53,7 +53,7 @@ function checkThemes() {
     if (date >= startStarWarsWeek && date <= endStarWarsWeek) {
         toggleThemeOption('starwars', false);
     } else {
-        toggleThemeOption('starwars', false);
+        toggleThemeOption('starwars', true);
     }
 
 // HTTYD 
@@ -62,7 +62,7 @@ function checkThemes() {
     if (date >= startHTTYDWeek && date <= endHTTYDWeek) {
         toggleThemeOption('httyd', false);
     } else {
-        toggleThemeOption('httyd', false);
+        toggleThemeOption('httyd', true);
     }
 
     // Jurassic World
@@ -71,7 +71,7 @@ function checkThemes() {
     if (date >= startJurassicWorldWeek && date <= endJurassicWorldWeek) {
         toggleThemeOption('jurassicworld', false);
     } else {
-        toggleThemeOption('jurassicworld', false);
+        toggleThemeOption('jurassicworld', true);
     }
 
     // Taylor Swift
@@ -80,7 +80,7 @@ function checkThemes() {
     if (date >= startTaylorSwiftWeek && date <= endTaylorSwiftWeek) {
         toggleThemeOption('taylorswift', false);
     } else {
-        toggleThemeOption('taylorswift', false);
+        toggleThemeOption('taylorswift', true);
     }
 }
 

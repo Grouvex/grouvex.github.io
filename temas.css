@@ -59,6 +59,7 @@ p {
 body {
     height: 100%;
     flex-direction: column;
+    margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-size: cover;
     background-repeat: no-repeat;
@@ -120,7 +121,7 @@ p.theme1 {
 body.theme1 {
     height: 100%;
     flex-direction: column;
-  margin: 0px;
+    margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-size: cover;
     background-repeat: no-repeat;
@@ -343,7 +344,7 @@ h1.starwars,h2.starwars,h3.starwars,h4.starwars,h5.starwars,h6.starwars {
   text-align: center;
   color: white;
   background-image: url(https://th.bing.com/th/id/OIP.fXzET8932QEAPm2_VL9h2wHaEK?w=316&h=180&c=7&r=0&o=5&pid=1.7);
-  background-position: 0px;
+ background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -352,7 +353,7 @@ mainTop.starwars {
     display: flex;
     padding: 10px;
     background-image: url(https://images.squarespace-cdn.com/content/v1/531630f6e4b0fa5080a5596f/1845bb78-5fb1-4250-a2b9-e959c995cef9/Star+Wars+v2.jpg);
-    background-position: 0px;
+   background-position: center;
     background-size:cover;
     background-repeat: no-repeat;
 }
@@ -363,7 +364,7 @@ article.starwars {
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
     background-image: url(https://th.bing.com/th/id/OIP.Q0rcMIyko5F5ado-TefV6wHaEK?w=316&h=180&c=7&r=0&o=5&pid=1.7);
-    background-position: 0px;
+   background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -438,7 +439,7 @@ article.jurassicworld {
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNG2bTMhZUu7owtd-3a6dDjM6yeB_p3DpzYA&s);
-    background-position: 0px;
+   background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -449,7 +450,7 @@ section.jurassicworld {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgUBGAIO4J6icDD29q9HqP7MA4Nae4IAwLsQ&s);
     background-size: cover;
-    background-position: 0px;
+   background-position: center;
     background-repeat: no-repeat;
 }
 aside.jurassicworld {
@@ -513,7 +514,7 @@ article.taylorswift {
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUSPNVF4QDrgiHN2AWmeWfis6Yts175pbWLQ&s);
-    background-position: 0px;
+   background-position: center;
     background-repeat: repeat;
 }
 section.taylorswift {
@@ -587,7 +588,7 @@ article.superheroes {
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
     background-image: url(https://images.hdqwalls.com/download/avengers-infinity-war-movie-bill-poster-7e-1440x900.jpg);
-    background-position: 0px;
+   background-position: center;
     background-repeat: no-repeat;
   background-size: cover;
 }
@@ -664,7 +665,7 @@ article.naturaleza1 {
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
     background-image: url(https://th.bing.com/th/id/R.efa3563dc34b39d6f6b087c20e014608?rik=rR0bIEpvuiFOwQ&pid=ImgRaw&r=0);
-    background-position: 0px;
+   background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
 }

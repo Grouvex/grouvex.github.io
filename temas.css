@@ -1,6 +1,6 @@
 /*Primavera*/
 .flower {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 10px;
@@ -11,7 +11,7 @@
 }
 /*Verano*/
 .sun {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 10px;
@@ -22,7 +22,7 @@
 }
 /*Verano*/
 .leaf {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 10px;
@@ -33,7 +33,7 @@
 }
 /*Navidad*/
 .snowflake {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 10px;
@@ -63,7 +63,7 @@ body {
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-size: cover;
     background-repeat: no-repeat;
-  background: black;
+    background: black;
 }
 
 /* Estilo para el contenido principal */
@@ -121,7 +121,7 @@ p.theme1 {
 body.theme1 {
     height: 100%;
     flex-direction: column;
-  margin: 0px;
+    margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-size: cover;
     background-repeat: no-repeat;
@@ -250,6 +250,7 @@ body.space {
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-position: center;
+    background-size: cover;
     background-image: url(https://th.bing.com/th/id/R.2233dd9dbbdc72fd46d1ae218bae965d?rik=mlwKyBXXRrJU6A&pid=ImgRaw&r=0);
 }
 /* Estilo para el contenido principal */
@@ -322,8 +323,8 @@ body.starwars {
     flex-direction: column;
     margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
     background-size: cover;
-    background-repeat: no-repeat;
     background-image: url(https://th.bing.com/th/id/R.3fbda316a14ddd3aab94262076b8e2a3?rik=3HhcUrtxNNsI0A&riu=http%3a%2f%2fwww.hdwallpaper.nu%2fwp-content%2fuploads%2f2015%2f10%2fstar_wars_wallpaper_4.jpg&ehk=8r8j1xWoA1oe3BDMRVfVZWe2PU2qyQqAMKTweqefYhk%3d&risl=&pid=ImgRaw&r=0);
 }
 /* Estilo para el contenido principal */
@@ -343,7 +344,7 @@ h1.starwars,h2.starwars,h3.starwars,h4.starwars,h5.starwars,h6.starwars {
   text-align: center;
   color: white;
   background-image: url(https://th.bing.com/th/id/OIP.fXzET8932QEAPm2_VL9h2wHaEK?w=316&h=180&c=7&r=0&o=5&pid=1.7);
-  background-position: 0px;
+ background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -352,7 +353,7 @@ mainTop.starwars {
     display: flex;
     padding: 10px;
     background-image: url(https://images.squarespace-cdn.com/content/v1/531630f6e4b0fa5080a5596f/1845bb78-5fb1-4250-a2b9-e959c995cef9/Star+Wars+v2.jpg);
-    background-position: 0px;
+   background-position: center;
     background-size:cover;
     background-repeat: no-repeat;
 }
@@ -363,7 +364,7 @@ article.starwars {
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
     background-image: url(https://th.bing.com/th/id/OIP.Q0rcMIyko5F5ado-TefV6wHaEK?w=316&h=180&c=7&r=0&o=5&pid=1.7);
-    background-position: 0px;
+   background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -398,6 +399,8 @@ body.jurassicworld {
     flex-direction: column;
     margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
+    background-size: cover;
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8k6I58I0r2yWS20ImbGZO2viw0K_ncxugsA&s);
 }
 /* Estilo para el contenido principal */
@@ -436,7 +439,7 @@ article.jurassicworld {
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNG2bTMhZUu7owtd-3a6dDjM6yeB_p3DpzYA&s);
-    background-position: 0px;
+   background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -447,7 +450,7 @@ section.jurassicworld {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgUBGAIO4J6icDD29q9HqP7MA4Nae4IAwLsQ&s);
     background-size: cover;
-    background-position: 0px;
+   background-position: center;
     background-repeat: no-repeat;
 }
 aside.jurassicworld {
@@ -472,6 +475,8 @@ body.taylorswift {
     flex-direction: column;
     margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
+    background-size: cover;
     background-image: url(https://th.bing.com/th/id/OIP.ZmgHb2BlqKPtoCS_pNH4pwHaQC?w=115&h=180&c=7&r=0&o=5&pid=1.7);
 }
 /* Estilo para el contenido principal */
@@ -509,7 +514,7 @@ article.taylorswift {
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUSPNVF4QDrgiHN2AWmeWfis6Yts175pbWLQ&s);
-    background-position: 0px;
+   background-position: center;
     background-repeat: repeat;
 }
 section.taylorswift {
@@ -544,8 +549,8 @@ body.superheroes {
     margin: 0;
     padding: 0;
     background-image: url(https://th.bing.com/th/id/R.6c83f52b1da153957504285959058b46?rik=5kwxZeA0BsJG%2fA&pid=ImgRaw&r=0);
+    background-position: center;
     background-size: cover;
-    background-repeat: no-repeat;
 }
 /* Estilo para el contenido principal */
 main.superheroes {
@@ -583,7 +588,7 @@ article.superheroes {
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
     background-image: url(https://images.hdqwalls.com/download/avengers-infinity-war-movie-bill-poster-7e-1440x900.jpg);
-    background-position: 0px;
+   background-position: center;
     background-repeat: no-repeat;
   background-size: cover;
 }
@@ -660,7 +665,7 @@ article.naturaleza1 {
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
     background-image: url(https://th.bing.com/th/id/R.efa3563dc34b39d6f6b087c20e014608?rik=rR0bIEpvuiFOwQ&pid=ImgRaw&r=0);
-    background-position: 0px;
+   background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -697,10 +702,9 @@ body.gstudios1{
     flex-direction: column;
     margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    background-size: cover;
-    background-repeat: no-repeat;
     background-position: center;
-    background-image: url(https://grouvex.github.io/port/Si%20Fuera.jpg);
+    background-size: cover;
+    background-image: url(https://grouvex.github.io/port/Si%20Fuera%20v2.jpg);
 }
 /* Estilo para el contenido principal */
 main.gstudios1 {
@@ -771,8 +775,8 @@ body.httyd {
     margin: 0px;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
     background-size: cover;
-    background-repeat: no-repeat;
     background-image: url(https://th.bing.com/th/id/OIP.rNJ8l2pKgEYsDHFsVBNJZAHaKM?dpr=1,9&pid=ImgDetMain&PC=EMMX01);
 }
 /* Estilo para el contenido principal */
@@ -840,7 +844,6 @@ footer {
   justify-content: left;
   word-wrap: break-word;
   text-align: left;
-  box-sizing: border-box;
   display: flex;
   align-items: center;
 }
@@ -849,7 +852,6 @@ footer {
   height: auto; /* Altura automática para mantener la proporción */
   max-width: 100px; /* Máximo ancho de 30px */
   margin-right: 10px;
-  margin-inline-start: 5px;
 }
 .footer-imagenes {
   justify-content: left; /* Centra los elementos en el eje horizontal */
@@ -1010,9 +1012,6 @@ footer {
 }
 .footer-text{
   justify-content: left;
-  word-wrap: break-word;
-  text-align: left;
-  box-sizing: border-box;
   display: block;
   align-items: center;
 }
@@ -1021,7 +1020,6 @@ footer {
   height: auto; /* Altura automática para mantener la proporción */
   max-width: 100px; /* Máximo ancho de 30px */
   margin-right: 10px;
-  margin-inline-start: 5px;
 }
 .footer-imagenes {
   justify-content: left; /* Centra los elementos en el eje horizontal */
@@ -1033,6 +1031,5 @@ footer {
   max-width: 60px; /* Máximo ancho de 30px */
   max-height: 30px; /* Máximo altura de 30px */
   margin: 5px; /* Margen de 5px para asegurar la separación */
-  
-}
+ }
 } 

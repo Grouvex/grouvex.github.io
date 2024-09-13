@@ -1,6 +1,6 @@
 /*Primavera*/
 .flower {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 10px;
@@ -11,7 +11,7 @@
 }
 /*Verano*/
 .sun {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 10px;
@@ -22,7 +22,7 @@
 }
 /*Verano*/
 .leaf {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 10px;
@@ -33,7 +33,7 @@
 }
 /*Navidad*/
 .snowflake {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 10px;

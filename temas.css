@@ -1020,12 +1020,14 @@ footer {
     opacity: 0.6;
     background-color: white;
     color: black;
+    z-index: 1;
 }
 .footer-text{
   justify-content: left;
   display: block;
   align-items: center;
   color: black;
+  z-index: 2;
 }
 .footer-text img{
   width: auto; /* Ancho automático para mantener la proporción */

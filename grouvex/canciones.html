@@ -35,7 +35,7 @@
 <body>
  <!-- Anuncio -->
   <div id="news"></div>
-<main>
+<main id="top">
   <!-- Título -->
 <span style="font-family: Times New Roman;color:white"> <a href="musica"><u style="color: blue"><span style="color: white">Album</span></u></a> ¦ <a href="ep"><u style="color: blue;"><span style="color: white">Extended Play (EP)</span></u></a> ¦ <a href="canciones"><u style="color: blue"><span style="color: green">Canciones</span></u></a></span> 
  <hr>
@@ -405,4 +405,35 @@
  </main> 
 </body>
 <div id="footer"></div>
+ <style>
+  #goTopBtn {
+    position: fixed;
+    bottom: 5px;
+    right: 5px;
+    width: 5vw; /* Proporcional a la pantalla */
+    height: 5vw; /* Proporcional a la pantalla */
+    background-color: transparent;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.5vw; /* Proporcional a la pantalla */
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+#goTopBtn:hover {
+    border-color: black;
+}
+ </style>
+ <script>
+  function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+ </script>
+<button id="goTopBtn" onclick="scrollToTop()">Top ↑</button>
 </html>

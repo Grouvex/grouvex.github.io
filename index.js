@@ -4,9 +4,11 @@ window.addEventListener('load', function() {
     sol();
     leaf();
     nieve();
+    aniversario()
 googleTranslateElementInit()
 });
-
+
+
 function flower() {
   var today = new Date();
   var month = today.getMonth();
@@ -81,6 +83,26 @@ function nieve() {
       snowflake.style.opacity = Math.random();
       snowflake.style.transform = 'scale(' + Math.random() + ')';
       document.body.appendChild(snowflake);
+    }
+  }
+}
+
+function aniversario() {
+  var today = new Date();
+  var month = today.getMonth();
+  var day = today.getDate();
+
+  // Comprueba si es la ultima semana de julio (30 de julio - 7 de agosto)
+  if ((month == 7 && day >= 30) || (month == 8 && day <= 7)) {
+    for (var i = 0; i < 200; i++) {
+      var aniversario = document.createElement('div');
+      aniversario.className = 'aniversario';
+      aniversario.style.left = Math.random() * window.innerWidth + 'px';
+      aniversario.style.animationDuration = Math.random() * 3 + 2 + 's';
+      aniversario.style.animationDelay = Math.random() * 7 + 's';
+      aniversario.style.opacity = Math.random();
+      aniversario.style.transform = 'scale(' + Math.random() + ')';
+      document.body.appendChild(aniversario);
     }
   }
 }

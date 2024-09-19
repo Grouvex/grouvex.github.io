@@ -42,7 +42,19 @@
   border-radius: 50%;
   animation: fall linear infinite;
 }
-
+/*Aniversario*/
+.aniversario {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  background: conic-gradient(
+        from 90deg, #FF0000,  /* Rojo */ #FF7F00,  /* Naranja */ #FFFF00,  /* Amarillo */ #90EE90,  /* Verde claro */ #00FF00,  /* Verde */ #00FFFF,  /* Cyan */ #0000FF,  /* Azul */ #4B0082,  /* Índigo */ #800080   /* Violeta */
+      );
+  border-radius: 50%;
+  animation: fall linear infinite;
+}
 @keyframes fall {
   0% { top: 0px; 
    opacity: 1;}

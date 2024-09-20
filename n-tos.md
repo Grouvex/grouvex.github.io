@@ -42,9 +42,7 @@
         <p style="background: rgba(255, 255, 255, 0.5);font-size: 14px; margin: 0;color:black">Los <a href="https://grouvex.github.io/tos"><u style="color white">Términos de Servicio Oficiales</u></a> y las <a href="https://grouvex.github.io/pp"><u style="color white">Políticas de Privacidad Oficiales</u></a> se están actualizando. Puesto que es un cambio general y urgente, se dejará 1 semana entre la fecha que se finaliza de redactar y la fecha en la que entra en vigor, los <a href="https://grouvex.github.io/n-tos"><u style="color white">NUEVOS Términos de Servicio Oficiales</u></a> y las <a href="https://grouvex.github.io/n-pp"><u style="color white">NUEVAS Politicas de Privacidad Oficiales</u></a>.</p>
         <p style="background: rgba(255, 255, 255, 0.5);font-size: 14px; margin: 0;color:black">Debe tener en cuenta que actualmente, los <a href="https://grouvex.github.io/tos"><u style="color white">Términos de Servicio Oficiales</u></a> y las <a href="https://grouvex.github.io/pp"><u style="color white">Políticas de Privacidad Oficiales</u></a>, son las actuales y por tanto, los <a href="https://grouvex.github.io/n-tos"><u style="color white">NUEVOS Términos de Servicio Oficiales</u></a> y las <a href="https://grouvex.github.io/n-pp"><u style="color white">NUEVAS Politicas de Privacidad Oficiales</u></a> no son actualmente las que son validas.</p>
 <hr>
-<p style="background: rgba(255, 255, 255, 0.5);font-size: 10px;color:black;margin:0">La fecha oficial en la que entrará en vigor será: <n style="color:black"><span id="Vigor"></span></n></p>
 <p style="background: rgba(255, 255, 255, 0.5);font-size: 12px;color:black;margin:0">©Grouvex Studios</p>
- <script>const uTVigor = 1728230400; actualizarFechas(uTVigor, "Vigor");</script>
     </div> 
 </div>
 <main>

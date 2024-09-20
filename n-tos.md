@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <script src="jquery-3.5.1.min.js"></script>
  <script> 
     $(function(){
@@ -114,7 +113,7 @@
  </details>
    </section>
  </article>
- <article  id="Normativa_General_de_Modificación_de_los_Términos"></summary>
+ <article  id="Normativa_General_de_Modificación_de_los_Términos">
 <details>
    <summary href="#Normativa_General_de_Modificacion_de_los_Terminos"><h2>Normativa General de Modificación de los Términos</h2></summary>
 <section>
@@ -124,7 +123,10 @@ Esta normativa busca equilibrar la necesidad de actuar con prontitud ante situac
  </details>
 </section>
 </article>
- 
+</main>
+<div id="footer"></div>
+</body>
+</html>
 > [!NOTE]  
 > Highlights information that users should take into account, even when skimming.
 
@@ -139,7 +141,3 @@ Esta normativa busca equilibrar la necesidad de actuar con prontitud ante situac
 
 > [!CAUTION]
 > Negative potential consequences of an action.
-</main>
-<div id="footer"></div>
-</body>
-</html>

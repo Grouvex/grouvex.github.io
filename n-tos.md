@@ -83,8 +83,9 @@
     <li><p>No utilizar la comunidad para fines publicitarios</p></li>
     <li><p>Intentar mantener la conversación en los <span class="tooltip"><strong>temas</strong><span class="tooltiptext">Los temas relacionados actualmente con Grouvex Studios son: <n>la música y la animación con el sonido.</n></span></span> que estén con relación a Grouvex Studios</p></li>
 </ol>
+ </details> 
 </section>
-</details> 
+</details>
 </article>
 <article id="Derechos_y_Obligaciones_de_los_Equipos">
  <details>
@@ -99,8 +100,8 @@
     <li><p>Proteger los datos personales de los Usuarios de acuerdo con la política de privacidad de la comunidad y la normativa vigente en materia de protección de datos.</p></li>
     <li><p>Resolver cualquier duda, queja o reclamación que pueda surgir en relación con el uso de la comunidad.</p></li>
    </ol>
+ </details>
    </section>
-</details>
 <section id="Compromisos_de_los_Administradores"> 
 <details>
   <summary href="#Compromisos_de_los_Administradores"><h3>Compromisos de los Administradores</h3></summary>
@@ -110,6 +111,7 @@
     <li><p>No utilizar los datos personales de los Usuarios para fines distintos a los establecidos en la política de privacidad de la comunidad.</p></li>
     <li><p>No divulgar ni transferir los datos personales de los Usuarios a terceros sin su consentimiento expreso.</p></li>
     </ol>
+ </details>
    </section>
     </details>
  </article>
@@ -117,9 +119,11 @@
 <details>
    <summary href="#Normativa_General_de_Modificacion_de_los_Terminos"><h2>Normativa General de Modificación de los Términos</h2></summary>
 <section>
+ <details>
    <p>En virtud de la presente Normativa General de Modificación de los Términos, se establece que los reglamentos generales podrán entrar en vigor al día siguiente de su publicación oficial en caso de que se considere que su aplicación es de carácter urgente y de suma importancia para el interés común. En circunstancias normales, dichos reglamentos serán efectivos una semana después de su anuncio oficial, proporcionando así un período razonable para su conocimiento y adecuada implementación.
 Por otro lado, los reglamentos específicos de cada comunidad tendrán un tratamiento diferenciado en cuanto a su entrada en vigor. Si se determina que la aplicación de un reglamento comunitario es importante para atender a necesidades particulares o situaciones excepcionales, este podrá ser aplicable una semana después de su comunicación oficial. En caso contrario, si no se identifica una urgencia inmediata, el reglamento comunitario entrará en vigor tres semanas después de su publicación, garantizando tiempo suficiente para su difusión y adaptación por parte de los miembros de la comunidad.
 Esta normativa busca equilibrar la necesidad de actuar con prontitud ante situaciones que requieren una respuesta rápida, con el derecho de los individuos y entidades a estar debidamente informados sobre las reglas que afectarán su conducta y obligaciones. Se busca así fomentar un ambiente de transparencia y previsibilidad, elementos esenciales para la confianza y la estabilidad normativa.</p>
+  <details>
 </section>
  </details>
 </article>

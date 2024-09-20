@@ -126,8 +126,6 @@ Esta normativa busca equilibrar la necesidad de actuar con prontitud ante situac
   </details>
 </section>
  </details>
-> [!NOTE]  
-> Highlights information that users should take into account, even when skimming.
 </article>
 </main>
 <div id="footer"></div>

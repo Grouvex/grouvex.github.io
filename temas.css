@@ -547,6 +547,83 @@ aside.taylorswift {
     background-repeat: repeat;
 }
 
+/*Theme Pokemon*/
+/* Establece el fondo de toda la página a gris */
+p.pokemon {
+  color: rgb(255, 255, 255);
+  text-shadow: white;
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.pokemon {
+    height: 100%;
+    flex-direction: column;
+    margin: 0px;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
+    background-size: cover;
+    background-image: url(https://th.bing.com/th/id/R.3fbda316a14ddd3aab94262076b8e2a3?rik=3HhcUrtxNNsI0A&riu=http%3a%2f%2fwww.hdwallpaper.nu%2fwp-content%2fuploads%2f2015%2f10%2fstar_wars_wallpaper_4.jpg&ehk=8r8j1xWoA1oe3BDMRVfVZWe2PU2qyQqAMKTweqefYhk%3d&risl=&pid=ImgRaw&r=0);
+}
+/* Estilo para el contenido principal */
+main.pokemon {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin-top: 30px;
+    background-image: url(https://th.bing.com/th/id/OIP.93-XtZpSnUMUofVyqLMZ2gHaNK?rs=1&pid=ImgDetMain);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+h1.pokemon,h2.pokemon,h3.pokemon,h4.pokemon,h5.pokemon,h6.pokemon {
+  text-align: center;
+  color: white;
+  background-image: url(https://th.bing.com/th/id/OIP.q4khjJEMKqXHNeEcDFdfOAHaEK?rs=1&pid=ImgDetMain);
+ background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.pokemon {
+    justify-content: space-between;
+    display: flex;
+    padding: 10px;
+    background-image: url(https://th.bing.com/th/id/OIP.JSYCbRX-KusrVVSgeYcOpQHaEK?w=297&h=180&c=7&r=0&o=5&pid=1.7);
+   background-position: center;
+    background-size:cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.pokemon {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://www.bing.com/images/search?view=detailV2&ccid=fuVEJDb4&id=6FA59E0782516B07D5B28E2662C28DC39AF659EE&thid=OIP.fuVEJDb4frYyfLrAoB3T6AHaEK&mediaurl=https%3a%2f%2fwww.xtrafondos.com%2fwallpapers%2fpokemon-escarlata-y-purpura-11558.jpg&cdnurl=https%3a%2f%2fth.bing.com%2fth%2fid%2fR.7ee5442436f87eb6327cbac0a01dd3e8%3frik%3d7ln2msONwmImjg%26pid%3dImgRaw%26r%3d0&exph=2160&expw=3840&q=imagen+de+Pokemones+cesped+3000x3000x&simid=608049271278740722&FORM=IRPRST&ck=7799F7D4C64203B6A3ED2735A05F727B&selectedIndex=94&itb=0);
+   background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+section.pokemon {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://th.bing.com/th/id/OIP.P_LxOVsyJfQaDltcpeXPuwHaEs?w=261&h=180&c=7&r=0&o=5&pid=1.7);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+aside.pokemon {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://th.bing.com/th/id/OIP.RzVl-RnbVt3LC_VoLCWZMgHaEK?w=308&h=180&c=7&r=0&o=5&pid=1.7);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 /*Theme 6 Super Heroes*/
 p.superheroes {
   color: rgb(243, 255, 248);

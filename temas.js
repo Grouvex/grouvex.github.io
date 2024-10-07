@@ -41,6 +41,18 @@ function checkThemes() {
     } else {
         toggleThemeOption('naturaleza4', true);
     }
+    // Naturaleza 5
+    if (month == 5) {
+        toggleThemeOption('naturaleza5', false);
+    } else {
+        toggleThemeOption('naturaleza5', true);
+    }
+    // Naturaleza 6
+    if (month == 6) {
+        toggleThemeOption('naturaleza6', false);
+    } else {
+        toggleThemeOption('naturaleza6', true);
+    }
 // GStudios1
     if (true == true) {
         toggleThemeOption('gstudios1', false);
@@ -88,6 +100,14 @@ function checkThemes() {
     } else {
         toggleThemeOption('taylorswift', true);
     }
+    // Pokemon
+    const startPokemontWeek = new Date(date.getFullYear(), 2, 1);
+    const endPokemontWeek = new Date(date.getFullYear(), 11, 20);
+    if (date >= startPokemontWeek && date <= endPokemontWeek) {
+        toggleThemeOption('pokemon', false);
+    } else {
+        toggleThemeOption('pokemon', true);
+    }
 }
 
 function toggleThemeOption(theme, hide) {
@@ -111,7 +131,7 @@ themeSelect.addEventListener('change', function() {
 
     // Elimina las clases de las opciones antiguas
     elements.forEach(function(element) {
-        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'pokemon', 'httyd', 'gstudios1', 'gstudios2');
+        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'naturaleza5', 'naturaleza6', 'pokemon', 'httyd', 'gstudios1', 'gstudios2');
     });
 
     // Si la opción seleccionada no es "default", añade la clase de la opción seleccionada

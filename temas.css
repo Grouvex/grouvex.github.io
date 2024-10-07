@@ -701,6 +701,83 @@ aside.naturaleza1 {
     background-size: cover;
 }
 
+/*Theme 7 Naturaleza: Polos*/
+p.naturaleza1 {
+  color: rgb(255, 255, 255);
+  background: linear-gradient(transparent, rgb(0, 0, 0), transparent);
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.naturaleza2 {
+    height: 100%; /* Cambiado a 100vh para ocupar toda la altura de la ventana */
+    margin: 0; /* Elimina el margen predeterminado del body */
+    display: flex; /* Flexbox para alinear contenido si es necesario */
+    flex-direction: column; /* Mantiene la dirección del contenido */
+    font-family: Arial, sans-serif; 
+    background-image: url(https://th.bing.com/th/id/R.36c399a1906a4e753e49a04b69f1e8c5?rik=F6xkD%2brClFTZWA&pid=ImgRaw&r=0);
+    background-size: cover; /* Asegura que la imagen cubra todo el fondo */
+    background-position: center; /* Centra la imagen de fondo */
+}
+
+/* Estilo para el contenido principal */
+main.naturaleza2 {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin-top: 30px;
+    background-image: url(https://th.bing.com/th/id/R.d1d3096e631e5795571d48fbb5844beb?rik=ApzRZjkI516j2w&riu=http%3a%2f%2fconhecimentocientifico.r7.com%2fwp-content%2fuploads%2f2015%2f12%2ficeberg-a-la-vista.jpg&ehk=1akT2oEISjtKpQjxzsCduyt9wncwtFaAfTqQG5T%2fGRc%3d&risl=&pid=ImgRaw&r=0);
+    background-repeat: repeat;
+}
+h1.naturaleza2,h2.naturaleza2,h3.naturaleza2,h4.naturaleza2,h5.naturaleza2,h6.naturaleza2 {
+  text-align: center;
+  color: white;
+  background-image: url(https://th.bing.com/th/id/OIP.QPJQJLqTcrngDPFnC9PIYAHaEp?rs=1&pid=ImgDetMain);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.naturaleza2 {
+    justify-content: space-between;
+    display: flex;
+    padding: 10px;
+    background-image: url(https://th.bing.com/th/id/OIP.aoYdHlS-eY68KaN3ZqXipQHaFB?rs=1&pid=ImgDetMain);
+    background-position-y: -100px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.naturaleza2 {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://th.bing.com/th/id/R.b9b0c57168515141e7e5d60eee0cec82?rik=vb765zkcnB7u4Q&riu=http%3a%2f%2fculturafotografica.es%2fwp-content%2fuploads%2f2016%2f04%2faurora-boreal-portada.jpg&ehk=4ftYiAYhifM1CfHof%2fVAo6KRfp%2b8FPE2lHhGWCV4ees%3d&risl=&pid=ImgRaw&r=0);
+   background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+section.naturaleza2 {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://p0.pikist.com/photos/577/451/northern-lights-aurora-borealis-northern-night-sky-green-lights-phenomenon-astronomy-thumbnail.jpg);
+    background-size:cover;
+    background-repeat: no-repeat;
+}
+aside.naturaleza2 {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://www.banditdenuit.com/wp-content/uploads/2022/08/aurore-boreale-polaire.jpg);
+    background-position-y: -400px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 /*Theme Grouvex Studios 1*/
 p.gstudios1 {
   background-color: rgba(0, 0, 0, 0);
@@ -766,6 +843,80 @@ section.gstudios1 {
     background-repeat: no-repeat;
 }
 aside.gstudios1 {
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/*Theme Grouvex Studios 2*/
+p.gstudios2 {
+  background-color: rgba(0, 0, 0, 0);
+  color: rgb(255, 255, 255);
+  text-shadow: white;
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.gstudios2 {
+    height: 100%;
+    flex-direction: column;
+    margin: 0px;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
+    background-size: cover;
+    background-image: url(https://grouvex.github.io/port/The%20Night%20Sky.jpg);
+}
+/* Estilo para el contenido principal */
+main.gstudios2 {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin-top: 30px;
+    background-color: rgba(0, 0, 0, 0);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+h1.gstudios2,h2.gstudios2,h3.gstudios2,h4.gstudios2,h5.gstudios2,h6.gstudios2 {
+  text-align: center;
+  color: white;
+  background: linear-gradient(45deg, transparent,  yellow, red);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.gstudios2 {
+    justify-content: space-between;
+    background-color: rgba(0, 0, 0, 0);
+    display: flex;
+    padding: 10px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.gstudios2 {
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+section.gstudios2 {
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+aside.gstudios2 {
     background-color: rgba(0, 0, 0, 0);
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;

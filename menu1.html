@@ -1,6 +1,3 @@
-<script src="temas.js"></script>
-<script src="../temas.js"></script>
-<script src="../../temas.js"></script>
 <script>
 function redirigir() {
   var selector = document.getElementById('selector-idioma');
@@ -32,3 +29,40 @@ function redirigir() {
 <option value="gstudios1">Tema G.Studios: Si Fuera</option>
   <!-- Añade tantas opciones como diseños tengas -->
 </select></span>
+var themeSelect = document.getElementById('themeSelect');
+
+// Cuando se cambia el tema
+themeSelect.addEventListener('change', function() {
+    // Obtiene todos los elementos a los que se les aplicará el cambio de tema
+    var elements = document.querySelectorAll('p, body, main, mainTop, h1, h2, h3, h4, h5, h6, article, section, aside, panel');
+
+    // Elimina las clases de las opciones antiguas
+    elements.forEach(function(element) {
+        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'naturaleza5', 'naturaleza6', 'pokemon', 'httyd', 'gstudios1', 'gstudios2');
+    });
+
+    // Si la opción seleccionada no es "default", añade la clase de la opción seleccionada
+    if (this.value !== 'default') {
+        elements.forEach(function(element) {
+            element.classList.add(this.value);
+        }.bind(this));
+    }
+
+    // Guarda la selección del usuario en el almacenamiento local
+    localStorage.setItem('selectedTheme', this.value);
+});
+<script>
+// Cuando se carga la página
+window.addEventListener('load', function() {
+    // Obtiene la selección del usuario del almacenamiento local
+    var selectedTheme = localStorage.getItem('selectedTheme');
+
+    // Si hay una selección guardada y no es "default", aplica el tema seleccionado
+    if (selectedTheme && selectedTheme !== 'gstudios') {
+        var elements = document.querySelectorAll('p, body, main, mainTop, h1, h2, h3, h4, h5, h6, article, section, aside, panel');
+        elements.forEach(function(element) {
+            element.classList.add(selectedTheme);
+        });
+        themeSelect.value = selectedTheme; // Asegúrate de que el menú desplegable muestre el tema correcto
+    }
+});</script>

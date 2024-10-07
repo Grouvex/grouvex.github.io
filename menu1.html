@@ -30,6 +30,8 @@ function redirigir() {
   <option value="gstudios2">Tema G.Studios: The Night Sky</option>
   <!-- Añade tantas opciones como diseños tengas -->
 </select></span>
+
+<script>
 var themeSelect = document.getElementById('themeSelect');
 
 // Cuando se cambia el tema
@@ -52,7 +54,7 @@ themeSelect.addEventListener('change', function() {
     // Guarda la selección del usuario en el almacenamiento local
     localStorage.setItem('selectedTheme', this.value);
 });
-<script>
+
 // Cuando se carga la página
 window.addEventListener('load', function() {
     // Obtiene la selección del usuario del almacenamiento local

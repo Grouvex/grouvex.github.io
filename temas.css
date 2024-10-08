@@ -701,24 +701,6 @@ aside.superheroes {
     background-size: cover;
 }
 
-/*Theme 7 Naturaleza: Atardecer/Amanecer*/
-p.naturaleza1 {
-  color: rgb(255, 255, 255);
-  background: linear-gradient(transparent, rgb(0, 0, 0), transparent);
-  display: block;
-}
-/* Establece el fondo de toda la página a gris */
-body.naturaleza1 {
-    height: 100%; /* Cambiado a 100vh para ocupar toda la altura de la ventana */
-    margin: 0; /* Elimina el margen predeterminado del body */
-    display: flex; /* Flexbox para alinear contenido si es necesario */
-    flex-direction: column; /* Mantiene la dirección del contenido */
-    font-family: Arial, sans-serif; 
-    background-image: url(https://th.bing.com/th/id/R.33f8b44…?rik=A%2fDnI88HMj5p3Q&pid=ImgRaw&r=0);
-    background-size: cover; /* Asegura que la imagen cubra todo el fondo */
-    background-position: center; /* Centra la imagen de fondo */
-}
-
 /*Theme The Wild Robot*/
 /* Establece el fondo de toda la página a gris */
 p.thewildrobot {
@@ -796,6 +778,23 @@ aside.thewildrobot {
     background-repeat: no-repeat;
 }
 
+/*Theme 7 Naturaleza: Atardecer/Amanecer*/
+p.naturaleza1 {
+  color: rgb(255, 255, 255);
+  background: linear-gradient(transparent, rgb(0, 0, 0), transparent);
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.naturaleza1 {
+    height: 100%; /* Cambiado a 100vh para ocupar toda la altura de la ventana */
+    margin: 0; /* Elimina el margen predeterminado del body */
+    display: flex; /* Flexbox para alinear contenido si es necesario */
+    flex-direction: column; /* Mantiene la dirección del contenido */
+    font-family: Arial, sans-serif; 
+    background-image: url(https://th.bing.com/th/id/R.33f8b44…?rik=A%2fDnI88HMj5p3Q&pid=ImgRaw&r=0);
+    background-size: cover; /* Asegura que la imagen cubra todo el fondo */
+    background-position: center; /* Centra la imagen de fondo */
+}
 
 /* Estilo para el contenido principal */
 main.naturaleza1 {

@@ -75,8 +75,8 @@ function checkThemes() {
     }
 
 // HTTYD 
-    const startHTTYDWeek = new Date(date.getFullYear(), 4, 4);
-    const endHTTYDWeek = new Date(date.getFullYear(), 4, 14);
+    const startHTTYDWeek = new Date(date.getFullYear(), 2, 25);
+    const endHTTYDWeek = new Date(date.getFullYear(), 3, 1);
     if (date >= startHTTYDWeek && date <= endHTTYDWeek) {
         toggleThemeOption('httyd', false);
     } else {
@@ -101,8 +101,8 @@ function checkThemes() {
         toggleThemeOption('taylorswift', true);
     }
     // Pokemon
-    const startPokemontWeek = new Date(date.getFullYear(), 2, 21);
-    const endPokemontWeek = new Date(date.getFullYear(), 2, 27);
+    const startPokemontWeek = new Date(date.getFullYear(), 1, 21);
+    const endPokemontWeek = new Date(date.getFullYear(), 1, 27);
     if (date >= startPokemontWeek && date <= endPokemontWeek) {
         toggleThemeOption('pokemon', false);
     } else {
@@ -110,7 +110,7 @@ function checkThemes() {
     }
     // TheWildRobot
     const startTheWildRobotWeek = new Date(date.getFullYear(), 9, 27);
-    const endTheWildRobotWeek = new Date(date.getFullYear(), 10, 4);
+    const endTheWildRobotWeek = new Date(date.getFullYear(), 10, 18);
     if (date >= startTheWildRobotWeek && date <= endTheWildRobotWeek) {
         toggleThemeOption('thewildrobot', false);
     } else {

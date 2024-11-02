@@ -1329,12 +1329,6 @@ footer {
   flex-basis: calc(25% - 40px); /* 4 cajetines por fila */
   background: linear-gradient(0deg, transparent, rgb(0, 255, 179), rgb(0, 255, 42)); /* Fondo del texto */
 }
-.cajetin2 img {
-  margin-top: 0px;
-  max-width: 70%;
-  height: auto;
-  vertical-align: middle; /* Alineación vertical con el texto */
-}
 .cajetin-left-section img {
   max-width: 60%;
   height: auto;

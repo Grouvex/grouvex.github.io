@@ -1167,7 +1167,6 @@ footer {
   word-wrap: break-word;
   text-align: left;
   display: flex;
-  color: black;
   align-items: center;
 }
 .footer-text img{
@@ -1250,8 +1249,8 @@ footer {
   gap: 10px; /* Espacio entre los cajetines */
 }
 .cajetin {
-  widht: 90%;
-  max-widht: 300px;
+  width: 90%;
+  max-width: 300px;
   height: auto;
   /* Estilos para cada cajetín */
   padding-top: 0px;
@@ -1267,6 +1266,90 @@ footer {
   vertical-align: middle; /* Alineación vertical con el texto */
 }
 
+/* Cajetines2*/
+.cajetin-fechas2 {
+  background: transparent;
+  overflow-y: auto;
+  box-sizing: border-box;
+  text-align: left; 
+  word-wrap: break-word; 
+  max-width: 100%;  
+  color: black;
+  display: block;
+  margin-bottom: 10px;
+  opacity: .8;
+  font-size: 10px;
+}
+.cajetin-titulo2 {
+  background: transparent;
+  overflow-y: auto;
+  text-align: left;  
+  max-width: 100%;  
+  word-wrap: break-word;
+  color: white;
+  display: contents;
+  font-size: 15px;
+}
+.cajetin-description2 {
+  background: transparent;
+  overflow-y: auto;
+  text-align: left; 
+  word-wrap: break-word; 
+  max-width: 100%;  
+  color: white;
+  display: contents;
+  font-size: 10px;
+
+} 
+.cajetin-footer2 {
+  background: transparent;
+  overflow-y: auto;
+  text-align: left;  
+  max-width: 100%;  
+  color: white;
+  display: contents;
+  font-size: 8px;
+}
+.cajetines2 {
+  display: flex;
+  overflow-y: auto; /* Agrega una barra de desplazamiento vertical */
+  max-height: 800px;
+  width: 100%;
+  flex-wrap: wrap; /* Muestra los cajetines en varias filas */
+  gap: 10px; /* Espacio entre los cajetines */
+}
+.cajetin2 {
+  display: flex;
+  width: 90%;
+  max-width: 300px;
+  height: auto;
+  /* Estilos para cada cajetín */
+  padding-top: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  flex-basis: calc(25% - 40px); /* 4 cajetines por fila */
+  background: linear-gradient(0deg, transparent, cyan, blue); /* Fondo del texto */
+}
+.cajetin2 img {
+  margin-top: 0px;
+  max-width: 70%;
+  height: auto;
+  vertical-align: middle; /* Alineación vertical con el texto */
+}
+.cajetin-left-section img {
+  max-width: 60%;
+  height: auto;
+}
+.cajetin-right-section{
+  display: flexbox;
+  word-wrap: break-word;
+  text-align: left;
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 300px;
+  max-width: 100px;
+}
 
 .musica-section {
 display: flex;
@@ -1362,4 +1445,4 @@ footer {
   max-height: 30px; /* Máximo altura de 30px */
   margin: 5px; /* Margen de 5px para asegurar la separación */
  }
-} 
+}

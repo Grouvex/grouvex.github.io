@@ -1152,7 +1152,6 @@ aside.httyd {
     background-size: cover;
     background-repeat: no-repeat;
 }
-
 /* Estilo para el pie de página */
 footer {
     margin-top: 10px;
@@ -1328,7 +1327,7 @@ footer {
   padding-left: 10px;
   padding-right: 10px;
   flex-basis: calc(25% - 40px); /* 4 cajetines por fila */
-  background: linear-gradient(0deg, transparent, cyan, blue); /* Fondo del texto */
+  background: linear-gradient(0deg, transparent, rgb(0, 255, 179), rgb(0, 255, 42)); /* Fondo del texto */
 }
 .cajetin2 img {
   margin-top: 0px;

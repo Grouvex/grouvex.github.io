@@ -1,10 +1,4 @@
-<html>| <span><select id="selector-idioma" onchange="redirigir()" disabled>
-  <option value="Language" disabled selected>Language</option>
-  <option value="https://grouvex.github.io/es">Spanish</option>
-  <option value="https://grouvex.github.io/en">English | Updating</option>
-  <option value="https://grouvex.github.io/fr" disabled>Français | Upcoming</option>
-  <!-- Añade más opciones de idioma según sea necesario -->
-</select></span> | <span><select id="themeSelect" style="width:100%; background: rgba(0, 0, 0, 0.3">
+<html><span><select id="themeSelect" style="width:100%; background: rgba(0, 0, 0, 0.3">
   <option value="default">Temas</option>
   <option value="theme1">Tema 1: Color</option>
   <option value="theme2">Tema 2: Color</option>
@@ -36,7 +30,7 @@ themeSelect.addEventListener('change', function() {
 
     // Elimina las clases de las opciones antiguas
     elements.forEach(function(element) {
-        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'pokemon', 'thewildrobot', 'httyd', 'gstudios1', 'gstudios2');
+        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'pokemon', 'thewildrobot', 'httyd', 'gstudios1', 'gstudios2', 'gstudios3', 'gstudios4');
     });
 
     // Si la opción seleccionada no es "default", añade la clase de la opción seleccionada

@@ -132,7 +132,7 @@ themeSelect.addEventListener('change', function() {
 
     // Elimina las clases de las opciones antiguas
     elements.forEach(function(element) {
-        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'pokemon', 'thewildrobot', 'httyd', 'gstudios1', 'gstudios2', 'gstudios3');
+        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'pokemon', 'thewildrobot', 'httyd', 'gstudios1', 'gstudios2', 'gstudios3', 'gstudios4');
     });
 
     // Si la opción seleccionada no es "default", añade la clase de la opción seleccionada

@@ -1458,7 +1458,6 @@ footer {
   font-size: 8px;
 }
 .cajetines2 {
-  display: flex;
   overflow-y: auto; /* Agrega una barra de desplazamiento vertical */
   max-height: 800px;
   width: 100%;

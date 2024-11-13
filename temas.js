@@ -21,9 +21,7 @@ function checkThemes() {
         toggleThemeOption('naturaleza1', true);
     }
     // Naturaleza 2
-    const startNaturaleza2Week = new Date(date.getFullYear(), 8, 21);
-    const endNaturaleza2Week = new Date(date.getFullYear(), 2, 21);
-    if (date >= startNaturaleza2Week && date <= endNaturaleza2Week) {
+    if (month == 2) {
         toggleThemeOption('naturaleza2', false);
     } else {
         toggleThemeOption('naturaleza2', true);
@@ -43,17 +41,23 @@ function checkThemes() {
         toggleThemeOption('naturaleza4', true);
     }
 // GStudios1
-    if (true == true) {
+    if (month == 8) {
         toggleThemeOption('gstudios1', false);
     } else {
         toggleThemeOption('gstudios1', true);
     }
 // GStudios2
-    if (true == true) {
+    if (month == 0) {
         toggleThemeOption('gstudios2', false);
     } else {
         toggleThemeOption('gstudios2', true);
     }    
+    // GStudios3
+    if (month >= 11 && month <= 1) {
+        toggleThemeOption('gstudios3', false);
+    } else {
+        toggleThemeOption('gstudios3', true);
+    }   
     // Star Wars
     const startStarWarsWeek = new Date(date.getFullYear(), 4, 4);
     const endStarWarsWeek = new Date(date.getFullYear(), 4, 14);
@@ -82,8 +86,8 @@ function checkThemes() {
     }
 
     // Taylor Swift
-    const startTaylorSwiftWeek = new Date(date.getFullYear(), 10, 13);
-    const endTaylorSwiftWeek = new Date(date.getFullYear(), 10, 23);
+    const startTaylorSwiftWeek = new Date(date.getFullYear(), 11, 13);
+    const endTaylorSwiftWeek = new Date(date.getFullYear(), 11, 23);
     if (date >= startTaylorSwiftWeek && date <= endTaylorSwiftWeek) {
         toggleThemeOption('taylorswift', false);
     } else {
@@ -128,7 +132,7 @@ themeSelect.addEventListener('change', function() {
 
     // Elimina las clases de las opciones antiguas
     elements.forEach(function(element) {
-        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'pokemon', 'thewildrobot', 'httyd', 'gstudios1', 'gstudios2');
+        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'pokemon', 'thewildrobot', 'httyd', 'gstudios1', 'gstudios2', 'gstudios3', 'gstudios4');
     });
 
     // Si la opción seleccionada no es "default", añade la clase de la opción seleccionada

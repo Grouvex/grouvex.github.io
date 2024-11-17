@@ -58,6 +58,12 @@ function checkThemes() {
     } else {
         toggleThemeOption('gstudios3', true);
     }   
+    // GStudios4
+    if (month >= 11 && month <= 1) {
+        toggleThemeOption('gstudios4', false);
+    } else {
+        toggleThemeOption('gstudios4', true);
+    }   
     // Star Wars
     const startStarWarsWeek = new Date(date.getFullYear(), 4, 4);
     const endStarWarsWeek = new Date(date.getFullYear(), 4, 14);

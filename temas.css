@@ -1413,82 +1413,39 @@ footer {
   vertical-align: middle; /* Alineación vertical con el texto */
 }
 
-/* Cajetines2*/
-.cajetin-fechas2 {
-  background: transparent;
-  overflow-y: auto;
-  box-sizing: border-box;
-  text-align: left; 
-  word-wrap: break-word; 
-  max-width: 100%;  
-  color: black;
-  display: block;
-  margin-bottom: 10px;
-  opacity: .8;
-  font-size: 10px;
-}
-.cajetin-titulo2 {
-  background: transparent;
-  overflow-y: auto;
-  text-align: left;  
-  max-width: 100%;  
-  word-wrap: break-word;
-  color: white;
-  display: contents;
-  font-size: 15px;
-}
-.cajetin-description2 {
-  background: transparent;
-  overflow-y: auto;
-  text-align: left; 
-  word-wrap: break-word; 
-  max-width: 100%;  
-  color: white;
-  display: contents;
-  font-size: 10px;
-
-} 
-.cajetin-footer2 {
-  background: transparent;
-  overflow-y: auto;
-  text-align: left;  
-  max-width: 100%;  
-  color: white;
-  display: contents;
-  font-size: 8px;
-}
-.cajetines2 {
+.tarjetas{
+  display: flex;
   overflow-y: auto; /* Agrega una barra de desplazamiento vertical */
-  max-height: 800px;
+  max-height: 200px;
   width: 100%;
   flex-wrap: wrap; /* Muestra los cajetines en varias filas */
   gap: 10px; /* Espacio entre los cajetines */
-}
-.cajetin2 {
-  width: 90%;
-  max-width: 300px;
-  height: auto;
-  /* Estilos para cada cajetín */
-  padding-top: 0px;
+    }
+    .tarjeta { 
+      display: flex; 
+      align-items: center; 
+      border-radius: 10px; 
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+      margin: 20px; 
+      padding: 20px; 
+      width: 90%;
+      height: auto;
+      width: 300px; 
+      padding-top: 0px;
   padding-left: 10px;
   padding-right: 10px;
   flex-basis: calc(25% - 40px); /* 4 cajetines por fila */
-  background: linear-gradient(0deg, transparent, rgb(0, 255, 179), rgb(0, 255, 42)); /* Fondo del texto */
-}
-.cajetin-left-section img {
-  max-width: 60%;
-  height: auto;
-}
-.cajetin-right-section{
-  display: flexbox;
-  word-wrap: break-word;
-  text-align: left;
-  flex: 1;
-  overflow-x: auto;
-  overflow-y: auto;
-  max-height: 300px;
-  max-width: 100px;
-}
+    }
+    .tarjeta img { 
+      border-radius: 50%; 
+      width: 50px; 
+      height: 50px; 
+      object-fit: cover; 
+      margin-right: 20px; 
+    }
+    .tarjeta h2 { margin: 0 0 5px; }
+    .tarjeta p { margin: 0 0 2.5px; color: #555; }
+    .tarjeta footer { font-size: 0.7em; color: #888; }
 
 .musica-section {
 display: flex;

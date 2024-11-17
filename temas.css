@@ -1465,7 +1465,6 @@ footer {
   gap: 10px; /* Espacio entre los cajetines */
 }
 .cajetin2 {
-  display: flex;
   width: 90%;
   max-width: 300px;
   height: auto;

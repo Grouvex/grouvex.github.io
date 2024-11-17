@@ -53,13 +53,13 @@ function checkThemes() {
         toggleThemeOption('gstudios2', true);
     }    
     // GStudios3
-    if (month >= 11 && month <= 1) {
+    if (month == 11 ) {
         toggleThemeOption('gstudios3', false);
     } else {
         toggleThemeOption('gstudios3', true);
     }   
     // GStudios4
-    if (month >= 11 && month <= 1) {
+    if (month == 10 ) {
         toggleThemeOption('gstudios4', false);
     } else {
         toggleThemeOption('gstudios4', true);

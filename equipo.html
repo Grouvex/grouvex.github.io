@@ -40,6 +40,41 @@ $(function(){
 <article>
  <h1>Grouvex Studios</h1>
  <!--Texto -->
+ <style>
+ .tarjetas{
+  display: flex;
+  overflow-y: auto; /* Agrega una barra de desplazamiento vertical */
+  max-height: 200px;
+  width: 100%;
+  flex-wrap: wrap; /* Muestra los cajetines en varias filas */
+  gap: 10px; /* Espacio entre los cajetines */
+    }
+    .tarjeta { 
+      display: flex; 
+      align-items: center; 
+      border-radius: 10px; 
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+      margin: 20px; 
+      padding: 20px; 
+      width: 90%;
+      height: auto;
+      width: 300px; 
+      padding-top: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  flex-basis: calc(25% - 40px); /* 4 cajetines por fila */
+    }
+    .tarjeta img { 
+      border-radius: 50%; 
+      width: 50px; 
+      height: 50px; 
+      object-fit: cover; 
+      margin-right: 20px; 
+    }
+    .tarjeta h2 { margin: 0 0 5px; }
+    .tarjeta p { margin: 0 0 2.5px; color: #555; }
+    .tarjeta footer { font-size: 0.7em; color: #888; }
+</style>
   <section id="Intro">
    <a href="#Intro"><h2>Introducción</h2></a>
     <p>Grouvex Studios es un grupo que se encarga de crear videos y también un <n>sello discográfico</n></p>

@@ -1417,6 +1417,7 @@ footer {
   display: flex;
   overflow-y: auto; /* Agrega una barra de desplazamiento vertical */
   max-height: 200px;
+  box-shadow: 0 2px 5px rgb(37,44,247);
   width: 100%;
   flex-wrap: wrap; /* Muestra los cajetines en varias filas */
   gap: 10px; /* Espacio entre los cajetines */
@@ -1425,7 +1426,7 @@ footer {
       display: flex; 
       align-items: center; 
       border-radius: 10px; 
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+      box-shadow: 0 2px 5px rgb(51,177,215);
       margin: 20px; 
       padding: 20px; 
       width: 90%;

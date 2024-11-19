@@ -119,7 +119,7 @@
     <script>
         let ordenarAscendente = true;
         const palabrasBloqueadas = ["malaPalabra1", "malaPalabra2", "malaPalabra3"];
-        const adminEmail = "grouvex@gmail.com"; // Reemplázalo con tu propio email
+        const adminEmail = "gestor@grouvex.com"; // Reemplázalo con tu propio email
         let verificationCode = "";
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -160,7 +160,7 @@
                 const date = new Date().toLocaleString();
                 const commentSection = document.getElementById(section + 'Comments');
                 const commentPara = document.createElement('p');
-                commentPara.innerHTML = `<strong>${date}:</strong> ${commentText} <span class="delete-button" onclick="requestDeleteComment(this)">Eliminar</span>`;
+                commentPara.innerHTML = `<strong>${date}:</strong> ${commentText} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
                 commentPara.dataset.timestamp = new Date().getTime();
                 commentSection.appendChild(commentPara);
                 guardarComentario(section, commentPara.innerHTML, commentPara.dataset.timestamp);
@@ -220,7 +220,7 @@
             return CryptoJS.MD5(value).toString();
         }
 
-        function requestPasswordChange() { const email = prompt("Ingrese su correo electrónico para recibir un código de verificación:"); if (email === adminEmail) { verificationCode = Math.floor(100000 + Math.random() * 900000).toString(); alert(`Se ha enviado un código de verificación a ${adminEmail}.`); const userCode = prompt("Ingrese el código de verificación recibido:"); if (userCode === verificationCode) { const newPassword = prompt("Ingrese su nueva contraseña:"); const newHash = md5(newPassword); localStorage.setItem('adminHash', newHash); alert("La contraseña ha sido cambiada exitosamente."); } else { alert("Código de verificación incorrecto."); } } else { alert("Correo electrónico no reconocido."); }}
+        function requestPasswordChange() { const email = prompt("Ingrese su correo electrónico para recibir un código de verificación:"); if (email === adminEmail) { verificationCode = Math.floor(100000 + Math.random() * 900000 + 5).toString(); alert(`El código de verificación es ${verificationCode}.`); const userCode = prompt("Ingrese el código de verificación recibido:"); if (userCode === verificationCode) { const newPassword = prompt("Ingrese su nueva contraseña:"); const newHash = md5(newPassword); localStorage.setItem('adminHash', newHash); alert("La contraseña ha sido cambiada exitosamente."); } else { alert("Código de verificación incorrecto."); } } else { alert("Correo electrónico no reconocido."); }}
 </script>
 </body>
 </html>

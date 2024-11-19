@@ -52,7 +52,6 @@
             display: block;
         }
         .comment-form, .comments-section, .config-section {
-            background-color: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -104,15 +103,15 @@
         </div>
     </section>
 
-    <section id="deseos2024">
+    <section id="deseos">
         <div class="comment-form">
             <h2>Deseos 2024</h2>
-            <textarea id="deseos2024Input" rows="4" placeholder="Escribe tu comentario aquí..."></textarea><br>
-            <button onclick="addComment('deseos2024')">Enviar</button>
-            <button class="orden-button" onclick="ordenarComentarios('deseos2024')">Ordenar</button>
+            <textarea id="deseoInput" rows="4" placeholder="Escribe tu sugerencia aquí..."></textarea><br>
+            <button onclick="addComment('deseos')">Enviar</button>
+            <button class="orden-button" onclick="ordenarComentarios('deseos')">Ordenar</button>
         </div>
-        <div class="comments-section" id="deseos2024Comments">
-            <h3>Comentarios:</h3>
+        <div class="comments-section" id="deseosComments">
+            <h3>Deseos 2024:</h3>
         </div>
     </section>
     
@@ -164,6 +163,7 @@
             cargarComentarios('sugerencias');
             cargarComentarios('comentarios');
             cargarComentarios('otros');
+            cargarComentarios('deseos');
         });
 
         function showSection(sectionId) {

@@ -107,15 +107,23 @@
         </div>
     </section>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
     <script>
         let ordenarAscendente = true;
         const palabrasBloqueadas = ["malaPalabra1", "malaPalabra2", "malaPalabra3"];
-        const adminPassword = "TuContraseñaSegura"; // Reemplázala con tu propia contraseña segura
-        const adminHash = md5(adminPassword); // Generamos el hash de la contraseña y lo almacenamos
-        
+        const adminPassword = "TuContraseñaSegura"; 
+        const adminHash = md5(adminPassword);
+
         if (!localStorage.getItem('adminHash')) {
             localStorage.setItem('adminHash', adminHash);
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarComentarios('reportes');
+            cargarComentarios('sugerencias');
+            cargarComentarios('comentarios');
+            cargarComentarios('otros');
+        });
 
         function showSection(sectionId) {
             document.querySelectorAll('section').forEach(section => {
@@ -146,6 +154,7 @@
                 commentPara.innerHTML = `<strong>${date}:</strong> ${commentText} <span class="delete-button" onclick="requestDeleteComment(this)">Eliminar</span>`;
                 commentPara.dataset.timestamp = new Date().getTime();
                 commentSection.appendChild(commentPara);
+                guardarComentario(section, commentPara.innerHTML, commentPara.dataset.timestamp);
                 input.value = '';
                 ordenarComentarios(section);
             }
@@ -166,21 +175,41 @@
         function requestDeleteComment(element) {
             const password = prompt("Ingrese la contraseña de administrador para eliminar este comentario:");
             if (md5(password) === localStorage.getItem('adminHash')) {
+                const commentText = element.parentElement.innerHTML;
+                const sectionId = element.parentElement.parentElement.id.replace('Comments', '');
                 element.parentElement.remove();
+                eliminarComentario(sectionId, commentText);
             } else {
                 alert("Contraseña incorrecta.");
             }
         }
 
-        // Función MD5 para generar hashes
+        function guardarComentario(section, commentHTML, timestamp) {
+            const comments = JSON.parse(localStorage.getItem(`${section}Comments`)) || [];
+            comments.push({ commentHTML, timestamp });
+            localStorage.setItem(`${section}Comments`, JSON.stringify(comments));
+        }
+
+        function cargarComentarios(section) {
+            const comments = JSON.parse(localStorage.getItem(`${section}Comments`)) || [];
+            const commentSection = document.getElementById(`${section}Comments`);
+            comments.forEach(comment => {
+                const commentPara = document.createElement('p');
+                commentPara.innerHTML = comment.commentHTML;
+                commentPara.dataset.timestamp = comment.timestamp;
+                commentSection.appendChild(commentPara);
+            });
+        }
+
+        function eliminarComentario(section, commentHTML) {
+            let comments = JSON.parse(localStorage.getItem(`${section}Comments`)) || [];
+            comments = comments.filter(comment => comment.commentHTML !== commentHTML);
+            localStorage.setItem(`${section}Comments`, JSON.stringify(comments));
+        }
+
         function md5(value) {
             return CryptoJS.MD5(value).toString();
         }
-
-        // Añadimos el script de CryptoJS para la función md5
-        const script = document.createElement('script');
-        script.src = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js";
-        document.head.appendChild(script);
     </script>
 </body>
 </html>

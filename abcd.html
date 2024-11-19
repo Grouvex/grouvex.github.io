@@ -220,8 +220,4 @@
             return CryptoJS.MD5(value).toString();
         }
 
-        function requestPasswordChange() {
-            const email = prompt("Ingrese su correo electrónico para recibir un código de verificación:");
-            if (email === adminEmail) {
-                verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-                alert(`Se ha[_{{{CITATION{{{_1{](https://github.com/la9una/web/tree/ba1073ae044ebb7b538a3b13f0f9598f7c410bb6/docs%2Fbootstrap%2Falignci.md)
+        function requestPasswordChange() { const email = prompt("Ingrese su correo electrónico para recibir un código de verificación:"); if (email === adminEmail) { verificationCode = Math.floor(100000 + Math.random() * 900000).toString(); alert(`Se ha enviado un código de verificación a ${adminEmail}.`); const userCode = prompt("Ingrese el código de verificación recibido:"); if (userCode === verificationCode) { const newPassword = prompt("Ingrese su nueva contraseña:"); const newHash = md5(newPassword); localStorage.setItem('adminHash', newHash); alert("La contraseña ha sido cambiada exitosamente."); } else { alert("Código de verificación incorrecto."); } } else { alert("Correo electrónico no reconocido."); }

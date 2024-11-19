@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comentarios de Usuarios</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        nav {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: blue;
+            cursor: pointer;
+        }
+        section {
+            display: none;
+        }
+        section.active {
+            display: block;
+        }
+        .comment-form, .comments-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .comments-section p {
+            margin: 10px 0;
+        }
+        .orden-button {
+            margin-top: 10px;
+        }
+        .delete-button {
+            margin-left: 10px;
+            color: red;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Comentarios de Usuarios</h1>
+    <nav>
+        <a onclick="showSection('reportes')">Reportes</a>
+        <a onclick="showSection('sugerencias')">Sugerencias</a>
+        <a onclick="showSection('comentarios')">Comentarios</a>
+        <a onclick="showSection('otros')">Otros</a>
+    </nav>
+
+    <section id="reportes" class="active">
+        <div class="comment-form">
+            <h2>Reportes a la página web</h2>
+            <textarea id="reporteInput" rows="4" placeholder="Escribe tu reporte aquí..."></textarea><br>
+            <button onclick="addComment('reportes')">Enviar</button>
+            <button class="orden-button" onclick="ordenarComentarios('reportes')">Ordenar</button>
+        </div>
+        <div class="comments-section" id="reportesComments">
+            <h3>Reportes:</h3>
+        </div>
+    </section>
+
+    <section id="sugerencias">
+        <div class="comment-form">
+            <h2>Sugerencias</h2>
+            <textarea id="sugerenciaInput" rows="4" placeholder="Escribe tu sugerencia aquí..."></textarea><br>
+            <button onclick="addComment('sugerencias')">Enviar</button>
+            <button class="orden-button" onclick="ordenarComentarios('sugerencias')">Ordenar</button>
+        </div>
+        <div class="comments-section" id="sugerenciasComments">
+            <h3>Sugerencias:</h3>
+        </div>
+    </section>
+
+    <section id="comentarios">
+        <div class="comment-form">
+            <h2>Comentarios</h2>
+            <textarea id="comentarioInput" rows="4" placeholder="Escribe tu comentario aquí..."></textarea><br>
+            <button onclick="addComment('comentarios')">Enviar</button>
+            <button class="orden-button" onclick="ordenarComentarios('comentarios')">Ordenar</button>
+        </div>
+        <div class="comments-section" id="comentariosComments">
+            <h3>Comentarios:</h3>
+        </div>
+    </section>
+
+    <section id="otros">
+        <div class="comment-form">
+            <h2>Otros</h2>
+            <textarea id="otroInput" rows="4" placeholder="Escribe aquí..."></textarea><br>
+            <button onclick="addComment('otros')">Enviar</button>
+            <button class="orden-button" onclick="ordenarComentarios('otros')">Ordenar</button>
+        </div>
+        <div class="comments-section" id="otrosComments">
+            <h3>Otros:</h3>
+        </div>
+    </section>
+
+    <script>
+        let ordenarAscendente = true;
+        const palabrasBloqueadas = ["malaPalabra1", "malaPalabra2", "malaPalabra3"];
+        const adminPassword = "TuContraseñaSegura"; // Reemplázala con tu propia contraseña segura
+        const adminHash = md5(adminPassword); // Generamos el hash de la contraseña y lo almacenamos
+        
+        if (!localStorage.getItem('adminHash')) {
+            localStorage.setItem('adminHash', adminHash);
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        function containsBlockedWords(text) {
+            return palabrasBloqueadas.some(palabra => text.includes(palabra));
+        }
+
+        function addComment(section) {
+            const inputId = section.slice(0, -1) + 'Input';
+            const input = document.getElementById(inputId);
+            const commentText = input.value.trim();
+
+            if (containsBlockedWords(commentText) || commentText.includes("http")) {
+                alert("El comentario contiene palabras bloqueadas o enlaces.");
+                input.value = '';
+                return;
+            }
+
+            if (commentText) {
+                const date = new Date().toLocaleString();
+                const commentSection = document.getElementById(section + 'Comments');
+                const commentPara = document.createElement('p');
+                commentPara.innerHTML = `<strong>${date}:</strong> ${commentText} <span class="delete-button" onclick="requestDeleteComment(this)">Eliminar</span>`;
+                commentPara.dataset.timestamp = new Date().getTime();
+                commentSection.appendChild(commentPara);
+                input.value = '';
+                ordenarComentarios(section);
+            }
+        }
+
+        function ordenarComentarios(section) {
+            const commentSection = document.getElementById(section + 'Comments');
+            const comments = Array.from(commentSection.querySelectorAll('p'));
+            comments.sort((a, b) => {
+                const aTime = parseInt(a.dataset.timestamp);
+                const bTime = parseInt(b.dataset.timestamp);
+                return ordenarAscendente ? bTime - aTime : aTime - bTime;
+            });
+            comments.forEach(comment => commentSection.appendChild(comment));
+            ordenarAscendente = !ordenarAscendente;
+        }
+
+        function requestDeleteComment(element) {
+            const password = prompt("Ingrese la contraseña de administrador para eliminar este comentario:");
+            if (md5(password) === localStorage.getItem('adminHash')) {
+                element.parentElement.remove();
+            } else {
+                alert("Contraseña incorrecta.");
+            }
+        }
+
+        // Función MD5 para generar hashes
+        function md5(value) {
+            return CryptoJS.MD5(value).toString();
+        }
+
+        // Añadimos el script de CryptoJS para la función md5
+        const script = document.createElement('script');
+        script.src = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js";
+        document.head.appendChild(script);
+    </script>
+</body>
+</html>

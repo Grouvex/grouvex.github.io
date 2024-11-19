@@ -30,7 +30,7 @@
         section.active {
             display: block;
         }
-        .comment-form, .comments-section {
+        .comment-form, .comments-section, .config-section {
             background-color: white;
             padding: 20px;
             border-radius: 10px;
@@ -109,7 +109,7 @@
     </section>
 
     <section id="configuracion">
-        <div class="comment-form">
+        <div class="config-section">
             <h2>Configuración</h2>
             <button onclick="requestPasswordChange()">Cambiar Contraseña</button>
         </div>
@@ -120,6 +120,7 @@
         let ordenarAscendente = true;
         const palabrasBloqueadas = ["malaPalabra1", "malaPalabra2", "malaPalabra3"];
         const adminEmail = "tuemail@ejemplo.com"; // Reemplázalo con tu propio email
+        let verificationCode = "";
 
         document.addEventListener('DOMContentLoaded', () => {
             if (!localStorage.getItem('adminHash')) {
@@ -222,4 +223,5 @@
         function requestPasswordChange() {
             const email = prompt("Ingrese su correo electrónico para recibir un código de verificación:");
             if (email === adminEmail) {
-               [_{{{CITATION{{{_1{](https://github.com/la9una/web/tree/ba1073ae044ebb7b538a3b13f0f9598f7c410bb6/docs%2Fbootstrap%2Falignci.md)
+                verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+                alert(`Se ha[_{{{CITATION{{{_1{](https://github.com/la9una/web/tree/ba1073ae044ebb7b538a3b13f0f9598f7c410bb6/docs%2Fbootstrap%2Falignci.md)

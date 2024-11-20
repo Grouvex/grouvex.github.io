@@ -96,11 +96,11 @@
     </style>
     <h1>Comentarios de Usuarios</h1>
     <nav>
-        <a onclick="showSection('reportes')">Reportes en la Web</a>
-        <a onclick="showSection('sugerencias')">Sugerencias</a>
-        <a onclick="showSection('comentarios')">Comentarios</a>
-        <a onclick="showSection('deseos2024')">Deseos 2024</a>
-        <a onclick="showSection('configuracion')">Configuración</a>
+      <a onclick="showSection('reportes')">Reportes en la Web</a>
+      <a onclick="showSection('configuracion')">Configuración</a>
+      <a onclick="showSection('deseos')">Deseos para 2024</a>
+      <a onclick="showSection('comentarios')">Comentarios</a>
+      <a onclick="showSection('sugerencias')">Sugerencias</a>
     </nav>
 
     <section id="reportes" class="active">
@@ -156,173 +156,144 @@
     </section>
 
     <section id="configuracion">
-        <div class="config-section">
-            <h2>Configuración</h2>
-            <button onclick="requestPasswordChange()">Cambiar Contraseña</button>
-        </div>
+      <div class="config-section">
+        <h2>Configuración</h2>
+        <button onclick="requestPasswordChange()">Cambiar Contraseña</button>
+      </div>
     </section>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
     <script>
-        var firebaseConfig = { apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
-         authDomain: "grouvex-studios.firebaseapp.com",
-         projectId: "grouvex-studios",
-         storageBucket: "grouvex-studios.firebasestorage.app",
-         messagingSenderId: "1070842606062",
-         appId: "1:1070842606062:web:5d887863048fd100b49eff",
-         measurementId: "G-75BR8D2CR3"
-        };
-        firebase.initializeApp(firebaseConfig);
-        var database = firebase.database();
+      let ordenarAscendente = true;
+      const palabrasBloqueadas = ["malaPalabra1", "malaPalabra2", "malaPalabra3"];
+      const adminEmail = "gestor@grouvex.com";
+      let verificationCode = "";
 
-        let ordenarAscendente = true;
-        const palabrasBloqueadas = ["malaPalabra1", "malaPalabra2", "malaPalabra3"];
-        const adminEmail = "gestor@grouvex.com"; // Reemplázalo con tu propio email
-        let verificationCode = "";
+      document.addEventListener('DOMContentLoaded', () => {
+        cargarComentarios('reportes');
+        cargarComentarios('sugerencias');
+        cargarComentarios('comentarios');
+        cargarComentarios('deseos');
+      });
 
-        document.addEventListener('DOMContentLoaded', () => {
-            cargarComentarios('reportes');
-            cargarComentarios('sugerencias');
-            cargarComentarios('comentarios');
-            cargarComentarios('deseos2024');
+      function showSection(sectionId) {
+        document.querySelectorAll('section').forEach(section => {
+          section.classList.remove('active');
         });
+        document.getElementById(sectionId).classList.add('active');
+      }
 
-        function showSection(sectionId) {
-            document.querySelectorAll('section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.getElementById(sectionId).classList.add('active');
+      function containsBlockedWords(text) {
+        return palabrasBloqueadas.some(palabra => text.includes(palabra));
+      }
+
+      function addComment(section, nameInputId) {
+        const nameInput = document.getElementById(nameInputId).value.trim();
+        const input = document.getElementById(section.slice(0, -1) + 'Input').value.trim();
+        const nameText = nameInput || "Anónimo";
+        const commentText = input.trim();
+
+        if (containsBlockedWords(commentText) || commentText.includes("http")) {
+          alert("El comentario contiene palabras bloqueadas o enlaces.");
+          document.getElementById(section.slice(0, -1) + 'Input').value = '';
+          return;
         }
 
-        function containsBlockedWords(text) {
-            return palabrasBloqueadas.some(palabra => text.includes(palabra));
+        if (commentText) {
+          const date = new Date().toLocaleString();
+          const timestamp = new Date().getTime();
+          const commentSection = document.getElementById(section + 'Comments');
+          const commentPara = document.createElement('p');
+          commentPara.innerHTML = `<strong>${date} - ${nameText}:</strong> ${commentText} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
+          commentPara.dataset.timestamp = timestamp;
+          commentSection.appendChild(commentPara);
+
+          // Guardar comentario en Firebase
+          guardarComentarioEnServidor(section, nameText, commentText, timestamp);
+          document.getElementById(section.slice(0, -1) + 'Input').value = '';
+          document.getElementById(nameInputId).value = '';
+          ordenarComentarios(section);
         }
+      }
 
-        function addComment(section, nameInputId) {
-            const nameInput = document.getElementById(nameInputId).value.trim();
-            const input = document.getElementById(section.slice(0, -1) + 'Input').value.trim();
-            const nameText = nameInput || "Anónimo";
-            const commentText = input.trim();
+      function ordenarComentarios(section) {
+    const commentSection = document.getElementById(section + 'Comments');
+    const comments = Array.from(commentSection.querySelectorAll('p'));
+    comments.sort((a, b) => {
+        const aTime = parseInt(a.dataset.timestamp);
+        const bTime = parseInt(b.dataset.timestamp);
+        return ordenarAscendente ? bTime - aTime : aTime - bTime;
+    });
+    comments.forEach(comment => commentSection.appendChild(comment));
+    ordenarAscendente = !ordenarAscendente;
+}
 
-            if (containsBlockedWords(commentText) || commentText.includes("http")) {
-                alert("El comentario contiene palabras bloqueadas o enlaces.");
-                document.getElementById(section.slice(0, -1) + 'Input').value = '';
-                return;
-            }
+function requestDeleteComment(element) {
+    const password = prompt("Ingrese la contraseña de administrador para eliminar este comentario:");
+    if (md5(password) === localStorage.getItem('adminHash')) {
+        const commentText = element.parentElement.innerHTML;
+        const sectionId = element.parentElement.parentElement.id.replace('Comments', '');
+        element.parentElement.remove();
+        eliminarComentario(sectionId, commentText);
+    } else {
+        alert("Contraseña incorrecta.");
+    }
+}
 
-            if (commentText) {
-                const date = new Date().toLocaleString();
-                const timestamp = new Date().getTime();
-                const commentSection = document.getElementById(section + 'Comments');
+function guardarComentarioEnServidor(section, name, comment, timestamp) {
+    const newCommentRef = database.ref('comments/' + section).push();
+    newCommentRef.set({
+        name: name,
+        comment: comment,
+        timestamp: timestamp
+    });
+}
+
+function cargarComentarios(section) {
+    const commentSection = document.getElementById(`${section}Comments`);
+    database.ref('comments/' + section).once('value', (snapshot) => {
+        const comments = snapshot.val();
+        if (comments) {
+            for (let id in comments) {
                 const commentPara = document.createElement('p');
-                commentPara.innerHTML = `<strong>${date} - ${nameText}:</strong> ${commentText} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
-                commentPara.dataset.timestamp = timestamp;
+                commentPara.innerHTML = `<strong>${new Date(comments[id].timestamp).toLocaleString()} - ${comments[id].name}:</strong> ${comments[id].comment} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
+                commentPara.dataset.timestamp = comments[id].timestamp;
                 commentSection.appendChild(commentPara);
-
-                // Guardar comentario en Firebase
-                guardarComentarioEnServidor(section, nameText, commentText, timestamp);
-                document.getElementById(section.slice(0, -1) + 'Input').value = '';
-                document.getElementById(nameInputId).value = '';
-                ordenarComentarios(section);
             }
-        }
-
-        function ordenarComentarios(section) {
-            const commentSection = document.getElementById(section + 'Comments');
-            const comments = Array.from(commentSection.querySelectorAll('p'));
-            comments.sort((a, b) => {
-                const aTime = parseInt(a.dataset.timestamp);
-                const bTime = parseInt(b.dataset.timestamp);
-                return ordenarAscendente ? bTime - aTime : aTime - bTime;
-            });
-            comments.forEach(comment => commentSection.appendChild(comment));
-            ordenarAscendente = !ordenarAscendente;
-        }
-
-        function requestDeleteComment(element) {
-            const password = prompt("Ingrese la contraseña de administrador para eliminar este comentario:");
-            if (md5(password) === localStorage.getItem('adminHash')) {
-                const commentText = element.parentElement.innerHTML;
-                const sectionId = element.parentElement.parentElement.id.replace('Comments', '');
-                element.parentElement.remove();
-                eliminarComentario(sectionId, commentText);
-            } else {
-                alert("Contraseña incorrecta.");
-            }
-        }
-
-        function guardarComentarioEnServidor(section, name, comment, timestamp) {
-            const newCommentRef = database.ref('comments/' + section).push();
-            newCommentRef.set({
-                name: name,
-                comment: comment,
-                timestamp: timestamp
-            });
-        }
-
-        function cargarComentarios(section) {
-            const commentSection = document.getElementById(`${section}Comments`);
-            database.ref('comments/' + section).once('value', (snapshot) => {
-                const comments = snapshot.val();
-                for (let id in comments) {
-                    const commentPara = document.createElement('p');
-                    commentPara.innerHTML = `<strong>${comments[id].timestamp} - ${comments[id].name}:</strong> ${comments[id].comment} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
-                    commentPara.dataset.timestamp = comments[id].timestamp;
-                    commentSection.appendChild(commentPara);
-                }
-            });
-        }
-firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    const userId = user.uid;
-    firebase.database().ref(`roles/admin/${userId}`).once('value').then((snapshot) => {
-      if (snapshot.exists()) {
-        console.log('User is an admin');
-        // Usuario es administrador, habilitar eliminación
-      } else {
-        console.log('User is not an admin');
-        // Usuario no es administrador, deshabilitar eliminación
-      }
-    });
-  } else {
-    // Usuario no autenticado
-  }
-});
-
-        function requestDeleteComment(element) {
-  const user = firebase.auth().currentUser;
-  if (user) {
-    firebase.database().ref(`roles/admin/${user.uid}`).once('value').then((snapshot) => {
-      if (snapshot.exists()) {
-        const password = prompt("Ingrese la contraseña de administrador para eliminar este comentario:");
-        if (md5(password) === localStorage.getItem('adminHash')) {
-          const commentText = element.parentElement.innerHTML;
-          const sectionId = element.parentElement.parentElement.id.replace('Comments', '');
-          element.parentElement.remove();
-          eliminarComentario(sectionId, commentText);
         } else {
-          alert("Contraseña incorrecta.");
+            commentSection.innerHTML = '<p>No hay comentarios aún.</p>';
         }
-      } else {
-        alert("No tienes permisos para eliminar este comentario.");
-      }
     });
-  } else {
-    alert("Debes iniciar sesión para eliminar comentarios.");
-  }
 }
 
 function eliminarComentario(section, commentKey) {
-  database.ref(`comments/${section}/${commentKey}`).remove()
+    database.ref(`comments/${section}/${commentKey}`).remove()
     .then(() => { alert("Comentario eliminado correctamente."); })
     .catch(error => { alert("Error al eliminar el comentario: " + error.message); });
 }
 
-        function md5(value) {
-            return CryptoJS.MD5(value).toString();
-        }
+function md5(value) {
+    return CryptoJS.MD5(value).toString();
+}
 
-        function requestPasswordChange() { const email = prompt("Ingrese su correo electrónico para recibir un código de verificación:"); if (email === adminEmail) { verificationCode = Math.floor(100000 + Math.random() * 900000).toString(); alert(`El código de verificación es 9${verificationCode}1.`); const userCode = prompt("Ingrese el código de verificación recibido:"); if (userCode === verificationCode) { const newPassword = prompt("Ingrese su nueva contraseña:"); const newHash = md5(newPassword); localStorage.setItem('adminHash', newHash); alert("La contraseña ha sido cambiada exitosamente."); } else { alert("Código de verificación incorrecto."); } } else { alert("Correo electrónico no reconocido."); }}
+function requestPasswordChange() {
+    const email = prompt("Ingrese su correo electrónico para recibir un código de verificación:");
+    if (email === adminEmail) {
+        verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+        alert(`El código de verificación es ${verificationCode}.`);
+        const userCode = prompt("Ingrese el código de verificación recibido:");
+        if (userCode === verificationCode) {
+            const newPassword = prompt("Ingrese su nueva contraseña:");
+            const newHash = md5(newPassword);
+            localStorage.setItem('adminHash', newHash);
+            alert("La contraseña ha sido cambiada exitosamente.");
+        } else {
+            alert("Código de verificación incorrecto.");
+        }
+    } else {
+        alert("Correo electrónico no reconocido.");
+    }
+}
 </script>
 </main>
  <!-- Footer -->

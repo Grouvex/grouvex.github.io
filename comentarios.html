@@ -273,9 +273,11 @@
             });
         }
 
-        function eliminarComentario(section, commentHTML) {
-            // Aquí deberías implementar la lógica para eliminar el comentario de Firebase
-            alert("Eliminar comentario de Firebase aún no implementado.");
+        function eliminarComentario(section, commentKey) { 
+         database.ref(`comments/${section}/${commentKey}`).remove() 
+          .then(() => { alert("Comentario eliminado correctamente."); }) 
+          .catch(error => { alert("Error al eliminar el comentario: " + error.message);
+                       }); 
         }
 
         function md5(value) {

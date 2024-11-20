@@ -30,35 +30,26 @@
 <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold"> <a href="https://grouvex.github.io/"><u style="color: blue"><span style="color: white">Inicio</span></u></a> | <a href="https://grouvex.github.io/artistas"><u style="color: blue"><span style="color: white">Artistas</span></u></a> | <a href="https://grouvex.github.io/equipo"><u style="color: blue"><span style="color: white">Equipo</span></u></a> | <a href="https://grouvex.github.io/comentarios"><u style="color: blue"><span style="color: green">Comentarios (vBeta)</span></u></a> | <a href="https://grouvex.github.io/registrar" style="pointer-events: none"><u style="color: blue"><span style="color: white">Registrar</span></u></a> <span id="menu"></span>
 </span>
 </mainTop>
+  <script>
+    // Initialize Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
+      authDomain: "grouvex-studios.firebaseapp.com",
+      databaseURL: "https://grouvex-studios-default-rtdb.firebaseio.com", // Asegúrate de incluir la URL de tu base de datos
+      projectId: "grouvex-studios",
+      storageBucket: "grouvex-studios.appspot.com",
+      messagingSenderId: "1070842606062",
+      appId: "1:1070842606062:web:5d887863048fd100b49eff",
+      measurementId: "G-75BR8D2CR3"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+  </script>
 </head>
 <body>
- <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
-    authDomain: "grouvex-studios.firebaseapp.com",
-    projectId: "grouvex-studios",
-    storageBucket: "grouvex-studios.firebasestorage.app",
-    messagingSenderId: "1070842606062",
-    appId: "1:1070842606062:web:5d887863048fd100b49eff",
-    measurementId: "G-75BR8D2CR3"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
- <!-- Anuncio -->
- <div id="news"></div>
-<main>
-  <!-- Título -->
+  <main>
     <style>
         nav {
             margin-bottom: 20px;
@@ -161,6 +152,7 @@
         <button onclick="requestPasswordChange()">Cambiar Contraseña</button>
       </div>
     </section>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
     <script>
       let ordenarAscendente = true;
@@ -293,7 +285,7 @@ function requestPasswordChange() {
         alert("Correo electrónico no reconocido.");
     }
 }
-</script>
+    </script>
 </main>
  <!-- Footer -->
  <div id="footer"></div>

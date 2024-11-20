@@ -39,7 +39,7 @@
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
+    window.database = getDatabase(app);
   </script>
   <!-- Clarity tracking code for https://grouvex.github.io/ -->
   <script>

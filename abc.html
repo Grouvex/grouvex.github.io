@@ -177,7 +177,6 @@ const firebaseConfig = {
             database.ref(`comments/${section}`).once('value', (snapshot) => {
                 const comments = snapshot.val();
                 if (comments) {
-                    commentSection.innerHTML = ''; // Limpiar la sección antes de añadir comentarios
                     for (let id in comments) {
                         const commentPara = document.createElement('p');
                         commentPara.innerHTML = `<strong>${comments[id].timestamp} - ${comments[id].name}:</strong> ${comments[id].comment} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;

@@ -104,55 +104,55 @@
     </nav>
 
     <section id="reportes" class="active">
-        <div class="comment-form">
-            <h2>Reportes a la página web</h2>
-            <input type="text" id="nombreInputReporte" placeholder="Tu nombre (opcional)..."><br>
-            <textarea id="reporteInput" rows="4" placeholder="Escribe tu reporte aquí..."></textarea><br>
-            <button onclick="addComment('reportes', 'nombreInputReporte')">Enviar</button>
-            <button class="orden-button" onclick="ordenarComentarios('reportes')">Ordenar</button>
-        </div>
-        <div class="comments-section" id="reportesComments">
-            <h3>Reportes:</h3>
-        </div>
+      <div class="comment-form">
+        <h2>Reportes a la página web</h2>
+        <input type="text" id="nombreInputReporte" placeholder="Tu nombre (opcional)..."><br>
+        <textarea id="reporteInput" rows="4" placeholder="Escribe tu reporte aquí..."></textarea><br>
+        <button onclick="addComment('reportes', 'nombreInputReporte')">Enviar</button>
+        <button class="orden-button" onclick="ordenarComentarios('reportes')">Ordenar</button>
+      </div>
+      <div class="comments-section" id="reportesComments">
+        <h3>Reportes:</h3>
+      </div>
+    </section>
+
+    <section id="deseos">
+      <div class="comment-form">
+        <h2>Deseos para 2024</h2>
+        <input type="text" id="nombreInputDeseo" placeholder="Tu nombre (opcional)..."><br>
+        <textarea id="deseoInput" rows="4" placeholder="Escribe tu deseo aquí..."></textarea><br>
+        <button onclick="addComment('deseos', 'nombreInputDeseo')">Enviar</button>
+        <button class="orden-button" onclick="ordenarComentarios('deseos')">Ordenar</button>
+      </div>
+      <div class="comments-section" id="deseosComments">
+        <h3>Deseos:</h3>
+      </div>
+    </section>
+
+    <section id="comentarios">
+      <div class="comment-form">
+        <h2>Comentarios</h2>
+        <input type="text" id="nombreInputComentario" placeholder="Tu nombre (opcional)..."><br>
+        <textarea id="comentarioInput" rows="4" placeholder="Escribe tu comentario aquí..."></textarea><br>
+        <button onclick="addComment('comentarios', 'nombreInputComentario')">Enviar</button>
+        <button class="orden-button" onclick="ordenarComentarios('comentarios')">Ordenar</button>
+      </div>
+      <div class="comments-section" id="comentariosComments">
+        <h3>Comentarios:</h3>
+      </div>
     </section>
 
     <section id="sugerencias">
-        <div class="comment-form">
-            <h2>Sugerencias</h2>
-            <input type="text" id="nombreInputSugerencia" placeholder="Tu nombre (opcional)..."><br>
-            <textarea id="sugerenciaInput" rows="4" placeholder="Escribe tu sugerencia aquí..."></textarea><br>
-            <button onclick="addComment('sugerencias', 'nombreInputSugerencia')">Enviar</button>
-            <button class="orden-button" onclick="ordenarComentarios('sugerencias')">Ordenar</button>
-        </div>
-        <div class="comments-section" id="sugerenciasComments">
-            <h3>Sugerencias:</h3>
-        </div>
-    </section>
-    
-    <section id="comentarios">
-        <div class="comment-form">
-            <h2>Comentarios</h2>
-            <input type="text" id="nombreInputComentario" placeholder="Tu nombre (opcional)..."><br>
-            <textarea id="comentarioInput" rows="4" placeholder="Escribe tu comentario aquí..."></textarea><br>
-            <button onclick="addComment('comentarios', 'nombreInputComentario')">Enviar</button>
-            <button class="orden-button" onclick="ordenarComentarios('comentarios')">Ordenar</button>
-        </div>
-        <div class="comments-section" id="comentariosComments">
-            <h3>Comentarios:</h3>
-        </div>
-    </section>
-
-    <section id="deseos2024">
-        <div class="comment-form">
-            <h2>Deseos 2024</h2>
-            <input type="text" id="nombreInputDeseos" placeholder="Tu nombre (opcional)..."><br>
-            <textarea id="deseoInput" rows="4" placeholder="Escribe tu deseo aquí..."></textarea><br>
-            <button onclick="addComment('deseos2024', 'nombreInputDeseos')">Enviar</button>
-            <button class="orden-button" onclick="ordenarComentarios('deseos2024')">Ordenar</button>
-        </div>
-        <div class="comments-section" id="deseos2024Comments">
-            <h3>Deseos 2024:</h3>
-        </div>
+      <div class="comment-form">
+        <h2>Sugerencias</h2>
+        <input type="text" id="nombreInputSugerencia" placeholder="Tu nombre (opcional)..."><br>
+        <textarea id="sugerenciaInput" rows="4" placeholder="Escribe tu sugerencia aquí..."></textarea><br>
+        <button onclick="addComment('sugerencias', 'nombreInputSugerencia')">Enviar</button>
+        <button class="orden-button" onclick="ordenarComentarios('sugerencias')">Ordenar</button>
+      </div>
+      <div class="comments-section" id="sugerenciasComments">
+        <h3>Sugerencias:</h3>
+      </div>
     </section>
 
     <section id="configuracion">
@@ -272,13 +272,51 @@
                 }
             });
         }
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    const userId = user.uid;
+    firebase.database().ref(`roles/admin/${userId}`).once('value').then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log('User is an admin');
+        // Usuario es administrador, habilitar eliminación
+      } else {
+        console.log('User is not an admin');
+        // Usuario no es administrador, deshabilitar eliminación
+      }
+    });
+  } else {
+    // Usuario no autenticado
+  }
+});
 
-        function eliminarComentario(section, commentKey) { 
-         database.ref(`comments/${section}/${commentKey}`).remove() 
-          .then(() => { alert("Comentario eliminado correctamente."); }) 
-          .catch(error => { alert("Error al eliminar el comentario: " + error.message);
-                       }); 
+        function requestDeleteComment(element) {
+  const user = firebase.auth().currentUser;
+  if (user) {
+    firebase.database().ref(`roles/admin/${user.uid}`).once('value').then((snapshot) => {
+      if (snapshot.exists()) {
+        const password = prompt("Ingrese la contraseña de administrador para eliminar este comentario:");
+        if (md5(password) === localStorage.getItem('adminHash')) {
+          const commentText = element.parentElement.innerHTML;
+          const sectionId = element.parentElement.parentElement.id.replace('Comments', '');
+          element.parentElement.remove();
+          eliminarComentario(sectionId, commentText);
+        } else {
+          alert("Contraseña incorrecta.");
         }
+      } else {
+        alert("No tienes permisos para eliminar este comentario.");
+      }
+    });
+  } else {
+    alert("Debes iniciar sesión para eliminar comentarios.");
+  }
+}
+
+function eliminarComentario(section, commentKey) {
+  database.ref(`comments/${section}/${commentKey}`).remove()
+    .then(() => { alert("Comentario eliminado correctamente."); })
+    .catch(error => { alert("Error al eliminar el comentario: " + error.message); });
+}
 
         function md5(value) {
             return CryptoJS.MD5(value).toString();

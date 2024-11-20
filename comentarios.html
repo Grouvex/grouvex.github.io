@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
+ <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
 <script src="jquery-3.5.1.min.js"></script>
  <script> 
     $(function(){
@@ -30,6 +32,29 @@
 </mainTop>
 </head>
 <body>
+ <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
+    authDomain: "grouvex-studios.firebaseapp.com",
+    projectId: "grouvex-studios",
+    storageBucket: "grouvex-studios.firebasestorage.app",
+    messagingSenderId: "1070842606062",
+    appId: "1:1070842606062:web:5d887863048fd100b49eff",
+    measurementId: "G-75BR8D2CR3"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
  <!-- Anuncio -->
  <div id="news"></div>
 <main>
@@ -74,16 +99,16 @@
         <a onclick="showSection('reportes')" style="pointer-events: none">Reportes en la Web</a>
         <a onclick="showSection('sugerencias')">Sugerencias</a>
         <a onclick="showSection('comentarios')">Comentarios</a>
-        <a onclick="showSection('deseos2024')">Deseos (2024)</a>
-        <a onclick="showSection('otros')" style="pointer-events: none">Otros</a>
+        <a onclick="showSection('deseos2024')">Deseos 2024</a>
         <a onclick="showSection('configuracion')">Configuración</a>
     </nav>
 
     <section id="reportes" class="active">
         <div class="comment-form">
             <h2>Reportes a la página web</h2>
+            <input type="text" id="nombreInputReporte" placeholder="Tu nombre (opcional)..."><br>
             <textarea id="reporteInput" rows="4" placeholder="Escribe tu reporte aquí..."></textarea><br>
-            <button onclick="addComment('reportes')">Enviar</button>
+            <button onclick="addComment('reportes', 'nombreInputReporte')">Enviar</button>
             <button class="orden-button" onclick="ordenarComentarios('reportes')">Ordenar</button>
         </div>
         <div class="comments-section" id="reportesComments">
@@ -94,32 +119,22 @@
     <section id="sugerencias">
         <div class="comment-form">
             <h2>Sugerencias</h2>
+            <input type="text" id="nombreInputSugerencia" placeholder="Tu nombre (opcional)..."><br>
             <textarea id="sugerenciaInput" rows="4" placeholder="Escribe tu sugerencia aquí..."></textarea><br>
-            <button onclick="addComment('sugerencias')">Enviar</button>
+            <button onclick="addComment('sugerencias', 'nombreInputSugerencia')">Enviar</button>
             <button class="orden-button" onclick="ordenarComentarios('sugerencias')">Ordenar</button>
         </div>
         <div class="comments-section" id="sugerenciasComments">
             <h3>Sugerencias:</h3>
         </div>
     </section>
-
-    <section id="deseos">
-        <div class="comment-form">
-            <h2>Deseos 2024</h2>
-            <textarea id="deseoInput" rows="4" placeholder="Escribe tu sugerencia aquí..."></textarea><br>
-            <button onclick="addComment('deseos')">Enviar</button>
-            <button class="orden-button" onclick="ordenarComentarios('deseos')">Ordenar</button>
-        </div>
-        <div class="comments-section" id="deseosComments">
-            <h3>Deseos 2024:</h3>
-        </div>
-    </section>
     
     <section id="comentarios">
         <div class="comment-form">
             <h2>Comentarios</h2>
+            <input type="text" id="nombreInputComentario" placeholder="Tu nombre (opcional)..."><br>
             <textarea id="comentarioInput" rows="4" placeholder="Escribe tu comentario aquí..."></textarea><br>
-            <button onclick="addComment('comentarios')">Enviar</button>
+            <button onclick="addComment('comentarios', 'nombreInputComentario')">Enviar</button>
             <button class="orden-button" onclick="ordenarComentarios('comentarios')">Ordenar</button>
         </div>
         <div class="comments-section" id="comentariosComments">
@@ -127,15 +142,16 @@
         </div>
     </section>
 
-    <section id="otros">
+    <section id="deseos2024">
         <div class="comment-form">
-            <h2>Otros</h2>
-            <textarea id="otroInput" rows="4" placeholder="Escribe aquí..."></textarea><br>
-            <button onclick="addComment('otros')">Enviar</button>
-            <button class="orden-button" onclick="ordenarComentarios('otros')">Ordenar</button>
+            <h2>Deseos 2024</h2>
+            <input type="text" id="nombreInputDeseos" placeholder="Tu nombre (opcional)..."><br>
+            <textarea id="deseoInput" rows="4" placeholder="Escribe tu deseo aquí..."></textarea><br>
+            <button onclick="addComment('deseos2024', 'nombreInputDeseos')">Enviar</button>
+            <button class="orden-button" onclick="ordenarComentarios('deseos2024')">Ordenar</button>
         </div>
-        <div class="comments-section" id="otrosComments">
-            <h3>Otros:</h3>
+        <div class="comments-section" id="deseos2024Comments">
+            <h3>Deseos 2024:</h3>
         </div>
     </section>
 
@@ -148,22 +164,27 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
     <script>
+        var firebaseConfig = { apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
+         authDomain: "grouvex-studios.firebaseapp.com",
+         projectId: "grouvex-studios",
+         storageBucket: "grouvex-studios.firebasestorage.app",
+         messagingSenderId: "1070842606062",
+         appId: "1:1070842606062:web:5d887863048fd100b49eff",
+         measurementId: "G-75BR8D2CR3"
+        };
+        firebase.initializeApp(firebaseConfig);
+        var database = firebase.database();
+
         let ordenarAscendente = true;
         const palabrasBloqueadas = ["malaPalabra1", "malaPalabra2", "malaPalabra3"];
         const adminEmail = "gestor@grouvex.com"; // Reemplázalo con tu propio email
         let verificationCode = "";
 
         document.addEventListener('DOMContentLoaded', () => {
-            if (!localStorage.getItem('adminHash')) {
-                const adminPassword = prompt("Establece la contraseña de administrador:");
-                const adminHash = md5(adminPassword);
-                localStorage.setItem('adminHash', adminHash);
-            }
             cargarComentarios('reportes');
             cargarComentarios('sugerencias');
             cargarComentarios('comentarios');
-            cargarComentarios('otros');
-            cargarComentarios('deseos');
+            cargarComentarios('deseos2024');
         });
 
         function showSection(sectionId) {
@@ -177,26 +198,31 @@
             return palabrasBloqueadas.some(palabra => text.includes(palabra));
         }
 
-        function addComment(section) {
-            const inputId = section.slice(0, -1) + 'Input';
-            const input = document.getElementById(inputId);
-            const commentText = input.value.trim();
+        function addComment(section, nameInputId) {
+            const nameInput = document.getElementById(nameInputId).value.trim();
+            const input = document.getElementById(section.slice(0, -1) + 'Input').value.trim();
+            const nameText = nameInput || "Anónimo";
+            const commentText = input.trim();
 
             if (containsBlockedWords(commentText) || commentText.includes("http")) {
                 alert("El comentario contiene palabras bloqueadas o enlaces.");
-                input.value = '';
+                document.getElementById(section.slice(0, -1) + 'Input').value = '';
                 return;
             }
 
             if (commentText) {
                 const date = new Date().toLocaleString();
+                const timestamp = new Date().getTime();
                 const commentSection = document.getElementById(section + 'Comments');
                 const commentPara = document.createElement('p');
-                commentPara.innerHTML = `<strong>${date}:</strong> ${commentText} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
-                commentPara.dataset.timestamp = new Date().getTime();
+                commentPara.innerHTML = `<strong>${date} - ${nameText}:</strong> ${commentText} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
+                commentPara.dataset.timestamp = timestamp;
                 commentSection.appendChild(commentPara);
-                guardarComentario(section, commentPara.innerHTML, commentPara.dataset.timestamp);
-                input.value = '';
+
+                // Guardar comentario en Firebase
+                guardarComentarioEnServidor(section, nameText, commentText, timestamp);
+                document.getElementById(section.slice(0, -1) + 'Input').value = '';
+                document.getElementById(nameInputId).value = '';
                 ordenarComentarios(section);
             }
         }
@@ -225,27 +251,31 @@
             }
         }
 
-        function guardarComentario(section, commentHTML, timestamp) {
-            const comments = JSON.parse(localStorage.getItem(`${section}Comments`)) || [];
-            comments.push({ commentHTML, timestamp });
-            localStorage.setItem(`${section}Comments`, JSON.stringify(comments));
+        function guardarComentarioEnServidor(section, name, comment, timestamp) {
+            const newCommentRef = database.ref('comments/' + section).push();
+            newCommentRef.set({
+                name: name,
+                comment: comment,
+                timestamp: timestamp
+            });
         }
 
         function cargarComentarios(section) {
-            const comments = JSON.parse(localStorage.getItem(`${section}Comments`)) || [];
             const commentSection = document.getElementById(`${section}Comments`);
-            comments.forEach(comment => {
-                const commentPara = document.createElement('p');
-                commentPara.innerHTML = comment.commentHTML;
-                commentPara.dataset.timestamp = comment.timestamp;
-                commentSection.appendChild(commentPara);
+            database.ref('comments/' + section).once('value', (snapshot) => {
+                const comments = snapshot.val();
+                for (let id in comments) {
+                    const commentPara = document.createElement('p');
+                    commentPara.innerHTML = `<strong>${comments[id].timestamp} - ${comments[id].name}:</strong> ${comments[id].comment} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
+                    commentPara.dataset.timestamp = comments[id].timestamp;
+                    commentSection.appendChild(commentPara);
+                }
             });
         }
 
         function eliminarComentario(section, commentHTML) {
-            let comments = JSON.parse(localStorage.getItem(`${section}Comments`)) || [];
-            comments = comments.filter(comment => comment.commentHTML !== commentHTML);
-            localStorage.setItem(`${section}Comments`, JSON.stringify(comments));
+            // Aquí deberías implementar la lógica para eliminar el comentario de Firebase
+            alert("Eliminar comentario de Firebase aún no implementado.");
         }
 
         function md5(value) {

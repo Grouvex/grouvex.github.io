@@ -32,6 +32,42 @@
 </mainTop>
 </head>
 <body>
+ <!-- Título -->
+    <style>
+        nav {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: blue;
+            cursor: pointer;
+        }
+        section {
+            display: none;
+        }
+        section.active {
+            display: block;
+        }
+        .comment-form, .comments-section, .config-section {
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .comments-section p {
+            margin: 10px 0;
+        }
+        .orden-button {
+            margin-top: 10px;
+        }
+        .delete-button {
+            margin-left: 10px;
+            color: red;
+            cursor: pointer;
+        }
+    </style>
 <script>
  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {

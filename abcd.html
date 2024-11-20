@@ -21,32 +21,30 @@
   <script src="index.js"></script>
   <script src="time.js"></script>
   <script src="temas.js"></script>
-  <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-    import { getDatabase } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
-    
-    // Your web app's Firebase configuration
+  <!-- Clarity tracking code for https://grouvex.github.io/ -->
+  <script>
+    (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "mdkjlz9c01");
+  </script>
+  <script>
+    // Initialize Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
       authDomain: "grouvex-studios.firebaseapp.com",
+      databaseURL: "https://grouvex-studios-default-rtdb.firebaseio.com", // Asegúrate de incluir la URL de tu base de datos
       projectId: "grouvex-studios",
-      storageBucket: "grouvex-studios.firebasestorage.app",
+      storageBucket: "grouvex-studios.appspot.com",
       messagingSenderId: "1070842606062",
       appId: "1:1070842606062:web:5d887863048fd100b49eff",
       measurementId: "G-75BR8D2CR3"
     };
 
     // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    window.database = getDatabase(app);
-  </script>
-  <!-- Clarity tracking code for https://grouvex.github.io/ -->
-  <script>
-    (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "mdkjlz9c01");
+    const app = firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
   </script>
 </head>
 <body>
+  <main>
     <style>
         nav {
             margin-bottom: 20px;
@@ -82,7 +80,6 @@
             cursor: pointer;
         }
     </style>
-  <main>
     <h1>Comentarios de Usuarios</h1>
     <nav>
       <a onclick="showSection('reportes')">Reportes en la Web</a>
@@ -177,35 +174,35 @@
       }
 
       function addComment(section, nameInputId) {
-    const nameInput = document.getElementById(nameInputId).value.trim();
-    const input = document.getElementById(section.slice(0, -1) + 'Input').value.trim();
-    const nameText = nameInput || "Anónimo";
-    const commentText = input.trim();
+        const nameInput = document.getElementById(nameInputId).value.trim();
+        const input = document.getElementById(section.slice(0, -1) + 'Input').value.trim();
+        const nameText = nameInput || "Anónimo";
+        const commentText = input.trim();
 
-    if (containsBlockedWords(commentText) || commentText.includes("http")) {
-        alert("El comentario contiene palabras bloqueadas o enlaces.");
-        document.getElementById(section.slice(0, -1) + 'Input').value = '';
-        return;
-    }
+        if (containsBlockedWords(commentText) || commentText.includes("http")) {
+          alert("El comentario contiene palabras bloqueadas o enlaces.");
+          document.getElementById(section.slice(0, -1) + 'Input').value = '';
+          return;
+        }
 
-    if (commentText) {
-        const date = new Date().toLocaleString();
-        const timestamp = new Date().getTime();
-        const commentSection = document.getElementById(section + 'Comments');
-        const commentPara = document.createElement('p');
-        commentPara.innerHTML = `<strong>${date} - ${nameText}:</strong> ${commentText} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
-        commentPara.dataset.timestamp = timestamp;
-        commentSection.appendChild(commentPara);
+        if (commentText) {
+          const date = new Date().toLocaleString();
+          const timestamp = new Date().getTime();
+          const commentSection = document.getElementById(section + 'Comments');
+          const commentPara = document.createElement('p');
+          commentPara.innerHTML = `<strong>${date} - ${nameText}:</strong> ${commentText} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
+          commentPara.dataset.timestamp = timestamp;
+          commentSection.appendChild(commentPara);
 
-        // Guardar comentario en Firebase
-        guardarComentarioEnServidor(section, nameText, commentText, timestamp);
-        document.getElementById(section.slice(0, -1) + 'Input').value = '';
-        document.getElementById(nameInputId).value = '';
-        ordenarComentarios(section);
-    }
-}
+          // Guardar comentario en Firebase
+          guardarComentarioEnServidor(section, nameText, commentText, timestamp);
+          document.getElementById(section.slice(0, -1) + 'Input').value = '';
+          document.getElementById(nameInputId).value = '';
+          ordenarComentarios(section);
+        }
+      }
 
-function ordenarComentarios(section) {
+      function ordenarComentarios(section) {
     const commentSection = document.getElementById(section + 'Comments');
     const comments = Array.from(commentSection.querySelectorAll('p'));
     comments.sort((a, b) => {
@@ -242,11 +239,15 @@ function cargarComentarios(section) {
     const commentSection = document.getElementById(`${section}Comments`);
     database.ref('comments/' + section).once('value', (snapshot) => {
         const comments = snapshot.val();
-        for (let id in comments) {
-            const commentPara = document.createElement('p');
-            commentPara.innerHTML = `<strong>${new Date(comments[id].timestamp).toLocaleString()} - ${comments[id].name}:</strong> ${comments[id].comment} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
-            commentPara.dataset.timestamp = comments[id].timestamp;
-            commentSection.appendChild(commentPara);
+        if (comments) {
+            for (let id in comments) {
+                const commentPara = document.createElement('p');
+                commentPara.innerHTML = `<strong>${new Date(comments[id].timestamp).toLocaleString()} - ${comments[id].name}:</strong> ${comments[id].comment} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
+                commentPara.dataset.timestamp = comments[id].timestamp;
+                commentSection.appendChild(commentPara);
+            }
+        } else {
+            commentSection.innerHTML = '<p>No hay comentarios aún.</p>';
         }
     });
 }

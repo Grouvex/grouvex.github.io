@@ -48,6 +48,18 @@
     const database = firebase.database();
   </script>
 </head>
+<script>
+ function protegerRuta() {
+  firebase.auth().onAuthStateChanged((user) => {
+    if (!user) {
+      // Redireccionar a la página de inicio de sesión si no está autenticado
+      window.location.href = 'login.html';
+    }
+  });
+}
+// Llamar a la función de protección de ruta en las páginas que necesiten protección
+protegerRuta();
+</script>
 <body>
   <main>
     <style>
@@ -218,18 +230,53 @@
     comments.forEach(comment => commentSection.appendChild(comment));
     ordenarAscendente = !ordenarAscendente;
 }
+     
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    const userId = user.uid;
+    firebase.database().ref(`roles/admin/${userId}`).once('value').then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log('User is an admin');
+        // Usuario es administrador, habilitar eliminación
+      } else {
+        console.log('User is not an admin');
+        // Usuario no es administrador, deshabilitar eliminación
+      }
+    });
+  } else {
+    // Usuario no autenticado
+  }
+});
 
 function requestDeleteComment(element) {
-    const password = prompt("Ingrese la contraseña de administrador para eliminar este comentario:");
-    if (md5(password) === localStorage.getItem('adminHash')) {
-        const commentText = element.parentElement.innerHTML;
-        const sectionId = element.parentElement.parentElement.id.replace('Comments', '');
-        element.parentElement.remove();
-        eliminarComentario(sectionId, commentText);
-    } else {
-        alert("Contraseña incorrecta.");
-    }
+  const user = firebase.auth().currentUser;
+  if (user) {
+    firebase.database().ref(`roles/admin/${user.uid}`).once('value').then((snapshot) => {
+      if (snapshot.exists()) {
+        const password = prompt("Ingrese la contraseña de administrador para eliminar este comentario:");
+        if (md5(password) === localStorage.getItem('adminHash')) {
+          const commentText = element.parentElement.innerHTML;
+          const sectionId = element.parentElement.parentElement.id.replace('Comments', '');
+          element.parentElement.remove();
+          eliminarComentario(sectionId, commentText);
+        } else {
+          alert("Contraseña incorrecta.");
+        }
+      } else {
+        alert("No tienes permisos para eliminar este comentario.");
+      }
+    });
+  } else {
+    alert("Debes iniciar sesión para eliminar comentarios.");
+  }
 }
+
+function eliminarComentario(section, commentKey) {
+  database.ref(`comments/${section}/${commentKey}`).remove()
+    .then(() => { alert("Comentario eliminado correctamente."); })
+    .catch(error => { alert("Error al eliminar el comentario: " + error.message); });
+}
+
 
 function guardarComentarioEnServidor(section, name, comment, timestamp) {
     const newCommentRef = database.ref('comments/' + section).push();
@@ -255,12 +302,6 @@ function cargarComentarios(section) {
             commentSection.innerHTML = '<p>No hay comentarios aún.</p>';
         }
     });
-}
-
-function eliminarComentario(section, commentKey) {
-    database.ref(`comments/${section}/${commentKey}`).remove()
-    .then(() => { alert("Comentario eliminado correctamente."); })
-    .catch(error => { alert("Error al eliminar el comentario: " + error.message); });
 }
 
 function md5(value) {

@@ -23,10 +23,10 @@ document.getElementById('registerForm').addEventListener('submit', (e) => {
   
   auth.createUserWithEmailAndPassword(email, password)
     .then((userCredential) => {
-      console.log('User registered:', userCredential.user);
+      alert('Usuario registrado: ' + userCredential.user.email);
     })
     .catch((error) => {
-      console.error('Error registering user:', error);
+      alert('Error al registrar usuario: ' + error.message);
     });
 });
 
@@ -38,31 +38,31 @@ document.getElementById('loginForm').addEventListener('submit', (e) => {
   
   auth.signInWithEmailAndPassword(email, password)
     .then((userCredential) => {
-      console.log('User logged in:', userCredential.user);
+      alert('Usuario inició sesión: ' + userCredential.user.email);
     })
     .catch((error) => {
-      console.error('Error logging in user:', error);
+      alert('Error al iniciar sesión: ' + error.message);
     });
 });
 
 // Cerrar sesión de usuario
 document.getElementById('logoutBtn').addEventListener('click', () => {
   auth.signOut().then(() => {
-    console.log('User logged out');
+    alert('Usuario cerró sesión');
   }).catch((error) => {
-    console.error('Error logging out:', error);
+    alert('Error al cerrar sesión: ' + error.message);
   });
 });
 
 // Manejo del estado de autenticación
 auth.onAuthStateChanged((user) => {
   if (user) {
-    console.log('User is logged in:', user);
+    alert('Usuario autenticado: ' + user.email);
     document.getElementById('auth-container').style.display = 'none';
     document.getElementById('content').style.display = 'block';
     document.getElementById('logoutBtn').style.display = 'block';
   } else {
-    console.log('User is logged out');
+    alert('Usuario no autenticado');
     document.getElementById('auth-container').style.display = 'block';
     document.getElementById('content').style.display = 'none';
     document.getElementById('logoutBtn').style.display = 'none';

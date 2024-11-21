@@ -41,19 +41,6 @@
     });
   });
 </script>
-   <script>
-   function protegerRuta() {
-  firebase.auth().onAuthStateChanged((user) => {
-    if (!user) {
-      // Redireccionar a la página de inicio de sesión si no está autenticado
-      window.location.href = 'login.html';
-    }
-  });
-}
-
-// Llamar a la función de protección de ruta en las páginas que necesiten protección
-protegerRuta();
-</script>
    <div class="footer-imagenes">
     <a href="https://instagram.com/grouvex" target="_blank"><img src="https://grouvex.github.io/img/Instagram.png" alt=""></a>
     <a href="https://youtube.com/@Grouvex" target="_blank"><img src="https://grouvex.github.io/img/YouTube.png" alt=""></a>

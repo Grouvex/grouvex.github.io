@@ -15,56 +15,74 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const database = firebase.database();
 
-// Registro de usuario
-document.getElementById('registerForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const email = document.getElementById('registerEmail').value;
-  const password = document.getElementById('registerPassword').value;
-  
-  auth.createUserWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      alert('Usuario registrado: ' + userCredential.user.email);
-    })
-    .catch((error) => {
-      alert('Error al registrar usuario: ' + error.message);
-    });
-});
+// Registro de usuario (solo en la página principal o donde tengas el formulario de registro)
+if (document.getElementById('registerForm')) {
+  document.getElementById('registerForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('registerEmail').value;
+    const password = document.getElementById('registerPassword').value;
+    
+    auth.createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        alert('Usuario registrado: ' + userCredential.user.email);
+      })
+      .catch((error) => {
+        alert('Error al registrar usuario: ' + error.message);
+      });
+  });
+}
 
 // Inicio de sesión de usuario
-document.getElementById('loginForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const email = document.getElementById('loginEmail').value;
-  const password = document.getElementById('loginPassword').value;
-  
-  auth.signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      alert('Usuario inició sesión: ' + userCredential.user.email);
-    })
-    .catch((error) => {
-      alert('Error al iniciar sesión: ' + error.message);
-    });
-});
+if (document.getElementById('loginForm')) {
+  document.getElementById('loginForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    
+    auth.signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        alert('Usuario inició sesión: ' + userCredential.user.email);
+      })
+      .catch((error) => {
+        alert('Error al iniciar sesión: ' + error.message);
+      });
+  });
+}
 
 // Cerrar sesión de usuario
-document.getElementById('logoutBtn').addEventListener('click', () => {
-  auth.signOut().then(() => {
-    alert('Usuario cerró sesión');
-  }).catch((error) => {
-    alert('Error al cerrar sesión: ' + error.message);
+if (document.getElementById('logoutBtn')) {
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    auth.signOut().then(() => {
+      alert('Usuario cerró sesión');
+    }).catch((error) => {
+      alert('Error al cerrar sesión: ' + error.message);
+    });
   });
-});
+}
 
 // Manejo del estado de autenticación
 auth.onAuthStateChanged((user) => {
   if (user) {
     alert('Usuario autenticado: ' + user.email);
-    document.getElementById('auth-container').style.display = 'none';
-    document.getElementById('content').style.display = 'block';
-    document.getElementById('logoutBtn').style.display = 'block';
+    if (document.getElementById('auth-container')) {
+      document.getElementById('auth-container').style.display = 'none';
+    }
+    if (document.getElementById('content')) {
+      document.getElementById('content').style.display = 'block';
+    }
+    if (document.getElementById('logoutBtn')) {
+      document.getElementById('logoutBtn').style.display = 'block';
+    }
   } else {
     alert('Usuario no autenticado');
-    document.getElementById('auth-container').style.display = 'block';
-    document.getElementById('content').style.display = 'none';
-    document.getElementById('logoutBtn').style.display = 'none';
+    if (document.getElementById('auth-container')) {
+      document.getElementById('auth-container').style.display = 'block';
+    }
+    if (document.getElementById('content')) {
+      document.getElementById('content').style.display = 'none';
+    }
+    if (document.getElementById('logoutBtn')) {
+      document.getElementById('logoutBtn').style.display = 'none';
+    }
   }
 });

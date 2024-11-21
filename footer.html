@@ -30,17 +30,6 @@
 }
  </style>
   <footer>
-   <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
-   <button id="logoutBtn">Logout</button>
-<script>
-  document.getElementById('logoutBtn').addEventListener('click', () => {
-    firebase.auth().signOut().then(() => {
-      console.log('User logged out');
-    }).catch((error) => {
-      console.error('Error logging out:', error);
-    });
-  });
-</script>
    <div class="footer-imagenes">
     <a href="https://instagram.com/grouvex" target="_blank"><img src="https://grouvex.github.io/img/Instagram.png" alt=""></a>
     <a href="https://youtube.com/@Grouvex" target="_blank"><img src="https://grouvex.github.io/img/YouTube.png" alt=""></a>

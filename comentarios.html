@@ -157,7 +157,8 @@
       const palabrasBloqueadas = ["malaPalabra1", "malaPalabra2", "malaPalabra3"];
       const adminEmail = "gestor@grouvex.com";
       let verificationCode = "";
-
+      firebase.initializeApp(config)
+      firebase.initializeApp(firebaseConfig)
       document.addEventListener('DOMContentLoaded', () => {
         cargarComentarios('reportes');
         cargarComentarios('sugerencias');

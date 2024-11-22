@@ -70,20 +70,6 @@
             cursor: pointer;
         }
     </style>
-    <div id="auth-container">
-        <h1>Autenticación de Usuarios en Grouvex Studios</h1>
-        <form id="authForm">
-            <h2 id="formTitle">Inicio de Sesión</h2>
-            <input type="email" id="authEmail" placeholder="Email" required>
-            <input type="password" id="authPassword" placeholder="Password" required>
-            <button type="submit" id="authButton">Iniciar Sesión</button>
-            <button type="button" id="toggleButton">¿No tienes cuenta? Regístrate</button>
-        </form>
-        <button id="logoutBtn" style="display: none;">Cerrar Sesión</button>
-        <button id="resetPasswordBtn">¿Olvidaste tu contraseña?</button>
-    </div>
-
-    <div id="content" style="display: none;"> 
     <nav>
       <a onclick="showSection('reportes')">Reportes en la Web</a>
       <a onclick="showSection('configuracion')">Configuración</a>
@@ -150,7 +136,7 @@
         <button onclick="requestPasswordChange()">Cambiar Contraseña</button>
       </div>
     </section>
-</div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
     <script>
       let ordenarAscendente = true;

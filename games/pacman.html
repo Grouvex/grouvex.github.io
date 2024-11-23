@@ -365,27 +365,37 @@
             label: 'Grouvex Studios Recording',
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
-            spotify: 'https://open.spotify.com/track/1'
+            spotify: 'https://open.spotify.com/intl-es/track/2swP5ghff8mLwaPeFfhHGP?si=e06c4de03f8c4775'
         },
         {
-            name: 'Canción 2',
-            file: 'song2.mp3',
-            artist: 'Artista 2',
-            album: 'Álbum 2',
-            label: 'Label 2',
-            composer: 'Compositor 2',
-            producer: 'Productor 2',
+            name: 'La Magia de la Estrella Polar',
+            file: 'La Magia de la Estrella Polar.mp3',
+            artist: 'Grouvex',
+            album: 'La Magia de la Estrella Polar',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2'
         },
         {
-            name: 'Canción 3',
-            file: 'song3.mp3',
-            artist: 'Artista 3',
-            album: 'Álbum 3',
-            label: 'Label 3',
-            composer: 'Compositor 3',
-            producer: 'Productor 3',
-            spotify: 'https://open.spotify.com/track/3'
+            name: 'La Magia de la Estrella Polar (Versión Acústica)',
+            file: 'La Magia de la Estrella Polar (Versión Acústica).mp3',
+            artist: 'Grouvex',
+            album: 'La Magia de la Estrella Polar',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2'
+        },
+        {
+            name: 'El Principe',
+            file: 'El Principe.mp3',
+            artist: 'Grouvex',
+            album: 'El Principe',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2'
         }
     ];
 
@@ -401,7 +411,7 @@
 
     function playTrack(index) {
         currentTrackIndex = index;
-        audioPlayer.src = `./music/${tracks[currentTrackIndex].file}`;
+        audioPlayer.src = `https://grouvex.com/music/${tracks[currentTrackIndex].file}`;
         updateTrackInfo(tracks[currentTrackIndex]);
         audioPlayer.play();
         isPlaying = true;

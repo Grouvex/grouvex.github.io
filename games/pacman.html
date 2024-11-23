@@ -322,18 +322,10 @@
 
 
 
-    <div id="song">
+<div id="song">
     <div id="player">
         <audio id="audioPlayer" controls></audio>
-        <div id="currentTrackInfo">
-            <h2 id="trackName"></h2>
-            <p id="trackArtist"></p>
-            <p id="trackAlbum"></p>
-            <p id="trackLabel"></p>
-            <p id="trackComposer"></p>
-            <p id="trackProducer"></p>
-            <p id="trackSpotify"><a href="" target="_blank" id="spotifyLink">Escuchar en Spotify</a></p>
-        </div>
+        <div id="currentTrackInfo"> <div id="infoLine1"> <span id="trackName"></span> - <span id="trackArtist"></span> - <span id="trackAlbum"></span> </div> <div id="infoLine2"> <span id="trackLabel"></span> | <span id="trackComposer"></span> | <span id="trackProducer"></span> </div> <p id="trackSpotify"><a href="" target="_blank" id="spotifyLink">Escuchar en Spotify</a></p> </div>
         <div id="controls">
             <button id="prevBtn">⏮️</button> <button id="pauseBtn">⏸️</button> <button id="nextBtn">⏭️</button>
            <hr> 
@@ -365,7 +357,8 @@
             label: 'Grouvex Studios Recording',
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
-            spotify: 'https://open.spotify.com/intl-es/track/2swP5ghff8mLwaPeFfhHGP?si=e06c4de03f8c4775'
+            spotify: 'https://open.spotify.com/intl-es/track/2swP5ghff8mLwaPeFfhHGP?si=e06c4de03f8c4775',
+            background: 'https://grouvex.com/port/A Parallel Universe.jpg'
         },
         {
             name: 'La Magia de la Estrella Polar',
@@ -375,7 +368,8 @@
             label: 'Grouvex Studios Recording',
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
-            spotify: 'https://open.spotify.com/track/2'
+            spotify: 'https://open.spotify.com/track/2',
+            background: 'https://grouvex.com/port/La Magia de la Estrella Polar.jpg'
         },
         {
             name: 'La Magia de la Estrella Polar (Versión Acústica)',
@@ -385,7 +379,8 @@
             label: 'Grouvex Studios Recording',
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
-            spotify: 'https://open.spotify.com/track/2'
+            spotify: 'https://open.spotify.com/track/2',
+            background: 'https://grouvex.com/port/La Magia de la Estrella Polar.jpg'
         },
         {
             name: 'El Principe',
@@ -395,7 +390,41 @@
             label: 'Grouvex Studios Recording',
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
-            spotify: 'https://open.spotify.com/track/2'
+            spotify: 'https://open.spotify.com/track/2',
+            background: 'https://grouvex.com/port/El Principe.jpg'
+        },
+        {
+            name: 'Unforgettable Memories (Nǎinai)',
+            file: 'Unforgettable Memories (Nǎinai).mp3',
+            artist: 'Grouvex',
+            album: 'Unforgettable Memories',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            background: 'https://grouvex.com/port/Unforgettable Memories.jpg'
+        },
+        {
+            name: 'Unforgettable Memories (Yéye)',
+            file: 'Unforgettable Memories (Yéye).mp3',
+            artist: 'Grouvex',
+            album: 'Unforgettable Memories',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            background: 'https://grouvex.com/port/Unforgettable Memories.jpg'
+        },
+        {
+            name: 'Unstoppable Friendship',
+            file: 'Unstoppable Friendship.mp3',
+            artist: 'Grouvex',
+            album: 'Unstoppable Friendship',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            background: 'https://grouvex.com/port/Unstoppable Friendship.jpg'
         }
     ];
 
@@ -407,6 +436,7 @@
         trackComposer.textContent = `Compositor: ${track.composer}`;
         trackProducer.textContent = `Productor: ${track.producer}`;
         spotifyLink.href = track.spotify;
+        document.body.style.backgroundImage = `url(${track.background})`
     }
 
     function playTrack(index) {
@@ -496,9 +526,10 @@
     </script>
     <style>
 #song {display: flex;justify-content: center;align-items: center; margin: 0; font-family: Arial, sans-serif;}
-#player { text-align: center; background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);}
-#currentTrackInfo { margin: 20px 0;}
-#controls { margin: 20px 0;}
+#player { text-align: center; background-color: #fff; padding: 10px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);}
+#currentTrackInfo { margin: 10px 0}
+#infoLine1, #infoLine2 { display: flex; justify-content: center; gap: 5px;}
+#controls { margin: 10px 0;}
 #controls button { margin: 0 10px; padding: 10px 20px; font-size: 16px; cursor: pointer;}
 #playlist { display: none; /* Ocultamos la lista de reproducción */ }
 </style>

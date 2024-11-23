@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minijuego de Pac-Man</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+        }
+        canvas {
+            border: 1px solid #fff;
+        }
+        #score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+        }
+        #instructions {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+  <div id="player">
+        <iframe width="560" height="315" src="https://music.youtube.com/playlist?list=PL1dpglw892ZhYph4BVcZeeAegQkIaezqB" 
+        frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen></iframe>
+    </div>
+    <div id="score">Puntuación: 0</div>
+    <div id="instructions">
+        <p>Instrucciones:</p>
+        <ul>
+            <li>Usa las teclas de flecha para mover a Pac-Man.</li>
+            <li>Come todos los puntos amarillos para avanzar de nivel.</li>
+            <li>¡Buena suerte y diviértete!</li>
+        </ul>
+    </div>
+    <canvas id="gameCanvas" width="550" height="550"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreDisplay = document.getElementById('score');
+        const tileSize = 50; // Ajustado para un tablero de 11x11
+        let score = 0;
+
+        const levels = [
+            { 
+                layout: [
+                    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    [1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1],
+                    [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
+                    [1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1],
+                    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+                    [1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1],
+                    [1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1],
+                    [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+                    [1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1],
+                    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+                    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+                ],
+                pacmanStart: { x: 1, y: 1 }
+            },
+    {
+        layout: [
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+            [1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+            [1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1],
+            [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1],
+            [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+            [1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        ],
+        pacmanStart: { x: 1, y: 1 }
+    },
+    {
+        layout: [
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
+            [1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1],
+            [1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1],
+            [1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1],
+            [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+            [1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1],
+            [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
+            [1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        ],
+        pacmanStart: { x: 1, y: 1 }
+    },
+    {
+        layout: [
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+            [1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1],
+            [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
+            [1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1],
+            [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        ],
+        pacmanStart: { x: 1, y: 1 }
+    },
+    {
+        layout: [
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1],
+            [1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1],
+            [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
+            [1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1],
+            [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+            [1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1],
+            [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        ],
+        pacmanStart: { x: 1, y: 1 }
+    },
+    {
+        layout: [
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1],
+            [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1],
+            [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1],
+            [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1],
+            [1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1],
+            [1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        ],
+        pacmanStart: { x: 1, y: 1 }
+    },
+    {
+        layout: [
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+            [1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+            [1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1],
+            [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1],
+            [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+            [1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        ],
+        pacmanStart: { x: 1, y: 1 }
+    },
+    {
+        layout: [
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
+            [1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1],
+            [1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1],
+            [1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1],
+            [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+            [1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1],
+            [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
+            [1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        ],
+        pacmanStart: { x: 1, y: 1 }
+    },
+    {
+        layout: [
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+            [1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1],
+            [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
+            [1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1],
+            [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        ],
+        pacmanStart: { x: 1, y: 1 }
+    },
+    {
+        layout: [
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1],
+            [1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1],
+            [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
+            [1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1],
+            [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+            [1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1],
+            [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        ],
+        pacmanStart: { x: 1, y: 1 }
+    },
+    {
+        layout: [
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1],
+            [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1],
+            [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1],
+            [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1],
+            [1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1],
+            [1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+        ],
+        pacmanStart: { x: 1, y: 1 }
+    },
+    ]
+
+        let currentLevel = 0;
+        let pacman = { ...levels[currentLevel].pacmanStart };
+        let layout = levels[currentLevel].layout.map(row => [...row]);
+
+        function drawGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let y = 0; y < layout.length; y++) {
+                for (let x = 0; x < layout[y].length; x++) {
+                    if (layout[y][x] === 1) {
+                        ctx.fillStyle = '#0000FF';
+                        ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+                    } else if (layout[y][x] === 0) {
+                        ctx.fillStyle = '#FFFF00';
+                        ctx.beginPath();
+                        ctx.arc(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2, tileSize / 4, 0, 2 * Math.PI);
+                        ctx.fill();
+                    }
+                }
+            }
+            // Dibujar Pac-Man
+            ctx.fillStyle = '#FFFF00';
+            ctx.beginPath();
+            ctx.arc(pacman.x * tileSize + tileSize / 2, pacman.y * tileSize + tileSize / 2, tileSize / 2, 0.2 * Math.PI, 1.8 * Math.PI);
+            ctx.lineTo(pacman.x * tileSize + tileSize / 2, pacman.y * tileSize + tileSize / 2);
+            ctx.fill();
+        }
+
+        function movePacman(dx, dy) {
+            const newX = pacman.x + dx;
+            const newY = pacman.y + dy;
+            if (layout[newY][newX] !== 1) {
+                pacman.x = newX;
+                pacman.y = newY;
+                if (layout[newY][newX] === 0) {
+                    layout[newY][newX] = -1;
+                    score++;
+                    scoreDisplay.textContent = 'Puntuación: ' + score;
+                    if (isLevelComplete()) {
+                        loadNextLevel();
+                    }
+                }
+            }
+            drawGame();
+        }
+
+        function isLevelComplete() {
+            for (let row of layout) {
+                if (row.includes(0)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function loadNextLevel() {
+            currentLevel++;
+            if (currentLevel < levels.length) {
+                layout = levels[currentLevel].layout.map(row => [...row]);
+                pacman = { ...levels[currentLevel].pacmanStart };
+            } else {
+                alert('¡Has completado todos los niveles!');
+                currentLevel = 0;
+                layout = levels[currentLevel].layout.map(row => [...row]);
+                pacman = { ...levels[currentLevel].pacmanStart };
+                score = 0;
+                scoreDisplay.textContent = 'Puntuación: ' + score;
+            }
+            drawGame();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            switch (e.key) {
+                case 'ArrowUp':
+                    movePacman(0, -1);
+                    break;
+                case 'ArrowDown':
+                    movePacman(0, 1);
+                    break;
+                case 'ArrowLeft':
+                    movePacman(-1, 0);
+                    break;
+                case 'ArrowRight':
+                    movePacman(1, 0);
+                    break;
+            }
+        });
+
+        drawGame();
+    </script>
+</body>
+</html>

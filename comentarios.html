@@ -181,7 +181,9 @@
           const timestamp = new Date().getTime();
           const commentSection = document.getElementById(section + 'Comments');
           const commentPara = document.createElement('p');
-          commentPara.innerHTML = `<strong>${date} - ${nameText}:</strong> ${commentText} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
+          const sanitizedNameText = DOMPurify.sanitize(nameText);
+          const sanitizedCommentText = DOMPurify.sanitize(commentText);
+          commentPara.innerHTML = `<strong>${date} - ${sanitizedNameText}:</strong> ${sanitizedCommentText} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
           commentPara.dataset.timestamp = timestamp;
           commentSection.appendChild(commentPara);
 

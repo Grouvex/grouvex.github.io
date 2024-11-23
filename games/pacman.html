@@ -35,11 +35,6 @@
     </style>
 </head>
 <body>
-  <div id="player">
-        <iframe width="560" height="315" src="https://music.youtube.com/playlist?list=PL1dpglw892ZhYph4BVcZeeAegQkIaezqB" 
-        frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen></iframe>
-    </div>
     <div id="score">Puntuación: 0</div>
     <div id="instructions">
         <p>Instrucciones:</p>
@@ -324,5 +319,179 @@
 
         drawGame();
     </script>
+
+
+
+    <div id="song">
+    <div id="player">
+        <audio id="audioPlayer" controls></audio>
+        <div id="currentTrackInfo">
+            <h2 id="trackName"></h2>
+            <p id="trackArtist"></p>
+            <p id="trackAlbum"></p>
+            <p id="trackLabel"></p>
+            <p id="trackComposer"></p>
+            <p id="trackProducer"></p>
+            <p id="trackSpotify"><a href="" target="_blank" id="spotifyLink">Escuchar en Spotify</a></p>
+        </div>
+        <div id="controls">
+            <button id="prevBtn">⏮️</button> <button id="pauseBtn">⏸️</button> <button id="nextBtn">⏭️</button>
+           <hr> 
+            <button id="shuffleBtn">🔀</button> <button id="repeatBtn">🔁</button>
+        </div>
+        <div id="playlist">
+            <ul>
+                <!-- La lista de canciones se generará dinámicamente aquí -->
+            </ul>
+        </div>
+    </div>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+    const audioPlayer = document.getElementById('audioPlayer');const playlist = document.getElementById('playlist').querySelector('ul'); const trackName = document.getElementById('trackName'); const trackArtist = document.getElementById('trackArtist'); const trackAlbum = document.getElementById('trackAlbum');    const trackLabel = document.getElementById('trackLabel');    const trackComposer = document.getElementById('trackComposer');    const trackProducer = document.getElementById('trackProducer');    const spotifyLink = document.getElementById('spotifyLink');
+    const playPauseButton = document.getElementById('pauseBtn');const prevButton = document.getElementById('prevBtn');const nextButton = document.getElementById('nextBtn');const randomButton = document.getElementById('shuffleBtn');const repeatButton = document.getElementById('repeatBtn');
+
+    let currentTrackIndex = 0;
+    let isPlaying = false;
+    let isRandom = false;
+    let repeatMode = 0; // 0: No repetir, 1: Repetir canción, 2: Repetir álbum
+
+    const tracks = [
+        {
+            name: 'A Parallel Universe',
+            file: 'A Parallel Universe.mp3',
+            artist: 'Grouvex',
+            album: 'A Parallel Universe',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/1'
+        },
+        {
+            name: 'Canción 2',
+            file: 'song2.mp3',
+            artist: 'Artista 2',
+            album: 'Álbum 2',
+            label: 'Label 2',
+            composer: 'Compositor 2',
+            producer: 'Productor 2',
+            spotify: 'https://open.spotify.com/track/2'
+        },
+        {
+            name: 'Canción 3',
+            file: 'song3.mp3',
+            artist: 'Artista 3',
+            album: 'Álbum 3',
+            label: 'Label 3',
+            composer: 'Compositor 3',
+            producer: 'Productor 3',
+            spotify: 'https://open.spotify.com/track/3'
+        }
+    ];
+
+    function updateTrackInfo(track) {
+        trackName.textContent = `Canción: ${track.name}`;
+        trackArtist.textContent = `Artista: ${track.artist}`;
+        trackAlbum.textContent = `Álbum: ${track.album}`;
+        trackLabel.textContent = `Label: ${track.label}`;
+        trackComposer.textContent = `Compositor: ${track.composer}`;
+        trackProducer.textContent = `Productor: ${track.producer}`;
+        spotifyLink.href = track.spotify;
+    }
+
+    function playTrack(index) {
+        currentTrackIndex = index;
+        audioPlayer.src = `./music/${tracks[currentTrackIndex].file}`;
+        updateTrackInfo(tracks[currentTrackIndex]);
+        audioPlayer.play();
+        isPlaying = true;
+        playPauseButton.textContent = '⏸️';
+    }
+
+    function playPause() {
+        if (isPlaying) {
+            audioPlayer.pause();
+            isPlaying = false;
+            playPauseButton.textContent = '▶️';
+        } else {
+            audioPlayer.play();
+            isPlaying = true;
+            playPauseButton.textContent = '⏸️';
+        }
+    }
+
+    function nextTrack() {
+        if (isRandom) {
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * tracks.length);
+            } while (randomIndex === currentTrackIndex);
+            playTrack(randomIndex);
+        } else {
+            if (repeatMode === 1) {
+                playTrack(currentTrackIndex);
+            } else {
+                currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+                if (currentTrackIndex === 0 && repeatMode === 2) {
+                    playTrack(currentTrackIndex);
+                } else if (currentTrackIndex !== 0 || repeatMode !== 0) {
+                    playTrack(currentTrackIndex);
+                } else {
+                    audioPlayer.pause();
+                    isPlaying = false;
+                    playPauseButton.textContent = '▶️';
+                }
+            }
+        }
+    }
+
+    function prevTrack() {
+        currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+        playTrack(currentTrackIndex);
+    }
+
+    function toggleRandom() {
+        isRandom = !isRandom;
+        randomButton.textContent = isRandom ? '🔀!' : '🔀';
+    }
+
+    function toggleRepeat() {
+        repeatMode = (repeatMode + 1) % 3;
+        switch (repeatMode) {
+            case 0:
+                repeatButton.textContent = '🔁';
+                break;
+            case 1:
+                repeatButton.textContent = '🔁1';
+                break;
+            case 2:
+                repeatButton.textContent = '🔁2';
+                break;
+        }
+    }
+
+    playPauseButton.addEventListener('click', playPause);
+    nextButton.addEventListener('click', nextTrack);
+    prevButton.addEventListener('click', prevTrack);
+    randomButton.addEventListener('click', toggleRandom);
+    repeatButton.addEventListener('click', toggleRepeat);
+
+    audioPlayer.addEventListener('ended', nextTrack);
+
+    // Reproducir la primera canción automáticamente al cargar la página
+    if (tracks.length > 0) {
+        playTrack(0);
+    }
+});
+    </script>
+    <style>
+#song {display: flex;justify-content: center;align-items: center; margin: 0; font-family: Arial, sans-serif;}
+#player { text-align: center; background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);}
+#currentTrackInfo { margin: 20px 0;}
+#controls { margin: 20px 0;}
+#controls button { margin: 0 10px; padding: 10px 20px; font-size: 16px; cursor: pointer;}
+#playlist { display: none; /* Ocultamos la lista de reproducción */ }
+</style>
+    
 </body>
 </html>

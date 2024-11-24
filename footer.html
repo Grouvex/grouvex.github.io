@@ -28,6 +28,20 @@
 #goTopBtn:hover {
     border-color: cyan;
 }
+#song {display: block;justify-content: center;align-items: center; margin: 0; font-family: Arial, sans-serif;border: 1px;max-width: 100%;max-height: 40px;}
+#player {color:white; text-align: center; padding: 10px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);background-image: url('https://grouvex.com/port/La Magia de la Estrella Polar.jpg');background-size: cover; background-position: center}
+#currentTrackInfo { margin: 10px 0}
+#infoLine1, #infoLine2 { display: flex; justify-content: center; gap: 5px;}
+#controls { margin: 10px 0;}
+#controls button { margin: 0 10px; padding: 10px 20px; font-size: 16px; cursor: pointer;}
+/* Deshabilitar el menú contextual para evitar la descarga del audio */ 
+audio { -webkit-user-select: none; /* Prevenir selección del texto */ -moz-user-select: none; -ms-user-select: none; user-select: none; }
+audio::-webkit-media-controls-enclosure { display: none !important; }
+audio::controls {display: none !important; }
+#playlist {margin-top: 20px;}
+#playlist ul {list-style-type: none; padding: 0;}
+#playlist li {margin: 5px 0;cursor: pointer;padding: 5px;background-color: #1fd6ae;border-radius: 5px;transition: background-color 0.3s;}
+#playlist li:hover {background-color: #5813da;}
  </style>
   <footer>
    <div class="footer-imagenes">
@@ -261,22 +275,6 @@
             });
         });
     </script>
-    <style>
-      #song {display: block;justify-content: center;align-items: center; margin: 0; font-family: Arial, sans-serif;border: 1px;max-width: 100%;max-height: 40px;}
-#player {color:white; text-align: center; padding: 10px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);background-image: url('https://grouvex.com/port/La Magia de la Estrella Polar.jpg');background-size: cover; background-position: center}
-#currentTrackInfo { margin: 10px 0}
-#infoLine1, #infoLine2 { display: flex; justify-content: center; gap: 5px;}
-#controls { margin: 10px 0;}
-#controls button { margin: 0 10px; padding: 10px 20px; font-size: 16px; cursor: pointer;}
-/* Deshabilitar el menú contextual para evitar la descarga del audio */ 
-audio { -webkit-user-select: none; /* Prevenir selección del texto */ -moz-user-select: none; -ms-user-select: none; user-select: none; }
-audio::-webkit-media-controls-enclosure { display: none !important; }
-audio::controls {display: none !important; }
-#playlist {margin-top: 20px;}
-#playlist ul {list-style-type: none; padding: 0;}
-#playlist li {margin: 5px 0;cursor: pointer;padding: 5px;background-color: #1fd6ae;border-radius: 5px;transition: background-color 0.3s;}
-#playlist li:hover {background-color: #5813da;}
-    </style>
  <div id="song">
     <div id="player">
         <h1>Mi Reproductor de Música</h1>

@@ -320,36 +320,61 @@
         drawGame();
     </script>
 
-
-
 <div id="song">
     <div id="player">
-        <audio id="audioPlayer" controls></audio>
-        <div id="currentTrackInfo"> <div id="infoLine1"> <span id="trackName"></span> - <span id="trackArtist"></span> - <span id="trackAlbum"></span> </div> <div id="infoLine2"> <span id="trackLabel"></span> | <span id="trackComposer"></span> | <span id="trackProducer"></span> </div> <p id="trackSpotify"><a href="" target="_blank" id="spotifyLink">Escuchar en Spotify</a></p> </div>
+        <h1>Mi Reproductor de Música</h1>
+        <div id="currentTrackInfo">
+          <h2 id="trackName"></h2>
+            <div id="infoLine1">
+                  <span id="trackArtist"></span> - <span id="trackAlbum"></span>
+            </div>
+            <div id="infoLine2">
+                <span id="trackLabel"></span> | 
+                <span id="trackComposer"></span> | 
+                <span id="trackProducer"></span>
+            </div>
+            <p id="trackSpotify"><a href="" target="_blank" id="spotifyLink">Escuchar en Spotify</a></p>
+        </div>
         <div id="controls">
-            <button id="prevBtn">⏮️</button> <button id="pauseBtn">⏸️</button> <button id="nextBtn">⏭️</button>
-           <hr> 
-            <button id="shuffleBtn">🔀</button> <button id="repeatBtn">🔁</button>
+            <button id="prev">⏮️</button>
+            <button id="playPause">⏸️</button>
+            <button id="next">⏭️</button>
+             <hr> 
+            <button id="random">🔀</button>
+            <button id="repeat">🔁</button>
         </div>
         <div id="playlist">
             <ul>
                 <!-- La lista de canciones se generará dinámicamente aquí -->
             </ul>
         </div>
-    </div>
+        <audio id="audioPlayer" controls></audio>
     </div>
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-    const audioPlayer = document.getElementById('audioPlayer');const playlist = document.getElementById('playlist').querySelector('ul'); const trackName = document.getElementById('trackName'); const trackArtist = document.getElementById('trackArtist'); const trackAlbum = document.getElementById('trackAlbum');    const trackLabel = document.getElementById('trackLabel');    const trackComposer = document.getElementById('trackComposer');    const trackProducer = document.getElementById('trackProducer');    const spotifyLink = document.getElementById('spotifyLink');const playlist = document.querySelector('#playlist ul');
-    const playPauseButton = document.getElementById('pauseBtn');const prevButton = document.getElementById('prevBtn');const nextButton = document.getElementById('nextBtn');const randomButton = document.getElementById('shuffleBtn');const repeatButton = document.getElementById('repeatBtn');
+        document.addEventListener('DOMContentLoaded', function() {
+            const audioPlayer = document.getElementById('audioPlayer');
+            const trackName = document.getElementById('trackName');
+            const trackArtist = document.getElementById('trackArtist');
+            const trackAlbum = document.getElementById('trackAlbum');
+            const trackLabel = document.getElementById('trackLabel');
+            const trackComposer = document.getElementById('trackComposer');
+            const trackProducer = document.getElementById('trackProducer');
+            const spotifyLink = document.getElementById('spotifyLink');
+            const playPauseButton = document.getElementById('playPause');
+            const prevButton = document.getElementById('prev');
+            const nextButton = document.getElementById('next');
+            const randomButton = document.getElementById('random');
+            const repeatButton = document.getElementById('repeat');
+            const player = document.getElementById('player');
+            const playlist = document.querySelector('#playlist ul');
 
-    let currentTrackIndex = 0;
-    let isPlaying = false;
-    let isRandom = false;
-    let repeatMode = 0; // 0: No repetir, 1: Repetir canción, 2: Repetir álbum
+            let currentTrackIndex = 0;
+            let isPlaying = false;
+            let isRandom = false;
+            let repeatMode = 0; // 0: No repetir, 1: Repetir canción, 2: Repetir álbum
 
-    const tracks = [
-        {
+            const tracks = [
+                {
             name: 'A Parallel Universe',
             file: 'A Parallel Universe.mp3',
             artist: 'Grouvex',
@@ -428,18 +453,18 @@
         }
     ];
 
-    function updateTrackInfo(track) {
-        trackName.textContent = `Canción: ${track.name}`;
-        trackArtist.textContent = `Artista: ${track.artist}`;
-        trackAlbum.textContent = `Álbum: ${track.album}`;
-        trackLabel.textContent = `Label: ${track.label}`;
-        trackComposer.textContent = `Compositor: ${track.composer}`;
-        trackProducer.textContent = `Productor: ${track.producer}`;
-        spotifyLink.href = track.spotify;
-        player.style.backgroundImage = `url(${track.background}.file)`
-    }
+            function updateTrackInfo(track) {
+                trackName.textContent = track.name;
+                trackArtist.textContent = track.artist;
+                trackAlbum.textContent = track.album;
+                trackLabel.textContent = `Label: ${track.label}`;
+                trackComposer.textContent = `Compositor: ${track.composer}`;
+                trackProducer.textContent = `Productor: ${track.producer}`;
+                spotifyLink.href = track.spotify;
+                player.style.backgroundImage = `url(${track.background})`;
+            }
 
-    function playTrack(index) {
+            function playTrack(index) {
         currentTrackIndex = index;
         audioPlayer.src = `https://grouvex.com/music/${tracks[currentTrackIndex].file}`;
         updateTrackInfo(tracks[currentTrackIndex]);
@@ -509,7 +534,8 @@
                 break;
         }
     }
-    function updatePlaylistHighlight() { const playlistItems = document.querySelectorAll('#playlist li'); playlistItems.forEach((item, index) => { if (index === currentTrackIndex) { item.classList.add('active'); } else { item.classList.remove('active'); } }); }
+
+            function updatePlaylistHighlight() { const playlistItems = document.querySelectorAll('#playlist li'); playlistItems.forEach((item, index) => { if (index === currentTrackIndex) { item.classList.add('active'); } else { item.classList.remove('active'); } }); }
     tracks.forEach((track, index) => { const li = document.createElement('li'); li.textContent = `${track.name} - ${track.artist}`; li.addEventListener('click', () => playTrack(index)); playlist.appendChild(li); });
     playPauseButton.addEventListener('click', playPause);
     nextButton.addEventListener('click', nextTrack);
@@ -519,25 +545,32 @@
 
     audioPlayer.addEventListener('ended', nextTrack);
 
-    // Reproducir la primera canción automáticamente al cargar la página
-          if (tracks.length > 0) { playTrack(0);} 
-    // Deshabilitar el clic derecho 
-    audioPlayer.addEventListener('contextmenu', function (e) { e.preventDefault(); });
-      });
+            // Reproducir la primera canción automáticamente al cargar la página
+            if (tracks.length > 0) {
+                playTrack(0);
+            }
+
+            // Deshabilitar el clic derecho
+            audioPlayer.addEventListener('contextmenu', function (e) {
+                e.preventDefault();
+            });
+        });
     </script>
     <style>
-#song {display: flex;justify-content: center;align-items: center; margin: 0; font-family: Arial, sans-serif;}
+      #song {display: block;justify-content: center;align-items: center; margin: 0; font-family: Arial, sans-serif;border: 1px;max-width: 100%;max-height: 40px;}
 #player {color:white; text-align: center; padding: 10px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);background-image: url('https://grouvex.com/port/La Magia de la Estrella Polar.jpg');background-size: cover; background-position: center}
 #currentTrackInfo { margin: 10px 0}
 #infoLine1, #infoLine2 { display: flex; justify-content: center; gap: 5px;}
 #controls { margin: 10px 0;}
 #controls button { margin: 0 10px; padding: 10px 20px; font-size: 16px; cursor: pointer;}
-#playlist { display: none; /* Ocultamos la lista de reproducción */ }
 /* Deshabilitar el menú contextual para evitar la descarga del audio */ 
 audio { -webkit-user-select: none; /* Prevenir selección del texto */ -moz-user-select: none; -ms-user-select: none; user-select: none; }
 audio::-webkit-media-controls-enclosure { display: none !important; }
-audio::controls { display: none !important; }
-</style>
-    
+audio::controls {display: none !important; }
+#playlist {margin-top: 20px;}
+#playlist ul {list-style-type: none; padding: 0;}
+#playlist li {margin: 5px 0;cursor: pointer;padding: 5px;background-color: #1fd6ae;border-radius: 5px;transition: background-color 0.3s;}
+#playlist li:hover {background-color: #5813da;}
+    </style>
 </body>
 </html>

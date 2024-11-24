@@ -340,7 +340,7 @@
     </div>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-    const audioPlayer = document.getElementById('audioPlayer');const playlist = document.getElementById('playlist').querySelector('ul'); const trackName = document.getElementById('trackName'); const trackArtist = document.getElementById('trackArtist'); const trackAlbum = document.getElementById('trackAlbum');    const trackLabel = document.getElementById('trackLabel');    const trackComposer = document.getElementById('trackComposer');    const trackProducer = document.getElementById('trackProducer');    const spotifyLink = document.getElementById('spotifyLink');
+    const audioPlayer = document.getElementById('audioPlayer');const playlist = document.getElementById('playlist').querySelector('ul'); const trackName = document.getElementById('trackName'); const trackArtist = document.getElementById('trackArtist'); const trackAlbum = document.getElementById('trackAlbum');    const trackLabel = document.getElementById('trackLabel');    const trackComposer = document.getElementById('trackComposer');    const trackProducer = document.getElementById('trackProducer');    const spotifyLink = document.getElementById('spotifyLink');const playlist = document.querySelector('#playlist ul');
     const playPauseButton = document.getElementById('pauseBtn');const prevButton = document.getElementById('prevBtn');const nextButton = document.getElementById('nextBtn');const randomButton = document.getElementById('shuffleBtn');const repeatButton = document.getElementById('repeatBtn');
 
     let currentTrackIndex = 0;
@@ -509,7 +509,8 @@
                 break;
         }
     }
-
+    function updatePlaylistHighlight() { const playlistItems = document.querySelectorAll('#playlist li'); playlistItems.forEach((item, index) => { if (index === currentTrackIndex) { item.classList.add('active'); } else { item.classList.remove('active'); } }); }
+    tracks.forEach((track, index) => { const li = document.createElement('li'); li.textContent = `${track.name} - ${track.artist}`; li.addEventListener('click', () => playTrack(index)); playlist.appendChild(li); });
     playPauseButton.addEventListener('click', playPause);
     nextButton.addEventListener('click', nextTrack);
     prevButton.addEventListener('click', prevTrack);

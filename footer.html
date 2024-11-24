@@ -55,39 +55,6 @@
 
 <details>
   <summary href="#Discografía"><h3>Discografía</h3></summary>
-<div id="song">
-    <div id="player">
-        <h1>Mi Reproductor de Música</h1>
-        <div id="currentTrackInfo">
-          <h2 id="trackName"></h2>
-            <div id="infoLine1">
-                  <span id="trackArtist"></span> - <span id="trackAlbum"></span>
-            </div>
-            <div id="infoLine2">
-                <span id="trackLabel"></span> | 
-                <span id="trackComposer"></span> | 
-                <span id="trackProducer"></span>
-            </div>
-            <p id="trackSpotify"><a href="" target="_blank" id="spotifyLink">Escuchar en Spotify</a></p>
-        </div>
-        <div id="controls">
-            <button id="prev">⏮️</button>
-            <button id="playPause">⏸️</button>
-            <button id="next">⏭️</button>
-             <hr> 
-            <button id="random">🔀</button>
-            <button id="repeat">🔁</button>
-        </div>
-        <details>
-  <summary href="#Playlist"><h3>Playlist</h3></summary>
-        <div id="playlist">
-            <ul>
-                <!-- La lista de canciones se generará dinámicamente aquí -->
-            </ul>
-        </div>
-        <audio id="audioPlayer" controls></audio>
-        </details>
-    </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const audioPlayer = document.getElementById('audioPlayer');
@@ -310,6 +277,39 @@ audio::controls {display: none !important; }
 #playlist li {margin: 5px 0;cursor: pointer;padding: 5px;background-color: #1fd6ae;border-radius: 5px;transition: background-color 0.3s;}
 #playlist li:hover {background-color: #5813da;}
     </style>
+ <div id="song">
+    <div id="player">
+        <h1>Mi Reproductor de Música</h1>
+        <div id="currentTrackInfo">
+          <h2 id="trackName"></h2>
+            <div id="infoLine1">
+                  <span id="trackArtist"></span> - <span id="trackAlbum"></span>
+            </div>
+            <div id="infoLine2">
+                <span id="trackLabel"></span> | 
+                <span id="trackComposer"></span> | 
+                <span id="trackProducer"></span>
+            </div>
+            <p id="trackSpotify"><a href="" target="_blank" id="spotifyLink">Escuchar en Spotify</a></p>
+        </div>
+        <div id="controls">
+            <button id="prev">⏮️</button>
+            <button id="playPause">⏸️</button>
+            <button id="next">⏭️</button>
+             <hr> 
+            <button id="random">🔀</button>
+            <button id="repeat">🔁</button>
+        </div>
+        <details>
+  <summary href="#Playlist"><h3>Playlist</h3></summary>
+        <div id="playlist">
+            <ul>
+                <!-- La lista de canciones se generará dinámicamente aquí -->
+            </ul>
+        </div>
+        <audio id="audioPlayer" controls></audio>
+        </details>
+    </div>
     </details>
    
   </footer>

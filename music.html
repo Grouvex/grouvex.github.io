@@ -34,8 +34,6 @@
  <div id="news"></div>
 <main>
   <!-- Título -->
-<article>
-    <div id="song">
     <div id="player">
         <h1>Mi Reproductor de Música</h1>
         <div id="currentTrackInfo">
@@ -49,6 +47,8 @@
                 <span id="trackProducer"></span>
             </div>
             <p id="trackSpotify"><a href="" target="_blank" id="spotifyLink">Escuchar en Spotify</a></p>
+        </div>
+        <div id="youtubeVideo" style="display: none;"> <iframe id="youtubePlayer" width="560" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
         <div id="controls">
             <button id="prev">⏮️</button>
@@ -64,7 +64,6 @@
             </ul>
         </div>
         <audio id="audioPlayer" controls></audio>
-    </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const audioPlayer = document.getElementById('audioPlayer');
@@ -82,6 +81,8 @@
             const repeatButton = document.getElementById('repeat');
             const player = document.getElementById('player');
             const playlist = document.querySelector('#playlist ul');
+            const youtubeVideo = document.getElementById('youtubeVideo');
+            const youtubePlayer = document.getElementById('youtubePlayer');
 
             let currentTrackIndex = 0;
             let isPlaying = false;
@@ -98,6 +99,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/intl-es/track/2swP5ghff8mLwaPeFfhHGP?si=e06c4de03f8c4775',
+            youtube: '',
             background: 'https://grouvex.com/port/A Parallel Universe.jpg'
         },
         {
@@ -109,6 +111,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2',
+            youtube: 'https://www.youtube.com/watch?v=XV_veUHdWMk',
             background: 'https://grouvex.com/port/La Magia de la Estrella Polar.jpg'
         },
         {
@@ -120,6 +123,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2',
+            youtube: '',
             background: 'https://grouvex.com/port/La Magia de la Estrella Polar.jpg'
         },
         {
@@ -131,6 +135,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2',
+            youtube: 'https://www.youtube.com/watch?v=0w7czW9p-SQ',
             background: 'https://grouvex.com/port/El Principe.jpg'
         },
         {
@@ -142,6 +147,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/intl-es/track/2nselUEJRkM2WcSt7EPPJk?si=786a70d65533408c',
+            youtube: 'https://youtu.be/_cKRVsZhT1g?si=vo4iCvdI5oJR-Mjl',
             background: 'https://grouvex.com/port/Unforgettable Memories.jpg'
         },
         {
@@ -153,6 +159,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/intl-es/track/1xgmSBSaAisdtD9JeZpeL9?si=b231cf89de774ab6',
+            youtube: 'https://youtu.be/V73-ZJY9Uek?si=RGX_pGvHqmyTUlGb',
             background: 'https://grouvex.com/port/Unforgettable Memories.jpg'
         },
         {
@@ -164,6 +171,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2',
+            youtube: '',
             background: 'https://grouvex.com/port/Unstoppable Friendship.jpg'
         }
     ];
@@ -177,6 +185,7 @@
                 trackProducer.textContent = `Productor: ${track.producer}`;
                 spotifyLink.href = track.spotify;
                 player.style.backgroundImage = `url(${track.background})`;
+                if (track.youtube) { youtubePlayer.src = track.youtube; youtubeVideo.style.display = 'block'; } else { youtubeVideo.style.display = 'none'; }
             }
 
             function playTrack(index) {
@@ -287,7 +296,6 @@ audio::controls {display: none !important; }
 #playlist li {margin: 5px 0;cursor: pointer;padding: 5px;background-color: #1fd6ae;border-radius: 5px;transition: background-color 0.3s;}
 #playlist li:hover {background-color: #5813da;}
     </style>
-</article>
  </main>
  <!-- Footer -->
  <div id="footer"></div>

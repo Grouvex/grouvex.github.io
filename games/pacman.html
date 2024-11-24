@@ -436,7 +436,7 @@
         trackComposer.textContent = `Compositor: ${track.composer}`;
         trackProducer.textContent = `Productor: ${track.producer}`;
         spotifyLink.href = track.spotify;
-        player.style.backgroundImage = `url(${track.background})`
+        player.style.backgroundImage = `url(${track.background}.file)`
     }
 
     function playTrack(index) {
@@ -519,19 +519,23 @@
     audioPlayer.addEventListener('ended', nextTrack);
 
     // Reproducir la primera canción automáticamente al cargar la página
-    if (tracks.length > 0) {
-        playTrack(0);
-    }
-});
+          if (tracks.length > 0) { playTrack(0);} 
+    // Deshabilitar el clic derecho 
+    audioPlayer.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+      });
     </script>
     <style>
 #song {display: flex;justify-content: center;align-items: center; margin: 0; font-family: Arial, sans-serif;}
-#player {color:white; text-align: center; padding: 10px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);background-size: cover; background-position: center}
+#player {color:white; text-align: center; padding: 10px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);background-image: url('https://grouvex.com/port/La Magia de la Estrella Polar.jpg');background-size: cover; background-position: center}
 #currentTrackInfo { margin: 10px 0}
 #infoLine1, #infoLine2 { display: flex; justify-content: center; gap: 5px;}
 #controls { margin: 10px 0;}
 #controls button { margin: 0 10px; padding: 10px 20px; font-size: 16px; cursor: pointer;}
 #playlist { display: none; /* Ocultamos la lista de reproducción */ }
+/* Deshabilitar el menú contextual para evitar la descarga del audio */ 
+audio { -webkit-user-select: none; /* Prevenir selección del texto */ -moz-user-select: none; -ms-user-select: none; user-select: none; }
+audio::-webkit-media-controls-enclosure { display: none !important; }
+audio::controls { display: none !important; }
 </style>
     
 </body>

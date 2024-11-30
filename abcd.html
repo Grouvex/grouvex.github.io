@@ -78,6 +78,7 @@
             <input type="password" id="authPassword" placeholder="Password" required>
             <button type="submit" id="authButton">Iniciar Sesión</button>
             <button type="button" id="toggleButton">¿No tienes cuenta? Regístrate</button>
+            <button type="button" id="googleSignInButton">Iniciar Sesión con Google</button>
         </form>
         <button id="logoutBtn" style="display: none;">Cerrar Sesión</button>
         <button id="resetPasswordBtn">¿Olvidaste tu contraseña?</button>
@@ -313,6 +314,28 @@ function requestPasswordChange() {
     }
 }
     </script>
+
+<!-- Script para manejar la autenticación con Google -->
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script>
+  function onGoogleSignIn(googleUser) {
+    var profile = googleUser.getBasicProfile();
+    console.log('ID: ' + profile.getId());
+    console.log('Name: ' + profile.getName());
+    console.log('Email: ' + profile.getEmail());
+    // Aquí puedes manejar la información del perfil del usuario y autenticación con tu backend.
+  }
+
+  gapi.load('auth2', function() {
+    gapi.auth2.init().then(function() {
+      var auth2 = gapi.auth2.getAuthInstance();
+      document.getElementById('googleSignInButton').addEventListener('click', function() {
+        auth2.signIn().then(onGoogleSignIn);
+      });
+    });
+  });
+</script>
+      
 <script src="abc.js"></script> 
 </main>
  <!-- Footer -->

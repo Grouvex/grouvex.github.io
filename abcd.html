@@ -17,7 +17,7 @@
  </script>
 <!-- header.html -->
 <head>
-<script src="abc.js"></script> <script src="index.js"></script> <script src="time.js"></script> <script src="temas.js"></script> <link rel="stylesheet" href="index.css"> <link rel="stylesheet" href="temas.css">
+<script src="index.js"></script> <script src="time.js"></script> <script src="temas.js"></script> <link rel="stylesheet" href="index.css"> <link rel="stylesheet" href="temas.css">
 <link rel="icon" href="img/GROUVEX.png"> <link rel="icon" href="GROUVEX.png" type="image/x-icon">
 <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8"> <meta name="author" content="Grouvex Studios"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="copyright" content="Grouvex Studios"> <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"> <meta http-equiv="Content-Security-Policy" content="policy"> <meta http-equiv="Referrer-Policy" content="no-referrer"> <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects"> <meta name="theme-color" content="#hexcode"> <link rel="canonical" href="URL_canónica">
   <!-- Clarity tracking code for https://grouvex.github.io/ -->
@@ -78,7 +78,6 @@
             <input type="password" id="authPassword" placeholder="Password" required>
             <button type="submit" id="authButton">Iniciar Sesión</button>
             <button type="button" id="toggleButton">¿No tienes cuenta? Regístrate</button>
-            <button type="button" id="googleSignInButton">Iniciar Sesión con Google</button>
         </form>
         <button id="logoutBtn" style="display: none;">Cerrar Sesión</button>
         <button id="resetPasswordBtn">¿Olvidaste tu contraseña?</button>
@@ -314,38 +313,7 @@ function requestPasswordChange() {
     }
 }
     </script>
-
-<!-- Script para manejar la autenticación con Google -->
-<script src="https://apis.google.com/js/platform.js" async defer></script>
-<script>
-  // Manejar autenticación con Google
-  function onGoogleSignIn(googleUser) {
-    var token = googleUser.getAuthResponse().id_token;
-    var credential = firebase.auth.GoogleAuthProvider.credential(token);
-    auth.signInWithCredential(credential).then(function(result) {
-      var user = result.user;
-      console.log('ID: ' + user.uid);
-      console.log('Name: ' + user.displayName);
-      console.log('Email: ' + user.email);
-      // Guardar datos del usuario en Firestore
-      db.collection("users").doc(user.uid).set({
-        name: user.displayName,
-        email: user.email
-      });
-    }).catch(function(error) {
-      console.log(error);
-    });
-  }
-
-  gapi.load('auth2', function() {
-    gapi.auth2.init().then(function() {
-      var auth2 = gapi.auth2.getAuthInstance();
-      document.getElementById('googleSignInButton').addEventListener('click', function() {
-        auth2.signIn().then(onGoogleSignIn);
-      });
-    });
-  });
-</script>
+<script src="abc.js"></script> 
 </main>
  <!-- Footer -->
  <div id="footer"></div>

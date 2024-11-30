@@ -1,51 +1,40 @@
 <!DOCTYPE html>
 <html lang="es">
+<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+<script src="jquery-3.5.1.min.js"></script>
+ <script> 
+    $(function(){
+      $("#menu").load("menu.html"); 
+    });
+    $(function(){
+      $("#footer").load("footer.html"); 
+    });
+  $(function(){
+      $("#news").load("news.html"); 
+    });
+ </script>
+<!-- header.html -->
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
-  <meta name="author" content="Grouvex Studios">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="copyright" content="Grouvex Studios">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Content-Security-Policy" content="policy">
-  <meta http-equiv="Referrer-Policy" content="no-referrer">
-  <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects">
-  <meta name="theme-color" content="#hexcode">
-  <link rel="canonical" href="URL_canónica">
-  <link rel="stylesheet" href="index.css">
-  <link rel="stylesheet" href="temas.css">
-  <link rel="icon" href="img/GROUVEX.png">
-  <link rel="icon" href="GROUVEX.png" type="image/x-icon">
-  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
-  <script src="jquery-3.5.1.min.js"></script>
-  <script src="index.js"></script>
-  <script src="time.js"></script>
-  <script src="temas.js"></script>
+<script src="index.js"></script> <script src="time.js"></script> <script src="temas.js"></script> <link rel="stylesheet" href="index.css"> <link rel="stylesheet" href="temas.css">
+<link rel="icon" href="img/GROUVEX.png"> <link rel="icon" href="GROUVEX.png" type="image/x-icon">
+<meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8"> <meta name="author" content="Grouvex Studios"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="copyright" content="Grouvex Studios"> <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"> <meta http-equiv="Content-Security-Policy" content="policy"> <meta http-equiv="Referrer-Policy" content="no-referrer"> <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects"> <meta name="theme-color" content="#hexcode"> <link rel="canonical" href="URL_canónica">
   <!-- Clarity tracking code for https://grouvex.github.io/ -->
-  <script>
-    (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "mdkjlz9c01");
-  </script>
-  <script>
-    // Initialize Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
-      authDomain: "grouvex-studios.firebaseapp.com",
-      databaseURL: "https://grouvex-studios-default-rtdb.firebaseio.com", // Asegúrate de incluir la URL de tu base de datos
-      projectId: "grouvex-studios",
-      storageBucket: "grouvex-studios.appspot.com",
-      messagingSenderId: "1070842606062",
-      appId: "1:1070842606062:web:5d887863048fd100b49eff",
-      measurementId: "G-75BR8D2CR3"
-    };
-
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
-  </script>
+  <script>    (function(c,l,a,r,i,t,y){        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "mdkjlz9c01");</script>
+<!-- Editable -->
+<meta property="og:title" content="Sitio web oficial - Grouvex Studios"> <meta property="og:description" content="Sitio web oficial de ©Grouvex Studios"> <meta property="og:image" href="img/GROUVEX.png">
+<title>Sitio Web Oficial - Grouvex Studios</title>
+<!-- Main Top -->
+<mainTop>
+<a href="https://grouvex.github.io/"><span style="font-family: Times New Roman; sans-serif; font-size: 30px;color:white">Grouvex Studios</span></a>
+<span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold"> <a href="https://grouvex.github.io/"><u style="color: blue"><span style="color: white">Inicio</span></u></a> | <a href="https://grouvex.github.io/artistas"><u style="color: blue"><span style="color: white">Artistas</span></u></a> | <a href="https://grouvex.github.io/equipo"><u style="color: blue"><span style="color: white">Equipo</span></u></a> | <a href="https://grouvex.github.io/comentarios"><u style="color: blue"><span style="color: green">Comentarios (vBeta)</span></u></a> | <a href="https://grouvex.github.io/registrar" style="pointer-events: none"><u style="color: blue"><span style="color: white">Registrar</span></u></a> <span id="menu"></span>
+</span>
+</mainTop>
 </head>
 <body>
   <main>
+        <!-- Título -->
     <style>
         nav {
             margin-bottom: 20px;
@@ -81,7 +70,20 @@
             cursor: pointer;
         }
     </style>
-    <h1>Comentarios de Usuarios</h1>
+    <h1>Autenticación de Usuarios en Grouvex Studios</h1>
+    <div id="auth-container">
+        <form id="authForm">
+            <h2 id="formTitle">Inicio de Sesión</h2>
+            <input type="email" id="authEmail" placeholder="Email" required>
+            <input type="password" id="authPassword" placeholder="Password" required>
+            <button type="submit" id="authButton">Iniciar Sesión</button>
+            <button type="button" id="toggleButton">¿No tienes cuenta? Regístrate</button>
+        </form>
+        <button id="logoutBtn" style="display: none;">Cerrar Sesión</button>
+        <button id="resetPasswordBtn">¿Olvidaste tu contraseña?</button>
+    </div>
+
+    <div id="content" style="display: none;"> 
     <nav>
       <a onclick="showSection('reportes')">Reportes en la Web</a>
       <a onclick="showSection('configuracion')">Configuración</a>
@@ -148,7 +150,7 @@
         <button onclick="requestPasswordChange()">Cambiar Contraseña</button>
       </div>
     </section>
-
+</div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
     <script>
       let ordenarAscendente = true;
@@ -214,18 +216,53 @@
     comments.forEach(comment => commentSection.appendChild(comment));
     ordenarAscendente = !ordenarAscendente;
 }
+     
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    const userId = user.uid;
+    firebase.database().ref(`roles/admin/${userId}`).once('value').then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log('User is an admin');
+        // Usuario es administrador, habilitar eliminación
+      } else {
+        console.log('User is not an admin');
+        // Usuario no es administrador, deshabilitar eliminación
+      }
+    });
+  } else {
+    // Usuario no autenticado
+  }
+});
 
 function requestDeleteComment(element) {
-    const password = prompt("Ingrese la contraseña de administrador para eliminar este comentario:");
-    if (md5(password) === localStorage.getItem('adminHash')) {
-        const commentText = element.parentElement.innerHTML;
-        const sectionId = element.parentElement.parentElement.id.replace('Comments', '');
-        element.parentElement.remove();
-        eliminarComentario(sectionId, commentText);
-    } else {
-        alert("Contraseña incorrecta.");
-    }
+  const user = firebase.auth().currentUser;
+  if (user) {
+    firebase.database().ref(`roles/admin/${user.uid}`).once('value').then((snapshot) => {
+      if (snapshot.exists()) {
+        const password = prompt("Ingrese la contraseña de administrador para eliminar este comentario:");
+        if (md5(password) === localStorage.getItem('adminHash')) {
+          const commentText = element.parentElement.innerHTML;
+          const sectionId = element.parentElement.parentElement.id.replace('Comments', '');
+          element.parentElement.remove();
+          eliminarComentario(sectionId, commentText);
+        } else {
+          alert("Contraseña incorrecta.");
+        }
+      } else {
+        alert("No tienes permisos para eliminar este comentario.");
+      }
+    });
+  } else {
+    alert("Debes iniciar sesión para eliminar comentarios.");
+  }
 }
+
+function eliminarComentario(section, commentKey) {
+  database.ref(`comments/${section}/${commentKey}`).remove()
+    .then(() => { alert("Comentario eliminado correctamente."); })
+    .catch(error => { alert("Error al eliminar el comentario: " + error.message); });
+}
+
 
 function guardarComentarioEnServidor(section, name, comment, timestamp) {
     const newCommentRef = database.ref('comments/' + section).push();
@@ -253,12 +290,6 @@ function cargarComentarios(section) {
     });
 }
 
-function eliminarComentario(section, commentKey) {
-    database.ref(`comments/${section}/${commentKey}`).remove()
-    .then(() => { alert("Comentario eliminado correctamente."); })
-    .catch(error => { alert("Error al eliminar el comentario: " + error.message); });
-}
-
 function md5(value) {
     return CryptoJS.MD5(value).toString();
 }
@@ -281,7 +312,10 @@ function requestPasswordChange() {
         alert("Correo electrónico no reconocido.");
     }
 }
-</script>
+    </script>
+<script src="abc.js"></script> 
 </main>
+ <!-- Footer -->
+ <div id="footer"></div>
 </body>
 </html>

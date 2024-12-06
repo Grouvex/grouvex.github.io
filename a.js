@@ -16,7 +16,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-function cambiarSecion() {
+function cambiarSeccion() {
             document.getElementById('section1').style.display = 'none'; // Oculta la sección 1
             document.getElementById('section2').style.display = 'block'; // Muestra la sección 2
         };

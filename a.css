@@ -55,6 +55,13 @@ button[type="button"] {
     margin-bottom: 20px;
 }
 
+#seccion1 {
+            display: block; /* Inicialmente oculta la sección 2 */
+        }
+#seccion2 {
+            display: none; /* Inicialmente oculta la sección 2 */
+        }
+
 #section-menu {
     display: flex;
     flex-direction: column;

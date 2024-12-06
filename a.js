@@ -16,13 +16,10 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const nextSection = (sectionIndex) => {
-    const currentSection = document.querySelectorAll('.section')[sectionIndex - 1];
-    const nextSection = document.querySelectorAll('.section')[sectionIndex];
-    currentSection.style.display = 'none';
-    nextSection.style.display = 'block';
-    document.getElementById('release-title-header').innerText = document.getElementById('release-title').value;
-};
+function cambiarSecion() {
+            document.getElementById('section1').style.display = 'none'; // Oculta la sección 1
+            document.getElementById('section2').style.display = 'block'; // Muestra la sección 2
+        };
 
 const showSubSection = (subSectionId) => {
     const subSections = document.querySelectorAll('#form-container .section > div');

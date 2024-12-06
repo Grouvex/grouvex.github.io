@@ -7,17 +7,7 @@
     <link rel="stylesheet" href="a.css">
 </head>
 <body>
-    <div id="auth-container">
-        <form id="authForm">
-            <h2 id="formTitle">Inicio de Sesión</h2>
-            <input type="email" id="authEmail" placeholder="Email" required>
-            <input type="password" id="authPassword" placeholder="Password" required>
-            <button type="submit" id="authButton">Iniciar Sesión</button>
-            <button type="button" id="toggleButton">¿No tienes cuenta? Regístrate</button>
-        </form>
-        <button id="logoutBtn" style="display: none;">Cerrar Sesión</button>
-        <button id="resetPasswordBtn">¿Olvidaste tu contraseña?</button>
-    </div>
+    <script> auth.onAuthStateChanged(user => { if (user) { document.getElementById('form-container').style.display = 'block'; } else { window.location.href = 'login.html'; } }); </script>
 
     <div id="form-container" style="display:none;">
         <h2>Crear un Nuevo Lanzamiento</h2>
@@ -255,7 +245,7 @@
 
             </div>
         </form>
-    </div>
+  
 
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>

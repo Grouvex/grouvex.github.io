@@ -12,16 +12,16 @@
         <h2>Crear un Nuevo Lanzamiento</h2>
         <form id="release-form">
             <!-- Sección 1 -->
-            <div class="section">
+            <div class="section1">
                 <label for="upc">UPC / EAN (opcional)</label>
                 <input type="text" id="upc" placeholder="If you don't have a UPC / EAN please leave blank and we can generate one for you.">
                 <label for="release-title">Release Title*</label>
                 <input type="text" id="release-title" required>
-                <button type="button" onclick="nextSection(1)">Siguiente</button>
+                <button onclick="cambiarSeccion()">Siguiente</button>
             </div>
 
             <!-- Sección 2 -->
-            <div class="section" style="display:none;">
+            <div class="section2" style="display:none;">
                 <h3 id="release-title-header"></h3>
                 <div id="section-menu">
                     <button type="button" onclick="showSubSection('album-details')">Detalles del Álbum</button>

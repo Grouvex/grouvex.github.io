@@ -45,7 +45,7 @@ authForm.addEventListener('submit', (e) => {
     auth.signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         alert('Usuario inició sesión: ' + userCredential.user.email);
-        location.reload();
+        window.history.back();
       })
       .catch((error) => {
         alert('Error al iniciar sesión: ' + error.message);

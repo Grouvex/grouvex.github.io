@@ -16,10 +16,22 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+document.addEventListener('DOMContentLoaded', (event) => {
+    document.getElementById('yourButtonId').addEventListener('click', cambiarSeccion);
+});
+
 function cambiarSeccion() {
-            document.getElementById('section1').style.display = 'none'; // Oculta la sección 1
-            document.getElementById('section2').style.display = 'block'; // Muestra la sección 2
-        };
+    console.log("Función cambiarSeccion llamada"); // Verificar que la función se llama
+    const section1 = document.getElementById('section1');
+    const section2 = document.getElementById('section2');
+    if (section1 && section2) {
+        section1.style.display = 'none'; // Oculta la sección 1
+        section2.style.display = 'block'; // Muestra la sección 2
+        console.log("Cambio de secciones exitoso"); // Confirmar el cambio
+    } else {
+        console.error("No se encontraron los elementos section1 y/o section2");
+    }
+};
 
 const showSubSection = (subSectionId) => {
     const subSections = document.querySelectorAll('#form-container .section > div');

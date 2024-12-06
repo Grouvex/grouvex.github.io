@@ -16,19 +16,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const login = () => {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            document.getElementById('auth-container').style.display = 'none';
-            document.getElementById('form-container').style.display = 'block';
-        })
-        .catch((error) => {
-            console.error("Error al iniciar sesión:", error);
-        });
-};
-
 const nextSection = (sectionIndex) => {
     const currentSection = document.querySelectorAll('.section')[sectionIndex - 1];
     const nextSection = document.querySelectorAll('.section')[sectionIndex];

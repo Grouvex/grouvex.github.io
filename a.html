@@ -7,7 +7,15 @@
     <link rel="stylesheet" href="a.css">
 </head>
 <body>
-
+<script>
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    firebase.auth().signOut().then(() => {
+      console.log('User logged out');
+    }).catch((error) => {
+      console.error('Error logging out:', error);
+    });
+  });
+</script>
     <div id="form-container">
         <h2>Crear un Nuevo Lanzamiento</h2>
         <form id="release-form">

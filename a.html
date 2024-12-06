@@ -258,5 +258,13 @@
             </div>
         </form>
 </div>
+<body>
+   <!-- Contenido del cuerpo -->
+   <script src="a.js"></script> <!-- Asegúrate de que este archivo contiene la función cambiarSeccion -->
+   <script>
+       document.addEventListener('DOMContentLoaded', (event) => {
+           document.getElementById('siguiente-btn').addEventListener('click', cambiarSeccion);
+       });
+   </script>
 </body>
 </html>

@@ -14,15 +14,23 @@
   <script src="abc.js"></script>
 
   <script>
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-      firebase.auth().signOut().then(() => {
-        console.log('User logged out');
-      }).catch((error) => {
-        console.error('Error logging out:', error);
-      });
-    });
-  </script>
+document.addEventListener('DOMContentLoaded', function() {
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            firebase.auth().signOut().then(() => {
+                console.log('User logged out');
+            }).catch((error) => {
+                console.error('Error logging out:', error);
+            });
+        });
+    } else {
+        console.error("No se encontró el elemento con id 'logoutBtn'");
+    }
+});
 
+  </script>
+<button id="logoutBtn">Cerrar sesión
   <div id="form-container">
     <h2>Crear un Nuevo Lanzamiento</h2>
     <form id="release-form">

@@ -1,270 +1,53 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario de Lanzamiento</title>
-    <link rel="stylesheet" href="a.css">
-</head>
-<body>
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
-    <script src="a.js"></script> <script src="abc.js"></script>
 
-<script>
-  document.getElementById('logoutBtn').addEventListener('click', () => {
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario de Lanzamiento</title>
+  <link rel="stylesheet" href="a.css">
+</head>
+
+<body>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
+  <script src="a.js"></script>
+  <script src="abc.js"></script>
+
+  <script>
+    document.getElementById('logoutBtn').addEventListener('click', () => {
     firebase.auth().signOut().then(() => {
       console.log('User logged out');
     }).catch((error) => {
       console.error('Error logging out:', error);
     });
   });
-</script>
-    <div id="form-container">
-        <h2>Crear un Nuevo Lanzamiento</h2>
-        <form id="release-form">
-            <!-- Sección 1 -->
-            <div class="section1" id="section1">
-                <label for="upc">UPC / EAN (opcional)</label>
-                <input type="text" id="upc" placeholder="If you don't have a UPC / EAN please leave blank and we can generate one for you.">
-                <label for="release-title">Release Title*</label>
-                <input type="text" id="release-title" required>
-                <button type="button" onclick="cambiarSeccion()">Siguiente</button>
-            </div>
+  </script>
+  <div id="form-container">
+    <h2>Crear un Nuevo Lanzamiento</h2>
+    <form id="release-form">
+      <!-- Sección 1 -->
+      <div class="section1" id="section1">
+        <label for="upc">UPC / EAN (opcional)</label>
+        <input type="text" id="upc" placeholder="If you don't have a UPC / EAN please leave blank and we can generate one for you.">
+        <label for="release-title">Release Title*</label>
+        <input type="text" id="release-title" required>
+        <button onclick="cambiarSeccion()">Siguiente</button>
+      </div>
 
-            <!-- Sección 2 -->
-            <div class="section2" id="section2" style="display:none;">
-                <h3 id="release-title-header"></h3>
-                <div id="section-menu">
-                    <button type="button" onclick="showSubSection('album-details')">Detalles del Álbum</button>
-                    <button type="button" onclick="showSubSection('image-details')">Detalles de Imagen</button>
-                    <button type="button" onclick="showSubSection('audio-details')">Detalles de Audio</button>
-                    <button type="button" onclick="showSubSection('stores-details')">Detalles de Tiendas</button>
-                    <button type="button" onclick="showSubSection('localization-details')">Detalles de Localización</button>
-                </div>
-
-                <!-- Detalles del Álbum -->
-                <div id="album-details" style="display:none;">
-                    <label for="language">Idioma (opcional)</label>
-                    <select id="language">
-                        <option value="">Selecciona un idioma</option>
-                        <!-- Listado de idiomas -->
-                    </select>
-                    <label for="album-title">Album/Single/EP Title*</label>
-                    <input type="text" id="album-title" required>
-                    <label for="album-version">Album Version (opcional)</label>
-                    <input type="text" id="album-version" placeholder="Album Version is used to distinguish different versions of the same album by the same artist (e.g. 'Live from San Francisco', 'Club Remix', 'Radio Edit').">
-                    <label for="compilation-album">Compilation Album*</label>
-                    <select id="compilation-album" required>
-                        <option value="yes">Sí</option>
-                        <option value="no">No</option>
-                    </select>
-                    <label for="artist-name">Artist Name*</label>
-                    <div id="artist-list">
-                        <div class="artist">
-                            <select class="artist-role">
-                                <option value="primary">Primario</option>
-                                <option value="featuring">Featuring</option>
-                                <option value="producer">Producer</option>
-                                <option value="with">With</option>
-                                <option value="performer">Performer</option>
-                                <option value="dj">DJ</option>
-                                <option value="remixer">Remixer</option>
-                                <option value="conductor">Conductor</option>
-                                <option value="arranger">Arranger</option>
-                                <option value="orchestra">Orchestra</option>
-                                <option value="actor">Actor</option>
-                            </select>
-                            <input type="text" class="artist-name" required>
-                            <button type="button" onclick="removeArtist(this)">Eliminar</button>
-                        </div>
-                    </div>
-                    <button type="button" onclick="addArtist()">+1 Artista</button>
-                    <!-- Información de Publicación -->
-                    <label for="writers">Writers*</label>
-                    <div id="writers-list">
-                        <div class="writer">
-                            <input type="text" class="writer-name" required>
-                            <button type="button" onclick="removeWriter(this)">Eliminar</button>
-                        </div>
-                    </div>
-                    <button type="button" onclick="addWriter()">+1 Compositor</button>
-                    <label for="lyrics">Does this release contain lyrics?*</label>
-                    <select id="lyrics" required onchange="toggleLyricistSection(this)">
-                        <option value="yes">Sí</option>
-                        <option value="no">No</option>
-                    </select>
-                    <div id="lyricist-section" style="display:none;">
-                        <label for="lyricists">Lyricists</label>
-                        <div id="lyricist-list">
-                            <div class="lyricist">
-                                <input type="text" class="lyricist-name">
-                                <button type="button" onclick="removeLyricist(this)">Eliminar</button>
-                            </div>
-                        </div>
-                        <button type="button" onclick="addLyricist()">+1 Letrista</button>
-                    </div>
-                    <label for="primary-genre">Primary Genre*</label>
-                    <select id="primary-genre" required>
-                        <!-- Listado de géneros -->
-                    </select>
-                    <label for="secondary-genre">Secondary Genre*</label>
-                    <select id="secondary-genre" required>
-                        <!-- Listado de géneros -->
-                    </select>
-                    <label for="composition-copyright">Composition Copyright*</label>
-                    <input type="text" id="composition-copyright" value="Grouvex Studios Recording" required>
-                    <label for="composition-date">Fecha de Copyright (años)*</label>
-                    <input type="number" id="composition-date" required>
-                    <label for="recording-copyright">Sound Recording Copyright*</label>
-                    <input type="text" id="recording-copyright" value="Grouvex Studios Recording" required>
-                    <label for="recording-date">Fecha de Copyright (años)*</label>
-                    <input type="number" id="recording-date" required>
-                    <label for="record-label-name">Record Label Name*</label>
-                    <input type="text" id="record-label-name" value="Grouvex Studios Recording" required>
-                    <label for="originally-released">Originally Released*</label>
-                    <input type="date" id="originally-released" required>
-                    <label for="pre-order-date">Pre Order Date (opcional)</label>
-                    <input type="date" id="pre-order-date">
-                    <button type="button" onclick="clearPreOrderDate()">Quitar Fecha</button>
-                    <label for="sales-start-date">Sales Start Date*</label>
-                    <input type="date" id="sales-start-date" required>
-                    <label for="add-time">Add a Time (opcional)</label>
-                    <input type="time" id="add-time">
-                    <select id="time-zone">
-                        <!-- Listado de zonas horarias -->
-                    </select>
-                    <button type="button" onclick="clearTime()">Eliminar Hora</button>
-                    <label for="release-time">Lanzar en tiempo local o mundialmente</label>
-                    <select id="release-time">
-                        <option value="local">Local</option>
-                        <option value="global">Global</option>
-                    </select>
-                    <label for="explicit-content">Explicit Content*</label>
-                    <select id="explicit-content" required>
-                        <option value="clean">No Explícito</option>
-                        <option value="explicit">Explícito</option>
-                        <option value="clean-version">Versión Limpia</option>
-                    </select>
-                    <button type="submit">Guardar</button>
-                </div>
-
-                <div id="album-details" style="display:none;">
-    <label for="language">Idioma (opcional)</label>
-    <select id="language">
-        <option value="">Selecciona un idioma</option>
-        <!-- Listado de idiomas -->
-    </select>
-    <label for="album-title">Album/Single/EP Title*</label>
-    <input type="text" id="album-title" required>
-    <label for="album-version">Album Version (opcional)</label>
-    <input type="text" id="album-version" placeholder="Album Version is used to distinguish different versions of the same album by the same artist (e.g. 'Live from San Francisco', 'Club Remix', 'Radio Edit').">
-    <label for="compilation-album">Compilation Album*</label>
-    <select id="compilation-album" required>
-        <option value="yes">Sí</option>
-        <option value="no">No</option>
-    </select>
-    <label for="artist-name">Artist Name*</label>
-    <div id="artist-list">
-        <div class="artist">
-            <select class="artist-role">
-                <option value="primary">Primario</option>
-                <option value="featuring">Featuring</option>
-                <option value="producer">Producer</option>
-                <option value="with">With</option>
-                <option value="performer">Performer</option>
-                <option value="dj">DJ</option>
-                <option value="remixer">Remixer</option>
-                <option value="conductor">Conductor</option>
-                <option value="arranger">Arranger</option>
-                <option value="orchestra">Orchestra</option>
-                <option value="actor">Actor</option>
-            </select>
-            <input type="text" class="artist-name" required>
-            <button type="button" onclick="removeArtist(this)">Eliminar</button>
+      <!-- Sección 2 -->
+      <div class="section2" id="section2" style="display:none;">
+        <h3 id="release-title-header"></h3>
+        <div id="section-menu">
+          <button type="button" onclick="showSubSection('album-details')">Detalles del Álbum</button>
+          <button type="button" onclick="showSubSection('image-details')">Detalles de Imagen</button>
+          <button type="button" onclick="showSubSection('audio-details')">Detalles de Audio</button>
+          <button type="button" onclick="showSubSection('stores-details')">Detalles de Tiendas</button>
+          <button type="button" onclick="showSubSection('localization-details')">Detalles de Localización</button>
         </div>
-    </div>
-    <button type="button" onclick="addArtist()">+1 Artista</button>
-    <!-- Información de Publicación -->
-    <label for="writers">Writers*</label>
-    <div id="writers-list">
-        <div class="writer">
-            <input type="text" class="writer-name" required>
-            <button type="button" onclick="removeWriter(this)">Eliminar</button>
-        </div>
-    </div>
-    <button type="button" onclick="addWriter()">+1 Compositor</button>
-    <label for="lyrics">Does this release contain lyrics?*</label>
-    <select id="lyrics" required onchange="toggleLyricistSection(this)">
-        <option value="yes">Sí</option>
-        <option value="no">No</option>
-    </select>
-    <div id="lyricist-section" style="display:none;">
-        <label for="lyricists">Lyricists</label>
-        <div id="lyricist-list">
-            <div class="lyricist">
-                <input type="text" class="lyricist-name">
-                <button type="button" onclick="removeLyricist(this)">Eliminar</button>
-            </div>
-        </div>
-        <button type="button" onclick="addLyricist()">+1 Letrista</button>
-    </div>
-    <label for="primary-genre">Primary Genre*</label>
-    <select id="primary-genre" required>
-        <!-- Listado de géneros -->
-    </select>
-    <label for="secondary-genre">Secondary Genre*</label>
-    <select id="secondary-genre" required>
-        <!-- Listado de géneros -->
-    </select>
-    <label for="composition-copyright">Composition Copyright*</label>
-    <input type="text" id="composition-copyright" value="Grouvex Studios Recording" required>
-    <label for="composition-date">Fecha de Copyright (años)*</label>
-    <input type="number" id="composition-date" required>
-    <label for="recording-copyright">Sound Recording Copyright*</label>
-    <input type="text" id="recording-copyright" value="Grouvex Studios Recording" required>
-    <label for="recording-date">Fecha de Copyright (años)*</label>
-    <input type="number" id="recording-date" required>
-    <label for="record-label-name">Record Label Name*</label>
-    <input type="text" id="record-label-name" value="Grouvex Studios Recording" required>
-    <label for="originally-released">Originally Released*</label>
-    <input type="date" id="originally-released" required>
-    <label for="pre-order-date">Pre Order Date (opcional)</label>
-    <input type="date" id="pre-order-date">
-    <button type="button" onclick="clearPreOrderDate()">Quitar Fecha</button>
-    <label for="sales-start-date">Sales Start Date*</label>
-    <input type="date" id="sales-start-date" required>
-    <label for="add-time">Add a Time (opcional)</label>
-    <input type="time" id="add-time">
-    <select id="time-zone">
-        <!-- Listado de zonas horarias -->
-    </select>
-    <button type="button" onclick="clearTime()">Eliminar Hora</button>
-    <label for="release-time">Lanzar en tiempo local o mundialmente</label>
-    <select id="release-time">
-        <option value="local">Local</option>
-        <option value="global">Global</option>
-    </select>
-    <label for="explicit-content">Explicit Content*</label>
-    <select id="explicit-content" required>
-        <option value="clean">No Explícito</option>
-        <option value="explicit">Explícito</option>
-        <option value="clean-version">Versión Limpia</option>
-    </select>
-    <button type="submit">Guardar</button>
-</div>
-
-            </div>
-        </form>
-</div>
-<body>
-   <!-- Contenido del cuerpo -->
-   <script src="a.js"></script> <!-- Asegúrate de que este archivo contiene la función cambiarSeccion -->
-   <script>
-       document.addEventListener('DOMContentLoaded', (event) => {
-           document.getElementById('siguiente-btn').addEventListener('click', cambiarSeccion);
-       });
-   </script>
-</body>
+      </div>
+    </form>
+  </div>
+  </body>
 </html>

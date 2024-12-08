@@ -16,10 +16,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-document.addEventListener('DOMContentLoaded', (event) => {
-    document.getElementById('yourButtonId').addEventListener('click', cambiarSeccion);
-});
-
 function cambiarSeccion() {
     console.log("Función cambiarSeccion llamada"); // Verificar que la función se llama
     const section1 = document.getElementById('section1');
@@ -32,6 +28,7 @@ function cambiarSeccion() {
         console.error("No se encontraron los elementos section1 y/o section2");
     }
 };
+document.addEventListener('DOMContentLoaded', function() { cambiarSeccion(); });
 
 const showSubSection = (subSectionId) => {
     const subSections = document.querySelectorAll('#form-container .section > div');

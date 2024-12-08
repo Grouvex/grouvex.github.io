@@ -1,170 +1,137 @@
-// Cuando se carga la página
-window.addEventListener('load', function() {
-    cambiarSeccion();
-    showSubSection('album-details'); // Asegúrate de pasar un ID válido
+// Configuración de Firebase
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+// Inicialización de Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// Ejemplo de estructura de datos de una pista
+const tracks = [];
+
+document.getElementById('add-track').addEventListener('click', () => {
+    const trackNumber = tracks.length + 1;
+    const trackData = {
+        number: trackNumber,
+        name: `Nombre de la Pista ${trackNumber} [Explícito]`,
+        artist: 'Artista',
+        role: 'Rol',
+        isrc: 'ISRC'
+    };
+    tracks.push(trackData);
+    updateTrackList();
 });
 
-// app.js
-import { initializeApp } from "firebase/app";
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { getFirestore, doc, setDoc } from "firebase/firestore"; 
-
-const firebaseConfig = {
-    apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
-    authDomain: "grouvex-studios.firebaseapp.com",
-    projectId: "grouvex-studios",
-    storageBucket: "grouvex-studios.appspot.com",
-    messagingSenderId: "1070842606062",
-    appId: "1:1070842606062:web:5d887863048fd100b49eff"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-function cambiarSeccion() {
-    alert('Función llamada correctamente!');
-    console.log("Función cambiarSeccion llamada"); // Verificar que la función se llama
-    const section1 = document.getElementById('section1');
-    const section2 = document.getElementById('section2');
-    if (section1 && section2) {
-        section1.style.display = 'none'; // Oculta la sección 1
-        section2.style.display = 'block'; // Muestra la sección 2
-        console.log("Cambio de secciones exitoso"); // Confirmar el cambio
-    } else {
-        console.error("No se encontraron los elementos section1 y/o section2");
-    }
+function updateTrackList() {
+    const trackList = document.getElementById('track-list');
+    trackList.innerHTML = '';
+    tracks.forEach(track => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${track.number}. ${track.name}</td>
+            <td>${track.artist}</td>
+            <td>${track.role}</td>
+            <td>${track.isrc}</td>
+            <td><button>Modificar</button></td>
+        `;
+        trackList.appendChild(row);
+    });
 }
 
-const showSubSection = (subSectionId) => {
-    const subSections = document.querySelectorAll('#form-container .section > div');
-    subSections.forEach(subSection => {
-        subSection.style.display = subSection.id === subSectionId ? 'block' : 'none';
+document.getElementById('lanzamiento-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const upc = document.getElementById('upc').value;
+    const titulo = document.getElementById('titulo').value;
+    const artistaPrincipal = document.getElementById('artista-principal').value;
+    const generoPrincipal = document.getElementById('genero-principal').value;
+    const label = document.getElementById('label').value;
+    const cLine = document.getElementById('c-line').value;
+    const pLine = document.getElementById('p-line').value;
+    const releaseDate = document.getElementById('release-date').value;
+
+    // Guardar los datos del lanzamiento en Firestore
+    db.collection('lanzamientos').add({
+        upc: upc,
+        titulo: titulo,
+        artistaPrincipal: artistaPrincipal,
+        generoPrincipal: generoPrincipal,
+        label: label,
+        cLine: cLine,
+        pLine: pLine,
+        releaseDate: releaseDate,
+        tracks: tracks
+    }).then(() => {
+        alert('Lanzamiento creado exitosamente');
+        document.getElementById('lanzamiento-form').reset();
+        // Limpiar la lista de pistas
+        tracks.length = 0;
+        updateTrackList();
+    }).catch((error) => {
+        console.error("Error al crear el lanzamiento: ", error);
     });
-};
+});
 
-const addArtist = () => {
-    const artistList = document.getElementById('artist-list');
-    const artist = document.createElement('div');
-    artist.className = 'artist';
-    artist.innerHTML = `
-        <select class="artist-role">
-            <option value="primary">Primario</option>
-            <option value="featuring">Featuring</option>
-            <option value="producer">Producer</option>
-            <option value="with">With</option>
-            <option value="performer">Performer</option>
-            <option value="dj">DJ</option>
-            <option value="remixer">Remixer</option>
-            <option value="conductor">Conductor</option>
-            <option value="arranger">Arranger</option>
-            <option value="orchestra">Orchestra</option>
-            <option value="actor">Actor</option>
-        </select>
-        <input type="text" class="artist-name" required>
-        <button type="button" onclick="removeArtist(this)">Eliminar</button>
-    `;
-    artistList.appendChild(artist);
-};
-
-const removeArtist = (button) => {
-    button.parentElement.remove();
-};
-
-const addWriter = () => {
-    const writersList = document.getElementById('writers-list');
-    const writer = document.createElement('div');
-    writer.className = 'writer';
-    writer.innerHTML = `
-        <input type="text" class="writer-name" required>
-        <button type="button" onclick="removeWriter(this)">Eliminar</button>
-    `;
-    writersList.appendChild(writer);
-};
-
-const removeWriter = (button) => {
-    button.parentElement.remove();
-};
-
-const toggleLyricistSection = (select) => {
+function toggleLyricists(value) {
     const lyricistSection = document.getElementById('lyricist-section');
-    if (select.value === 'yes') {
+    if (value === 'yes') {
         lyricistSection.style.display = 'block';
     } else {
         lyricistSection.style.display = 'none';
     }
-};
+}
 
-const addLyricist = () => {
-    const lyricistList = document.getElementById('lyricist-list');
-    const lyricist = document.createElement('div');
-    lyricist.className = 'lyricist';
-    lyricist.innerHTML = `
-        <input type="text" class="lyricist-name">
-        <button type="button" onclick="removeLyricist(this)">Eliminar</button>
+document.getElementById('add-composer-row').addEventListener('click', () => {
+    const newRow = document.createElement('div');
+    newRow.classList.add('composer-row');
+    newRow.innerHTML = `
+        <label for="composer-name">Composer*</label>
+        <input type="text" id="composer-name" name="composer-name" required>
+        <button type="button" class="remove-composer-row">Eliminar</button>
     `;
-    lyricistList.appendChild(lyricist);
-};
-
-const removeLyricist = (button) => {
-    button.parentElement.remove();
-};
-
-const clearPreOrderDate = () => {
-    document.getElementById('pre-order-date').value = '';
-};
-
-const clearTime = () => {
-    document.getElementById('add-time').value = '';
-    document.getElementById('time-zone').value = '';
-};
-
-document.getElementById('release-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const releaseData = {
-        upc: document.getElementById('upc').value,
-        releaseTitle: document.getElementById('release-title').value,
-        albumTitle: document.getElementById('album-title').value,
-        language: document.getElementById('language').value,
-        albumVersion: document.getElementById('album-version').value,
-        compilationAlbum: document.getElementById('compilation-album').value,
-        artists: Array.from(document.getElementsByClassName('artist')).map(artist => ({
-            role: artist.querySelector('.artist-role').value,
-            name: artist.querySelector('.artist-name').value
-        })),
-        writers: Array.from(document.getElementsByClassName('writer')).map(writer => writer.querySelector('.writer-name').value),
-        lyrics: document.getElementById('lyrics').value,
-        lyricists: Array.from(document.getElementsByClassName('lyricist')).map(lyricist => lyricist.querySelector('.lyricist-name').value),
-        primaryGenre: document.getElementById('primary-genre').value,
-        secondaryGenre: document.getElementById('secondary-genre').value,
-        compositionCopyright: document.getElementById('composition-copyright').value,
-        compositionDate: document.getElementById('composition-date').value,
-        recordingCopyright: document.getElementById('recording-copyright').value,
-        recordingDate: document.getElementById('recording-date').value,
-        recordLabelName: document.getElementById('record-label-name').value,
-        originallyReleased: document.getElementById('originally-released').value,
-        preOrderDate: document.getElementById('pre-order-date').value,
-        salesStartDate: document.getElementById('sales-start-date').value,
-        addTime: document.getElementById('add-time').value,
-        timeZone: document.getElementById('time-zone').value,
-        releaseTime: document.getElementById('release-time').value,
-        explicitContent: document.getElementById('explicit-content').value
-    };
-    setDoc(doc(db, "releases", releaseData.releaseTitle), releaseData)
-        .then(() => {
-            alert("Lanzamiento guardado correctamente");
-        })
-        .catch((error) => {
-            console.error("Error al guardar el lanzamiento:", error);
-        });
+    document.getElementById('composer-rows').appendChild(newRow);
 });
 
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        document.getElementById('auth-container').style.display = 'none';
-        document.getElementById('form-container').style.display = 'block';
-    } else {
-        document.getElementById('auth-container').style.display = 'block';
-        document.getElementById('form-container').style.display = 'none';
+document.getElementById('add-artist-row').addEventListener('click', () => {
+    const newRow = document.createElement('div');
+    newRow.classList.add('artist-row');
+    newRow.innerHTML = `
+        <select name="artist-role">
+            <option value="main">Main</option>
+            <option value="featured">Featured</option>
+            <!-- Agregar más roles según sea necesario -->
+        </select>
+        <input type="text" name="artist-name" required>
+        <button type="button" class="remove-artist-row">Eliminar</button>
+    `;
+    document.getElementById('artist-rows').appendChild(newRow);
+});
+
+document.getElementById('add-lyricist-row').addEventListener('click', () => {
+    const newRow = document.createElement('div');
+    newRow.classList.add('lyricist-row');
+    newRow.innerHTML = `
+        <label for="lyricist-name">Lyricist*</label>
+        <input type="text" id="lyricist-name" name="lyricist-name" required>
+        <button type="button" class="remove-lyricist-row">Eliminar</button>
+    `;
+    document.getElementById('lyricist-rows').appendChild(newRow);
+});
+
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('remove-composer-row')) {
+        e.target.parentElement.remove();
+    }
+    if (e.target.classList.contains('remove-artist-row')) {
+        e.target.parentElement.remove();
+    }
+    if (e.target.classList.contains('remove-lyricist-row')) {
+        e.target.parentElement.remove();
     }
 });

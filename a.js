@@ -1,20 +1,17 @@
 // Configuración de Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
-      authDomain: "grouvex-studios.firebaseapp.com",
-      databaseURL: "https://grouvex-studios-default-rtdb.firebaseio.com", // Asegúrate de incluir la URL de tu base de datos
-      projectId: "grouvex-studios",
-      storageBucket: "grouvex-studios.appspot.com",
-      messagingSenderId: "1070842606062",
-      appId: "1:1070842606062:web:5d887863048fd100b49eff",
-      measurementId: "G-75BR8D2CR3"
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
 };
 
 // Inicialización de Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// Ejemplo de estructura de datos de una pista
 const tracks = [];
 
 document.getElementById('add-track').addEventListener('click', () => {
@@ -40,10 +37,33 @@ function updateTrackList() {
             <td>${track.artist}</td>
             <td>${track.role}</td>
             <td>${track.isrc}</td>
-            <td><button>Modificar</button></td>
+            <td><button onclick="openAudioDetails(${track.number - 1})">Modificar</button></td>
         `;
         trackList.appendChild(row);
     });
+    checkFormStatus();
+}
+
+function checkFormStatus() {
+    const form = document.getElementById('lanzamiento-form');
+    const inputs = form.querySelectorAll('input[required]');
+    let allFilled = true;
+
+    inputs.forEach(input => {
+        if (!input.value) {
+            allFilled = false;
+        }
+    });
+
+    if (allFilled && tracks.length > 0) {
+        document.getElementById('form-status').innerText = '✓';
+        document.getElementById('submit-button').disabled = false;
+        document.getElementById('enviar-formulario').disabled = false;
+    } else {
+        document.getElementById('form-status').innerText = '✗';
+        document.getElementById('submit-button').disabled = true;
+        document.getElementById('enviar-formulario').disabled = true;
+    }
 }
 
 document.getElementById('lanzamiento-form').addEventListener('submit', (e) => {
@@ -77,6 +97,160 @@ document.getElementById('lanzamiento-form').addEventListener('submit', (e) => {
         updateTrackList();
     }).catch((error) => {
         console.error("Error al crear el lanzamiento: ", error);
+    });
+});
+
+function openAudioDetails(trackIndex) {
+    // Lógica para abrir la sección de detalles de audio con la pista seleccionada
+    document.getElementById('detalles-audio-form').style.display = 'block';
+    // Completar la información en el formulario de detalles de audio
+    const track = tracks[trackIndex];
+    document.getElementById('track-name').value = track.name;
+    document.getElementById('artist-name').value = track.artist;
+    // Rellenar otros campos según sea necesario
+}
+
+function toggleCompilationAlbum(value) {
+    const artistRows = document.getElementById('artist-rows');
+    if (value === 'yes') {
+        document.getElementById('artist-name').value = 'Varios artistas';
+        artistRows.style.display = 'none';
+    } else {
+        artistRows.style.display = 'block';
+    }
+}
+
+function toggleLyricists(value) {
+    const lyricistSection = document.getElementById('lyricist-section');
+    if (value === 'yes') {
+        lyricistSection.style.display = 'block';
+    } else {
+        lyricistSection.style.display = 'none';
+    }
+}
+
+document.getElementById('add-composer-row').addEventListener('click', () => {
+    const newRow = document.createElement('div');
+    newRow.classList.add('composer-row');
+    newRow.innerHTML = `
+        <label for="composer-name">Composer*</label>
+        <input type="text" id="composer-name" name="composer-name" required>
+        <button type="button" class="remove-composer-row">Eliminar</button>
+    `;
+    document.getElementById('composer-rows').appendChild(newRow);
+});
+
+document.getElementById('add-artist-row').addEventListener('click', () => {
+    const newRow = document.createElement('div');
+    newRow.classList.add('artist-row');
+    newRow.innerHTML = `
+        <select name="artist-role">
+            <option value="main">Main</option>
+            <option value="featured">Featured</option>
+            <!-- Agregar más roles según sea necesario -->
+        </select>
+        <input type="text" name="artist-name" required>
+        <button type="button" class="remove-artist-row">Eliminar</button>
+    `;
+    document.getElementById('artist-rows').appendChild(newRow);
+});
+
+document.getElementById('add-lyricist-row').addEventListener('click', () => {
+    const newRow = document.createElement('div');
+    newRow.classList.add('lyricist-row');
+    newRow.innerHTML = `
+        <label for="lyricist-name">Lyricist*</label>
+        <input type="text" id="lyricist-name" name="lyricist-name" required>
+        <button type="button" class="remove-lyricist-row">Eliminar</button>
+    `;
+    document.getElementById('lyricist-rows').appendChild(newRow);
+});
+
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('remove-composer-row')) {
+        e.target.parentElement.remove();
+    }
+    if (e.target.classList.contains('remove-artist-row')) {
+        e.target.parentElement.remove();
+    }
+    if (e.target.classList.contains('remove-lyricist-row')) {
+        e.target.parentElement.remove();
+    }
+});
+
+document.getElementById('album-details-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    // Guardar los detalles del álbum en los campos correspondientes
+    document.getElementById('detalle-upc').innerText = document.getElementById('upc').value;
+    document.getElementById('detalle-titulo').innerText = document.getElementById('titulo').value;
+    document.getElementById('detalle-artista-principal').innerText = document.getElementById('artista-principal').value;
+    document.getElementById('detalle-genero-principal').innerText = document.getElementById('genero-principal').value;
+    document.getElementById('detalle-label').innerText = document.getElementById('label').value;
+    document.getElementById('detalle-c-line').innerText = document.getElementById('c-line').value;
+    document.getElementById('detalle-p-line').innerText = document.getElementById('p-line').value;
+    document.getElementById('detalle-release-date').innerText = document.getElementById('release-date').value;
+    // Cambiar el estado de los detalles del álbum a completado
+    document.getElementById('detalles-album-status').innerText = '✓';
+    document.getElementById('detalles-album-form').style.display = 'none';
+    checkFormStatus();
+});
+
+document.getElementById('audio-details-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    // Guardar los detalles de la pista en la lista de pistas
+    const trackIndex = parseInt(document.getElementById('track-number').value, 10) - 1;
+    if (tracks[trackIndex]) {
+        tracks[trackIndex].name = document.getElementById('track-name').value;
+        tracks[trackIndex].artist = document.getElementById('artist-name').value;
+        // Guardar otros detalles según sea necesario
+    }
+    // Cambiar el estado de los detalles del audio a completado
+    document.getElementById('detalles-audio-status').innerText = '✓';
+    document.getElementById('detalles-audio-form').style.display = 'none';
+checkFormStatus();
+});
+
+document.getElementById('store-details-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    // Guardar los detalles de las tiendas seleccionadas
+    const selectedStores = [];
+    document.querySelectorAll('input[name="store"]:checked').forEach((checkbox) => {
+        selectedStores.push(checkbox.value);
+    });
+    const selectedTerritories = [];
+    document.querySelectorAll('input[name="territory"]:checked').forEach((checkbox) => {
+        selectedTerritories.push(checkbox.value);
+    });
+    const territoryAction = document.getElementById('territory-action').value;
+    
+    // Guardar la información en los campos correspondientes
+    document.getElementById('detalles-tiendas-status').innerText = '✓';
+    document.getElementById('detalles-tiendas-form').style.display = 'none';
+    checkFormStatus();
+});
+
+document.getElementById('album-artwork-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    // Guardar los detalles de la imagen del álbum
+    const albumArtwork = document.getElementById('album-artwork').files[0];
+    if (albumArtwork) {
+        // Procesar la imagen según sea necesario
+        document.getElementById('detalles-imagen-status').innerText = '✓';
+        document.getElementById('detalles-imagen-form').style.display = 'none';
+    } else {
+        document.getElementById('detalles-imagen-status').innerText = '✗';
+    }
+    checkFormStatus();
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.botones button').forEach(button => {
+        button.addEventListener('click', () => {
+            const targetFormId = button.id.replace('detalles-', '') + '-form';
+            document.querySelectorAll('form').forEach(form => {
+                form.style.display = form.id === targetFormId ? 'block' : 'none';
+            });
+        });
     });
 });
 

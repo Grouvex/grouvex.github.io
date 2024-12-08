@@ -1,133 +1,499 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulario de Lanzamiento</title>
-  <link rel="stylesheet" href="a.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevos Lanzamientos</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+    <script src="app.js" defer></script>
 </head>
 <body>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
-  <script src="a.js"></script>
-  <script src="abc.js"></script>
+    <section id="nueva-lanzamiento">
+        <h1>Crear un Nuevo Lanzamiento</h1>
+        <form id="lanzamiento-form">
+            <label for="upc">UPC / EAN (opcional)
+                <span class="help">❓
+                    <span class="help-text">If you don't have a UPC / EAN please leave blank and we can generate one for you.</span>
+                </span>
+            </label>
+            <input type="text" id="upc" name="upc">
 
-  <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const logoutBtn = document.getElementById('logoutBtn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', () => {
-            firebase.auth().signOut().then(() => {
-                console.log('User logged out');
-            }).catch((error) => {
-                console.error('Error logging out:', error);
-            });
-        });
-    } else {
-        console.error("No se encontró el elemento con id 'logoutBtn'");
-    }
-});
-  </script>
-<button id="logoutBtn">Cerrar sesión</button>
-  <div id="form-container">
-    <h2>Crear un Nuevo Lanzamientos</h2>
-    <form id="release-form">
-      <!-- Sección 1 -->
-      <div class="section1" id="section1">
-        <label for="upc">UPC / EAN (opcional)</label>
-        <input type="text" id="upc" placeholder="If you don't have a UPC / EAN please leave blank and we can generate one for you.">
-        <label for="release-title">Release Title*</label>
-        <input type="text" id="release-title" required>
-        <button type="button" onclick="cambiarSeccion()">Siguiente</button>
-      </div>
+            <label for="titulo">Release Title* 
+                <span class="help">❓
+                    <span class="help-text">This will be the title of your release.</span>
+                </span>
+            </label>
+            <input type="text" id="titulo" name="titulo" required>
 
-      <!-- Sección 2 -->
-      <div class="section2" id="section2" style="display:none;">
-        <h3 id="release-title-header"></h3>
-        <div id="section-menu">
-          <button type="button" onclick="showSubSection('album-details')">Detalles del Álbum</button>
-          <button type="button" onclick="showSubSection('image-details')">Detalles de Imagen</button>
-          <button type="button" onclick="showSubSection('audio-details')">Detalles de Audio</button>
-          <button type="button" onclick="showSubSection('stores-details')">Detalles de Tiendas</button>
-          <button type="button" onclick="showSubSection('localization-details')">Detalles de Localización</button>
+            <!-- Más campos aquí según se requiera -->
+            <label for="artista-principal">Artista Principal*</label>
+            <input type="text" id="artista-principal" name="artista-principal" required>
+
+            <label for="genero-principal">Género Principal*</label>
+            <input type="text" id="genero-principal" name="genero-principal" required>
+
+            <label for="label">Label*</label>
+            <input type="text" id="label" name="label" required>
+
+            <label for="c-line">© C Line*</label>
+            <input type="text" id="c-line" name="c-line" required>
+
+            <label for="p-line">℗ P Line*</label>
+            <input type="text" id="p-line" name="p-line" required>
+
+            <label for="release-date">Release Date*</label>
+            <input type="date" id="release-date" name="release-date" required>
+
+            <button type="submit">Enviar</button>
+        </form>
+    </section>
+
+    <section id="informacion">
+        <h1 id="titulo-album">Título del Album</h1>
+        <div class="release-details">
+            <h2>Release Details</h2>
+            <p>Use each of the three sections below to make changes to your release. Please be aware that any changes can take a few days to a week to reflect on the partner services.</p>
         </div>
+        <div class="botones">
+            <button id="detalles-album">Detalles del Album</button>
+            <button id="detalles-imagen">Detalles de la Imagen</button>
+            <button id="detalles-audio">Detalles del Audio</button>
+            <button id="detalles-tiendas">Detalles de las Tiendas</button>
+        </div>
+        <div class="detalle-album">
+            <!-- Información del álbum aquí -->
+            <p>UPC: <span id="detalle-upc"></span></p>
+            <p>Título: <span id="detalle-titulo"></span></p>
+            <p>Artista Principal: <span id="detalle-artista-principal"></span></p>
+            <p>Género Principal: <span id="detalle-genero-principal"></span></p>
+            <p>Label: <span id="detalle-label"></span></p>
+            <p>© C Line: <span id="detalle-c-line"></span></p>
+            <p>℗ P Line: <span id="detalle-p-line"></span></p>
+            <p>Release Date: <span id="detalle-release-date"></span></p>
+        </div>
+        <div class="track-data">
+            <!-- Datos de las pistas aquí -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Track Data</th>
+                        <th>Artista(s)</th>
+                        <th>Roles</th>
+                        <th>ISRC</th>
+                        <th>Modificar</th>
+                    </tr>
+                </thead>
+                <tbody id="track-list">
+                    <!-- Pistas añadidas automáticamente -->
+                </tbody>
+            </table>
+            <button id="add-track">Añadir Pista</button>
+        </div>
+        <button id="enviar-formulario">Enviar Formulario</button>
+    </section>
 
-        <!-- Subsección: Detalles del Álbum -->
-        <div id="album-details" style="display:none;">
-          <label for="album-title">Título del Álbum*</label>
-          <input type="text" id="album-title" required>
+    <div id="detalles-album-form" style="display:none;">
+        <!-- Aquí irá el formulario de detalles del álbum -->
+    <h2>Album Details</h2>
+    <form id="album-details-form">
+        <label for="language">Language</label>
+        <select id="language" name="language">
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <!-- Agregar más idiomas según sea necesario -->
+        </select>
 
-          <label for="language">Idioma*</label>
-          <input type="text" id="language" required>
+        <label for="album-title">Album/Single/EP Title* 
+            <span class="help">❓
+                <span class="help-text">If this release contains the same featuring artist(s) for all tracks, please add the featuring artist(s) to the album title in this format “(feat. artistname)”</span>
+            </span>
+        </label>
+        <input type="text" id="album-title" name="album-title" required>
 
-          <label for="album-version">Versión del Álbum</label>
-          <input type="text" id="album-version">
+        <label for="album-version">Album Version 
+            <span class="help">❓
+                <span class="help-text">Album Version is used to distinguish different versions of the same album by the same artist (e.g. 'Live from San Francisco', 'Club Remix', 'Radio Edit').</span>
+            </span>
+        </label>
+        <input type="text" id="album-version" name="album-version">
 
-          <label for="compilation-album">Álbum de Compilación</label>
-          <input type="text" id="compilation-album">
-          
-          <button type="button" onclick="addArtist()">Añadir Artista</button>
-          <div id="artist-list"></div>
-
-          <button type="button" onclick="addWriter()">Añadir Escritor</button>
-          <div id="writers-list"></div>
-
-          <label for="lyrics">Letras</label>
-          <textarea id="lyrics"></textarea>
-
-          <label for="primary-genre">Género Principal*</label>
-          <input type="text" id="primary-genre" required>
-
-          <label for="secondary-genre">Género Secundario</label>
-          <input type="text" id="secondary-genre">
-
-          <label for="composition-copyright">Derechos de Autor de la Composición*</label>
-          <input type="text" id="composition-copyright" required>
-
-          <label for="composition-date">Fecha de Composición</label>
-          <input type="date" id="composition-date">
-
-          <label for="recording-copyright">Derechos de Autor de la Grabación*</label>
-          <input type="text" id="recording-copyright" required>
-
-          <label for="recording-date">Fecha de Grabación</label>
-          <input type="date" id="recording-date">
-
-          <label for="record-label-name">Nombre de la Discográfica*</label>
-          <input type="text" id="record-label-name" required>
-
-          <label for="originally-released">Lanzamiento Original</label>
-          <input type="date" id="originally-released">
-
-          <label for="pre-order-date">Fecha de Pre-pedido</label>
-          <input type="date" id="pre-order-date">
-
-          <label for="sales-start-date">Fecha de Inicio de Ventas</label>
-          <input type="date" id="sales-start-date">
-
-          <button type="button" onclick="clearPreOrderDate()">Limpiar Fecha de Pre-pedido</button>
-
-          <label for="add-time">Añadir Hora</label>
-          <input type="time" id="add-time">
-
-          <label for="time-zone">Zona Horaria</label>
-          <input type="text" id="time-zone">
-
-          <button type="button" onclick="clearTime()">Limpiar Hora</button>
-
-          <label for="release-time">Hora de Lanzamiento</label>
-          <input type="time" id="release-time">
-
-          <label for="explicit-content">Contenido Explícito*</label>
-          <select id="explicit-content" required>
-            <option value="" disabled selected>Selecciona una opción</option>
+        <label for="compilation-album">Compilation Album</label>
+        <select id="compilation-album" name="compilation-album">
             <option value="no">No</option>
-            <option value="yes">Sí</option>
-          </select>
+            <option value="yes">Yes</option>
+        </select>
+
+        <label>Artist Name*</label>
+        <div id="artist-rows">
+            <div class="artist-row">
+                <select name="artist-role">
+                    <option value="main">Main</option>
+                    <option value="featured">Featured</option>
+                    <!-- Agregar más roles según sea necesario -->
+                </select>
+                <input type="text" name="artist-name" required>
+                <button type="button" class="remove-artist-row">Eliminar</button>
+            </div>
         </div>
-      </div>
+        <button type="button" id="add-artist-row">Añadir Artista</button>
+
+        <label for="publishing-info">Publishing Information 
+            <span class="help">❓
+                <span class="help-text">Providing accurate composers and lyricists for this release is important for ensuring all writers are correctly credited at the stores and are eligible for publishing royalties. One composer is required but we encourage as much creditation as possible!</span>
+            </span>
+        </label>
+        <div id="composer-rows">
+            <div class="composer-row">
+                <label for="composer-name">Composer*</label>
+                <input type="text" id="composer-name" name="composer-name" required>
+                <button type="button" class="remove-composer-row">Eliminar</button>
+            </div>
+        </div>
+        <button type="button" id="add-composer-row">Añadir Compositor</button>
+
+        <label for="lyrics">Does this release contain lyrics?*</label>
+        <select id="lyrics" name="lyrics" onchange="toggleLyricists(this.value)">
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+        </select>
+
+        <div id="lyricist-section" style="display:none;">
+            <label>Lyricists</label>
+            <div id="lyricist-rows">
+                <div class="lyricist-row">
+                    <label for="lyricist-name">Lyricist*</label>
+                    <input type="text" id="lyricist-name" name="lyricist-name" required>
+                    <button type="button" class="remove-lyricist-row">Eliminar</button>
+                </div>
+            </div>
+            <button type="button" id="add-lyricist-row">Añadir Letrísta</button>
+        </div>
+
+        <label for="primary-genre">Primary Genre*</label>
+        <select id="primary-genre" name="primary-genre">
+            <option value="pop">Pop</option>
+            <!-- Agregar más géneros según sea necesario -->
+        </select>
+
+        <label for="secondary-genre">Secondary Genre*</label>
+        <select id="secondary-genre" name="secondary-genre">
+            <option value="rock">Rock</option>
+            <!-- Agregar más géneros según sea necesario -->
+        </select>
+
+        <label for="composition-copyright">Composition Copyright*</label>
+        <div>
+            <input type="number" id="composition-copyright-year" name="composition-copyright-year" min="1900" max="2100" required>
+            <input type="text" id="composition-copyright" name="composition-copyright" required>
+        </div>
+
+        <label for="sound-recording-copyright">Sound Recording Copyright*</label>
+        <div>
+            <input type="number" id="sound-recording-copyright-year" name="sound-recording-copyright-year" min="1900" max="2100" required>
+            <input type="text" id="sound-recording-copyright" name="sound-recording-copyright" required>
+        </div>
+
+        <label for="record-label-name">Record Label Name* 
+            <span class="help">❓
+                <span class="help-text">If you don't have a formally agreed label, your artist name or band name will be sufficient. Descriptions such as "indie", "independent", "non" will not be accepted.</span>
+            </span>
+        </label>
+        <input type="text" id="record-label-name" name="record-label-name" value="Grouvex Studios Recording" required>
+
+        <label for="originally-released">Originally Released*</label>
+        <input type="date" id="originally-released" name="originally-released" required>
+
+        <label for="pre-order-date">Pre Order Date</label>
+        <input type="date" id="pre-order-date" name="pre-order-date">
+
+        <label for="sales-start-date">Sales Start Date*</label>
+        <input type="date" id="sales-start-date" name="sales-start-date" required>
+
+        <label for="explicit-content">Explicit Content*</label>
+        <select id="explicit-content" name="explicit-content">
+            <option value="explicit">Explícito</option>
+            <option value="not-explicit">No Explícito</option>
+            <option value="clean">Limpio</option>
+        </select>
+
+        <button type="submit">Guardar y Continuar</button>
     </form>
-  </div>
+</div>
+
+<script>
+    function toggleLyricists(value) {
+        const lyricistSection = document.getElementById('lyricist-section');
+        if (value === 'yes') {
+            lyricistSection.style.display = 'block';
+        } else {
+            lyricistSection.style.display = 'none';
+        }
+    }
+
+    document.getElementById('add-composer-row').addEventListener('click', () => {
+        const newRow = document.createElement('div');
+        newRow.classList.add('composer-row');
+        newRow.innerHTML = `
+            <label for="composer-name">Composer*</label>
+            <input type="text" id="composer-name" name="composer-name" required>
+            <button type="button" class="remove-composer-row">Eliminar</button>
+        `;
+        document.getElementById('composer-rows').appendChild(newRow);
+    });
+
+    document.getElementById('add-artist-row').addEventListener('click', () => {
+        const newRow = document.createElement('div');
+        newRow.classList.add('artist-row');
+        newRow.innerHTML = `
+            <select name="artist-role">
+                <option value="main">Main</option>
+                <option value="featured">Featured</option>
+                <!-- Agregar más roles según sea necesario -->
+            </select>
+            <input type="text" name="artist-name" required>
+            <button type="button" class="remove-artist-row">Eliminar</button>
+        `;
+        document.getElementById('artist-rows').appendChild(newRow);
+    });
+
+    document.getElementById('add-lyricist-row').addEventListener('click', () => {
+        const newRow = document.createElement('div');
+        newRow.classList.add('lyricist-row');
+        newRow.innerHTML = `
+            <label for="lyricist-name">Lyricist*</label>
+            <input type="text" id="lyricist-name" name="lyricist-name" required>
+            <button type="button" class="remove-lyricist-row">Eliminar</button>
+        `;
+        document.getElementById('lyricist-rows').appendChild(newRow);
+    });
+
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('remove-composer-row')) {
+            e.target.parentElement.remove();
+        }
+        if (e.target.classList.contains('remove-artist-row')) {
+            e.target.parentElement.remove();
+        }
+        if (e.target.classList.contains('remove-lyricist-row')) {
+            e.target.parentElement.remove();
+        }
+    });
+</script>
+
+
+    <div id="detalles-imagen-form" style="display:none;">
+        <!-- Aquí irá el formulario de detalles de la imagen -->
+    <h2>Upload Album Artwork</h2>
+    <form id="album-artwork-form">
+        <label for="album-artwork">Sube una imagen</label>
+        <input type="file" id="album-artwork" name="album-artwork" accept="image/jpeg, image/jpg" required>
+        <p>La imagen debe cumplir con los siguientes requisitos:</p>
+        <ul>
+            <li>3000px x 3000px</li>
+            <li>Professional quality, product relevant images</li>
+            <li>Less than 25MB</li>
+            <li>RGB Colour Space</li>
+            <li>JPG</li>
+        </ul>
+        <button type="submit">Guardar y Continuar</button>
+    </form>
+
+    </div>
+
+    <div id="detalles-audio-form" style="display:none;">
+        <!-- Aquí irá el formulario de detalles del audio -->
+    <h2>Audio Metadata</h2>
+    <form id="audio-details-form">
+        <div id="track-rows">
+            <div class="track-row">
+                <label for="track-name">Track Name*</label>
+                <input type="text" id="track-name" name="track-name" required>
+                
+                <label for="title-version">Title Version</label>
+                <input type="text" id="title-version" name="title-version">
+                
+                <label for="track-number">Track Number</label>
+                <input type="number" id="track-number" name="track-number">
+                
+                <label for="artist-name">Artist Name*</label>
+                <input type="text" id="artist-name" name="artist-name" required>
+                
+                <label for="publishing-info">Publishing Information</label>
+                <input type="text" id="publishing-info" name="publishing-info">
+                
+                <label for="lyrics">Does this release contain lyrics?</label>
+                <select id="lyrics" name="lyrics">
+                    <option value="no">No</option>
+                    <option value="yes">Yes</option>
+                </select>
+                
+                <label for="explicit-content">Explicit Content*</label>
+                <select id="explicit-content" name="explicit-content">
+                    <option value="explicit">Explícito</option>
+                    <option value="not-explicit">No Explícito</option>
+                    <option value="clean">Limpio</option>
+                </select>
+                
+                <label for="language">Language*</label>
+                <select id="language" name="language">
+                    <option value="en">English</option>
+                    <option value="es">Español</option>
+                    <!-- Agregar más idiomas según sea necesario -->
+                </select>
+                
+                <button type="button" class="remove-track-row">Eliminar</button>
+            </div>
+        </div>
+        <button type="button" id="add-track-row">Añadir Pista</button>
+        <button type="submit">Guardar y Continuar</button>
+    </form>
+    </div>
+
+    <div id="detalles-tiendas-form" style="display:none;">
+        <!-- Aquí irá el formulario de detalles de las tiendas -->
+    <h2>Manage Stores</h2>
+    <form id="store-details-form">
+        <label for="selected-stores">Selected Stores</label>
+        <div id="store-list">
+            <div class="store-row">
+                <input type="checkbox" id="store-spotify" name="store" value="spotify">
+                <label for="store-spotify">Spotify</label>
+                <a href="https://www.spotify.com" target="_blank">Enlace</a>
+            </div>
+            <div class="store-row">
+                <input type="checkbox" id="store-apple-music" name="store" value="apple-music">
+                <label for="store-apple-music">Apple Music</label>
+                <a href="https://www.apple.com/apple-music/" target="_blank">Enlace</a>
+            </div>
+            <!-- Añadir más tiendas según sea necesario -->
+        </div>
+        <p>WARNING: For Worldwide distribution please DO NOT add Territory information. Selected Stores with NO additional Territory information will be distributed Worldwide.</p>
+        
+        <label for="selected-territories">Selected Territories</label>
+        <div id="territory-list">
+            <div class="territory-row">
+                <input type="checkbox" id="territory-usa" name="territory" value="usa">
+                <label for="territory-usa">USA</label>
+            </div>
+            <div class="territory-row">
+                <input type="checkbox" id="territory-uk" name="territory" value="uk">
+                <label for="territory-uk">UK</label>
+            </div>
+            <div class="territory-row">
+                <input type="checkbox" id="territory-canada" name="territory" value="canada">
+                <label for="territory-canada">Canada</label>
+            </div>
+            <!-- Añadir más territorios según sea necesario -->
+        </div>
+        
+        <label for="territory-action">Acción</label>
+        <select name="territory-action" id="territory-action">
+            <option value="include">Incluir</option>
+            <option value="exclude">Excluir</option>
+        </select>
+        
+        <button type="submit">Guardar y Continuar</button>
+    </form>
+    </div>
+
+    <script>
+        // Ejemplo de estructura de datos de una pista
+        const tracks = [];
+
+        document.getElementById('add-track').addEventListener('click', () => {
+            const trackNumber = tracks.length + 1;
+            const trackData = {
+                number: trackNumber,
+                name: `Nombre de la Pista ${trackNumber} [Explícito]`,
+                artist: 'Artista',
+                role: 'Rol',
+                isrc: 'ISRC'
+            };
+            tracks.push(trackData);
+            updateTrackList();
+        });
+
+        function updateTrackList() {
+            const trackList = document.getElementById('track-list');
+            trackList.innerHTML = '';
+            tracks.forEach(track => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${track.number}. ${track.name}</td>
+                    <td>${track.artist}</td>
+                    <td>${track.role}</td>
+                    <td>${track.isrc}</td>
+                    <td><button>Modificar</button></td>
+                `;
+                trackList.appendChild(row);
+            });
+        }
+
+        document.getElementById('lanzamiento-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const upc = document.getElementById('upc').value;
+    const titulo = document.getElementById('titulo').value;
+    const artistaPrincipal = document.getElementById('artista-principal').value;
+    const generoPrincipal = document.getElementById('genero-principal').value;
+    const label = document.getElementById('label').value;
+    const cLine = document.getElementById('c-line').value;
+    const pLine = document.getElementById('p-line').value;
+    const releaseDate = document.getElementById('release-date').value;
+
+    // Guardar los datos del lanzamiento en Firestore
+    db.collection('lanzamientos').add({
+        upc: upc,
+        titulo: titulo,
+        artistaPrincipal: artistaPrincipal,
+        generoPrincipal: generoPrincipal,
+        label: label,
+        cLine: cLine,
+        pLine: pLine,
+        releaseDate: releaseDate,
+        tracks: tracks
+    }).then(() => {
+        alert('Lanzamiento creado exitosamente');
+        document.getElementById('lanzamiento-form').reset();
+        // Limpiar la lista de pistas
+        tracks.length = 0;
+        updateTrackList();
+    }).catch((error) => {
+        console.error("Error al crear el lanzamiento: ", error);
+    });
+});
+
+        // Mostrar y ocultar secciones de detalles
+        document.getElementById('detalles-album').addEventListener('click', () => {
+            document.getElementById('detalles-album-form').style.display = 'block';
+            document.getElementById('detalles-imagen-form').style.display = 'none';
+            document.getElementById('detalles-audio-form').style.display = 'none';
+            document.getElementById('detalles-tiendas-form').style.display = 'none';
+        });
+
+        document.getElementById('detalles-imagen').addEventListener('click', () => {
+            document.getElementById('detalles-album-form').style.display = 'none';
+            document.getElementById('detalles-imagen-form').style.display = 'block';
+            document.getElementById('detalles-audio-form').style.display = 'none';
+            document.getElementById('detalles-tiendas-form').style.display = 'none';
+        });
+
+        document.getElementById('detalles-audio').addEventListener('click', () => {
+            document.getElementById('detalles-album-form').style.display = 'none';
+            document.getElementById('detalles-imagen-form').style.display = 'none';
+            document.getElementById('detalles-audio-form').style.display = 'block';
+            document.getElementById('detalles-tiendas-form').style.display = 'none';
+        });
+
+        document.getElementById('detalles-tiendas').addEventListener('click', () => {
+            document.getElementById('detalles-album-form').style.display = 'none';
+            document.getElementById('detalles-imagen-form').style.display = 'none';
+            document.getElementById('detalles-audio-form').style.display = 'none';
+            document.getElementById('detalles-tiendas-form').style.display = 'block';
+        });
+    </script>
 </body>
 </html>

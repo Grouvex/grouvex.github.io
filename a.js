@@ -1,16 +1,4 @@
-// Configuración de Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
-      authDomain: "grouvex-studios.firebaseapp.com",
-      databaseURL: "https://grouvex-studios-default-rtdb.firebaseio.com", // Asegúrate de incluir la URL de tu base de datos
-      projectId: "grouvex-studios",
-      storageBucket: "grouvex-studios.appspot.com",
-      messagingSenderId: "1070842606062",
-      appId: "1:1070842606062:web:5d887863048fd100b49eff",
-      measurementId: "G-75BR8D2CR3"
-};
-
-// Inicialización de Firebase
+// Continuación de la configuración de Firebase y otras funcionalidades
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
@@ -40,10 +28,33 @@ function updateTrackList() {
             <td>${track.artist}</td>
             <td>${track.role}</td>
             <td>${track.isrc}</td>
-            <td><button>Modificar</button></td>
+            <td><button onclick="openAudioDetails(${track.number - 1})">Modificar</button></td>
         `;
         trackList.appendChild(row);
     });
+    checkFormStatus();
+}
+
+function checkFormStatus() {
+    const form = document.getElementById('lanzamiento-form');
+    const inputs = form.querySelectorAll('input[required]');
+    let allFilled = true;
+
+    inputs.forEach(input => {
+        if (!input.value) {
+            allFilled = false;
+        }
+    });
+
+    if (allFilled && tracks.length > 0) {
+        document.getElementById('form-status').innerText = '✓';
+        document.getElementById('submit-button').disabled = false;
+        document.getElementById('enviar-formulario').disabled = false;
+    } else {
+        document.getElementById('form-status').innerText = '✗';
+        document.getElementById('submit-button').disabled = true;
+        document.getElementById('enviar-formulario').disabled = true;
+    }
 }
 
 document.getElementById('lanzamiento-form').addEventListener('submit', (e) => {
@@ -79,6 +90,26 @@ document.getElementById('lanzamiento-form').addEventListener('submit', (e) => {
         console.error("Error al crear el lanzamiento: ", error);
     });
 });
+
+function openAudioDetails(trackIndex) {
+    // Lógica para abrir la sección de detalles de audio con la pista seleccionada
+    document.getElementById('detalles-audio-form').style.display = 'block';
+    // Completar la información en el formulario de detalles de audio
+    const track = tracks[trackIndex];
+    document.getElementById('track-name').value = track.name;
+    document.getElementById('artist-name').value = track.artist;
+    // Rellenar otros campos según sea necesario
+}
+
+function toggleCompilationAlbum(value) {
+    const artistRows = document.getElementById('artist-rows');
+    if (value === 'yes') {
+        document.getElementById('artist-name').value = 'Varios artistas';
+        artistRows.style.display = 'none';
+    } else {
+        artistRows.style.display = 'block';
+    }
+}
 
 function toggleLyricists(value) {
     const lyricistSection = document.getElementById('lyricist-section');
@@ -136,4 +167,21 @@ document.addEventListener('click', (e) => {
     if (e.target.classList.contains('remove-lyricist-row')) {
         e.target.parentElement.remove();
     }
+});
+
+document.getElementById('album-details-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    // Guardar los detalles del álbum en los campos correspondientes
+    document.getElementById('detalle-upc').innerText = document.getElementById('upc').value;
+    document.getElementById('detalle-titulo').innerText = document.getElementById('titulo').value;
+    document.getElementById('detalle-artista-principal').innerText = document.getElementById('artista-principal').value;
+    document.getElementById('detalle-genero-principal').innerText = document.getElementById('genero-principal').value;
+    document.getElementById('detalle-label').innerText = document.getElementById('label').value;
+    document.getElementById('detalle-c-line').innerText = document.getElementById('c-line').value;
+    document.getElementById('detalle-p-line').innerText = document.getElementById('p-line').value;
+    document.getElementById('detalle-release-date').innerText = document.getElementById('release-date').value;
+    // Cambiar el estado de los detalles del álbum a completado
+    document.getElementById('detalles-album-status').innerText = '✓';
+    document.getElementById('detalles-album-form').style.display = 'none';
+    checkFormStatus();
 });

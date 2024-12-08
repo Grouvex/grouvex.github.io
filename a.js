@@ -1,3 +1,9 @@
+// Cuando se carga la página
+window.addEventListener('load', function() {
+    cambiarSeccion();
+    showSubSection('album-details'); // Asegúrate de pasar un ID válido
+});
+
 // app.js
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
@@ -9,7 +15,7 @@ const firebaseConfig = {
     projectId: "grouvex-studios",
     storageBucket: "grouvex-studios.appspot.com",
     messagingSenderId: "1070842606062",
-    appId: "1:1070842606062:web:5d887863048fd100b49eff",
+    appId: "1:1070842606062:web:5d887863048fd100b49eff"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -17,6 +23,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 function cambiarSeccion() {
+    alert('Función llamada correctamente!');
     console.log("Función cambiarSeccion llamada"); // Verificar que la función se llama
     const section1 = document.getElementById('section1');
     const section2 = document.getElementById('section2');
@@ -27,8 +34,7 @@ function cambiarSeccion() {
     } else {
         console.error("No se encontraron los elementos section1 y/o section2");
     }
-};
-document.addEventListener('DOMContentLoaded', function() { cambiarSeccion(); });
+}
 
 const showSubSection = (subSectionId) => {
     const subSections = document.querySelectorAll('#form-container .section > div');
@@ -142,7 +148,7 @@ document.getElementById('release-form').addEventListener('submit', (e) => {
         addTime: document.getElementById('add-time').value,
         timeZone: document.getElementById('time-zone').value,
         releaseTime: document.getElementById('release-time').value,
-        explicitContent: document.getElementById('explicit-content').value,
+        explicitContent: document.getElementById('explicit-content').value
     };
     setDoc(doc(db, "releases", releaseData.releaseTitle), releaseData)
         .then(() => {

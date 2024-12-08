@@ -1,8 +1,17 @@
-// Continuación de la configuración de Firebase y otras funcionalidades
+// Configuración de Firebase
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+// Inicialización de Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// Ejemplo de estructura de datos de una pista
 const tracks = [];
 
 document.getElementById('add-track').addEventListener('click', () => {
@@ -184,4 +193,121 @@ document.getElementById('album-details-form').addEventListener('submit', (e) => 
     document.getElementById('detalles-album-status').innerText = '✓';
     document.getElementById('detalles-album-form').style.display = 'none';
     checkFormStatus();
+});
+
+document.getElementById('audio-details-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    // Guardar los detalles de la pista en la lista de pistas
+    const trackIndex = parseInt(document.getElementById('track-number').value, 10) - 1;
+    if (tracks[trackIndex]) {
+        tracks[trackIndex].name = document.getElementById('track-name').value;
+        tracks[trackIndex].artist = document.getElementById('artist-name').value;
+        // Guardar otros detalles según sea necesario
+    }
+    // Cambiar el estado de los detalles del audio a completado
+    document.getElementById('detalles-audio-status').innerText = '✓';
+    document.getElementById('detalles-audio-form').style.display = 'none';
+checkFormStatus();
+});
+
+document.getElementById('store-details-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    // Guardar los detalles de las tiendas seleccionadas
+    const selectedStores = [];
+    document.querySelectorAll('input[name="store"]:checked').forEach((checkbox) => {
+        selectedStores.push(checkbox.value);
+    });
+    const selectedTerritories = [];
+    document.querySelectorAll('input[name="territory"]:checked').forEach((checkbox) => {
+        selectedTerritories.push(checkbox.value);
+    });
+    const territoryAction = document.getElementById('territory-action').value;
+    
+    // Guardar la información en los campos correspondientes
+    document.getElementById('detalles-tiendas-status').innerText = '✓';
+    document.getElementById('detalles-tiendas-form').style.display = 'none';
+    checkFormStatus();
+});
+
+document.getElementById('album-artwork-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    // Guardar los detalles de la imagen del álbum
+    const albumArtwork = document.getElementById('album-artwork').files[0];
+    if (albumArtwork) {
+        // Procesar la imagen según sea necesario
+        document.getElementById('detalles-imagen-status').innerText = '✓';
+        document.getElementById('detalles-imagen-form').style.display = 'none';
+    } else {
+        document.getElementById('detalles-imagen-status').innerText = '✗';
+    }
+    checkFormStatus();
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.botones button').forEach(button => {
+        button.addEventListener('click', () => {
+            const targetFormId = button.id.replace('detalles-', '') + '-form';
+            document.querySelectorAll('form').forEach(form => {
+                form.style.display = form.id === targetFormId ? 'block' : 'none';
+            });
+        });
+    });
+});
+
+function toggleLyricists(value) {
+    const lyricistSection = document.getElementById('lyricist-section');
+    if (value === 'yes') {
+        lyricistSection.style.display = 'block';
+    } else {
+        lyricistSection.style.display = 'none';
+    }
+}
+
+document.getElementById('add-composer-row').addEventListener('click', () => {
+    const newRow = document.createElement('div');
+    newRow.classList.add('composer-row');
+    newRow.innerHTML = `
+        <label for="composer-name">Composer*</label>
+        <input type="text" id="composer-name" name="composer-name" required>
+        <button type="button" class="remove-composer-row">Eliminar</button>
+    `;
+    document.getElementById('composer-rows').appendChild(newRow);
+});
+
+document.getElementById('add-artist-row').addEventListener('click', () => {
+    const newRow = document.createElement('div');
+    newRow.classList.add('artist-row');
+    newRow.innerHTML = `
+        <select name="artist-role">
+            <option value="main">Main</option>
+            <option value="featured">Featured</option>
+            <!-- Agregar más roles según sea necesario -->
+        </select>
+        <input type="text" name="artist-name" required>
+        <button type="button" class="remove-artist-row">Eliminar</button>
+    `;
+    document.getElementById('artist-rows').appendChild(newRow);
+});
+
+document.getElementById('add-lyricist-row').addEventListener('click', () => {
+    const newRow = document.createElement('div');
+    newRow.classList.add('lyricist-row');
+    newRow.innerHTML = `
+        <label for="lyricist-name">Lyricist*</label>
+        <input type="text" id="lyricist-name" name="lyricist-name" required>
+        <button type="button" class="remove-lyricist-row">Eliminar</button>
+    `;
+    document.getElementById('lyricist-rows').appendChild(newRow);
+});
+
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('remove-composer-row')) {
+        e.target.parentElement.remove();
+    }
+    if (e.target.classList.contains('remove-artist-row')) {
+        e.target.parentElement.remove();
+    }
+    if (e.target.classList.contains('remove-lyricist-row')) {
+        e.target.parentElement.remove();
+    }
 });

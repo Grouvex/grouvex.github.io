@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulario de Lanzamiento</title>
   <link rel="stylesheet" href="a.css">
 </head>
-
 <body>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
@@ -17,13 +15,14 @@
 
   <script>
     document.getElementById('logoutBtn').addEventListener('click', () => {
-    firebase.auth().signOut().then(() => {
-      console.log('User logged out');
-    }).catch((error) => {
-      console.error('Error logging out:', error);
+      firebase.auth().signOut().then(() => {
+        console.log('User logged out');
+      }).catch((error) => {
+        console.error('Error logging out:', error);
+      });
     });
-  });
   </script>
+
   <div id="form-container">
     <h2>Crear un Nuevo Lanzamiento</h2>
     <form id="release-form">
@@ -33,7 +32,7 @@
         <input type="text" id="upc" placeholder="If you don't have a UPC / EAN please leave blank and we can generate one for you.">
         <label for="release-title">Release Title*</label>
         <input type="text" id="release-title" required>
-        <button onclick="cambiarSeccion()">Siguiente</button>
+        <button type="button" onclick="cambiarSeccion()">Siguiente</button>
       </div>
 
       <!-- Sección 2 -->
@@ -46,8 +45,82 @@
           <button type="button" onclick="showSubSection('stores-details')">Detalles de Tiendas</button>
           <button type="button" onclick="showSubSection('localization-details')">Detalles de Localización</button>
         </div>
+
+        <!-- Subsección: Detalles del Álbum -->
+        <div id="album-details" style="display:none;">
+          <label for="album-title">Título del Álbum*</label>
+          <input type="text" id="album-title" required>
+
+          <label for="language">Idioma*</label>
+          <input type="text" id="language" required>
+
+          <label for="album-version">Versión del Álbum</label>
+          <input type="text" id="album-version">
+
+          <label for="compilation-album">Álbum de Compilación</label>
+          <input type="text" id="compilation-album">
+          
+          <button type="button" onclick="addArtist()">Añadir Artista</button>
+          <div id="artist-list"></div>
+
+          <button type="button" onclick="addWriter()">Añadir Escritor</button>
+          <div id="writers-list"></div>
+
+          <label for="lyrics">Letras</label>
+          <textarea id="lyrics"></textarea>
+
+          <label for="primary-genre">Género Principal*</label>
+          <input type="text" id="primary-genre" required>
+
+          <label for="secondary-genre">Género Secundario</label>
+          <input type="text" id="secondary-genre">
+
+          <label for="composition-copyright">Derechos de Autor de la Composición*</label>
+          <input type="text" id="composition-copyright" required>
+
+          <label for="composition-date">Fecha de Composición</label>
+          <input type="date" id="composition-date">
+
+          <label for="recording-copyright">Derechos de Autor de la Grabación*</label>
+          <input type="text" id="recording-copyright" required>
+
+          <label for="recording-date">Fecha de Grabación</label>
+          <input type="date" id="recording-date">
+
+          <label for="record-label-name">Nombre de la Discográfica*</label>
+          <input type="text" id="record-label-name" required>
+
+          <label for="originally-released">Lanzamiento Original</label>
+          <input type="date" id="originally-released">
+
+          <label for="pre-order-date">Fecha de Pre-pedido</label>
+          <input type="date" id="pre-order-date">
+
+          <label for="sales-start-date">Fecha de Inicio de Ventas</label>
+          <input type="date" id="sales-start-date">
+
+          <button type="button" onclick="clearPreOrderDate()">Limpiar Fecha de Pre-pedido</button>
+
+          <label for="add-time">Añadir Hora</label>
+          <input type="time" id="add-time">
+
+          <label for="time-zone">Zona Horaria</label>
+          <input type="text" id="time-zone">
+
+          <button type="button" onclick="clearTime()">Limpiar Hora</button>
+
+          <label for="release-time">Hora de Lanzamiento</label>
+          <input type="time" id="release-time">
+
+          <label for="explicit-content">Contenido Explícito*</label>
+          <select id="explicit-content" required>
+            <option value="" disabled selected>Selecciona una opción</option>
+            <option value="no">No</option>
+            <option value="yes">Sí</option>
+          </select>
+        </div>
       </div>
     </form>
   </div>
-  </body>
+</body>
 </html>

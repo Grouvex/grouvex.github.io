@@ -1,92 +1,167 @@
-/* styles.css */
+/* Estilos generales */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
+    background-color: #f4f4f4;
     margin: 0;
-    padding: 0;
-}
-
-#auth-container, #form-container {
-    max-width: 800px;
-    margin: 50px auto;
     padding: 20px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: #333;
 }
 
-h2, h3 {
-    color: #333;
+/* Estilos para las secciones */
+section {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+h1, h2 {
+    color: #2c3e50;
 }
 
 label {
     display: block;
-    margin-bottom: 5px;
+    margin: 10px 0 5px;
     font-weight: bold;
+    color: #34495e;
 }
 
-input[type="text"], input[type="email"], input[type="password"], input[type="date"], input[type="number"], input[type="time"], select {
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="file"],
+select {
     width: 100%;
-    padding: 8px;
+    padding: 10px;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
+/* Botones */
 button {
-    padding: 10px 15px;
-    background-color: #007bff;
-    border: none;
+    background-color: #2980b9;
     color: white;
-    border-radius: 3px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #3498db;
 }
 
-button[type="button"] {
-    margin-right: 10px;
+button.remove-artist-row,
+button.remove-composer-row,
+button.remove-lyricist-row,
+button.remove-track-row {
+    background-color: #e74c3c;
+    color: white;
+    padding: 5px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 5px;
 }
 
-.section {
-    margin-bottom: 20px;
+button.remove-artist-row:hover,
+button.remove-composer-row:hover,
+button.remove-lyricist-row:hover,
+button.remove-track-row:hover {
+    background-color: #c0392b;
 }
 
-#seccion1 {
-            display: block; /* Inicialmente oculta la sección 2 */
-        }
-#seccion2 {
-            display: none; /* Inicialmente oculta la sección 2 */
-        }
-
-#section-menu {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
+.help {
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    color: #2980b9;
 }
 
-#section-menu button {
-    margin-bottom: 10px;
+.help-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: #34495e;
+    color: #ecf0f1;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; 
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
 }
 
-#album-details, #image-details, #audio-details, #stores-details, #localization-details {
+.help:hover .help-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #bdc3c7;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #2980b9;
+    color: white;
+}
+
+td button {
+    background-color: #3498db;
+    color: white;
+    padding: 5px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+td button:hover {
+    background-color: #2980b9;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    background-color: #ecf0f1;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 4px;
+    color: #2c3e50;
+}
+
+/* Estilos para el formulario de detalles */
+#detalles-album-form,
+#detalles-imagen-form,
+#detalles-audio-form,
+#detalles-tiendas-form {
     display: none;
 }
 
-.artist, .writer, .lyricist {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.artist select, .artist input, .writer input, .lyricist input {
-    flex: 1;
-    margin-right: 10px;
-}
-
-.artist button, .writer button, .lyricist button {
-    flex-shrink: 0;
+h2 {
+    border-bottom: 2px solid #2980b9;
+    padding-bottom: 10px;
 }

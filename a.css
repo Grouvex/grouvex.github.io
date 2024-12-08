@@ -1,10 +1,13 @@
+/* Estilos generales */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
     padding: 20px;
+    color: #333;
 }
 
+/* Estilos para las secciones */
 section {
     background: #fff;
     padding: 20px;
@@ -13,35 +16,79 @@ section {
     margin-bottom: 20px;
 }
 
-h1 {
-    font-size: 24px;
-    margin-bottom: 10px;
+h1, h2 {
+    color: #2c3e50;
 }
 
 label {
     display: block;
     margin: 10px 0 5px;
+    font-weight: bold;
+    color: #34495e;
 }
 
-input[type="text"], input[type="date"] {
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="file"],
+select {
     width: 100%;
-    padding: 8px;
+    padding: 10px;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #bdc3c7;
     border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Botones */
+button {
+    background-color: #2980b9;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #3498db;
+}
+
+button.remove-artist-row,
+button.remove-composer-row,
+button.remove-lyricist-row,
+button.remove-track-row {
+    background-color: #e74c3c;
+    color: white;
+    padding: 5px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+button.remove-artist-row:hover,
+button.remove-composer-row:hover,
+button.remove-lyricist-row:hover,
+button.remove-track-row:hover {
+    background-color: #c0392b;
 }
 
 .help {
     cursor: pointer;
     position: relative;
     display: inline-block;
+    color: #2980b9;
 }
 
 .help-text {
     visibility: hidden;
     width: 200px;
-    background-color: #000;
-    color: #fff;
+    background-color: #34495e;
+    color: #ecf0f1;
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
@@ -59,16 +106,62 @@ input[type="text"], input[type="date"] {
     opacity: 1;
 }
 
-button {
-    background-color: #4CAF50;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #bdc3c7;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #2980b9;
     color: white;
-    padding: 10px 20px;
+}
+
+td button {
+    background-color: #3498db;
+    color: white;
+    padding: 5px 10px;
+    font-size: 14px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin-top: 10px;
 }
 
-button:hover {
-    background-color: #45a049;
+td button:hover {
+    background-color: #2980b9;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    background-color: #ecf0f1;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 4px;
+    color: #2c3e50;
+}
+
+/* Estilos para el formulario de detalles */
+#detalles-album-form,
+#detalles-imagen-form,
+#detalles-audio-form,
+#detalles-tiendas-form {
+    display: none;
+}
+
+h2 {
+    border-bottom: 2px solid #2980b9;
+    padding-bottom: 10px;
 }

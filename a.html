@@ -121,7 +121,7 @@
         <input type="text" id="album-version" name="album-version">
 
         <label for="compilation-album">Compilation Album</label>
-        <select id="compilation-album" name="compilation-album">
+        <select id="compilation-album" name="compilation-album" onchange="toggleCompilationAlbum(this.value)">
             <option value="no">No</option>
             <option value="yes">Yes</option>
         </select>
@@ -134,7 +134,7 @@
                     <option value="featured">Featured</option>
                     <!-- Agregar más roles según sea necesario -->
                 </select>
-                <input type="text" name="artist-name" required>
+                <input type="text" name="artist-name" id="artist-name" required>
                 <button type="button" class="remove-artist-row">Eliminar</button>
             </div>
         </div>
@@ -222,66 +222,6 @@
         <button type="submit">Guardar y Continuar</button>
     </form>
 </div>
-
-<script>
-    function toggleLyricists(value) {
-        const lyricistSection = document.getElementById('lyricist-section');
-        if (value === 'yes') {
-            lyricistSection.style.display = 'block';
-        } else {
-            lyricistSection.style.display = 'none';
-        }
-    }
-
-    document.getElementById('add-composer-row').addEventListener('click', () => {
-        const newRow = document.createElement('div');
-        newRow.classList.add('composer-row');
-        newRow.innerHTML = `
-            <label for="composer-name">Composer*</label>
-            <input type="text" id="composer-name" name="composer-name" required>
-            <button type="button" class="remove-composer-row">Eliminar</button>
-        `;
-        document.getElementById('composer-rows').appendChild(newRow);
-    });
-
-    document.getElementById('add-artist-row').addEventListener('click', () => {
-        const newRow = document.createElement('div');
-        newRow.classList.add('artist-row');
-        newRow.innerHTML = `
-            <select name="artist-role">
-                <option value="main">Main</option>
-                <option value="featured">Featured</option>
-                <!-- Agregar más roles según sea necesario -->
-            </select>
-            <input type="text" name="artist-name" required>
-            <button type="button" class="remove-artist-row">Eliminar</button>
-        `;
-        document.getElementById('artist-rows').appendChild(newRow);
-    });
-
-    document.getElementById('add-lyricist-row').addEventListener('click', () => {
-        const newRow = document.createElement('div');
-        newRow.classList.add('lyricist-row');
-        newRow.innerHTML = `
-            <label for="lyricist-name">Lyricist*</label>
-            <input type="text" id="lyricist-name" name="lyricist-name" required>
-            <button type="button" class="remove-lyricist-row">Eliminar</button>
-        `;
-        document.getElementById('lyricist-rows').appendChild(newRow);
-    });
-
-    document.addEventListener('click', (e) => {
-        if (e.target.classList.contains('remove-composer-row')) {
-            e.target.parentElement.remove();
-        }
-        if (e.target.classList.contains('remove-artist-row')) {
-            e.target.parentElement.remove();
-        }
-        if (e.target.classList.contains('remove-lyricist-row')) {
-            e.target.parentElement.remove();
-        }
-    });
-</script>
 
 
     <div id="detalles-imagen-form" style="display:none;">

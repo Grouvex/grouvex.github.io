@@ -1,11 +1,13 @@
 // Configuración de Firebase
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
+      authDomain: "grouvex-studios.firebaseapp.com",
+      databaseURL: "https://grouvex-studios-default-rtdb.firebaseio.com", // Asegúrate de incluir la URL de tu base de datos
+      projectId: "grouvex-studios",
+      storageBucket: "grouvex-studios.appspot.com",
+      messagingSenderId: "1070842606062",
+      appId: "1:1070842606062:web:5d887863048fd100b49eff",
+      measurementId: "G-75BR8D2CR3"
 };
 
 // Inicialización de Firebase

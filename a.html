@@ -363,6 +363,103 @@
     // Mostrar y ocultar secciones de detalles
            
 document.addEventListener('DOMContentLoaded', () => {
+    const countrySelect = document.getElementById('country-select');
+    const addCountryButton = document.getElementById('add-country');
+    const selectedCountriesList = document.getElementById('selected-countries-list');
+    const selectedCountries = [];
+
+    addCountryButton.addEventListener('click', () => {
+        Array.from(countrySelect.selectedOptions).forEach(option => {
+            if (!selectedCountries.includes(option.value)) {
+                selectedCountries.push(option.value);
+                const listItem = document.createElement('li');
+                listItem.textContent = option.text;
+                listItem.dataset.value = option.value;
+
+                const removeButton = document.createElement('button');
+                removeButton.textContent = 'Eliminar';
+                removeButton.addEventListener('click', () => {
+                    selectedCountries.splice(selectedCountries.indexOf(option.value), 1);
+                    listItem.remove();
+                });
+
+                listItem.appendChild(removeButton);
+                selectedCountriesList.appendChild(listItem);
+            }
+        });
+
+        // Deseleccionar todas las opciones
+        countrySelect.selectedIndex = -1;
+    });
+
+    document.getElementById('store-details-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // Guardar los detalles de las tiendas seleccionadas
+        const selectedStores = [];
+        document.querySelectorAll('input[name="store"]:checked').forEach((checkbox) => {
+            selectedStores.push(checkbox.value);
+        });
+
+        // Guardar los detalles de los territorios seleccionados
+        const selectedTerritories = [...selectedCountries]; // Usar los países seleccionados
+        const territoryAction = document.getElementById('territory-action').value;
+
+        const storeDetails = {
+            selectedStores: selectedStores,
+            selectedTerritories: selectedTerritories,
+            territoryAction: territoryAction
+        };
+
+        // Guardar en sessionStorage
+        sessionStorage.setItem('storeDetails', JSON.stringify(storeDetails));
+
+        // Cambiar el estado de los detalles de las tiendas a completado
+        document.getElementById('detalles-tiendas-status').innerText = '✓';
+        document.getElementById('detalles-tiendas-form').style.display = 'none';
+        checkFormStatus();
+    });
+
+    // Manejar la adición de artistas
+    document.getElementById('add-audio-artist-row').addEventListener('click', () => {
+        const artistRows = document.getElementById('audio-artist-rows');
+        const newRow = document.createElement('div');
+        newRow.classList.add('audio-artist-row');
+        newRow.innerHTML = `
+            <select name="artist-role">
+                <option value="main">Main</option>
+                <option value="featured">Featured</option>
+            </select>
+            <input type="text" name="artist-name" required>
+            <button type="button" class="remove-artist-row">Eliminar</button>
+        `;
+        newRow.querySelector('.remove-artist-row').addEventListener('click', () => {
+            newRow.remove();
+        });
+        artistRows.appendChild(newRow);
+    });
+
+    // Manejar la adición de compositores
+    document.getElementById('add-audio-writer-row').addEventListener('click', () => {
+        const writerRows = document.getElementById('audio-writer-rows');
+        const newRow = document.createElement('div');
+        newRow.classList.add('audio-writer-row');
+        newRow.innerHTML = `
+            <select name="writer-role">
+                <option value="composer">Composer</option>
+                <option value="lyricist">Lyricist</option>
+            </select>
+            <input type="text" name="writer-name" required>
+            <button type="button" class="remove-writer-row">Eliminar</button>
+        `;
+        newRow.querySelector('.remove-writer-row').addEventListener('click', () => {
+            newRow.remove();
+        });
+        writerRows.appendChild(newRow);
+    });
+
+    // Manejar la visualización de formularios
+    document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.botones button').forEach(button => {
         button.addEventListener('click', () => {
             const targetFormId = button.id.replace('detalles-', 'detalles-') + '-form';
@@ -380,6 +477,25 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
+    
+
+    // Función para habilitar/deshabilitar campos de letristas
+    function toggleLyricists(value) {
+        const lyricistSection = document.getElementById('lyricist-section');
+        const lyricistNameInput = document.getElementById('lyricist-name');
+        
+        if (value === 'yes') {
+            lyricistSection.style.display = 'block';
+            lyricistNameInput.setAttribute('required', 'required');
+        } else {
+            lyricistSection.style.display = 'none';
+            lyricistNameInput.removeAttribute('required');
+        }
+    }
+
+    // Inicializa el estado del formulario
+    toggleLyricists(document.getElementById('lyrics').value);
+
     // Función para verificar el estado del formulario y actualizar los detalles
     function checkFormStatus() {
         const detallesSection = document.getElementById('detalles-seccion');
@@ -422,35 +538,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         detalleElement.innerHTML = contenido;
     }
-
-    // Manejar el envío de detalles de tiendas
-    document.getElementById('store-details-form').addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        // Guardar los detalles de las tiendas seleccionadas
-        const selectedStores = [];
-        document.querySelectorAll('input[name="store"]:checked').forEach((checkbox) => {
-            selectedStores.push(checkbox.value);
-        });
-
-        // Guardar los detalles de los territorios seleccionados
-        const selectedTerritories = [...selectedCountries]; // Usar los países seleccionados
-        const territoryAction = document.getElementById('territory-action').value;
-
-        const storeDetails = {
-            selectedStores: selectedStores,
-            selectedTerritories: selectedTerritories,
-            territoryAction: territoryAction
-        };
-
-        // Guardar en sessionStorage
-        sessionStorage.setItem('storeDetails', JSON.stringify(storeDetails));
-
-        // Cambiar el estado de los detalles de las tiendas a completado
-        document.getElementById('detalles-tiendas-status').innerText = '✓';
-        document.getElementById('detalles-tiendas-form').style.display = 'none';
-        checkFormStatus();
-    });
 
     // Inicializa el estado del formulario
     checkFormStatus();

@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nuevos Lanzamientos</title>
-    <link rel="stylesheet" href="a.css">
+    <link rel="stylesheet" href="styles.css">
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
-    <script src="a.js" defer></script>
+    <script src="app.js" defer></script>
 </head>
 <body>
     <section id="informacion">
@@ -195,6 +195,7 @@
 
         <button type="submit">Guardar y Continuar</button>
     </form>
+    <button type="buttonCerrar" class="cerrar-form">Cerrar</button>
 </div>
 <div id="detalles-imagen-form" style="display:none;">
     <h2>Upload Album Artwork</h2>
@@ -211,6 +212,7 @@
         </ul>
         <button type="submit">Guardar y Continuar</button>
     </form>
+    <button type="buttonCerrar" class="cerrar-form">Cerrar</button>
 </div>
 
 <div id="detalles-audio-form" style="display:none;">
@@ -299,6 +301,7 @@
 
         <button type="submit">Guardar y Continuar</button>
     </form>
+    <button type="buttonCerrar" class="cerrar-form">Cerrar</button>
 </div>
 
 <div id="detalles-tiendas-form" style="display:none;">
@@ -321,21 +324,30 @@
         <p>WARNING: For Worldwide distribution please DO NOT add Territory information. Selected Stores with NO additional Territory information will be distributed Worldwide.</p>
         
         <label for="selected-territories">Selected Territories</label>
-        <div id="territory-list">
-            <div class="territory-row">
-                <input type="checkbox" id="territory-usa" name="territory" value="usa">
-                <label for="territory-usa">USA</label>
-            </div>
-            <div class="territory-row">
-                <input type="checkbox" id="territory-uk" name="territory" value="uk">
-                <label for="territory-uk">UK</label>
-            </div>
-            <div class="territory-row">
-                <input type="checkbox" id="territory-canada" name="territory" value="canada">
-                <label for="territory-canada">Canada</label>
-            </div>
-            <!-- Añadir más territorios según sea necesario -->
-        </div>
+        <label for="country-select">Selecciona varios países:</label>
+        <select id="country-select" name="countries" multiple size="10">
+            <option value="usa">Estados Unidos</option>
+            <option value="canada">Canadá</option>
+            <option value="mexico">México</option>
+            <option value="uk">Reino Unido</option>
+            <option value="france">Francia</option>
+            <option value="germany">Alemania</option>
+            <option value="italy">Italia</option>
+            <option value="spain">España</option>
+            <option value="japan">Japón</option>
+            <option value="australia">Australia</option>
+            <option value="brazil">Brasil</option>
+            <option value="india">India</option>
+            <option value="china">China</option>
+            <option value="russia">Rusia</option>
+            <option value="south-africa">Sudáfrica</option>
+        </select>
+        <button id="add-country">Añadir País</button>
+
+        <h3>Países Seleccionados</h3>
+        <ul id="selected-countries-list"></ul>
+
+
         
         <label for="territory-action">Acción</label>
         <select name="territory-action" id="territory-action">
@@ -345,8 +357,9 @@
         
         <button type="submit">Guardar y Continuar</button>
     </form>
+    <button type="buttonCerrar" class="cerrar-form">Cerrar</button>
 </div>
-    <script>
+<script>
     // Mostrar y ocultar secciones de detalles
            
 document.addEventListener('DOMContentLoaded', () => {
@@ -355,6 +368,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const targetFormId = button.id.replace('detalles-', 'detalles-') + '-form';
             document.querySelectorAll('div[id$="-form"]').forEach(form => {
                 form.style.display = form.id === targetFormId ? 'block' : 'none';
+            });
+        });
+    });
+
+    // Manejar el cierre de formularios
+    document.querySelectorAll('.cerrar-form').forEach(buttonCerrar => {
+        button.addEventListener('click', () => {
+            document.querySelectorAll('div[id$="-form"]').forEach(form => {
+                form.style.display = 'none';
             });
         });
     });

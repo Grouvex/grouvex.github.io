@@ -339,22 +339,13 @@ document.addEventListener('click', (e) => {
 
 function toggleLyricists(value) {
     const lyricistSection = document.getElementById('lyricist-section');
+    const lyricistNameInput = document.getElementById('lyricist-name');
+    
     if (value === 'yes') {
         lyricistSection.style.display = 'block';
+        lyricistNameInput.setAttribute('required', 'required');
     } else {
         lyricistSection.style.display = 'none';
+        lyricistNameInput.removeAttribute('required');
     }
 }
-
-// Mostrar y ocultar secciones de detalles
-           
-       document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.botones button').forEach(button => {
-        button.addEventListener('click', () => {
-            const targetFormId = button.id.replace('detalles-', 'detalles-') + '-form';
-            document.querySelectorAll('div[id$="-form"]').forEach(form => {
-                form.style.display = form.id === targetFormId ? 'block' : 'none';
-            });
-        });
-    });
-});

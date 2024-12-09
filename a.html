@@ -380,6 +380,80 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
+    // Función para verificar el estado del formulario y actualizar los detalles
+    function checkFormStatus() {
+        const detallesSection = document.getElementById('detalles-seccion');
+
+        // Detalles de álbum (ejemplo)
+        if (document.getElementById('detalles-album-status').innerText === '✓') {
+            const albumDetails = `Título del Álbum: ${document.getElementById('titulo-album').value}`;
+            updateDetalles(detallesSection, 'album', albumDetails);
+        }
+
+        // Detalles de imagen (ejemplo)
+        if (document.getElementById('detalles-imagen-status').innerText === '✓') {
+            const imagenDetails = `Archivo de Imagen: ${document.getElementById('archivo-imagen').value}`;
+            updateDetalles(detallesSection, 'imagen', imagenDetails);
+        }
+
+        // Detalles de audio
+        if (document.getElementById('detalles-audio-status').innerText === '✓') {
+            const audioDetails = `Nombre de la Pista: ${document.getElementById('track-name').value}`;
+            updateDetalles(detallesSection, 'audio', audioDetails);
+        }
+
+        // Detalles de tiendas
+        if (document.getElementById('detalles-tiendas-status').innerText === '✓') {
+            const storeDetails = JSON.parse(sessionStorage.getItem('storeDetails'));
+            const tiendasDetails = `Tiendas Seleccionadas: ${storeDetails.selectedStores.join(', ')}<br>
+                                    Países Seleccionados: ${storeDetails.selectedTerritories.join(', ')}<br>
+                                    Acción: ${storeDetails.territoryAction}`;
+            updateDetalles(detallesSection, 'tiendas', tiendasDetails);
+        }
+    }
+
+    // Función para actualizar los detalles en la sección de detalles
+    function updateDetalles(seccion, tipo, contenido) {
+        let detalleElement = document.getElementById(`detalle-${tipo}`);
+        if (!detalleElement) {
+            detalleElement = document.createElement('div');
+            detalleElement.id = `detalle-${tipo}`;
+            seccion.appendChild(detalleElement);
+        }
+        detalleElement.innerHTML = contenido;
+    }
+
+    // Manejar el envío de detalles de tiendas
+    document.getElementById('store-details-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // Guardar los detalles de las tiendas seleccionadas
+        const selectedStores = [];
+        document.querySelectorAll('input[name="store"]:checked').forEach((checkbox) => {
+            selectedStores.push(checkbox.value);
+        });
+
+        // Guardar los detalles de los territorios seleccionados
+        const selectedTerritories = [...selectedCountries]; // Usar los países seleccionados
+        const territoryAction = document.getElementById('territory-action').value;
+
+        const storeDetails = {
+            selectedStores: selectedStores,
+            selectedTerritories: selectedTerritories,
+            territoryAction: territoryAction
+        };
+
+        // Guardar en sessionStorage
+        sessionStorage.setItem('storeDetails', JSON.stringify(storeDetails));
+
+        // Cambiar el estado de los detalles de las tiendas a completado
+        document.getElementById('detalles-tiendas-status').innerText = '✓';
+        document.getElementById('detalles-tiendas-form').style.display = 'none';
+        checkFormStatus();
+    });
+
+    // Inicializa el estado del formulario
+    checkFormStatus();
 });
 </script>
 </body>

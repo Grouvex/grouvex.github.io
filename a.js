@@ -75,21 +75,21 @@ function checkFormStatus() {
 document.getElementById('lanzamiento-form').addEventListener('submit', (e) => {
     e.preventDefault();
         const upc = document.getElementById('upc').value;
-        const language: document.getElementById('language').value,
-        const title: document.getElementById('album-title').value,
-        const version: document.getElementById('album-version').value,
-        const compilation: document.getElementById('compilation-album').value,
-        const artist: document.getElementById('artist-name').value,
-        const primaryGenre: document.getElementById('primary-genre').value,
-        const secondaryGenre: document.getElementById('secondary-genre').value,
-        const compositionCopyrightYear: document.getElementById('composition-copyright-year').value,
-        const compositionCopyright: document.getElementById('composition-copyright').value,
-        const soundRecordingCopyrightYear: document.getElementById('sound-recording-copyright-year').value,
-        const soundRecordingCopyright: document.getElementById('sound-recording-copyright').value,
-        const recordLabelName: document.getElementById('record-label-name').value,
-        const originallyReleased: document.getElementById('originally-released').value,
-        const preOrderDate: document.getElementById('pre-order-date').value,
-        const salesStartDate: document.getElementById('sales-start-date').value,
+        const language: document.getElementById('language').value;
+        const title: document.getElementById('album-title').value;
+        const version: document.getElementById('album-version').value;
+        const compilation: document.getElementById('compilation-album').value;
+        const artist: document.getElementById('artist-name').value;
+        const primaryGenre: document.getElementById('primary-genre').value;
+        const secondaryGenre: document.getElementById('secondary-genre').value;
+        const compositionCopyrightYear: document.getElementById('composition-copyright-year').value;
+        const compositionCopyright: document.getElementById('composition-copyright').value;
+        const soundRecordingCopyrightYear: document.getElementById('sound-recording-copyright-year').value;
+        const soundRecordingCopyright: document.getElementById('sound-recording-copyright').value;
+        const recordLabelName: document.getElementById('record-label-name').value;
+        const originallyReleased: document.getElementById('originally-released').value;
+        const preOrderDate: document.getElementById('pre-order-date').value;
+        const salesStartDate: document.getElementById('sales-start-date').value;
         const explicitContent: document.getElementById('explicit-content').value
 
   //    const upc = document.getElementById('upc').value;

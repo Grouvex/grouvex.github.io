@@ -347,30 +347,14 @@ function toggleLyricists(value) {
 }
 
 // Mostrar y ocultar secciones de detalles
-        document.getElementById('detalles-album').addEventListener('click', () => {
-            document.getElementById('detalles-album-form').style.display = 'block';
-            document.getElementById('detalles-imagen-form').style.display = 'none';
-            document.getElementById('detalles-audio-form').style.display = 'none';
-            document.getElementById('detalles-tiendas-form').style.display = 'none';
+           
+       document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.botones button').forEach(button => {
+        button.addEventListener('click', () => {
+            const targetFormId = button.id.replace('detalles-', 'detalles-') + '-form';
+            document.querySelectorAll('div[id$="-form"]').forEach(form => {
+                form.style.display = form.id === targetFormId ? 'block' : 'none';
+            });
         });
-
-        document.getElementById('detalles-imagen').addEventListener('click', () => {
-            document.getElementById('detalles-album-form').style.display = 'none';
-            document.getElementById('detalles-imagen-form').style.display = 'block';
-            document.getElementById('detalles-audio-form').style.display = 'none';
-            document.getElementById('detalles-tiendas-form').style.display = 'none';
-        });
-
-        document.getElementById('detalles-audio').addEventListener('click', () => {
-            document.getElementById('detalles-album-form').style.display = 'none';
-            document.getElementById('detalles-imagen-form').style.display = 'none';
-            document.getElementById('detalles-audio-form').style.display = 'block';
-            document.getElementById('detalles-tiendas-form').style.display = 'none';
-        });
-
-        document.getElementById('detalles-tiendas').addEventListener('click', () => {
-            document.getElementById('detalles-album-form').style.display = 'none';
-            document.getElementById('detalles-imagen-form').style.display = 'none';
-            document.getElementById('detalles-audio-form').style.display = 'none';
-            document.getElementById('detalles-tiendas-form').style.display = 'block';
-        });
+    });
+});

@@ -346,5 +346,19 @@
         <button type="submit">Guardar y Continuar</button>
     </form>
 </div>
+    <script>
+    // Mostrar y ocultar secciones de detalles
+           
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.botones button').forEach(button => {
+        button.addEventListener('click', () => {
+            const targetFormId = button.id.replace('detalles-', 'detalles-') + '-form';
+            document.querySelectorAll('div[id$="-form"]').forEach(form => {
+                form.style.display = form.id === targetFormId ? 'block' : 'none';
+            });
+        });
+    });
+});
+</script>
 </body>
 </html>

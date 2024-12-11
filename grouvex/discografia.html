@@ -175,6 +175,12 @@
 <details>
 <summary style="font-family: Times New Roman" >Start with E</summary> 
 <ol>
+<li><a href="el_principe">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/El Principe.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>El Principe</span><span>El Principe</span></span>
+</div></a>
+</li>
 <li><a href="el_diamante">
 <div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
 <img src="../port/El Diamante.jpg" alt="" class="r-img" style="margin-right:2px">
@@ -205,6 +211,12 @@
 <details>
 <summary style="font-family: Times New Roman" >Start with F</summary>
 <ol>
+<li><a href="family_dinner">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Family Dinner.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Family Dinner</span><span>Family Dinner</span></span>
+</div></a>
+</li> 
 <li><a href="forward">
 <div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
 <img src="../port/The Life.jpg" alt="" class="r-img" style="margin-right:2px">
@@ -232,11 +244,25 @@
 <div id="k"><a href="#k" style="font-size: 50px; font-family: Times New Roman; color:white">K</a></div>
 <details>
 <summary style="font-family: Times New Roman" >Start with K</summary>
+<ol>
+<li><a href="kiss_the_sky">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Kiss the Sky.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Kiss the Sky (by Maren Morris, from The Wild Robot)</span><span>Kiss the Sky (by Maren Morris, from The Wild Robot)</span></span>
+</div></a>
+</li>
+</ol>
 </details>
 <div id="l"><a href="#l" style="font-size: 50px; font-family: Times New Roman; color:white">L</a></div>
 <details>
 <summary style="font-family: Times New Roman" >Start with L</summary>
 <ol>
+<li><a href="la_magia_de_la_estrella_polar">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/La Magia de la Estrella Polar.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>La Magia de la Estrella Polar</span><span>La Magia de la Estrella Polar</span></span>
+</div></a>
+</li>
 <li><a href="la_perla">
 <div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
 <img src="../port/La Perla.jpg" alt="" class="r-img" style="margin-right:2px">
@@ -385,6 +411,12 @@
 <span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Unforgettable Memories (Yéye)</span><span>Unforgettable Memories</span></span>
 </div></a>
 </li>
+<li><a href="universal_union">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Universal Union.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Universal Union</span><span>Universal Union</span></span>
+</div></a>
+</li>
 <li><a href="unstoppable_friendship">
 <div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
 <img src="../port/Unstoppable Friendship.jpg" alt="" class="r-img" style="margin-right:2px">
@@ -512,6 +544,12 @@ function cambiarOrden() {if(document.getElementById('ordenSelector').value == 'a
         <option value="desT">⬆ to ⬇</option>
     </select>
  <div class="cajetines">
+     <a href="la_magia_de_la_estrella_polar" class="cajetin" data-ut="1733011200">   
+      <img src="../port/La Magia de la Estrella Polar.jpg" alt="" style="width:300px">
+      <p class="cajetin-fechas"><span id="f1_6"></span></p>
+      <p class="cajetin-titulo">La Magia de la Estrella Polar</p>
+      <p class="cajetin-footer">©Grouvex Studios Recording</p>
+     </a>
      <a href="esferas_brillantes" class="cajetin" data-ut="1727308800">   
       <img src="../port/Esferas Brillantes.jpg" alt="" style="width:300px">
       <p class="cajetin-fechas"><span id="f1_5"></span></p>
@@ -545,12 +583,14 @@ function cambiarOrden() {if(document.getElementById('ordenSelector').value == 'a
     </div>
  </article>
         `;
+        actualizarFechas(1733011200, "f1_6")
+        actualizarFechas(1727308800, "f1_5")
         actualizarFechas(1704067200, "f1_4")
         actualizarFechas(1703203200, "f1_3")
         actualizarFechas(1700784000, "f1_2")
         actualizarFechas(1727308800, "f1_5")
         actualizarFechas(1699660800, "f1_1")
-        const marcasDeTiempo = [uT1, uT2, uT3, uT4, uT5];
+        const marcasDeTiempo = [uT1, uT2, uT3, uT4, uT5, uT6];
 // NO tocar
 function cambiarOrden() {if(document.getElementById('ordenSelector').value == 'ascT') {marcasDeTiempo.sort((a, b) => b - a);}if(document.getElementById('ordenSelector').value == 'desT') {marcasDeTiempo.sort((a, b) => a - b);}const cajetinesContainer = document.querySelector('.cajetines');marcasDeTiempo.forEach((uT) => {const cajetin = document.querySelector(`[data-ut="${uT}"]`);cajetinesContainer.appendChild(cajetin);});}
       }

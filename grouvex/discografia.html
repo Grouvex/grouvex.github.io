@@ -532,7 +532,7 @@
         actualizarFechas(1703203200, "f1_1")
         const marcasDeTiempo = [uT1, uT2, uT3];
 // NO tocar
-function cambiarOrden() {if(document.getElementById('ordenSelector').value == 'ascT') {marcasDeTiempo.sort((a, b) => b - a);}if(document.getElementById('ordenSelector').value == 'desT') {marcasDeTiempo.sort((a, b) => a - b);}const cajetinesContainer = document.querySelector('.cajetines');marcasDeTiempo.forEach((uT) => {const cajetin = document.querySelector(`[data-ut="${uT}"]`);cajetinesContainer.appendChild(cajetin);});}
+// function cambiarOrden() {if(document.getElementById('ordenSelector').value == 'ascT') {marcasDeTiempo.sort((a, b) => b - a);}if(document.getElementById('ordenSelector').value == 'desT') {marcasDeTiempo.sort((a, b) => a - b);}const cajetinesContainer = document.querySelector('.cajetines');marcasDeTiempo.forEach((uT) => {const cajetin = document.querySelector(`[data-ut="${uT}"]`);cajetinesContainer.appendChild(cajetin);});}
       } else if (seccion === 'ep') {
         contenido.innerHTML = `
 <h2>Reproducción Extendida (EP)</h2>
@@ -592,15 +592,11 @@ function cambiarOrden() {if(document.getElementById('ordenSelector').value == 'a
         actualizarFechas(1699660800, "f1_1")
         const marcasDeTiempo = [uT1, uT2, uT3, uT4, uT5, uT6];
 // NO tocar
-function cambiarOrden() {if(document.getElementById('ordenSelector').value == 'ascT') {marcasDeTiempo.sort((a, b) => b - a);}if(document.getElementById('ordenSelector').value == 'desT') {marcasDeTiempo.sort((a, b) => a - b);}const cajetinesContainer = document.querySelector('.cajetines');marcasDeTiempo.forEach((uT) => {const cajetin = document.querySelector(`[data-ut="${uT}"]`);cajetinesContainer.appendChild(cajetin);});}
+// function cambiarOrden() {if(document.getElementById('ordenSelector').value == 'ascT') {marcasDeTiempo.sort((a, b) => b - a);}if(document.getElementById('ordenSelector').value == 'desT') {marcasDeTiempo.sort((a, b) => a - b);}const cajetinesContainer = document.querySelector('.cajetines');marcasDeTiempo.forEach((uT) => {const cajetin = document.querySelector(`[data-ut="${uT}"]`);cajetinesContainer.appendChild(cajetin);});}
       }
     }
 
-    function actualizarFechas(unixTime, elementId) {
-      const date = new Date(unixTime * 1000);
-      const options = { year: 'numeric', month: 'long', day: 'numeric' };
-      document.getElementById(elementId).textContent = date.toLocaleDateString('es-ES', options);
-    }
+    function actualizarFechas(uT, elementoId) {const f = new Date(uT * 1000).toUTCString();document.getElementById(elementoId).textContent = f; if (uT >= Math.floor(Date.now() / 1000)) {const fUT = Math.floor(Date.now() / 1000);const diferencia = uT - fUT;const seg = diferencia % 60;const min = Math.floor((diferencia / 60) % 60);const h = Math.floor((diferencia / 3600) % 24);const d = Math.floor(diferencia / 86400);const m = Math.floor(d / 30.24);const a = Math.floor(d / 365.44);const f1 = `(${a} year(s), ${m} month(s), ${d}d, ${h}h, ${min}m y ${seg}s left) `;document.getElementById(elementoId).textContent = `${f} ¦ ${f1}`}}
   </script>
 </main>
 </body>
@@ -628,6 +624,7 @@ function cambiarOrden() {if(document.getElementById('ordenSelector').value == 'a
 }
  </style>
  <script>
+  function cambiarOrden() {if(document.getElementById('ordenSelector').value == 'ascT') {marcasDeTiempo.sort((a, b) => b - a);}if(document.getElementById('ordenSelector').value == 'desT') {marcasDeTiempo.sort((a, b) => a - b);}const cajetinesContainer = document.querySelector('.cajetines');marcasDeTiempo.forEach((uT) => {const cajetin = document.querySelector(`[data-ut="${uT}"]`);cajetinesContainer.appendChild(cajetin);});}
   function scrollToTop() {
     window.scrollTo({
         top: 0,

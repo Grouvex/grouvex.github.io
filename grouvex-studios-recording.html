@@ -17,7 +17,10 @@
  </script>
 <!-- header.html -->
 <head>
-<script src="index.js"></script> <script src="time.js"></script> <script src="temas.js"></script> <link rel="stylesheet" href="index.css"> <link rel="stylesheet" href="temas.css">
+ <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+ <script src="index.js"></script> <script src="time.js"></script> <script src="temas.js"></script> <link rel="stylesheet" href="index.css"> <link rel="stylesheet" href="temas.css">
 <link rel="icon" href="img/GROUVEX.png"> <link rel="icon" href="GROUVEX.png" type="image/x-icon">
 <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8"> <meta name="author" content="Grouvex Studios"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="copyright" content="Grouvex Studios"> <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"> <meta http-equiv="Content-Security-Policy" content="policy"> <meta http-equiv="Referrer-Policy" content="no-referrer"> <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects"> <meta name="theme-color" content="#hexcode"> <link rel="canonical" href="URL_canónica">
   <!-- Clarity tracking code for https://grouvex.github.io/ -->
@@ -37,8 +40,25 @@
  <div id="news"></div>
  <div id="tosypp"></div>
 <main>
+ <h1>Autenticación de Usuarios en Grouvex Studios</h1>
+ <p style="color:white; font-size:13px">Para acceder a los reglamentos de Grouvex Studios Recording y a su vez a los formularios, deberá iniciar sesión.</p>
+ <p style="color:white; font-size:13px">En caso de <n>NO tener</n> una cuenta de Grouvex Studios, solicite una al correo <a href="mailto:soporte@grouvex.com" style="color:green">soporte@grouvex.com</a></p>
+    <div id="auth-container">
+        <form id="authForm">
+            <h2 id="formTitle">Inicio de Sesión</h2>
+            <input type="email" id="authEmail" placeholder="Email" required>
+            <input type="password" id="authPassword" placeholder="Password" required>
+            <button type="submit" id="authButton">Iniciar Sesión</button>
+            <button type="button" id="toggleButton" disabled>¿No tienes cuenta? Regístrate</button>
+        </form>
+        <button id="logoutBtn" style="display: none;">Cerrar Sesión</button>
+        <button id="resetPasswordBtn">¿Olvidaste tu contraseña?</button>
+    </div>
+
+    <div id="content" style="display: none;"> 
   <!-- Título -->
  <h1>Grouvex Studios Recording</h1>
+ <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSe9CFEvsM9iLjF6dA_78v7rOMnL_kqYt9BZ4QFPVI_4tv9h_A/viewform?embedded=true" width="600" height="420" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
  <!--Text -->
   <section id="Intro">
    <a href="#Intro"><h2>Introducción</h2></a>
@@ -507,10 +527,12 @@ Direcciones web, Información de contacto de cualquier tipo (incluidas las etiqu
             </li>
         </ol>
     </details>
-</section
+</section>
     </details>
  </article>
+ </div>
 </main>
+ <script src="abc.js"></script>
 <div id="footer"></div>
 </body>
 </html>

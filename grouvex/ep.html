@@ -45,6 +45,13 @@
         <option value="desT">⬆ to ⬇</option>
     </select>
  <div class="cajetines">
+      <a href="la_magia_de_la_estrella_polar" class="cajetin" data-ut="1733011200">   
+      <img src="../port/La Magia de la Estrella Polar.jpg" alt="" style="width:300px">
+      <p class="cajetin-fechas"><span id="f1_6"></span></p>
+      <p class="cajetin-titulo">La Magia de la Estrella Polar</p>
+      <p class="cajetin-footer">©Grouvex Studios Recording</p>
+      <script>const uT6 = 1733011200; actualizarFechas(uT6, "f1_6");</script>
+     </a>
      <a href="esferas_brillantes" class="cajetin" data-ut="1727308800">   
       <img src="../port/Esferas Brillantes.jpg" alt="" style="width:300px">
       <p class="cajetin-fechas"><span id="f1_5"></span></p>
@@ -82,7 +89,7 @@
      </a>
     </div>
 <script>
-const marcasDeTiempo = [uT1, uT2, uT3, uT4, uT5];
+const marcasDeTiempo = [uT1, uT2, uT3, uT4, uT5, uT6];
 // NO tocar
 function cambiarOrden() {if(document.getElementById('ordenSelector').value == 'ascT') {marcasDeTiempo.sort((a, b) => b - a);}if(document.getElementById('ordenSelector').value == 'desT') {marcasDeTiempo.sort((a, b) => a - b);}const cajetinesContainer = document.querySelector('.cajetines');marcasDeTiempo.forEach((uT) => {const cajetin = document.querySelector(`[data-ut="${uT}"]`);cajetinesContainer.appendChild(cajetin);});}
 </script>

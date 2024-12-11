@@ -1,3 +1,33 @@
+/*Inicio Sesion*/
+form {
+    background: transparent;
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 4px rgb(107, 47, 47);
+}
+
+input {
+    display: block;
+    width: 100%;
+    padding: 1px;
+    margin-bottom: 10px;
+    border: 1px solid #b12020;
+    border-radius: 4px;
+}
+
+button {
+    padding: 5px 10px;
+    background: #28a745;
+    color: white;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #218838;
+}
+
 /*Página*/
 @media screen and (max-height: 450px) {
     .sidenav {padding-top: 15px;}

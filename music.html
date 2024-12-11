@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="es">
+<script src="jquery-3.5.1.min.js"></script>
+ <script> 
+    $(function(){
+      $("#menu").load("menu.html"); 
+    });
+    $(function(){
+      $("#footer").load("footer.html"); 
+    });
+  $(function(){
+      $("#news").load("news.html"); 
+    });
+ </script>
+<!-- header.html -->
+<head>
+<script src="index.js"></script> <script src="time.js"></script> <script src="temas.js"></script> <link rel="stylesheet" href="index.css"> <link rel="stylesheet" href="temas.css">
+<link rel="icon" href="img/GROUVEX.png"> <link rel="icon" href="GROUVEX.png" type="image/x-icon">
+<meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8"> <meta name="author" content="Grouvex Studios"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="copyright" content="Grouvex Studios"> <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"> <meta http-equiv="Content-Security-Policy" content="policy"> <meta http-equiv="Referrer-Policy" content="no-referrer"> <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects"> <meta name="theme-color" content="#hexcode"> <link rel="canonical" href="URL_canónica">
+  <!-- Clarity tracking code for https://grouvex.github.io/ -->
+  <script>    (function(c,l,a,r,i,t,y){        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "mdkjlz9c01");</script>
+<!-- Editable -->
+<meta property="og:title" content="Sitio web oficial - Grouvex Studios"> <meta property="og:description" content="Sitio web oficial de ©Grouvex Studios"> <meta property="og:image" href="img/GROUVEX.png">
+<title>Sitio web Oficial - Grouvex Studios</title>
+<!-- Main Top -->
+<mainTop>
+<a href="https://grouvex.github.io/"><span style="font-family: Times New Roman; sans-serif; font-size: 30px;color:white">Grouvex Studios</span></a>
+<span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold"> <a href="https://grouvex.github.io/"><u style="color: blue"><span style="color: green">Inicio</span></u></a> | <a href="https://grouvex.github.io/artistas"><u style="color: blue"><span style="color: white">Artistas</span></u></a> | <a href="https://grouvex.github.io/equipo"><u style="color: blue"><span style="color: white">Equipo</span></u></a> | <a href="https://grouvex.github.io/comentarios"><u style="color: blue"><span style="color: white">Comentarios (vBeta)</span></u></a> | <a href="https://grouvex.github.io/registrar" style="pointer-events: none"><u style="color: blue"><span style="color: white">Registrar</span></u></a> <span id="menu"></span>
+</span>
+</mainTop>
+</head>
+<body>
+ <!-- Anuncio -->
+ <div id="news"></div>
+<main>
+  <!-- Título -->
+    <div id="player">
+        <h1>Reproductor de Música</h1>
+        <div id="currentTrackInfo">
+          <h2 id="trackName"></h2>
+            <div id="infoLine1">
+                  <span id="trackArtist"></span> - <span id="trackAlbum"></span>
+            </div>
+            <div id="infoLine2">
+                <span id="trackLabel"></span> | 
+                <span id="trackComposer"></span> | 
+                <span id="trackProducer"></span>
+            </div>
+            <p id="trackSpotify"><a href="" target="_blank" id="spotifyLink">Escuchar en Spotify</a></p>
+        </div>
+        <div id="youtubeVideo" style="display: none;"> <iframe id="youtubePlayer" width="560" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div id="controls">
+            <button id="prev">⏮️</button>
+            <button id="playPause">⏸️</button>
+            <button id="next">⏭️</button>
+             <hr> 
+            <button id="random">🔀</button>
+            <button id="repeat">🔁</button>
+        </div>
+     <details>
+  <summary href="#Playlist"><h3>Playlist</h3></summary>
+        <div id="playlist">
+            <ul>
+                <!-- La lista de canciones se generará dinámicamente aquí -->
+            </ul>
+        </div>
+        <audio id="audioPlayer" controls></audio>
+      </details>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const audioPlayer = document.getElementById('audioPlayer');
+            const trackName = document.getElementById('trackName');
+            const trackArtist = document.getElementById('trackArtist');
+            const trackAlbum = document.getElementById('trackAlbum');
+            const trackLabel = document.getElementById('trackLabel');
+            const trackComposer = document.getElementById('trackComposer');
+            const trackProducer = document.getElementById('trackProducer');
+            const spotifyLink = document.getElementById('spotifyLink');
+            const playPauseButton = document.getElementById('playPause');
+            const prevButton = document.getElementById('prev');
+            const nextButton = document.getElementById('next');
+            const randomButton = document.getElementById('random');
+            const repeatButton = document.getElementById('repeat');
+            const player = document.getElementById('player');
+            const playlist = document.querySelector('#playlist ul');
+            const youtubeVideo = document.getElementById('youtubeVideo');
+            const youtubePlayer = document.getElementById('youtubePlayer');
+
+            let currentTrackIndex = 0;
+            let isPlaying = false;
+            let isRandom = false;
+            let repeatMode = 0; // 0: No repetir, 1: Repetir canción, 2: Repetir álbum
+
+            const tracks = [
+                {
+            name: 'A Parallel Universe',
+            file: 'A Parallel Universe.mp3',
+            artist: 'Grouvex',
+            album: 'A Parallel Universe',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/intl-es/track/2swP5ghff8mLwaPeFfhHGP?si=e06c4de03f8c4775',
+            youtube: '',
+            background: 'https://grouvex.com/port/A Parallel Universe.jpg'
+        },
+        {
+            name: 'La Magia de la Estrella Polar',
+            file: 'La Magia de la Estrella Polar.mp3',
+            artist: 'Grouvex',
+            album: 'La Magia de la Estrella Polar',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            youtube: 'https://www.youtube-nocookie.com/embed/XV_veUHdWMk',
+            background: 'https://grouvex.com/port/La Magia de la Estrella Polar.jpg'
+        },
+        {
+            name: 'La Magia de la Estrella Polar (Versión Acústica)',
+            file: 'La Magia de la Estrella Polar (Versión Acústica).mp3',
+            artist: 'Grouvex',
+            album: 'La Magia de la Estrella Polar',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            youtube: '',
+            background: 'https://grouvex.com/port/La Magia de la Estrella Polar.jpg'
+        },
+        {
+            name: 'El Principe',
+            file: 'El Principe.mp3',
+            artist: 'Grouvex',
+            album: 'El Principe',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            youtube: 'https://www.youtube-nocookie.com/embed/0w7czW9p-SQ',
+            background: 'https://grouvex.com/port/El Principe.jpg'
+        },
+        {
+            name: 'Unforgettable Memories (Nǎinai)',
+            file: 'Unforgettable Memories (Nǎinai).mp3',
+            artist: 'Grouvex',
+            album: 'Unforgettable Memories',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/intl-es/track/2nselUEJRkM2WcSt7EPPJk?si=786a70d65533408c',
+            youtube: 'https://www.youtube-nocookie.com/embed/_cKRVsZhT1g?si=Zxb5jIVhIlMw-_cF',
+            background: 'https://grouvex.com/port/Unforgettable Memories.jpg'
+        },
+        {
+            name: 'Unforgettable Memories (Yéye)',
+            file: 'Unforgettable Memories (Yéye).mp3',
+            artist: 'Grouvex',
+            album: 'Unforgettable Memories',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/intl-es/track/1xgmSBSaAisdtD9JeZpeL9?si=b231cf89de774ab6',
+            youtube: 'https://www.youtube-nocookie.com/embed/V73-ZJY9Uek?si=RwTrG4nkV4qVTrKo',
+            background: 'https://grouvex.com/port/Unforgettable Memories.jpg'
+        },
+        {
+            name: 'Unstoppable Friendship',
+            file: 'Unstoppable Friendship.mp3',
+            artist: 'Grouvex',
+            album: 'Unstoppable Friendship',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            youtube: '',
+            background: 'https://grouvex.com/port/Unstoppable Friendship.jpg'
+        },
+        {
+            name: 'Acuario',
+            file: 'Acuario.mp3',
+            artist: 'Grouvex',
+            album: 'The Night Sky',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            youtube: '',
+            background: 'https://grouvex.com/port/The Night Sky.jpg'
+        },
+        {
+            name: 'Aries',
+            file: 'Aries.mp3',
+            artist: 'Grouvex',
+            album: 'The Night Sky',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            youtube: '',
+            background: 'https://grouvex.com/port/The Night Sky.jpg'
+        },
+        {
+            name: 'Cancer',
+            file: 'Cancer.mp3',
+            artist: 'Grouvex',
+            album: 'The Night Sky',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            youtube: '',
+            background: 'https://grouvex.com/port/The Night Sky.jpg'
+        },
+        {
+            name: 'Capricornio',
+            file: 'Capricornio.mp3',
+            artist: 'Grouvex',
+            album: 'The Night Sky',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            youtube: '',
+            background: 'https://grouvex.com/port/The Night Sky.jpg'
+        },
+        {
+            name: 'Escorpio',
+            file: 'Escorpio.mp3',
+            artist: 'Grouvex',
+            album: 'The Night Sky',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            youtube: '',
+            background: 'https://grouvex.com/port/The Night Sky.jpg'
+        },
+        {
+            name: 'Gemini',
+            file: 'Gemini.mp3',
+            artist: 'Grouvex',
+            album: 'The Night Sky',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            youtube: '',
+            background: 'https://grouvex.com/port/The Night Sky.jpg'
+        },
+        {
+            name: 'Leo',
+            file: 'Leo.mp3',
+            artist: 'Grouvex',
+            album: 'The Night Sky',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            youtube: '',
+            background: 'https://grouvex.com/port/The Night Sky.jpg'
+        },
+        {
+            name: 'Libra',
+            file: 'Libra.mp3',
+            artist: 'Grouvex',
+            album: 'The Night Sky',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            youtube: 'https://www.youtube.com/embed/0zMrnu_u9wM?si=cabWWLJIuLVWDZ2D',
+            background: 'https://grouvex.com/port/The Night Sky.jpg'
+        },
+        {
+            name: 'Piscis',
+            file: 'Piscis.mp3',
+            artist: 'Grouvex',
+            album: 'The Night Sky',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            youtube: '',
+            background: 'https://grouvex.com/port/The Night Sky.jpg'
+        },
+        {
+            name: 'Tauro',
+            file: 'Tauro.mp3',
+            artist: 'Grouvex',
+            album: 'The Night Sky',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            youtube: '',
+            background: 'https://grouvex.com/port/The Night Sky.jpg'
+        },
+        {
+            name: 'Virgo',
+            file: 'Virgo.mp3',
+            artist: 'Grouvex',
+            album: 'The Night Sky',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            youtube: '',
+            background: 'https://grouvex.com/port/The Night Sky.jpg'
+        },
+        {
+            name: 'Advanced Music',
+            file: 'Advanced Music.mp3',
+            artist: 'Grouvex',
+            album: 'Alpha Version',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            youtube: '',
+            background: 'https://grouvex.com/port/Alpha Version.jpg'
+        },
+        {
+            name: 'Conversation',
+            file: 'Conversation.mp3',
+            artist: 'Grouvex',
+            album: 'Alpha Version',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            youtube: '',
+            background: 'https://grouvex.com/port/Alpha Version.jpg'
+        },
+        {
+            name: 'Grouvexs song',
+            file: 'Grouvexs song.mp3',
+            artist: 'Grouvex',
+            album: 'Alpha Version',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            youtube: '',
+            background: 'https://grouvex.com/port/Alpha Version.jpg'
+        },
+        {
+            name: 'Knowledgest',
+            file: 'Knowledgest.mp3',
+            artist: 'Grouvex',
+            album: 'Alpha Version',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            youtube: '',
+            background: 'https://grouvex.com/port/Alpha Version.jpg'
+        },
+        {
+            name: 'Questions',
+            file: 'Questions.mp3',
+            artist: 'Grouvex',
+            album: 'Alpha Version',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            youtube: '',
+            background: 'https://grouvex.com/port/Alpha Version.jpg'
+        },
+        {
+            name: 'Reaction',
+            file: 'Reaction.mp3',
+            artist: 'Grouvex',
+            album: 'Alpha Version',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            youtube: '',
+            background: 'https://grouvex.com/port/Alpha Version.jpg'
+        },
+        {
+            name: 'Relaxing',
+            file: 'Relaxing.mp3',
+            artist: 'Grouvex',
+            album: 'Alpha Version',
+            label: 'Grouvex Studios Recording',
+            composer: 'Grouvex Studios',
+            producer: 'Grouvex Studios',
+            spotify: 'https://open.spotify.com/track/2',
+            youtube: '',
+            background: 'https://grouvex.com/port/Alpha Version.jpg'
+        }
+    ];
+
+            function updateTrackInfo(track) {
+                trackName.textContent = track.name;
+                trackArtist.textContent = track.artist;
+                trackAlbum.textContent = track.album;
+                trackLabel.textContent = `Label: ${track.label}`;
+                trackComposer.textContent = `Compositor: ${track.composer}`;
+                trackProducer.textContent = `Productor: ${track.producer}`;
+                spotifyLink.href = track.spotify;
+                player.style.backgroundImage = `url(${track.background})`;
+                if (track.youtube) { youtubePlayer.src = track.youtube; youtubeVideo.style.display = 'block'; } else { youtubeVideo.style.display = 'none'; }
+            }
+
+            function playTrack(index) {
+        currentTrackIndex = index;
+        audioPlayer.src = `https://grouvex.com/music/${tracks[currentTrackIndex].file}`;
+        updateTrackInfo(tracks[currentTrackIndex]);
+        audioPlayer.play();
+        isPlaying = true;
+        playPauseButton.textContent = '⏸️';
+    }
+
+    function playPause() {
+        if (isPlaying) {
+            audioPlayer.pause();
+            isPlaying = false;
+            playPauseButton.textContent = '▶️';
+        } else {
+            audioPlayer.play();
+            isPlaying = true;
+            playPauseButton.textContent = '⏸️';
+        }
+    }
+
+    function nextTrack() {
+        if (isRandom) {
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * tracks.length);
+            } while (randomIndex === currentTrackIndex);
+            playTrack(randomIndex);
+        } else {
+            if (repeatMode === 1) {
+                playTrack(currentTrackIndex);
+            } else {
+                currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+                if (currentTrackIndex === 0 && repeatMode === 2) {
+                    playTrack(currentTrackIndex);
+                } else if (currentTrackIndex !== 0 || repeatMode !== 0) {
+                    playTrack(currentTrackIndex);
+                } else {
+                    audioPlayer.pause();
+                    isPlaying = false;
+                    playPauseButton.textContent = '▶️';
+                }
+            }
+        }
+    }
+
+    function prevTrack() {
+        currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+        playTrack(currentTrackIndex);
+    }
+
+    function toggleRandom() {
+        isRandom = !isRandom;
+        randomButton.textContent = isRandom ? '🔀!' : '🔀';
+    }
+
+    function toggleRepeat() {
+        repeatMode = (repeatMode + 1) % 3;
+        switch (repeatMode) {
+            case 0:
+                repeatButton.textContent = '🔁';
+                break;
+            case 1:
+                repeatButton.textContent = '🔁1';
+                break;
+            case 2:
+                repeatButton.textContent = '🔁2';
+                break;
+        }
+    }
+
+            function updatePlaylistHighlight() { const playlistItems = document.querySelectorAll('#playlist li'); playlistItems.forEach((item, index) => { if (index === currentTrackIndex) { item.classList.add('active'); } else { item.classList.remove('active'); } }); }
+    tracks.forEach((track, index) => { const li = document.createElement('li'); li.textContent = `${track.name} - ${track.artist}`; li.addEventListener('click', () => playTrack(index)); playlist.appendChild(li); });
+    playPauseButton.addEventListener('click', playPause);
+    nextButton.addEventListener('click', nextTrack);
+    prevButton.addEventListener('click', prevTrack);
+    randomButton.addEventListener('click', toggleRandom);
+    repeatButton.addEventListener('click', toggleRepeat);
+
+    audioPlayer.addEventListener('ended', nextTrack);
+
+            // Reproducir la primera canción automáticamente al cargar la página
+            if (tracks.length > 0) {
+                playTrack(0);
+            }
+
+            // Deshabilitar el clic derecho
+            audioPlayer.addEventListener('contextmenu', function (e) {
+                e.preventDefault();
+            });
+        });
+    </script>
+    <style>
+      #song {display: block;justify-content: center;align-items: center; margin: 0; font-family: Arial, sans-serif;border: 1px;max-width: 100%;max-height: 40px;}
+#player {color:white; text-align: center; padding: 10px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);background-size: cover; background-position: center}
+#currentTrackInfo { margin: 10px 0}
+#infoLine1, #infoLine2 { display: flex; justify-content: center; gap: 5px;}
+#controls { margin: 10px 0;}
+#controls button { margin: 0 10px; padding: 10px 20px; font-size: 16px; cursor: pointer;}
+/* Deshabilitar el menú contextual para evitar la descarga del audio */ 
+audio { -webkit-user-select: none; /* Prevenir selección del texto */ -moz-user-select: none; -ms-user-select: none; user-select: none; }
+audio::-webkit-media-controls-enclosure { display: none !important; }
+audio::controls {display: none !important; }
+#playlist {margin-top: 20px;}
+#playlist ul {list-style-type: none; padding: 0;}
+#playlist li {margin: 5px 0;cursor: pointer;padding: 5px;background-color: #1fd6ae;border-radius: 5px;transition: background-color 0.3s;}
+#playlist li:hover {background-color: #5813da;}
+    </style>
+ </main>
+ <!-- Footer -->
+ <div id="footer"></div>
+</body>
+</html>

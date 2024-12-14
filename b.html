@@ -21,10 +21,10 @@
         }
         .container {
             text-align: center;
-            display: block
+            display: block;
         }
         .content {
-            display: none
+            display: none;
         }
         h1 {
             font-size: 2em;
@@ -43,35 +43,32 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="login-container">
         <h1>Acceso Restringido</h1>
         <p>Inicia sesión para continuar</p>
         <button id="google-login-btn">Iniciar Sesión con Google</button>
         <button id="email-login-btn">Iniciar Sesión con Email</button>
     </div>
-    <div class="content">
+    <div class="content" id="protected-content">
         <h1>Acceso Permitido</h1>
-        <p>Inicia sesión para continuar</p>
+        <p>Bienvenido al contenido protegido</p>
     </div>
     <script>
         // Configuración de Firebase
-     var firebaseConfig = {
-  apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
-      authDomain: "grouvex-studios.firebaseapp.com",
-      databaseURL: "https://grouvex-studios-default-rtdb.firebaseio.com", // Asegúrate de incluir la URL de tu base de datos
-      projectId: "grouvex-studios",
-      storageBucket: "grouvex-studios.appspot.com",
-      messagingSenderId: "1070842606062",
-      appId: "1:1070842606062:web:5d887863048fd100b49eff",
-      measurementId: "G-75BR8D2CR3"
-};
+        var firebaseConfig = {
+            apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw", 
+            authDomain: "grouvex-studios.firebaseapp.com", 
+            databaseURL: "https://grouvex-studios-default-rtdb.firebaseio.com",
+            projectId: "grouvex-studios", 
+            storageBucket: "grouvex-studios.appspot.com", 
+            messagingSenderId: "1070842606062", 
+            appId: "1:1070842606062:web:5d887863048fd100b49eff", 
+            measurementId: "G-75BR8D2CR3"
+        };
         firebase.initializeApp(firebaseConfig);
 
         var auth = firebase.auth();
         var db = firebase.firestore();
-
-        // ID permitidos (por ejemplo, estos se podrían almacenar en Firestore)
-        const allowedIds = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"];
 
         // Función para iniciar sesión con Google
         document.getElementById('google-login-btn').addEventListener('click', function() {
@@ -80,8 +77,6 @@
                 .then((result) => {
                     var user = result.user;
                     checkAccess(user.uid);
-                    document.getElementById('container').style.display = 'none';
-                    document.getElementById('content').style.display = 'block';
                 })
                 .catch((error) => {
                     console.error("Error al iniciar sesión con Google:", error);
@@ -96,8 +91,6 @@
                 .then((result) => {
                     var user = result.user;
                     checkAccess(user.uid);
-                    document.getElementById('container').style.display = 'none';
-                    document.getElementById('content').style.display = 'block';
                 })
                 .catch((error) => {
                     console.error("Error al iniciar sesión con Email/Password:", error);
@@ -107,12 +100,11 @@
         // Función para verificar el acceso
         function checkAccess(uid) {
             db.collection("allowedUsers").doc(uid).get().then((doc) => {
-                if (doc.exists && allowedIds.includes(uid)) {
+                if (doc.exists) {
                     // Acceso permitido
                     alert("Acceso concedido");
-                    // Redirigir a la página protegida
-                    document.getElementById('container').style.display = 'none';
-                    document.getElementById('content').style.display = 'block';
+                    document.getElementById('login-container').style.display = 'none';
+                    document.getElementById('protected-content').style.display = 'block';
                 } else {
                     // Acceso denegado
                     alert("Acceso denegado. No tienes permiso para acceder a esta página.");
@@ -121,6 +113,15 @@
                 console.error("Error al verificar el acceso:", error);
             });
         }
+
+        // Verificar si el usuario está autenticado
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                checkAccess(user.uid);
+            } else {
+                console.log("No has iniciado sesión.");
+            }
+        });
     </script>
 </body>
 </html>

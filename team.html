@@ -21,6 +21,7 @@
         }
         .container {
             text-align: center;
+            display: none;
         }
         h1 {
             font-size: 2em;
@@ -29,12 +30,6 @@
         p {
             font-size: 1.2em;
             color: #666;
-        }
-        button {
-            padding: 10px 20px;
-            margin: 10px;
-            font-size: 16px;
-            cursor: pointer;
         }
     </style>
     <script>
@@ -65,7 +60,7 @@ const firebaseConfig = {
             }
         });
         // ID permitidos (por ejemplo, estos se podrían almacenar en Firestore)
-        const allowedIds = ["id1", "id2", "id3"];
+        const allowedIds = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "7Ta4FHPusqUFaMp2gZkA0d5wUaE2"];
 
         // Función para verificar el acceso al cargar la página
         function checkAccess(uid) {
@@ -73,15 +68,16 @@ const firebaseConfig = {
                 if (doc.exists && allowedIds.includes(uid)) {
                     // Acceso permitido
                     console.log("Acceso concedido");
+                    document.getElementById('protected-container').style.display = 'block';
                 } else {
                     // Acceso denegado
-                    alert("Acceso denegado. No tienes permiso para acceder a esta página.");
+                    alert("Acceso denegado. No tienes permiso para acceder a esta página. Solo puede el equipo");
                     // Redirigir a la página anterior
                     window.history.back();
                 }
             }).catch((error) => {
                 console.error("Error al verificar el acceso:", error);
-                alert("Error al verificar el acceso.");
+                alert("Error al verificar el acceso.", error);
                 // Redirigir a la página anterior
                 window.history.back();
             });
@@ -89,7 +85,7 @@ const firebaseConfig = {
     </script>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="protected-container">
         <h1>Página Protegida</h1>
         <p>Bienvenido al contenido protegido</p>
     </div>

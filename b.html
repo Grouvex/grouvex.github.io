@@ -21,6 +21,10 @@
         }
         .container {
             text-align: center;
+            display: block
+        }
+        .content {
+            display: none
         }
         h1 {
             font-size: 2em;
@@ -45,6 +49,10 @@
         <button id="google-login-btn">Iniciar Sesión con Google</button>
         <button id="email-login-btn">Iniciar Sesión con Email</button>
     </div>
+    <div class="content">
+        <h1>Acceso Permitido</h1>
+        <p>Inicia sesión para continuar</p>
+    </div>
     <script>
         // Configuración de Firebase
      var firebaseConfig = {
@@ -63,7 +71,7 @@
         var db = firebase.firestore();
 
         // ID permitidos (por ejemplo, estos se podrían almacenar en Firestore)
-        const allowedIds = ["id1", "id2", "id3"];
+        const allowedIds = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"];
 
         // Función para iniciar sesión con Google
         document.getElementById('google-login-btn').addEventListener('click', function() {
@@ -72,6 +80,8 @@
                 .then((result) => {
                     var user = result.user;
                     checkAccess(user.uid);
+                    document.getElementById('container').style.display = 'none';
+                    document.getElementById('content').style.display = 'block';
                 })
                 .catch((error) => {
                     console.error("Error al iniciar sesión con Google:", error);
@@ -86,6 +96,8 @@
                 .then((result) => {
                     var user = result.user;
                     checkAccess(user.uid);
+                    document.getElementById('container').style.display = 'none';
+                    document.getElementById('content').style.display = 'block';
                 })
                 .catch((error) => {
                     console.error("Error al iniciar sesión con Email/Password:", error);
@@ -99,7 +111,8 @@
                     // Acceso permitido
                     alert("Acceso concedido");
                     // Redirigir a la página protegida
-                    window.location.href = 'pagina-protegida.html';
+                    document.getElementById('container').style.display = 'none';
+                    document.getElementById('content').style.display = 'block';
                 } else {
                     // Acceso denegado
                     alert("Acceso denegado. No tienes permiso para acceder a esta página.");

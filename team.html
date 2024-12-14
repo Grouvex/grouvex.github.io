@@ -37,12 +37,6 @@
             cursor: pointer;
         }
     </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Página Protegida</h1>
-        <p>Bienvenido al contenido protegido</p>
-    </div>
     <script>
         // Configuración de Firebase
 const firebaseConfig = {
@@ -60,6 +54,16 @@ const firebaseConfig = {
         var auth = firebase.auth();
         var db = firebase.firestore();
 
+        // Verificar si el usuario está autenticado
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                checkAccess(user.uid);
+            } else {
+                // Si no está autenticado, redirigir a la página de inicio de sesión
+                alert("No has iniciado sesión. Serás redirigido a la página de inicio de sesión.");
+                window.location.href = 'login.html';
+            }
+        });
         // ID permitidos (por ejemplo, estos se podrían almacenar en Firestore)
         const allowedIds = ["id1", "id2", "id3"];
 
@@ -82,17 +86,12 @@ const firebaseConfig = {
                 window.history.back();
             });
         }
-
-        // Verificar si el usuario está autenticado
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                checkAccess(user.uid);
-            } else {
-                // Si no está autenticado, redirigir a la página de inicio de sesión
-                alert("No has iniciado sesión. Serás redirigido a la página de inicio de sesión.");
-                window.location.href = 'login.html';
-            }
-        });
     </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Página Protegida</h1>
+        <p>Bienvenido al contenido protegido</p>
+    </div>
 </body>
 </html>

@@ -4,7 +4,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
 <script src="jquery-3.5.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.4/purify.min.js"></script>
  <script> 
     $(function(){
       $("#menu").load("menu.html"); 
@@ -71,6 +70,21 @@
             cursor: pointer;
         }
     </style>
+    
+ <!--   <div id="auth-container">
+        <h1>Autenticación de Usuarios en Grouvex Studios</h1>
+        <form id="authForm">
+            <h2 id="formTitle">Inicio de Sesión</h2>
+            <input type="email" id="authEmail" placeholder="Email" required>
+            <input type="password" id="authPassword" placeholder="Password" required>
+            <button type="submit" id="authButton">Iniciar Sesión</button>
+            <button type="button" id="toggleButton">¿No tienes cuenta? Regístrate</button>
+        </form>
+        <button id="logoutBtn" style="display: none;">Cerrar Sesión</button>
+        <button id="resetPasswordBtn">¿Olvidaste tu contraseña?</button>
+    </div>-->
+
+    <div id="content" style="display: block;"> 
     <nav>
       <a onclick="showSection('reportes')">Reportes en la Web</a>
       <a onclick="showSection('configuracion')">Configuración</a>
@@ -137,15 +151,14 @@
         <button onclick="requestPasswordChange()">Cambiar Contraseña</button>
       </div>
     </section>
-
+</div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
     <script>
       let ordenarAscendente = true;
       const palabrasBloqueadas = ["malaPalabra1", "malaPalabra2", "malaPalabra3"];
       const adminEmail = "gestor@grouvex.com";
       let verificationCode = "";
-      firebase.initializeApp(config)
-      firebase.initializeApp(firebaseConfig)
+
       document.addEventListener('DOMContentLoaded', () => {
         cargarComentarios('reportes');
         cargarComentarios('sugerencias');
@@ -181,9 +194,7 @@
           const timestamp = new Date().getTime();
           const commentSection = document.getElementById(section + 'Comments');
           const commentPara = document.createElement('p');
-          const sanitizedNameText = DOMPurify.sanitize(nameText);
-          const sanitizedCommentText = DOMPurify.sanitize(commentText);
-          commentPara.innerHTML = `<strong>${date} - ${sanitizedNameText}:</strong> ${sanitizedCommentText} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
+          commentPara.innerHTML = `<strong>${date} - ${nameText}:</strong> ${commentText} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
           commentPara.dataset.timestamp = timestamp;
           commentSection.appendChild(commentPara);
 
@@ -270,9 +281,7 @@ function cargarComentarios(section) {
         if (comments) {
             for (let id in comments) {
                 const commentPara = document.createElement('p');
-                const sanitizedComment = DOMPurify.sanitize(comments[id].comment);
-                const sanitizedName = DOMPurify.sanitize(comments[id].name);
-                commentPara.innerHTML = `<strong>${new Date(comments[id].timestamp).toLocaleString()} - ${sanitizedName}:</strong> ${sanitizedComment} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
+                commentPara.innerHTML = `<strong>${new Date(comments[id].timestamp).toLocaleString()} - ${comments[id].name}:</strong> ${comments[id].comment} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
                 commentPara.dataset.timestamp = comments[id].timestamp;
                 commentSection.appendChild(commentPara);
             }

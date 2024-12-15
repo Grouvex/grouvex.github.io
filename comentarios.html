@@ -95,7 +95,6 @@
     <section id="new" class="active">
       <div class="comment-form">
         <h2>Noticias</h2>
-        <input type="text" id="nombreInputNew" placeholder="Tu nombre (opcional)..."><br>
         <textarea id="newInput" rows="4" placeholder="Escribe tu reporte aquí..."></textarea><br>
         <button onclick="addComment1('new', 'nombreInputNew')">Enviar</button>
         <button class="orden-button" onclick="ordenarComentarios('new')">Ordenar</button>
@@ -265,34 +264,42 @@ function cargarComentarios(section) {
     });
 }
 // New
-      function addComment1(section, nameInputId) {
-        const nameInput = document.getElementById(nameInputId).value.trim();
-        const input = document.getElementById(section.slice(0, -1) + 'Input').value.trim();
-        const nameText = nameInput || "Anónimo";
-        const commentText = input.trim();
+      function addComment1(section) {
+            const input = document.getElementById(section.slice(0, -1) + 'Input').value.trim();
+            const commentText = input.trim();
 
-        if (containsBlockedWords(commentText) || commentText.includes("http")) {
-          alert("El comentario contiene palabras bloqueadas o enlaces.");
-          document.getElementById(section.slice(0, -1) + 'Input').value = '';
-          return;
+            if (containsBlockedWords(commentText) || commentText.includes("http")) {
+                alert("El comentario contiene palabras bloqueadas o enlaces.");
+                document.getElementById(section.slice(0, -1) + 'Input').value = '';
+                return;
+            }
+
+            if (commentText) {
+                firebase.auth().onAuthStateChanged((user) => {
+                    if (user) {
+                        const nameText = user.displayName || prompt("Por favor, ingresa tu nombre:");
+                        if (!nameText) {
+                            alert("Debes ingresar tu nombre para comentar.");
+                            return;
+                        }
+                        const date = new Date().toLocaleString();
+                        const timestamp = new Date().getTime();
+                        const commentSection = document.getElementById(section + 'Comments');
+                        const commentPara = document.createElement('p');
+                        commentPara.innerHTML = `<strong>${date} - ${nameText}:</strong> ${commentText}`;
+                        commentPara.dataset.timestamp = timestamp;
+                        commentSection.appendChild(commentPara);
+
+                        // Guardar comentario en Firebase
+                        guardarComentarioEnServidor1(section, nameText, commentText, timestamp);
+                        document.getElementById(section.slice(0, -1) + 'Input').value = '';
+                        ordenarComentarios(section);
+                    } else {
+                        alert("Debes iniciar sesión para comentar.");
+                    }
+                });
+            }
         }
-
-        if (commentText) {
-          const date = new Date().toLocaleString();
-          const timestamp = new Date().getTime();
-          const commentSection = document.getElementById(section + 'Comments');
-          const commentPara = document.createElement('p');
-          commentPara.innerHTML = `<strong>${date} - ${nameText}:</strong> ${commentText}`;
-          commentPara.dataset.timestamp = timestamp;
-          commentSection.appendChild(commentPara);
-
-          // Guardar comentario en Firebase
-          guardarComentarioEnServidor1(section, nameText, commentText, timestamp);
-          document.getElementById(section.slice(0, -1) + 'Input').value = '';
-          document.getElementById(nameInputId).value = '';
-          ordenarComentarios(section);
-        }
-      }
 function guardarComentarioEnServidor1(section, name, comment, timestamp) {
     const newCommentRef = database.ref('new/' + section).push();
     newCommentRef.set({
@@ -318,7 +325,6 @@ function cargarComentarios(section) {
         }
     });
 }
-
     </script>
 <script src="abc.js"></script> 
 </main>

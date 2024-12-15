@@ -159,111 +159,96 @@
 </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
     <script>
-      let ordenarAscendente = true;
-      const palabrasBloqueadas = ["malaPalabra1", "malaPalabra2", "malaPalabra3"];
-
-      document.addEventListener('DOMContentLoaded', () => {
-        cargarComentarios('new');
-        cargarComentarios('reportes');
-        cargarComentarios('sugerencias');
-        cargarComentarios('comentarios');
-        cargarComentarios('deseos');
-      });
-
-      function showSection(sectionId) {
-        document.querySelectorAll('section').forEach(section => {
-          section.classList.remove('active');
+        let ordenarAscendente = true;
+        const palabrasBloqueadas = ["malaPalabra1", "malaPalabra2", "malaPalabra3"];
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarComentarios('new');
+            cargarComentarios('reportes');
+            cargarComentarios('sugerencias');
+            cargarComentarios('comentarios');
+            cargarComentarios('deseos');
         });
-        document.getElementById(sectionId).classList.add('active');
-      }
-
-      function containsBlockedWords(text) {
-        return palabrasBloqueadas.some(palabra => text.includes(palabra));
-      }
-
-      function addComment(section, nameInputId) {
-        const nameInput = document.getElementById(nameInputId).value.trim();
-        const input = document.getElementById(section.slice(0, -1) + 'Input').value.trim();
-        const nameText = nameInput || "Anónimo";
-        const commentText = input.trim();
-
-        if (containsBlockedWords(commentText) || commentText.includes("http")) {
-          alert("El comentario contiene palabras bloqueadas o enlaces.");
-          document.getElementById(section.slice(0, -1) + 'Input').value = '';
-          return;
+        function showSection(sectionId) {
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
         }
-
-        if (commentText) {
-          const date = new Date().toLocaleString();
-          const timestamp = new Date().getTime();
-          const commentSection = document.getElementById(section + 'Comments');
-          const commentPara = document.createElement('p');
-          commentPara.innerHTML = `<strong>${date} - ${nameText}:</strong> ${commentText}`;
-          commentPara.dataset.timestamp = timestamp;
-          commentSection.appendChild(commentPara);
-
-          // Guardar comentario en Firebase
-          guardarComentarioEnServidor(section, nameText, commentText, timestamp);
-          document.getElementById(section.slice(0, -1) + 'Input').value = '';
-          document.getElementById(nameInputId).value = '';
-          ordenarComentarios(section);
+        function containsBlockedWords(text) {
+            return palabrasBloqueadas.some(palabra => text.includes(palabra));
         }
-      }
-
-      function ordenarComentarios(section) {
-    const commentSection = document.getElementById(section + 'Comments');
-    const comments = Array.from(commentSection.querySelectorAll('p'));
-    comments.sort((a, b) => {
-        const aTime = parseInt(a.dataset.timestamp);
-        const bTime = parseInt(b.dataset.timestamp);
-        return ordenarAscendente ? bTime - aTime : aTime - bTime;
-    });
-    comments.forEach(comment => commentSection.appendChild(comment));
-    ordenarAscendente = !ordenarAscendente;
-}
-     
-firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    const userId = user.uid;
-    firebase.database().ref(`roles/admin/${userId}`).once('value').then((snapshot) => {
-      if (snapshot.exists()) {
-        console.log('User is an admin');
-        // Usuario es administrador, habilitar eliminación
-      } else {
-        console.log('User is not an admin');
-        // Usuario no es administrador, deshabilitar eliminación
-      }
-    });
-  } else {
-    // Usuario no autenticado
-  }
-});
-
-function guardarComentarioEnServidor(section, name, comment, timestamp) {
-    const newCommentRef = database.ref(section + '/').push();
-    newCommentRef.set({
-        name: name,
-        comment: comment,
-        timestamp: timestamp
-    });
-}
-        
-function cargarComentarios(section) {
-    const commentSection = document.getElementById(`${section}Comments`);
-    database.ref(section + '/').once('value', (snapshot) => {
-        const comments = snapshot.val();
-        if (comments) {
-            for (let id in comments) {
-                const commentPara = document.createElement('p');
-                commentPara.innerHTML = `<strong>${new Date(comments[id].timestamp).toLocaleString()} - ${comments[id].name}:</strong> ${comments[id].comment}`;
-                commentPara.dataset.timestamp = comments[id].timestamp;
-                commentSection.appendChild(commentPara);
+        function addComment(section, nameInputId) {
+            const nameInput = document.getElementById(nameInputId).value.trim();
+            const input = document.getElementById(section.slice(0, -1) + 'Input').value.trim();
+            const nameText = nameInput || "Anónimo";
+            const commentText = input.trim();
+            if (containsBlockedWords(commentText) || commentText.includes("http")) {
+                alert("El comentario contiene palabras bloqueadas o enlaces.");
+                document.getElementById(section.slice(0, -1) + 'Input').value = '';
+                return;
             }
-        } else {
-            commentSection.innerHTML = '<p>No hay comentarios aún.</p>';
+            if (commentText) {
+                const date = new Date().toLocaleString();
+                const timestamp = new Date().getTime();
+                const commentSection = document.getElementById(section + 'Comments');
+                const commentPara = document.createElement('p');
+                commentPara.innerHTML = `<strong>${date} - ${nameText}:</strong> ${commentText}`;
+                commentPara.dataset.timestamp = timestamp;
+                commentSection.appendChild(commentPara);
+                // Guardar comentario en Firebase
+                guardarComentarioEnServidor(section, nameText, commentText, timestamp);
+                document.getElementById(section.slice(0, -1) + 'Input').value = '';
+                document.getElementById(nameInputId).value = '';
+                ordenarComentarios(section);
+            }
         }
-    });
-}
+        function ordenarComentarios(section) {
+            const commentSection = document.getElementById(section + 'Comments');
+            const comments = Array.from(commentSection.querySelectorAll('p'));
+            comments.sort((a, b) => {
+                const aTime = parseInt(a.dataset.timestamp);
+                const bTime = parseInt(b.dataset.timestamp);
+                return ordenarAscendente ? bTime - aTime : aTime - bTime;
+            });
+            comments.forEach(comment => commentSection.appendChild(comment));
+            ordenarAscendente = !ordenarAscendente;
+        }
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                const userId = user.uid;
+                firebase.database().ref(`roles/admin/${userId}`).once('value').then((snapshot) => {
+                    if (snapshot.exists()) {
+                        console.log('User is an admin');
+                        // Usuario es administrador, habilitar eliminación
+                    } else {
+                        console.log('User is not an admin');
+                        // Usuario no es administrador, deshabilitar eliminación
+                    }
+                });
+            } else {
+                // Usuario no autenticado
+            }
+        });
+        function guardarComentarioEnServidor(section, name, comment, timestamp) {
+            const newCommentRef = database.ref(section + '/').push();
+            newCommentRef.set({ name: name, comment: comment, timestamp: timestamp });
+        }
+        function cargarComentarios(section) {
+            const commentSection = document.getElementById(`${section}Comments`);
+            database.ref(section + '/').once('value', (snapshot) => {
+                const comments = snapshot.val();
+                if (comments) {
+                    for (let id in comments) {
+                        const commentPara = document.createElement('p');
+                        commentPara.innerHTML = `<strong>${new Date(comments[id].timestamp).toLocaleString()} - ${comments[id].name}:</strong> ${comments[id].comment}`;
+                        commentPara.dataset.timestamp = comments[id].timestamp;
+                        commentSection.appendChild(commentPara);
+                    }
+                } else {
+                    commentSection.innerHTML = '<p>No hay comentarios aún.</p>';
+                }
+            });
+        }
     </script>
 <script src="abc.js"></script> 
 </main>

@@ -96,7 +96,7 @@
       <div class="comment-form">
         <h2>Noticias</h2>
         <textarea id="newInput" rows="4" placeholder="Escribe tu reporte aquí..."></textarea><br>
-        <button onclick="addCommentA('new', 'nombreInputNew')">Enviar</button>
+        <button onclick="addCommenta('new', 'nombreInputNew')">Enviar</button>
         <button class="orden-button" onclick="ordenarComentarios('new')">Ordenar</button>
       </div>
       <div class="comments-section" id="newComments">
@@ -264,7 +264,11 @@ function cargarComentarios(section) {
     });
 }
 // New
-      function addCommentA(section) {
+      function addCommenta(section) {
+            const inputElement = document.getElementById(section + 'Input');
+            if (!inputElement) {
+                console.error(`Elemento con id '${section}Input' no encontrado`); return; 
+            }
             const input = document.getElementById(section.slice(0, -1) + 'Input').value.trim();
             const commentText = input.trim();
 
@@ -291,7 +295,7 @@ function cargarComentarios(section) {
                         commentSection.appendChild(commentPara);
 
                         // Guardar comentario en Firebase
-                        guardarComentarioEnServidorA(section, nameText, commentText, timestamp);
+                        guardarComentarioEnServidora(section, nameText, commentText, timestamp);
                         document.getElementById(section.slice(0, -1) + 'Input').value = '';
                         ordenarComentarios(section);
                     } else {
@@ -300,7 +304,7 @@ function cargarComentarios(section) {
                 });
             }
         }
-function guardarComentarioEnServidorA(section, name, comment, timestamp) {
+function guardarComentarioEnServidora(section, name, comment, timestamp) {
     const newCommentRef = database.ref('new/' + section).push();
     newCommentRef.set({
         name: name,

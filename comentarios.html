@@ -86,13 +86,26 @@
 
     <div id="content" style="display: block;"> 
     <nav>
+      <a onclick="showSection('news')">Noticias</a>
       <a onclick="showSection('reportes')">Reportes en la Web</a>
       <a onclick="showSection('deseos')">Deseos para 2024</a>
       <a onclick="showSection('comentarios')">Comentarios</a>
       <a onclick="showSection('sugerencias')">Sugerencias</a>
     </nav>
-
-    <section id="reportes" class="active">
+    <section id="news" class="active">
+      <div class="comment-form">
+        <h2>Noticias</h2>
+        <input type="text" id="nombreInputNews" placeholder="Tu nombre (opcional)..."><br>
+        <textarea id="newsInput" rows="4" placeholder="Escribe tu reporte aquí..."></textarea><br>
+        <button onclick="addComment1('news', 'nombreInputNews')">Enviar</button>
+        <button class="orden-button" onclick="ordenarComentarios('news')">Ordenar</button>
+      </div>
+      <div class="comments-section" id="newsComments">
+        <h3>Reportes:</h3>
+      </div>
+    </section>
+        
+    <section id="reportes">
       <div class="comment-form">
         <h2>Reportes a la página web</h2>
         <input type="text" id="nombreInputReporte" placeholder="Tu nombre (opcional)..."><br>
@@ -150,6 +163,7 @@
       const palabrasBloqueadas = ["malaPalabra1", "malaPalabra2", "malaPalabra3"];
 
       document.addEventListener('DOMContentLoaded', () => {
+        cargarComentarios('news');
         cargarComentarios('reportes');
         cargarComentarios('sugerencias');
         cargarComentarios('comentarios');
@@ -184,7 +198,7 @@
           const timestamp = new Date().getTime();
           const commentSection = document.getElementById(section + 'Comments');
           const commentPara = document.createElement('p');
-          commentPara.innerHTML = `<strong>${date} - ${nameText}:</strong> ${commentText} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
+          commentPara.innerHTML = `<strong>${date} - ${nameText}:</strong> ${commentText}`;
           commentPara.dataset.timestamp = timestamp;
           commentSection.appendChild(commentPara);
 
@@ -241,7 +255,61 @@ function cargarComentarios(section) {
         if (comments) {
             for (let id in comments) {
                 const commentPara = document.createElement('p');
-                commentPara.innerHTML = `<strong>${new Date(comments[id].timestamp).toLocaleString()} - ${comments[id].name}:</strong> ${comments[id].comment} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
+                commentPara.innerHTML = `<strong>${new Date(comments[id].timestamp).toLocaleString()} - ${comments[id].name}:</strong> ${comments[id].comment}`;
+                commentPara.dataset.timestamp = comments[id].timestamp;
+                commentSection.appendChild(commentPara);
+            }
+        } else {
+            commentSection.innerHTML = '<p>No hay comentarios aún.</p>';
+        }
+    });
+}
+// News
+      function addComment1(section, nameInputId) {
+        const nameInput = document.getElementById(nameInputId).value.trim();
+        const input = document.getElementById(section.slice(0, -1) + 'Input').value.trim();
+        const nameText = nameInput || "Anónimo";
+        const commentText = input.trim();
+
+        if (containsBlockedWords(commentText) || commentText.includes("http")) {
+          alert("El comentario contiene palabras bloqueadas o enlaces.");
+          document.getElementById(section.slice(0, -1) + 'Input').value = '';
+          return;
+        }
+
+        if (commentText) {
+          const date = new Date().toLocaleString();
+          const timestamp = new Date().getTime();
+          const commentSection = document.getElementById(section + 'Comments');
+          const commentPara = document.createElement('p');
+          commentPara.innerHTML = `<strong>${date} - ${nameText}:</strong> ${commentText}`;
+          commentPara.dataset.timestamp = timestamp;
+          commentSection.appendChild(commentPara);
+
+          // Guardar comentario en Firebase
+          guardarComentarioEnServidor1(section, nameText, commentText, timestamp);
+          document.getElementById(section.slice(0, -1) + 'Input').value = '';
+          document.getElementById(nameInputId).value = '';
+          ordenarComentarios(section);
+        }
+      }
+function guardarComentarioEnServidor1(section, name, comment, timestamp) {
+    const newCommentRef = database.ref('news/' + section).push();
+    newCommentRef.set({
+        name: name,
+        comment: comment,
+        timestamp: timestamp
+    });
+}
+
+function cargarComentarios(section) {
+    const commentSection = document.getElementById(`${section}Comments`);
+    database.ref('news/' + section).once('value', (snapshot) => {
+        const comments = snapshot.val();
+        if (comments) {
+            for (let id in comments) {
+                const commentPara = document.createElement('p');
+                commentPara.innerHTML = `<strong>${new Date(comments[id].timestamp).toLocaleString()} - ${comments[id].name}:</strong> ${comments[id].comment}`;
                 commentPara.dataset.timestamp = comments[id].timestamp;
                 commentSection.appendChild(commentPara);
             }

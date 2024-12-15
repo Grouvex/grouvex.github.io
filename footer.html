@@ -31,6 +31,16 @@
  </style>
   <footer>
    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+   <script>
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+  auth.signOut().then(() => {
+    alert('Usuario cerró sesión');
+    location.reload();
+  }).catch((error) => {
+    alert('Error al cerrar sesión: ' + error.message);
+  });
+});
+   </script>
    <button id="logoutBtn">Logout</button>
    <div class="footer-imagenes">
     <a href="https://instagram.com/grouvex" target="_blank"><img src="https://grouvex.github.io/img/Instagram.png" alt=""></a>

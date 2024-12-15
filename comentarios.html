@@ -93,6 +93,7 @@
       <a onclick="showSection('sugerencias')">Sugerencias</a>
     </nav>
     <section id="newa" class="active">
+        <form>
       <div class="comment-form">
         <h2>Noticias</h2>
         <input type="text" id="nombreInputNew" placeholder="Tu nombre..." required><br>
@@ -100,58 +101,67 @@
         <button onclick="addComment('newa', 'nombreInputNew')">Enviar</button>
         <button class="orden-button" onclick="ordenarComentarios('newa')">Ordenar</button>
       </div>
+        </form>
       <div class="comments-section" id="newaComments">
         <h3>Noticias:</h3>
       </div>
     </section>
         
     <section id="reportes">
+    <form>
       <div class="comment-form">
         <h2>Reportes a la página web</h2>
         <input type="text" id="nombreInputReporte" placeholder="Tu nombre (opcional)..."><br>
-        <textarea id="reporteInput" rows="4" placeholder="Escribe tu reporte aquí..."></textarea><br>
+        <textarea id="reporteInput" rows="4" placeholder="Escribe tu reporte aquí..." required></textarea><br>
         <button onclick="addComment('reportes', 'nombreInputReporte')">Enviar</button>
         <button class="orden-button" onclick="ordenarComentarios('reportes')">Ordenar</button>
       </div>
+    </form>
       <div class="comments-section" id="reportesComments">
         <h3>Reportes:</h3>
       </div>
     </section>
 
     <section id="deseos">
+    <form>
       <div class="comment-form">
         <h2>Deseos para 2024</h2>
         <input type="text" id="nombreInputDeseo" placeholder="Tu nombre (opcional)..."><br>
-        <textarea id="deseoInput" rows="4" placeholder="Escribe tu deseo aquí..."></textarea><br>
+        <textarea id="deseoInput" rows="4" placeholder="Escribe tu deseo aquí..." required></textarea><br>
         <button onclick="addComment('deseos', 'nombreInputDeseo')">Enviar</button>
         <button class="orden-button" onclick="ordenarComentarios('deseos')">Ordenar</button>
       </div>
+    </form>
       <div class="comments-section" id="deseosComments">
         <h3>Deseos:</h3>
       </div>
     </section>
 
     <section id="comentarios">
+    <form>
       <div class="comment-form">
         <h2>Comentarios</h2>
         <input type="text" id="nombreInputComentario" placeholder="Tu nombre (opcional)..."><br>
-        <textarea id="comentarioInput" rows="4" placeholder="Escribe tu comentario aquí..."></textarea><br>
+        <textarea id="comentarioInput" rows="4" placeholder="Escribe tu comentario aquí..." required></textarea><br>
         <button onclick="addComment('comentarios', 'nombreInputComentario')">Enviar</button>
         <button class="orden-button" onclick="ordenarComentarios('comentarios')">Ordenar</button>
       </div>
+    </form>
       <div class="comments-section" id="comentariosComments">
         <h3>Comentarios:</h3>
       </div>
     </section>
 
     <section id="sugerencias">
+    <form>
       <div class="comment-form">
         <h2>Sugerencias</h2>
         <input type="text" id="nombreInputSugerencia" placeholder="Tu nombre (opcional)..."><br>
-        <textarea id="sugerenciaInput" rows="4" placeholder="Escribe tu sugerencia aquí..."></textarea><br>
+        <textarea id="sugerenciaInput" rows="4" placeholder="Escribe tu sugerencia aquí..." required></textarea><br>
         <button onclick="addComment('sugerencias', 'nombreInputSugerencia')">Enviar</button>
         <button class="orden-button" onclick="ordenarComentarios('sugerencias')">Ordenar</button>
       </div>
+    </form>
       <div class="comments-section" id="sugerenciasComments">
         <h3>Sugerencias:</h3>
       </div>

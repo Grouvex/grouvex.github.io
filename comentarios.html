@@ -95,8 +95,9 @@
     <section id="new" class="active">
       <div class="comment-form">
         <h2>Noticias</h2>
+        <input type="text" id="nombreInputReporte" placeholder="Tu nombre..." required><br>
         <textarea id="newInput" rows="4" placeholder="Escribe tu reporte aquí..."></textarea><br>
-        <button onclick="addCommenta('new', 'nombreInputNew')">Enviar</button>
+        <button onclick="addComment('new', 'nombreInputNew')">Enviar</button>
         <button class="orden-button" onclick="ordenarComentarios('new')">Ordenar</button>
       </div>
       <div class="comments-section" id="newComments">
@@ -239,57 +240,7 @@ firebase.auth().onAuthStateChanged((user) => {
 });
 
 function guardarComentarioEnServidor(section, name, comment, timestamp) {
-    const newCommentRef = database.ref('comments/' + section).push();
-    newCommentRef.set({
-        name: name,
-        comment: comment,
-        timestamp: timestamp
-    });
-}
-
-// New
-      function addCommenta(section) {
-            const inputElement = document.getElementById(section + 'Input');
-            if (!inputElement) {
-                console.error(`Elemento con id '${section}Input' no encontrado`); return; 
-            }
-            const input = document.getElementById(section.slice(0, -1) + 'Input').value.trim();
-            const commentText = input.trim();
-
-            if (containsBlockedWords(commentText) || commentText.includes("http")) {
-                alert("El comentario contiene palabras bloqueadas o enlaces.");
-                document.getElementById(section.slice(0, -1) + 'Input').value = '';
-                return;
-            }
-
-            if (commentText) {
-                firebase.auth().onAuthStateChanged((user) => {
-                    if (user) {
-                        const nameText = user.displayName || prompt("Por favor, ingresa tu nombre:");
-                        if (!nameText) {
-                            alert("Debes ingresar tu nombre para comentar.");
-                            return;
-                        }
-                        const date = new Date().toLocaleString();
-                        const timestamp = new Date().getTime();
-                        const commentSection = document.getElementById(section + 'Comments');
-                        const commentPara = document.createElement('p');
-                        commentPara.innerHTML = `<strong>${date} - ${nameText}:</strong> ${commentText}`;
-                        commentPara.dataset.timestamp = timestamp;
-                        commentSection.appendChild(commentPara);
-
-                        // Guardar comentario en Firebase
-                        guardarComentarioEnServidora(section, nameText, commentText, timestamp);
-                        document.getElementById(section.slice(0, -1) + 'Input').value = '';
-                        ordenarComentarios(section);
-                    } else {
-                        alert("Debes iniciar sesión para comentar.");
-                    }
-                });
-            }
-        }
-function guardarComentarioEnServidora(section, name, comment, timestamp) {
-    const newCommentRef = database.ref('new/' + section).push();
+    const newCommentRef = database.ref(section + '/').push();
     newCommentRef.set({
         name: name,
         comment: comment,
@@ -299,7 +250,7 @@ function guardarComentarioEnServidora(section, name, comment, timestamp) {
         
 function cargarComentarios(section) {
     const commentSection = document.getElementById(`${section}Comments`);
-    database.ref('comments/' + section).once('value', (snapshot) => {
+    database.ref(section + '/').once('value', (snapshot) => {
         const comments = snapshot.val();
         if (comments) {
             for (let id in comments) {

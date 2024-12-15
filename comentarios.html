@@ -280,11 +280,13 @@
         });
         function guardarComentarioEnServidor(section, name, comment, timestamp) {
             const refPath = section === 'newa' ? `new/${section}` : `comments/${section}/`;
+            const refPath = section === 'newb' ? `new/${section}` : `comments/${section}/`;
             const newCommentRef = database.ref(refPath).push();
             newCommentRef.set({ name: name, comment: comment, timestamp: timestamp });
         }
         function cargarComentarios(section) {
             const refPath = section === 'newa' ? `new/${section}` : `comments/${section}/`;
+            const refPath = section === 'newb' ? `new/${section}` : `comments/${section}/`;
             const commentSection = document.getElementById(`${section}Comments`);
             database.ref(refPath).once('value', (snapshot) => {
                 const comments = snapshot.val();

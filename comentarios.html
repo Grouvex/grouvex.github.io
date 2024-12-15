@@ -78,7 +78,7 @@
             cursor: pointer;
         }
     </style>
-    
+
  <!--   <div id="auth-container">
         <h1>Autenticación de Usuarios en Grouvex Studios</h1>
         <form id="authForm">
@@ -97,6 +97,7 @@
       <a onclick="showSection('newa')">Noticias</a>
       <a onclick="showSection('reportes')">Reportes en la Web</a>
       <a onclick="showSection('deseos')">Deseos para 2024 <span class="status recommended">Recommended</span></a>
+      <a onclick="showSection('artistas')">Artistas<span class="status recommended">Recommended</span></a>
       <a onclick="showSection('comentarios')">Comentarios</a>
       <a onclick="showSection('sugerencias')">Sugerencias</a>
     </nav>
@@ -115,7 +116,21 @@
         <h3>Noticias:</h3>
       </div>
     </section>
-        
+    <section id="artistas">
+      <div class="comment-form">
+        <h2>Artista</h2>
+        <p>Mensaje de los artistas</p>
+        <form>
+        <input type="text" id="nombreInputArtista" placeholder="Tu nombre..." required><br>
+        <input type="text" id="artistaInput" rows="4" placeholder="Escribe tu reporte aquí..." required><br>
+        <button type="submit" onclick="addComment('artistas', 'nombreInputArtista')">Enviar</button>
+        </form>
+        <button class="orden-button" onclick="ordenarComentarios('artistas')">Ordenar</button>
+      </div>
+      <div class="comments-section" id="artistasComments">
+        <h3>Artistas:</h3>
+      </div>
+    </section>  
     <section id="reportes">
       <div class="comment-form">
         <h2>Reportes a la página web</h2>
@@ -185,6 +200,7 @@
         let ordenarAscendente = true;
         const palabrasBloqueadas = ["malaPalabra1", "malaPalabra2", "malaPalabra3"];
         document.addEventListener('DOMContentLoaded', () => {
+            cargarComentarios('artistas');
             cargarComentarios('newa');
             cargarComentarios('reportes');
             cargarComentarios('sugerencias');
@@ -200,7 +216,7 @@
         function containsBlockedWords(text) {
             return palabrasBloqueadas.some(palabra => text.includes(palabra));
         }
-        
+
         function escapeHTML(str) {
             return str.replace(/[&<>"']/g, function (match) {
                 const escapeMap = {
@@ -213,25 +229,25 @@
                 return escapeMap[match];
             });
         }
-        
+
         function addComment(section, nameInputId) {
             const nameInput = document.getElementById(nameInputId);
             const inputElement = document.getElementById(section.slice(0, -1) + 'Input');
-            
+
             if (!nameInput || !inputElement) {
                 console.error("Element not found:", nameInputId, section.slice(0, -1) + 'Input');
                 return;
             }
-        
+
             const nameText = escapeHTML(nameInput.value.trim() || "Anónimo");
             const commentText = escapeHTML(inputElement.value.trim());
-        
+
             if (containsBlockedWords(commentText) || commentText.includes("http")) {
                 alert("El comentario contiene palabras bloqueadas o enlaces.");
                 inputElement.value = '';
                 return;
             }
-        
+
             if (commentText) {
                 const date = new Date().toUTCString();
                 const timestamp = new Date().getTime();
@@ -275,12 +291,12 @@
             }
         });
         function guardarComentarioEnServidor(section, name, comment, timestamp) {
-            const refPath = section === 'newa' ? `new/${section}` : `comments/${section}/`;
+            const refPath = section === 'newa' ? 'new/' : section === 'artistas' ? 'artistas/' : `comments/${section}/`;
             const newCommentRef = database.ref(refPath).push();
             newCommentRef.set({ name: name, comment: comment, timestamp: timestamp });
         }
         function cargarComentarios(section) {
-            const refPath = section === 'newa' ? `new/${section}` : `comments/${section}/`;
+            const refPath = section === 'newa' ? 'new/' : section === 'artistas' ? 'artistas/' : `comments/${section}/`;
             const commentSection = document.getElementById(`${section}Comments`);
             database.ref(refPath).once('value', (snapshot) => {
                 const comments = snapshot.val();

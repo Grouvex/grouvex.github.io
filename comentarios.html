@@ -100,7 +100,7 @@
         <button class="orden-button" onclick="ordenarComentarios('new')">Ordenar</button>
       </div>
       <div class="comments-section" id="newComments">
-        <h3>Reportes:</h3>
+        <h3>Noticias:</h3>
       </div>
     </section>
         
@@ -247,22 +247,6 @@ function guardarComentarioEnServidor(section, name, comment, timestamp) {
     });
 }
 
-function cargarComentarios(section) {
-    const commentSection = document.getElementById(`${section}Comments`);
-    database.ref('comments/' + section).once('value', (snapshot) => {
-        const comments = snapshot.val();
-        if (comments) {
-            for (let id in comments) {
-                const commentPara = document.createElement('p');
-                commentPara.innerHTML = `<strong>${new Date(comments[id].timestamp).toLocaleString()} - ${comments[id].name}:</strong> ${comments[id].comment}`;
-                commentPara.dataset.timestamp = comments[id].timestamp;
-                commentSection.appendChild(commentPara);
-            }
-        } else {
-            commentSection.innerHTML = '<p>No hay comentarios aún.</p>';
-        }
-    });
-}
 // New
       function addCommenta(section) {
             const inputElement = document.getElementById(section + 'Input');
@@ -312,10 +296,10 @@ function guardarComentarioEnServidora(section, name, comment, timestamp) {
         timestamp: timestamp
     });
 }
-
+        
 function cargarComentarios(section) {
     const commentSection = document.getElementById(`${section}Comments`);
-    database.ref('new/' + section).once('value', (snapshot) => {
+    database.ref('comments/' + section).once('value', (snapshot) => {
         const comments = snapshot.val();
         if (comments) {
             for (let id in comments) {

@@ -238,12 +238,12 @@
             }
         });
         function guardarComentarioEnServidor(section, name, comment, timestamp) {
-            const refPath = section === 'new' ? 'new/' : `comments/${section}/`;
+            const refPath = section === 'new' ? `new/${section}` : `comments/${section}/`;
             const newCommentRef = database.ref(refPath).push();
             newCommentRef.set({ name: name, comment: comment, timestamp: timestamp });
         }
         function cargarComentarios(section) {
-            const refPath = section === 'new' ? 'new/' : `comments/${section}/`;
+            const refPath = section === 'new' ? `new/${section}` : `comments/${section}/`;
             const commentSection = document.getElementById(`${section}Comments`);
             database.ref(refPath).once('value', (snapshot) => {
                 const comments = snapshot.val();

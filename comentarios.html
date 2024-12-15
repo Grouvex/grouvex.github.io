@@ -178,15 +178,23 @@
             return palabrasBloqueadas.some(palabra => text.includes(palabra));
         }
         function addComment(section, nameInputId) {
-            const nameInput = document.getElementById(nameInputId).value.trim();
-            const input = document.getElementById(section.slice(0, -1) + 'Input').value.trim();
-            const nameText = nameInput || "Anónimo";
-            const commentText = input.trim();
-            if (containsBlockedWords(commentText) || commentText.includes("http")) {
-                alert("El comentario contiene palabras bloqueadas o enlaces.");
-                document.getElementById(section.slice(0, -1) + 'Input').value = '';
+            const nameInput = document.getElementById(nameInputId);
+            const inputElement = document.getElementById(section.slice(0, -1) + 'Input');
+            
+            if (!nameInput || !inputElement) {
+                console.error("Element not found:", nameInputId, section.slice(0, -1) + 'Input');
                 return;
             }
+        
+            const nameText = nameInput.value.trim() || "Anónimo";
+            const commentText = inputElement.value.trim();
+        
+            if (containsBlockedWords(commentText) || commentText.includes("http")) {
+                alert("El comentario contiene palabras bloqueadas o enlaces.");
+                inputElement.value = '';
+                return;
+            }
+        
             if (commentText) {
                 const date = new Date().toUTCString();
                 const timestamp = new Date().getTime();
@@ -197,8 +205,8 @@
                 commentSection.appendChild(commentPara);
                 // Guardar comentario en Firebase
                 guardarComentarioEnServidor(section, nameText, commentText, timestamp);
-                document.getElementById(section.slice(0, -1) + 'Input').value = '';
-                document.getElementById(nameInputId).value = '';
+                inputElement.value = '';
+                nameInput.value = '';
                 ordenarComentarios(section);
             }
         }

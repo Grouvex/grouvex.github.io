@@ -267,12 +267,12 @@
             }
         });
         function guardarComentarioEnServidor(section, name, comment, timestamp) {
-            let refPath; if (section === 'newa') { refPath = 'new/'; } else if (section === 'artistas') { refPath = 'artistas/'; } else { refPath = `comments/${section}/`; }
+            let refPath; if (section === 'newa') { refPath = 'new/'; } else if (section === 'artistas') { refPath = 'artistas/'; } else if (section != 'newa') { refPath = `comments/${section}/`; else if (section != 'artistas') { refPath = `comments/${section}/`;}
             const newCommentRef = database.ref(refPath).push();
             newCommentRef.set({ name: name, comment: comment, timestamp: timestamp });
         }
         function cargarComentarios(section) {
-            let refPath; if (section === 'newa') { refPath = 'new/'; } else if (section === 'artistas') { refPath = 'artistas/'; } else { refPath = `comments/${section}/`; }
+            let refPath; if (section === 'newa') { refPath = 'new/'; } else if (section === 'artistas') { refPath = 'artistas/'; } else if (section != 'newa') { refPath = `comments/${section}/`; else if (section != 'artistas') { refPath = `comments/${section}/`;}
             const commentSection = document.getElementById(`${section}Comments`);
             database.ref(refPath).once('value', (snapshot) => {
                 const comments = snapshot.val();

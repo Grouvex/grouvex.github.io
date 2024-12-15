@@ -96,7 +96,7 @@
       <div class="comment-form">
         <h2>Noticias</h2>
         <textarea id="newInput" rows="4" placeholder="Escribe tu reporte aquí..."></textarea><br>
-        <button onclick="addComment1('new', 'nombreInputNew')">Enviar</button>
+        <button onclick="addCommentA('new', 'nombreInputNew')">Enviar</button>
         <button class="orden-button" onclick="ordenarComentarios('new')">Ordenar</button>
       </div>
       <div class="comments-section" id="newComments">
@@ -264,7 +264,7 @@ function cargarComentarios(section) {
     });
 }
 // New
-      function addComment1(section) {
+      function addCommentA(section) {
             const input = document.getElementById(section.slice(0, -1) + 'Input').value.trim();
             const commentText = input.trim();
 
@@ -291,7 +291,7 @@ function cargarComentarios(section) {
                         commentSection.appendChild(commentPara);
 
                         // Guardar comentario en Firebase
-                        guardarComentarioEnServidor1(section, nameText, commentText, timestamp);
+                        guardarComentarioEnServidorA(section, nameText, commentText, timestamp);
                         document.getElementById(section.slice(0, -1) + 'Input').value = '';
                         ordenarComentarios(section);
                     } else {
@@ -300,7 +300,7 @@ function cargarComentarios(section) {
                 });
             }
         }
-function guardarComentarioEnServidor1(section, name, comment, timestamp) {
+function guardarComentarioEnServidorA(section, name, comment, timestamp) {
     const newCommentRef = database.ref('new/' + section).push();
     newCommentRef.set({
         name: name,

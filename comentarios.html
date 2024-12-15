@@ -87,7 +87,6 @@
     <div id="content" style="display: block;"> 
     <nav>
       <a onclick="showSection('reportes')">Reportes en la Web</a>
-      <a onclick="showSection('configuracion')">Configuración</a>
       <a onclick="showSection('deseos')">Deseos para 2024</a>
       <a onclick="showSection('comentarios')">Comentarios</a>
       <a onclick="showSection('sugerencias')">Sugerencias</a>
@@ -144,20 +143,11 @@
         <h3>Sugerencias:</h3>
       </div>
     </section>
-
-    <section id="configuracion">
-      <div class="config-section">
-        <h2>Configuración</h2>
-        <button onclick="requestPasswordChange()">Cambiar Contraseña</button>
-      </div>
-    </section>
 </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
     <script>
       let ordenarAscendente = true;
       const palabrasBloqueadas = ["malaPalabra1", "malaPalabra2", "malaPalabra3"];
-      const adminEmail = "gestor@grouvex.com";
-      let verificationCode = "";
 
       document.addEventListener('DOMContentLoaded', () => {
         cargarComentarios('reportes');
@@ -235,36 +225,6 @@ firebase.auth().onAuthStateChanged((user) => {
   }
 });
 
-function requestDeleteComment(element) {
-  const user = firebase.auth().currentUser;
-  if (user) {
-    firebase.database().ref(`roles/admin/${user.uid}`).once('value').then((snapshot) => {
-      if (snapshot.exists()) {
-        const password = prompt("Ingrese la contraseña de administrador para eliminar este comentario:");
-        if (md5(password) === localStorage.getItem('adminHash')) {
-          const commentText = element.parentElement.innerHTML;
-          const sectionId = element.parentElement.parentElement.id.replace('Comments', '');
-          element.parentElement.remove();
-          eliminarComentario(sectionId, commentText);
-        } else {
-          alert("Contraseña incorrecta.");
-        }
-      } else {
-        alert("No tienes permisos para eliminar este comentario.");
-      }
-    });
-  } else {
-    alert("Debes iniciar sesión para eliminar comentarios.");
-  }
-}
-
-function eliminarComentario(section, commentKey) {
-  database.ref(`comments/${section}/${commentKey}`).remove()
-    .then(() => { alert("Comentario eliminado correctamente."); })
-    .catch(error => { alert("Error al eliminar el comentario: " + error.message); });
-}
-
-
 function guardarComentarioEnServidor(section, name, comment, timestamp) {
     const newCommentRef = database.ref('comments/' + section).push();
     newCommentRef.set({
@@ -291,28 +251,6 @@ function cargarComentarios(section) {
     });
 }
 
-function md5(value) {
-    return CryptoJS.MD5(value).toString();
-}
-
-function requestPasswordChange() {
-    const email = prompt("Ingrese su correo electrónico para recibir un código de verificación:");
-    if (email === adminEmail) {
-        verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-        alert(`El código de verificación es ${verificationCode}.`);
-        const userCode = prompt("Ingrese el código de verificación recibido:");
-        if (userCode === verificationCode) {
-            const newPassword = prompt("Ingrese su nueva contraseña:");
-            const newHash = md5(newPassword);
-            localStorage.setItem('adminHash', newHash);
-            alert("La contraseña ha sido cambiada exitosamente.");
-        } else {
-            alert("Código de verificación incorrecto.");
-        }
-    } else {
-        alert("Correo electrónico no reconocido.");
-    }
-}
     </script>
 <script src="abc.js"></script> 
 </main>

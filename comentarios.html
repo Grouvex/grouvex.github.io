@@ -88,7 +88,8 @@
     <nav>
       <a onclick="showSection('newa')">Noticias</a>
       <a onclick="showSection('reportes')">Reportes en la Web</a>
-      <a onclick="showSection('deseos')">Deseos para 2024</a>
+      <a onclick="showSection('deseos')">Deseos para 2024 <span class="status recommended">Recommended</span></a>
+        <a onclick="showSection('newb')">Artistas <span class="status recommended">Recommended</span></a>
       <a onclick="showSection('comentarios')">Comentarios</a>
       <a onclick="showSection('sugerencias')">Sugerencias</a>
     </nav>
@@ -103,6 +104,21 @@
         <button class="orden-button" onclick="ordenarComentarios('newa')">Ordenar</button>
       </div>
       <div class="comments-section" id="newaComments">
+        <h3>Noticias:</h3>
+      </div>
+    </section>
+
+        <section id="newb">
+      <div class="comment-form">
+        <h2>Artistas</h2>
+        <form>
+        <input type="text" id="nombreInputArtista" placeholder="Tu nombre..." required><br>
+        <input type="text" id="artistaInput" rows="4" placeholder="Escribe tu reporte aquí..." required><br>
+        <button type="submit" onclick="addComment('newb', 'nombreInputArtista')">Enviar</button>
+        </form>
+        <button class="orden-button" onclick="ordenarComentarios('newb')">Ordenar</button>
+      </div>
+      <div class="comments-section" id="newbComments">
         <h3>Noticias:</h3>
       </div>
     </section>
@@ -172,6 +188,7 @@
         let ordenarAscendente = true;
         const palabrasBloqueadas = ["malaPalabra1", "malaPalabra2", "malaPalabra3"];
         document.addEventListener('DOMContentLoaded', () => {
+            cargarComentarios('newb');
             cargarComentarios('newa');
             cargarComentarios('reportes');
             cargarComentarios('sugerencias');

@@ -86,21 +86,21 @@
 
     <div id="content" style="display: block;"> 
     <nav>
-      <a onclick="showSection('news')">Noticias</a>
+      <a onclick="showSection('new')">Noticias</a>
       <a onclick="showSection('reportes')">Reportes en la Web</a>
       <a onclick="showSection('deseos')">Deseos para 2024</a>
       <a onclick="showSection('comentarios')">Comentarios</a>
       <a onclick="showSection('sugerencias')">Sugerencias</a>
     </nav>
-    <section id="news" class="active">
+    <section id="new" class="active">
       <div class="comment-form">
         <h2>Noticias</h2>
-        <input type="text" id="nombreInputNews" placeholder="Tu nombre (opcional)..."><br>
-        <textarea id="newsInput" rows="4" placeholder="Escribe tu reporte aquí..."></textarea><br>
-        <button onclick="addComment1('news', 'nombreInputNews')">Enviar</button>
-        <button class="orden-button" onclick="ordenarComentarios('news')">Ordenar</button>
+        <input type="text" id="nombreInputNew" placeholder="Tu nombre (opcional)..."><br>
+        <textarea id="newInput" rows="4" placeholder="Escribe tu reporte aquí..."></textarea><br>
+        <button onclick="addComment1('new', 'nombreInputNew')">Enviar</button>
+        <button class="orden-button" onclick="ordenarComentarios('new')">Ordenar</button>
       </div>
-      <div class="comments-section" id="newsComments">
+      <div class="comments-section" id="newComments">
         <h3>Reportes:</h3>
       </div>
     </section>
@@ -264,7 +264,7 @@ function cargarComentarios(section) {
         }
     });
 }
-// News
+// New
       function addComment1(section, nameInputId) {
         const nameInput = document.getElementById(nameInputId).value.trim();
         const input = document.getElementById(section.slice(0, -1) + 'Input').value.trim();
@@ -294,7 +294,7 @@ function cargarComentarios(section) {
         }
       }
 function guardarComentarioEnServidor1(section, name, comment, timestamp) {
-    const newCommentRef = database.ref('news/' + section).push();
+    const newCommentRef = database.ref('new/' + section).push();
     newCommentRef.set({
         name: name,
         comment: comment,
@@ -304,7 +304,7 @@ function guardarComentarioEnServidor1(section, name, comment, timestamp) {
 
 function cargarComentarios(section) {
     const commentSection = document.getElementById(`${section}Comments`);
-    database.ref('news/' + section).once('value', (snapshot) => {
+    database.ref('new/' + section).once('value', (snapshot) => {
         const comments = snapshot.val();
         if (comments) {
             for (let id in comments) {

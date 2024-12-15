@@ -188,7 +188,7 @@
                 return;
             }
             if (commentText) {
-                const date = new Date().toLocaleString();
+                const date = new Date().toUTCString();
                 const timestamp = new Date().getTime();
                 const commentSection = document.getElementById(section + 'Comments');
                 const commentPara = document.createElement('p');
@@ -230,17 +230,19 @@
             }
         });
         function guardarComentarioEnServidor(section, name, comment, timestamp) {
-            const newCommentRef = database.ref(section + '/').push();
+            const refPath = section === 'new' ? 'new/' : `comments/${section}/`;
+            const newCommentRef = database.ref(refPath).push();
             newCommentRef.set({ name: name, comment: comment, timestamp: timestamp });
         }
         function cargarComentarios(section) {
+            const refPath = section === 'new' ? 'new/' : `comments/${section}/`;
             const commentSection = document.getElementById(`${section}Comments`);
-            database.ref(section + '/').once('value', (snapshot) => {
+            database.ref(refPath).once('value', (snapshot) => {
                 const comments = snapshot.val();
                 if (comments) {
                     for (let id in comments) {
                         const commentPara = document.createElement('p');
-                        commentPara.innerHTML = `<strong>${new Date(comments[id].timestamp).toLocaleString()} - ${comments[id].name}:</strong> ${comments[id].comment}`;
+                        commentPara.innerHTML = `<strong>${new Date(comments[id].timestamp).toUTCString()} - ${comments[id].name}:</strong> ${comments[id].comment}`;
                         commentPara.dataset.timestamp = comments[id].timestamp;
                         commentSection.appendChild(commentPara);
                     }

@@ -33,8 +33,16 @@
 </mainTop>
 </head>
 <body>
-  <main>
-        <!-- Título -->
+ <!-- Anuncio -->
+ <div id="news"></div>
+<main>
+ <!-- Publicado por -->
+<div class="tarjeta" style="display: flex;align-items: center; border-radius: 8px;  box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 10px;  padding: 10px;  height: 45px; width: 250px; padding-top: 10px;padding-bottom: 10px">
+<img src="../img/GROUVEX.png" alt="" style="border-radius: 50%; width: 35px;height: 35px;object-fit: cover; margin-right: 10px;"><div>
+<h2 style="margin:2px; font-size: 7.5px">Publicado por:</h2><h2 style="margin:2px; padding: 1px;font-size: 9px">Grouvex Studios</h2>
+<p style="color: white; font-size: 11px"><span id="ActualizadoDATE"></span></p><a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@rouvex.com</footer></a></div></div>
+<script>const uTActualizado = 1734710400; actualizarFechas(uTActualizado, "ActualizadoDATE");</script> 
+  <!-- Título -->
     <style>
         nav {
             margin-bottom: 20px;
@@ -70,8 +78,9 @@
             cursor: pointer;
         }
     </style>
-    <h1>Autenticación de Usuarios en Grouvex Studios</h1>
-    <div id="auth-container">
+    
+ <!--   <div id="auth-container">
+        <h1>Autenticación de Usuarios en Grouvex Studios</h1>
         <form id="authForm">
             <h2 id="formTitle">Inicio de Sesión</h2>
             <input type="email" id="authEmail" placeholder="Email" required>
@@ -81,23 +90,56 @@
         </form>
         <button id="logoutBtn" style="display: none;">Cerrar Sesión</button>
         <button id="resetPasswordBtn">¿Olvidaste tu contraseña?</button>
-    </div>
+    </div>-->
 
-    <div id="content" style="display: none;"> 
+    <div id="content" style="display: block;"> 
     <nav>
+      <a onclick="showSection('newa')">Noticias</a>
       <a onclick="showSection('reportes')">Reportes en la Web</a>
-      <a onclick="showSection('configuracion')">Configuración</a>
-      <a onclick="showSection('deseos')">Deseos para 2024</a>
+      <a onclick="showSection('deseos')">Deseos para 2024 <span class="status recommended">Recommended</span></a>
+      <a onclick="showSection('artistas')">Artistas<span class="status recommended">Recommended</span></a>
       <a onclick="showSection('comentarios')">Comentarios</a>
       <a onclick="showSection('sugerencias')">Sugerencias</a>
     </nav>
-
-    <section id="reportes" class="active">
+    <section id="newa" class="active">
+      <div class="comment-form">
+        <h2>Noticias</h2>
+        <p>Noticias del equipo de Grouvex Studios</p>
+        <form>
+        <input type="text" id="nombreInputNew" placeholder="Tu nombre..." required><br>
+        <input type="text" id="newInput" rows="4" placeholder="Escribe tu reporte aquí..." required><br>
+        <button type="submit" onclick="addComment('newa', 'nombreInputNew')">Enviar</button>
+        </form>
+        <button class="orden-button" onclick="ordenarComentarios('newa')">Ordenar</button>
+      </div>
+      <div class="comments-section" id="newaComments">
+        <h3>Noticias:</h3>
+      </div>
+    </section>
+    <section id="artistas" class="active">
+      <div class="comment-form">
+        <h2>Artista</h2>
+        <p>Mensaje de los artistas</p>
+        <form>
+        <input type="text" id="nombreInputArtista" placeholder="Tu nombre..." required><br>
+        <input type="text" id="artistaInput" rows="4" placeholder="Escribe tu reporte aquí..." required><br>
+        <button type="submit" onclick="addComment('artistas', 'nombreInputArtista')">Enviar</button>
+        </form>
+        <button class="orden-button" onclick="ordenarComentarios('artistas')">Ordenar</button>
+      </div>
+      <div class="comments-section" id="artistasComments">
+        <h3>Noticias:</h3>
+      </div>
+    </section>  
+    <section id="reportes">
       <div class="comment-form">
         <h2>Reportes a la página web</h2>
+        <p>Escriba los reportes (problemas) que tiene la web o califica la web</p>
+        <form>
         <input type="text" id="nombreInputReporte" placeholder="Tu nombre (opcional)..."><br>
-        <textarea id="reporteInput" rows="4" placeholder="Escribe tu reporte aquí..."></textarea><br>
-        <button onclick="addComment('reportes', 'nombreInputReporte')">Enviar</button>
+        <input type="text" id="reporteInput" rows="4" placeholder="Escribe tu reporte aquí..." required><br>
+        <button type="submit" onclick="addComment('reportes', 'nombreInputReporte')">Enviar</button>
+        </form>
         <button class="orden-button" onclick="ordenarComentarios('reportes')">Ordenar</button>
       </div>
       <div class="comments-section" id="reportesComments">
@@ -107,10 +149,13 @@
 
     <section id="deseos">
       <div class="comment-form">
-        <h2>Deseos para 2024</h2>
+        <h2>Deseos para 2024 - 2025</h2>
+        <p>Pide un deseo aquí. Puede que se haga realidad tu sueño.⛄</p>
+        <form>
         <input type="text" id="nombreInputDeseo" placeholder="Tu nombre (opcional)..."><br>
-        <textarea id="deseoInput" rows="4" placeholder="Escribe tu deseo aquí..."></textarea><br>
-        <button onclick="addComment('deseos', 'nombreInputDeseo')">Enviar</button>
+        <input type="text" id="deseoInput" rows="4" placeholder="Escribe tu deseo aquí..." required><br>
+        <button type="submit" onclick="addComment('deseos', 'nombreInputDeseo')">Enviar</button>
+        </form>
         <button class="orden-button" onclick="ordenarComentarios('deseos')">Ordenar</button>
       </div>
       <div class="comments-section" id="deseosComments">
@@ -121,9 +166,12 @@
     <section id="comentarios">
       <div class="comment-form">
         <h2>Comentarios</h2>
+        <p>Comenta lo que quieras sobre la web, los artistas o algo en relación a Grouvex Studios.</p>
+        <form>
         <input type="text" id="nombreInputComentario" placeholder="Tu nombre (opcional)..."><br>
-        <textarea id="comentarioInput" rows="4" placeholder="Escribe tu comentario aquí..."></textarea><br>
-        <button onclick="addComment('comentarios', 'nombreInputComentario')">Enviar</button>
+        <input type="text" id="comentarioInput" rows="4" placeholder="Escribe tu comentario aquí..." required><br>
+        <button type="submit" onclick="addComment('comentarios', 'nombreInputComentario')">Enviar</button>
+        </form>
         <button class="orden-button" onclick="ordenarComentarios('comentarios')">Ordenar</button>
       </div>
       <div class="comments-section" id="comentariosComments">
@@ -134,184 +182,136 @@
     <section id="sugerencias">
       <div class="comment-form">
         <h2>Sugerencias</h2>
+        <p>Haz sugerencias para mejorar la web 😉.</p>
+        <form>
         <input type="text" id="nombreInputSugerencia" placeholder="Tu nombre (opcional)..."><br>
-        <textarea id="sugerenciaInput" rows="4" placeholder="Escribe tu sugerencia aquí..."></textarea><br>
-        <button onclick="addComment('sugerencias', 'nombreInputSugerencia')">Enviar</button>
+        <input type="text" id="sugerenciaInput" rows="4" placeholder="Escribe tu sugerencia aquí..." required><br>
+        <button type="submit" onclick="addComment('sugerencias', 'nombreInputSugerencia')">Enviar</button>
+        </form>
         <button class="orden-button" onclick="ordenarComentarios('sugerencias')">Ordenar</button>
       </div>
       <div class="comments-section" id="sugerenciasComments">
         <h3>Sugerencias:</h3>
       </div>
     </section>
-
-    <section id="configuracion">
-      <div class="config-section">
-        <h2>Configuración</h2>
-        <button onclick="requestPasswordChange()">Cambiar Contraseña</button>
-      </div>
-    </section>
 </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
     <script>
-      let ordenarAscendente = true;
-      const palabrasBloqueadas = ["malaPalabra1", "malaPalabra2", "malaPalabra3"];
-      const adminEmail = "gestor@grouvex.com";
-      let verificationCode = "";
-
-      document.addEventListener('DOMContentLoaded', () => {
-        cargarComentarios('reportes');
-        cargarComentarios('sugerencias');
-        cargarComentarios('comentarios');
-        cargarComentarios('deseos');
-      });
-
-      function showSection(sectionId) {
-        document.querySelectorAll('section').forEach(section => {
-          section.classList.remove('active');
+        let ordenarAscendente = true;
+        const palabrasBloqueadas = ["malaPalabra1", "malaPalabra2", "malaPalabra3"];
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarComentarios('artistas');
+            cargarComentarios('newa');
+            cargarComentarios('reportes');
+            cargarComentarios('sugerencias');
+            cargarComentarios('comentarios');
+            cargarComentarios('deseos');
         });
-        document.getElementById(sectionId).classList.add('active');
-      }
-
-      function containsBlockedWords(text) {
-        return palabrasBloqueadas.some(palabra => text.includes(palabra));
-      }
-
-      function addComment(section, nameInputId) {
-        const nameInput = document.getElementById(nameInputId).value.trim();
-        const input = document.getElementById(section.slice(0, -1) + 'Input').value.trim();
-        const nameText = nameInput || "Anónimo";
-        const commentText = input.trim();
-
-        if (containsBlockedWords(commentText) || commentText.includes("http")) {
-          alert("El comentario contiene palabras bloqueadas o enlaces.");
-          document.getElementById(section.slice(0, -1) + 'Input').value = '';
-          return;
+        function showSection(sectionId) {
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
         }
-
-        if (commentText) {
-          const date = new Date().toLocaleString();
-          const timestamp = new Date().getTime();
-          const commentSection = document.getElementById(section + 'Comments');
-          const commentPara = document.createElement('p');
-          commentPara.innerHTML = `<strong>${date} - ${nameText}:</strong> ${commentText} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
-          commentPara.dataset.timestamp = timestamp;
-          commentSection.appendChild(commentPara);
-
-          // Guardar comentario en Firebase
-          guardarComentarioEnServidor(section, nameText, commentText, timestamp);
-          document.getElementById(section.slice(0, -1) + 'Input').value = '';
-          document.getElementById(nameInputId).value = '';
-          ordenarComentarios(section);
+        function containsBlockedWords(text) {
+            return palabrasBloqueadas.some(palabra => text.includes(palabra));
         }
-      }
-
-      function ordenarComentarios(section) {
-    const commentSection = document.getElementById(section + 'Comments');
-    const comments = Array.from(commentSection.querySelectorAll('p'));
-    comments.sort((a, b) => {
-        const aTime = parseInt(a.dataset.timestamp);
-        const bTime = parseInt(b.dataset.timestamp);
-        return ordenarAscendente ? bTime - aTime : aTime - bTime;
-    });
-    comments.forEach(comment => commentSection.appendChild(comment));
-    ordenarAscendente = !ordenarAscendente;
-}
-     
-firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    const userId = user.uid;
-    firebase.database().ref(`roles/admin/${userId}`).once('value').then((snapshot) => {
-      if (snapshot.exists()) {
-        console.log('User is an admin');
-        // Usuario es administrador, habilitar eliminación
-      } else {
-        console.log('User is not an admin');
-        // Usuario no es administrador, deshabilitar eliminación
-      }
-    });
-  } else {
-    // Usuario no autenticado
-  }
-});
-
-function requestDeleteComment(element) {
-  const user = firebase.auth().currentUser;
-  if (user) {
-    firebase.database().ref(`roles/admin/${user.uid}`).once('value').then((snapshot) => {
-      if (snapshot.exists()) {
-        const password = prompt("Ingrese la contraseña de administrador para eliminar este comentario:");
-        if (md5(password) === localStorage.getItem('adminHash')) {
-          const commentText = element.parentElement.innerHTML;
-          const sectionId = element.parentElement.parentElement.id.replace('Comments', '');
-          element.parentElement.remove();
-          eliminarComentario(sectionId, commentText);
-        } else {
-          alert("Contraseña incorrecta.");
+        
+        function escapeHTML(str) {
+            return str.replace(/[&<>"']/g, function (match) {
+                const escapeMap = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                };
+                return escapeMap[match];
+            });
         }
-      } else {
-        alert("No tienes permisos para eliminar este comentario.");
-      }
-    });
-  } else {
-    alert("Debes iniciar sesión para eliminar comentarios.");
-  }
-}
-
-function eliminarComentario(section, commentKey) {
-  database.ref(`comments/${section}/${commentKey}`).remove()
-    .then(() => { alert("Comentario eliminado correctamente."); })
-    .catch(error => { alert("Error al eliminar el comentario: " + error.message); });
-}
-
-
-function guardarComentarioEnServidor(section, name, comment, timestamp) {
-    const newCommentRef = database.ref('comments/' + section).push();
-    newCommentRef.set({
-        name: name,
-        comment: comment,
-        timestamp: timestamp
-    });
-}
-
-function cargarComentarios(section) {
-    const commentSection = document.getElementById(`${section}Comments`);
-    database.ref('comments/' + section).once('value', (snapshot) => {
-        const comments = snapshot.val();
-        if (comments) {
-            for (let id in comments) {
-                const commentPara = document.createElement('p');
-                commentPara.innerHTML = `<strong>${new Date(comments[id].timestamp).toLocaleString()} - ${comments[id].name}:</strong> ${comments[id].comment} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
-                commentPara.dataset.timestamp = comments[id].timestamp;
-                commentSection.appendChild(commentPara);
+        
+        function addComment(section, nameInputId) {
+            const nameInput = document.getElementById(nameInputId);
+            const inputElement = document.getElementById(section.slice(0, -1) + 'Input');
+            
+            if (!nameInput || !inputElement) {
+                console.error("Element not found:", nameInputId, section.slice(0, -1) + 'Input');
+                return;
             }
-        } else {
-            commentSection.innerHTML = '<p>No hay comentarios aún.</p>';
+        
+            const nameText = escapeHTML(nameInput.value.trim() || "Anónimo");
+            const commentText = escapeHTML(inputElement.value.trim());
+        
+            if (containsBlockedWords(commentText) || commentText.includes("http")) {
+                alert("El comentario contiene palabras bloqueadas o enlaces.");
+                inputElement.value = '';
+                return;
+            }
+        
+            if (commentText) {
+                const date = new Date().toUTCString();
+                const timestamp = new Date().getTime();
+                const commentSection = document.getElementById(section + 'Comments');
+                const commentPara = document.createElement('p');
+                commentPara.innerHTML = `<strong>${date} - ${nameText}:</strong> ${commentText}`;
+                commentPara.dataset.timestamp = timestamp;
+                commentSection.appendChild(commentPara);
+                // Guardar comentario en Firebase
+                guardarComentarioEnServidor(section, nameText, commentText, timestamp);
+                inputElement.value = '';
+                nameInput.value = '';
+                ordenarComentarios(section);
+            }
         }
-    });
-}
-
-function md5(value) {
-    return CryptoJS.MD5(value).toString();
-}
-
-function requestPasswordChange() {
-    const email = prompt("Ingrese su correo electrónico para recibir un código de verificación:");
-    if (email === adminEmail) {
-        verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-        alert(`El código de verificación es ${verificationCode}.`);
-        const userCode = prompt("Ingrese el código de verificación recibido:");
-        if (userCode === verificationCode) {
-            const newPassword = prompt("Ingrese su nueva contraseña:");
-            const newHash = md5(newPassword);
-            localStorage.setItem('adminHash', newHash);
-            alert("La contraseña ha sido cambiada exitosamente.");
-        } else {
-            alert("Código de verificación incorrecto.");
+        function ordenarComentarios(section) {
+            const commentSection = document.getElementById(section + 'Comments');
+            const comments = Array.from(commentSection.querySelectorAll('p'));
+            comments.sort((a, b) => {
+                const aTime = parseInt(a.dataset.timestamp);
+                const bTime = parseInt(b.dataset.timestamp);
+                return ordenarAscendente ? bTime - aTime : aTime - bTime;
+            });
+            comments.forEach(comment => commentSection.appendChild(comment));
+            ordenarAscendente = !ordenarAscendente;
         }
-    } else {
-        alert("Correo electrónico no reconocido.");
-    }
-}
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                const userId = user.uid;
+                firebase.database().ref(`roles/admin/${userId}`).once('value').then((snapshot) => {
+                    if (snapshot.exists()) {
+                        console.log('User is an admin');
+                        // Usuario es administrador, habilitar eliminación
+                    } else {
+                        console.log('User is not an admin');
+                        // Usuario no es administrador, deshabilitar eliminación
+                    }
+                });
+            } else {
+                // Usuario no autenticado
+            }
+        });
+        function guardarComentarioEnServidor(section, name, comment, timestamp) {
+            const refPath = section === 'newa' ? 'new/' : section === 'artistas' ? 'artistas/' : `comments/${section}/`;
+            const newCommentRef = database.ref(refPath).push();
+            newCommentRef.set({ name: name, comment: comment, timestamp: timestamp });
+        }
+        function cargarComentarios(section) {
+            const refPath = section === 'newa' ? 'new/' : section === 'artistas' ? 'artistas/' : `comments/${section}/`;
+            const commentSection = document.getElementById(`${section}Comments`);
+            database.ref(refPath).once('value', (snapshot) => {
+                const comments = snapshot.val();
+                if (comments) {
+                    for (let id in comments) {
+                        const commentPara = document.createElement('p');
+                        commentPara.innerHTML = `<strong>${new Date(comments[id].timestamp).toUTCString()} - ${comments[id].name}:</strong> ${comments[id].comment}`;
+                        commentPara.dataset.timestamp = comments[id].timestamp;
+                        commentSection.appendChild(commentPara);
+                    }
+                } else {
+                    commentSection.innerHTML = '<p>No hay comentarios aún.</p>';
+                }
+            });
+        }
     </script>
 <script src="abc.js"></script> 
 </main>

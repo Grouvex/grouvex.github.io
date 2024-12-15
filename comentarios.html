@@ -184,7 +184,7 @@
           const timestamp = new Date().getTime();
           const commentSection = document.getElementById(section + 'Comments');
           const commentPara = document.createElement('p');
-          commentPara.innerHTML = `<strong>${date} - ${nameText}:</strong> ${commentText} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
+          commentPara.innerHTML = `<strong>${date} - ${nameText}:</strong> ${commentText}`;
           commentPara.dataset.timestamp = timestamp;
           commentSection.appendChild(commentPara);
 
@@ -241,7 +241,7 @@ function cargarComentarios(section) {
         if (comments) {
             for (let id in comments) {
                 const commentPara = document.createElement('p');
-                commentPara.innerHTML = `<strong>${new Date(comments[id].timestamp).toLocaleString()} - ${comments[id].name}:</strong> ${comments[id].comment} <span class="delete-button" onclick="requestDeleteComment(this)">🗑</span>`;
+                commentPara.innerHTML = `<strong>${new Date(comments[id].timestamp).toLocaleString()} - ${comments[id].name}:</strong> ${comments[id].comment}`;
                 commentPara.dataset.timestamp = comments[id].timestamp;
                 commentSection.appendChild(commentPara);
             }

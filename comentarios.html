@@ -33,8 +33,16 @@
 </mainTop>
 </head>
 <body>
-  <main>
-        <!-- Título -->
+ <!-- Anuncio -->
+ <div id="news"></div>
+<main>
+ <!-- Publicado por -->
+<div class="tarjeta" style="display: flex;align-items: center; border-radius: 8px;  box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 10px;  padding: 10px;  height: 45px; width: 250px; padding-top: 10px;padding-bottom: 10px">
+<img src="../img/GROUVEX.png" alt="" style="border-radius: 50%; width: 35px;height: 35px;object-fit: cover; margin-right: 10px;"><div>
+<h2 style="margin:2px; font-size: 7.5px">Publicado por:</h2><h2 style="margin:2px; padding: 1px;font-size: 9px">Grouvex Studios</h2>
+<p style="color: white; font-size: 11px"><span id="ActualizadoDATE"></span></p><a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@rouvex.com</footer></a></div></div>
+<script>const uTActualizado = 1734710400; actualizarFechas(uTActualizado, "ActualizadoDATE");</script> 
+  <!-- Título -->
     <style>
         nav {
             margin-bottom: 20px;
@@ -88,13 +96,14 @@
     <nav>
       <a onclick="showSection('newa')">Noticias</a>
       <a onclick="showSection('reportes')">Reportes en la Web</a>
-      <a onclick="showSection('deseos')">Deseos para 2024</a>
+      <a onclick="showSection('deseos')">Deseos para 2024 <span class="status recommended">Recommended</span></a>
       <a onclick="showSection('comentarios')">Comentarios</a>
       <a onclick="showSection('sugerencias')">Sugerencias</a>
     </nav>
     <section id="newa" class="active">
       <div class="comment-form">
         <h2>Noticias</h2>
+        <p>Noticias del equipo de Grouvex Studios</p>
         <form>
         <input type="text" id="nombreInputNew" placeholder="Tu nombre..." required><br>
         <input type="text" id="newInput" rows="4" placeholder="Escribe tu reporte aquí..." required><br>
@@ -110,6 +119,7 @@
     <section id="reportes">
       <div class="comment-form">
         <h2>Reportes a la página web</h2>
+        <p>Escriba los reportes (problemas) que tiene la web o califica la web</p>
         <form>
         <input type="text" id="nombreInputReporte" placeholder="Tu nombre (opcional)..."><br>
         <input type="text" id="reporteInput" rows="4" placeholder="Escribe tu reporte aquí..." required><br>
@@ -124,7 +134,8 @@
 
     <section id="deseos">
       <div class="comment-form">
-        <h2>Deseos para 2024</h2>
+        <h2>Deseos para 2024 - 2025</h2>
+        <p>Pide un deseo aquí. Puede que se haga realidad tu sueño.⛄</p>
         <form>
         <input type="text" id="nombreInputDeseo" placeholder="Tu nombre (opcional)..."><br>
         <input type="text" id="deseoInput" rows="4" placeholder="Escribe tu deseo aquí..." required><br>
@@ -140,6 +151,7 @@
     <section id="comentarios">
       <div class="comment-form">
         <h2>Comentarios</h2>
+        <p>Comenta lo que quieras sobre la web, los artistas o algo en relación a Grouvex Studios.</p>
         <form>
         <input type="text" id="nombreInputComentario" placeholder="Tu nombre (opcional)..."><br>
         <input type="text" id="comentarioInput" rows="4" placeholder="Escribe tu comentario aquí..." required><br>
@@ -155,6 +167,7 @@
     <section id="sugerencias">
       <div class="comment-form">
         <h2>Sugerencias</h2>
+        <p>Haz sugerencias para mejorar la web 😉.</p>
         <form>
         <input type="text" id="nombreInputSugerencia" placeholder="Tu nombre (opcional)..."><br>
         <input type="text" id="sugerenciaInput" rows="4" placeholder="Escribe tu sugerencia aquí..." required><br>

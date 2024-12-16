@@ -78,7 +78,6 @@
             cursor: pointer;
         }
     </style>
-
  <!--   <div id="auth-container">
         <h1>Autenticación de Usuarios en Grouvex Studios</h1>
         <form id="authForm">
@@ -130,7 +129,7 @@
       <div class="comments-section" id="artistasComments">
         <h3>Artistas:</h3>
       </div>
-    </section>  
+    </section> 
     <section id="reportes">
       <div class="comment-form">
         <h2>Reportes a la página web</h2>
@@ -216,7 +215,6 @@
         function containsBlockedWords(text) {
             return palabrasBloqueadas.some(palabra => text.includes(palabra));
         }
-
         function escapeHTML(str) {
             return str.replace(/[&<>"']/g, function (match) {
                 const escapeMap = {
@@ -229,25 +227,20 @@
                 return escapeMap[match];
             });
         }
-
         function addComment(section, nameInputId) {
             const nameInput = document.getElementById(nameInputId);
             const inputElement = document.getElementById(section.slice(0, -1) + 'Input');
-
             if (!nameInput || !inputElement) {
                 console.error("Element not found:", nameInputId, section.slice(0, -1) + 'Input');
                 return;
             }
-
             const nameText = escapeHTML(nameInput.value.trim() || "Anónimo");
             const commentText = escapeHTML(inputElement.value.trim());
-
             if (containsBlockedWords(commentText) || commentText.includes("http")) {
                 alert("El comentario contiene palabras bloqueadas o enlaces.");
                 inputElement.value = '';
                 return;
             }
-
             if (commentText) {
                 const date = new Date().toUTCString();
                 const timestamp = new Date().getTime();

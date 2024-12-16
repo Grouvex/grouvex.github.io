@@ -18,6 +18,8 @@ var database = firebase.database();
 const authForm = document.getElementById('authForm');
 const formTitle = document.getElementById('formTitle');
 const authButton = document.getElementById('authButton');
+const emailloginbtn = document.getElementById('email-login-btn');
+const googleloginbtn = document.getElementById('google-login-btn');
 const toggleButton = document.getElementById('toggleButton');
 let isLogin = true; // Estado inicial de la forma
 
@@ -27,6 +29,8 @@ toggleButton.addEventListener('click', () => {
   if (isLogin) {
     formTitle.textContent = 'Inicio de Sesión';
     authButton.textContent = 'Iniciar Sesión';
+    emailloginbtn.textContent = 'Iniciar Sesión con Email';
+    googleloginbtn.textContent = 'Iniciar Sesión con Google';
     toggleButton.textContent = '¿No tienes cuenta? Regístrate';
   } else {
     formTitle.textContent = 'Registro';

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<script src="../jquery-3.5.1.min.js"></script>
+ <script> 
+    $(function(){
+      $("#menu").load("../menu.html"); 
+    });
+  $(function(){
+      $("#news").load("../news.html"); 
+    });
+    $(function(){
+      $("#footer").load("../footer.html"); 
+    });
+ </script>
+<!-- header.html -->
+<head>
+<script src="../index.js"></script> <script src="../time.js"></script> <script src="../temas.js"></script> <link rel="stylesheet" href="../temas.css"> <link rel="stylesheet" href="../index.css">
+<link rel="icon" href="../img/GROUVEX.png"> <link rel="icon" href="GROUVEX.png" type="image/x-icon">
+<meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8"> <meta name="author" content="Grouvex Studios"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="copyright" content="Grouvex Studios"> <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"> <meta http-equiv="Content-Security-Policy" content="policy"> <meta http-equiv="Referrer-Policy" content="no-referrer"> <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects"> <meta name="theme-color" content="#hexcode"> <link rel="canonical" href="URL_canónica">
+  <!-- Clarity tracking code for https://grouvex.github.io/ -->
+  <script>    (function(c,l,a,r,i,t,y){        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);    })(window, document, "clarity", "script", "mdkjlz9c01");</script>
+<!-- Editable -->
+<meta property="og:title" content="Discografía - Grouvex Studios"> <meta property="og:description" content="Discografía de Tarlight Etherall"> <meta property="og:image" href="../../img/GROUVEX.png">
+<title>Discografía Tarlight Etherall - Grouvex Studios</title>
+<!-- Main Top -->
+<mainTop>
+<span style="display: block;font-family: Times New Roman; sans-serif;">
+<a href="https://grouvex.github.io/"><div style="font-size: 30px;color:white">Grouvex Studios</div></a>
+<a href="https://grouvex.github.io/tarlight_etherall/inicio"><div style="font-size: 15px;color:white">Artista Tarlight Etherall - Grouvex Studios</div></a>
+</span>
+<span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold"> <a href="inicio"><u style="color: blue"><span style="color: white">Inicio</span></u></a> | <a href="https://grouvex.github.io/artistas"><u style="color: blue"><span style="color: white">Artistas</span></u></a> | <a href="discografia"><u style="color: blue"><span style="color: white">Discografía</span></u></a> | <a href="https://grouvex.github.io/equipo"><u style="color: blue"><span style="color: white">Equipo</span></u></a> | <a href="https://grouvex.github.io/comentarios"><u style="color: blue"><span style="color: white">Comentarios (vBeta)</span></u></a> | <a href="https://grouvex.github.io/music"><u style="color: blue"><span style="color: gold">Mi Música</span></u></a> <span id="menu"></span>
+</span>
+</mainTop>
+</head>
+<body>
+ <!-- Anuncio -->
+  <div id="news"></div>
+<main id="top">
+<!-- Publicado por -->
+<div class="tarjeta" style="display: flex;align-items: center; border-radius: 8px;  box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 10px;  padding: 10px;  height: 45px; width: 250px; padding-top: 10px;padding-bottom: 10px">
+<img src="../img/GROUVEX.png" alt="" style="border-radius: 50%; width: 35px;height: 35px;object-fit: cover; margin-right: 10px;"><div>
+<h2 style="margin:2px; font-size: 7.5px">Publicado por:</h2><h2 style="margin:2px; padding: 1px;font-size: 9px">Grouvex Studios</h2>
+<p style="color: white; font-size: 11px"><span id="ActualizadoDATE"></span></p><a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@rouvex.com</footer></a></div></div>
+<script>const uTActualizado = 1734710400; actualizarFechas(uTActualizado, "ActualizadoDATE");</script> 
+  <!-- Título -->
+  <h1>Discografía Tarlight Etherall</h1>
+  <nav>
+    <span style="font-family: Times New Roman;color:white"><a onclick="mostrarSeccion('lanzamientos')"><span style="color: white">Lanzamientos</span></a> | <a onclick="mostrarSeccion('discografia')"><span style="color: white">Discografía</span></a><hr><a onclick="mostrarSeccion('musica')"><span style="color: white">Música</span></a> <a onclick="mostrarSeccion('albumes')"><span style="color: white">Álbumes</span></a> <a onclick="mostrarSeccion('ep')"><span style="color: white">Reproducción Extendida (EP)</span></a>
+  </nav>
+  <article id="contenido">
+    <!-- Contenido inicial -->
+    <h2>Lanzamientos</h2>
+    <p>Los proximos lanzamientos son:</p>
+  </article>
+
+  <script>
+    function mostrarSeccion(seccion) {
+      const contenido = document.getElementById('contenido');
+      if (seccion === 'lanzamientos') {
+        contenido.innerHTML = `
+          <h2>Lanzamientos</h2>
+          <p>Aquí están los lanzamientos más recientes...</p>
+        `;
+      } else if (seccion === 'discografia') {
+        contenido.innerHTML = `
+          <h2>Discografía</h2>
+          <p>Aquí puedes ver toda la discografía del artista...</p>
+        `;
+      } else if (seccion === 'musica') {
+        contenido.innerHTML = `
+        <style>
+        .letra {
+            font-size: 40px;
+            font-family: Times New Roman;
+            color: white;
+            transition: color 0.3s;
+        }
+        .letra:hover {
+            color: inherit;
+        }
+    </style>
+          <h2>Música</h2>
+          <a href="#top" style="font-size: 30px ;font-family: Times New Roman;color:white">#</a> <a href="#a" class="letra" onclick="this.style.color='red';">A</a>
+    <a href="#b" class="letra" onclick="this.style.color='darkorange';">B</a>
+    <a href="#c" class="letra" onclick="this.style.color='orange';">C</a>
+    <a href="#d" class="letra" onclick="this.style.color='gold';">D</a>
+    <a href="#e" class="letra" onclick="this.style.color='yellow';">E</a>
+    <a href="#f" class="letra" onclick="this.style.color='greenyellow';">F</a>
+    <a href="#g" class="letra" onclick="this.style.color='lime';">G</a>
+    <a href="#h" class="letra" onclick="this.style.color='springgreen';">H</a>
+    <a href="#i" class="letra" onclick="this.style.color='cyan';">I</a>
+    <a href="#j" class="letra" onclick="this.style.color='deepskyblue';">J</a>
+    <a href="#k" class="letra" onclick="this.style.color='dodgerblue';">K</a>
+    <a href="#l" class="letra" onclick="this.style.color='blue';">L</a>
+    <a href="#m" class="letra" onclick="this.style.color='blueviolet';">M</a>
+    <a href="#n" class="letra" onclick="this.style.color='indigo';">N</a>
+    <a href="#o" class="letra" onclick="this.style.color='darkviolet';">O</a>
+    <a href="#p" class="letra" onclick="this.style.color='violet';">P</a>
+    <a href="#q" class="letra" onclick="this.style.color='orchid';">Q</a>
+    <a href="#r" class="letra" onclick="this.style.color='magenta';">R</a>
+    <a href="#s" class="letra" onclick="this.style.color='deeppink';">S</a>
+    <a href="#t" class="letra" onclick="this.style.color='crimson';">T</a>
+    <a href="#u" class="letra" onclick="this.style.color='red';">U</a>
+    <a href="#v" class="letra" onclick="this.style.color='darkorange';">V</a>
+    <a href="#w" class="letra" onclick="this.style.color='orange';">W</a>
+    <a href="#x" class="letra" onclick="this.style.color='gold';">X</a>
+    <a href="#y" class="letra" onclick="this.style.color='yellow';">Y</a>
+    <a href="#z" class="letra" onclick="this.style.color='greenyellow';">Z</a>
+ <article>
+<style>li {font-family: Times New Roman} summary{font-size:25px; cursor: pointer} details{border: 2px solid white} details[open] {border-image: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet) 1; border-width: 2px;border-style: solid;} .r-img{width: 30px;} @media only screen and (max-width: 600px) {.r-img {max-width: 30px;max-height: 30px;}}</style>
+<!-- Abecedario -->
+<div id="top"><a href="#top" style="font-size: 50px ;font-family: Times New Roman;color:white">#</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Does not contain a letter</summary>
+</details>
+<div id="a"><a href="#a" class="letra" onclick="this.style.color='red';">A</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with A</summary>
+
+</details>
+<div id="b"><a href="#b" class="letra" onclick="this.style.color='darkorange';">B</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with B</summary>
+
+</details>
+<div id="c"><a href="#c" style="font-size: 50px; font-family: Times New Roman; color:white">C</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with C</summary>
+</details>
+<div id="d"><a href="#d" style="font-size: 50px; font-family: Times New Roman; color:white">D</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with D</summary>
+
+</details>
+<div id="e"><a href="#e" style="font-size: 50px; font-family: Times New Roman; color:white">E</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with E</summary> 
+
+</details>
+<div id="f"><a href="#f" style="font-size: 50px; font-family: Times New Roman; color:white">F</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with F</summary>
+
+</details>
+<div id="g"><a href="#g" style="font-size: 50px; font-family: Times New Roman; color:white">G</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with G</summary>
+</details>
+<div id="h"><a href="#h" style="font-size: 50px; font-family: Times New Roman; color:white">H</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with H</summary>
+</details>
+<div id="i"><a href="#i" style="font-size: 50px; font-family: Times New Roman; color:white">I</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with I</summary>
+</details>
+<div id="j"><a href="#j" style="font-size: 50px; font-family: Times New Roman; color:white">J</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with J</summary>
+</details>
+<div id="k"><a href="#k" style="font-size: 50px; font-family: Times New Roman; color:white">K</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with K</summary>
+
+</details>
+<div id="l"><a href="#l" style="font-size: 50px; font-family: Times New Roman; color:white">L</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with L</summary>
+<ol>
+<li><a href="libertad">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Libertad.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Libertad</span><span>Libertad</span></span>
+</div></a>
+</li> 
+</ol>
+</details>
+<div id="m"><a href="#m" style="font-size: 50px; font-family: Times New Roman; color:white">M</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with M</summary>
+
+</details>
+<div id="n"><a href="#n" style="font-size: 50px; font-family: Times New Roman; color:white">N</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with N</summary>
+<ol>
+<li><a href="nuestros_años_dorados">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Nuestros Años Dorados.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Nuestros Años Dorados</span><span>Nuestros Años Dorados</span></span>
+</div></a>
+</li> 
+</ol>
+</details>
+<div id="o"><a href="#o" style="font-size: 50px; font-family: Times New Roman; color:white">O</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with O</summary>
+</details>
+<div id="p"><a href="#p" style="font-size: 50px; font-family: Times New Roman; color:white">P</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with P</summary>
+
+</details>
+<div id="q"><a href="#q" style="font-size: 50px; font-family: Times New Roman; color:white">Q</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with Q</summary>
+</details>
+<div id="r"><a href="#r" style="font-size: 50px; font-family: Times New Roman; color:white">R</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with R</summary>
+</details>
+<div id="s"><a href="#s" style="font-size: 50px; font-family: Times New Roman; color:white">S</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with S</summary>
+
+</details>
+<div id="t"><a href="#t" style="font-size: 50px; font-family: Times New Roman; color:white">T</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with T</summary>
+
+</details>
+<div id="u"><a href="#u" style="font-size: 50px; font-family: Times New Roman; color:white">U</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with U</summary>
+
+</details>
+<div id="v"><a href="#v" style="font-size: 50px; font-family: Times New Roman; color:white">V</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with V</summary>
+
+</details>
+<div id="w"><a href="#w" style="font-size: 50px; font-family: Times New Roman; color:white">W</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with W</summary>
+
+</details>
+<div id="x"><a href="#x" style="font-size: 50px; font-family: Times New Roman; color:white">X</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with X</summary>
+</details>
+<div id="y"><a href="#y" style="font-size: 50px; font-family: Times New Roman; color:white">Y</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with Y</summary>
+
+</details>
+<div id="z"><a href="#z" style="font-size: 50px; font-family: Times New Roman; color:white">Z</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with Z</summary>
+</details>
+ </article>
+        `;
+      } else if (seccion === 'albumes') {
+        contenido.innerHTML = `
+  <!-- Título -->
+  <h2>Álbums</h2>
+ <article>
+  <select class="orden-button" id="ordenSelector" onchange="cambiarOrden()" style="margin:5px;margin-left:0px">
+        <option value="" disabled selected>Order</option>
+        <option value="ascT">⬇ a ⬆</option>
+        <option value="desT">⬆ a ⬇</option>
+    </select>
+ <div class="cajetines">
+    
+    </div>
+ </article>
+        `;
+        actualizarFechas(03, "f1_3")
+        actualizarFechas(02, "f1_2")
+        actualizarFechas(01, "f1_1")
+        const marcasDeTiempo = [uT1, uT2, uT3];
+// NO tocar
+// function cambiarOrden() {if(document.getElementById('ordenSelector').value == 'ascT') {marcasDeTiempo.sort((a, b) => b - a);}if(document.getElementById('ordenSelector').value == 'desT') {marcasDeTiempo.sort((a, b) => a - b);}const cajetinesContainer = document.querySelector('.cajetines');marcasDeTiempo.forEach((uT) => {const cajetin = document.querySelector(`[data-ut="${uT}"]`);cajetinesContainer.appendChild(cajetin);});}
+      } else if (seccion === 'ep') {
+        contenido.innerHTML = `
+<h2>Reproducción Extendida (EP)</h2>
+  <!-- Título -->
+ <article>
+  <select class="orden-button" id="ordenSelector" onchange="cambiarOrden()" style="margin:5px;margin-left:0px">
+        <option value="" disabled selected>Order</option>
+        <option value="ascT">⬇ to ⬆</option>
+        <option value="desT">⬆ to ⬇</option>
+    </select>
+ <div class="cajetines">
+     
+    </div>
+ </article>
+        `;
+        actualizarFechas(01, "f1_6")
+        actualizarFechas(02, "f1_5")
+        actualizarFechas(03, "f1_4")
+        actualizarFechas(04, "f1_3")
+        actualizarFechas(05, "f1_2")
+        actualizarFechas(06, "f1_5")
+        actualizarFechas(07, "f1_1")
+        const marcasDeTiempo = [uT1, uT2, uT3, uT4, uT5, uT6];
+// NO tocar
+// function cambiarOrden() {if(document.getElementById('ordenSelector').value == 'ascT') {marcasDeTiempo.sort((a, b) => b - a);}if(document.getElementById('ordenSelector').value == 'desT') {marcasDeTiempo.sort((a, b) => a - b);}const cajetinesContainer = document.querySelector('.cajetines');marcasDeTiempo.forEach((uT) => {const cajetin = document.querySelector(`[data-ut="${uT}"]`);cajetinesContainer.appendChild(cajetin);});}
+      }
+    }
+
+    function actualizarFechas(uT, elementoId) {const f = new Date(uT * 1000).toUTCString();document.getElementById(elementoId).textContent = f; if (uT >= Math.floor(Date.now() / 1000)) {const fUT = Math.floor(Date.now() / 1000);const diferencia = uT - fUT;const seg = diferencia % 60;const min = Math.floor((diferencia / 60) % 60);const h = Math.floor((diferencia / 3600) % 24);const d = Math.floor(diferencia / 86400);const m = Math.floor(d / 30.24);const a = Math.floor(d / 365.44);const f1 = `(${a} year(s), ${m} month(s), ${d}d, ${h}h, ${min}m y ${seg}s left) `;document.getElementById(elementoId).textContent = `${f} ¦ ${f1}`}}
+  </script>
+</main>
+</body>
+<div id="footer"></div>
+ <style>
+  #goTopBtn {
+    position: fixed;
+    bottom: 15px;
+    right: 8px;
+    width: 8vw; /* Proporcional a la pantalla */
+    height: 8vw; /* Proporcional a la pantalla */
+    background-color: transparent;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    cursor: pointer;
+  /* font-size: 15px;  Proporcional a la pantalla */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+#goTopBtn:hover {
+    border-color: cyan;
+}
+ </style>
+ <script>
+  function cambiarOrden() {if(document.getElementById('ordenSelector').value == 'ascT') {marcasDeTiempo.sort((a, b) => b - a);}if(document.getElementById('ordenSelector').value == 'desT') {marcasDeTiempo.sort((a, b) => a - b);}const cajetinesContainer = document.querySelector('.cajetines');marcasDeTiempo.forEach((uT) => {const cajetin = document.querySelector(`[data-ut="${uT}"]`);cajetinesContainer.appendChild(cajetin);});}
+  function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+ </script>
+<button id="goTopBtn" onclick="scrollToTop()">↑ Top</button>
+</html>

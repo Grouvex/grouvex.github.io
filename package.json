@@ -1,0 +1,14 @@
+{
+  "name": "mi-proyecto-web",
+  "version": "1.0.0",
+  "description": "Mi proyecto web con dependencias actualizadas",
+  "main": "index.js",
+  "scripts": {
+    "start": "live-server --port=8080",
+    "update": "npm update"
+  },
+  "dependencies": {
+    "live-server": "^1.2.1"
+  },
+  "devDependencies": {}
+}

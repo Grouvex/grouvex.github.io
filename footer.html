@@ -92,6 +92,24 @@ s0.parentNode.insertBefore(s1,s0);
         behavior: 'smooth'
     });
 }
+  // Ejemplo de implementación de la API de la Privacy Sandbox para publicidad
+if ('document' in window && 'serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').then(registration => {
+        console.log('Service Worker registrado:', registration);
+    }).catch(error => {
+        console.error('Error al registrar el Service Worker:', error);
+    });
+}
+
+// Implementar la API de la Privacy Sandbox para identidad
+if ('document' in window && 'window' in window) {
+    window.addEventListener('message', (event) => {
+        if (event.data && event.data.type === 'identity') {
+            // Procesar la solicitud de identidad
+            console.log('Solicitud de identidad recibida:', event.data);
+        }
+    });
+}
  </script>
 <button id="goTopBtn" onclick="scrollToTop()">↑ Top</button>
     <script>

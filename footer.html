@@ -94,3 +94,62 @@ s0.parentNode.insertBefore(s1,s0);
 }
  </script>
 <button id="goTopBtn" onclick="scrollToTop()">↑ Top</button>
+    <script>
+     function escapeHTML(string) {
+    const entityMap = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+        '/': '&#x2F;',
+        '`': '&#x60;',
+        '=': '&#x3D;'
+    };
+    return String(string).replace(/[&<>"'`=\/]/g, s => entityMap[s]);
+}
+
+// Uso
+const userComment = "<script>alert('XSS');<\/script>";
+const safeComment = escapeHTML(userComment);
+console.log(safeComment); // &lt;script&gt;alert('XSS');&lt;/script&gt;
+
+        window.onload = function() {
+            const container = document.getElementById('container');
+            const p = document.createElement('p');
+            p.textContent = 'Este es un párrafo añadido dinámicamente.';
+            container.appendChild(p);
+    const scripts = document.getElementsByTagName('script');
+    for (let i = 0; i < scripts.length; i++) {
+        console.log(scripts[i].src);
+    }
+};
+     function sanitizeInput(input) {
+    const element = document.createElement('div');
+    element.innerText = input;
+    return element.innerHTML;
+}
+
+// Uso
+const userInput = "<script>alert('hack');<\/script>";
+const safeInput = sanitizeInput(userInput);
+console.log(safeInput); // &lt;script&gt;alert('hack');&lt;/script&gt;
+function escapeHTML(string) {
+    const entityMap = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+        '/': '&#x2F;',
+        '`': '&#x60;',
+        '=': '&#x3D;'
+    };
+    return String(string).replace(/[&<>"'`=\/]/g, s => entityMap[s]);
+}
+
+// Uso
+const userComment = "<script>alert('XSS');<\/script>";
+const safeComment = escapeHTML(userComment);
+console.log(safeComment); // &lt;script&gt;alert('XSS');&lt;/script&gt;
+    </script>

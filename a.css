@@ -1,167 +1,53 @@
-/* Estilos generales */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+:root {
+    --bg-position: center; /* Variable para la posición de la imagen de fondo */
+}
+
+body, html {
     margin: 0;
-    padding: 20px;
-    color: #333;
-}
-
-/* Estilos para las secciones */
-section {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
-
-h1, h2 {
-    color: #2c3e50;
-}
-
-label {
-    display: block;
-    margin: 10px 0 5px;
-    font-weight: bold;
-    color: #34495e;
-}
-
-input[type="text"],
-input[type="number"],
-input[type="date"],
-input[type="file"],
-select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #bdc3c7;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-/* Botones */
-button {
-    background-color: #2980b9;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
-}
-
-button:hover {
-    background-color: #3498db;
-}
-
-button.remove-artist-row,
-button.remove-composer-row,
-button.remove-lyricist-row,
-button.remove-track-row {
-    background-color: #e74c3c;
-    color: white;
-    padding: 5px 10px;
-    font-size: 14px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 5px;
-}
-
-button.remove-artist-row:hover,
-button.remove-composer-row:hover,
-button.remove-lyricist-row:hover,
-button.remove-track-row:hover {
-    background-color: #c0392b;
-}
-
-.help {
-    cursor: pointer;
-    position: relative;
-    display: inline-block;
-    color: #2980b9;
-}
-
-.help-text {
-    visibility: hidden;
-    width: 200px;
-    background-color: #34495e;
-    color: #ecf0f1;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    position: absolute;
-    z-index: 1;
-    bottom: 125%; 
-    left: 50%;
-    margin-left: -100px;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.help:hover .help-text {
-    visibility: visible;
-    opacity: 1;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-table, th, td {
-    border: 1px solid #bdc3c7;
-}
-
-th, td {
-    padding: 10px;
-    text-align: left;
-}
-
-th {
-    background-color: #2980b9;
-    color: white;
-}
-
-td button {
-    background-color: #3498db;
-    color: white;
-    padding: 5px 10px;
-    font-size: 14px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-td button:hover {
-    background-color: #2980b9;
-}
-
-ul {
-    list-style-type: none;
     padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
-ul li {
-    background-color: #ecf0f1;
-    margin: 5px 0;
-    padding: 10px;
-    border-radius: 4px;
-    color: #2c3e50;
+#intro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/port/La%20Magia%20de%20la%20Estrella%20Polar.jpg);
+    background-size: cover;
+    background-position: var(--bg-position); /* Usa la variable para la posición */
+    background-repeat: no-repeat;
 }
 
-/* Estilos para el formulario de detalles */
-#detalles-album-form,
-#detalles-imagen-form,
-#detalles-audio-form,
-#detalles-tiendas-form {
-    display: none;
+#logo {
+    width: 150px;
+    height: auto;
+    animation: slideUp 3s forwards, fadeOut 2s 3s forwards;
 }
 
-h2 {
-    border-bottom: 2px solid #2980b9;
-    padding-bottom: 10px;
+@keyframes slideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(-50px);
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }

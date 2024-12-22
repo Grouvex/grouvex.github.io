@@ -34,13 +34,6 @@ button:hover {
     .sidenav a {font-size: 18px;}
 }
 
-@media (max-width: 768px) {
-    /* Estilos para pantallas pequeñas (móviles) */
-}
-@media (min-width: 769px) {
-    /* Estilos para pantallas más grandes (tabletas, computadoras) */
-}
-
   .red {
     width: 30px;
     height: 30px;

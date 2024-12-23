@@ -1,3 +1,43 @@
+#intro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/port/La%20Magia%20de%20la%20Estrella%20Polar.jpg);
+    background-size:cover;
+    background-position: center;
+}
+
+#logo {
+    width: 250px;
+    height: auto;
+    animation: slideUp 5s forwards, fadeOut 1s 8s forwards;
+}
+
+@keyframes slideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(100vh);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-100vh);
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
 /*Primavera*/
 .flower {
   position: fixed;
@@ -1415,9 +1455,9 @@ footer {
       width: 90%;
       height: auto;
       padding-top: 0px;
-      padding-left: 10px;
-      padding-right: 10px;
-      flex-basis: calc(25% - 40px); /* 4 cajetines por fila */
+  padding-left: 10px;
+  padding-right: 10px;
+  flex-basis: calc(25% - 40px); /* 4 cajetines por fila */
     }
     .tarjeta img { 
       border-radius: 50%; 

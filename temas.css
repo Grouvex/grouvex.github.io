@@ -1414,11 +1414,10 @@ footer {
       padding: 20px; 
       width: 90%;
       height: auto;
-      width: 300px; 
       padding-top: 0px;
-  padding-left: 10px;
-  padding-right: 10px;
-  flex-basis: calc(25% - 40px); /* 4 cajetines por fila */
+      padding-left: 10px;
+      padding-right: 10px;
+      flex-basis: calc(25% - 40px); /* 4 cajetines por fila */
     }
     .tarjeta img { 
       border-radius: 50%; 
@@ -1462,6 +1461,9 @@ align-content: center;
   max-width: 100%;
 }
 @media (max-width: 768px) {
+mainTop {
+    display: grid;
+}
 .cajetin {
    width: 100%;
  } 

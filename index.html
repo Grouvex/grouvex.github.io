@@ -14,6 +14,8 @@
     <meta http-equiv="Referrer-Policy" content="no-referrer">
     <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects">
     <meta name="theme-color" content="#hexcode">
+    <link rel="preconnect" href="https://example.com">
+    <link rel="dns-prefetch" href="https://example.com">
     <link rel="canonical" href="URL_canónica">
         <!-- Scripts con Nonce -->
     <script src="jquery-3.5.1.min.js" nonce="nonce-placeholder"></script>
@@ -28,7 +30,7 @@
             $("#news").load("news.html"); 
         });
     </script>
-    <script src="index.js" nonce="nonce-placeholder"></script><script src="time.js" nonce="nonce-placeholder"></script><script src="temas.js" nonce="nonce-placeholder"></script>
+    <script src="index.js" nonce="nonce-placeholder" defer></script><script src="time.js" nonce="nonce-placeholder" defer></script><script src="temas.js" nonce="nonce-placeholder"></script>
     <script nonce="nonce-placeholder">
         (function(c,l,a,r,i,t,y){
             c[a]=c[a]||function(){
@@ -80,7 +82,7 @@
             <hr>
             <h2>Comunidad de Discord</h2>
             <p>En esta comunidad, los miembros pueden conocer más sobre el mundo de la música, como de la animación. Además la comunidad sirve para soporte de los artistas, colaboraciones y muchas más cosas. Podrás divertirte con otras personas o con los bots en los canales de texto o voz. ¡No pierdas esta oportunidad!</p>
-            <iframe src="https://discord.com/widget?id=1152697336871530527&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+            <iframe src="https://discord.com/widget?id=1152697336871530527&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts" loading="lazy"></iframe>
         </article>
     </main>
     <!-- Footer -->

@@ -76,13 +76,9 @@
     <!-- Scripts con hash -->
     <script src="jquery-3.5.1.min.js"></script>
     <script> 
-        $(function(){
+        document.addEventListener("DOMContentLoaded", function() { 
             $("#menu").load("menu.html"); 
-        });
-        $(function(){
             $("#footer").load("footer.html"); 
-        });
-        $(function(){
             $("#news").load("news.html"); 
         });
     </script>

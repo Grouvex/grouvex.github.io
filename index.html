@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta id="csp-meta" http-equiv="Content-Security-Policy" content="script-src 'self' 'nonce-placeholder';">
     <title>Sitio web Oficial - Grouvex Studios</title>
     <meta property="og:title" content="Sitio web oficial - Grouvex Studios">
     <meta property="og:description" content="Sitio web oficial de ©Grouvex Studios">
@@ -22,7 +21,7 @@
     <link rel="canonical" href="URL_canónica">
     <link rel="preconnect" href="https://example.com">
     <link rel="dns-prefetch" href="https://example.com">
-    <!-- Scripts con hash -->
+    <!-- Scripts sin nonce -->
     <script src="jquery-3.5.1.min.js"></script>
     <script> 
         document.addEventListener("DOMContentLoaded", function() { 
@@ -42,13 +41,13 @@
         })(window, document, "clarity", "script", "mdkjlz9c01");
     </script>
 </head>
+<body>
     <mainTop>
         <a href="https://grouvex.github.io/"><span style="font-family: Times New Roman; sans-serif; font-size: 30px;color:white">Grouvex Studios</span></a>
         <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold"> 
-            <a href="https://grouvex.github.io/"><u style="color: blue"><span style="color: white">Inicio</span></u></a> | <a href="https://grouvex.github.io/artistas"><u style="color: blue"><span style="color: white">Artistas</span></u></a> | <a href="https://grouvex.github.io/equipo"><u style="color: blue"><span style="color: white">Equipo</span></u></a> | <a href="https://grouvex.github.io/comentarios"><u style="color: blue"><span style="color: white">Comentarios (vBeta)</span></u></a> | <a href="https://grouvex.github.io/music"><u style="color: blue"><span style="color: gold">Mi Música</span></u></a> | <a href="https://grouvex.github.io/login" style="pointer-events: none"><u style="color: blue"><span style="color: white">Registrar</span></u></a> <span id="menu"></span>
+            <a href="https://grouvex.github.io/"><u style="color: blue"><span style="color: white">Inicio</span></u></a> | <a href="https://grouvex.github.io/artistas"><u style="color: blue"><span style="color: white">Artistas</span></u></a> | <a href="https://grouvex.github.io/equipo"><u style="color: blue"><span style="color: white">Equipo</span></u></a> | <a href="https://grouvex.github.io/comentarios"><u style="color: blue"><span style="color: white">Comentarios (vBeta)</span></u></a> | <a href="https://grouvex.github.io/music"><u style="color: blue"><span style="color: gold">Mi Música</span></u></a> | <a href="https://grouvex.github.io/login" style="pointer-events: none"><u style="color: blue"><span style="color: white">Registrar</span></u></a>  <span id="menu"></span>
         </span>
     </mainTop>
-<body>
     <!-- Anuncio -->
     <div id="news"></div>
     <main>
@@ -61,7 +60,7 @@
                 <p style="color: white; font-size: 11px"><span id="ActualizadoDATE"></span></p>
                 <a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@rouvex.com</footer></a>
             </div>
-            <script> // Reemplaza '<your-script-hash>' con el hash de tu script
+            <script>
                 const uTActualizado = 1734710400;
                 actualizarFechas(uTActualizado, "ActualizadoDATE");
             </script>

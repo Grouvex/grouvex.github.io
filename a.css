@@ -1,5 +1,9 @@
-:root {
-    --bg-position: center; /* Variable para la posición de la imagen de fondo */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
 #intro {
@@ -9,15 +13,15 @@
     width: 100%;
     height: 100vh;
     background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/port/La%20Magia%20de%20la%20Estrella%20Polar.jpg);
-    background-size: cover;
-    background-position: var(--bg-position); /* Usa la variable para la posición */
+    background-size: auto;
+    background-position: center;
     background-repeat: no-repeat;
 }
 
 #logo {
-    width: 150px;
+    width: 200px;
     height: auto;
-    animation: slideUp 3s forwards, fadeOut 2s 3s forwards;
+    animation: slideUp 5s forwards, fadeOut 2s 4s forwards;
 }
 
 @keyframes slideUp {

@@ -162,6 +162,12 @@ aside {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
     background-color: rgb(48, 185, 66);
 }
+ hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  height: 5px;
+  width: 100%;
+  }
 /*Theme 1*/
 p.theme1 {
   color: rgb(255, 255, 255);
@@ -226,6 +232,12 @@ aside.theme1 {
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
 }
+ hr.theme1 {
+  border: none;
+  border-top: 1px solid cyan;
+  height: 5px;
+  width: 100%;
+  }
 /*Theme 2*/
 p.theme2 {
   color: rgb(255, 255, 255);
@@ -285,7 +297,12 @@ aside.theme2 {
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
 }
-
+ hr.theme2 {
+  border: none;
+  border-top: 1px solid magenta;
+  height: 5px;
+  width: 100%;
+  }
 /*Theme 3 Space*/
 p.space {
   color: rgb(255, 255, 255);
@@ -357,7 +374,6 @@ aside.space {
     background-size: cover;
     background-repeat: no-repeat;
 }
-
 /*Theme 4 Star Wars*/
 /* Establece el fondo de toda la página a gris */
 p.starwars {
@@ -433,7 +449,12 @@ aside.starwars {
     background-size: cover;
     background-repeat: no-repeat;
 }
-
+ hr.starwars {
+  border: none;
+  height: 10px;
+  width: 100%;
+  background: url('https://img.freepik.com/fotos-premium/fondo-pantalla-planeta-estrellas-nubes-llamado-star-wars_910135-9709.jpg');
+  }
 /*Theme 5 Jurassic World*/
 p.jurassicworld {
   color: rgb(255, 255, 255);

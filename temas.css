@@ -71,7 +71,6 @@ p {
 body {
     height: 100%;
     flex-direction: column;
-    margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-size: cover;
     background-repeat: no-repeat;
@@ -133,7 +132,6 @@ p.theme1 {
 body.theme1 {
     height: 100%;
     flex-direction: column;
-    margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-size: cover;
     background-repeat: no-repeat;
@@ -198,7 +196,6 @@ p.theme2 {
 body.theme2 {
     height: 100%;
     flex-direction: column;
-  margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-size: cover;
     background-repeat: no-repeat;
@@ -258,7 +255,6 @@ p.space {
 /* Establece el fondo de toda la página a gris */
 body.space {
     height: 100%;
-    margin: 0;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-position: center;
@@ -333,7 +329,6 @@ p.starwars {
 body.starwars {
     height: 100%;
     flex-direction: column;
-    margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-position: center;
     background-size: cover;
@@ -409,7 +404,6 @@ p.jurassicworld {
 body.jurassicworld {
     height: 100%;
     flex-direction: column;
-    margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-position: center;
     background-size: cover;
@@ -485,7 +479,6 @@ p.taylorswift {
 body.taylorswift {
     height: 100%;
     flex-direction: column;
-    margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-position: center;
     background-size: cover;
@@ -558,7 +551,6 @@ p.pokemon {
 body.pokemon {
     height: 100%;
     flex-direction: column;
-    margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-position: center;
     background-size: cover;
@@ -635,7 +627,6 @@ body.superheroes {
     height: 100%;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    margin: 0;
     padding: 0;
     background-image: url(https://th.bing.com/th/id/R.6c83f52b1da153957504285959058b46?rik=5kwxZeA0BsJG%2fA&pid=ImgRaw&r=0);
     background-position: center;
@@ -712,7 +703,6 @@ p.thewildrobot {
 body.thewildrobot {
     height: 100%;
     flex-direction: column;
-    margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-position: center;
     background-size: cover;
@@ -734,7 +724,7 @@ main.thewildrobot {
 h1.thewildrobot,h2.thewildrobot,h3.thewildrobot,h4.thewildrobot,h5.thewildrobot,h6.thewildrobot {
   text-align: center;
   color: white;
-  background-image: url(https://th.bing.com/th/id/OIP.fXzET8932QEAPm2_VL9h2wHaEK?w=316&h=180&c=7&r=0&o=5&pid=1.7);
+  background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsx1DJS9a81yuTwitR4oBTxSacXqax7aopQA&s);
  background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -787,7 +777,6 @@ p.naturaleza1 {
 /* Establece el fondo de toda la página a gris */
 body.naturaleza1 {
     height: 100%; /* Cambiado a 100vh para ocupar toda la altura de la ventana */
-    margin: 0; /* Elimina el margen predeterminado del body */
     display: flex; /* Flexbox para alinear contenido si es necesario */
     flex-direction: column; /* Mantiene la dirección del contenido */
     font-family: Arial, sans-serif; 
@@ -864,7 +853,6 @@ p.naturaleza1 {
 /* Establece el fondo de toda la página a gris */
 body.naturaleza2 {
     height: 100%; /* Cambiado a 100vh para ocupar toda la altura de la ventana */
-    margin: 0; /* Elimina el margen predeterminado del body */
     display: flex; /* Flexbox para alinear contenido si es necesario */
     flex-direction: column; /* Mantiene la dirección del contenido */
     font-family: Arial, sans-serif; 
@@ -943,7 +931,6 @@ p.gstudios1 {
 body.gstudios1{
     height: 100%;
     flex-direction: column;
-    margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-position: center;
     background-size: cover;
@@ -1017,7 +1004,6 @@ p.gstudios2 {
 body.gstudios2 {
     height: 100%;
     flex-direction: column;
-    margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-position: center;
     background-size: cover;
@@ -1091,7 +1077,6 @@ p.gstudios3 {
 body.gstudios3 {
     height: 100%;
     flex-direction: column;
-    margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-position: center;
     background-size: cover;
@@ -1165,7 +1150,6 @@ p.gstudios4 {
 body.gstudios4 {
     height: 100%;
     flex-direction: column;
-    margin: 0px;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-position: center;
     background-size: cover;
@@ -1237,7 +1221,6 @@ p.httyd {
 /* Establece el fondo de toda la página a gris */
 body.httyd {
     height: 100%;
-    margin: 0px;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-position: center;

@@ -20,21 +20,21 @@ body, html {
 #logo {
     width: 250px;
     height: auto;
-    animation: slideUp 5s forwards, fadeOut 2s 4s forwards;
+    animation: slideUp 5s forwards, fadeOut 1s 8s forwards;
 }
 
 @keyframes slideUp {
     0% {
         opacity: 0;
-        transform: translateY(50px);
+        transform: translateY(100vh);
     }
     50% {
         opacity: 1;
         transform: translateY(0);
     }
     100% {
-        opacity: 1;
-        transform: translateY(-50px);
+        opacity: 0;
+        transform: translateY(-100vh);
     }
 }
 

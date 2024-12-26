@@ -152,7 +152,7 @@
             spotify: 'https://open.spotify.com/track/2',
             youtube: 'https://www.youtube-nocookie.com/embed/0w7czW9p-SQ',
             background: 'https://grouvex.com/port/El Principe.jpg',
-            startDate: { month: 12, day: 24 }, endDate: { month: 1, day: 7 },
+            startDate: { month: 12, day: 24 }, endDate: { month: 12, day: 31 },
             releaseDate: 1734994800
         },
         {
@@ -432,7 +432,7 @@
             spotify: 'https://open.spotify.com/track/2',
             youtube: '',
             background: 'https://grouvex.com/port/Alpha Version.jpg',
-            startDate: { month: 12, day: 22 }, endDate: { month: 12, day: 29 },
+            startDate: { month: 12, day: 22 }, endDate: { month: 1, day: 5 },
             releaseDate: 1703199600
         },
         {
@@ -446,130 +446,164 @@
             spotify: 'https://open.spotify.com/track/2',
             youtube: '',
             background: 'https://grouvex.com/port/Alpha Version.jpg',
-            startDate: { month: 12, day: 22 }, endDate: { month: 12, day: 29 },
+            startDate: { month: 12, day: 22 }, endDate: { month: 1, day: 5 },
             releaseDate: 1703199600
         }
     ];
-
-            function updateTrackInfo(track) {
-                trackName.textContent = track.name;
-                trackArtist.textContent = track.artist;
-                trackAlbum.textContent = track.album;
-                trackLabel.textContent = `Label: ${track.label}`;
-                trackComposer.textContent = `Compositor: ${track.composer}`;
-                trackProducer.textContent = `Productor: ${track.producer}`;
-                spotifyLink.href = track.spotify;
-                player.style.backgroundImage = `url(${track.background})`;
-                if (track.youtube) { youtubePlayer.src = track.youtube; youtubeVideo.style.display = 'block'; } else { youtubeVideo.style.display = 'none'; }
-            }
-
-            function playTrack(index) {
-        currentTrackIndex = index;
-        audioPlayer.src = `https://grouvex.com/music/${tracks[currentTrackIndex].file}`;
-        updateTrackInfo(tracks[currentTrackIndex]);
-        audioPlayer.play();
-        isPlaying = true;
-        playPauseButton.textContent = '⏸️';
-    }
-
-    function playPause() {
-        if (isPlaying) {
-            audioPlayer.pause();
-            isPlaying = false;
-            playPauseButton.textContent = '▶️';
-        } else {
-            audioPlayer.play();
-            isPlaying = true;
-            playPauseButton.textContent = '⏸️';
-        }
-    }
-
-    function nextTrack() {
-        if (isRandom) {
-            let randomIndex;
-            do {
-                randomIndex = Math.floor(Math.random() * tracks.length);
-            } while (randomIndex === currentTrackIndex);
-            playTrack(randomIndex);
-        } else {
-            if (repeatMode === 1) {
-                playTrack(currentTrackIndex);
-            } else {
-                currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
-                if (currentTrackIndex === 0 && repeatMode === 2) {
-                    playTrack(currentTrackIndex);
-                } else if (currentTrackIndex !== 0 || repeatMode !== 0) {
-                    playTrack(currentTrackIndex);
-                } else {
-                    audioPlayer.pause();
-                    isPlaying = false;
-                    playPauseButton.textContent = '▶️';
+function updateTrackInfo(track) {
+                    trackName.textContent = track.name;
+                    trackArtist.textContent = track.artist;
+                    trackAlbum.textContent = track.album;
+                    trackLabel.textContent = `Label: ${track.label}`;
+                    trackComposer.textContent = `Compositor: ${track.composer}`;
+                    trackProducer.textContent = `Productor: ${track.producer}`;
+                    spotifyLink.href = track.spotify;
+                    player.style.backgroundImage = `url(${track.background})`;
+                    if (track.youtube) {
+                        youtubePlayer.src = track.youtube;
+                        youtubeVideo.style.display = 'block';
+                    } else {
+                        youtubeVideo.style.display = 'none';
+                    }
                 }
-            }
-        }
-    }
 
-    function prevTrack() {
-        currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
-        playTrack(currentTrackIndex);
-    }
+                function playTrack(index) {
+                    currentTrackIndex = index;
+                    audioPlayer.src = `https://grouvex.com/music/${tracks[currentTrackIndex].file}`;
+                    updateTrackInfo(tracks[currentTrackIndex]);
+                    audioPlayer.play();
+                    isPlaying = true;
+                    playPauseButton.textContent = '⏸️';
+                }
 
-    function toggleRandom() {
-        isRandom = !isRandom;
-        randomButton.textContent = isRandom ? '🔀!' : '🔀';
-    }
+                function playPause() {
+                    if (isPlaying) {
+                        audioPlayer.pause();
+                        isPlaying = false;
+                        playPauseButton.textContent = '▶️';
+                    } else {
+                        audioPlayer.play();
+                        isPlaying = true;
+                        playPauseButton.textContent = '⏸️';
+                    }
+                }
 
-    function toggleRepeat() {
-        repeatMode = (repeatMode + 1) % 3;
-        switch (repeatMode) {
-            case 0:
-                repeatButton.textContent = '🔁';
-                break;
-            case 1:
-                repeatButton.textContent = '🔁1';
-                break;
-            case 2:
-                repeatButton.textContent = '🔁2';
-                break;
-        }
-    }
+                function nextTrack() {
+                    do {
+                        currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+                    } while (!isTrackAvailable(tracks[currentTrackIndex]));
+                    playTrack(currentTrackIndex);
+                }
 
-            function updatePlaylistHighlight() { const playlistItems = document.querySelectorAll('#playlist li'); playlistItems.forEach((item, index) => { if (index === currentTrackIndex) { item.classList.add('active'); } else { item.classList.remove('active'); } }); }
-    tracks.forEach((track, index) => { const li = document.createElement('li'); li.textContent = `${track.name} - ${track.artist}`; li.addEventListener('click', () => playTrack(index)); playlist.appendChild(li); });
-    playPauseButton.addEventListener('click', playPause);
-    nextButton.addEventListener('click', nextTrack);
-    prevButton.addEventListener('click', prevTrack);
-    randomButton.addEventListener('click', toggleRandom);
-    repeatButton.addEventListener('click', toggleRepeat);
+                function prevTrack() {
+                    do {
+                        currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+                    } while (!isTrackAvailable(tracks[currentTrackIndex]));
+                    playTrack(currentTrackIndex);
+                }
 
-    audioPlayer.addEventListener('ended', nextTrack);
+                function toggleRandom() {
+                    isRandom = !isRandom;
+                    randomButton.textContent = isRandom ? '🔀!' : '🔀';
+                }
 
-            // Reproducir la primera canción automáticamente al cargar la página
-            if (tracks.length > 0) {
-                playTrack(0);
-            }
+                function toggleRepeat() {
+                    repeatMode = (repeatMode + 1) % 3;
+                    switch (repeatMode) {
+                        case 0:
+                            repeatButton.textContent = '🔁';
+                            break;
+                        case 1:
+                            repeatButton.textContent = '🔁1';
+                            break;
+                        case 2:
+                            repeatButton.textContent = '🔁2';
+                            break;
+                    }
+                }
 
-            // Deshabilitar el clic derecho
-            audioPlayer.addEventListener('contextmenu', function (e) {
-                e.preventDefault();
-            });
-     // Función para comprobar si una canción está en su periodo de reproducción
-     function isTrackAvailable(track) { 
-      const now = new Date(); 
-      const nowUnixTime = Math.floor(now.getTime() / 1000);
-      const nowMonth = now.getMonth() + 1; 
-      const nowDay = now.getDate(); 
-      const startDate = new Date(now.getFullYear(), track.startDate.month - 1, track.startDate.day); 
-      const endDate = new Date(now.getFullYear(), track.endDate.month - 1, track.endDate.day); 
-      return now >= startDate && now <= endDate && nowUnixTime >= track.releaseDate;
-     }
-     // Ejemplo de uso 
-     tracks.forEach(track => {
-      if (isTrackAvailable(track)) {
-       console.log(`Ahora puedes escuchar: ${track.name} de ${track.artist}`); 
-      }
-     })
-   });                 
+                function updatePlaylistHighlight() {
+                    const playlistItems = document.querySelectorAll('#playlist li');
+                    playlistItems.forEach((item, index) => {
+                        if (index === currentTrackIndex) {
+                            item.classList.add('active');
+                        } else {
+                            item.classList.remove('active');
+                        }
+                    });
+                }
+
+                // Función para comprobar si una canción está en su periodo de reproducción
+                function isTrackAvailable(track) { 
+                    const now = new Date(); 
+                    const nowUnixTime = Math.floor(now.getTime() / 1000); // Unix Time actual
+                    const startDate = new Date(now.getFullYear(), track.startDate.month - 1, track.startDate.day); 
+                    const endDate = new Date(now.getFullYear(), track.endDate.month - 1, track.endDate.day); 
+                    return now >= startDate && now <= endDate && nowUnixTime >= track.releaseDate;
+                }
+
+                // Generar la lista de reproducción dinámicamente
+                tracks.forEach((track, index) => {
+                    if (isTrackAvailable(track)) {
+                        const li = document.createElement('li');
+                        li.textContent = `${track.name} - ${track.artist}`;
+                        li.addEventListener('click', () => playTrack(index));
+                        playlist.appendChild(li);
+                    }
+                });
+
+                // Deshabilitar el clic derecho
+                audioPlayer.addEventListener('contextmenu', function (e) {
+                    e.preventDefault();
+                });
+
+                // Reproducir la primera canción disponible automáticamente al cargar la página
+                if (playlist.childNodes.length > 0) {
+                    playTrack(0);
+                }
+
+                playPauseButton.addEventListener('click', playPause);
+                nextButton.addEventListener('click', nextTrack);
+                prevButton.addEventListener('click', prevTrack);
+                randomButton.addEventListener('click', toggleRandom);
+                repeatButton.addEventListener('click', toggleRepeat);
+
+                audioPlayer.addEventListener('ended', nextTrack);
+
+                // Asegurarse de que solo las canciones disponibles se reproduzcan
+                function playNextAvailableTrack() {
+                    do {
+                        currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+                    } while (!isTrackAvailable(tracks[currentTrackIndex]));
+                    playTrack(currentTrackIndex);
+                }
+
+                function playPrevAvailableTrack() {
+                    do {
+                        currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+                    } while (!isTrackAvailable(tracks[currentTrackIndex]));
+                    playTrack(currentTrackIndex);
+                }
+
+                function randomTrack() {
+                    let randomIndex;
+                    do {
+                        randomIndex = Math.floor(Math.random() * tracks.length);
+                    } while (!isTrackAvailable(tracks[randomIndex]));
+                    playTrack(randomIndex);
+                }
+
+                nextButton.addEventListener('click', playNextAvailableTrack);
+                prevButton.addEventListener('click', playPrevAvailableTrack);
+                randomButton.addEventListener('click', randomTrack);
+
+                audioPlayer.addEventListener('ended', playNextAvailableTrack);
+
+                // Reproducir la primera canción disponible automáticamente al cargar la página
+                if (playlist.childNodes.length > 0) {
+                    playTrack(0);
+                }
+            });         
     </script>
     <style>
       #song {display: block;justify-content: center;align-items: center; margin: 0; font-family: Arial, sans-serif;border: 1px;max-width: 100%;max-height: 40px;}

@@ -1525,6 +1525,77 @@ align-content: center;
 mainTop {
     display: grid;
 }
+mainTop.theme1 {
+    display: grid;
+}
+
+mainTop.theme2 {
+    display: grid;
+}
+
+mainTop.space {
+    display: grid;
+}
+
+mainTop.starwars {
+    display: grid;
+}
+
+mainTop.jurassicworld {
+    display: grid;
+}
+
+mainTop.taylorswift {
+    display: grid;
+}
+
+mainTop.superheroes {
+    display: grid;
+}
+
+mainTop.naturaleza1 {
+    display: grid;
+}
+
+mainTop.naturaleza2 {
+    display: grid;
+}
+
+mainTop.naturaleza3 {
+    display: grid;
+}
+
+mainTop.naturaleza4 {
+    display: grid;
+}
+
+mainTop.pokemon {
+    display: grid;
+}
+
+mainTop.thewildrobot {
+    display: grid;
+}
+
+mainTop.httyd {
+    display: grid;
+}
+
+mainTop.gstudios1 {
+    display: grid;
+}
+
+mainTop.gstudios2 {
+    display: grid;
+}
+
+mainTop.gstudios3 {
+    display: grid;
+}
+
+mainTop.gstudios4 {
+    display: grid;
+}
 .cajetin {
    width: 100%;
  } 

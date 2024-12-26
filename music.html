@@ -130,7 +130,7 @@
             spotifyEmbed: 'https://open.spotify.com/embed/album/70YGATq1GybnYLuVxtwbrM?utm_source=generator',
             youtube: 'https://www.youtube-nocookie.com/embed/XV_veUHdWMk',
             background: 'https://grouvex.com/port/La Magia de la Estrella Polar.jpg',
-            startDate: { month: 12, day: 1 }, endDate: { month: 12, day: 23 },
+            startDate: { month: 12, day: 1 }, endDate: { month: 12, day: 26 },
             releaseDate: 1733007600
         },
         {
@@ -145,7 +145,7 @@
             spotifyEmbed: 'https://open.spotify.com/embed/album/70YGATq1GybnYLuVxtwbrM?utm_source=generator',
             youtube: '',
             background: 'https://grouvex.com/port/La Magia de la Estrella Polar.jpg',
-            startDate: { month: 12, day: 1 }, endDate: { month: 12, day: 23 },
+            startDate: { month: 12, day: 1 }, endDate: { month: 12, day: 26 },
             releaseDate: 1733007600
         },
         {
@@ -478,7 +478,7 @@
             releaseDate: 1703199600
         }
     ];
-function updateTrackInfo(track) {
+                function updateTrackInfo(track) {
                     trackName.textContent = track.name;
                     trackArtist.textContent = track.artist;
                     trackAlbum.textContent = track.album;
@@ -569,12 +569,12 @@ function updateTrackInfo(track) {
 
                 // Función para comprobar si una canción está en su periodo de reproducción
                 function isTrackAvailable(track) { 
-                    const now = new Date(); 
-                    const nowUnixTime = Math.floor(now.getTime() / 1000); // Unix Time actual
-                    const startDate = new Date(now.getFullYear(), track.startDate.month - 1, track.startDate.day); 
-                    const endDate = new Date(now.getFullYear(), track.endDate.month - 1, track.endDate.day); 
-                    return now >= startDate && now <= endDate && nowUnixTime >= track.releaseDate;
-                }
+                   const now = new Date(); 
+                   const nowUnixTime = Math.floor(now.getTime() / 1000); // Unix Time actual
+                   const startDate = new Date(now.getFullYear(), track.startDate.month - 1, track.startDate.day, 0, 0, 0); 
+                   const endDate = new Date(now.getFullYear(), track.endDate.month - 1, track.endDate.day, 23, 59, 59); 
+                   return now >= startDate && now <= endDate && nowUnixTime >= track.releaseDate;
+               }
 
                 // Generar la lista de reproducción dinámicamente
                 tracks.forEach((track, index) => {
@@ -658,12 +658,6 @@ audio::controls {display: none !important; }
 #playlist li:hover {background-color: #5813da;}
     </style>
  </main>
- <!-- Publicado por -->
-<div class="tarjeta" style="display: flex;align-items: center; border-radius: 8px;  box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 5px;  padding: 5px;  height: 50px; width: 300px; padding-top: 10px;padding-bottom: 10px">
-<img src="../img/GROUVEX.png" alt="" style="border-radius: 50%; width: 40px;height: 40px;object-fit: cover; margin-right: 10px;"><div>
-<h2 style="margin: 0 0 3px;font-size: 8px">Publicado por:</h2><h2 style="margin: 0 0 2px; padding: 3px;font-size: 11px">Grouvex Studios</h2>
-<p style="color: white; font-size: 10px"><span id="ActualizadoDATE"></span></p><a href="mailto:grouvex.studio@gmail.com" style="color:white"><footer style="font-size: 0.7em; color: white; font-size: 6px;padding:3px">grouvex.studio@gmail.com</footer></a></div></div>
-<script>const uTActualizado = 1734710400; actualizarFechas(uTActualizado, "ActualizadoDATE");</script> 
 <!-- Footer -->
  <div id="footer"></div>
 </body>

@@ -644,11 +644,13 @@
 
                 audioPlayer.addEventListener('ended', playNextAvailableTrack);
                 // Reproducir la primera canción disponible automáticamente al cargar la página
-                if (playlist.childNodes.length > 0) {
-                    const firstTrackIndex = tracks.findIndex(track => isTrackAvailable(track));
-                    if (firstTrackIndex !== -1) {
-                        playTrack(firstTrackIndex);
-                    }
+                if (playlist.childNodes.length > 0) { 
+                 const firstTrackIndex = tracks.findIndex(track => isTrackAvailable(track));
+                 if (firstTrackIndex !== -1) {
+                  playTrack(firstTrackIndex); 
+                 } 
+                  } else { 
+                 const noTrackElement = document.createElement('li'); noTrackElement.textContent = 'No hay ninguna canción disponible'; playlist.appendChild(noTrackElement);
                 }
          function toggleControls(enable) {
            const playPauseButton = document.getElementById('playPause');

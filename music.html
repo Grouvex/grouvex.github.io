@@ -54,7 +54,9 @@
             </div>
             <p id="trackSpotify"><a href="" target="_blank" id="spotifyLink">Escuchar en Spotify</a></p>
         </div>
-        <div id="youtubeVideo" style="display: none;"> <iframe id="youtubePlayer" width="560" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div id="youtubeVideo" style="display: none;"> <iframe id="youtubePlayer" width="100%" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe>
+        </div>
+        <div id="spotifyVideo" style="display: none;"> <iframe style="border-radius:12px" id="spotifyPlayer" width="100%" height="152" frameBorder="0" allowfullscreen="false" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture" loading="lazy"></iframe>
         </div>
         <div id="controls">
             <button id="prev">⏮️</button>
@@ -92,6 +94,8 @@
             const playlist = document.querySelector('#playlist ul');
             const youtubeVideo = document.getElementById('youtubeVideo');
             const youtubePlayer = document.getElementById('youtubePlayer');
+            const spotifyVideo = document.getElementById('spotifyVideo');
+            const spotifyPlayer = document.getElementById('spotifyPlayer');
 
             let currentTrackIndex = 0;
             let isPlaying = false;
@@ -108,6 +112,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/intl-es/track/2swP5ghff8mLwaPeFfhHGP?si=e06c4de03f8c4775',
+            spotifyEmbed: '',
             youtube: '',
             background: 'https://grouvex.com/port/A Parallel Universe.jpg',
             startDate: { month: 12, day: 25 }, endDate: { month: 1, day: 6 },
@@ -121,7 +126,8 @@
             label: 'Grouvex Studios Recording',
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
-            spotify: 'https://open.spotify.com/track/2',
+            spotify: 'https://open.spotify.com/intl-es/album/70YGATq1GybnYLuVxtwbrM?si=K0ezbkmORl-3D-6AuvFDww',
+            spotifyEmbed: 'https://open.spotify.com/embed/album/70YGATq1GybnYLuVxtwbrM?utm_source=generator',
             youtube: 'https://www.youtube-nocookie.com/embed/XV_veUHdWMk',
             background: 'https://grouvex.com/port/La Magia de la Estrella Polar.jpg',
             startDate: { month: 12, day: 1 }, endDate: { month: 12, day: 23 },
@@ -135,7 +141,8 @@
             label: 'Grouvex Studios Recording',
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
-            spotify: 'https://open.spotify.com/track/2',
+            spotify: 'https://open.spotify.com/intl-es/album/70YGATq1GybnYLuVxtwbrM?si=K0ezbkmORl-3D-6AuvFDww',
+            spotifyEmbed: 'https://open.spotify.com/embed/album/70YGATq1GybnYLuVxtwbrM?utm_source=generator',
             youtube: '',
             background: 'https://grouvex.com/port/La Magia de la Estrella Polar.jpg',
             startDate: { month: 12, day: 1 }, endDate: { month: 12, day: 23 },
@@ -149,7 +156,8 @@
             label: 'Grouvex Studios Recording',
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
-            spotify: 'https://open.spotify.com/track/2',
+            spotify: 'https://open.spotify.com/intl-es/album/5s83msHzKVXaIBWYdQr0um?si=aqMtVR5PQ22Lo01XJGXnWw',
+            spotifyEmbed: 'https://open.spotify.com/embed/album/5s83msHzKVXaIBWYdQr0um?utm_source=generator',
             youtube: 'https://www.youtube-nocookie.com/embed/0w7czW9p-SQ',
             background: 'https://grouvex.com/port/El Principe.jpg',
             startDate: { month: 12, day: 24 }, endDate: { month: 12, day: 31 },
@@ -164,6 +172,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/intl-es/track/2nselUEJRkM2WcSt7EPPJk?si=786a70d65533408c',
+            spotifyEmbed: '',
             youtube: 'https://www.youtube-nocookie.com/embed/_cKRVsZhT1g?si=Zxb5jIVhIlMw-_cF',
             background: 'https://grouvex.com/port/Unforgettable Memories.jpg',
             startDate: { month: 1, day: 1 }, endDate: { month: 1, day: 14 },
@@ -192,6 +201,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2',
+            spotifyEmbed: '',
             youtube: '',
             background: 'https://grouvex.com/port/Unstoppable Friendship.jpg',
             startDate: { month: 5, day: 27 }, endDate: { month: 6, day: 10 },
@@ -206,6 +216,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2',
+            spotifyEmbed: '',
             youtube: '',
             background: 'https://grouvex.com/port/The Night Sky.jpg',
             startDate: { month: 1, day: 1 }, endDate: { month: 1, day: 14 },
@@ -220,6 +231,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2',
+            spotifyEmbed: '',
             youtube: '',
             background: 'https://grouvex.com/port/The Night Sky.jpg',
             startDate: { month: 1, day: 1 }, endDate: { month: 1, day: 14 },
@@ -234,6 +246,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2',
+            spotifyEmbed: '',
             youtube: '',
             background: 'https://grouvex.com/port/The Night Sky.jpg',
             startDate: { month: 1, day: 1 }, endDate: { month: 1, day: 14 },
@@ -248,6 +261,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2',
+            spotifyEmbed: '',
             youtube: '',
             background: 'https://grouvex.com/port/The Night Sky.jpg',
             startDate: { month: 1, day: 1 }, endDate: { month: 1, day: 14 },
@@ -262,6 +276,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2',
+            spotifyEmbed: '',
             youtube: '',
             background: 'https://grouvex.com/port/The Night Sky.jpg',
             startDate: { month: 1, day: 1 }, endDate: { month: 1, day: 14 },
@@ -276,6 +291,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2',
+            spotifyEmbed: '',
             youtube: '',
             background: 'https://grouvex.com/port/The Night Sky.jpg',
             startDate: { month: 1, day: 1 }, endDate: { month: 1, day: 14 },
@@ -290,6 +306,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2',
+            spotifyEmbed: '',
             youtube: '',
             background: 'https://grouvex.com/port/The Night Sky.jpg',
             startDate: { month: 1, day: 1 }, endDate: { month: 1, day: 14 },
@@ -304,6 +321,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2',
+            spotifyEmbed: '',
             youtube: 'https://www.youtube.com/embed/0zMrnu_u9wM?si=cabWWLJIuLVWDZ2D',
             background: 'https://grouvex.com/port/The Night Sky.jpg',
             startDate: { month: 1, day: 1 }, endDate: { month: 1, day: 14 },
@@ -318,6 +336,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2',
+            spotifyEmbed: '',
             youtube: '',
             background: 'https://grouvex.com/port/The Night Sky.jpg',
             startDate: { month: 1, day: 1 }, endDate: { month: 1, day: 14 },
@@ -332,6 +351,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2',
+            spotifyEmbed: '',
             youtube: '',
             background: 'https://grouvex.com/port/The Night Sky.jpg',
             startDate: { month: 1, day: 1 }, endDate: { month: 1, day: 14 },
@@ -346,6 +366,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2',
+            spotifyEmbed: '',
             youtube: '',
             background: 'https://grouvex.com/port/The Night Sky.jpg',
             startDate: { month: 1, day: 1 }, endDate: { month: 1, day: 14 },
@@ -360,6 +381,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2',
+            spotifyEmbed: '',
             youtube: '',
             background: 'https://grouvex.com/port/Alpha Version.jpg',
             startDate: { month: 12, day: 22 }, endDate: { month: 1, day: 5 },
@@ -374,6 +396,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2',
+            spotifyEmbed: '',
             youtube: '',
             background: 'https://grouvex.com/port/Alpha Version.jpg',
             startDate: { month: 12, day: 22 }, endDate: { month: 1, day: 5 },
@@ -388,6 +411,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2',
+            spotifyEmbed: '',
             youtube: '',
             background: 'https://grouvex.com/port/Alpha Version.jpg',
             startDate: { month: 12, day: 22 }, endDate: { month: 1, day: 5 },
@@ -402,6 +426,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2',
+            spotifyEmbed: '',
             youtube: '',
             background: 'https://grouvex.com/port/Alpha Version.jpg',
             startDate: { month: 12, day: 22 }, endDate: { month: 1, day: 5 },
@@ -416,6 +441,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2',
+            spotifyEmbed: '',
             youtube: '',
             background: 'https://grouvex.com/port/Alpha Version.jpg',
             startDate: { month: 12, day: 22 }, endDate: { month: 1, day: 5 },
@@ -430,6 +456,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2',
+            spotifyEmbed: '',
             youtube: '',
             background: 'https://grouvex.com/port/Alpha Version.jpg',
             startDate: { month: 12, day: 22 }, endDate: { month: 1, day: 5 },
@@ -444,6 +471,7 @@
             composer: 'Grouvex Studios',
             producer: 'Grouvex Studios',
             spotify: 'https://open.spotify.com/track/2',
+            spotifyEmbed: '',
             youtube: '',
             background: 'https://grouvex.com/port/Alpha Version.jpg',
             startDate: { month: 12, day: 22 }, endDate: { month: 1, day: 5 },
@@ -464,6 +492,12 @@ function updateTrackInfo(track) {
                         youtubeVideo.style.display = 'block';
                     } else {
                         youtubeVideo.style.display = 'none';
+                    }
+                   if (track.spotifyEmbed) {
+                        spotifyPlayer.src = track.spotifyEmbed;
+                        spotifyVideo.style.display = 'block';
+                    } else {
+                        spotifyVideo.style.display = 'none';
                     }
                 }
 
@@ -598,10 +632,12 @@ function updateTrackInfo(track) {
                 randomButton.addEventListener('click', randomTrack);
 
                 audioPlayer.addEventListener('ended', playNextAvailableTrack);
-
                 // Reproducir la primera canción disponible automáticamente al cargar la página
                 if (playlist.childNodes.length > 0) {
-                    playTrack(0);
+                    const firstTrackIndex = tracks.findIndex(track => isTrackAvailable(track));
+                    if (firstTrackIndex !== -1) {
+                        playTrack(firstTrackIndex);
+                    }
                 }
             });         
     </script>

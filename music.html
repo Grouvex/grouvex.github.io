@@ -501,9 +501,10 @@
                         spotifyVideo.style.display = 'none';
                     }
                  document.title = `${track.name} - Grouvex Studios`;
+                 document.description = `Se está reproduciendo ${track.name} del album ${track.album}. El artista ${track.artist} y está compuesta por ${track.composer} y está producida por ${track.producer}. Label: ©${track.label}`;
                 }
               // Función para actualizar el título de la página según el estado de reproducción 
-                function updatePageTitle() { if (audioPlayer.paused || audioPlayer.src === '') { document.title = 'Reproductor de música - Grouvex Studios'; } else { const currentTrack = tracks[currentTrackIndex]; document.title = `${currentTrack.name} - Grouvex Studios`; } } 
+                function updatePageTitle() { if (audioPlayer.paused || audioPlayer.src === '') { document.title = 'Reproductor de música - Grouvex Studios'; document.description = 'Reproductor de música del Grouvex Studios';} else { const currentTrack = tracks[currentTrackIndex]; document.title = `${currentTrack.name} - Grouvex Studios`;  document.description = `Se está reproduciendo ${currentTrack.name} del album ${currentTrack.album}. El artista ${currentTrack.artist} y está compuesta por ${currentTrack.composer} y está producida por ${currentTrack.producer}. Label: ©${currentTrack.label}`;} } 
              // Llamar a la función updatePageTitle() cuando se pausa o reproduce una pista 
                 audioPlayer.addEventListener('play', updatePageTitle); audioPlayer.addEventListener('pause', updatePageTitle); audioPlayer.addEventListener('ended', updatePageTitle); 
             // Asegurar que el título sea correcto al cargar la página

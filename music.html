@@ -499,12 +499,19 @@
                     } else {
                         spotifyVideo.style.display = 'none';
                     }
+                 document.title = `${track.name} - Grouvex Studios`;
                 }
-
+              // Función para actualizar el título de la página según el estado de reproducción 
+                function updatePageTitle() { if (audioPlayer.paused || audioPlayer.src === '') { document.title = 'Reproductor de música - Grouvex Studios'; } else { const currentTrack = tracks[currentTrackIndex]; document.title = `${currentTrack.name} - Grouvex Studios`; } } 
+             // Llamar a la función updatePageTitle() cuando se pausa o reproduce una pista 
+                audioPlayer.addEventListener('play', updatePageTitle); audioPlayer.addEventListener('pause', updatePageTitle); audioPlayer.addEventListener('ended', updatePageTitle); 
+            // Asegurar que el título sea correcto al cargar la página
+                document.addEventListener('DOMContentLoaded', updatePageTitle);
                 function playTrack(index) {
                     currentTrackIndex = index;
-                    audioPlayer.src = `https://grouvex.com/music/${tracks[currentTrackIndex].file}`;
                     updateTrackInfo(tracks[currentTrackIndex]);
+                    if (playPauseButton.hasAttribute('disabled')) { return;}
+                    audioPlayer.src = `https://grouvex.com/music/${tracks[currentTrackIndex].file}`;
                     audioPlayer.play();
                     isPlaying = true;
                     playPauseButton.textContent = '⏸️';
@@ -639,6 +646,29 @@
                         playTrack(firstTrackIndex);
                     }
                 }
+         function toggleControls(enable) {
+           const playPauseButton = document.getElementById('playPause');
+           const prevButton = document.getElementById('prev');
+           const nextButton = document.getElementById('next');
+           const randomButton = document.getElementById('random');
+           const repeatButton = document.getElementById('repeat');
+           
+           if (enable) {
+               playPauseButton.removeAttribute('disabled');
+               prevButton.removeAttribute('disabled');
+               nextButton.removeAttribute('disabled');
+               randomButton.removeAttribute('disabled');
+               repeatButton.removeAttribute('disabled');
+           } else {
+               playPauseButton.setAttribute('disabled', 'true');
+               prevButton.setAttribute('disabled', 'true');
+               nextButton.setAttribute('disabled', 'true');
+               randomButton.setAttribute('disabled', 'true');
+               repeatButton.setAttribute('disabled', 'true');
+               audioPlayer.pause();
+           }
+       }
+       toggleControls(false);
             });         
     </script>
     <style>

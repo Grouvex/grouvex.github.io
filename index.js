@@ -168,3 +168,11 @@ window.onload = function() {
         content.style.display = 'block';
     }, 5000); // Tiempo de la animación total en milisegundos (3s slideUp + 2s fadeOut)
 };
+window.onload = function() {
+function setThemeImage(imageUrl) {
+    document.getElementById('img.mainTop').src = imageUrl;
+}
+
+// Cambia la URL de la imagen aquí
+setThemeImage('https://grouvex.com/img/Grouvex1.png');
+};

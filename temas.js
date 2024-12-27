@@ -2,7 +2,6 @@ window.addEventListener('load', function() {
     // Llama a todas las funciones que quieres ejecutar cuando se carga la página
     checkThemes();
 });
-
 function checkThemes() {
     const date = new Date();
     const month = date.getMonth();
@@ -166,10 +165,3 @@ window.addEventListener('load', function() {
         themeSelect.value = selectedTheme; // Asegúrate de que el menú desplegable muestre el tema correcto
     }
 });
-
-function setThemeImage(imageUrl) {
-    document.getElementById('img.mainTop').src = imageUrl;
-}
-
-// Cambia la URL de la imagen aquí
-setThemeImage('https://grouvex.com/img/Grouvex1.png');

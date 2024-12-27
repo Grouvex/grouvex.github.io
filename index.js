@@ -159,15 +159,12 @@ function googleTranslateElementInit() {
     }, 'google_translate_element');
 }
 
-// Detectar el idioma del navegador del usuario
-//document.addEventListener('DOMContentLoaded', function() {
-//    var userLang = navigator.language || navigator.userLanguage;
-//    var langCode = userLang.split('-')[0]; // Obtener el código del idioma
-
-    // Configurar el idioma detectado en el widget de Google Translate
-    //var translateElement = document.querySelector('.goog-te-combo');
-  //  if (translateElement) {
-  //      translateElement.value = langCode;
-   //     translateElement.dispatchEvent(new Event('change'));
- //   }
-//});
+window.onload = function() {
+    setTimeout(function() {
+        const intro = document.getElementById('intro');
+        intro.style.display = 'none';
+        
+        const content = document.getElementById('content');
+        content.style.display = 'block';
+    }, 5000); // Tiempo de la animación total en milisegundos (3s slideUp + 2s fadeOut)
+};

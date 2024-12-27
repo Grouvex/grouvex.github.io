@@ -1523,13 +1523,16 @@ align-content: center;
 }
 @media (max-width: 768px) {
 mainTop {
+    justify-items: center;
     display: grid;
 }
 mainTop.theme1 {
+    justify-items: center;
     display: grid;
 }
 
 mainTop.theme2 {
+    justify-items: center;
     display: grid;
 }
 
@@ -1538,62 +1541,77 @@ mainTop.space {
 }
 
 mainTop.starwars {
+    justify-items: center;
     display: grid;
 }
 
 mainTop.jurassicworld {
+    justify-items: center;
     display: grid;
 }
 
 mainTop.taylorswift {
+    justify-items: center;
     display: grid;
 }
 
 mainTop.superheroes {
+    justify-items: center;
     display: grid;
 }
 
 mainTop.naturaleza1 {
+    justify-items: center;
     display: grid;
 }
 
 mainTop.naturaleza2 {
+    justify-items: center;
     display: grid;
 }
 
 mainTop.naturaleza3 {
+    justify-items: center;
     display: grid;
 }
 
 mainTop.naturaleza4 {
+    justify-items: center;
     display: grid;
 }
 
 mainTop.pokemon {
+    justify-items: center;
     display: grid;
 }
 
 mainTop.thewildrobot {
+    justify-items: center;
     display: grid;
 }
 
 mainTop.httyd {
+    justify-items: center;
     display: grid;
 }
 
 mainTop.gstudios1 {
+    justify-items: center;
     display: grid;
 }
 
 mainTop.gstudios2 {
+    justify-items: center;
     display: grid;
 }
 
 mainTop.gstudios3 {
+    justify-items: center;
     display: grid;
 }
 
 mainTop.gstudios4 {
+    justify-items: center;
     display: grid;
 }
 .cajetin {

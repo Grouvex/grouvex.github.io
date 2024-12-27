@@ -4,10 +4,25 @@ window.addEventListener('load', function() {
     sol();
     leaf();
     nieve();
-    aniversario()
-googleTranslateElementInit()
+    aniversario();
+    googleTranslateElementInit();
+    setThemeImage(imageUrl);
+    setTimeout() 
 });
 
+function setTimeout() {
+        const intro = document.getElementById('intro');
+        intro.style.display = 'none';
+        
+        const content = document.getElementById('content');
+        content.style.display = 'block';
+    }, 5000); // Tiempo de la animación total en milisegundos (3s slideUp + 2s fadeOut)
+function setThemeImage(imageUrl) {
+    document.getElementById('img.mainTop').src = imageUrl;
+}
+
+// Cambia la URL de la imagen aquí
+setThemeImage('https://grouvex.com/img/Grouvex1.png');
 
 function flower() {
   var today = new Date();
@@ -158,21 +173,3 @@ function googleTranslateElementInit() {
         layout: google.translate.TranslateElement.InlineLayout.SIMPLE
     }, 'google_translate_element');
 }
-
-window.onload = function() {
-    setTimeout(function() {
-        const intro = document.getElementById('intro');
-        intro.style.display = 'none';
-        
-        const content = document.getElementById('content');
-        content.style.display = 'block';
-    }, 5000); // Tiempo de la animación total en milisegundos (3s slideUp + 2s fadeOut)
-};
-window.onload = function() {
-function setThemeImage(imageUrl) {
-    document.getElementById('img.mainTop').src = imageUrl;
-}
-
-// Cambia la URL de la imagen aquí
-setThemeImage('https://grouvex.com/img/Grouvex1.png');
-};

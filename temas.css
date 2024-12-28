@@ -140,8 +140,8 @@ mainTop {
     align-items: center;
 }
 .img-container {
-  width: 100vh; /* Puedes ajustar el tamaño según tus necesidades */
-  height: 70px; /* Ajusta la altura según sea necesario */
+  width: 90vh; /* Puedes ajustar el tamaño según tus necesidades */
+  height: 80px; /* Ajusta la altura según sea necesario */
   background-image: url('https://grouvex.github.io/img/Grouvex1.png');
   background-size: contain;
   background-repeat: no-repeat;

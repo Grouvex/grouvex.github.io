@@ -6,19 +6,23 @@ window.addEventListener('load', function() {
     nieve();
     aniversario();
     googleTranslateElementInit();
-    setThemeImage(imageUrl);
-    setTimeout() 
+    setThemeImage('https://grouvex.com/img/Grouvex1.png');
+    startTimeout();
 });
 
-function setTimeout() {
+// Renombrar la función a startTimeout
+function startTimeout() {
+    setTimeout(function() {
         const intro = document.getElementById('intro');
         intro.style.display = 'none';
         
         const content = document.getElementById('content');
         content.style.display = 'block';
     }, 5000); // Tiempo de la animación total en milisegundos (3s slideUp + 2s fadeOut)
+}
+
 function setThemeImage(imageUrl) {
-    document.getElementById('img.mainTop').src = imageUrl;
+    document.querySelector('.mainTop').src = imageUrl;
 }
 
 // Cambia la URL de la imagen aquí
@@ -43,6 +47,7 @@ function flower() {
     }
   }
 }
+
 function sol() {
   var today = new Date();
   var month = today.getMonth();
@@ -62,6 +67,7 @@ function sol() {
     }
   }
 }
+
 function leaf() {
   var today = new Date();
   var month = today.getMonth();
@@ -122,54 +128,16 @@ function aniversario() {
   }
 }
 
-var videos = [
-            {id: 'x09D-9ZpF_o', title: 'Título 1', description: 'Descripción 1', credits: 'Créditos 1'},
-            {id: 'x09D-9ZpF_o', title: 'Título 2', description: 'Descripción 2', credits: 'Créditos 2'},
-            {id: 'x09D-9ZpF_o', title: 'Título 2', description: 'Descripción 2', credits: 'Créditos 2'},
-            {id: 'x09D-9ZpF_o', title: 'Título 2', description: 'Descripción 2', credits: 'Créditos 2'},
-            {id: 'x09D-9ZpF_o', title: 'Título 1', description: 'Descripción 1', credits: 'Créditos 1'},
-            {id: 'x09D-9ZpF_o', title: 'Título 2', description: 'Descripción 2', credits: 'Créditos 2'},
-            {id: 'x09D-9ZpF_o', title: 'Título 2', description: 'Descripción 2', credits: 'Créditos 2'},
-            {id: 'x09D-9ZpF_o', title: 'Título 2', description: 'Descripción 2', credits: 'Créditos 2'},
-            // Añade más videos aquí
-        ];
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+};
 
-        var carousel = document.getElementById('videoCarousel');
-        var modal = document.getElementById('modal');
-        var modalContent = document.getElementById('modalContent');
-
-        videos.forEach(function(video) {
-            var div = document.createElement('div');
-            div.className = 'video';
-            div.innerHTML = `
-                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${video.id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                <section> 
-                    <h2>${video.title}</h2>
-                    <p>${video.description}</p>
-                    <div class="credits"><strong>Créditos:</strong> ${video.credits}</div>
-                </section> 
-            `;
-            div.onclick = function() {
-                modal.style.display = "block";
-                modalContent.innerHTML = `
-                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${video.id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    <h2>${video.title}</h2>
-                    <p>${video.description}</p>
-                    <div class="credits"><strong>Créditos:</strong> ${video.credits}</div>
-                `;
-            };
-            carousel.appendChild(div);
-        });
-
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        };
 function googleTranslateElementInit() {
-    new google.translate.TranslateElement({
-        pageLanguage: 'es',
-        includedLanguages: 'es,en,fr,de,it,pt,zh-CN,ja,ko,ru,ar',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-    }, 'google_translate_element');
-}
+  new google.translate.TranslateElement({
+    pageLanguage: 'es',
+    includedLanguages: 'es,en,fr,de,it,pt,zh-CN,ja,ko,ru,ar',
+    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+  }, 'google_translate_element');
+         }

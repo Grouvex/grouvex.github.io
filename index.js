@@ -7,22 +7,10 @@ window.addEventListener('load', function() {
     aniversario();
     googleTranslateElementInit();
     setThemeImage('https://grouvex.com/img/Grouvex1.png');
-    startTimeout();
 });
 
-// Renombrar la función a startTimeout
-function startTimeout() {
-    setTimeout(function() {
-        const intro = document.getElementById('intro');
-        intro.style.display = 'none';
-        
-        const content = document.getElementById('content');
-        content.style.display = 'block';
-    }, 5000); // Tiempo de la animación total en milisegundos (3s slideUp + 2s fadeOut)
-}
-
 function setThemeImage(imageUrl) {
-    document.querySelector('.mainTop').src = imageUrl;
+    document.querySelector('img-mainTop').src = imageUrl;
 }
 
 // Cambia la URL de la imagen aquí

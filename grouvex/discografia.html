@@ -40,7 +40,7 @@
         });
     </script>
     <script src="//www.youtube.com/player_api"></script><script src="https://www.youtube.com/iframe_api"></script>
-    <script src="../index.js"></script><script src="../time.js"></script><script src="../temas.js"></script><script src="../abc.js"></script>
+    <script src="../index.js"></script><script src="../time.js"></script><script src="../abc.js"></script>
 </head>
 <mainTop>
     <span style="display: block;font-family: Times New Roman; sans-serif;">
@@ -566,15 +566,12 @@
         actualizarFechas(1735689600, "f1_3")
         actualizarFechas(1707523200, "f1_2")
         actualizarFechas(1703203200, "f1_1")
-        const marcasDeTiempo = [1703203200, 1707523200, 1707523200];
-// NO tocar
- function cambiarOrden() {if(document.getElementById('ordenSelector').value == 'ascT') {marcasDeTiempo.sort((a, b) => b - a);}if(document.getElementById('ordenSelector').value == 'desT') {marcasDeTiempo.sort((a, b) => a - b);}const cajetinesContainer = document.querySelector('.cajetines');marcasDeTiempo.forEach((uT) => {const cajetin = document.querySelector(`[data-ut="${uT}"]`);cajetinesContainer.appendChild(cajetin);});}
       } else if (seccion === 'ep') {
         contenido.innerHTML = `
 <h2>Reproducción Extendida (EP)</h2>
   <!-- Título -->
  <article>
-  <select class="orden-button" id="ordenSelector" onchange="cambiarOrden()" style="margin:5px;margin-left:0px">
+  <select class="orden-button" id="ordenSelectorEP" onchange="cambiarOrdenEP()" style="margin:5px;margin-left:0px">
         <option value="" disabled selected>Order</option>
         <option value="ascT">⬇ to ⬆</option>
         <option value="desT">⬆ to ⬇</option>
@@ -619,7 +616,7 @@
 <a href="the_life" class="cajetin" data-ut="1699660800">   
       <img src="../port/The Life.jpg" alt="" style="width:300px">
       <p class="cajetin-fechas"><span id="f1_1"></span></p>
-      <p class="cajetin-titulo">The Life</p>
+            <p class="cajetin-titulo">The Life</p>
       <p class="cajetin-footer">©Grouvex Studios Recording</p>
      </a>
     </div>
@@ -631,43 +628,77 @@
         actualizarFechas(1704067200, "f1_4")
         actualizarFechas(1703203200, "f1_3")
         actualizarFechas(1700784000, "f1_2")
-        actualizarFechas(1727308800, "f1_5")
         actualizarFechas(1699660800, "f1_1")
-        const marcasDeTiempo = [1699660800, 1727308800, 1700784000, uT4, uT5, uT6];
-// NO tocar
-function cambiarOrdenEP() { ordenarElementos('ordenSelector', '.cajetines'); }
-document.getElementById('ordenSelectorEP').addEventListener('change', cambiarOrdenEP); 
       }
+    }
+
+    function cambiarOrden() {
+      const selector = document.getElementById('ordenSelector');
+      const orden = selector.value;
+      const cajetinesContainer = document.querySelector('.cajetines');
+      const cajetines = document.querySelectorAll('.cajetin');
+
+      // Convertir los atributos data-ut a números para una comparación numérica
+      const elementosConUT = Array.from(cajetines).map(cajetin => {
+        return {
+          elemento: cajetin,
+          uT: parseInt(cajetin.dataset.ut)
+        };
+      });
+
+      // Ordenar los elementos según el valor de uT y el orden seleccionado
+      elementosConUT.sort((a, b) => {
+        if (orden === 'ascT') {
+          return a.uT - b.uT;
+        } else if (orden === 'desT') {
+          return b.uT - a.uT;
+        }
+        return 0; // No ordenar si no se seleccionó ninguna opción
+      });
+
+      // Vaciar el contenedor y agregar los elementos ordenados
+      cajetinesContainer.innerHTML = '';
+      elementosConUT.forEach(elemento => {
+        cajetinesContainer.appendChild(elemento.elemento);
+      });
+    }
+
+    function cambiarOrdenEP() {
+      const selector = document.getElementById('ordenSelectorEP');
+      const orden = selector.value;
+      const cajetinesContainer = document.querySelector('.cajetines');
+      const cajetines = document.querySelectorAll('.cajetin');
+
+      // Convertir los atributos data-ut a números para una comparación numérica
+      const elementosConUT = Array.from(cajetines).map(cajetin => {
+        return {
+          elemento: cajetin,
+          uT: parseInt(cajetin.dataset.ut)
+        };
+      });
+
+      // Ordenar los elementos según el valor de uT y el orden seleccionado
+      elementosConUT.sort((a, b) => {
+        if (orden === 'ascT') {
+          return a.uT - b.uT;
+        } else if (orden === 'desT') {
+          return b.uT - a.uT;
+        }
+        return 0; // No ordenar si no se seleccionó ninguna opción
+      });
+
+      // Vaciar el contenedor y agregar los elementos ordenados
+      cajetinesContainer.innerHTML = '';
+      elementosConUT.forEach(elemento => {
+        cajetinesContainer.appendChild(elemento.elemento);
+      });
     }
   </script>
 </main>
 </body>
 <div id="footer"></div>
- <style>
-  #goTopBtn {
-    position: fixed;
-    bottom: 15px;
-    right: 8px;
-    width: 8vw; /* Proporcional a la pantalla */
-    height: 8vw; /* Proporcional a la pantalla */
-    background-color: transparent;
-    border: 2px solid transparent;
-    border-radius: 50%;
-    cursor: pointer;
-  /* font-size: 15px;  Proporcional a la pantalla */
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
-#goTopBtn:hover {
-    border-color: cyan;
-}
- </style>
- <script>
-     // ... (resto del código)
-
+<script src="../time.js"></script>
+<script>
 // Función mejorada para actualizar fechas y ordenar elementos
 function actualizarFechas(uT, elementoId) {
   const f = new Date(uT * 1000).toUTCString();
@@ -688,38 +719,6 @@ function actualizarFechas(uT, elementoId) {
     document.getElementById(elementoId).textContent = `${f} ¦ ${f1}`;
   }
 }
-
-// Función de ordenamiento mejorada
-function cambiarOrden() {const selector = document.getElementById('ordenSelector');
-  const orden = selector.value;
-  const cajetinesContainer = document.querySelector('.cajetines');
-  const cajetines = document.querySelectorAll('.cajetin');
-  const elementos = document.querySelectorAll(`${contenedorClase} .cajetin`);
-
-  // Convertir los atributos data-ut a números para una comparación numérica
-  const elementosConUT = Array.from(cajetines).map(cajetin => {
-    return {
-      elemento: cajetin,
-      uT: parseInt(cajetin.dataset.ut)
-    };
-  });
-
-  // Ordenar los elementos según el valor de uT y el orden seleccionado
-  elementosConUT.sort((a, b) => {
-    if (orden === 'ascT') {
-      return a.uT - b.uT;
-    } else if (orden === 'desT') {
-      return b.uT - a.uT;
-    }
-    return 0; // No ordenar si no se seleccionó ninguna opción
-  });
-
-  // Vaciar el contenedor y agregar los elementos ordenados
-  cajetinesContainer.innerHTML = '';
-  elementosConUT.forEach(elemento => {
-    cajetinesContainer.appendChild(elemento.elemento);
-  });
-}
- </script>
+</script>
 <button id="goTopBtn" onclick="scrollToTop()">↑ Top</button>
 </html>

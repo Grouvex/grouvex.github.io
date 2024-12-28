@@ -6,15 +6,7 @@ window.addEventListener('load', function() {
     nieve();
     aniversario();
     googleTranslateElementInit();
-    setThemeImage('https://grouvex.com/img/Grouvex1.png');
 });
-
-function setThemeImage(imageUrl) {
-    document.querySelector('img-mainTop').src = imageUrl;
-}
-
-// Cambia la URL de la imagen aquí
-setThemeImage('https://grouvex.com/img/Grouvex1.png');
 
 function flower() {
   var today = new Date();

@@ -71,7 +71,7 @@ authForm.addEventListener('submit', (e) => {
       .then((userCredential) => {
         console.log("Usuario registrado:", userCredential.user.email);
         alert('Usuario registrado: ' + userCredential.user.email);
-        location.reload();
+        window.history.back();
       })
       .catch((error) => {
         console.error("Error al registrar usuario:", error.message);
@@ -89,7 +89,7 @@ googleLoginBtn.addEventListener('click', function() {
       console.log("Usuario inició sesión con Google:", user.email);
       checkAccess(user.uid);
       alert('Usuario inició sesión: ' + user.email);
-      location.reload();
+      window.history.back();
     })
     .catch((error) => {
       console.error("Error al iniciar sesión con Google:", error.message);
@@ -109,7 +109,7 @@ emailLoginBtn.addEventListener('click', function() {
       console.log("Usuario inició sesión:", user.email);
       checkAccess(user.uid);
       alert('Usuario inició sesión: ' + user.email);
-      location.reload();
+      window.history.back();
     })
     .catch((error) => {
       console.error("Error al iniciar sesión con Email/Password:", error.message);

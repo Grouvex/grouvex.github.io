@@ -16,6 +16,21 @@ var auth = firebase.auth();
 var database = firebase.database();
 
 console.log("Firebase inicializado correctamente");
+// Verificar si el usuario está autenticado
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    console.log("Usuario autenticado:", user.email);
+    checkAccess(user.uid);
+    document.getElementById('auth-container').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+    document.getElementById('logoutBtn').style.display = 'block';
+  } else {
+    console.log("Usuario no autenticado");
+    document.getElementById('auth-container').style.display = 'block';
+    document.getElementById('content').style.display = 'none';
+    document.getElementById('logoutBtn').style.display = 'none';
+  }
+});
 
 const authForm = document.getElementById('authForm');
 const formTitle = document.getElementById('formTitle');
@@ -148,21 +163,6 @@ document.getElementById('resetPasswordBtn').addEventListener('click', () => {
   }
 });
 
-// Verificar si el usuario está autenticado
-auth.onAuthStateChanged((user) => {
-  if (user) {
-    console.log("Usuario autenticado:", user.email);
-    checkAccess(user.uid);
-    document.getElementById('auth-container').style.display = 'none';
-    document.getElementById('content').style.display = 'block';
-    document.getElementById('logoutBtn').style.display = 'block';
-  } else {
-    console.log("Usuario no autenticado");
-    document.getElementById('auth-container').style.display = 'block';
-    document.getElementById('content').style.display = 'none';
-    document.getElementById('logoutBtn').style.display = 'none';
-  }
-});
 
 // Función para verificar acceso (debes definir esta función según tus necesidades)
 function checkAccess(uid) {

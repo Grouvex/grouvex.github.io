@@ -137,6 +137,7 @@ mainTop {
     padding: 10px;
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
     background: #000000;
+    align-items: center;
 }
 .img-container {
   width: 100vh; /* Puedes ajustar el tamaño según tus necesidades */
@@ -198,6 +199,7 @@ main.theme1 {
     color: white;
     margin-top: 30px;
     background: radial-gradient(circle, red, rgb(99, 99, 168), black);
+    align-items: center;
 }
 
 h1.theme1,h2.theme1,h3.theme1,h4.theme1,h5.theme1,h6.theme1 {
@@ -212,6 +214,7 @@ mainTop.theme1 {
     display: flex;
     padding: 10px;
     background: linear-gradient(45deg, red, white, blue);
+    align-items: center;
 }
 .avatar1.theme1 {
     width: 220px;
@@ -278,6 +281,7 @@ h1.theme2,h2.theme2,h3.theme2,h4.theme2,h5.theme2,h6.theme2 {
 mainTop.theme2 {
     justify-self: center;
     align-self: center;
+    align-items: center;
     display: flex;
     padding: 10px;
     background: linear-gradient(45deg, green, yellow, blue, red, pink, cyan);
@@ -349,6 +353,7 @@ h1.space,h2.space,h3.space,h4.space,h5.space,h6.space {
 mainTop.space {
     justify-self: center;
     align-self: center;
+    align-items: center;
     display: flex;
     padding: 10px;
     background-image: url(https://live.staticflickr.com/7060/6971643495_05dc317572_b.jpg);
@@ -423,6 +428,7 @@ h1.starwars,h2.starwars,h3.starwars,h4.starwars,h5.starwars,h6.starwars {
 mainTop.starwars {
     justify-self: center;
     align-self: center;
+    align-items: center;
     display: flex;
     padding: 10px;
     background-image: url(https://images.squarespace-cdn.com/content/v1/531630f6e4b0fa5080a5596f/1845bb78-5fb1-4250-a2b9-e959c995cef9/Star+Wars+v2.jpg);
@@ -503,6 +509,7 @@ h1.jurassicworld,h2.jurassicworld,h3.jurassicworld,h4.jurassicworld,h5.jurassicw
 mainTop.jurassicworld {
     justify-self: center;
     align-self: center;
+    align-items: center;
     display: flex;
     padding: 10px;
     background-image: url(https://th.bing.com/th/id/OIP.TJK__-FIvQRNVUIPkvJQ9QHaEd);
@@ -578,6 +585,7 @@ h1.taylorswift,h2.taylorswift,h3.taylorswift,h4.taylorswift,h5.taylorswift,h6.ta
 mainTop.taylorswift {
     justify-self: center;
     align-self: center;
+    align-items: center;
     display: flex;
     padding: 10px;
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgbFt-ngiiBOWghZHp8cO2TbaIPic31Wv6Qg&s);
@@ -653,6 +661,7 @@ h1.pokemon,h2.pokemon,h3.pokemon,h4.pokemon,h5.pokemon,h6.pokemon {
 mainTop.pokemon {
     justify-self: center;
     align-self: center;
+    align-items: center;
     display: flex;
     padding: 10px;
     background-image: url(https://th.bing.com/th/id/OIP.JSYCbRX-KusrVVSgeYcOpQHaEK?w=297&h=180&c=7&r=0&o=5&pid=1.7);
@@ -729,6 +738,7 @@ h1.superheroes,h2.superheroes,h3.superheroes,h4.superheroes,h5.superheroes,h6.su
 mainTop.superheroes {
     justify-self: center;
     align-self: center;
+    align-items: center;
     display: flex;
     padding: 10px;
     background-image: url(https://cdn2.mediotiempo.com/uploads/media/2019/05/05/avengers-internet.jpg);
@@ -807,6 +817,7 @@ h1.thewildrobot,h2.thewildrobot,h3.thewildrobot,h4.thewildrobot,h5.thewildrobot,
 mainTop.thewildrobot {
     justify-self: center;
     align-self: center;
+    align-items: center;
     display: flex;
     padding: 10px;
     background-image: url(https://televitos.com/wp-content/uploads/2024/09/RobotSalvaje_01-1.webp);
@@ -883,6 +894,7 @@ h1.naturaleza1,h2.naturaleza1,h3.naturaleza1,h4.naturaleza1,h5.naturaleza1,h6.na
 mainTop.naturaleza1 {
     justify-self: center;
     align-self: center;
+    align-items: center;
     display: flex;
     padding: 10px;
     background-image: url(https://th.bing.com/th/id/OIP.T5PqdU-B6jYYqzBPelW2EwHaFj?rs=1&pid=ImgDetMain);
@@ -960,6 +972,7 @@ h1.naturaleza2,h2.naturaleza2,h3.naturaleza2,h4.naturaleza2,h5.naturaleza2,h6.na
 mainTop.naturaleza2 {
     justify-self: center;
     align-self: center;
+    align-items: center;
     display: flex;
     padding: 10px;
     background-image: url(https://th.bing.com/th/id/OIP.aoYdHlS-eY68KaN3ZqXipQHaFB?rs=1&pid=ImgDetMain);
@@ -1037,6 +1050,7 @@ h1.gstudios1,h2.gstudios1,h3.gstudios1,h4.gstudios1,h5.gstudios1,h6.gstudios1 {
 mainTop.gstudios1 {
     justify-self: center;
     align-self: center;
+    align-items: center;
     background-color: rgba(0, 0, 0, 0);
     display: flex;
     padding: 10px;
@@ -1111,6 +1125,7 @@ h1.gstudios2,h2.gstudios2,h3.gstudios2,h4.gstudios2,h5.gstudios2,h6.gstudios2 {
 mainTop.gstudios2 {
     justify-self: center;    
     align-self: center;
+    align-items: center;
     background-color: rgba(0, 0, 0, 0);
     display: flex;
     padding: 10px;
@@ -1185,6 +1200,7 @@ h1.gstudios3,h2.gstudios3,h3.gstudios3,h4.gstudios3,h5.gstudios3,h6.gstudios3 {
 mainTop.gstudios3 {
     justify-self: center;     
     align-self: center;
+    align-items: center;
     background-color: rgba(0, 0, 0, 0);
     display: flex;
     padding: 10px;
@@ -1259,6 +1275,7 @@ h1.gstudios4,h2.gstudios4,h3.gstudios4,h4.gstudios4,h5.gstudios4,h6.gstudios4 {
 mainTop.gstudios4 {
     justify-self: center;     
     align-self: center;
+    align-items: center;
     background-color: rgba(0, 0, 0, 0);
     display: flex;
     padding: 10px;
@@ -1332,6 +1349,7 @@ h1.httyd,h2.httyd,h3.httyd,h4.httyd,h5.httyd,h6.httyd {
 mainTop.httyd {
     justify-self: center;     
     align-self: center;
+    align-items: center;
     display: flex;
     padding: 10px;
     background-image: url(https://th.bing.com/th/id/OIP.GSPiB_i4DFW__QygF3wa_wHaEK?dpr=1,9&pid=ImgDetMain&PC=EMMX01);
@@ -1546,113 +1564,114 @@ align-content: center;
 @media (max-width: 768px) {
 mainTop {
     justify-items: center;
-    align-items: center;
+    justify-content: normal;
     display: grid;
 }
 mainTop.theme1 {
     justify-items: center;
-    align-items: center;
+    justify-content: normal;
     display: grid;
 }
 
 mainTop.theme2 {
     justify-items: center;
-    align-items: center;
+    justify-content: normal;
     display: grid;
 }
 
 mainTop.space {
     justify-items: center;
-    align-items: center;
+    justify-content: normal;
     display: grid;
 }
 
 mainTop.starwars {
     justify-items: center;
+    justify-content: normal;
     display: grid;
 }
 
 mainTop.jurassicworld {
     justify-items: center;
-    align-items: center;
+    justify-content: normal;
     display: grid;
 }
 
 mainTop.taylorswift {
     justify-items: center;
-    align-items: center;
+    justify-content: normal;
     display: grid;
 }
 
 mainTop.superheroes {
     justify-items: center;
-    align-items: center;
+    justify-content: normal;
     display: grid;
 }
 
 mainTop.naturaleza1 {
     justify-items: center;
-    align-items: center;
+    justify-content: normal;
     display: grid;
 }
 
 mainTop.naturaleza2 {
     justify-items: center;
-    align-items: center;
+    justify-content: normal;
     display: grid;
 }
 
 mainTop.naturaleza3 {
     justify-items: center;
-    align-items: center;
+    justify-content: normal;
     display: grid;
 }
 
 mainTop.naturaleza4 {
     justify-items: center;
-    align-items: center;
+    justify-content: normal;
     display: grid;
 }
 
 mainTop.pokemon {
     justify-items: center;
-    align-items: center;
+    justify-content: normal;
     display: grid;
 }
 
 mainTop.thewildrobot {
     justify-items: center;
-    align-items: center;
+    justify-content: normal;
     display: grid;
 }
 
 mainTop.httyd {
     justify-items: center;
-    align-items: center;
+    justify-content: normal;
     display: grid;
 }
 
 mainTop.gstudios1 {
     justify-items: center;
-    align-items: center;
+    justify-content: normal;
     display: grid;
 }
 
 mainTop.gstudios2 {
     justify-items: center;
-    align-items: center;
+    justify-content: normal;
     display: grid;
 }
 
 mainTop.gstudios3 {
     justify-items: center;
-    align-items: center;
+    justify-content: normal;
     display: grid;
 }
 
 mainTop.gstudios4 {
     justify-items: center;
-    align-items: center;
+    justify-content: normal;
     display: grid;
 }
 .cajetin {

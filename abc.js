@@ -21,14 +21,30 @@ auth.onAuthStateChanged((user) => {
   if (user) {
     console.log("Usuario autenticado:", user.email);
     checkAccess(user.uid);
-    document.getElementById('auth-container').style.display = 'none';
-    document.getElementById('content').style.display = 'block';
-    document.getElementById('logoutBtn').style.display = 'block';
+    const authContainer = document.getElementById('auth-container');
+    const content = document.getElementById('content');
+    const logoutBtn = document.getElementById('logoutBtn');
+    
+    if (authContainer && content && logoutBtn) {
+      authContainer.style.display = 'none';
+      content.style.display = 'block';
+      logoutBtn.style.display = 'block';
+    } else {
+      console.error("Error: Uno o más elementos del DOM no se encontraron");
+    }
   } else {
     console.log("Usuario no autenticado");
-    document.getElementById('auth-container').style.display = 'block';
-    document.getElementById('content').style.display = 'none';
-    document.getElementById('logoutBtn').style.display = 'none';
+    const authContainer = document.getElementById('auth-container');
+    const content = document.getElementById('content');
+    const logoutBtn = document.getElementById('logoutBtn');
+    
+    if (authContainer && content && logoutBtn) {
+      authContainer.style.display = 'block';
+      content.style.display = 'none';
+      logoutBtn.style.display = 'none';
+    } else {
+      console.error("Error: Uno o más elementos del DOM no se encontraron");
+    }
   }
 });
 
@@ -47,122 +63,135 @@ if (authForm && formTitle && authButton && emailLoginBtn && googleLoginBtn && to
 }
 
 // Toggle entre inicio de sesión y registro
-toggleButton.addEventListener('click', () => {
-  isLogin = !isLogin;
-  if (isLogin) {
-    formTitle.textContent = 'Inicio de Sesión';
-    authButton.textContent = 'Iniciar Sesión';
-    emailLoginBtn.textContent = 'Iniciar Sesión con Email';
-    googleLoginBtn.textContent = 'Iniciar Sesión con Google';
-    toggleButton.textContent = '¿No tienes cuenta? Regístrate';
-  } else {
-    formTitle.textContent = 'Registro';
-    authButton.textContent = 'Registrar';
-    toggleButton.textContent = '¿Ya tienes cuenta? Inicia Sesión';
-  }
-  console.log("Modo cambiado a", isLogin ? "Inicio de Sesión" : "Registro");
-});
+if (toggleButton) {
+  toggleButton.addEventListener('click', () => {
+    isLogin = !isLogin;
+    if (isLogin) {
+      formTitle.textContent = 'Inicio de Sesión';
+      authButton.textContent = 'Iniciar Sesión';
+      emailLoginBtn.textContent = 'Iniciar Sesión con Email';
+      googleLoginBtn.textContent = 'Iniciar Sesión con Google';
+      toggleButton.textContent = '¿No tienes cuenta? Regístrate';
+    } else {
+      formTitle.textContent = 'Registro';
+      authButton.textContent = 'Registrar';
+      toggleButton.textContent = '¿Ya tienes cuenta? Inicia Sesión';
+    }
+    console.log("Modo cambiado a", isLogin ? "Inicio de Sesión" : "Registro");
+  });
+}
 
 // Manejo del formulario de autenticación
-authForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const email = document.getElementById('authEmail').value;
-  const password = document.getElementById('authPassword').value;
-  console.log("Formulario enviado, email:", email);
+if (authForm) {
+  authForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('authEmail').value;
+    const password = document.getElementById('authPassword').value;
+    console.log("Formulario enviado, email:", email);
 
-  if (isLogin) {
-    auth.signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        console.log("Usuario inició sesión:", userCredential.user.email);
-        alert('Usuario inició sesión: ' + userCredential.user.email);
-        window.history.back();
-      })
-      .catch((error) => {
-        console.error("Error al iniciar sesión:", error.message);
-        alert('Error al iniciar sesión: ' + error.message);
-      });
-  } else {
-    auth.createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        console.log("Usuario registrado:", userCredential.user.email);
-        alert('Usuario registrado: ' + userCredential.user.email);
-        window.history.back();
-      })
-      .catch((error) => {
-        console.error("Error al registrar usuario:", error.message);
-        alert('Error al registrar usuario: ' + error.message);
-      });
-  }
-});
+    if (isLogin) {
+      auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          console.log("Usuario inició sesión:", userCredential.user.email);
+          alert('Usuario inició sesión: ' + userCredential.user.email);
+          window.history.back();
+        })
+        .catch((error) => {
+          console.error("Error al iniciar sesión:", error.message);
+          alert('Error al iniciar sesión: ' + error.message);
+        });
+    } else {
+      auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          console.log("Usuario registrado:", userCredential.user.email);
+          alert('Usuario registrado: ' + userCredential.user.email);
+          window.history.back();
+        })
+        .catch((error) => {
+          console.error("Error al registrar usuario:", error.message);
+          alert('Error al registrar usuario: ' + error.message);
+        });
+    }
+  });
+}
 
 // Función para iniciar sesión con Google
-googleLoginBtn.addEventListener('click', function() {
-  var provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithPopup(provider)
-    .then((result) => {
-      var user = result.user;
-      console.log("Usuario inició sesión con Google:", user.email);
-      checkAccess(user.uid);
-      alert('Usuario inició sesión: ' + user.email);
-      window.history.back();
-    })
-    .catch((error) => {
-      console.error("Error al iniciar sesión con Google:", error.message);
-      alert('Error al iniciar sesión con Google: ' + error.message);
-    });
-});
-
-// Función para iniciar sesión con Email/Password
-emailLoginBtn.addEventListener('click', function() {
-  var email = prompt("Introduce tu email:");
-  var password = prompt("Introduce tu contraseña:");
-  console.log("Intentando iniciar sesión con email:", email);
-
-  auth.signInWithEmailAndPassword(email, password)
-    .then((result) => {
-      var user = result.user;
-      console.log("Usuario inició sesión:", user.email);
-      checkAccess(user.uid);
-      alert('Usuario inició sesión: ' + user.email);
-      window.history.back();
-    })
-    .catch((error) => {
-      console.error("Error al iniciar sesión con Email/Password:", error.message);
-      alert('Error al iniciar sesión con Email/Password: ' + error.message);
-    });
-});
-
-// Cerrar sesión de usuario
-document.getElementById('logoutBtn').addEventListener('click', () => {
-  auth.signOut().then(() => {
-    console.log("Usuario cerró sesión");
-    alert('Usuario cerró sesión');
-    location.reload();
-  }).catch((error) => {
-    console.error("Error al cerrar sesión:", error.message);
-    alert('Error al cerrar sesión: ' + error.message);
-  });
-});
-
-// Restablecer contraseña
-document.getElementById('resetPasswordBtn').addEventListener('click', () => {
-  const email = prompt('Introduce tu correo electrónico para restablecer la contraseña:');
-  if (email) {
-    console.log("Enviando correo de restablecimiento a:", email);
-    auth.sendPasswordResetEmail(email)
-      .then(() => {
-        console.log("Correo de restablecimiento enviado");
-        alert('Correo para restablecer la contraseña enviado.');
+if (googleLoginBtn) {
+  googleLoginBtn.addEventListener('click', function() {
+    var provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider)
+      .then((result) => {
+        var user = result.user;
+        console.log("Usuario inició sesión con Google:", user.email);
+        checkAccess(user.uid);
+        alert('Usuario inició sesión: ' + user.email);
+        window.history.back();
       })
       .catch((error) => {
-        console.error("Error al enviar el correo de restablecimiento:", error.message);
-        alert('Error al enviar el correo de restablecimiento: ' + error.message);
+        console.error("Error al iniciar sesión con Google:", error.message);
+        alert('Error al iniciar sesión con Google: ' + error.message);
       });
-  } else {
-    console.log("No se proporcionó un correo electrónico para el restablecimiento");
-  }
-});
+  });
+}
 
+// Función para iniciar sesión con Email/Password
+if (emailLoginBtn) {
+  emailLoginBtn.addEventListener('click', function() {
+    var email = prompt("Introduce tu email:");
+    var password = prompt("Introduce tu contraseña:");
+    console.log("Intentando iniciar sesión con email:", email);
+
+    auth.signInWithEmailAndPassword(email, password)
+      .then((result) => {
+        var user = result.user;
+        console.log("Usuario inició sesión:", user.email);
+        checkAccess(user.uid);
+        alert('Usuario inició sesión: ' + user.email);
+        window.history.back();
+      })
+      .catch((error) => {
+        console.error("Error al iniciar sesión con Email/Password:", error.message);
+        alert('Error al iniciar sesión con Email/Password: ' + error.message);
+      });
+  });
+}
+
+// Cerrar sesión de usuario
+const logoutBtn = document.getElementById('logoutBtn');
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', () => {
+    auth.signOut().then(() => {
+      console.log("Usuario cerró sesión");
+      alert('Usuario cerró sesión');
+      location.reload();
+    }).catch((error) => {
+      console.error("Error al cerrar sesión:", error.message);
+      alert('Error al cerrar sesión: ' + error.message);
+    });
+  });
+}
+
+// Restablecer contraseña
+const resetPasswordBtn = document.getElementById('resetPasswordBtn');
+if (resetPasswordBtn) {
+  resetPasswordBtn.addEventListener('click', () => {
+    const email = prompt('Introduce tu correo electrónico para restablecer la contraseña:');
+    if (email) {
+      console.log("Enviando correo de restablecimiento a:", email);
+      auth.sendPasswordResetEmail(email)
+        .then(() => {
+          console.log("Correo de restablecimiento enviado");
+          alert('Correo para restablecer la contraseña enviado.');
+        })
+        .catch((error) => {
+          console.error("Error al enviar el correo de restablecimiento:", error.message);
+          alert('Error al enviar el correo de restablecimiento: ' + error.message);
+        });
+    } else {
+      console.log("No se proporcionó un correo electrónico para el restablecimiento");
+    }
+  });
+}
 
 // Función para verificar acceso (debes definir esta función según tus necesidades)
 function checkAccess(uid) {

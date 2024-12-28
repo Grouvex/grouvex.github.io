@@ -1,9 +1,14 @@
-window.onload = function() {
-    setTimeout(function() {
-        const intro = document.getElementById('intro');
-        intro.style.display = 'none';
-        
-        const content = document.getElementById('content');
-        content.style.display = 'block';
-    }, 5000); // Tiempo de la animación total en milisegundos (3s slideUp + 2s fadeOut)
-};
+// Cuando se carga la página
+window.addEventListener('load', function() {
+    flower();
+    sol();
+    leaf();
+    nieve();
+    aniversario();
+    googleTranslateElementInit();
+    setThemeImage('https://grouvex.com/img/Grouvex1.png');
+});
+
+function setThemeImage(imageUrl) {
+    document.querySelector('img-mainTop').src = imageUrl;
+}

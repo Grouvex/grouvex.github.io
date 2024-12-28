@@ -1562,6 +1562,14 @@ align-content: center;
   max-width: 100%;
 }
 @media (max-width: 768px) {
+.img-container {
+  width: 200px; /* Puedes ajustar el tamaño según tus necesidades */
+  height: 80px; /* Ajusta la altura según sea necesario */
+  background-image: url('https://grouvex.github.io/img/Grouvex1.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 mainTop {
     justify-items: center;
     justify-content: normal;

@@ -131,11 +131,20 @@ h1,h2,h3,h4,h5,h6,h7,h8 {
   color: rgb(255, 255, 255);
 }
 mainTop {
-    justify-content: space-between;
+    justify-self: center;
+    align-self: center;
     display: flex;
     padding: 10px;
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
     background: #000000;
+}
+.img-container {
+  width: 100vh; /* Puedes ajustar el tamaño según tus necesidades */
+  height: 70px; /* Ajusta la altura según sea necesario */
+  background-image: url('https://grouvex.github.io/img/Grouvex1.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 /* Estilo para los artículos, secciones y barras laterales */
 article {
@@ -198,7 +207,8 @@ h1.theme1,h2.theme1,h3.theme1,h4.theme1,h5.theme1,h6.theme1 {
 }
 
 mainTop.theme1 {
-    justify-content: space-between;
+    justify-self: center;
+    align-self: center;
     display: flex;
     padding: 10px;
     background: linear-gradient(45deg, red, white, blue);
@@ -266,7 +276,8 @@ h1.theme2,h2.theme2,h3.theme2,h4.theme2,h5.theme2,h6.theme2 {
   color: white;
 }
 mainTop.theme2 {
-    justify-content: space-between;
+    justify-self: center;
+    align-self: center;
     display: flex;
     padding: 10px;
     background: linear-gradient(45deg, green, yellow, blue, red, pink, cyan);
@@ -336,7 +347,8 @@ h1.space,h2.space,h3.space,h4.space,h5.space,h6.space {
   background-repeat: no-repeat;
 }
 mainTop.space {
-    justify-content: space-between;
+    justify-self: center;
+    align-self: center;
     display: flex;
     padding: 10px;
     background-image: url(https://live.staticflickr.com/7060/6971643495_05dc317572_b.jpg);
@@ -409,7 +421,8 @@ h1.starwars,h2.starwars,h3.starwars,h4.starwars,h5.starwars,h6.starwars {
   background-repeat: no-repeat;
 }
 mainTop.starwars {
-    justify-content: space-between;
+    justify-self: center;
+    align-self: center;
     display: flex;
     padding: 10px;
     background-image: url(https://images.squarespace-cdn.com/content/v1/531630f6e4b0fa5080a5596f/1845bb78-5fb1-4250-a2b9-e959c995cef9/Star+Wars+v2.jpg);
@@ -488,7 +501,8 @@ h1.jurassicworld,h2.jurassicworld,h3.jurassicworld,h4.jurassicworld,h5.jurassicw
   background-repeat: no-repeat;
 }
 mainTop.jurassicworld {
-    justify-content: space-between;
+    justify-self: center;
+    align-self: center;
     display: flex;
     padding: 10px;
     background-image: url(https://th.bing.com/th/id/OIP.TJK__-FIvQRNVUIPkvJQ9QHaEd);
@@ -562,7 +576,8 @@ h1.taylorswift,h2.taylorswift,h3.taylorswift,h4.taylorswift,h5.taylorswift,h6.ta
   background-repeat: no-repeat;
 }
 mainTop.taylorswift {
-    justify-content: space-between;
+    justify-self: center;
+    align-self: center;
     display: flex;
     padding: 10px;
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgbFt-ngiiBOWghZHp8cO2TbaIPic31Wv6Qg&s);
@@ -636,7 +651,8 @@ h1.pokemon,h2.pokemon,h3.pokemon,h4.pokemon,h5.pokemon,h6.pokemon {
   background-repeat: no-repeat;
 }
 mainTop.pokemon {
-    justify-content: space-between;
+    justify-self: center;
+    align-self: center;
     display: flex;
     padding: 10px;
     background-image: url(https://th.bing.com/th/id/OIP.JSYCbRX-KusrVVSgeYcOpQHaEK?w=297&h=180&c=7&r=0&o=5&pid=1.7);
@@ -711,7 +727,8 @@ h1.superheroes,h2.superheroes,h3.superheroes,h4.superheroes,h5.superheroes,h6.su
   background-repeat: no-repeat;
 }
 mainTop.superheroes {
-    justify-content: space-between;
+    justify-self: center;
+    align-self: center;
     display: flex;
     padding: 10px;
     background-image: url(https://cdn2.mediotiempo.com/uploads/media/2019/05/05/avengers-internet.jpg);
@@ -788,7 +805,8 @@ h1.thewildrobot,h2.thewildrobot,h3.thewildrobot,h4.thewildrobot,h5.thewildrobot,
   background-repeat: no-repeat;
 }
 mainTop.thewildrobot {
-    justify-content: space-between;
+    justify-self: center;
+    align-self: center;
     display: flex;
     padding: 10px;
     background-image: url(https://televitos.com/wp-content/uploads/2024/09/RobotSalvaje_01-1.webp);
@@ -863,7 +881,8 @@ h1.naturaleza1,h2.naturaleza1,h3.naturaleza1,h4.naturaleza1,h5.naturaleza1,h6.na
   background-repeat: no-repeat;
 }
 mainTop.naturaleza1 {
-    justify-content: space-between;
+    justify-self: center;
+    align-self: center;
     display: flex;
     padding: 10px;
     background-image: url(https://th.bing.com/th/id/OIP.T5PqdU-B6jYYqzBPelW2EwHaFj?rs=1&pid=ImgDetMain);
@@ -939,7 +958,8 @@ h1.naturaleza2,h2.naturaleza2,h3.naturaleza2,h4.naturaleza2,h5.naturaleza2,h6.na
   background-repeat: no-repeat;
 }
 mainTop.naturaleza2 {
-    justify-content: space-between;
+    justify-self: center;
+    align-self: center;
     display: flex;
     padding: 10px;
     background-image: url(https://th.bing.com/th/id/OIP.aoYdHlS-eY68KaN3ZqXipQHaFB?rs=1&pid=ImgDetMain);
@@ -1015,7 +1035,8 @@ h1.gstudios1,h2.gstudios1,h3.gstudios1,h4.gstudios1,h5.gstudios1,h6.gstudios1 {
   background-repeat: no-repeat;
 }
 mainTop.gstudios1 {
-    justify-content: space-between;
+    justify-self: center;
+    align-self: center;
     background-color: rgba(0, 0, 0, 0);
     display: flex;
     padding: 10px;
@@ -1088,7 +1109,8 @@ h1.gstudios2,h2.gstudios2,h3.gstudios2,h4.gstudios2,h5.gstudios2,h6.gstudios2 {
   background-repeat: no-repeat;
 }
 mainTop.gstudios2 {
-    justify-content: space-between;
+    justify-self: center;    
+    align-self: center;
     background-color: rgba(0, 0, 0, 0);
     display: flex;
     padding: 10px;
@@ -1161,7 +1183,8 @@ h1.gstudios3,h2.gstudios3,h3.gstudios3,h4.gstudios3,h5.gstudios3,h6.gstudios3 {
   background-repeat: no-repeat;
 }
 mainTop.gstudios3 {
-    justify-content: space-between;
+    justify-self: center;     
+    align-self: center;
     background-color: rgba(0, 0, 0, 0);
     display: flex;
     padding: 10px;
@@ -1234,7 +1257,8 @@ h1.gstudios4,h2.gstudios4,h3.gstudios4,h4.gstudios4,h5.gstudios4,h6.gstudios4 {
   background-repeat: no-repeat;
 }
 mainTop.gstudios4 {
-    justify-content: space-between;
+    justify-self: center;     
+    align-self: center;
     background-color: rgba(0, 0, 0, 0);
     display: flex;
     padding: 10px;
@@ -1306,7 +1330,8 @@ h1.httyd,h2.httyd,h3.httyd,h4.httyd,h5.httyd,h6.httyd {
   background-repeat: no-repeat;
 }
 mainTop.httyd {
-    justify-content: space-between;
+    justify-self: center;     
+    align-self: center;
     display: flex;
     padding: 10px;
     background-image: url(https://th.bing.com/th/id/OIP.GSPiB_i4DFW__QygF3wa_wHaEK?dpr=1,9&pid=ImgDetMain&PC=EMMX01);

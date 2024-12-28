@@ -73,9 +73,11 @@ document.getElementById('google-login-btn').addEventListener('click', function()
         .then((result) => {
             var user = result.user;
             checkAccess(user.uid);
+            alert('Usuario registrado: ' + userCredential.user.email);
+           location.reload();
         })
         .catch((error) => {
-            console.error("Error al iniciar sesión con Google:", error);
+            alert('Error al iniciar sesión con Google:' + error.message);
         });
 });
 
@@ -87,9 +89,11 @@ document.getElementById('google-login-btn').addEventListener('click', function()
           .then((result) => {
               var user = result.user;
               checkAccess(user.uid);
+              alert('Usuario registrado: ' + userCredential.user.email);
+              location.reload();
           })
           .catch((error) => {
-              console.error("Error al iniciar sesión con Email/Password:", error);
+              alert('Error al iniciar sesión con Email/Password:' + error.message);
           });
   });
 

@@ -108,13 +108,6 @@ function aniversario() {
   }
 }
 
-window.onclick = function(event) {
-  const modal = document.getElementById('modal');
-  if (modal && event.target === modal) {
-    modal.style.display = "none";
-  }
-};
-
 function googleTranslateElementInit() {
   if (typeof google !== 'undefined' && google.translate) {
     new google.translate.TranslateElement({

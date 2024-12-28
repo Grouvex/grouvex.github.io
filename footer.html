@@ -30,21 +30,6 @@
 }
  </style>
   <footer>
-   <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
-   <script>
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-  auth.signOut().then(() => {
-    alert('Usuario cerró sesión');
-    location.reload();
-  }).catch((error) => {
-    alert('Error al cerrar sesión: ' + error.message);
-  });
-});
-   document.getElementById('loginBtn').addEventListener('click', () => {
-  window.location.href !== 'https://grouvex.com/login.html'
-});
-   </script>
-   <button  id="loginBtn" style="color:red" >Login</button> <button id="logoutBtn" style="color:red">Logout</button>
   <div class="footer-imagenes">
       <a href="https://instagram.com/grouvex" target="_blank"><img src="https://grouvex.github.io/img/Instagram.png" alt="" loading="lazy"></a>
       <a href="https://discord.gg/XnxcuZHrh3" target="_blank"><img src="https://grouvex.github.io/img/Discord.png" alt="" loading="lazy"></a>

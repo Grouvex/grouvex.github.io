@@ -28,7 +28,6 @@ auth.onAuthStateChanged((user) => {
     if (authContainer && content && logoutBtn) {
       authContainer.style.display = 'none';
       content.style.display = 'block';
-      logoutBtn.style.display = 'block';
     } else {
       console.error("Error: Uno o más elementos del DOM no se encontraron");
     }
@@ -41,7 +40,6 @@ auth.onAuthStateChanged((user) => {
     if (authContainer && content && logoutBtn) {
       authContainer.style.display = 'block';
       content.style.display = 'none';
-      logoutBtn.style.display = 'none';
     } else {
       console.error("Error: Uno o más elementos del DOM no se encontraron");
     }

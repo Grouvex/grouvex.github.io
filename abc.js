@@ -203,32 +203,39 @@ function inicializarFormularioDeAutenticacion() {
       });
     }
 
-    // Función para habilitar la autenticación de dos factores (MFA)
+    // Función para habilitar la autenticación de dos factores (MFA) con una app de autenticación
     if (enableMfaBtn) {
       enableMfaBtn.addEventListener('click', () => {
         var user = auth.currentUser;
         if (user) {
           user.multiFactor.getSession().then((multiFactorSession) => {
-            var phoneAuthProvider = new firebase.auth.PhoneAuthProvider();
-            var phoneNumber = prompt('Introduce tu número de teléfono:');
-            phoneAuthProvider.verifyPhoneNumber(phoneNumber, multiFactorSession)
-              .then((verificationId) => {
-                var verificationCode = prompt('Introduce el código de verificación enviado a tu teléfono:');
-                var phoneAuthCredential = firebase.auth.PhoneAuthProvider.credential(verificationId, verificationCode);
-                var multiFactorAssertion = firebase.auth.PhoneMultiFactorGenerator.assertion(phoneAuthCredential);
-                user.multiFactor.enroll(multiFactorAssertion)
-                  .then(() => {
-                    alert('Autenticación de dos factores habilitada exitosamente.');
-                  })
-                                    .catch((error) => {
-                    console.error("Error al habilitar la autenticación de dos factores:", error.message);
-                    alert('Error al habilitar la autenticación de dos factores: ' + error.message);
-                  });
-              })
-              .catch((error) => {
-                console.error("Error al verificar el número de teléfono:", error.message);
-                alert('Error al verificar el número de teléfono: ' + error.message);
-              });
+            var totpAuthProvider = new firebase.auth.TotpAuthProvider();
+            totpAuthProvider.generateSecret().then((secret) => {
+              console.log("Clave secreta de TOTP generada:", secret.secret);
+
+              // Mostrar QR y clave secreta
+              var qrCodeHtml = `<img src="${qrCodeUrl}" alt="QR Code" />`;
+              alert(`Escanea este código QR con tu aplicación de autenticación o ingresa este código: ${secret.secret}`);
+              
+              document.getElementById('qrCodeContainer').innerHTML = qrCodeHtml;
+              document.getElementById('totpSecret').textContent = secret.secret;
+
+              var verificationCode = prompt('Introduce el código de verificación generado por tu aplicación de autenticación:');
+              var totpAuthCredential = firebase.auth.TotpAuthProvider.credential(secret.secret, verificationCode);
+              var multiFactorAssertion = firebase.auth.TotpMultiFactorGenerator.assertion(totpAuthCredential);
+              user.multiFactor.enroll(multiFactorAssertion)
+                .then(() => {
+                  alert('Autenticación de dos factores habilitada exitosamente.');
+                })
+                .catch((error) => {
+                  console.error("Error al habilitar la autenticación de dos factores:", error.message);
+                  alert('Error al habilitar la autenticación de dos factores: ' + error.message);
+                });
+            })
+            .catch((error) => {
+              console.error("Error al generar la clave secreta de TOTP:", error.message);
+              alert('Error al generar la clave secreta de TOTP: ' + error.message);
+            });
           }).catch((error) => {
             console.error("Error al obtener la sesión de múltiples factores:", error.message);
             alert('Error al obtener la sesión de múltiples factores: ' + error.message);

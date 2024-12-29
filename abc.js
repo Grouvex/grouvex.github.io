@@ -25,7 +25,7 @@ auth.onAuthStateChanged((user) => {
     const content = document.getElementById('content');
     const logoutBtn = document.getElementById('logoutBtn');
     
-    if (authContainer && content && logoutBtn) {
+    if (authContainer && content) {
       authContainer.style.display = 'none';
       content.style.display = 'block';
     } else {

@@ -190,8 +190,56 @@ if (resetPasswordBtn) {
   });
 }
 
+    // Verificar estado de usuario
+    const checkVerificationBtn = document.getElementById('checkVerificationBtn');
+    if (checkVerificationBtn) {
+      checkVerificationBtn.addEventListener('click', () => {
+        const user = auth.currentUser;
+        if (user) {
+          if (user.emailVerified) {
+             console.log('El correo electrónico del usuario está verificado.');
+            alert('El correo electrónico del usuario está verificado.');
+        const authContainer = document.getElementById('auth-container');
+        const content = document.getElementById('content');
+        inicializarFormularioDeAutenticacion()
+        if (authContainer && content) {
+          authContainer.style.display = 'none';
+          content.style.display = 'block';
+        } else {
+          console.error("Error: Uno o más elementos del DOM no se encontraron");
+        }
+          } else {
+             console.log('El correo electrónico del usuario no está verificado.');
+            alert('El correo electrónico del usuario no está verificado.');
+                    const authContainer = document.getElementById('auth-container');
+        const content = document.getElementById('content');
+        inicializarFormularioDeAutenticacion()
+        if (authContainer && content) {
+          authContainer.style.display = 'block';
+          content.style.display = 'none';
+        } else {
+          console.error("Error: Uno o más elementos del DOM no se encontraron");
+        }
+          }
+        } else {
+           console.log('No hay ningún usuario autenticado.');
+          alert('No hay ningún usuario autenticado.');
+                  const authContainer = document.getElementById('auth-container');
+        const content = document.getElementById('content');
+        inicializarFormularioDeAutenticacion()
+        if (authContainer && content) {
+          authContainer.style.display = 'block';
+          content.style.display = 'none';
+        } else {
+          console.error("Error: Uno o más elementos del DOM no se encontraron");
+        }
+        }
+      });
+    }
+
 // Función para verificar acceso (debes definir esta función según tus necesidades)
 function checkAccess(uid) {
   console.log("Verificando acceso para UID:", uid);
   // Lógica para verificar el acceso del usuario
 }
+

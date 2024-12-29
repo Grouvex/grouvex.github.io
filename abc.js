@@ -36,8 +36,8 @@ auth.onAuthStateChanged((user) => {
     const authContainer = document.getElementById('auth-container');
     const content = document.getElementById('content');
     const logoutBtn = document.getElementById('logoutBtn');
-    
-    if (authContainer && content && logoutBtn) {
+    inicializarFormularioDeAutenticacion()
+    if (authContainer && content) {
       authContainer.style.display = 'block';
       content.style.display = 'none';
     } else {
@@ -45,7 +45,7 @@ auth.onAuthStateChanged((user) => {
     }
   }
 });
-
+function inicializarFormularioDeAutenticacion() {
 const authForm = document.getElementById('authForm');
 const formTitle = document.getElementById('formTitle');
 const authButton = document.getElementById('authButton');
@@ -53,7 +53,7 @@ const emailLoginBtn = document.getElementById('email-login-btn');
 const googleLoginBtn = document.getElementById('google-login-btn');
 const toggleButton = document.getElementById('toggleButton');
 let isLogin = true; // Estado inicial del formulario
-
+toggleButton.disabled = 'true';
 if (authForm && formTitle && authButton && emailLoginBtn && googleLoginBtn && toggleButton) {
   console.log("Todos los elementos del DOM fueron encontrados");
 } else {
@@ -153,7 +153,7 @@ if (emailLoginBtn) {
       });
   });
 }
-
+}
 // Cerrar sesión de usuario
 const logoutBtn = document.getElementById('logoutBtn');
 if (logoutBtn) {

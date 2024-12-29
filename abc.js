@@ -76,7 +76,7 @@ function inicializarFormularioDeAutenticacion() {
             var user = userCredential.user;
             console.log("Usuario inició sesión:", user.displayName);
             if (!user.emailVerified) {
-              alert('Por favor verifica tu correo electrónico.');
+              enviarVerificacionDeCorreo(user);
             } else {
               alert('Usuario inició sesión: ' + user.displayName);
               window.history.back();
@@ -94,9 +94,7 @@ function inicializarFormularioDeAutenticacion() {
               displayName: displayName
             }).then(() => {
               console.log("Usuario registrado:", user.displayName);
-              alert('Usuario registrado: ' + user.displayName);
-              enviarVerificacionDeCorreo();
-              window.history.back();
+              enviarVerificacionDeCorreo(user);
             }).catch((error) => {
               console.error("Error al actualizar el perfil:", error.message);
               alert('Error al actualizar el perfil: ' + error.message);
@@ -124,16 +122,14 @@ function inicializarFormularioDeAutenticacion() {
               displayName: displayName
             }).then(() => {
               checkAccess(user.uid);
-              alert('Usuario inició sesión: ' + user.displayName);
-              window.history.back();
+              enviarVerificacionDeCorreo(user);
             }).catch((error) => {
               console.error("Error al actualizar el perfil:", error.message);
               alert('Error al actualizar el perfil: ' + error.message);
             });
           } else {
             checkAccess(user.uid);
-            alert('Usuario inició sesión: ' + user.displayName);
-            window.history.back();
+            enviarVerificacionDeCorreo(user);
           }
         })
         .catch((error) => {
@@ -160,16 +156,14 @@ function inicializarFormularioDeAutenticacion() {
               displayName: displayName
             }).then(() => {
               checkAccess(user.uid);
-              alert('Usuario inició sesión: ' + user.displayName);
-              window.history.back();
+              enviarVerificacionDeCorreo(user);
             }).catch((error) => {
               console.error("Error al actualizar el perfil:", error.message);
               alert('Error al actualizar el perfil: ' + error.message);
             });
           } else {
             checkAccess(user.uid);
-            alert('Usuario inició sesión: ' + user.displayName);
-            window.history.back();
+            enviarVerificacionDeCorreo(user);
           }
         })
         .catch((error) => {
@@ -181,7 +175,12 @@ function inicializarFormularioDeAutenticacion() {
     // Función para verificar correo electrónico
     if (verifyEmailBtn) {
       verifyEmailBtn.addEventListener('click', () => {
-        enviarVerificacionDeCorreo();
+        var user = auth.currentUser;
+        if (user && !user.emailVerified) {
+          enviarVerificacionDeCorreo(user);
+        } else {
+          alert('No hay ningún usuario autenticado o el correo ya está verificado.');
+        }
       });
     }
 
@@ -193,7 +192,7 @@ function inicializarFormularioDeAutenticacion() {
         if (user) {
           user.updateEmail(newEmail).then(() => {
             alert('Correo electrónico actualizado con éxito.');
-            enviarVerificacionDeCorreo();
+            enviarVerificacionDeCorreo(user);
           }).catch((error) => {
             console.error("Error al actualizar el correo electrónico:", error.message);
             alert('Error al actualizar el correo electrónico: ' + error.message);
@@ -204,32 +203,40 @@ function inicializarFormularioDeAutenticacion() {
       });
     }
 
-    // Función para habilitar la autenticación de dos factores (MFA)
+    // Función para habilitar la autenticación de dos factores (MFA) con una app de autenticación
     if (enableMfaBtn) {
       enableMfaBtn.addEventListener('click', () => {
         var user = auth.currentUser;
         if (user) {
           user.multiFactor.getSession().then((multiFactorSession) => {
-            var phoneAuthProvider = new firebase.auth.PhoneAuthProvider();
-            var phoneNumber = prompt('Introduce tu número de teléfono:');
-            phoneAuthProvider.verifyPhoneNumber(phoneNumber, multiFactorSession)
-              .then((verificationId) => {
-                var verificationCode = prompt('Introduce el código de verificación enviado a tu teléfono:');
-                var phoneAuthCredential = firebase.auth.PhoneAuthProvider.credential(verificationId, verificationCode);
-                var multiFactorAssertion = firebase.auth.PhoneMultiFactorGenerator.assertion(phoneAuthCredential);
-                user.multiFactor.enroll(multiFactorAssertion)
-                  .then(() => {
-                                        alert('Autenticación de dos factores habilitada exitosamente.');
-                  })
-                  .catch((error) => {
-                    console.error("Error al habilitar la autenticación de dos factores:", error.message);
-                    alert('Error al habilitar la autenticación de dos factores: ' + error.message);
-                  });
-              })
-              .catch((error) => {
-                console.error("Error al verificar el número de teléfono:", error.message);
-                alert('Error al verificar el número de teléfono: ' + error.message);
-              });
+            var totpAuthProvider = new firebase.auth.TotpAuthProvider();
+            totpAuthProvider.generateSecret().then((secret) => {
+              console.log("Clave secreta de TOTP generada:", secret.secret);
+
+              // Mostrar QR y clave secreta
+              var qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(secret.secret)}`;
+              var qrCodeHtml = `<img src="${qrCodeUrl}" alt="QR Code" />`;
+              alert(`Escanea este código QR con tu aplicación de autenticación o ingresa este código: ${secret.secret}`);
+              
+              document.getElementById('qrCodeContainer').innerHTML = qrCodeHtml;
+              document.getElementById('totpSecret').textContent = secret.secret;
+
+              var verificationCode = prompt('Introduce el código de verificación generado por tu aplicación de autenticación:');
+              var totpAuthCredential = firebase.auth.TotpAuthProvider.credential(secret.secret, verificationCode);
+              var multiFactorAssertion = firebase.auth.TotpMultiFactorGenerator.assertion(totpAuthCredential);
+              user.multiFactor.enroll(multiFactorAssertion)
+                .then(() => {
+                  alert('Autenticación de dos factores habilitada exitosamente.');
+                })
+                .catch((error) => {
+                  console.error("Error al habilitar la autenticación de dos factores:", error.message);
+                  alert('Error al habilitar la autenticación de dos factores: ' + error.message);
+                });
+            })
+            .catch((error) => {
+              console.error("Error al generar la clave secreta de TOTP:", error.message);
+              alert('Error al generar la clave secreta de TOTP: ' + error.message);
+            });
           }).catch((error) => {
             console.error("Error al obtener la sesión de múltiples factores:", error.message);
             alert('Error al obtener la sesión de múltiples factores: ' + error.message);
@@ -241,11 +248,10 @@ function inicializarFormularioDeAutenticacion() {
     }
 
     // Función para enviar la verificación de correo electrónico
-    function enviarVerificacionDeCorreo() {
-      var user = auth.currentUser;
+    function enviarVerificacionDeCorreo(user) {
       if (user) {
         user.sendEmailVerification().then(() => {
-          alert('Correo de verificación enviado.');
+          alert('Correo de verificación enviado. Por favor, revisa tu bandeja de entrada.');
         }).catch((error) => {
           console.error("Error al enviar correo de verificación:", error.message);
           alert('Error al enviar correo de verificación: ' + error.message);
@@ -261,7 +267,25 @@ function inicializarFormularioDeAutenticacion() {
   }
 }
 
-// Inicializar el formulario de autenticación al cargar la página
-window.onload = function() {
-  inicializarFormularioDeAutenticacion();
-};
+// Verificar si el usuario está autenticado
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    console.log("Usuario autenticado:", user.email);
+    checkAccess(user.uid);
+    if (authContainer && content && logoutBtn) {
+      authContainer.style.display = 'none';
+      content.style.display = 'block';
+    } else {
+      console.error("Error: Uno o más elementos del DOM no se encontraron");
+    }
+  } else {
+    console.log("Usuario no autenticado");
+    inicializarFormularioDeAutenticacion()
+    if (authContainer && content) {
+      authContainer.style.display = 'block';
+      content.style.display = 'none';
+    } else {
+      console.error("Error: Uno o más elementos del DOM no se encontraron");
+    }
+  }
+});

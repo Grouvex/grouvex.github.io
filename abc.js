@@ -76,7 +76,7 @@ function inicializarFormularioDeAutenticacion() {
             var user = userCredential.user;
             console.log("Usuario inició sesión:", user.displayName);
             if (!user.emailVerified) {
-              alert('Por favor verifica tu correo electrónico.');
+              enviarVerificacionDeCorreo(user);
             } else {
               alert('Usuario inició sesión: ' + user.displayName);
               window.history.back();
@@ -94,9 +94,7 @@ function inicializarFormularioDeAutenticacion() {
               displayName: displayName
             }).then(() => {
               console.log("Usuario registrado:", user.displayName);
-              alert('Usuario registrado: ' + user.displayName);
-              enviarVerificacionDeCorreo();
-              window.history.back();
+              enviarVerificacionDeCorreo(user);
             }).catch((error) => {
               console.error("Error al actualizar el perfil:", error.message);
               alert('Error al actualizar el perfil: ' + error.message);
@@ -124,16 +122,14 @@ function inicializarFormularioDeAutenticacion() {
               displayName: displayName
             }).then(() => {
               checkAccess(user.uid);
-              alert('Usuario inició sesión: ' + user.displayName);
-              window.history.back();
+              enviarVerificacionDeCorreo(user);
             }).catch((error) => {
               console.error("Error al actualizar el perfil:", error.message);
               alert('Error al actualizar el perfil: ' + error.message);
             });
           } else {
             checkAccess(user.uid);
-            alert('Usuario inició sesión: ' + user.displayName);
-            window.history.back();
+            enviarVerificacionDeCorreo(user);
           }
         })
         .catch((error) => {
@@ -160,16 +156,14 @@ function inicializarFormularioDeAutenticacion() {
               displayName: displayName
             }).then(() => {
               checkAccess(user.uid);
-              alert('Usuario inició sesión: ' + user.displayName);
-              window.history.back();
+              enviarVerificacionDeCorreo(user);
             }).catch((error) => {
               console.error("Error al actualizar el perfil:", error.message);
               alert('Error al actualizar el perfil: ' + error.message);
             });
           } else {
             checkAccess(user.uid);
-            alert('Usuario inició sesión: ' + user.displayName);
-            window.history.back();
+            enviarVerificacionDeCorreo(user);
           }
         })
         .catch((error) => {
@@ -181,7 +175,12 @@ function inicializarFormularioDeAutenticacion() {
     // Función para verificar correo electrónico
     if (verifyEmailBtn) {
       verifyEmailBtn.addEventListener('click', () => {
-        enviarVerificacionDeCorreo();
+        var user = auth.currentUser;
+        if (user && !user.emailVerified) {
+          enviarVerificacionDeCorreo(user);
+        } else {
+          alert('No hay ningún usuario autenticado o el correo ya está verificado.');
+        }
       });
     }
 
@@ -193,7 +192,7 @@ function inicializarFormularioDeAutenticacion() {
         if (user) {
           user.updateEmail(newEmail).then(() => {
             alert('Correo electrónico actualizado con éxito.');
-            enviarVerificacionDeCorreo();
+            enviarVerificacionDeCorreo(user);
           }).catch((error) => {
             console.error("Error al actualizar el correo electrónico:", error.message);
             alert('Error al actualizar el correo electrónico: ' + error.message);
@@ -219,9 +218,9 @@ function inicializarFormularioDeAutenticacion() {
                 var multiFactorAssertion = firebase.auth.PhoneMultiFactorGenerator.assertion(phoneAuthCredential);
                 user.multiFactor.enroll(multiFactorAssertion)
                   .then(() => {
-                                        alert('Autenticación de dos factores habilitada exitosamente.');
+                    alert('Autenticación de dos factores habilitada exitosamente.');
                   })
-                  .catch((error) => {
+                                    .catch((error) => {
                     console.error("Error al habilitar la autenticación de dos factores:", error.message);
                     alert('Error al habilitar la autenticación de dos factores: ' + error.message);
                   });
@@ -241,11 +240,10 @@ function inicializarFormularioDeAutenticacion() {
     }
 
     // Función para enviar la verificación de correo electrónico
-    function enviarVerificacionDeCorreo() {
-      var user = auth.currentUser;
+    function enviarVerificacionDeCorreo(user) {
       if (user) {
         user.sendEmailVerification().then(() => {
-          alert('Correo de verificación enviado.');
+          alert('Correo de verificación enviado. Por favor, revisa tu bandeja de entrada.');
         }).catch((error) => {
           console.error("Error al enviar correo de verificación:", error.message);
           alert('Error al enviar correo de verificación: ' + error.message);

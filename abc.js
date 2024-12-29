@@ -214,6 +214,7 @@ function inicializarFormularioDeAutenticacion() {
               console.log("Clave secreta de TOTP generada:", secret.secret);
 
               // Mostrar QR y clave secreta
+              var qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(secret.secret)}`;
               var qrCodeHtml = `<img src="${qrCodeUrl}" alt="QR Code" />`;
               alert(`Escanea este código QR con tu aplicación de autenticación o ingresa este código: ${secret.secret}`);
               
@@ -266,7 +267,25 @@ function inicializarFormularioDeAutenticacion() {
   }
 }
 
-// Inicializar el formulario de autenticación al cargar la página
-window.onload = function() {
-  inicializarFormularioDeAutenticacion();
-};
+// Verificar si el usuario está autenticado
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    console.log("Usuario autenticado:", user.email);
+    checkAccess(user.uid);
+    if (authContainer && content && logoutBtn) {
+      authContainer.style.display = 'none';
+      content.style.display = 'block';
+    } else {
+      console.error("Error: Uno o más elementos del DOM no se encontraron");
+    }
+  } else {
+    console.log("Usuario no autenticado");
+    inicializarFormularioDeAutenticacion()
+    if (authContainer && content) {
+      authContainer.style.display = 'block';
+      content.style.display = 'none';
+    } else {
+      console.error("Error: Uno o más elementos del DOM no se encontraron");
+    }
+  }
+});

@@ -289,3 +289,9 @@ auth.onAuthStateChanged((user) => {
     }
   }
 });
+
+// Función para verificar acceso (debes definir esta función según tus necesidades)
+function checkAccess(uid) {
+  console.log("Verificando acceso para UID:", uid);
+  // Lógica para verificar el acceso del usuario
+}

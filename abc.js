@@ -35,7 +35,6 @@ auth.onAuthStateChanged((user) => {
     console.log("Usuario no autenticado");
     const authContainer = document.getElementById('auth-container');
     const content = document.getElementById('content');
-    const logoutBtn = document.getElementById('logoutBtn');
     inicializarFormularioDeAutenticacion()
     if (authContainer && content) {
       authContainer.style.display = 'block';

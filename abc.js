@@ -22,6 +22,9 @@ const authContainer = document.getElementById('auth-container');
 const content = document.getElementById('content');
 const logoutBtn = document.getElementById('logoutBtn');
 const resetPasswordBtn = document.getElementById('resetPasswordBtn');
+const verifyEmailBtn = document.getElementById('verifyEmailBtn');
+const changeEmailBtn = document.getElementById('changeEmailBtn');
+const enableMfaBtn = document.getElementById('enableMfaBtn');
 
 // Función para inicializar el formulario de autenticación
 function inicializarFormularioDeAutenticacion() {
@@ -42,16 +45,19 @@ function inicializarFormularioDeAutenticacion() {
     // Toggle entre inicio de sesión y registro
     toggleButton.addEventListener('click', () => {
       isLogin = !isLogin;
+      const displayNameInput = document.getElementById('authDisplayName');
       if (isLogin) {
         formTitle.textContent = 'Inicio de Sesión';
         authButton.textContent = 'Iniciar Sesión';
         emailLoginBtn.textContent = 'Iniciar Sesión con Email';
         googleLoginBtn.textContent = 'Iniciar Sesión con Google';
         toggleButton.textContent = '¿No tienes cuenta? Regístrate';
+        if (displayNameInput) displayNameInput.style.display = 'none';
       } else {
         formTitle.textContent = 'Registro';
         authButton.textContent = 'Registrar';
         toggleButton.textContent = '¿Ya tienes cuenta? Inicia Sesión';
+        if (displayNameInput) displayNameInput.style.display = 'block';
       }
       console.log("Modo cambiado a", isLogin ? "Inicio de Sesión" : "Registro");
     });
@@ -61,6 +67,7 @@ function inicializarFormularioDeAutenticacion() {
       e.preventDefault();
       const email = document.getElementById('authEmail').value;
       const password = document.getElementById('authPassword').value;
+      const displayName = document.getElementById('authDisplayName').value;
       console.log("Formulario enviado, email:", email);
 
       if (isLogin) {
@@ -68,8 +75,12 @@ function inicializarFormularioDeAutenticacion() {
           .then((userCredential) => {
             var user = userCredential.user;
             console.log("Usuario inició sesión:", user.displayName);
-            alert('Usuario inició sesión: ' + user.displayName);
-            window.history.back();
+            if (!user.emailVerified) {
+              alert('Por favor verifica tu correo electrónico.');
+            } else {
+              alert('Usuario inició sesión: ' + user.displayName);
+              window.history.back();
+            }
           })
           .catch((error) => {
             console.error("Error al iniciar sesión:", error.message);
@@ -79,12 +90,12 @@ function inicializarFormularioDeAutenticacion() {
         auth.createUserWithEmailAndPassword(email, password)
           .then((userCredential) => {
             var user = userCredential.user;
-            var displayName = prompt("Introduce tu nombre de usuario:");
             user.updateProfile({
               displayName: displayName
             }).then(() => {
               console.log("Usuario registrado:", user.displayName);
               alert('Usuario registrado: ' + user.displayName);
+              enviarVerificacionDeCorreo();
               window.history.back();
             }).catch((error) => {
               console.error("Error al actualizar el perfil:", error.message);
@@ -166,71 +177,91 @@ function inicializarFormularioDeAutenticacion() {
           alert('Error al iniciar sesión con Email/Password: ' + error.message);
         });
     });
-  } else {
-    console.error("Error: No se encontraron todos los elementos del DOM");
-  }
-}
 
-// Cerrar sesión de usuario
-if (logoutBtn) {
-  logoutBtn.addEventListener('click', () => {
-    auth.signOut().then(() => {
-      console.log("Usuario cerró sesión");
-      alert('Usuario cerró sesión');
-      location.reload();
-    }).catch((error) => {
-      console.error("Error al cerrar sesión:", error.message);
-      alert('Error al cerrar sesión: ' + error.message);
-    });
-  });
-}
-
-// Restablecer contraseña
-if (resetPasswordBtn) {
-  resetPasswordBtn.addEventListener('click', () => {
-    const email = prompt('Introduce tu correo electrónico para restablecer la contraseña:');
-    if (email) {
-      console.log("Enviando correo de restablecimiento");
-      auth.sendPasswordResetEmail(email)
-        .then(() => {
-          console.log("Correo de restablecimiento enviado");
-          alert('Correo para restablecer la contraseña enviado.');
-        })
-        .catch((error) => {
-          console.error("Error al enviar el correo de restablecimiento:", error.message);
-          alert('Error al enviar el correo de restablecimiento: ' + error.message);
-        });
-    } else {
-      console.log("No se proporcionó un correo electrónico para el restablecimiento");
+    // Función para verificar correo electrónico
+    if (verifyEmailBtn) {
+      verifyEmailBtn.addEventListener('click', () => {
+        enviarVerificacionDeCorreo();
+      });
     }
-  });
-}
 
-// Función para cambiar la visibilidad de los contenedores
-function toggleContainers(isAuthenticated) {
-  if (authContainer && content) {
-    authContainer.style.display = isAuthenticated ? 'none' : 'block';
-    content.style.display = isAuthenticated ? 'block' : 'none';
+    // Función para cambiar dirección de correo electrónico
+    if (changeEmailBtn) {
+      changeEmailBtn.addEventListener('click', () => {
+        var newEmail = prompt('Introduce tu nuevo correo electrónico:');
+        var user = auth.currentUser;
+        if (user) {
+          user.updateEmail(newEmail).then(() => {
+            alert('Correo electrónico actualizado con éxito.');
+            enviarVerificacionDeCorreo();
+          }).catch((error) => {
+            console.error("Error al actualizar el correo electrónico:", error.message);
+            alert('Error al actualizar el correo electrónico: ' + error.message);
+          });
+        } else {
+          alert('No hay ningún usuario autenticado.');
+        }
+      });
+    }
+
+    // Función para habilitar la autenticación de dos factores (MFA)
+    if (enableMfaBtn) {
+      enableMfaBtn.addEventListener('click', () => {
+        var user = auth.currentUser;
+        if (user) {
+          user.multiFactor.getSession().then((multiFactorSession) => {
+            var phoneAuthProvider = new firebase.auth.PhoneAuthProvider();
+            var phoneNumber = prompt('Introduce tu número de teléfono:');
+            phoneAuthProvider.verifyPhoneNumber(phoneNumber, multiFactorSession)
+              .then((verificationId) => {
+                var verificationCode = prompt('Introduce el código de verificación enviado a tu teléfono:');
+                var phoneAuthCredential = firebase.auth.PhoneAuthProvider.credential(verificationId, verificationCode);
+                var multiFactorAssertion = firebase.auth.PhoneMultiFactorGenerator.assertion(phoneAuthCredential);
+                user.multiFactor.enroll(multiFactorAssertion)
+                  .then(() => {
+                                        alert('Autenticación de dos factores habilitada exitosamente.');
+                  })
+                  .catch((error) => {
+                    console.error("Error al habilitar la autenticación de dos factores:", error.message);
+                    alert('Error al habilitar la autenticación de dos factores: ' + error.message);
+                  });
+              })
+              .catch((error) => {
+                console.error("Error al verificar el número de teléfono:", error.message);
+                alert('Error al verificar el número de teléfono: ' + error.message);
+              });
+          }).catch((error) => {
+            console.error("Error al obtener la sesión de múltiples factores:", error.message);
+            alert('Error al obtener la sesión de múltiples factores: ' + error.message);
+          });
+        } else {
+          alert('No hay ningún usuario autenticado.');
+        }
+      });
+    }
+
+    // Función para enviar la verificación de correo electrónico
+    function enviarVerificacionDeCorreo() {
+      var user = auth.currentUser;
+      if (user) {
+        user.sendEmailVerification().then(() => {
+          alert('Correo de verificación enviado.');
+        }).catch((error) => {
+          console.error("Error al enviar correo de verificación:", error.message);
+          alert('Error al enviar correo de verificación: ' + error.message);
+        });
+      } else {
+        alert('No hay ningún usuario autenticado.');
+      }
+    }
+
+    console.log("Formulario de autenticación inicializado.");
   } else {
-    console.error("Error: Uno o más elementos del DOM no se encontraron");
+    console.error("No se encontraron todos los elementos del DOM necesarios.");
   }
 }
 
-// Verificar si el usuario está autenticado
-auth.onAuthStateChanged((user) => {
-  if (user) {
-    console.log("Usuario autenticado:", user.email);
-    checkAccess(user.uid);
-    toggleContainers(true);
-  } else {
-    console.log("Usuario no autenticado");
-    inicializarFormularioDeAutenticacion();
-    toggleContainers(false);
-  }
-});
-
-// Función para verificar acceso (debes definir esta función según tus necesidades)
-function checkAccess(uid) {
-  console.log("Usuario Verificado");
-  // Lógica para verificar el acceso del usuario
-}
+// Inicializar el formulario de autenticación al cargar la página
+window.onload = function() {
+  inicializarFormularioDeAutenticacion();
+};

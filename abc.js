@@ -21,30 +21,9 @@ console.log("Firebase inicializado correctamente");
 const authContainer = document.getElementById('auth-container');
 const content = document.getElementById('content');
 const logoutBtn = document.getElementById('logoutBtn');
+const resetPasswordBtn = document.getElementById('resetPasswordBtn');
 
-// Función para cambiar la visibilidad de los contenedores
-function toggleContainers(isAuthenticated) {
-  if (authContainer && content) {
-    authContainer.style.display = isAuthenticated ? 'none' : 'block';
-    content.style.display = isAuthenticated ? 'block' : 'none';
-  } else {
-    console.error("Error: Uno o más elementos del DOM no se encontraron");
-  }
-}
-
-// Verificar si el usuario está autenticado
-auth.onAuthStateChanged((user) => {
-  if (user) {
-    console.log("Usuario autenticado:", user.email);
-    checkAccess(user.uid);
-    toggleContainers(true);
-  } else {
-    console.log("Usuario no autenticado");
-    inicializarFormularioDeAutenticacion();
-    toggleContainers(false);
-  }
-});
-
+// Función para inicializar el formulario de autenticación
 function inicializarFormularioDeAutenticacion() {
   const authForm = document.getElementById('authForm');
   const formTitle = document.getElementById('formTitle');
@@ -207,7 +186,6 @@ if (logoutBtn) {
 }
 
 // Restablecer contraseña
-const resetPasswordBtn = document.getElementById('resetPasswordBtn');
 if (resetPasswordBtn) {
   resetPasswordBtn.addEventListener('click', () => {
     const email = prompt('Introduce tu correo electrónico para restablecer la contraseña:');
@@ -227,6 +205,29 @@ if (resetPasswordBtn) {
     }
   });
 }
+
+// Función para cambiar la visibilidad de los contenedores
+function toggleContainers(isAuthenticated) {
+  if (authContainer && content) {
+    authContainer.style.display = isAuthenticated ? 'none' : 'block';
+    content.style.display = isAuthenticated ? 'block' : 'none';
+  } else {
+    console.error("Error: Uno o más elementos del DOM no se encontraron");
+  }
+}
+
+// Verificar si el usuario está autenticado
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    console.log("Usuario autenticado:", user.email);
+    checkAccess(user.uid);
+    toggleContainers(true);
+  } else {
+    console.log("Usuario no autenticado");
+    inicializarFormularioDeAutenticacion();
+    toggleContainers(false);
+  }
+});
 
 // Función para verificar acceso (debes definir esta función según tus necesidades)
 function checkAccess(uid) {

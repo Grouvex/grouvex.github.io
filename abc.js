@@ -87,8 +87,9 @@ function inicializarFormularioDeAutenticacion() {
       if (isLogin) {
         auth.signInWithEmailAndPassword(email, password)
           .then((userCredential) => {
-            console.log("Usuario inició sesión:", userCredential.user.email);
-            alert('Usuario inició sesión: ' + userCredential.user.email);
+            var user = userCredential.user;
+            console.log("Usuario inició sesión:", user.displayName);
+            alert('Usuario inició sesión: ' + user.displayName);
             window.history.back();
           })
           .catch((error) => {
@@ -98,9 +99,18 @@ function inicializarFormularioDeAutenticacion() {
       } else {
         auth.createUserWithEmailAndPassword(email, password)
           .then((userCredential) => {
-            console.log("Usuario registrado:", userCredential.user.email);
-            alert('Usuario registrado: ' + userCredential.user.email);
-            window.history.back();
+            var user = userCredential.user;
+            var displayName = prompt("Introduce tu nombre de usuario:");
+            user.updateProfile({
+              displayName: displayName
+            }).then(() => {
+              console.log("Usuario registrado:", user.displayName);
+              alert('Usuario registrado: ' + user.displayName);
+              window.history.back();
+            }).catch((error) => {
+              console.error("Error al actualizar el perfil:", error.message);
+              alert('Error al actualizar el perfil: ' + error.message);
+            });
           })
           .catch((error) => {
             console.error("Error al registrar usuario:", error.message);
@@ -115,10 +125,26 @@ function inicializarFormularioDeAutenticacion() {
       auth.signInWithPopup(provider)
         .then((result) => {
           var user = result.user;
-          console.log("Usuario inició sesión con Google:", user.email);
-          checkAccess(user.uid);
-          alert('Usuario inició sesión: ' + user.email);
-          window.history.back();
+          console.log("Usuario inició sesión con Google:", user.displayName);
+
+          // Verificar y actualizar displayName si no está definido
+          if (!user.displayName) {
+            var displayName = prompt("Introduce tu nombre de usuario:");
+            user.updateProfile({
+              displayName: displayName
+            }).then(() => {
+              checkAccess(user.uid);
+              alert('Usuario inició sesión: ' + user.displayName);
+              window.history.back();
+            }).catch((error) => {
+              console.error("Error al actualizar el perfil:", error.message);
+              alert('Error al actualizar el perfil: ' + error.message);
+            });
+          } else {
+            checkAccess(user.uid);
+            alert('Usuario inició sesión: ' + user.displayName);
+            window.history.back();
+          }
         })
         .catch((error) => {
           console.error("Error al iniciar sesión con Google:", error.message);
@@ -135,10 +161,26 @@ function inicializarFormularioDeAutenticacion() {
       auth.signInWithEmailAndPassword(email, password)
         .then((result) => {
           var user = result.user;
-          console.log("Usuario inició sesión:", user.email);
-          checkAccess(user.uid);
-          alert('Usuario inició sesión: ' + user.email);
-          window.history.back();
+          console.log("Usuario inició sesión");
+
+          // Verificar y actualizar displayName si no está definido
+          if (!user.displayName) {
+            var displayName = prompt("Introduce tu nombre de usuario:");
+            user.updateProfile({
+              displayName: displayName
+            }).then(() => {
+              checkAccess(user.uid);
+              alert('Usuario inició sesión: ' + user.displayName);
+              window.history.back();
+            }).catch((error) => {
+              console.error("Error al actualizar el perfil:", error.message);
+              alert('Error al actualizar el perfil: ' + error.message);
+            });
+          } else {
+            checkAccess(user.uid);
+            alert('Usuario inició sesión: ' + user.displayName);
+            window.history.back();
+          }
         })
         .catch((error) => {
           console.error("Error al iniciar sesión con Email/Password:", error.message);
@@ -151,7 +193,6 @@ function inicializarFormularioDeAutenticacion() {
 }
 
 // Cerrar sesión de usuario
-const logoutBtn = document.getElementById('logoutBtn');
 if (logoutBtn) {
   logoutBtn.addEventListener('click', () => {
     auth.signOut().then(() => {
@@ -171,7 +212,7 @@ if (resetPasswordBtn) {
   resetPasswordBtn.addEventListener('click', () => {
     const email = prompt('Introduce tu correo electrónico para restablecer la contraseña:');
     if (email) {
-      console.log("Enviando correo de restablecimiento a:", email);
+      console.log("Enviando correo de restablecimiento");
       auth.sendPasswordResetEmail(email)
         .then(() => {
           console.log("Correo de restablecimiento enviado");
@@ -189,6 +230,6 @@ if (resetPasswordBtn) {
 
 // Función para verificar acceso (debes definir esta función según tus necesidades)
 function checkAccess(uid) {
-  console.log("Verificando acceso para UID:", uid);
+  console.log("Usuario Verificado");
   // Lógica para verificar el acceso del usuario
 }

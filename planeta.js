@@ -5,58 +5,53 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById('container').appendChild(renderer.domElement);
 
-// Manejar el cambio de tamaño de la ventana
-window.addEventListener('resize', onWindowResize);
-
-function onWindowResize() {
+// Ajustar la cámara y el renderizador cuando la ventana cambia de tamaño
+window.addEventListener('resize', () => {
     const width = window.innerWidth;
     const height = window.innerHeight;
     renderer.setSize(width, height);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
-    positionConstellations();
-}
+    positionConstellations(); // Reposicionar constelaciones al cambiar tamaño de ventana
+});
 
-// Crear fondo degradado
-function createGradientBackground() {
+// Fondo de colores degradados y estrellas brillantes
+const createGradientBackground = () => {
     const canvas = document.createElement('canvas');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     const context = canvas.getContext('2d');
+
+    // Crear gradiente
     const gradient = context.createLinearGradient(0, 0, canvas.width, canvas.height);
-    gradient.addColorStop(0, '#0e1a3d');
-    gradient.addColorStop(0.5, '#6c1414');
-    gradient.addColorStop(1, '#b5661a');
+    gradient.addColorStop(0, '#0e1a3d'); // Ajustado a un color más oscuro
+    gradient.addColorStop(0.5, '#6c1414'); // Ajustado a un color más oscuro
+    gradient.addColorStop(1, '#b5661a'); // Ajustado a un color más oscuro
+
     context.fillStyle = gradient;
     context.fillRect(0, 0, canvas.width, canvas.height);
+
     return new THREE.CanvasTexture(canvas);
-}
+};
 
 scene.background = createGradientBackground();
 
-// Establecer constantes y cargar texturas
-const STAR_SIZE = 1;
-const CONSTELLATION_SIZE = 3;
-const starTexture = new THREE.TextureLoader().load('path_to_circular_texture.png');
-
-// Crear estrellas brillantes
-const starMaterial = new THREE.PointsMaterial({ map: starTexture, size: STAR_SIZE, sizeAttenuation: false, transparent: true });
+// Estrellas brillantes
+const starGeometry = new THREE.BufferGeometry();
+const starMaterial = new THREE.PointsMaterial({ color: 0xFFFFFF, size: 1, sizeAttenuation: true });
 const starVertices = [];
-const fixedZDistance = 1000;
 for (let i = 0; i < 10000; i++) {
     const x = (Math.random() - 0.5) * 2000;
     const y = (Math.random() - 0.5) * 2000;
-    const z = (Math.random() - 0.5) * fixedZDistance;
+    const z = (Math.random() - 0.5) * 2000;
     starVertices.push(x, y, z);
 }
-
-const starGeometry = new THREE.BufferGeometry();
 starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
 const stars = new THREE.Points(starGeometry, starMaterial);
 scene.add(stars);
 
 // Opción para posiciones fijas o aleatorias
-const fixedPositions = false;
+const fixedPositions = true; // Cambia esto a false para posiciones aleatorias
 
 // Constelaciones con posiciones fijas
 const constellations = [
@@ -74,27 +69,26 @@ const constellations = [
     { name: 'Pisces', stars: 6, position: { x: 0, y: -500, z: 0 } },
     { name: 'Ursa Minor', stars: 7, position: { x: 0, y: 0, z: 500 } }
 ];
-
 const constellationStars = [];
-const constellationMaterial = new THREE.PointsMaterial({ map: starTexture, size: CONSTELLATION_SIZE, sizeAttenuation: false, transparent: true });
+const constellationMaterial = new THREE.PointsMaterial({ color: 0x00FFFF, size: 4, sizeAttenuation: true }); // Color azul brillante y tamaño mayor
 
-function createConstellation(positions) {
+const createConstellation = (positions) => {
     const constellationGeometry = new THREE.BufferGeometry();
     constellationGeometry.setFromPoints(positions);
     return new THREE.Points(constellationGeometry, constellationMaterial);
-}
+};
 
-function positionConstellations() {
-    constellationStars.forEach(star => scene.remove(star));
+const positionConstellations = () => {
+    constellationStars.forEach(star => scene.remove(star)); // Limpiar las constelaciones previas
 
     constellations.forEach((constellation) => {
-        const numStars = constellation.stars;
+        const numStars = constellation.stars; // Número de estrellas de la constelación
         const positions = [];
 
         for (let i = 0; i < numStars; i++) {
-            const x = (Math.random() - 0.5) * 100;
+            const x = (Math.random() - 0.5) * 100; // Limitar las posiciones para mantenerlas en el espacio visible
             const y = (Math.random() - 0.5) * 100;
-            const z = (Math.random() - 0.5) * fixedZDistance;
+            const z = (Math.random() - 0.5) * 100;
             positions.push(new THREE.Vector3(x, y, z));
         }
 
@@ -108,7 +102,7 @@ function positionConstellations() {
             while (!isPositionValid) {
                 xOffset = (Math.random() - 0.5) * window.innerWidth / 2;
                 yOffset = (Math.random() - 0.5) * window.innerHeight / 2;
-                zOffset = (Math.random() - 0.5) * fixedZDistance;
+                zOffset = (Math.random() - 0.5) * 1000;
 
                 isPositionValid = true;
                 constellationStars.forEach(star => {
@@ -118,7 +112,7 @@ function positionConstellations() {
                         Math.pow(star.position.z - zOffset, 2)
                     );
 
-                    if (distance < 300) {
+                    if (distance < 300) { // Distancia mínima entre constelaciones
                         isPositionValid = false;
                     }
                 });
@@ -130,24 +124,55 @@ function positionConstellations() {
         scene.add(constellationPoints);
         constellationStars.push(constellationPoints);
     });
-}
+};
 
-positionConstellations();
+positionConstellations(); // Posicionar las constelaciones inicialmente
+
+// Crear un gradiente para el ojo de la tormenta de Júpiter
+const createJupiterStormGradient = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 512;
+    canvas.height = 512;
+    const ctx = canvas.getContext('2d');
+
+    // Crear gradiente radial para simular el ojo de la tormenta
+    const gradient = ctx.createRadialGradient(256, 256, 50, 256, 256, 256);
+    gradient.addColorStop(0, '#FFA500'); // Naranja
+    gradient.addColorStop(0.5, '#FF4500'); // Rojo anaranjado
+    gradient.addColorStop(1, '#8B0000'); // Rojo oscuro
+
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 512, 512);
+
+    return new THREE.CanvasTexture(canvas);
+};
+
+// Aplicar el gradiente del ojo de la tormenta a Júpiter
+const jupiterGeometry = new THREE.SphereGeometry(11.21, 32, 32);
+const jupiterMaterial = new THREE.MeshBasicMaterial({ map: createJupiterStormGradient() });
+const jupiter = new THREE.Mesh(jupiterGeometry, jupiterMaterial);
+scene.add(jupiter);
+
+// Posicionar Júpiter
+jupiter.position.set(20, 0, 0);
 
 // Añadir una fuente de luz
 const pointLight = new THREE.PointLight(0xFFFFFF, 2, 100);
 pointLight.position.set(0, 0, 0);
 scene.add(pointLight);
 
-// Crear gradiente para planetas
-function createPlanetGradient(color1, color2) {
+// Crear un gradiente para los planetas
+const createPlanetGradient = (color1, color2) => {
     const canvas = document.createElement('canvas');
     canvas.width = 512;
     canvas.height = 512;
     const context = canvas.getContext('2d');
+
+    // Crear gradiente radial
     const gradient = context.createRadialGradient(canvas.width / 2, canvas.height / 2, 0, canvas.width / 2, canvas.height / 2, canvas.width / 2);
     gradient.addColorStop(0, color1);
     gradient.addColorStop(1, color2);
+
     context.fillStyle = gradient;
     context.fillRect(0, 0, canvas.width, canvas.height);
     return new THREE.CanvasTexture(canvas);
@@ -211,14 +236,14 @@ function addMoons(planet, numMoons, moonSize, moonDistance) {
 
 // Datos de los planetas
 const planetData = [
-    { name: 'mercury', size: 0.383, distance: 7, gradient: planetGradients.mercury, moons: { numMoons: 0, moonSize: 0.1, moonDistance: 1 } },
-    { name: 'venus', size: 0.949, distance: 9, gradient: planetGradients.venus, moons: { numMoons: 0, moonSize: 0.1, moonDistance: 1 } },
-    { name: 'earth', size: 1, distance: 10, gradient: planetGradients.earth, moons: { numMoons: 1, moonSize: 0.27, moonDistance: 1.5 } },
-    { name: 'mars', size: 0.532, distance: 12, gradient: planetGradients.mars, moons: { numMoons: 2, moonSize: 0.1, moonDistance: 1.2 } },
-    { name: 'jupiter', size: 11.21, distance: 20, gradient: planetGradients.jupiter, moons: { numMoons: 4, moonSize: 0.5, moonDistance: 3 } },
-    { name: 'saturn', size: 9.45, distance: 30, gradient: planetGradients.saturn, moons: { numMoons: 7, moonSize: 0.3, moonDistance: 2.5 } },
-    { name: 'uranus', size: 4.01, distance: 40, gradient: planetGradients.uranus, moons: { numMoons: 5, moonSize: 0.2, moonDistance: 2 } },
-    { name: 'neptune', size: 3.88, distance: 50, gradient: planetGradients.neptune, moons: { numMoons: 2, moonSize: 0.15, moonDistance: 1.5 } }
+    { name: 'mercury', size: 0.383, distance: 6, gradient: planetGradients.mercury, moons: { numMoons: 0, moonSize: 0.1, moonDistance: 1 } },
+    { name: 'venus', size: 0.949, distance: 7, gradient: planetGradients.venus, moons: { numMoons: 0, moonSize: 0.1, moonDistance: 1 } },
+    { name: 'earth', size: 1, distance: 9, gradient: planetGradients.earth, moons: { numMoons: 1, moonSize: 0.27, moonDistance: 1.5 } },
+    { name: 'mars', size: 0.532, distance: 10, gradient: planetGradients.mars, moons: { numMoons: 2, moonSize: 0.1, moonDistance: 1.2 } },
+    { name: 'jupiter', size: 11.21, distance: 18, gradient: planetGradients.jupiter, moons: { numMoons: 4, moonSize: 0.5, moonDistance: 3 } },
+    { name: 'saturn', size: 9.45, distance: 28, gradient: planetGradients.saturn, moons: { numMoons: 7, moonSize: 0.3, moonDistance: 2.5 } },
+    { name: 'uranus', size: 4.01, distance: 38, gradient: planetGradients.uranus, moons: { numMoons: 5, moonSize: 0.2, moonDistance: 2 } },
+    { name: 'neptune', size: 3.88, distance: 45, gradient: planetGradients.neptune, moons: { numMoons: 2, moonSize: 0.15, moonDistance: 1.5 } }
 ];
 
 planetData.forEach(planet => {

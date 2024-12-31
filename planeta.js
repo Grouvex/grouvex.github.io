@@ -51,7 +51,7 @@ const stars = new THREE.Points(starGeometry, starMaterial);
 scene.add(stars);
 
 // Opción para posiciones fijas o aleatorias
-const fixedPositions = true; // Cambia esto a false para posiciones aleatorias
+const fixedPositions = false; // Cambia esto a false para posiciones aleatorias
 
 // Constelaciones con posiciones fijas
 const constellations = [

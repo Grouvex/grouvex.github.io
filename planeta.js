@@ -1,12 +1,15 @@
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-// Nueva posición de la cámara
 camera.position.z = 500;
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById('container').appendChild(renderer.domElement);
+
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; 
+controls.dampingFactor = 0.25;
+controls.enableZoom = true;
 
 window.addEventListener('resize', () => {
     const width = window.innerWidth;
@@ -16,12 +19,6 @@ window.addEventListener('resize', () => {
     camera.updateProjectionMatrix();
     positionConstellations(); 
 });
-
-// Añadir controles de órbita para cambiar la perspectiva
-const controls = new THREE.OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true; 
-controls.dampingFactor = 0.25;
-controls.enableZoom = true;
 
 const createGradientBackground = () => {
     const canvas = document.createElement('canvas');
@@ -38,24 +35,24 @@ const createGradientBackground = () => {
 };
 scene.background = createGradientBackground();
 
-// Estrellas brillantes
-const starGeometry = new THREE.BufferGeometry();
-const starMaterial = new THREE.PointsMaterial({ color: 0xFFFFFF, size: 1, sizeAttenuation: true });
-const starVertices = [];
-for (let i = 0; i < 10000; i++) {
-    const x = (Math.random() - 0.5) * 2000;
-    const y = (Math.random() - 0.5) * 2000;
-    const z = (Math.random() - 0.5) * 2000;
-    starVertices.push(x, y, z);
-}
-starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
-const stars = new THREE.Points(starGeometry, starMaterial);
-scene.add(stars);
+const generateStars = (count, spread) => {
+    const starGeometry = new THREE.BufferGeometry();
+    const starMaterial = new THREE.PointsMaterial({ color: 0xFFFFFF, size: 1, sizeAttenuation: true });
+    const starVertices = [];
+    for (let i = 0; i < count; i++) {
+        const x = (Math.random() - 0.5) * spread;
+        const y = (Math.random() - 0.5) * spread;
+        const z = (Math.random() - 0.5) * spread;
+        starVertices.push(x, y, z);
+    }
+    starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+    const stars = new THREE.Points(starGeometry, starMaterial);
+    scene.add(stars);
+};
 
-// Opción para posiciones fijas o aleatorias
-const fixedPositions = true; // Cambia esto a false para posiciones aleatorias
+generateStars(10000, 2000); // Genera un montón de estrellas iniciales
 
-// Constelaciones con posiciones fijas
+const fixedPositions = true; 
 const constellations = [
     { name: 'Aries', stars: 4, position: { x: -500, y: 300, z: -500 } },
     { name: 'Taurus', stars: 9, position: { x: 500, y: 300, z: -500 } },
@@ -72,7 +69,7 @@ const constellations = [
     { name: 'Ursa Minor', stars: 7, position: { x: 0, y: 0, z: 500 } }
 ];
 const constellationStars = [];
-const constellationMaterial = new THREE.PointsMaterial({ color: 0x00FFFF, size: 4, sizeAttenuation: true }); // Color azul brillante y tamaño mayor
+const constellationMaterial = new THREE.PointsMaterial({ color: 0x00FFFF, size: 4, sizeAttenuation: true }); 
 
 const createConstellation = (positions) => {
     const constellationGeometry = new THREE.BufferGeometry();
@@ -81,21 +78,17 @@ const createConstellation = (positions) => {
 };
 
 const positionConstellations = () => {
-    constellationStars.forEach(star => scene.remove(star)); // Limpiar las constelaciones previas
-
+    constellationStars.forEach(star => scene.remove(star)); 
     constellations.forEach((constellation) => {
-        const numStars = constellation.stars; // Número de estrellas de la constelación
+        const numStars = constellation.stars; 
         const positions = [];
-
         for (let i = 0; i < numStars; i++) {
-            const x = (Math.random() - 0.5) * 100; // Limitar las posiciones para mantenerlas en el espacio visible
+            const x = (Math.random() - 0.5) * 100; 
             const y = (Math.random() - 0.5) * 100;
             const z = (Math.random() - 0.5) * 100;
             positions.push(new THREE.Vector3(x, y, z));
         }
-
         const constellationPoints = createConstellation(positions);
-
         if (fixedPositions) {
             constellationPoints.position.set(constellation.position.x, constellation.position.y, constellation.position.z);
         } else {
@@ -105,7 +98,6 @@ const positionConstellations = () => {
                 xOffset = (Math.random() - 0.5) * window.innerWidth / 2;
                 yOffset = (Math.random() - 0.5) * window.innerHeight / 2;
                 zOffset = (Math.random() - 0.5) * 1000;
-
                 isPositionValid = true;
                 constellationStars.forEach(star => {
                     const distance = Math.sqrt(
@@ -113,72 +105,35 @@ const positionConstellations = () => {
                         Math.pow(star.position.y - yOffset, 2) +
                         Math.pow(star.position.z - zOffset, 2)
                     );
-
-                    if (distance < 300) { // Distancia mínima entre constelaciones
+                    if (distance < 300) { 
                         isPositionValid = false;
                     }
                 });
             }
-
             constellationPoints.position.set(xOffset, yOffset, zOffset);
         }
-
         scene.add(constellationPoints);
         constellationStars.push(constellationPoints);
     });
 };
+positionConstellations(); 
 
-positionConstellations(); // Posicionar las constelaciones inicialmente
-
-// Crear un gradiente para el ojo de la tormenta de Júpiter
-const createJupiterStormGradient = () => {
-    const canvas = document.createElement('canvas');
-    canvas.width = 512;
-    canvas.height = 512;
-    const ctx = canvas.getContext('2d');
-
-    // Crear gradiente radial para simular el ojo de la tormenta
-    const gradient = ctx.createRadialGradient(256, 256, 50, 256, 256, 256);
-    gradient.addColorStop(0, '#FFA500'); // Naranja
-    gradient.addColorStop(0.5, '#FF4500'); // Rojo anaranjado
-    gradient.addColorStop(1, '#8B0000'); // Rojo oscuro
-
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 512, 512);
-
-    return new THREE.CanvasTexture(canvas);
-};
-
-// Aplicar el gradiente del ojo de la tormenta a Júpiter
-const jupiterGeometry = new THREE.SphereGeometry(11.21, 32, 32);
-const jupiterMaterial = new THREE.MeshBasicMaterial({ map: createJupiterStormGradient() });
-const jupiter = new THREE.Mesh(jupiterGeometry, jupiterMaterial);
-scene.add(jupiter);
-
-// Posicionar Júpiter
-jupiter.position.set(20, 0, 0);
-
-// Añadir una fuente de luz
 const pointLight = new THREE.PointLight(0xFFFFFF, 2, 100);
 pointLight.position.set(0, 0, 0);
 scene.add(pointLight);
 
-// Crear un gradiente para los planetas
 const createPlanetGradient = (color1, color2) => {
     const canvas = document.createElement('canvas');
     canvas.width = 512;
     canvas.height = 512;
     const context = canvas.getContext('2d');
-
-    // Crear gradiente radial
     const gradient = context.createRadialGradient(canvas.width / 2, canvas.height / 2, 0, canvas.width / 2, canvas.height / 2, canvas.width / 2);
     gradient.addColorStop(0, color1);
     gradient.addColorStop(1, color2);
-
     context.fillStyle = gradient;
     context.fillRect(0, 0, canvas.width, canvas.height);
     return new THREE.CanvasTexture(canvas);
-}
+};
 
 const planetGradients = {
     sun: createPlanetGradient('#FFFF00', '#FFA500'),
@@ -192,7 +147,6 @@ const planetGradients = {
     neptune: createPlanetGradient('#4169E1', '#0000FF')
 };
 
-// Crear el Sol
 const sunGradient = (() => {
     const canvas = document.createElement('canvas');
     canvas.width = 512;
@@ -205,49 +159,43 @@ const sunGradient = (() => {
     gradient.addColorStop(0.6, '#FF8C00');
     gradient.addColorStop(0.8, '#FF4500');
     gradient.addColorStop(1, '#FF0000');
-        ctx.fillStyle = gradient;
+    ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, 512, 512);
     return new THREE.CanvasTexture(canvas);
 })();
 
-const sunGeometry = new THREE.SphereGeometry(7, 34, 34);
 const sunMaterial = new THREE.MeshBasicMaterial({ map: sunGradient });
 const sun = new THREE.Mesh(sunGeometry, sunMaterial);
 scene.add(sun);
 
-// Función para crear lunas y agregarlas a un planeta
 function addMoons(planet, numMoons, moonSize, moonDistance) {
     const moons = [];
     for (let i = 0; i < numMoons; i++) {
         const moonGeometry = new THREE.SphereGeometry(moonSize, 32, 32);
         const moonMaterial = new THREE.MeshBasicMaterial({ color: 0x888888 });
         const moon = new THREE.Mesh(moonGeometry, moonMaterial);
-
         const angle = (i / numMoons) * Math.PI * 2;
         moon.position.set(
             moonDistance * Math.cos(angle),
             0,
             moonDistance * Math.sin(angle)
         );
-
         planet.mesh.add(moon);
         moons.push(moon);
     }
     planet.moons = moons;
 }
 
-// Datos de los planetas
 const planetData = [
-    { name: 'mercury', size: 0.383/2, distance: 6, gradient: planetGradients.mercury, moons: { numMoons: 0, moonSize: 0.1, moonDistance: 1/2 } },
-    { name: 'venus', size: 0.949/2, distance: 7, gradient: planetGradients.venus, moons: { numMoons: 0, moonSize: 0.1, moonDistance: 1/2 } },
-    { name: 'earth', size: 1/2, distance: 9, gradient: planetGradients.earth, moons: { numMoons: 1, moonSize: 0.27, moonDistance: 1.5/2 } },
-    { name: 'mars', size: 0.532/2, distance: 10, gradient: planetGradients.mars, moons: { numMoons: 2, moonSize: 0.1, moonDistance: 1.2/2 } },
-    { name: 'jupiter', size: 11.21/2, distance: 18, gradient: planetGradients.jupiter, moons: { numMoons: 4, moonSize: 0.5, moonDistance: 3/2 } },
-    { name: 'saturn', size: 9.45/2, distance: 28, gradient: planetGradients.saturn, moons: { numMoons: 7, moonSize: 0.3, moonDistance: 2.5/2 } },
-    { name: 'uranus', size: 4.01/2, distance: 38, gradient: planetGradients.uranus, moons: { numMoons: 5, moonSize: 0.2, moonDistance: 2/2 } },
-    { name: 'neptune', size: 3.88/2, distance: 45, gradient: planetGradients.neptune, moons: { numMoons: 2, moonSize: 0.15, moonDistance: 1.5/2 } }
+    { name: 'mercury', size: 0.383, distance: 6, gradient: planetGradients.mercury, moons: { numMoons: 0, moonSize: 0.1, moonDistance: 1 } },
+    { name: 'venus', size: 0.949, distance: 7, gradient: planetGradients.venus, moons: { numMoons: 0, moonSize: 0.1, moonDistance: 1 } },
+    { name: 'earth', size: 1, distance: 9, gradient: planetGradients.earth, moons: { numMoons: 1, moonSize: 0.27, moonDistance: 1.5 } },
+    { name: 'mars', size: 0.532, distance: 10, gradient: planetGradients.mars, moons: { numMoons: 2, moonSize: 0.1, moonDistance: 1.2 } },
+    { name: 'jupiter', size: 11.21, distance: 18, gradient: planetGradients.jupiter, moons: { numMoons: 4, moonSize: 0.5, moonDistance: 3 } },
+    { name: 'saturn', size: 9.45, distance: 28, gradient: planetGradients.saturn, moons: { numMoons: 7, moonSize: 0.3, moonDistance: 2.5 } },
+    { name: 'uranus', size: 4.01, distance: 38, gradient: planetGradients.uranus, moons: { numMoons: 5, moonSize: 0.2, moonDistance: 2 } },
+    { name: 'neptune', size: 3.88, distance: 45, gradient: planetGradients.neptune, moons: { numMoons: 2, moonSize: 0.15, moonDistance: 1.5 } }
 ];
-
 planetData.forEach(planet => {
     const geometry = new THREE.SphereGeometry(planet.size, 32, 32);
     const material = new THREE.MeshBasicMaterial({ map: planet.gradient });
@@ -272,26 +220,39 @@ planetData.forEach(planet => {
         planet.mesh.add(ring);
     }
 
-    // Añadir lunas según la configuración del planeta
     if (planet.moons.numMoons > 0) {
         addMoons(planet, planet.moons.numMoons, planet.moons.moonSize, planet.moons.moonDistance);
     }
 });
 
-// Añadir las constelaciones
 let constellationGroup = new THREE.Group();
 constellationStars.forEach(star => constellationGroup.add(star));
 scene.add(constellationGroup);
 
-// Función de animación para rotar lunas y constelaciones
+const galaxyGroup = new THREE.Group();
+scene.add(galaxyGroup);
+
+const generateGalaxies = (count, spread) => {
+    for (let i = 0; i < count; i++) {
+        const galaxy = new THREE.Group();
+        generateStars(10000, spread).forEach(star => galaxy.add(star));
+        galaxy.position.set(
+            (Math.random() - 0.5) * spread * 10,
+            (Math.random() - 0.5) * spread * 10,
+            (Math.random() - 0.5) * spread * 10
+        );
+        galaxyGroup.add(galaxy);
+    }
+};
+
+generateGalaxies(10, 5000); // Genera varias galaxias en el espacio
+
 function animate() {
     requestAnimationFrame(animate);
     const time = Date.now() * 0.001;
-
     planetData.forEach(planet => {
         planet.mesh.position.x = planet.distance * Math.cos(time * 0.1 * (1 / planet.size));
         planet.mesh.position.z = planet.distance * Math.sin(time * 0.1 * (1 / planet.size));
-
         if (planet.moons && planet.moons.length > 0) {
             planet.moons.forEach((moon, index) => {
                 const angle = (index / planet.moons.length) * Math.PI * 2 + time * 0.5;
@@ -300,11 +261,9 @@ function animate() {
             });
         }
     });
-
-    // Rotar el grupo de constelaciones
-    constellationGroup.rotation.y += 0.0001; // Ajustado para mayor velocidad
+    constellationGroup.rotation.y += 0.0001; 
+    galaxyGroup.rotation.y += 0.00005; // Rotación lenta de las galaxias
 
     renderer.render(scene, camera);
 }
-
 animate();

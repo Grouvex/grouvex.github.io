@@ -256,7 +256,7 @@ function animate() {
         }
     });
 
-    constellationGroup.rotation.y += 0.001; // Rotar el grupo de constelaciones
+    constellationGroup.rotation.y += 0.004; // Rotar el grupo de constelaciones
 
     renderer.render(scene, camera);
 }

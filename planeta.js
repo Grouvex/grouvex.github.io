@@ -207,7 +207,7 @@ planetData.forEach(planet => {
     const material = new THREE.MeshBasicMaterial({ map: planet.gradient });
     const mesh = new THREE.Mesh(geometry, material);
     const distanceFromSunSurface = 7 + planet.distance;
-    mesh.position.x = planet.distance;
+    mesh.position.x = distanceFromSunSurface;
     scene.add(mesh);
     planet.mesh = mesh;
 

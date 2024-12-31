@@ -52,10 +52,22 @@ scene.add(stars);
 
 // Constelaciones
 const constellations = [
-    'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpius', 'Sagittarius', 'Capricornus', 'Aquarius', 'Pisces'
+    { name: 'Aries', stars: 4 },
+    { name: 'Taurus', stars: 9 },
+    { name: 'Gemini', stars: 8 },
+    { name: 'Cancer', stars: 5 },
+    { name: 'Leo', stars: 9 },
+    { name: 'Virgo', stars: 9 },
+    { name: 'Libra', stars: 4 },
+    { name: 'Scorpius', stars: 14 },
+    { name: 'Sagittarius', stars: 8 },
+    { name: 'Capricornus', stars: 6 },
+    { name: 'Aquarius', stars: 10 },
+    { name: 'Pisces', stars: 6 },
+    { name: 'Ursa Minor', stars: 7 }
 ];
 const constellationStars = [];
-const constellationMaterial = new THREE.PointsMaterial({ color: 0x00FFFF, size: 3, sizeAttenuation: true }); // Color azul brillante y tamaño mayor
+const constellationMaterial = new THREE.PointsMaterial({ color: 0x00FFFF, size: 4, sizeAttenuation: true }); // Color azul brillante y tamaño mayor
 
 const createConstellation = (positions) => {
     const constellationGeometry = new THREE.BufferGeometry();
@@ -66,8 +78,8 @@ const createConstellation = (positions) => {
 const positionConstellations = () => {
     constellationStars.forEach(star => scene.remove(star)); // Limpiar las constelaciones previas
 
-    constellations.forEach((constellation, index) => {
-        const numStars = 6 + Math.floor(Math.random() * 5); // Cada constelación tiene entre 5 y 10 estrellas
+    constellations.forEach((constellation) => {
+        const numStars = constellation.stars; // Número de estrellas de la constelación
         const positions = [];
 
         for (let i = 0; i < numStars; i++) {

@@ -50,24 +50,27 @@ starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVerti
 const stars = new THREE.Points(starGeometry, starMaterial);
 scene.add(stars);
 
-// Constelaciones
+// Opción para posiciones fijas o aleatorias
+const fixedPositions = true; // Cambia esto a false para posiciones aleatorias
+
+// Constelaciones con posiciones fijas
 const constellations = [
-    { name: 'Aries', stars: 4 },
-    { name: 'Taurus', stars: 9 },
-    { name: 'Gemini', stars: 8 },
-    { name: 'Cancer', stars: 5 },
-    { name: 'Leo', stars: 9 },
-    { name: 'Virgo', stars: 9 },
-    { name: 'Libra', stars: 4 },
-    { name: 'Scorpius', stars: 14 },
-    { name: 'Sagittarius', stars: 8 },
-    { name: 'Capricornus', stars: 6 },
-    { name: 'Aquarius', stars: 10 },
-    { name: 'Pisces', stars: 6 },
-    { name: 'Ursa Minor', stars: 7 }
+    { name: 'Aries', stars: 4, position: { x: -500, y: 300, z: -500 } },
+    { name: 'Taurus', stars: 9, position: { x: 500, y: 300, z: -500 } },
+    { name: 'Gemini', stars: 8, position: { x: -500, y: -300, z: -500 } },
+    { name: 'Cancer', stars: 5, position: { x: 500, y: -300, z: -500 } },
+    { name: 'Leo', stars: 9, position: { x: -500, y: 300, z: 500 } },
+    { name: 'Virgo', stars: 9, position: { x: 500, y: 300, z: 500 } },
+    { name: 'Libra', stars: 4, position: { x: -500, y: -300, z: 500 } },
+    { name: 'Scorpius', stars: 14, position: { x: 500, y: -300, z: 500 } },
+    { name: 'Sagittarius', stars: 8, position: { x: -500, y: 0, z: 0 } },
+    { name: 'Capricornus', stars: 6, position: { x: 500, y: 0, z: 0 } },
+    { name: 'Aquarius', stars: 10, position: { x: 0, y: 500, z: 0 } },
+    { name: 'Pisces', stars: 6, position: { x: 0, y: -500, z: 0 } },
+    { name: 'Ursa Minor', stars: 7, position: { x: 0, y: 0, z: 500 } }
 ];
 const constellationStars = [];
-const constellationMaterial = new THREE.PointsMaterial({ color: 0x00FFFF, size: 4, sizeAttenuation: true }); // Color azul brillante y tamaño mayor
+const constellationMaterial = new THREE.PointsMaterial({ color: 0x00FFFF, size: 5, sizeAttenuation: true }); // Color azul brillante y tamaño mayor
 
 const createConstellation = (positions) => {
     const constellationGeometry = new THREE.BufferGeometry();
@@ -89,29 +92,35 @@ const positionConstellations = () => {
             positions.push(new THREE.Vector3(x, y, z));
         }
 
-        let xOffset, yOffset, zOffset;
-        let isPositionValid = false;
-        while (!isPositionValid) {
-            xOffset = (Math.random() - 0.5) * window.innerWidth / 2;
-            yOffset = (Math.random() - 0.5) * window.innerHeight / 2;
-            zOffset = (Math.random() - 0.5) * 1000;
+        const constellationPoints = createConstellation(positions);
 
-            isPositionValid = true;
-            constellationStars.forEach(star => {
-                const distance = Math.sqrt(
-                    Math.pow(star.position.x - xOffset, 2) +
-                    Math.pow(star.position.y - yOffset, 2) +
-                    Math.pow(star.position.z - zOffset, 2)
-                );
+        if (fixedPositions) {
+            constellationPoints.position.set(constellation.position.x, constellation.position.y, constellation.position.z);
+        } else {
+            let xOffset, yOffset, zOffset;
+            let isPositionValid = false;
+            while (!isPositionValid) {
+                xOffset = (Math.random() - 0.5) * window.innerWidth / 2;
+                yOffset = (Math.random() - 0.5) * window.innerHeight / 2;
+                zOffset = (Math.random() - 0.5) * 1000;
 
-                if (distance < 300) { // Distancia mínima entre constelaciones
-                    isPositionValid = false;
-                }
-            });
+                isPositionValid = true;
+                constellationStars.forEach(star => {
+                    const distance = Math.sqrt(
+                        Math.pow(star.position.x - xOffset, 2) +
+                        Math.pow(star.position.y - yOffset, 2) +
+                        Math.pow(star.position.z - zOffset, 2)
+                    );
+
+                    if (distance < 300) { // Distancia mínima entre constelaciones
+                        isPositionValid = false;
+                    }
+                });
+            }
+
+            constellationPoints.position.set(xOffset, yOffset, zOffset);
         }
 
-        const constellationPoints = createConstellation(positions);
-        constellationPoints.position.set(xOffset, yOffset, zOffset);
         scene.add(constellationPoints);
         constellationStars.push(constellationPoints);
     });

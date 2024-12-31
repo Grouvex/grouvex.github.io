@@ -36,16 +36,24 @@ const createGradientBackground = () => {
 
 scene.background = createGradientBackground();
 
+// Tamaño de las estrellas y constelaciones
+const STAR_SIZE = 1; // Tamaño de las estrellas
+const CONSTELLATION_SIZE = 3; // Tamaño de las constelaciones
+
+// Cargar una textura circular para las estrellas y constelaciones
+const starTexture = new THREE.TextureLoader().load('path_to_circular_texture.png'); // Asegúrate de tener una textura circular
+
 // Estrellas brillantes
-const starGeometry = new THREE.BufferGeometry();
-const starMaterial = new THREE.PointsMaterial({ color: 0xFFFFFF, size: 1, sizeAttenuation: true });
+const starMaterial = new THREE.PointsMaterial({ map: starTexture, size: STAR_SIZE, sizeAttenuation: false, transparent: true });
 const starVertices = [];
+const fixedZDistance = 1000; // Distancia fija en el eje Z
 for (let i = 0; i < 10000; i++) {
     const x = (Math.random() - 0.5) * 2000;
     const y = (Math.random() - 0.5) * 2000;
-    const z = (Math.random() - 0.5) * 2000;
+    const z = (Math.random() - 0.5) * fixedZDistance; // Mantener la misma distancia en Z
     starVertices.push(x, y, z);
 }
+const starGeometry = new THREE.BufferGeometry();
 starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
 const stars = new THREE.Points(starGeometry, starMaterial);
 scene.add(stars);
@@ -70,7 +78,7 @@ const constellations = [
     { name: 'Ursa Minor', stars: 7, position: { x: 0, y: 0, z: 500 } }
 ];
 const constellationStars = [];
-const constellationMaterial = new THREE.PointsMaterial({ color: 0x00FFFF, size: 3, sizeAttenuation: true }); // Color azul brillante y tamaño mayor
+const constellationMaterial = new THREE.PointsMaterial({ map: starTexture, size: CONSTELLATION_SIZE, sizeAttenuation: false, transparent: true });
 
 const createConstellation = (positions) => {
     const constellationGeometry = new THREE.BufferGeometry();
@@ -88,7 +96,7 @@ const positionConstellations = () => {
         for (let i = 0; i < numStars; i++) {
             const x = (Math.random() - 0.5) * 100; // Limitar las posiciones para mantenerlas en el espacio visible
             const y = (Math.random() - 0.5) * 100;
-            const z = (Math.random() - 0.5) * 100;
+            const z = (Math.random() - 0.5) * fixedZDistance; // Mantener la misma distancia en Z
             positions.push(new THREE.Vector3(x, y, z));
         }
 
@@ -102,7 +110,7 @@ const positionConstellations = () => {
             while (!isPositionValid) {
                 xOffset = (Math.random() - 0.5) * window.innerWidth / 2;
                 yOffset = (Math.random() - 0.5) * window.innerHeight / 2;
-                zOffset = (Math.random() - 0.5) * 1000;
+                zOffset = (Math.random() - 0.5) * fixedZDistance; // Mantener la misma distancia en Z
 
                 isPositionValid = true;
                 constellationStars.forEach(star => {
@@ -127,6 +135,7 @@ const positionConstellations = () => {
 };
 
 positionConstellations(); // Posicionar las constelaciones inicialmente
+
 
 // Añadir una fuente de luz
 const pointLight = new THREE.PointLight(0xFFFFFF, 2, 100);

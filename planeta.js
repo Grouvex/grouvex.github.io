@@ -188,16 +188,37 @@ const sunMaterial = new THREE.MeshBasicMaterial({ map: sunGradient });
 const sun = new THREE.Mesh(sunGeometry, sunMaterial);
 scene.add(sun);
 
+// Función para crear lunas y agregarlas a un planeta
+function addMoons(planet, numMoons, moonSize, moonDistance) {
+    const moons = [];
+    for (let i = 0; i < numMoons; i++) {
+        const moonGeometry = new THREE.SphereGeometry(moonSize, 32, 32);
+        const moonMaterial = new THREE.MeshBasicMaterial({ color: 0x888888 });
+        const moon = new THREE.Mesh(moonGeometry, moonMaterial);
+
+        const angle = (i / numMoons) * Math.PI * 2;
+        moon.position.set(
+            moonDistance * Math.cos(angle),
+            0,
+            moonDistance * Math.sin(angle)
+        );
+
+        planet.mesh.add(moon);
+        moons.push(moon);
+    }
+    planet.moons = moons;
+}
+
 // Datos de los planetas
 const planetData = [
-    { name: 'mercury', size: 0.383, distance: 7, gradient: planetGradients.mercury },
-    { name: 'venus', size: 0.949, distance: 9, gradient: planetGradients.venus },
-    { name: 'earth', size: 1, distance: 10, gradient: planetGradients.earth },
-    { name: 'mars', size: 0.532, distance: 12, gradient: planetGradients.mars },
-    { name: 'jupiter', size: 11.21, distance: 20, gradient: planetGradients.jupiter },
-    { name: 'saturn', size: 9.45, distance: 30, gradient: planetGradients.saturn },
-    { name: 'uranus', size: 4.01, distance: 40, gradient: planetGradients.uranus },
-    { name: 'neptune', size: 3.88, distance: 50, gradient: planetGradients.neptune }
+    { name: 'mercury', size: 0.383, distance: 7, gradient: planetGradients.mercury, moons: { numMoons: 0, moonSize: 0.1, moonDistance: 1 } },
+    { name: 'venus', size: 0.949, distance: 9, gradient: planetGradients.venus, moons: { numMoons: 0, moonSize: 0.1, moonDistance: 1 } },
+    { name: 'earth', size: 1, distance: 10, gradient: planetGradients.earth, moons: { numMoons: 1, moonSize: 0.27, moonDistance: 1.5 } },
+    { name: 'mars', size: 0.532, distance: 12, gradient: planetGradients.mars, moons: { numMoons: 2, moonSize: 0.1, moonDistance: 1.2 } },
+    { name: 'jupiter', size: 11.21, distance: 20, gradient: planetGradients.jupiter, moons: { numMoons: 4, moonSize: 0.5, moonDistance: 3 } },
+    { name: 'saturn', size: 9.45, distance: 30, gradient: planetGradients.saturn, moons: { numMoons: 7, moonSize: 0.3, moonDistance: 2.5 } },
+    { name: 'uranus', size: 4.01, distance: 40, gradient: planetGradients.uranus, moons: { numMoons: 5, moonSize: 0.2, moonDistance: 2 } },
+    { name: 'neptune', size: 3.88, distance: 50, gradient: planetGradients.neptune, moons: { numMoons: 2, moonSize: 0.15, moonDistance: 1.5 } }
 ];
 
 planetData.forEach(planet => {
@@ -224,24 +245,18 @@ planetData.forEach(planet => {
         planet.mesh.add(ring);
     }
 
-    if (planet.name === 'earth') {
-        const moonGeometry = new THREE.SphereGeometry(0.27, 32, 32);
-        const moonMaterial = new THREE.MeshBasicMaterial({ color: 0x888888 });
-        const moon = new THREE.Mesh(moonGeometry, moonMaterial);
-        moon.position.set(1.5, 0, 0);
-        planet.mesh.add(moon);
-        planet.moon = moon;
+    // Añadir lunas según la configuración del planeta
+    if (planet.moons.numMoons > 0) {
+        addMoons(planet, planet.moons.numMoons, planet.moons.moonSize, planet.moons.moonDistance);
     }
 });
-
-camera.position.z = 60;
 
 // Añadir las constelaciones
 let constellationGroup = new THREE.Group();
 constellationStars.forEach(star => constellationGroup.add(star));
 scene.add(constellationGroup);
 
-// Función de animación
+// Función de animación para rotar lunas y constelaciones
 function animate() {
     requestAnimationFrame(animate);
     const time = Date.now() * 0.001;
@@ -250,13 +265,17 @@ function animate() {
         planet.mesh.position.x = planet.distance * Math.cos(time * 0.1 * (1 / planet.size));
         planet.mesh.position.z = planet.distance * Math.sin(time * 0.1 * (1 / planet.size));
 
-        if (planet.name === 'earth') {
-            planet.moon.position.x = 1.5 * Math.cos(time * 2);
-            planet.moon.position.z = 1.5 * Math.sin(time * 2);
+        if (planet.moons && planet.moons.length > 0) {
+            planet.moons.forEach((moon, index) => {
+                const angle = (index / planet.moons.length) * Math.PI * 2 + time * 0.5;
+                moon.position.x = planet.moons.moonDistance * Math.cos(angle);
+                moon.position.z = planet.moons.moonDistance * Math.sin(angle);
+            });
         }
     });
 
-    constellationGroup.rotation.y += 0.01; // Rotar el grupo de constelaciones
+    // Rotar el grupo de constelaciones
+    constellationGroup.rotation.y += 0.01; // Ajustado para mayor velocidad
 
     renderer.render(scene, camera);
 }

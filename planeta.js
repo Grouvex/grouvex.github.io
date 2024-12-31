@@ -7,9 +7,10 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById('container').appendChild(renderer.domElement);
 
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true; 
+controls.enableDamping = true;
 controls.dampingFactor = 0.25;
 controls.enableZoom = true;
+controls.enablePan = true; // Permitir paneo para mejor control en dispositivos móviles
 
 window.addEventListener('resize', () => {
     const width = window.innerWidth;
@@ -50,9 +51,9 @@ const generateStars = (count, spread) => {
     scene.add(stars);
 };
 
-generateStars(1000000, 200000); // Genera un montón de estrellas iniciales
+generateStars(10000, 2000); // Genera un montón de estrellas iniciales
 
-const fixedPositions = false; 
+const fixedPositions = true;
 const constellations = [
     { name: 'Aries', stars: 4, position: { x: -500, y: 300, z: -500 } },
     { name: 'Taurus', stars: 9, position: { x: 500, y: 300, z: -500 } },
@@ -69,7 +70,7 @@ const constellations = [
     { name: 'Ursa Minor', stars: 7, position: { x: 0, y: 0, z: 500 } }
 ];
 const constellationStars = [];
-const constellationMaterial = new THREE.PointsMaterial({ color: 0x00FFFF, size: 2, sizeAttenuation: true }); 
+const constellationMaterial = new THREE.PointsMaterial({ color: 0x00FFFF, size: 4, sizeAttenuation: true });
 
 const createConstellation = (positions) => {
     const constellationGeometry = new THREE.BufferGeometry();
@@ -78,14 +79,14 @@ const createConstellation = (positions) => {
 };
 
 const positionConstellations = () => {
-    constellationStars.forEach(star => scene.remove(star)); 
+    constellationStars.forEach(star => scene.remove(star));
     constellations.forEach((constellation) => {
-        const numStars = constellation.stars; 
+        const numStars = constellation.stars;
         const positions = [];
         for (let i = 0; i < numStars; i++) {
-            const x = (Math.random() - 0.5) * 200; 
-            const y = (Math.random() - 0.5) * 200;
-            const z = (Math.random() - 0.5) * 200;
+            const x = (Math.random() - 0.5) * 100;
+            const y = (Math.random() - 0.5) * 100;
+            const z = (Math.random() - 0.5) * 100;
             positions.push(new THREE.Vector3(x, y, z));
         }
         const constellationPoints = createConstellation(positions);
@@ -105,7 +106,7 @@ const positionConstellations = () => {
                         Math.pow(star.position.y - yOffset, 2) +
                         Math.pow(star.position.z - zOffset, 2)
                     );
-                    if (distance < 300) { 
+                    if (distance < 300) {
                         isPositionValid = false;
                     }
                 });
@@ -116,7 +117,7 @@ const positionConstellations = () => {
         constellationStars.push(constellationPoints);
     });
 };
-positionConstellations(); 
+positionConstellations();
 
 const pointLight = new THREE.PointLight(0xFFFFFF, 2, 100);
 pointLight.position.set(0, 0, 0);
@@ -164,6 +165,7 @@ const sunGradient = (() => {
     return new THREE.CanvasTexture(canvas);
 })();
 
+const sunGeometry = new THREE.SphereGeometry(7, 34, 34);
 const sunMaterial = new THREE.MeshBasicMaterial({ map: sunGradient });
 const sun = new THREE.Mesh(sunGeometry, sunMaterial);
 scene.add(sun);
@@ -196,6 +198,7 @@ const planetData = [
     { name: 'uranus', size: 4.01, distance: 63, gradient: planetGradients.uranus, moons: { numMoons: 5, moonSize: 0.2, moonDistance: 2 } },
     { name: 'neptune', size: 3.88, distance: 73, gradient: planetGradients.neptune, moons: { numMoons: 2, moonSize: 0.15, moonDistance: 1.5 } }
 ];
+
 planetData.forEach(planet => {
     const geometry = new THREE.SphereGeometry(planet.size, 32, 32);
     const material = new THREE.MeshBasicMaterial({ map: planet.gradient });
@@ -251,13 +254,21 @@ function animate() {
     requestAnimationFrame(animate);
     const time = Date.now() * 0.001;
     planetData.forEach(planet => {
-        planet.mesh.position.x = planet.distance * Math.cos(time * 0.1 * (1 / planet.size));
-        planet.mesh.position.z = planet.distance * Math.sin(time * 0.1 * (1 / planet.size));
+        // Órbitas elípticas
+        const angle = time * 0.1 * (1 / planet.size);
+        const a = planet.distance; // semi-major axis
+        const b = planet.distance * Math.sqrt(1 - Math.pow(planet.eccentricity, 2)); // semi-minor axis
+        planet.mesh.position.x = a * Math.cos(angle);
+        planet.mesh.position.z = b * Math.sin(angle);
+
+        // Rotación sobre su eje
+        planet.mesh.rotation.y += planet.rotationSpeed;
+
         if (planet.moons && planet.moons.length > 0) {
             planet.moons.forEach((moon, index) => {
-                const angle = (index / planet.moons.length) * Math.PI * 2 + time * 0.5;
-                moon.position.x = planet.moons.moonDistance * Math.cos(angle);
-                moon.position.z = planet.moons.moonDistance * Math.sin(angle);
+                const moonAngle = (index / planet.moons.length) * Math.PI * 2 + time * 0.5;
+                moon.position.x = planet.moons.moonDistance * Math.cos(moonAngle);
+                moon.position.z = planet.moons.moonDistance * Math.sin(moonAngle);
             });
         }
     });

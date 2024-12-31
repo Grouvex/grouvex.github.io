@@ -70,7 +70,7 @@ const constellations = [
     { name: 'Ursa Minor', stars: 7, position: { x: 0, y: 0, z: 500 } }
 ];
 const constellationStars = [];
-const constellationMaterial = new THREE.PointsMaterial({ color: 0x00FFFF, size: 5, sizeAttenuation: true }); // Color azul brillante y tamaño mayor
+const constellationMaterial = new THREE.PointsMaterial({ color: 0x00FFFF, size: 3, sizeAttenuation: true }); // Color azul brillante y tamaño mayor
 
 const createConstellation = (positions) => {
     const constellationGeometry = new THREE.BufferGeometry();

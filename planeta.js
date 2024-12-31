@@ -187,14 +187,14 @@ function addMoons(planet, numMoons, moonSize, moonDistance) {
 }
 
 const planetData = [
-    { name: 'mercury', size: 0.383, distance: 6, gradient: planetGradients.mercury, moons: { numMoons: 0, moonSize: 0.1, moonDistance: 1 } },
-    { name: 'venus', size: 0.949, distance: 7, gradient: planetGradients.venus, moons: { numMoons: 0, moonSize: 0.1, moonDistance: 1 } },
-    { name: 'earth', size: 1, distance: 9, gradient: planetGradients.earth, moons: { numMoons: 1, moonSize: 0.27, moonDistance: 1.5 } },
-    { name: 'mars', size: 0.532, distance: 10, gradient: planetGradients.mars, moons: { numMoons: 2, moonSize: 0.1, moonDistance: 1.2 } },
-    { name: 'jupiter', size: 11.21, distance: 18, gradient: planetGradients.jupiter, moons: { numMoons: 4, moonSize: 0.5, moonDistance: 3 } },
-    { name: 'saturn', size: 9.45, distance: 28, gradient: planetGradients.saturn, moons: { numMoons: 7, moonSize: 0.3, moonDistance: 2.5 } },
-    { name: 'uranus', size: 4.01, distance: 38, gradient: planetGradients.uranus, moons: { numMoons: 5, moonSize: 0.2, moonDistance: 2 } },
-    { name: 'neptune', size: 3.88, distance: 45, gradient: planetGradients.neptune, moons: { numMoons: 2, moonSize: 0.15, moonDistance: 1.5 } }
+    { name: 'mercury', size: 0.383, distance: 10, gradient: planetGradients.mercury, moons: { numMoons: 0, moonSize: 0.1, moonDistance: 1 } },
+    { name: 'venus', size: 0.949, distance: 12, gradient: planetGradients.venus, moons: { numMoons: 0, moonSize: 0.1, moonDistance: 1 } },
+    { name: 'earth', size: 1, distance: 13, gradient: planetGradients.earth, moons: { numMoons: 1, moonSize: 0.27, moonDistance: 1.5 } },
+    { name: 'mars', size: 0.532, distance: 15, gradient: planetGradients.mars, moons: { numMoons: 2, moonSize: 0.1, moonDistance: 1.2 } },
+    { name: 'jupiter', size: 11.21, distance: 33, gradient: planetGradients.jupiter, moons: { numMoons: 4, moonSize: 0.5, moonDistance: 3 } },
+    { name: 'saturn', size: 9.45, distance: 53, gradient: planetGradients.saturn, moons: { numMoons: 7, moonSize: 0.3, moonDistance: 2.5 } },
+    { name: 'uranus', size: 4.01, distance: 63, gradient: planetGradients.uranus, moons: { numMoons: 5, moonSize: 0.2, moonDistance: 2 } },
+    { name: 'neptune', size: 3.88, distance: 73, gradient: planetGradients.neptune, moons: { numMoons: 2, moonSize: 0.15, moonDistance: 1.5 } }
 ];
 planetData.forEach(planet => {
     const geometry = new THREE.SphereGeometry(planet.size, 32, 32);

@@ -50,9 +50,9 @@ const generateStars = (count, spread) => {
     scene.add(stars);
 };
 
-generateStars(10000, 2000); // Genera un montón de estrellas iniciales
+generateStars(1000000, 200000); // Genera un montón de estrellas iniciales
 
-const fixedPositions = true; 
+const fixedPositions = false; 
 const constellations = [
     { name: 'Aries', stars: 4, position: { x: -500, y: 300, z: -500 } },
     { name: 'Taurus', stars: 9, position: { x: 500, y: 300, z: -500 } },
@@ -69,7 +69,7 @@ const constellations = [
     { name: 'Ursa Minor', stars: 7, position: { x: 0, y: 0, z: 500 } }
 ];
 const constellationStars = [];
-const constellationMaterial = new THREE.PointsMaterial({ color: 0x00FFFF, size: 4, sizeAttenuation: true }); 
+const constellationMaterial = new THREE.PointsMaterial({ color: 0x00FFFF, size: 2, sizeAttenuation: true }); 
 
 const createConstellation = (positions) => {
     const constellationGeometry = new THREE.BufferGeometry();
@@ -83,9 +83,9 @@ const positionConstellations = () => {
         const numStars = constellation.stars; 
         const positions = [];
         for (let i = 0; i < numStars; i++) {
-            const x = (Math.random() - 0.5) * 100; 
-            const y = (Math.random() - 0.5) * 100;
-            const z = (Math.random() - 0.5) * 100;
+            const x = (Math.random() - 0.5) * 200; 
+            const y = (Math.random() - 0.5) * 200;
+            const z = (Math.random() - 0.5) * 200;
             positions.push(new THREE.Vector3(x, y, z));
         }
         const constellationPoints = createConstellation(positions);

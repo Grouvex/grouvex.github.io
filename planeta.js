@@ -208,7 +208,6 @@ planetData.forEach(planet => {
     scene.add(mesh);
     planet.mesh = mesh;
 
-    // Añadir anillos a Saturno y Urano
     if (planet.name === 'saturn') {
         const ringGeometry = new THREE.RingGeometry(planet.size + 0.5, planet.size + 1, 64);
         const ringMaterial = new THREE.MeshBasicMaterial({ color: 0xFFFFFF, side: THREE.DoubleSide });
@@ -225,34 +224,40 @@ planetData.forEach(planet => {
         planet.mesh.add(ring);
     }
 
-    // Añadir la luna a la Tierra
     if (planet.name === 'earth') {
-        const moonGeometry = new THREE.SphereGeometry(0.27, 32, 32); // Tamaño relativo de la luna
+        const moonGeometry = new THREE.SphereGeometry(0.27, 32, 32);
         const moonMaterial = new THREE.MeshBasicMaterial({ color: 0x888888 });
         const moon = new THREE.Mesh(moonGeometry, moonMaterial);
-        moon.position.set(1.5, 0, 0); // Posición relativa a la Tierra
+        moon.position.set(1.5, 0, 0);
         planet.mesh.add(moon);
         planet.moon = moon;
     }
 });
 
-// Establecer posición de la cámara
 camera.position.z = 60;
+
+// Añadir las constelaciones
+let constellationGroup = new THREE.Group();
+constellationStars.forEach(star => constellationGroup.add(star));
+scene.add(constellationGroup);
 
 // Función de animación
 function animate() {
     requestAnimationFrame(animate);
     const time = Date.now() * 0.001;
+
     planetData.forEach(planet => {
         planet.mesh.position.x = planet.distance * Math.cos(time * 0.1 * (1 / planet.size));
         planet.mesh.position.z = planet.distance * Math.sin(time * 0.1 * (1 / planet.size));
-        
-        // Rotar luna alrededor de la Tierra
+
         if (planet.name === 'earth') {
             planet.moon.position.x = 1.5 * Math.cos(time * 2);
             planet.moon.position.z = 1.5 * Math.sin(time * 2);
         }
     });
+
+    constellationGroup.rotation.y += 0.001; // Rotar el grupo de constelaciones
+
     renderer.render(scene, camera);
 }
 

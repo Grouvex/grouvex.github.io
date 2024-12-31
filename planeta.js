@@ -1,39 +1,41 @@
-// Configuración básica de Three.js
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+// Nueva posición de la cámara
+camera.position.z = 500;
+
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById('container').appendChild(renderer.domElement);
 
-// Ajustar la cámara y el renderizador cuando la ventana cambia de tamaño
 window.addEventListener('resize', () => {
     const width = window.innerWidth;
     const height = window.innerHeight;
     renderer.setSize(width, height);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
-    positionConstellations(); // Reposicionar constelaciones al cambiar tamaño de ventana
+    positionConstellations(); 
 });
 
-// Fondo de colores degradados y estrellas brillantes
+// Añadir controles de órbita para cambiar la perspectiva
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; 
+controls.dampingFactor = 0.25;
+controls.enableZoom = true;
+
 const createGradientBackground = () => {
     const canvas = document.createElement('canvas');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     const context = canvas.getContext('2d');
-
-    // Crear gradiente
     const gradient = context.createLinearGradient(0, 0, canvas.width, canvas.height);
-    gradient.addColorStop(0, '#0e1a3d'); // Ajustado a un color más oscuro
-    gradient.addColorStop(0.5, '#6c1414'); // Ajustado a un color más oscuro
-    gradient.addColorStop(1, '#b5661a'); // Ajustado a un color más oscuro
-
+    gradient.addColorStop(0, '#0e1a3d'); 
+    gradient.addColorStop(0.5, '#6c1414'); 
+    gradient.addColorStop(1, '#b5661a'); 
     context.fillStyle = gradient;
     context.fillRect(0, 0, canvas.width, canvas.height);
-
     return new THREE.CanvasTexture(canvas);
 };
-
 scene.background = createGradientBackground();
 
 // Estrellas brillantes
@@ -300,7 +302,7 @@ function animate() {
     });
 
     // Rotar el grupo de constelaciones
-    constellationGroup.rotation.y += 0.01; // Ajustado para mayor velocidad
+    constellationGroup.rotation.y += 0.0001; // Ajustado para mayor velocidad
 
     renderer.render(scene, camera);
 }

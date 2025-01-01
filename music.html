@@ -739,6 +739,7 @@
                nextButton.removeAttribute('disabled');
                randomButton.removeAttribute('disabled');
                repeatButton.removeAttribute('disabled');
+               alert('Está disponible la reproducción') 
            } else {
                playPauseButton.setAttribute('disabled', 'true');
                prevButton.setAttribute('disabled', 'true');
@@ -746,6 +747,7 @@
                randomButton.setAttribute('disabled', 'true');
                repeatButton.setAttribute('disabled', 'true');
                audioPlayer.pause();
+               alert('No está disponible la reproducción') 
            }
        }
        toggleControls(true);

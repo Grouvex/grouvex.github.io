@@ -166,7 +166,7 @@ const sunGradient = (() => {
     return new THREE.CanvasTexture(canvas);
 })();
 
-const sunGeometry = new THREE.SphereGeometry(7, 34, 34);
+const sunGeometry = new THREE.SphereGeometry(20, 34, 34);
 const sunMaterial = new THREE.MeshBasicMaterial({ map: sunGradient });
 const sun = new THREE.Mesh(sunGeometry, sunMaterial);
 scene.add(sun);
@@ -208,7 +208,7 @@ planetData.forEach(planet => {
     const geometry = new THREE.SphereGeometry(planet.size, 32, 32);
     const material = new THREE.MeshBasicMaterial({ map: planet.gradient });
     const mesh = new THREE.Mesh(geometry, material);
-    const distanceFromSunSurface = 7 + planet.distance;
+    const distanceFromSunSurface = 20 + planet.distance;
     mesh.position.x = distanceFromSunSurface;
     scene.add(mesh);
     planet.mesh = mesh;

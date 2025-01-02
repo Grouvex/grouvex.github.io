@@ -146,7 +146,8 @@ const planetGradients = {
     jupiter: createPlanetGradient('#D4AF37', '#A0522D'),
     saturn: createPlanetGradient('#F4A460', '#D2691E'),
     uranus: createPlanetGradient('#40E0D0', '#008080'),
-    neptune: createPlanetGradient('#4169E1', '#0000FF')
+    neptune: createPlanetGradient('#4169E1', '#0000FF'),
+    pluton: createPlanetGradient('#b1b1b1', '#808080'),
 };
 
 const sunGradient = (() => {

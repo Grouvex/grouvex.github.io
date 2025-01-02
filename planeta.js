@@ -52,9 +52,9 @@ const generateStars = (count, spread) => {
     return stars
 };
 
-generateStars(10000, 2000); // Genera un montón de estrellas iniciales
+generateStars(100000, 20000); // Genera un montón de estrellas iniciales
 
-const fixedPositions = true;
+const fixedPositions = false;
 const constellations = [
     { name: 'Aries', stars: 4, position: { x: -500, y: 300, z: -500 } },
     { name: 'Taurus', stars: 9, position: { x: 500, y: 300, z: -500 } },
@@ -71,7 +71,7 @@ const constellations = [
     { name: 'Ursa Minor', stars: 7, position: { x: 0, y: 0, z: 500 } }
 ];
 const constellationStars = [];
-const constellationMaterial = new THREE.PointsMaterial({ color: 0x00FFFF, size: 4, sizeAttenuation: true });
+const constellationMaterial = new THREE.PointsMaterial({ color: 0x00FFFF, size: 3, sizeAttenuation: true });
 
 const createConstellation = (positions) => {
     const constellationGeometry = new THREE.BufferGeometry();
@@ -227,14 +227,6 @@ planetData.forEach(planet => {
         ring.position.set(0, 0, 0);
         planet.mesh.add(ring);
     }
-
-    if (planet.moons && planet.moons.length > 0) {
-            planet.moons.forEach((moon, index) => {
-                const moonAngle = (index / planet.moons.length) * Math.PI * 2 + time * 0.5;
-                moon.position.x = (planet.size + moon.moonDistance + index * (moon.size + 0.2)) * Math.cos(moonAngle);
-                moon.position.z = (planet.size + moon.moonDistance + index * (moon.size + 0.2)) * Math.sin(moonAngle);
-            });
-        }
     });
 
 let constellationGroup = new THREE.Group();
@@ -261,7 +253,7 @@ const generateGalaxies = (count, spread) => {
 };
 
 
-generateGalaxies(10, 5000); // Genera varias galaxias en el espacio
+generateGalaxies(1000, 5000); // Genera varias galaxias en el espacio
 
 function animate() {
     requestAnimationFrame(animate);
@@ -286,7 +278,7 @@ function animate() {
         }
     });
     constellationGroup.rotation.y += 0.0001; 
-    galaxyGroup.rotation.y += 0.00005; // Rotación lenta de las galaxias
+    galaxyGroup.rotation.y += 0.0005; // Rotación lenta de las galaxias
 
     renderer.render(scene, camera);
 }

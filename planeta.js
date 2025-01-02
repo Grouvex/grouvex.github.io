@@ -211,7 +211,9 @@ planetData.forEach(planet => {
     mesh.position.x = distanceFromSunSurface;
     scene.add(mesh);
     planet.mesh = mesh;
-
+if (planet.moons.numMoons > 0) { 
+    addMoons(planet, planet.moons.numMoons, planet.moons.moonSize, planet.moons.moonDistance);
+}
     if (planet.name === 'saturn') {
         const ringGeometry = new THREE.RingGeometry(planet.size + 0.5, planet.size + 1, 64);
         const ringMaterial = new THREE.MeshBasicMaterial({ color: 0xFFFFFF, side: THREE.DoubleSide });
@@ -279,7 +281,7 @@ function animate() {
     });
     constellationGroup.rotation.y += 0.0001; 
     galaxyGroup.rotation.y += 0.0005; // Rotación lenta de las galaxias
-
+    controls.update()
     renderer.render(scene, camera);
 }
 animate();

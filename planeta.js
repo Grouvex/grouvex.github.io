@@ -197,9 +197,10 @@ const planetData = [
     { name: 'earth', size: 1, distance: 13, eccentricity: 0.2, rotationSpeed: 0.01, gradient: planetGradients.earth, moons: { numMoons: 1, moonSize: 0.5, moonDistance: 1 } },
     { name: 'mars', size: 0.532, distance: 15, eccentricity: 0.2, rotationSpeed: 0.01, gradient: planetGradients.mars, moons: { numMoons: 2, moonSize: 0.09, moonDistance: 1 } },
     { name: 'jupiter', size: 11.21, distance: 33, eccentricity: 0.2, rotationSpeed: 0.01, gradient: planetGradients.jupiter, moons: { numMoons: 4, moonSize: 0.5, moonDistance: 3 } },
-    { name: 'saturn', size: 9.45, distance: 53, eccentricity: 0.2, rotationSpeed: 0.01, gradient: planetGradients.saturn, moons: { numMoons: 7, moonSize: 0.3, moonDistance: 1.5 } },
-    { name: 'uranus', size: 4.01, distance: 63, eccentricity: 0.2, rotationSpeed: 0.01, gradient: planetGradients.uranus, moons: { numMoons: 5, moonSize: 0.2, moonDistance: 1.5 } },
-    { name: 'neptune', size: 3.88, distance: 73, eccentricity: 0.2, rotationSpeed: 0.01, gradient: planetGradients.neptune, moons: { numMoons: 2, moonSize: 0.35, moonDistance: 1 } }
+    { name: 'saturn', size: 9.45, distance: 63, eccentricity: 0.2, rotationSpeed: 0.01, gradient: planetGradients.saturn, moons: { numMoons: 7, moonSize: 0.3, moonDistance: 1.5 } },
+    { name: 'uranus', size: 4.01, distance: 73, eccentricity: 0.2, rotationSpeed: 0.01, gradient: planetGradients.uranus, moons: { numMoons: 5, moonSize: 0.2, moonDistance: 1.5 } },
+    { name: 'neptune', size: 3.88, distance: 83, eccentricity: 0.2, rotationSpeed: 0.01, gradient: planetGradients.neptune, moons: { numMoons: 2, moonSize: 0.35, moonDistance: 1 } },
+    { name: 'pluton', size: 0.183, distance: 100, eccentricity: 0.2, rotationSpeed: 0.01, gradient: planetGradients.neptune, moons: { numMoons: 0, moonSize: 0, moonDistance: 0 } }
 ];
 
 

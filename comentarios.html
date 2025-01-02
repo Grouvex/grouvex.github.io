@@ -104,28 +104,20 @@
     <nav>
       <a onclick="showSection('newa')">Noticias</a>
       <a onclick="showSection('reportes')">Reportes en la Web</a>
-      <a onclick="showSection('deseos')">Deseos para 2024 <span class="status recommended">Recommended</span></a>
-      <a onclick="showSection('artistas')">Artistas<span class="status recommended">Recommended</span></a>
+      <a onclick="showSection('deseos')" style="display:none">Deseos para 2024 <span class="status recommended">Recommended</span></a>
+      <a onclick="showSection('artistas')" style="display:none">Artistas<span class="status recommended">Recommended</span></a>
       <a onclick="showSection('comentarios')">Comentarios</a>
       <a onclick="showSection('sugerencias')">Sugerencias</a>
     </nav>
-    <button id="checkVerificationBtn">Estado de Usuario</button>
     <section id="newa" class="active">
       <div class="comment-form">
         <h2>Noticias</h2>
         <p>Noticias del equipo de Grouvex Studios</p>
-         <div id="auth-container">
-         <h1 id="authForm">Autenticación de Usuarios en Grouvex Studios</h1>
-         <p style="color:white; font-size:13px">Para acceder a los reglamentos de Grouvex Studios Recording y a su vez a los formularios, deberá darle a <strong>Registrar</strong>, en la parte de arriba. Si crees que estas verificado dale a Estado de Verificado</p>
-         <p style="color:white; font-size:13px">En caso de <n>NO tener</n> una cuenta de Grouvex Studios, solicite una al correo <a href="mailto:soporte@grouvex.com" style="color:green">soporte@grouvex.com</a></p>
-    </div>
-    <div id="content" style="display: none;"> 
         <form>
         <input type="text" id="nombreInputNew" placeholder="Tu nombre..." required><br>
         <input type="text" id="newInput" rows="4" placeholder="Escribe tu reporte aquí..." required><br>
         <button type="submit" onclick="addComment('newa', 'nombreInputNew')">Enviar</button>
         </form>
-        </div>
         <button class="orden-button" onclick="ordenarComentarios('newa')">Ordenar</button>
       </div>
      <!-- <p><strong>${date} - ${nameText}:</strong> ${commentText}</p> -->
@@ -144,18 +136,11 @@
       <div class="comment-form">
         <h2>Artista</h2>
         <p>Mensaje de los artistas</p>
-        <div id="auth-container">
-         <h1 id="authForm">Autenticación de Usuarios en Grouvex Studios</h1>
-         <p style="color:white; font-size:13px">Para acceder a los reglamentos de Grouvex Studios Recording y a su vez a los formularios, deberá darle a <strong>Registrar</strong>, en la parte de arriba. Si crees que estas verificado dale a Estado de Verificado</p>
-         <p style="color:white; font-size:13px">En caso de <n>NO tener</n> una cuenta de Grouvex Studios, solicite una al correo <a href="mailto:soporte@grouvex.com" style="color:green">soporte@grouvex.com</a></p>
-         </div>
-         <div id="content" style="display: none;"> 
         <form>
         <input type="text" id="nombreInputArtista" placeholder="Tu nombre..." required><br>
         <input type="text" id="artistaInput" rows="4" placeholder="Escribe tu reporte aquí..." required><br>
         <button type="submit" onclick="addComment('artistas', 'nombreInputArtista')">Enviar</button>
         </form>
-        </div>
         <button class="orden-button" onclick="ordenarComentarios('artistas')">Ordenar</button>
       </div>
       <div class="comments-section" id="artistasComments">

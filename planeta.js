@@ -49,6 +49,7 @@ const generateStars = (count, spread) => {
     starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
     const stars = new THREE.Points(starGeometry, starMaterial);
     scene.add(stars);
+    return stars
 };
 
 generateStars(10000, 2000); // Genera un montón de estrellas iniciales
@@ -240,9 +241,11 @@ const galaxyGroup = new THREE.Group();
 scene.add(galaxyGroup);
 
 const generateGalaxies = (count, spread) => {
+    const galaxyGroup = new THREE.Group();
     for (let i = 0; i < count; i++) {
         const galaxy = new THREE.Group();
-        generateStars(10000, spread).forEach(star => galaxy.add(star));
+        const stars = generateStars(10000, spread);
+        galaxy.add(stars);
         galaxy.position.set(
             (Math.random() - 0.5) * spread * 10,
             (Math.random() - 0.5) * spread * 10,
@@ -250,7 +253,9 @@ const generateGalaxies = (count, spread) => {
         );
         galaxyGroup.add(galaxy);
     }
+    scene.add(galaxyGroup);
 };
+
 
 generateGalaxies(10, 5000); // Genera varias galaxias en el espacio
 

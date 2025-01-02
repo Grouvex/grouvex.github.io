@@ -265,8 +265,8 @@ function animate() {
     planetData.forEach(planet => {
         // Órbitas elípticas
         const angle = time * 0.1 * (1 / planet.size);
-        const a = planet.distance; // semi-major axis
-        const b = planet.distance * Math.sqrt(1 - Math.pow(planet.eccentricity, 2)); // semi-minor axis
+        const a = 20 + planet.distance; // semi-major axis
+        const b = a * Math.sqrt(1 - Math.pow(planet.eccentricity, 2)); // semi-minor axis
         planet.mesh.position.x = a * Math.cos(angle);
         planet.mesh.position.z = b * Math.sin(angle);
 
@@ -276,8 +276,9 @@ function animate() {
         if (planet.moons && planet.moons.length > 0) {
             planet.moons.forEach((moon, index) => {
                 const moonAngle = (index / planet.moons.length) * Math.PI * 2 + time * 0.5;
-                moon.position.x = planet.moons.moonDistance * Math.cos(moonAngle);
-                moon.position.z = planet.moons.moonDistance * Math.sin(moonAngle);
+                const distanceFromSurface = planet.size + planet.moons[0].userData.moonDistance;
+                moon.position.x = distanceFromSurface * Math.cos(moonAngle);
+                moon.position.z = distanceFromSurface * Math.sin(moonAngle);
             });
         }
     });

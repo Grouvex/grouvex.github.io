@@ -102,12 +102,14 @@
         }
     </style>
     <nav>
+      <h2>Activadas</h2>
       <a onclick="showSection('newa')">Noticias</a>
       <a onclick="showSection('reportes')">Reportes en la Web</a>
-      <a onclick="showSection('deseos')" style="display:none">Deseos para 2024 <span class="status recommended">Recommended</span></a>
-      <a onclick="showSection('artistas')" style="display:none">Artistas<span class="status recommended">Recommended</span></a>
       <a onclick="showSection('comentarios')">Comentarios</a>
       <a onclick="showSection('sugerencias')">Sugerencias</a>
+      <h2>Desactivadas</h2>
+      <a onclick="showSection('deseos')" style="color:red">Deseos para 2024</a>
+      <a onclick="showSection('artistas')" style="color:red">Artistas</a>
     </nav>
     <section id="newa" class="active">
       <div class="comment-form">
@@ -137,11 +139,11 @@
         <h2>Artista</h2>
         <p>Mensaje de los artistas</p>
         <form>
-        <input type="text" id="nombreInputArtista" placeholder="Tu nombre..." required><br>
-        <input type="text" id="artistaInput" rows="4" placeholder="Escribe tu reporte aquí..." required><br>
-        <button type="submit" onclick="addComment('artistas', 'nombreInputArtista')">Enviar</button>
+        <input type="text" id="nombreInputArtista" placeholder="Tu nombre..." required disabled><br>
+        <input type="text" id="artistaInput" rows="4" placeholder="Escribe tu reporte aquí..." required disabled><br>
+        <button type="submit" onclick="addComment('artistas', 'nombreInputArtista')" disabled>Enviar</button>
         </form>
-        <button class="orden-button" onclick="ordenarComentarios('artistas')">Ordenar</button>
+        <button class="orden-button" onclick="ordenarComentarios('artistas')" disabled>Ordenar</button>
       </div>
       <div class="comments-section" id="artistasComments">
         <h3>Artistas:</h3>
@@ -183,11 +185,11 @@
         <h2>Deseos para 2024 - 2025</h2>
         <p>Pide un deseo aquí. Puede que se haga realidad tu sueño.⛄</p>
         <form>
-        <input type="text" id="nombreInputDeseo" placeholder="Tu nombre (opcional)..."><br>
-        <input type="text" id="deseoInput" rows="4" placeholder="Escribe tu deseo aquí..." required><br>
-        <button type="submit" onclick="addComment('deseos', 'nombreInputDeseo')">Enviar</button>
+        <input type="text" id="nombreInputDeseo" placeholder="Tu nombre (opcional)..." disabled><br>
+        <input type="text" id="deseoInput" rows="4" placeholder="Escribe tu deseo aquí..." required disabled><br>
+        <button type="submit" onclick="addComment('deseos', 'nombreInputDeseo')" disabled>Enviar</button>
         </form>
-        <button class="orden-button" onclick="ordenarComentarios('deseos')">Ordenar</button>
+        <button class="orden-button" onclick="ordenarComentarios('deseos')" disabled>Ordenar</button>
       </div>
       <div class="comments-section" id="deseosComments">
         <h3>Deseos:</h3>

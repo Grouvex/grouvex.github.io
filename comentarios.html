@@ -102,14 +102,16 @@
         }
     </style>
     <nav>
-      <h2>Activadas</h2>
+      <h3>Activadas</h3>
       <a onclick="showSection('newa')">Noticias</a>
       <a onclick="showSection('reportes')">Reportes en la Web</a>
       <a onclick="showSection('comentarios')">Comentarios</a>
       <a onclick="showSection('sugerencias')">Sugerencias</a>
-      <h2>Desactivadas</h2>
+      <details>
+      <summary><h3>Desactivadas</h3></summary>
       <a onclick="showSection('deseos')" style="color:red">Deseos para 2024</a>
       <a onclick="showSection('artistas')" style="color:red">Artistas</a>
+      </details>
     </nav>
     <section id="newa" class="active">
       <div class="comment-form">

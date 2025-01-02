@@ -53,7 +53,7 @@ const generateStars = (count, spread, size) => {
     return starGroup;
 };
 
-generateStars(10000000, 20000, 0.1); // Genera un montón de estrellas iniciales
+generateStars(100**4, 2000, 0.1); // Genera un montón de estrellas iniciales
 
 const fixedPositions = true;
 const constellations = [

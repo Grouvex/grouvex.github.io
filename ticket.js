@@ -12,9 +12,11 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+// Escuchadores de eventos
 document.getElementById('ticket-form').addEventListener('submit', submitTicket);
 document.getElementById('team-member').addEventListener('change', updateEmailInfo);
 
+// Función para enviar los tickets
 function submitTicket(event) {
     event.preventDefault();
 
@@ -29,25 +31,34 @@ function submitTicket(event) {
     const subject = document.getElementById('subject').value;
     const message = document.getElementById('message').value;
     const fromEmail = user.email;
+    const timestamp = firebase.firestore.FieldValue.serverTimestamp();
 
-    db.collection('tickets').add({
+    guardarTicketEnServidor(artistName, teamMember, subject, message, fromEmail, timestamp);
+}
+
+// Función para guardar tickets en el servidor
+function guardarTicketEnServidor(artistName, teamMember, subject, message, fromEmail, timestamp) {
+    const newTicketRef = db.collection('tickets').doc();
+    newTicketRef.set({
         artistName: artistName,
         teamMember: teamMember,
         subject: subject,
         message: message,
         fromEmail: fromEmail,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        timestamp: timestamp
     })
     .then(() => {
+        console.log('Ticket guardado exitosamente.');
         alert('Ticket enviado exitosamente.');
         updateEmailInfo();
         cargarTickets();
     })
     .catch((error) => {
-        console.error('Error al enviar el ticket: ', error);
+        console.error('Error al guardar el ticket: ', error);
     });
 }
 
+// Función para actualizar información del email
 function updateEmailInfo() {
     const user = firebase.auth().currentUser;
     if (!user) {
@@ -61,6 +72,7 @@ function updateEmailInfo() {
     document.getElementById('email-info').innerText = `Este ticket está enviado por ${fromEmail}, para el miembro del equipo ${teamMember}`;
 }
 
+// Función para cargar tickets existentes
 function cargarTickets() {
     const ticketSection = document.getElementById('ticketComments');
     ticketSection.innerHTML = ''; // Limpiar la sección antes de cargar nuevos tickets

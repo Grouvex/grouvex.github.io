@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Tickets</title>
+    <link rel="stylesheet" href="ticket.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Sistema de Tickets</h1>
+        <form id="ticket-form">
+            <label for="artist-name">Nombre del Artista:</label>
+            <input type="text" id="artist-name" required>
+            
+            <label for="team-member">Miembro del Equipo:</label>
+            <select id="team-member" required>
+                <option value="soporte">Soporte</option>
+                <option value="moderador">Moderador</option>
+                <option value="administrador">Administrador</option>
+                <option value="gestor">Gestor</option>
+            </select>
+
+            <label for="subject">Asunto:</label>
+            <input type="text" id="subject" required>
+
+            <label for="message">Mensaje:</label>
+            <textarea id="message" required></textarea>
+
+            <button type="submit">Enviar Ticket</button>
+        </form>
+        <p id="email-info"></p>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+    <script src="ticket.js"></script>
+</body>
+</html>

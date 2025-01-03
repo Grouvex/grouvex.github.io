@@ -1,12 +1,6 @@
 body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     background: linear-gradient(to right, #8e44ad, #3498db);
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
 }
 
 .container {

@@ -1,13 +1,13 @@
 // Configuración de Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
-  authDomain: "grouvex-studios.firebaseapp.com",
-  databaseURL: "https://grouvex-studios-default-rtdb.firebaseio.com",
-  projectId: "grouvex-studios",
-  storageBucket: "grouvex-studios.appspot.com",
-  messagingSenderId: "1070842606062",
-  appId: "1:1070842606062:web:5d887863048fd100b49eff",
-  measurementId: "G-75BR8D2CR3"
+    apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
+    authDomain: "grouvex-studios.firebaseapp.com",
+    databaseURL: "https://grouvex-studios-default-rtdb.firebaseio.com",
+    projectId: "grouvex-studios",
+    storageBucket: "grouvex-studios.appspot.com",
+    messagingSenderId: "1070842606062",
+    appId: "1:1070842606062:web:5d887863048fd100b49eff",
+    measurementId: "G-75BR8D2CR3"
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
@@ -29,7 +29,6 @@ function submitTicket(event) {
     const subject = document.getElementById('subject').value;
     const message = document.getElementById('message').value;
     const fromEmail = user.email;
-    const toEmail = getEmailForTeamMember(teamMember);
 
     db.collection('tickets').add({
         artistName: artistName,
@@ -37,12 +36,12 @@ function submitTicket(event) {
         subject: subject,
         message: message,
         fromEmail: fromEmail,
-        toEmail: toEmail,
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
     })
     .then(() => {
-        alert(`Ticket enviado exitosamente. Este ticket está enviado por ${fromEmail}, para ${toEmail}`);
+        alert('Ticket enviado exitosamente.');
         updateEmailInfo();
+        cargarTickets();
     })
     .catch((error) => {
         console.error('Error al enviar el ticket: ', error);
@@ -58,24 +57,22 @@ function updateEmailInfo() {
 
     const teamMember = document.getElementById('team-member').value;
     const fromEmail = user.email;
-    const toEmail = getEmailForTeamMember(teamMember);
 
-    document.getElementById('email-info').innerText = `Este ticket está enviado por ${fromEmail}, para ${toEmail}`;
+    document.getElementById('email-info').innerText = `Este ticket está enviado por ${fromEmail}, para el miembro del equipo ${teamMember}`;
 }
 
-function getEmailForTeamMember(teamMember) {
-    switch (teamMember) {
-        case 'soporte':
-            return 'soporte@grouvex.com';
-        case 'moderador':
-            return 'moderador@grouvex.com';
-        case 'administrador':
-            return 'administrador@grouvex.com';
-        case 'gestor':
-            return 'gestion@grouvex.com';
-        default:
-            return 'soporte@grouvex.com';
-    }
+function cargarTickets() {
+    const ticketSection = document.getElementById('ticketComments');
+    ticketSection.innerHTML = ''; // Limpiar la sección antes de cargar nuevos tickets
+    db.collection('tickets').get().then((snapshot) => {
+        snapshot.forEach((doc) => {
+            const ticket = doc.data();
+            const ticketPara = document.createElement('p');
+            ticketPara.innerHTML = `<strong>${new Date(ticket.timestamp.seconds * 1000).toUTCString()} - ${ticket.artistName}:</strong> ${ticket.message} (Equipo: ${ticket.teamMember}, Asunto: ${ticket.subject})`;
+            ticketPara.dataset.timestamp = ticket.timestamp.seconds;
+            ticketSection.appendChild(ticketPara);
+        });
+    });
 }
 
 // Inicializa Firebase Auth y maneja la autenticación del usuario
@@ -84,6 +81,7 @@ firebase.auth().onAuthStateChanged((user) => {
         // Usuario está autenticado
         console.log('Usuario autenticado:', user.email);
         updateEmailInfo();
+        cargarTickets();
     } else {
         // Usuario no está autenticado
         console.log('No hay ningún usuario autenticado');

@@ -1,19 +1,32 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * const {onCall} = require("firebase-functions/v2/https");
- * const {onDocumentWritten} = require("firebase-functions/v2/firestore");
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
+const functions = require("firebase-functions");
+const admin = require("firebase-admin");
+const nodemailer = require("nodemailer");
+admin.initializeApp();
 
-const {onRequest} = require("firebase-functions/v2/https");
-const logger = require("firebase-functions/logger");
+// Configuración de Nodemailer
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'TU_CORREO@gmail.com',
+        pass: 'TU_CONTRASEÑA'
+    }
+});
 
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
+exports.sendEmailNotification = functions.firestore.document('tickets/{ticketId}')
+    .onCreate((snap, context) => {
+        const ticket = snap.data();
+        const mailOptions = {
+            from: ticket.fromEmail,
+            to: ticket.toEmail,
+            subject: ticket.subject,
+            text: `Nombre del Artista: ${ticket.artistName}\nMiembro del Equipo: ${ticket.teamMember}\nAsunto: ${ticket.subject}\nMensaje: ${ticket.message}\n\nEste ticket está enviado por ${ticket.fromEmail}, para ${ticket.toEmail}`
+        };
 
-// exports.helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+        return transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error('Error al enviar el correo: ', error);
+            } else {
+                console.log('Correo enviado exitosamente: ', info.response);
+            }
+        });
+    });

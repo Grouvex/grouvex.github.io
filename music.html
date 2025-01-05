@@ -585,53 +585,97 @@
                  document.title = `${track.name} -  ${track.artist} (${track.album}) - Grouvex Studios`;
                 }
               // Función para actualizar el título de la página según el estado de reproducción 
-                function updatePageTitle() { if (audioPlayer.paused || audioPlayer.src === '') { document.title = 'Reproductor de música - Grouvex Studios'; document.title = `${currentTrack.name} -  ${currentTrack.artist} (${currentTrack.album}) - Grouvex Studios`;} } 
-             // Llamar a la función updatePageTitle() cuando se pausa o reproduce una pista 
-                audioPlayer.addEventListener('play', updatePageTitle); audioPlayer.addEventListener('pause', updatePageTitle); audioPlayer.addEventListener('ended', updatePageTitle); 
+            function updatePageTitle() { 
+                try {
+                    if (audioPlayer.paused || audioPlayer.src === '') { 
+                        document.title = 'Reproductor de música - Grouvex Studios'; 
+                    } else {
+                        document.title = `${currentTrack.name} -  ${currentTrack.artist} (${currentTrack.album}) - Grouvex Studios`;
+                    }
+                } catch (error) {
+                    console.error('Error updating page title:', error);
+                }
+            }
+            
+            // Llamar a la función updatePageTitle() cuando se pausa o reproduce una pista 
+            audioPlayer.addEventListener('play', updatePageTitle); 
+            audioPlayer.addEventListener('pause', updatePageTitle); 
+            audioPlayer.addEventListener('ended', updatePageTitle); 
+            
             // Asegurar que el título sea correcto al cargar la página
-                document.addEventListener('DOMContentLoaded', updatePageTitle);
-                function playTrack(index) {
+            document.addEventListener('DOMContentLoaded', updatePageTitle);
+            
+            function playTrack(index) {
+                try {
                     currentTrackIndex = index;
                     updateTrackInfo(tracks[currentTrackIndex]);
-                    if (playPauseButton.hasAttribute('disabled')) { return;}
+                    if (playPauseButton.hasAttribute('disabled')) { return; }
                     audioPlayer.src = `https://grouvex.com/music/${tracks[currentTrackIndex].file}`;
-                    audioPlayer.play();
+                    audioPlayer.play().then(() => {
+                        console.log('Audio is playing');
+                    }).catch(error => {
+                        console.error('Error trying to play audio:', error);
+                    });
                     isPlaying = true;
                     playPauseButton.textContent = '⏸️';
+                } catch (error) {
+                    console.error('Error in playTrack:', error);
                 }
-
-                function playPause() {
+            }
+            
+            function playPause() {
+                try {
                     if (isPlaying) {
                         audioPlayer.pause();
                         isPlaying = false;
                         playPauseButton.textContent = '▶️';
                     } else {
-                        audioPlayer.play();
+                        audioPlayer.play().then(() => {
+                            console.log('Audio is playing');
+                        }).catch(error => {
+                            console.error('Error trying to play audio:', error);
+                        });
                         isPlaying = true;
                         playPauseButton.textContent = '⏸️';
                     }
+                } catch (error) {
+                    console.error('Error in playPause:', error);
                 }
-
-                function nextTrack() {
+            }
+            
+            function nextTrack() {
+                try {
                     do {
                         currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
                     } while (!isTrackAvailable(tracks[currentTrackIndex]));
                     playTrack(currentTrackIndex);
+                } catch (error) {
+                    console.error('Error in nextTrack:', error);
                 }
-
-                function prevTrack() {
+            }
+            
+            function prevTrack() {
+                try {
                     do {
                         currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
                     } while (!isTrackAvailable(tracks[currentTrackIndex]));
                     playTrack(currentTrackIndex);
+                } catch (error) {
+                    console.error('Error in prevTrack:', error);
                 }
-
-                function toggleRandom() {
+            }
+            
+            function toggleRandom() {
+                try {
                     isRandom = !isRandom;
                     randomButton.textContent = isRandom ? '🔀!' : '🔀';
+                } catch (error) {
+                    console.error('Error in toggleRandom:', error);
                 }
-
-                function toggleRepeat() {
+            }
+            
+            function toggleRepeat() {
+                try {
                     repeatMode = (repeatMode + 1) % 3;
                     switch (repeatMode) {
                         case 0:
@@ -644,9 +688,13 @@
                             repeatButton.textContent = '🔁2';
                             break;
                     }
+                } catch (error) {
+                    console.error('Error in toggleRepeat:', error);
                 }
-
-                function updatePlaylistHighlight() {
+            }
+            
+            function updatePlaylistHighlight() {
+                try {
                     const playlistItems = document.querySelectorAll('#playlist li');
                     playlistItems.forEach((item, index) => {
                         if (index === currentTrackIndex) {
@@ -655,18 +703,27 @@
                             item.classList.remove('active');
                         }
                     });
+                } catch (error) {
+                    console.error('Error in updatePlaylistHighlight:', error);
                 }
-
-                // Función para comprobar si una canción está en su periodo de reproducción
-                function isTrackAvailable(track) { 
-                   const now = new Date(); 
-                   const nowUnixTime = Math.floor(now.getTime() / 1000); // Unix Time actual
-                   const startDate = new Date(now.getFullYear(), track.startDate.month - 1, track.startDate.day, 0, 0, 0); 
-                   const endDate = new Date(now.getFullYear(), track.endDate.month - 1, track.endDate.day, 23, 59, 59); 
-                   return now >= startDate && now <= endDate && nowUnixTime >= track.releaseDate;
-               }
-
-                // Generar la lista de reproducción dinámicamente
+            }
+            
+            // Función para comprobar si una canción está en su periodo de reproducción
+            function isTrackAvailable(track) { 
+                try {
+                    const now = new Date(); 
+                    const nowUnixTime = Math.floor(now.getTime() / 1000); // Unix Time actual
+                    const startDate = new Date(now.getFullYear(), track.startDate.month - 1, track.startDate.day, 0, 0, 0); 
+                    const endDate = new Date(now.getFullYear(), track.endDate.month - 1, track.endDate.day, 23, 59, 59); 
+                    return now >= startDate && now <= endDate && nowUnixTime >= track.releaseDate;
+                } catch (error) {
+                    console.error('Error in isTrackAvailable:', error);
+                    return false;
+                }
+            }
+            
+            // Generar la lista de reproducción dinámicamente
+            try {
                 tracks.forEach((track, index) => {
                     if (isTrackAvailable(track)) {
                         const li = document.createElement('li');
@@ -675,110 +732,165 @@
                         playlist.appendChild(li);
                     }
                 });
-
-                // Deshabilitar el clic derecho
-                audioPlayer.addEventListener('contextmenu', function (e) {
+            } catch (error) {
+                console.error('Error generating playlist:', error);
+            }
+            
+            // Deshabilitar el clic derecho
+            audioPlayer.addEventListener('contextmenu', function (e) {
+                try {
                     e.preventDefault();
-                });
-
-                // Reproducir la primera canción disponible automáticamente al cargar la página
-                if (playlist.childNodes.length > 0) {
-                    playTrack(0);
+                } catch (error) {
+                    console.error('Error disabling right-click:', error);
                 }
-
-                playPauseButton.addEventListener('click', playPause);
-                nextButton.addEventListener('click', nextTrack);
-                prevButton.addEventListener('click', prevTrack);
-                randomButton.addEventListener('click', toggleRandom);
-                repeatButton.addEventListener('click', toggleRepeat);
-
-                audioPlayer.addEventListener('ended', nextTrack);
-
-                // Asegurarse de que solo las canciones disponibles se reproduzcan
-                function playNextAvailableTrack() {
+            });
+            
+            // Reproducir la primera canción disponible automáticamente al cargar la página
+            try {
+                if (playlist.childNodes.length > 0) {
+                    const firstTrackIndex = tracks.findIndex(track => isTrackAvailable(track));
+                    if (firstTrackIndex !== -1) {
+                        playTrack(firstTrackIndex);
+                    }
+                } else {
+                    const noTrackElement = document.createElement('li');
+                    noTrackElement.textContent = 'No hay ninguna canción disponible';
+                    playlist.appendChild(noTrackElement);
+                }
+            } catch (error) {
+                console.error('Error playing first available track:', error);
+            }
+            
+            playPauseButton.addEventListener('click', playPause);
+            nextButton.addEventListener('click', nextTrack);
+            prevButton.addEventListener('click', prevTrack);
+            randomButton.addEventListener('click', toggleRandom);
+            repeatButton.addEventListener('click', toggleRepeat);
+            
+            audioPlayer.addEventListener('ended', nextTrack);
+            
+            // Asegurarse de que solo las canciones disponibles se reproduzcan
+            function playNextAvailableTrack() {
+                try {
                     do {
                         currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
                     } while (!isTrackAvailable(tracks[currentTrackIndex]));
                     playTrack(currentTrackIndex);
+                } catch (error) {
+                    console.error('Error in playNextAvailableTrack:', error);
                 }
-
-                function playPrevAvailableTrack() {
+            }
+            
+            function playPrevAvailableTrack() {
+                try {
                     do {
                         currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
                     } while (!isTrackAvailable(tracks[currentTrackIndex]));
                     playTrack(currentTrackIndex);
+                } catch (error) {
+                    console.error('Error in playPrevAvailableTrack:', error);
                 }
-
-                function randomTrack() {
+            }
+            
+            function randomTrack() {
+                try {
                     let randomIndex;
                     do {
                         randomIndex = Math.floor(Math.random() * tracks.length);
                     } while (!isTrackAvailable(tracks[randomIndex]));
                     playTrack(randomIndex);
+                } catch (error) {
+                    console.error('Error in randomTrack:', error);
                 }
-
-                nextButton.addEventListener('click', playNextAvailableTrack);
-                prevButton.addEventListener('click', playPrevAvailableTrack);
-                randomButton.addEventListener('click', randomTrack);
-
-                audioPlayer.addEventListener('ended', playNextAvailableTrack);
-                // Reproducir la primera canción disponible automáticamente al cargar la página
+            }
+            
+            nextButton.addEventListener('click', playNextAvailableTrack);
+            prevButton.addEventListener('click', playPrevAvailableTrack);
+            randomButton.addEventListener('click', randomTrack);
+            
+            audioPlayer.addEventListener('ended', playNextAvailableTrack);
+            
+            // Reproducir la primera canción disponible automáticamente al cargar la página
+            try {
                 if (playlist.childNodes.length > 0) { 
-                 const firstTrackIndex = tracks.findIndex(track => isTrackAvailable(track));
-                 if (firstTrackIndex !== -1) {
-                  playTrack(firstTrackIndex); 
-                 } 
-                  } else { 
-                 const noTrackElement = document.createElement('li'); noTrackElement.textContent = 'No hay ninguna canción disponible'; playlist.appendChild(noTrackElement);
+                    const firstTrackIndex = tracks.findIndex(track => isTrackAvailable(track));
+                    if (firstTrackIndex !== -1) {
+                        playTrack(firstTrackIndex); 
+                    } 
+                } else { 
+                    const noTrackElement = document.createElement('li'); 
+                    noTrackElement.textContent = 'No hay ninguna canción disponible'; 
+                    playlist.appendChild(noTrackElement);
                 }
-         // Encapsulamos la función para habilitar/deshabilitar los controles
-// Encapsulamos la función para habilitar/deshabilitar los controles
-function toggleControls(enableAudio, enableLista, enableBotones) {
-    const playPauseButton = document.getElementById('playPause');
-    const prevButton = document.getElementById('prev');
-    const nextButton = document.getElementById('next');
-    const randomButton = document.getElementById('random');
-    const repeatButton = document.getElementById('repeat');
-    const playlistItems = document.querySelectorAll('#playlist li');
-
-    let audioState = '';
-    if (enableAudio) {
-        audioPlayer.play();
-        audioState = 'Audio: Habilitado';
-    } else {
-        audioPlayer.pause();
-        audioState = 'Audio: Deshabilitado';
-    }
-
-    let listaState = '';
-    playlistItems.forEach(item => {
-        if (enableLista) {
-            playlist.style.display = 'block';
-        } else {
-            playlist.style.display = 'none';
-        }
-    });
-    listaState = `Lista: ${enableLista ? 'Habilitada' : 'Deshabilitada'}`;
-
-    let botonesState = '';
-    const buttons = [playPauseButton, prevButton, nextButton, randomButton, repeatButton];
-    buttons.forEach(button => {
-        if (enableBotones) {
-            button.removeAttribute('disabled');
-        } else {
-            button.setAttribute('disabled', 'true');
-        }
-    });
-    botonesState = `Botones: ${enableBotones ? 'Habilitados' : 'Deshabilitados'}`;
-
-    alert(`Estado del Reproductor de Música:\n• ${audioState}\n• ${listaState}\n• ${botonesState}`);
-}
-
-// Llamadas para habilitar/deshabilitar los controles
-toggleControls(true, false, false);  
-// Habilita audio, lista y botones
-
-            });         
+            } catch (error) {
+                console.error('Error playing first available track on load:', error);
+            }
+            // Encapsulamos la función para habilitar/deshabilitar los controles
+            function toggleControls(enableAudio, enableLista, enableBotones) {
+                const playPauseButton = document.getElementById('playPause');
+                const prevButton = document.getElementById('prev');
+                const nextButton = document.getElementById('next');
+                const randomButton = document.getElementById('random');
+                const repeatButton = document.getElementById('repeat');
+                const playlistItems = document.querySelectorAll('#playlist li');
+            
+                let audioState = '';
+                try {
+                    if (enableAudio) {
+                        audioPlayer.play();
+                        audioState = 'Audio: Habilitado';
+                    } else {
+                        audioPlayer.pause();
+                        audioState = 'Audio: Deshabilitado';
+                    }
+                } catch (error) {
+                    console.error('Error handling audio controls:', error);
+                }
+            
+                let listaState = '';
+                try {
+                    playlistItems.forEach(item => {
+                        if (enableLista) {
+                            playlist.style.display = 'block';
+                        } else {
+                            playlist.style.display = 'none';
+                        }
+                    });
+                    listaState = `Lista: ${enableLista ? 'Habilitada' : 'Deshabilitada'}`;
+                } catch (error) {
+                    console.error('Error handling playlist visibility:', error);
+                }
+            
+                let botonesState = '';
+                try {
+                    const buttons = [playPauseButton, prevButton, nextButton, randomButton, repeatButton];
+                    buttons.forEach(button => {
+                        if (enableBotones) {
+                            button.removeAttribute('disabled');
+                        } else {
+                            button.setAttribute('disabled', 'true');
+                        }
+                    });
+                    botonesState = `Botones: ${enableBotones ? 'Habilitados' : 'Deshabilitados'}`;
+                } catch (error) {
+                    console.error('Error handling button controls:', error);
+                }
+            
+                try {
+                    alert(`Estado del Reproductor de Música:\n• ${audioState}\n• ${listaState}\n• ${botonesState}`);
+                } catch (error) {
+                    console.error('Error displaying alert:', error);
+                }
+            }
+            
+            // Llamadas para habilitar/deshabilitar los controles
+            try {
+                toggleControls(true, true, false);  
+                // Habilita audio, lista y botones
+            } catch (error) {
+                console.error('Error in toggleControls:', error);
+            }
+        });         
     </script>
     <style>
       #song {display: block;justify-content: center;align-items: center; margin: 0; font-family: Arial, sans-serif;border: 1px;max-width: 100%;max-height: 40px;}

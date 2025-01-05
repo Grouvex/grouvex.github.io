@@ -1,41 +1,3 @@
-<<<<<<< HEAD
-#intro {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-
-#logo {
-    width: 250px;
-    height: auto;
-    animation: slideUp 5s forwards, fadeOut 1s 8s forwards;
-}
-
-@keyframes slideUp {
-    0% {
-        opacity: 0;
-        transform: translateY(100vh);
-    }
-    50% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(-100vh);
-    }
-}
-
-@keyframes fadeOut {
-    0% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
-}
-
 /*Primavera*/
 .flower {
   position: fixed;
@@ -3496,4 +3458,3 @@ footer {
   margin: 5px; /* Margen de 5px para asegurar la separación */
  }
 }
->>>>>>> 953cfe9e8dc18a2cf4d19717b2a169173244cdef

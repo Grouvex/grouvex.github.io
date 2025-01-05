@@ -58,7 +58,7 @@
 <body>
  <!-- Anuncio -->
   <div id="news"></div>
-<main id="top">
+ <main id="top">
  <!-- Publicado por -->
 <div class="tarjeta" style="display: flex;align-items: center; border-radius: 8px;  box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 10px;  padding: 10px;  height: 45px; width: 250px; padding-top: 10px;padding-bottom: 10px">
 <img src="../img/GROUVEX.png" alt="" style="border-radius: 50%; width: 35px;height: 35px;object-fit: cover; margin-right: 10px;"><div>
@@ -542,23 +542,25 @@
  <article>
   <select class="orden-button" id="ordenSelector" onchange="cambiarOrden()" style="margin:5px;margin-left:0px">
         <option value="" disabled selected>Order</option>
-        <option value="ascT">⬇ a ⬆</option>
-        <option value="desT">⬆ a ⬇</option>
+        <option value="ascT">⬇ a ⬆ (Tiempo)</option>
+        <option value="desT">⬆ a ⬇ (Tiempo)</option>
+        <option value="ascA">A-Z (Alfabeto)</option>
+        <option value="desA">Z-A (Alfabeto)</option>
     </select>
  <div class="cajetines">
-    <a href="lanzamientos/the_night_sky" class="cajetin" data-ut="1727308800">   
+    <a href="lanzamientos/the_night_sky" class="cajetin" data-ut="1727308800" data-title="The Night Sky">   
       <img src="../port/The Night Sky.jpg" alt="" style="width:300px">
       <p class="cajetin-fechas"><span id="f1_3"></span></p>
       <p class="cajetin-titulo">The Night Sky</p>
       <p class="cajetin-footer">©Grouvex Studios Recording</p>
      </a>
-     <a href="lanzamientos/spheres_of_life" class="cajetin" data-ut="1727308800">   
+     <a href="lanzamientos/spheres_of_life" class="cajetin" data-ut="1727308800" data-title="Spheres of Life">   
       <img src="../port/Spheres of Life.jpg" alt="" style="width:300px">
       <p class="cajetin-fechas"><span id="f1_2"></span></p>
       <p class="cajetin-titulo">Spheres of Life</p>
       <p class="cajetin-footer">©Grouvex Studios Recording</p>
      </a>
-<a href="lanzamientos/alpha_version" class="cajetin" data-ut="1703203200">   
+<a href="lanzamientos/alpha_version" class="cajetin" data-ut="1703203200" data-title="Alpha Version">   
       <img src="../port/Alpha_Version.jpg" alt="" style="width:300px">
       <p class="cajetin-fechas"><span id="f1_1"></span></p>
       <p class="cajetin-titulo">Alpha Version</p>
@@ -577,47 +579,49 @@
  <article>
   <select class="orden-button" id="ordenSelectorEP" onchange="cambiarOrdenEP()" style="margin:5px;margin-left:0px">
         <option value="" disabled selected>Order</option>
-        <option value="ascT">⬇ to ⬆</option>
-        <option value="desT">⬆ to ⬇</option>
+        <option value="ascT">⬇ to ⬆ (Tiempo)</option>
+        <option value="desT">⬆ to ⬇ (Tiempo)</option>
+        <option value="ascA">A-Z (Alfabeto)</option>
+        <option value="desA">Z-A (Alfabeto)</option>
     </select>
  <div class="cajetines">
-     <a href="si_fuera" class="cajetin" data-ut="1733911200">   
+     <a href="si_fuera" class="cajetin" data-ut="1733911200" data-title="Si Fuera">   
       <img src="../port/Si Fuera.jpg" alt="" style="width:300px">
       <p class="cajetin-fechas"><span id="f1_7"></span></p>
       <p class="cajetin-titulo">Si Fuera</p>
       <p class="cajetin-footer">©Grouvex Studios Recording</p>
      </a>
-     <a href="la_magia_de_la_estrella_polar" class="cajetin" data-ut="1733011200">   
+     <a href="la_magia_de_la_estrella_polar" class="cajetin" data-ut="1733011200" data-title="La Magia de la Estrella Polar">   
       <img src="../port/La Magia de la Estrella Polar.jpg" alt="" style="width:300px">
       <p class="cajetin-fechas"><span id="f1_6"></span></p>
       <p class="cajetin-titulo">La Magia de la Estrella Polar</p>
       <p class="cajetin-footer">©Grouvex Studios Recording</p>
      </a>
-     <a href="esferas_brillantes" class="cajetin" data-ut="1727308800">   
+     <a href="esferas_brillantes" class="cajetin" data-ut="1727308800" data-title="Esferas Brillantes">   
       <img src="../port/Esferas Brillantes.jpg" alt="" style="width:300px">
       <p class="cajetin-fechas"><span id="f1_5"></span></p>
       <p class="cajetin-titulo">Esferas Brillantes</p>
       <p class="cajetin-footer">©Grouvex Studios Recording</p>
      </a>
-<a href="unforgettable_memories" class="cajetin" data-ut="1704067200">   
+<a href="unforgettable_memories" class="cajetin" data-ut="1704067200" data-title="Unforgettable Memories">   
       <img src="../port/Unforgettable Memories.jpg" alt="" style="width:300px">
       <p class="cajetin-fechas"><span id="f1_4"></span></p>
       <p class="cajetin-titulo">Unforgettable Memories</p>
       <p class="cajetin-footer">©Grouvex Studios Recording</p>
      </a>
-<a href="omega_version" class="cajetin" data-ut="1703203200">   
+<a href="omega_version" class="cajetin" data-ut="1703203200" data-title="Omega Version">   
       <img src="../port/Omega_Version.jpg" alt="" style="width:300px">
       <p class="cajetin-fechas"><span id="f1_3"></span></p>
       <p class="cajetin-titulo">Omega Version</p>
       <p class="cajetin-footer">©Grouvex Studios Recording</p>
      </a>
-<a href="sentimental" class="cajetin" data-ut="1700784000">   
+<a href="sentimental" class="cajetin" data-ut="1700784000" data-title="Sentimental">   
       <img src="../port/Sentimental.jpg" alt="" style="width:300px">
       <p class="cajetin-fechas"><span id="f1_2"></span></p>
       <p class="cajetin-titulo">Sentimental</p>
       <p class="cajetin-footer">©Grouvex Studios Recording</p>
      </a>
-<a href="the_life" class="cajetin" data-ut="1699660800">   
+<a href="the_life" class="cajetin" data-ut="1699660800" data-title="The Life">   
       <img src="../port/The Life.jpg" alt="" style="width:300px">
       <p class="cajetin-fechas"><span id="f1_1"></span></p>
             <p class="cajetin-titulo">The Life</p>
@@ -646,16 +650,21 @@
       const elementosConUT = Array.from(cajetines).map(cajetin => {
         return {
           elemento: cajetin,
-          uT: parseInt(cajetin.dataset.ut)
+          uT: parseInt(cajetin.dataset.ut),
+          title: cajetin.querySelector('.cajetin-titulo').innerText.toLowerCase()
         };
       });
 
-      // Ordenar los elementos según el valor de uT y el orden seleccionado
+      // Ordenar los elementos según el valor de orden seleccionado
       elementosConUT.sort((a, b) => {
         if (orden === 'ascT') {
           return a.uT - b.uT;
         } else if (orden === 'desT') {
           return b.uT - a.uT;
+        } else if (orden === 'ascA') {
+          return a.title.localeCompare(b.title);
+        } else if (orden === 'desA') {
+          return b.title.localeCompare(a.title);
         }
         return 0; // No ordenar si no se seleccionó ninguna opción
       });
@@ -677,16 +686,21 @@
       const elementosConUT = Array.from(cajetines).map(cajetin => {
         return {
           elemento: cajetin,
-          uT: parseInt(cajetin.dataset.ut)
+          uT: parseInt(cajetin.dataset.ut),
+          title: cajetin.querySelector('.cajetin-titulo').innerText.toLowerCase()
         };
       });
 
-      // Ordenar los elementos según el valor de uT y el orden seleccionado
+      // Ordenar los elementos según el valor de orden seleccionado
       elementosConUT.sort((a, b) => {
         if (orden === 'ascT') {
           return a.uT - b.uT;
         } else if (orden === 'desT') {
           return b.uT - a.uT;
+        } else if (orden === 'ascA') {
+          return a.title.localeCompare(b.title);
+        } else if (orden === 'desA') {
+          return b.title.localeCompare(a.title);
         }
         return 0; // No ordenar si no se seleccionó ninguna opción
       });

@@ -79,6 +79,10 @@
                 <span id="trackComposer"></span> | 
                 <span id="trackProducer"></span>
             </div>
+            <div id="trackDates"> 
+              <p>Información de la fecha de reproducción: mes/día</p>  
+                <span id="startDate"></span> - <span id="endDate"></span> 
+            </div>
             <p id="trackSpotify"><a href="" target="_blank" id="spotifyLink">Escuchar en Spotify</a></p>
         </div>
         <div id="youtubeVideo" style="display: none;"> <iframe id="youtubePlayer" width="100%" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe>
@@ -96,7 +100,7 @@
      <p style="font-size:12px">Información de los Botones - <span class="tooltip" style="font-size:14px;color:red">?<span class="tooltiptext"style="font-size:12px;color:white">⏮️ Retroceder | ⏸️ Pausado | ▶️ Reproducir | ⏭️ Siguiente | 🔀 Aleatorio (Desactivado) | 🔀! Aleatorio (Activado) | 🔁 Repetir (Desactivado) | 🔁1 Repetir (Activado - Canción) | 🔁2 Repetir (Activado - Lista)</span></span></p>
      <details>
   <summary href="#Playlist"><h3>Playlist</h3></summary>
-        <div id="playlist">
+        <div id="playlist" style="block">
             <ul>
                 <!-- La lista de canciones se generará dinámicamente aquí -->
             </ul>
@@ -124,7 +128,8 @@
             const youtubePlayer = document.getElementById('youtubePlayer');
             const spotifyVideo = document.getElementById('spotifyVideo');
             const spotifyPlayer = document.getElementById('spotifyPlayer');
-
+            const startDateElement = document.getElementById('startDate'); 
+            const endDateElement = document.getElementById('endDate');
             let currentTrackIndex = 0;
             let isPlaying = false;
             let isRandom = false;
@@ -562,6 +567,9 @@
                     trackProducer.textContent = `Productor: ${track.producer}`;
                     spotifyLink.href = track.spotify;
                     player.style.backgroundImage = `url(${track.background})`;
+                    // Actualizar fechas 
+                    startDateElement.textContent = `Inicio: ${track.startDate.month}/${track.startDate.day}`;
+                    endDateElement.textContent = `Fin: ${track.endDate.month}/${track.endDate.day}`;
                     if (track.youtube) {
                         youtubePlayer.src = track.youtube;
                         youtubeVideo.style.display = 'block';
@@ -723,32 +731,53 @@
                   } else { 
                  const noTrackElement = document.createElement('li'); noTrackElement.textContent = 'No hay ninguna canción disponible'; playlist.appendChild(noTrackElement);
                 }
-         function toggleControls(enable) {
-           const playPauseButton = document.getElementById('playPause');
-           const prevButton = document.getElementById('prev');
-           const nextButton = document.getElementById('next');
-           const randomButton = document.getElementById('random');
-           const repeatButton = document.getElementById('repeat');
-           
-           if (enable) {
-               playPauseButton.removeAttribute('disabled');
-               prevButton.removeAttribute('disabled');
-               nextButton.removeAttribute('disabled');
-               randomButton.removeAttribute('disabled');
-               repeatButton.removeAttribute('disabled');
-               audioPlayer.play();
-               alert('Está disponible la reproducción') 
-           } else {
-               playPauseButton.setAttribute('disabled', 'true');
-               prevButton.setAttribute('disabled', 'true');
-               nextButton.setAttribute('disabled', 'true');
-               randomButton.setAttribute('disabled', 'true');
-               repeatButton.setAttribute('disabled', 'true');
-               audioPlayer.pause();
-               alert('No está disponible la reproducción') 
-           }
-       }
-       toggleControls(true);
+         // Encapsulamos la función para habilitar/deshabilitar los controles
+// Encapsulamos la función para habilitar/deshabilitar los controles
+function toggleControls(enableAudio, enableLista, enableBotones) {
+    const playPauseButton = document.getElementById('playPause');
+    const prevButton = document.getElementById('prev');
+    const nextButton = document.getElementById('next');
+    const randomButton = document.getElementById('random');
+    const repeatButton = document.getElementById('repeat');
+    const playlistItems = document.querySelectorAll('#playlist li');
+
+    let audioState = '';
+    if (enableAudio) {
+        audioPlayer.play();
+        audioState = 'Audio: Habilitado';
+    } else {
+        audioPlayer.pause();
+        audioState = 'Audio: Deshabilitado';
+    }
+
+    let listaState = '';
+    playlistItems.forEach(item => {
+        if (enableLista) {
+            playlist.style.display = 'block';
+        } else {
+            playlist.style.display = 'none';
+        }
+    });
+    listaState = `Lista: ${enableLista ? 'Habilitada' : 'Deshabilitada'}`;
+
+    let botonesState = '';
+    const buttons = [playPauseButton, prevButton, nextButton, randomButton, repeatButton];
+    buttons.forEach(button => {
+        if (enableBotones) {
+            button.removeAttribute('disabled');
+        } else {
+            button.setAttribute('disabled', 'true');
+        }
+    });
+    botonesState = `Botones: ${enableBotones ? 'Habilitados' : 'Deshabilitados'}`;
+
+    alert(`Estado del Reproductor de Música:\n• ${audioState}\n• ${listaState}\n• ${botonesState}`);
+}
+
+// Llamadas para habilitar/deshabilitar los controles
+toggleControls(true, false, false);  
+// Habilita audio, lista y botones
+
             });         
     </script>
     <style>

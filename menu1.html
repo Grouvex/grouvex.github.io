@@ -1,0 +1,61 @@
+<html><span><select id="themeSelect" style="width:100%; background: rgba(0, 0, 0, 0.3">
+  <option value="default">Temas</option>
+  <option value="theme1">Tema 1: Color</option>
+  <option value="theme2">Tema 2: Color</option>
+  <option value="space">Tema: Espacio</option>
+  <option value="starwars">Tema Star Wars</option>
+  <option value="jurassicworld">Tema: Jurassic World</option>
+  <option value="taylorswift">Tema: Taylor Swift</option>
+  <option value="superheroes">Tema: Super Héroes</option>
+  <option value="naturaleza1">Tema Natulareza: Amanecer/Atardecer</option>
+  <option value="naturaleza2">Tema Naturaleza: Polos</option>
+  <option value="naturaleza3">Tema Naturaleza: Mar</option>
+  <option value="naturaleza4">Tema Naturaleza: Selva</option>
+<option value="httyd">Tema: Cómo Entrenar A Tu Dragón</option>
+  <option value="pokemon">Tema: Pokémon</option>
+  <option value="thewildrobot">Tema: The Wild Robot</option>
+<option value="gstudios1">Tema G.Studios: Si Fuera</option>
+  <option value="gstudios2">Tema G.Studios: The Night Sky</option>
+    <option value="gstudios3">Tema G.Studios: La Magia de la Estrella Polar</option>
+  <option value="gstudios4">Tema G.Studios: Unstoppable Friendship</option>
+  <!-- Añade tantas opciones como diseños tengas -->
+</select></span>
+</html>
+<script>
+var themeSelect = document.getElementById('themeSelect');
+// Cuando se cambia el tema
+themeSelect.addEventListener('change', function() {
+    // Obtiene todos los elementos a los que se les aplicará el cambio de tema
+    var elements = document.querySelectorAll('p, body, main, mainTop, h1, h2, h3, h4, h5, h6, article, section, aside, panel');
+
+    // Elimina las clases de las opciones antiguas
+    elements.forEach(function(element) {
+        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'pokemon', 'thewildrobot', 'httyd', 'gstudios1', 'gstudios2', 'gstudios3', 'gstudios4');
+    });
+
+    // Si la opción seleccionada no es "default", añade la clase de la opción seleccionada
+    if (this.value !== 'default') {
+        elements.forEach(function(element) {
+            element.classList.add(this.value);
+        }.bind(this));
+    }
+
+    // Guarda la selección del usuario en el almacenamiento local
+    localStorage.setItem('selectedTheme', this.value);
+});
+
+// Cuando se carga la página
+window.addEventListener('load', function() {
+    // Obtiene la selección del usuario del almacenamiento local
+    var selectedTheme = localStorage.getItem('selectedTheme');
+
+    // Si hay una selección guardada y no es "default", aplica el tema seleccionado
+    if (selectedTheme && selectedTheme !== 'gstudios') {
+        var elements = document.querySelectorAll('p, body, main, mainTop, h1, h2, h3, h4, h5, h6, article, section, aside, panel');
+        elements.forEach(function(element) {
+            element.classList.add(selectedTheme);
+        });
+        themeSelect.value = selectedTheme; // Asegúrate de que el menú desplegable muestre el tema correcto
+    }
+});
+</script>

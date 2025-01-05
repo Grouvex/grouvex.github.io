@@ -1,0 +1,158 @@
+ <!-- Footer -->
+ <!-- footer.html -->
+<style>
+ hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  color: #fff;
+  height: 5px;
+  width: 100%;
+  }
+  #goTopBtn {
+    position: fixed;
+    bottom: 15px;
+    right: 8px;
+    width: 8vw; /* Proporcional a la pantalla */
+    height: 8vw; /* Proporcional a la pantalla */
+    background-color: transparent;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    cursor: pointer;
+  /* font-size: 15px;  Proporcional a la pantalla */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+#goTopBtn:hover {
+    border-color: cyan;
+}
+ </style>
+  <footer>
+  <div class="footer-imagenes">
+      <a href="https://instagram.com/grouvex" target="_blank"><img src="https://grouvex.github.io/img/Instagram.png" alt="" loading="lazy"></a>
+      <a href="https://discord.gg/XnxcuZHrh3" target="_blank"><img src="https://grouvex.github.io/img/Discord.png" alt="" loading="lazy"></a>
+      <a href="https://tiktok.com/@Grouvex" target="_blank"><img src="https://grouvex.github.io/img/TikTok.png" alt="" loading="lazy"></a>
+      <a href="https://open.spotify.com/intl-es/artist/0Sz3myYKWtxR1seCT5e7Rx?si=O624cS5UT261AHIjCJDCJw" target="_blank"><img src="https://grouvex.github.io/img/Spotify.png" alt="" loading="lazy"></a>
+      <a href="https://twitter.com/@grouvex" target="_blank"><img src="https://grouvex.github.io/img/X.png" alt="" loading="lazy"></a>
+      <a href="https://musescore.com/user/70786552" target="_blank"><img src="https://grouvex.github.io/img/MuseScore.png" alt="" loading="lazy"></a>
+      <a href="https://youtube.com/@Grouvex" target="_blank"><img src="https://grouvex.github.io/img/YouTube.png" alt="" loading="lazy"></a>
+      <a href="https://music.youtube.com/channel/UCCjEGDcTAyAgcw0L-HGeeZQ" target="_blank"><img src="https://grouvex.github.io/img/YouTubeMusic.png" alt="YouTubeMusic" loading="lazy"></a>
+      <a href="https://www.amazon.es/music/player/artists/B0CK9MNQ61/grouvex" target="_blank"><img src="https://grouvex.github.io/img/AmazonMusic.png" alt="" loading="lazy"></a>
+      <a href="https://www.deezer.com/en/artist/222357525" target="_blank"><img src="https://grouvex.github.io/img/Deezer.png" alt="" loading="lazy"></a>
+      <a href="https://play.anghami.com/artist/19328687" target="_blank"><img src="https://grouvex.github.io/img/Anghami.png" alt="" loading="lazy"></a>
+      <a href="https://music.apple.com/mx/artist/grouvex/1713912150" target="_blank"><img src="https://grouvex.github.io/img/AppleMusic.png" alt="" loading="lazy"></a>
+  </div>
+ <hr>
+    <div class="footer-text">
+      <a href="https://grouvex.github.io"><img src="https://grouvex.github.io/img/Grouvex1.png" alt="" loading="lazy"></a>
+      <div>
+       <p><a href="https://grouvex.github.io/tos" style="color:white" >Términos de Servicio</a> | <a href="https://grouvex.github.io/pp" style="color:white">Políticas de Privacidad</a> | <a href="https://grouvex.github.io/faqs" style="color:white">Preguntas Frecuentes (FAQS)</a></p>
+       <p style="color:white; font-size:15px">Contacto: <a href="mailto:soporte@grouvex.com" style="color:white">soporte@grouvex.com</a></p>
+       <p>©Grouvex Studios</p>
+       <p><a href="https://github.com/Grouvex/grouvex.github.io/tree/v6.0.0" style="color:white; font-size:8px" target="_blank">©2024-v6.0.0 (<span id="VersionDATE"></span>)</a></p>
+       <!-- <p><n><a href="https://github.com/Grouvex/grouvex.github.io/tree/v6.0.0" style="color:white; font-size:8px" target="_blank">©2024-v6.0.0 (<span id="NVersionDATE"></span>)</a></n><span class="status upcoming">Upcoming</span></p> -->
+       </div>
+    </div>
+  </footer>
+<script>const uTVersion = 1734710400; actualizarFechas(uTVersion, "VersionDATE"); const uTNVersion = 1734810400; actualizarFechas(uTNVersion, "NVersionDATE");</script> 
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/6525b3a66fcfe87d54b88bc4/1hcdkbgr3';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+ <script>
+  function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+  // Ejemplo de implementación de la API de la Privacy Sandbox para publicidad
+if ('document' in window && 'serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').then(registration => {
+        console.log('Service Worker registrado:', registration);
+    }).catch(error => {
+        console.error('Error al registrar el Service Worker:', error);
+    });
+}
+
+// Implementar la API de la Privacy Sandbox para identidad
+if ('document' in window && 'window' in window) {
+    window.addEventListener('message', (event) => {
+        if (event.data && event.data.type === 'identity') {
+            // Procesar la solicitud de identidad
+            console.log('Solicitud de identidad recibida:', event.data);
+        }
+    });
+}
+ </script>
+<button id="goTopBtn" onclick="scrollToTop()">↑ Top</button>
+    <script>
+     function escapeHTML(string) {
+    const entityMap = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+        '/': '&#x2F;',
+        '`': '&#x60;',
+        '=': '&#x3D;'
+    };
+    return String(string).replace(/[&<>"'`=\/]/g, s => entityMap[s]);
+}
+
+// Uso
+const userComment = "<script>alert('XSS');<\/script>";
+const safeComment = escapeHTML(userComment);
+console.log(safeComment); // &lt;script&gt;alert('XSS');&lt;/script&gt;
+
+        window.onload = function() {
+            const container = document.getElementById('container');
+            const p = document.createElement('p');
+            p.textContent = 'Este es un párrafo añadido dinámicamente.';
+            container.appendChild(p);
+    const scripts = document.getElementsByTagName('script');
+    for (let i = 0; i < scripts.length; i++) {
+        console.log(scripts[i].src);
+    }
+};
+     function sanitizeInput(input) {
+    const element = document.createElement('div');
+    element.innerText = input;
+    return element.innerHTML;
+}
+
+// Uso
+const userInput = "<script>alert('hack');<\/script>";
+const safeInput = sanitizeInput(userInput);
+console.log(safeInput); // &lt;script&gt;alert('hack');&lt;/script&gt;
+function escapeHTML(string) {
+    const entityMap = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+        '/': '&#x2F;',
+        '`': '&#x60;',
+        '=': '&#x3D;'
+    };
+    return String(string).replace(/[&<>"'`=\/]/g, s => entityMap[s]);
+}
+
+// Uso
+const userComment = "<script>alert('XSS');<\/script>";
+const safeComment = escapeHTML(userComment);
+console.log(safeComment); // &lt;script&gt;alert('XSS');&lt;/script&gt;
+    </script>

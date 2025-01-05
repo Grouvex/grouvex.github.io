@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Discografía Grouvex - Grouvex Studios</title>
+    <meta property="og:site_name" content="Grouvex Studios">
+    <meta property="og:title" content=">Discografía Grouvex - Grouvex Studios">
+    <meta property="og:description" content=">Discografía Grouvex de ©Grouvex Studios">
+    <meta property="og:type" content="website">
+    <meta property="og:image" href="../../img/GROUVEX.png">
+    <meta property="og:url" content="https://grouvex.com/">
+    <meta property="og:locale" content="es_ES">
+    <link rel="stylesheet" href="../index.css">
+    <link rel="stylesheet" href="../temas.css">
+    <link rel="icon" href="img/GROUVEX.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="MobileOptimized" content="width">
+    <meta name="author" content="Grouvex Studios">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="copyright" content="Grouvex Studios">
+    <meta name="google-site-verification" content="54a46b8f7ec187ad80dd5a45fff8f43b">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Referrer-Policy" content="no-referrer">
+    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects">
+    <meta name="theme-color" content="#hexcode">
+    <link rel="canonical" href="https://grouvex.com/">
+    <link rel="shortlink" href="https://grouvex.com/">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="HandheldFriendly" content="true">
+    <link rel="preconnect" href="https://example.com">
+    <link rel="dns-prefetch" href="https://example.com">
+    <!-- Scripts sin nonce -->
+    <script src="../jquery-3.5.1.min.js"></script>
+        <script> 
+        document.addEventListener("DOMContentLoaded", function() { 
+            $("#menuG").load("../menuG.html"); 
+            $("#menuE").load("../menuE.html"); 
+            $("#menuT").load("../menuT.html");
+            $("#menuU").load("../menuU.html");
+            $("#footer").load("../footer.html"); 
+            $("#news").load("../news.html"); 
+            $("#tosypp").load("../tosypp.html");
+        });
+    </script>
+    <script src="//www.youtube.com/player_api"></script><script src="https://www.youtube.com/iframe_api"></script>
+    <script src="../time.js"></script></script><script src="../abc.js"></script><script src="../index.js"></script>
+</head>
+<body>
+        <mainTop>
+            <a href="https://grouvex.github.io/"> <div class="img-container"></div></a> 
+            <a href="https://grouvex.github.io/grouvex/inicio"><div style="font-size: 15px;color:white;margin-top:5px;margin-bottom:15px">Artista Grouvex - Grouvex Studios</div></a>
+            <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
+                <span id="menuG"></span> <!-- General -->
+                <span id="menuE"></span> <!-- Especifico -->
+                <span id="menuT"></span> <!-- Temas/Idioma -->
+                <span id="menuU"></span> <!-- Usuario -->
+        </mainTop>
+<body>
+ <!-- Anuncio -->
+  <div id="news"></div>
+<main id="top">
+ <!-- Publicado por -->
+<div class="tarjeta" style="display: flex;align-items: center; border-radius: 8px;  box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 10px;  padding: 10px;  height: 45px; width: 250px; padding-top: 10px;padding-bottom: 10px">
+<img src="../img/GROUVEX.png" alt="" style="border-radius: 50%; width: 35px;height: 35px;object-fit: cover; margin-right: 10px;"><div>
+<h2 style="margin:2px; font-size: 7.5px">Publicado por:</h2><h2 style="margin:2px; padding: 1px;font-size: 9px">Grouvex Studios</h2>
+<p style="color: white; font-size: 11px"><span id="ActualizadoDATE"></span></p><a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@rouvex.com</footer></a></div></div>
+<script>const uTActualizado = 1734710400; actualizarFechas(uTActualizado, "ActualizadoDATE");</script> 
+  <!-- Título -->
+  <h1>Discografía</h1>
+  <nav>
+    <span style="font-family: Times New Roman;color:white"><a onclick="mostrarSeccion('lanzamientos')"><span style="color: white">Lanzamientos</span></a> | <a onclick="mostrarSeccion('discografia')"><span style="color: white">Discografía</span></a><hr><a onclick="mostrarSeccion('musica')"><span style="color: white">Música</span></a> <a onclick="mostrarSeccion('albumes')"><span style="color: white">Álbumes</span></a> <a onclick="mostrarSeccion('ep')"><span style="color: white">Reproducción Extendida (EP)</span></a>
+  </nav>
+  <article id="contenido">
+    <!-- Contenido inicial -->
+    <h2>Lanzamientos</h2>
+    <p>Los proximos lanzamientos son:</p>
+  </article>
+  <script>
+    function mostrarSeccion(seccion) {
+      const contenido = document.getElementById('contenido');
+      if (seccion === 'lanzamientos') {
+        contenido.innerHTML = `
+          <h2>Lanzamientos</h2>
+          <p>Aquí están los lanzamientos más recientes...</p>
+        `;
+      } else if (seccion === 'discografia') {
+        contenido.innerHTML = `
+          <h2>Discografía</h2>
+          <p>Aquí puedes ver toda la discografía del artista...</p>
+        `;
+      } else if (seccion === 'musica') {
+        contenido.innerHTML = `
+        <style>
+        .letra {
+            font-size: 40px;
+            font-family: Times New Roman;
+            color: white;
+            transition: color 0.3s;
+        }
+        .letra:hover {
+            color: inherit;
+        }
+    </style>
+          <h2>Música</h2>
+          <a href="#top" style="font-size: 30px ;font-family: Times New Roman;color:white">#</a> <a href="#a" class="letra" onclick="this.style.color='red';">A</a>
+    <a href="#b" class="letra" onclick="this.style.color='darkorange';">B</a>
+    <a href="#c" class="letra" onclick="this.style.color='orange';">C</a>
+    <a href="#d" class="letra" onclick="this.style.color='gold';">D</a>
+    <a href="#e" class="letra" onclick="this.style.color='yellow';">E</a>
+    <a href="#f" class="letra" onclick="this.style.color='greenyellow';">F</a>
+    <a href="#g" class="letra" onclick="this.style.color='lime';">G</a>
+    <a href="#h" class="letra" onclick="this.style.color='springgreen';">H</a>
+    <a href="#i" class="letra" onclick="this.style.color='cyan';">I</a>
+    <a href="#j" class="letra" onclick="this.style.color='deepskyblue';">J</a>
+    <a href="#k" class="letra" onclick="this.style.color='dodgerblue';">K</a>
+    <a href="#l" class="letra" onclick="this.style.color='blue';">L</a>
+    <a href="#m" class="letra" onclick="this.style.color='blueviolet';">M</a>
+    <a href="#n" class="letra" onclick="this.style.color='indigo';">N</a>
+    <a href="#o" class="letra" onclick="this.style.color='darkviolet';">O</a>
+    <a href="#p" class="letra" onclick="this.style.color='violet';">P</a>
+    <a href="#q" class="letra" onclick="this.style.color='orchid';">Q</a>
+    <a href="#r" class="letra" onclick="this.style.color='magenta';">R</a>
+    <a href="#s" class="letra" onclick="this.style.color='deeppink';">S</a>
+    <a href="#t" class="letra" onclick="this.style.color='crimson';">T</a>
+    <a href="#u" class="letra" onclick="this.style.color='red';">U</a>
+    <a href="#v" class="letra" onclick="this.style.color='darkorange';">V</a>
+    <a href="#w" class="letra" onclick="this.style.color='orange';">W</a>
+    <a href="#x" class="letra" onclick="this.style.color='gold';">X</a>
+    <a href="#y" class="letra" onclick="this.style.color='yellow';">Y</a>
+    <a href="#z" class="letra" onclick="this.style.color='greenyellow';">Z</a>
+ <article>
+<style>li {font-family: Times New Roman} summary{font-size:25px; cursor: pointer} details{border: 2px solid white} details[open] {border-image: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet) 1; border-width: 2px;border-style: solid;} .r-img{width: 30px;} @media only screen and (max-width: 600px) {.r-img {max-width: 30px;max-height: 30px;}}</style>
+<!-- Abecedario -->
+<div id="top"><a href="#top" style="font-size: 50px ;font-family: Times New Roman;color:white">#</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Does not contain a letter</summary>
+</details>
+<div id="a"><a href="#a" class="letra" onclick="this.style.color='red';">A</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with A</summary>
+<ol>
+<li><a href="affliction">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Alpha_Version.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Affliction</span><span>Alpha Version</span></span>
+</div></a>
+</li>
+<li><a href="amor_fatuo">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Amor Fatuo.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Amor Fatuo</span><span>Amor Fatuo</span></span>
+</div></a>
+</li>
+<li><a href="anger">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Alpha_Version.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Anger</span><span>Alpha Version</span></span>
+</div></a>
+</li>
+<li><a href="a_parallel_universe">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/A Parallel Universe.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>A Parallel Universe</span><span>A Parallel Universe</span></span>
+</div></a>
+</li>
+<li><a href="aries">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Aries.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Aries</span><span>The Night</span></span>
+</div></a>
+</li>
+</ol>
+</details>
+<div id="b"><a href="#b" class="letra" onclick="this.style.color='darkorange';">B</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with B</summary>
+<ol>
+<li><a href="balance_sphere">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Spheres of Life.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Balance Sphere</span><span>Spheres of Life</span></span>
+</div></a>
+</li>
+</ol>
+</details>
+<div id="c"><a href="#c" style="font-size: 50px; font-family: Times New Roman; color:white">C</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with C</summary>
+</details>
+<div id="d"><a href="#d" style="font-size: 50px; font-family: Times New Roman; color:white">D</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with D</summary>
+<ol>
+<li><a href="diamonds">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Diamonds.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Diamonds</span><span>Diamonds</span></span>
+</div></a>
+</li>
+</ol>
+</details>
+<div id="e"><a href="#e" style="font-size: 50px; font-family: Times New Roman; color:white">E</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with E</summary> 
+<ol>
+<li><a href="el_principe">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/El Principe.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>El Principe</span><span>El Principe</span></span>
+</div></a>
+</li>
+<li><a href="el_diamante">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/El Diamante.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>El Diamante</span><span>Esferas Brillantes</span></span>
+</div></a>
+</li>
+<li><a href="espectro">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Espectro.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Espectro</span><span>Espectro</span></span>
+</div></a>
+</li>
+<li><a href="ephemeral">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Ephemeral.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Ephemeral</span><span>Ephemeral</span></span>
+</div></a>
+</li>
+<li><a href="eternal_life">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/The Life.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Eternal Life</span><span>The Life</span></span>
+</div></a>
+</li>
+</ol>
+</details>
+<div id="f"><a href="#f" style="font-size: 50px; font-family: Times New Roman; color:white">F</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with F</summary>
+<ol>
+<li><a href="family_dinner">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Family Dinner.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Family Dinner</span><span>Family Dinner</span></span>
+</div></a>
+</li> 
+<li><a href="forward">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/The Life.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Forward</span><span>The Life</span></span>
+</div></a>
+</li> 
+</ol>
+</details>
+<div id="g"><a href="#g" style="font-size: 50px; font-family: Times New Roman; color:white">G</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with G</summary>
+</details>
+<div id="h"><a href="#h" style="font-size: 50px; font-family: Times New Roman; color:white">H</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with H</summary>
+</details>
+<div id="i"><a href="#i" style="font-size: 50px; font-family: Times New Roman; color:white">I</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with I</summary>
+</details>
+<div id="j"><a href="#j" style="font-size: 50px; font-family: Times New Roman; color:white">J</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with J</summary>
+</details>
+<div id="k"><a href="#k" style="font-size: 50px; font-family: Times New Roman; color:white">K</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with K</summary>
+<ol>
+<li><a href="kiss_the_sky">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Kiss the Sky.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Kiss the Sky (by Maren Morris, from The Wild Robot)</span><span>Kiss the Sky (by Maren Morris, from The Wild Robot)</span></span>
+</div></a>
+</li>
+</ol>
+</details>
+<div id="l"><a href="#l" style="font-size: 50px; font-family: Times New Roman; color:white">L</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with L</summary>
+<ol>
+<li><a href="la_magia_de_la_estrella_polar">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/La Magia de la Estrella Polar.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>La Magia de la Estrella Polar</span><span>La Magia de la Estrella Polar</span></span>
+</div></a>
+</li>
+<li><a href="la_perla">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/La Perla.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>La Perla</span><span>Esferas Brillantes</span></span>
+</div></a>
+</li>
+<li><a href="libra">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Libra.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Libra</span><span>The Night</span></span>
+</div></a>
+</li>
+</ol>
+</details>
+<div id="m"><a href="#m" style="font-size: 50px; font-family: Times New Roman; color:white">M</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with M</summary>
+<ol>
+<li><a href="magical_whises">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Magical Wishes.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Magical Wishes</span><span>Magical Wishes</span></span>
+</div></a>
+</li>
+</ol>
+</details>
+<div id="n"><a href="#n" style="font-size: 50px; font-family: Times New Roman; color:white">N</a></div>
+<details>
+<summary style="font-family: Times New Roman" >Start with N</summary>
+</details>
+<div id="o"><a href="#o" style="font-size: 50px; font-family: Times New Roman; color:white">O</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with O</summary>
+</details>
+<div id="p"><a href="#p" style="font-size: 50px; font-family: Times New Roman; color:white">P</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with P</summary>
+<ol>
+<li><a href="paz_interior">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/The Life.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Paz Interior</span><span>The Life</span></span>
+</div></a>
+</li>
+</ol>
+</details>
+<div id="q"><a href="#q" style="font-size: 50px; font-family: Times New Roman; color:white">Q</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with Q</summary>
+</details>
+<div id="r"><a href="#r" style="font-size: 50px; font-family: Times New Roman; color:white">R</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with R</summary>
+</details>
+<div id="s"><a href="#s" style="font-size: 50px; font-family: Times New Roman; color:white">S</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with S</summary>
+<ol>
+<li><a href="si_fuera">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Si Fuera.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Si Fuera</span><span>Si Fuera</span></span>
+</div></a>
+</li>
+<li><a href="si_fuera">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Si Fuera.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Si Fuera (Versión Intrumental)</span><span>Si Fuera</span></span>
+</div></a>
+</li>
+<li><a href="sphere_of_emotion">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Spheres of Life.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Sphere of Emotion</span><span>Spheres of Life</span></span>
+</div></a>
+</li>
+<li><a href="sphere_of_life">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Spheres of Life.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Sphere of Life</span><span>Spheres of Life</span></span>
+</div></a>
+</li>
+<li><a href="sphere_of_society">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Spheres of Life.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Sphere of Society</span><span>Spheres of Life</span></span>
+</div></a>
+</li>
+<li><a href="sphere_of_the_intelligentsia">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Spheres of Life.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Sphere of the Intelligentsia</span><span>Spheres of Life</span></span>
+</div></a>
+</li>
+<li><a href="sphere_of_the_physicist">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Spheres of Life.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Sphere of the Physicist</span><span>Spheres of Life</span></span>
+</div></a>
+</li>
+<li><a href="spiritual_sphere">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Spheres of Life.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Spiritual Sphere</span><span>Spheres of Life</span></span>
+</div></a>
+</li> 
+<li><a href="super_guitar">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Omega_Version.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Super Guitar</span><span>Omega Version</span></span>
+</div></a>
+</li>
+<li><a href="super_piano">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Omega_Version.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Super Piano</span><span>Omega Version</span></span>
+</div></a>
+</li>
+<li><a href="super_synth">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Omega_Version.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Super Synth</span><span>Omega Version</span></span>
+</div></a>
+</li>
+</ol> 
+</details>
+<div id="t"><a href="#t" style="font-size: 50px; font-family: Times New Roman; color:white">T</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with T</summary>
+<ol>
+<li><a href="tauro">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Tauro.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Tauro</span><span>The Night</span></span>
+</div></a>
+</li>
+<li><a href="the_infinite">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/The Infinite.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>The Infinite</span><span>The Infinite</span></span>
+</div></a>
+</li>
+</ol>
+</details>
+<div id="u"><a href="#u" style="font-size: 50px; font-family: Times New Roman; color:white">U</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with U</summary>
+<ol>
+<li><a href="unforgettable_memories2">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Unforgettable Memories.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Unforgettable Memories (Nǎinai)</span><span>Unforgettable Memories</span></span>
+</div></a>
+</li>
+<li><a href="unforgettable_memories1">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Unforgettable Memories.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Unforgettable Memories (Yéye)</span><span>Unforgettable Memories</span></span>
+</div></a>
+</li>
+<li><a href="universal_union">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Universal Union.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Universal Union</span><span>Universal Union</span></span>
+</div></a>
+</li>
+<li><a href="unstoppable_friendship">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Unstoppable Friendship.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Unstoppable Friendship</span><span>Unstoppable Friendship</span></span>
+</div></a>
+</li>
+</ol>
+</details>
+<div id="v"><a href="#v" style="font-size: 50px; font-family: Times New Roman; color:white">V</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with V</summary>
+<ol>
+<li><a href="v1_beta">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Omega_Version.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>V1 - Beta</span><span>Omega Version</span></span>
+</div></a>
+</li>
+<li><a href="v2_alpha">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Omega_Version.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>V2 - Alpha</span><span>Omega Version</span></span>
+</div></a>
+</li>
+<li><a href="v3_delta">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Omega_Version.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>V3 - Delta</span><span>Omega Version</span></span>
+</div></a>
+</li>
+<li><a href="virgo">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Virgo.jpg" alt="" style="width:30px;margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Virgo</span><span>The Night</span></span>
+</div></a>
+</li>
+</ol> 
+</details>
+<div id="w"><a href="#w" style="font-size: 50px; font-family: Times New Roman; color:white">W</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with W</summary>
+<ol>
+<li><a href="welfare">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Alpha_Version.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Welfare</span><span>Alpha Version</span></span>
+</div></a>
+</li>
+</ol>
+</details>
+<div id="x"><a href="#x" style="font-size: 50px; font-family: Times New Roman; color:white">X</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with X</summary>
+</details>
+<div id="y"><a href="#y" style="font-size: 50px; font-family: Times New Roman; color:white">Y</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with Y</summary>
+<ol>
+<li><a href="yo_quiero">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Yo Quiero.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Yo Quiero</span><span>Yo Quiero</span></span>
+</div></a>
+</li>
+<li><a href="yo_quiero">
+<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
+<img src="../port/Yo Quiero.jpg" alt="" class="r-img" style="margin-right:2px">
+<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Yo Quiero (Versión Intrumental)</span><span>Yo Quiero</span></span>
+</div></a>
+</li>
+</ol>
+</details>
+<div id="z"><a href="#z" style="font-size: 50px; font-family: Times New Roman; color:white">Z</a></div>
+<details>
+<summary style="font-family: Times New Roman">Start with Z</summary>
+</details>
+ </article>
+        `;
+      } else if (seccion === 'albumes') {
+        contenido.innerHTML = `
+  <!-- Título -->
+  <h2>Álbums</h2>
+ <article>
+  <select class="orden-button" id="ordenSelector" onchange="cambiarOrden()" style="margin:5px;margin-left:0px">
+        <option value="" disabled selected>Order</option>
+        <option value="ascT">⬇ a ⬆</option>
+        <option value="desT">⬆ a ⬇</option>
+    </select>
+ <div class="cajetines">
+    <a href="lanzamientos/the_night_sky" class="cajetin" data-ut="1727308800">   
+      <img src="../port/The Night Sky.jpg" alt="" style="width:300px">
+      <p class="cajetin-fechas"><span id="f1_3"></span></p>
+      <p class="cajetin-titulo">The Night Sky</p>
+      <p class="cajetin-footer">©Grouvex Studios Recording</p>
+     </a>
+     <a href="lanzamientos/spheres_of_life" class="cajetin" data-ut="1727308800">   
+      <img src="../port/Spheres of Life.jpg" alt="" style="width:300px">
+      <p class="cajetin-fechas"><span id="f1_2"></span></p>
+      <p class="cajetin-titulo">Spheres of Life</p>
+      <p class="cajetin-footer">©Grouvex Studios Recording</p>
+     </a>
+<a href="lanzamientos/alpha_version" class="cajetin" data-ut="1703203200">   
+      <img src="../port/Alpha_Version.jpg" alt="" style="width:300px">
+      <p class="cajetin-fechas"><span id="f1_1"></span></p>
+      <p class="cajetin-titulo">Alpha Version</p>
+      <p class="cajetin-footer">©Grouvex Studios Recording</p>
+     </a>
+    </div>
+ </article>
+        `;
+        actualizarFechas(1735689600, "f1_3")
+        actualizarFechas(1707523200, "f1_2")
+        actualizarFechas(1703203200, "f1_1")
+      } else if (seccion === 'ep') {
+        contenido.innerHTML = `
+<h2>Reproducción Extendida (EP)</h2>
+  <!-- Título -->
+ <article>
+  <select class="orden-button" id="ordenSelectorEP" onchange="cambiarOrdenEP()" style="margin:5px;margin-left:0px">
+        <option value="" disabled selected>Order</option>
+        <option value="ascT">⬇ to ⬆</option>
+        <option value="desT">⬆ to ⬇</option>
+    </select>
+ <div class="cajetines">
+     <a href="si_fuera" class="cajetin" data-ut="1733911200">   
+      <img src="../port/Si Fuera.jpg" alt="" style="width:300px">
+      <p class="cajetin-fechas"><span id="f1_7"></span></p>
+      <p class="cajetin-titulo">Si Fuera</p>
+      <p class="cajetin-footer">©Grouvex Studios Recording</p>
+     </a>
+     <a href="la_magia_de_la_estrella_polar" class="cajetin" data-ut="1733011200">   
+      <img src="../port/La Magia de la Estrella Polar.jpg" alt="" style="width:300px">
+      <p class="cajetin-fechas"><span id="f1_6"></span></p>
+      <p class="cajetin-titulo">La Magia de la Estrella Polar</p>
+      <p class="cajetin-footer">©Grouvex Studios Recording</p>
+     </a>
+     <a href="esferas_brillantes" class="cajetin" data-ut="1727308800">   
+      <img src="../port/Esferas Brillantes.jpg" alt="" style="width:300px">
+      <p class="cajetin-fechas"><span id="f1_5"></span></p>
+      <p class="cajetin-titulo">Esferas Brillantes</p>
+      <p class="cajetin-footer">©Grouvex Studios Recording</p>
+     </a>
+<a href="unforgettable_memories" class="cajetin" data-ut="1704067200">   
+      <img src="../port/Unforgettable Memories.jpg" alt="" style="width:300px">
+      <p class="cajetin-fechas"><span id="f1_4"></span></p>
+      <p class="cajetin-titulo">Unforgettable Memories</p>
+      <p class="cajetin-footer">©Grouvex Studios Recording</p>
+     </a>
+<a href="omega_version" class="cajetin" data-ut="1703203200">   
+      <img src="../port/Omega_Version.jpg" alt="" style="width:300px">
+      <p class="cajetin-fechas"><span id="f1_3"></span></p>
+      <p class="cajetin-titulo">Omega Version</p>
+      <p class="cajetin-footer">©Grouvex Studios Recording</p>
+     </a>
+<a href="sentimental" class="cajetin" data-ut="1700784000">   
+      <img src="../port/Sentimental.jpg" alt="" style="width:300px">
+      <p class="cajetin-fechas"><span id="f1_2"></span></p>
+      <p class="cajetin-titulo">Sentimental</p>
+      <p class="cajetin-footer">©Grouvex Studios Recording</p>
+     </a>
+<a href="the_life" class="cajetin" data-ut="1699660800">   
+      <img src="../port/The Life.jpg" alt="" style="width:300px">
+      <p class="cajetin-fechas"><span id="f1_1"></span></p>
+            <p class="cajetin-titulo">The Life</p>
+      <p class="cajetin-footer">©Grouvex Studios Recording</p>
+     </a>
+    </div>
+ </article>
+        `;
+        actualizarFechas(1733911200, "f1_7")
+        actualizarFechas(1733011200, "f1_6")
+        actualizarFechas(1727308800, "f1_5")
+        actualizarFechas(1704067200, "f1_4")
+        actualizarFechas(1703203200, "f1_3")
+        actualizarFechas(1700784000, "f1_2")
+        actualizarFechas(1699660800, "f1_1")
+      }
+    }
+
+    function cambiarOrden() {
+      const selector = document.getElementById('ordenSelector');
+      const orden = selector.value;
+      const cajetinesContainer = document.querySelector('.cajetines');
+      const cajetines = document.querySelectorAll('.cajetin');
+
+      // Convertir los atributos data-ut a números para una comparación numérica
+      const elementosConUT = Array.from(cajetines).map(cajetin => {
+        return {
+          elemento: cajetin,
+          uT: parseInt(cajetin.dataset.ut)
+        };
+      });
+
+      // Ordenar los elementos según el valor de uT y el orden seleccionado
+      elementosConUT.sort((a, b) => {
+        if (orden === 'ascT') {
+          return a.uT - b.uT;
+        } else if (orden === 'desT') {
+          return b.uT - a.uT;
+        }
+        return 0; // No ordenar si no se seleccionó ninguna opción
+      });
+
+      // Vaciar el contenedor y agregar los elementos ordenados
+      cajetinesContainer.innerHTML = '';
+      elementosConUT.forEach(elemento => {
+        cajetinesContainer.appendChild(elemento.elemento);
+      });
+    }
+
+    function cambiarOrdenEP() {
+      const selector = document.getElementById('ordenSelectorEP');
+      const orden = selector.value;
+      const cajetinesContainer = document.querySelector('.cajetines');
+      const cajetines = document.querySelectorAll('.cajetin');
+
+      // Convertir los atributos data-ut a números para una comparación numérica
+      const elementosConUT = Array.from(cajetines).map(cajetin => {
+        return {
+          elemento: cajetin,
+          uT: parseInt(cajetin.dataset.ut)
+        };
+      });
+
+      // Ordenar los elementos según el valor de uT y el orden seleccionado
+      elementosConUT.sort((a, b) => {
+        if (orden === 'ascT') {
+          return a.uT - b.uT;
+        } else if (orden === 'desT') {
+          return b.uT - a.uT;
+        }
+        return 0; // No ordenar si no se seleccionó ninguna opción
+      });
+
+      // Vaciar el contenedor y agregar los elementos ordenados
+      cajetinesContainer.innerHTML = '';
+      elementosConUT.forEach(elemento => {
+        cajetinesContainer.appendChild(elemento.elemento);
+      });
+    }
+  </script>
+</main>
+</body>
+<div id="footer"></div>
+<script src="../time.js"></script>
+</html>

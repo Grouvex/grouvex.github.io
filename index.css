@@ -1,0 +1,403 @@
+/*Inicio Sesion*/
+form {
+    background: transparent;
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 4px rgb(107, 47, 47);
+}
+
+input {
+    display: block;
+    padding: 1px;
+    margin-bottom: 10px;
+    border: 1px solid #b12020;
+    border-radius: 4px;
+}
+
+button {
+    padding: 5px 10px;
+    color: white;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #218838;
+}
+
+/*Página*/
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+
+  .red {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+  .red1 {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-top: 1%;
+    margin-left: 0%;
+    position: absolute;
+  }
+  .red2 {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-top: 1%;
+    margin-left: 8%;
+    position: absolute;
+  }
+  .red3 {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-top: 1%;
+    margin-left: 16%;
+    position: absolute;
+  }
+  .red4 {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-top: 1%;
+    margin-left: -8%;
+    position: absolute;
+  }
+  .red5 {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-top: 1%;
+    margin-left: -16%;
+    position: absolute;
+  }
+  .red6 {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-top: 1%;
+    margin-left: 24%;
+    position: absolute;
+  }
+
+.Atencion {
+    color: white;
+    text-align: center;
+    background-color: blue;
+} 
+  n {
+    font-weight: bold;
+  }
+  ig {
+    color: fuchsia;
+  }
+  yt {
+    color: red;
+  }
+  tt {
+    color: aqua;
+  }
+  ds {
+    color: blue;
+  }
+  sp {
+    color: green;
+  }
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: transparent;
+    border: none;
+  }
+#selector-idioma {
+    font-size: 14px;
+    font-family: Times New Roman;
+    background-color: transparent; /* Fondo blanco */
+    color: white; /* Texto en color negro para contraste */
+    /* Añade más estilos según necesites */
+    width: 65px;
+    height: 20px;
+  }
+#selector-idioma option {
+    background-color: black;
+    color: white;
+  }
+#themeSelect {
+  font-size: 14px;
+  font-family: Times New Roman;
+    background-color: transparent; /* Fondo blanco */
+    color: gold; /* Texto en color negro para contraste */
+    /* Añade más estilos según necesites */
+    width: 45px;
+    height: 20px;
+  }
+#themeSelect option {
+    background-color: darkslategrey;
+    color: white;
+  }
+
+.orden-button {
+  background: white;
+  color: black;
+  cursor: pointer;
+}
+/* Estilo para las direcciones y texto pequeño */
+address, small {
+    display: block;
+}
+/* Estilo para la navegación */
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav li {
+    display: inline;
+    margin-right: 10px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+}
+#videoCarousel {
+            display: flex;
+            overflow-x: scroll;
+            margin-left: 0px;
+            width: 1080px;
+            height: 270px;
+        }
+        .video {
+            flex: 0 0 auto;
+            width: 300px;
+            height: 200px;
+            margin-right: 20px;
+            position: relative;
+        }
+        .video .credits {
+            display: none;
+            position: absolute;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            width: 100%;
+            height: 120px;
+            text-align: left;
+        }
+        .video:hover .credits {
+            display: block;
+        }
+        #modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(124, 10, 255, 0.4);
+        }
+        #modalContent {
+            background-color: #1e4f53;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+.carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 50%;
+}
+
+.carousel > div {
+    flex: 0 0 auto;
+    width: 100%;
+    height: 600px;
+    scroll-snap-align: center;
+}
+
+.post-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.post-description {
+    font-size: 16px;
+    color: white;
+}
+/* Estilos para el acordeón */
+.accordion {
+    background-color: #000000;
+    color: #1e997a;
+    cursor: pointer;
+    padding: 10px;
+    margin: 5px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    transition: 0.4s;
+}
+
+.active, .accordion:hover {
+    background-color: #00ff6a;
+}
+
+.panel {
+    padding: 0 18px;
+    display: none;
+    background-color: white;
+    overflow: hidden;
+}
+
+  .hiddenOption {
+    display: none;
+  }
+/* news */
+.status {
+  display: inline-block;
+  padding: 2px 10px;
+  margin-left: 10px;
+  border-radius: 50px; /* Esto hace que la etiqueta sea ovalada */
+  color: white;
+  font-size: 0.5em;
+
+}
+/*Etiquetas*/
+.new {
+  background-color: green;
+  animation: rotate 2s infinite linear; /* Esto hace que la etiqueta "Nuevo" tenga un efecto de rotación */
+}
+.maintenance {
+  background-color: orange;
+}
+.updating {
+  background-color: blue;
+}
+.featured {
+  background-color: purple;
+  box-shadow: 0 0 10px rgb(255, 255, 255); /* Esto hace que la etiqueta "Destacado" destaque */
+}
+.popular {
+  background-image: url('https://usagif.com/wp-content/uploads/gif/outerspace-76.gif'); /* Asegúrate de reemplazar esto con la ruta a tu imagen de estrellas */
+  background-size: cover;
+  box-shadow: 0 0 10px rgb(230, 6, 6);
+  
+}
+.upcoming {
+  background-color: yellow;
+  color: black;
+}
+.exclusive {
+  background-color: purple;
+  box-shadow: 0 0 10px rgb(0, 0, 0); /* Esto hace que la etiqueta "Exclusivo" destaque */
+  animation: pulse 2s infinite; /* Esto hace que la etiqueta "Exclusivo" tenga un efecto de pulso */
+}
+.recommended {
+  background-color: rgb(15, 122, 122);
+}
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+.classic {
+  box-shadow: 0 0 10px grey;
+  background-color: grey;
+  animation: pulse 1.5s infinite;
+}
+.on-sale {
+  background-color: red;
+}
+.limited-edition {
+  background-color: gold;
+  color: black; /* As the background is light, we use black for the text */
+  box-shadow: 0 0 10px gold; /* Esto hace que la etiqueta "Edición limitada" destaque */
+}
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Posición de la notita */
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+.musica-section {
+display: block; 
+padding: 20px; 
+overflow: hidden;
+align-items: center;
+align-content: center;
+}
+.left-section {
+flex: 1;
+  display: flex;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  justify-content: center;
+  align-items: center;
+}
+.right-section{
+  word-wrap: break-word;
+  text-align: left;
+  box-sizing: border-box;
+  flex: 1;
+  padding: 20px;
+  margin-right: 10px;
+  overflow-y: auto;
+  max-width: 100%;
+}
+.left-section img {
+  max-width: 90%;
+  height: auto;
+}
+@media (max-width: 768px) {
+.musica-section {
+display: flex;
+padding: 20px; 
+overflow: hidden;
+align-items: center;
+align-content: center;
+}
+.right-section{
+  word-wrap: break-word;
+  text-align: left;
+  box-sizing: border-box;
+  flex: 1;
+  padding: 20px;
+  margin-right: 10px;
+  overflow-y: auto;
+  max-height: 300px;
+  max-width: 100%;
+}
+} 

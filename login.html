@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar - Grouvex Studios</title>
+    <meta property="og:site_name" content="Grouvex Studios">
+    <meta property="og:title" content="Registrar - Grouvex Studios">
+    <meta property="og:description" content="Registrarse en ©Grouvex Studios">
+    <meta property="og:type" content="website">
+    <meta property="og:image" href="img/GROUVEX.png">
+    <meta property="og:url" content="https://grouvex.com/">
+    <meta property="og:locale" content="es_ES">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="temas.css">
+    <link rel="icon" href="img/GROUVEX.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="MobileOptimized" content="width">
+    <meta name="author" content="Grouvex Studios">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="copyright" content="Grouvex Studios">
+    <meta name="google-site-verification" content="54a46b8f7ec187ad80dd5a45fff8f43b">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Referrer-Policy" content="no-referrer">
+    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects">
+    <meta name="theme-color" content="#hexcode">
+    <link rel="canonical" href="https://grouvex.com/">
+    <link rel="shortlink" href="https://grouvex.com/">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="HandheldFriendly" content="true">
+    <link rel="preconnect" href="https://example.com">
+    <link rel="dns-prefetch" href="https://example.com">
+    <!-- Scripts sin nonce -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+    <script src="jquery-3.5.1.min.js"></script>
+    <script> 
+        document.addEventListener("DOMContentLoaded", function() { 
+            $("#menuG").load("menuG.html"); 
+            $("#menuE").load("menuE.html"); 
+            $("#menuT").load("menuT.html");
+            $("#menuU").load("menuU.html");
+            $("#footer").load("footer.html"); 
+            $("#news").load("news.html"); 
+            $("#tosypp").load("tosypp.html");
+        });
+    </script>
+    <script src="//www.youtube.com/player_api"></script><script src="https://www.youtube.com/iframe_api"></script>
+    <script src="time.js"></script><script src="index.js"></script>
+</head>
+<body>
+    <mainTop>
+        <a href="https://grouvex.github.io/"><div class="img-container"></div></a> 
+        <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
+            <span id="menuG"></span> <!-- General -->
+            <span id="menuT"></span> <!-- Temas/Idioma -->
+            <span id="menuU"></span> <!-- Usuario -->
+        </span>
+    </mainTop>
+    <main>
+        <h1>Autenticación de Usuarios en Grouvex Studios</h1>
+        <div id="auth-container">
+            <form id="authForm">
+                <h2 id="formTitle">Inicio de Sesión</h2>
+                <input type="email" id="authEmail" placeholder="Email" required>
+                <input type="password" id="authPassword" placeholder="Password" required>
+                <input type="text" id="authDisplayName" placeholder="Nombre de Usuario" style="display:none;">
+                <button type="submit" id="authButton">Iniciar Sesión</button>
+                <button type="button" id="toggleButton">¿No tienes cuenta? Regístrate</button>
+            </form>
+            <button id="google-login-btn"><img src="https://img.icons8.com/?size=512&id=17949&format=png" alt="" width="20" height="20">Iniciar Sesión con Google</button>
+            <button id="email-login-btn"><img src="https://static.vecteezy.com/system/resources/previews/022/484/508/non_2x/google-mail-gmail-icon-logo-symbol-free-png.png" alt="" width="20" height="20">Iniciar Sesión con Email</button>
+            <button id="resetPasswordBtn">¿Olvidaste tu contraseña?</button>
+        </div>
+        <div id="content" style="display: none;">
+            <h2>Bienvenido</h2>
+            <p>Este contenido es visible solo para usuarios autenticados.</p>
+            <button id="logoutBtn">Cerrar Sesión</button>
+        </div>
+    </main>
+    <script src="abc.js"></script>
+    <!-- Footer -->
+    <div id="footer"></div>
+</body>
+</html>

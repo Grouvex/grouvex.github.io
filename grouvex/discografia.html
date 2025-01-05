@@ -536,182 +536,114 @@
  </article>
         `;
       } else if (seccion === 'albumes') {
-        contenido.innerHTML = `
-  <!-- Título -->
-  <h2>Álbums</h2>
- <article>
-  <select class="orden-button" id="ordenSelector" onchange="cambiarOrden()" style="margin:5px;margin-left:0px">
-        <option value="" disabled selected>Order</option>
-        <option value="ascT">⬇ a ⬆ (Tiempo)</option>
-        <option value="desT">⬆ a ⬇ (Tiempo)</option>
-        <option value="ascA">A-Z (Alfabeto)</option>
-        <option value="desA">Z-A (Alfabeto)</option>
-    </select>
- <div class="cajetines">
-    <a href="lanzamientos/the_night_sky" class="cajetin" data-ut="1727308800" data-title="The Night Sky">   
-      <img src="../port/The Night Sky.jpg" alt="" style="width:300px">
-      <p class="cajetin-fechas"><span id="f1_3"></span></p>
-      <p class="cajetin-titulo">The Night Sky</p>
-      <p class="cajetin-footer">©Grouvex Studios Recording</p>
-     </a>
-     <a href="lanzamientos/spheres_of_life" class="cajetin" data-ut="1727308800" data-title="Spheres of Life">   
-      <img src="../port/Spheres of Life.jpg" alt="" style="width:300px">
-      <p class="cajetin-fechas"><span id="f1_2"></span></p>
-      <p class="cajetin-titulo">Spheres of Life</p>
-      <p class="cajetin-footer">©Grouvex Studios Recording</p>
-     </a>
-<a href="lanzamientos/alpha_version" class="cajetin" data-ut="1703203200" data-title="Alpha Version">   
-      <img src="../port/Alpha_Version.jpg" alt="" style="width:300px">
-      <p class="cajetin-fechas"><span id="f1_1"></span></p>
-      <p class="cajetin-titulo">Alpha Version</p>
-      <p class="cajetin-footer">©Grouvex Studios Recording</p>
-     </a>
-    </div>
- </article>
-        `;
-        actualizarFechas(1735689600, "f1_3")
-        actualizarFechas(1707523200, "f1_2")
-        actualizarFechas(1703203200, "f1_1")
-      } else if (seccion === 'ep') {
-        contenido.innerHTML = `
-<h2>Reproducción Extendida (EP)</h2>
-  <!-- Título -->
- <article>
+    contenido.innerHTML = `
+    <!-- Título -->
+    <h2>Álbums</h2>
+    <article>
+        <select class="orden-button" id="tipoOrdenSelector" onchange="cambiarTipoOrden()" style="margin:5px;margin-left:0px">
+            <option value="" disabled selected>Tipo de Orden</option>
+            <option value="tiempo">Tiempo</option>
+            <option value="alfabeto">Alfabeto</option>
+        </select>
+        <select class="orden-button" id="ordenSelector" onchange="cambiarOrden()" style="margin:5px;margin-left:0px">
+            <option value="" disabled selected>Orden</option>
+            <option value="asc">Ascendente</option>
+            <option value="des">Descendente</option>
+        </select>
+        <div class="cajetines">
+            <a href="lanzamientos/the_night_sky" class="cajetin" data-ut="1727308800" data-title="The Night Sky">
+                <img src="../port/The Night Sky.jpg" alt="" style="width:300px">
+                <p class="cajetin-fechas"><span id="f1_3"></span></p>
+                <p class="cajetin-titulo">The Night Sky</p>
+                <p class="cajetin-footer">©Grouvex Studios Recording</p>
+            </a>
+            <a href="lanzamientos/spheres_of_life" class="cajetin" data-ut="1727308800" data-title="Spheres of Life">
+                <img src="../port/Spheres of Life.jpg" alt="" style="width:300px">
+                <p class="cajetin-fechas"><span id="f1_2"></span></p>
+                <p class="cajetin-titulo">Spheres of Life</p>
+                <p class="cajetin-footer">©Grouvex Studios Recording</p>
+            </a>
+            <a href="lanzamientos/alpha_version" class="cajetin" data-ut="1703203200" data-title="Alpha Version">
+                <img src="../port/Alpha_Version.jpg" alt="" style="width:300px">
+                <p class="cajetin-fechas"><span id="f1_1"></span></p>
+                <p class="cajetin-titulo">Alpha Version</p>
+                <p class="cajetin-footer">©Grouvex Studios Recording</p>
+            </a>
+        </div>
+    </article>
+    `;
+    actualizarFechas(1735689600, "f1_3");
+    actualizarFechas(1707523200, "f1_2");
+    actualizarFechas(1703203200, "f1_1");
+} else if (seccion === 'ep') {
+    contenido.innerHTML = `
+    <h2>Reproducción Extendida (EP)</h2>
+<article>
+  <!-- Botón para elegir el tipo de orden -->
+  <select class="orden-button" id="tipoOrdenSelectorEP" onchange="cambiarTipoOrdenEP()" style="margin:5px;margin-left:0px">
+    <option value="" disabled selected>Tipo de Orden</option>
+    <option value="tiempo">Tiempo</option>
+    <option value="alfabeto">Alfabeto</option>
+  </select>
+  <!-- Botón para elegir el orden ascendente o descendente -->
   <select class="orden-button" id="ordenSelectorEP" onchange="cambiarOrdenEP()" style="margin:5px;margin-left:0px">
-        <option value="" disabled selected>Order</option>
-        <option value="ascT">⬇ to ⬆ (Tiempo)</option>
-        <option value="desT">⬆ to ⬇ (Tiempo)</option>
-        <option value="ascA">A-Z (Alfabeto)</option>
-        <option value="desA">Z-A (Alfabeto)</option>
-    </select>
- <div class="cajetines">
-     <a href="si_fuera" class="cajetin" data-ut="1733911200" data-title="Si Fuera">   
-      <img src="../port/Si Fuera.jpg" alt="" style="width:300px">
-      <p class="cajetin-fechas"><span id="f1_7"></span></p>
-      <p class="cajetin-titulo">Si Fuera</p>
-      <p class="cajetin-footer">©Grouvex Studios Recording</p>
-     </a>
-     <a href="la_magia_de_la_estrella_polar" class="cajetin" data-ut="1733011200" data-title="La Magia de la Estrella Polar">   
-      <img src="../port/La Magia de la Estrella Polar.jpg" alt="" style="width:300px">
-      <p class="cajetin-fechas"><span id="f1_6"></span></p>
-      <p class="cajetin-titulo">La Magia de la Estrella Polar</p>
-      <p class="cajetin-footer">©Grouvex Studios Recording</p>
-     </a>
-     <a href="esferas_brillantes" class="cajetin" data-ut="1727308800" data-title="Esferas Brillantes">   
-      <img src="../port/Esferas Brillantes.jpg" alt="" style="width:300px">
-      <p class="cajetin-fechas"><span id="f1_5"></span></p>
-      <p class="cajetin-titulo">Esferas Brillantes</p>
-      <p class="cajetin-footer">©Grouvex Studios Recording</p>
-     </a>
-<a href="unforgettable_memories" class="cajetin" data-ut="1704067200" data-title="Unforgettable Memories">   
-      <img src="../port/Unforgettable Memories.jpg" alt="" style="width:300px">
-      <p class="cajetin-fechas"><span id="f1_4"></span></p>
-      <p class="cajetin-titulo">Unforgettable Memories</p>
-      <p class="cajetin-footer">©Grouvex Studios Recording</p>
-     </a>
-<a href="omega_version" class="cajetin" data-ut="1703203200" data-title="Omega Version">   
-      <img src="../port/Omega_Version.jpg" alt="" style="width:300px">
-      <p class="cajetin-fechas"><span id="f1_3"></span></p>
-      <p class="cajetin-titulo">Omega Version</p>
-      <p class="cajetin-footer">©Grouvex Studios Recording</p>
-     </a>
-<a href="sentimental" class="cajetin" data-ut="1700784000" data-title="Sentimental">   
-      <img src="../port/Sentimental.jpg" alt="" style="width:300px">
-      <p class="cajetin-fechas"><span id="f1_2"></span></p>
-      <p class="cajetin-titulo">Sentimental</p>
-      <p class="cajetin-footer">©Grouvex Studios Recording</p>
-     </a>
-<a href="the_life" class="cajetin" data-ut="1699660800" data-title="The Life">   
-      <img src="../port/The Life.jpg" alt="" style="width:300px">
-      <p class="cajetin-fechas"><span id="f1_1"></span></p>
-            <p class="cajetin-titulo">The Life</p>
-      <p class="cajetin-footer">©Grouvex Studios Recording</p>
-     </a>
-    </div>
- </article>
-        `;
-        actualizarFechas(1733911200, "f1_7")
-        actualizarFechas(1733011200, "f1_6")
-        actualizarFechas(1727308800, "f1_5")
-        actualizarFechas(1704067200, "f1_4")
-        actualizarFechas(1703203200, "f1_3")
-        actualizarFechas(1700784000, "f1_2")
-        actualizarFechas(1699660800, "f1_1")
+    <option value="" disabled selected>Orden</option>
+    <option value="asc">Ascendente</option>
+    <option value="des">Descendente</option>
+  </select>
+  <div class="cajetines">
+    <!-- Aquí van los elementos -->
+  </div>
+</article>
+
+<script>
+  let tipoOrdenEP = '';
+
+  function cambiarTipoOrdenEP() {
+    const tipoSelectorEP = document.getElementById('tipoOrdenSelectorEP');
+    tipoOrdenEP = tipoSelectorEP.value;
+  }
+
+  function cambiarOrdenEP() {
+    const selectorEP = document.getElementById('ordenSelectorEP');
+    const ordenEP = selectorEP.value;
+    const cajetinesContainerEP = document.querySelector('.cajetines');
+    const cajetinesEP = document.querySelectorAll('.cajetin');
+
+    // Convertir los atributos data-ut y títulos a números y texto para una comparación adecuada
+    const elementosConUTEP = Array.from(cajetinesEP).map(cajetin => {
+      return {
+        elemento: cajetin,
+        uT: parseInt(cajetin.dataset.ut),
+        title: cajetin.querySelector('.cajetin-titulo').innerText.toLowerCase()
+      };
+    });
+
+    // Ordenar los elementos según el tipo de orden y el valor de orden seleccionado
+    elementosConUTEP.sort((a, b) => {
+      if (tipoOrdenEP === 'tiempo') {
+        if (ordenEP === 'asc') {
+          return a.uT - b.uT;
+        } else if (ordenEP === 'des') {
+          return b.uT - a.uT;
+        }
+      } else if (tipoOrdenEP === 'alfabeto') {
+        if (ordenEP === 'asc') {
+          return a.title.localeCompare(b.title);
+        } else if (ordenEP === 'des') {
+          return b.title.localeCompare(a.title);
+        }
       }
-    }
+      return 0; // No ordenar si no se seleccionó ninguna opción
+    });
 
-    function cambiarOrden() {
-      const selector = document.getElementById('ordenSelector');
-      const orden = selector.value;
-      const cajetinesContainer = document.querySelector('.cajetines');
-      const cajetines = document.querySelectorAll('.cajetin');
-
-      // Convertir los atributos data-ut a números para una comparación numérica
-      const elementosConUT = Array.from(cajetines).map(cajetin => {
-        return {
-          elemento: cajetin,
-          uT: parseInt(cajetin.dataset.ut),
-          title: cajetin.querySelector('.cajetin-titulo').innerText.toLowerCase()
-        };
-      });
-
-      // Ordenar los elementos según el valor de orden seleccionado
-      elementosConUT.sort((a, b) => {
-        if (orden === 'ascT') {
-          return a.uT - b.uT;
-        } else if (orden === 'desT') {
-          return b.uT - a.uT;
-        } else if (orden === 'ascA') {
-          return a.title.localeCompare(b.title);
-        } else if (orden === 'desA') {
-          return b.title.localeCompare(a.title);
-        }
-        return 0; // No ordenar si no se seleccionó ninguna opción
-      });
-
-      // Vaciar el contenedor y agregar los elementos ordenados
-      cajetinesContainer.innerHTML = '';
-      elementosConUT.forEach(elemento => {
-        cajetinesContainer.appendChild(elemento.elemento);
-      });
-    }
-
-    function cambiarOrdenEP() {
-      const selector = document.getElementById('ordenSelectorEP');
-      const orden = selector.value;
-      const cajetinesContainer = document.querySelector('.cajetines');
-      const cajetines = document.querySelectorAll('.cajetin');
-
-      // Convertir los atributos data-ut a números para una comparación numérica
-      const elementosConUT = Array.from(cajetines).map(cajetin => {
-        return {
-          elemento: cajetin,
-          uT: parseInt(cajetin.dataset.ut),
-          title: cajetin.querySelector('.cajetin-titulo').innerText.toLowerCase()
-        };
-      });
-
-      // Ordenar los elementos según el valor de orden seleccionado
-      elementosConUT.sort((a, b) => {
-        if (orden === 'ascT') {
-          return a.uT - b.uT;
-        } else if (orden === 'desT') {
-          return b.uT - a.uT;
-        } else if (orden === 'ascA') {
-          return a.title.localeCompare(b.title);
-        } else if (orden === 'desA') {
-          return b.title.localeCompare(a.title);
-        }
-        return 0; // No ordenar si no se seleccionó ninguna opción
-      });
-
-      // Vaciar el contenedor y agregar los elementos ordenados
-      cajetinesContainer.innerHTML = '';
-      elementosConUT.forEach(elemento => {
-        cajetinesContainer.appendChild(elemento.elemento);
-      });
-    }
-  </script>
+    // Vaciar el contenedor y agregar los elementos ordenados
+    cajetinesContainerEP.innerHTML = '';
+    elementosConUTEP.forEach(elemento => {
+      cajetinesContainerEP.appendChild(elemento.elemento);
+    });
+  }
+</script>
 </main>
 </body>
 <div id="footer"></div>

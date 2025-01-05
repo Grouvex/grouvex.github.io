@@ -70,13 +70,13 @@ p {
 /* Establece el fondo de toda la página a gris */
 body {
     height: 100%;
+    display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
+    background: linear-gradient(to right, #8e44ad, #3498db);
     background-size: cover;
     background-repeat: no-repeat;
-    background: linear-gradient(to right, #8e44ad, #3498db);
 }
-
 /* Estilo para el contenido principal */
 main {
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);

@@ -32,7 +32,7 @@
     <!-- Scripts sin nonce -->
     <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script> 
     <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js"></script> 
-    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-database.js">
+    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-database.js"></script> 
     <script src="../jquery-3.5.1.min.js"></script>
         <script> 
         document.addEventListener("DOMContentLoaded", function() { 
@@ -328,16 +328,21 @@
       const elementosConUT = Array.from(cajetines).map(cajetin => {
         return {
           elemento: cajetin,
-          uT: parseInt(cajetin.dataset.ut)
+          uT: parseInt(cajetin.dataset.ut),
+          title: cajetin.querySelector('.cajetin-titulo').innerText.toLowerCase()
         };
       });
 
-      // Ordenar los elementos según el valor de uT y el orden seleccionado
+      // Ordenar los elementos según el valor de orden seleccionado
       elementosConUT.sort((a, b) => {
         if (orden === 'ascT') {
           return a.uT - b.uT;
         } else if (orden === 'desT') {
           return b.uT - a.uT;
+        } else if (orden === 'ascA') {
+          return a.title.localeCompare(b.title);
+        } else if (orden === 'desA') {
+          return b.title.localeCompare(a.title);
         }
         return 0; // No ordenar si no se seleccionó ninguna opción
       });
@@ -359,16 +364,21 @@
       const elementosConUT = Array.from(cajetines).map(cajetin => {
         return {
           elemento: cajetin,
-          uT: parseInt(cajetin.dataset.ut)
+          uT: parseInt(cajetin.dataset.ut),
+          title: cajetin.querySelector('.cajetin-titulo').innerText.toLowerCase()
         };
       });
 
-      // Ordenar los elementos según el valor de uT y el orden seleccionado
+      // Ordenar los elementos según el valor de orden seleccionado
       elementosConUT.sort((a, b) => {
         if (orden === 'ascT') {
           return a.uT - b.uT;
         } else if (orden === 'desT') {
           return b.uT - a.uT;
+        } else if (orden === 'ascA') {
+          return a.title.localeCompare(b.title);
+        } else if (orden === 'desA') {
+          return b.title.localeCompare(a.title);
         }
         return 0; // No ordenar si no se seleccionó ninguna opción
       });
@@ -383,27 +393,5 @@
 </main>
 </body>
 <div id="footer"></div>
- <style>
-  #goTopBtn {
-    position: fixed;
-    bottom: 15px;
-    right: 8px;
-    width: 8vw; /* Proporcional a la pantalla */
-    height: 8vw; /* Proporcional a la pantalla */
-    background-color: transparent;
-    border: 2px solid transparent;
-    border-radius: 50%;
-    cursor: pointer;
-  /* font-size: 15px;  Proporcional a la pantalla */
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
-#goTopBtn:hover {
-    border-color: cyan;
-}
- </style>
-<button id="goTopBtn" onclick="scrollToTop()">↑ Top</button>
+<script src="../time.js"></script>
 </html>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #intro {
     display: flex;
     justify-content: center;
@@ -1746,3 +1747,1753 @@ footer {
   margin: 5px; /* Margen de 5px para asegurar la separación */
  }
 }
+=======
+#intro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+#logo {
+    width: 250px;
+    height: auto;
+    animation: slideUp 5s forwards, fadeOut 1s 8s forwards;
+}
+
+@keyframes slideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(100vh);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-100vh);
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/*Primavera*/
+.flower {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  background: pink;
+  border-radius: 50%;
+  animation: fall linear infinite;
+}
+/*Verano*/
+.sun {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  background: yellow;
+  border-radius: 50%;
+  animation: fall linear infinite;
+}
+/*Verano*/
+.leaf {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  background: orange;
+  border-radius: 50%;
+  animation: fall linear infinite;
+}
+/*Navidad*/
+.snowflake {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 50%;
+  animation: fall linear infinite;
+}
+/*Aniversario*/
+.aniversario {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  background: conic-gradient(
+        from 90deg, #FF0000,  /* Rojo */ #FF7F00,  /* Naranja */ #FFFF00,  /* Amarillo */ #90EE90,  /* Verde claro */ #00FF00,  /* Verde */ #00FFFF,  /* Cyan */ #0000FF,  /* Azul */ #4B0082,  /* Índigo */ #800080   /* Violeta */
+      );
+  border-radius: 50%;
+  animation: fall linear infinite;
+}
+@keyframes fall {
+  0% { top: 0px; 
+   opacity: 1;}
+  100% { top:  100%; 
+      opacity: 0;}
+}
+/*Default Theme*/
+p {
+  color: white;
+  text-shadow: white;
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body {
+    height: 100%;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background: black;
+}
+
+/* Estilo para el contenido principal */
+main {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    color: white;
+    margin-top: 30px;
+    background-color: #000000;
+}
+h1,h2,h3,h4,h5,h6,h7,h8 {
+   box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+  text-align: center;
+  background-color: #000000;
+  color: rgb(255, 255, 255);
+}
+mainTop {
+    justify-self: center;
+    align-self: center;
+    display: flex;
+    padding: 10px;
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    background: #000000;
+    align-items: center;
+}
+.img-container {
+  width: 200px; /* Puedes ajustar el tamaño según tus necesidades */
+  height: 80px; /* Ajusta la altura según sea necesario */
+  background-image: url('https://grouvex.github.io/img/Grouvex1.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1); /* Sombra suave */
+    background-color: rgb(77, 199, 221);
+}
+section {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(51, 255, 0, 0.1); /* Sombra suave */
+    background-color: rgb(202, 105, 105);
+}
+aside {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-color: rgb(48, 185, 66);
+}
+ hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  height: 5px;
+  width: 100%;
+  }
+/*Theme 1*/
+p.theme1 {
+  color: rgb(255, 255, 255);
+  text-shadow: white;
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.theme1 {
+    height: 100%;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para el contenido principal */
+
+main.theme1 {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    color: white;
+    margin-top: 30px;
+    background: radial-gradient(circle, red, rgb(99, 99, 168), black);
+    align-items: center;
+}
+
+h1.theme1,h2.theme1,h3.theme1,h4.theme1,h5.theme1,h6.theme1 {
+  background: linear-gradient(to bottom, green, rgb(99, 99, 168), black);
+  text-align: center;
+  color: white;
+}
+
+mainTop.theme1 {
+    justify-self: center;
+    align-self: center;
+    display: flex;
+    padding: 10px;
+    background: linear-gradient(45deg, red, white, blue);
+    align-items: center;
+}
+.avatar1.theme1 {
+    width: 220px;
+    background: linear-gradient(red, white, cyan);
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.theme1 {
+    background: linear-gradient(to bottom, pink, rgb(99, 99, 168), black);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+}
+section.theme1 {
+    background: linear-gradient(to bottom, yellow, rgb(99, 99, 168), black);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+}
+aside.theme1 {
+    background: radial-gradient(circle, rgb(200, 71, 226), rgb(99, 99, 168), black);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+}
+ hr.theme1 {
+  border: none;
+  border-top: 1px solid cyan;
+  height: 5px;
+  width: 100%;
+  }
+/*Theme 2*/
+p.theme2 {
+  color: rgb(255, 255, 255);
+  text-shadow: white;
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.theme2 {
+    height: 100%;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: lightcoral;
+}
+/* Estilo para el contenido principal */
+main.theme2 {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    color: white;
+    margin-top: 30px;
+    background: radial-gradient(circle, pink, rgb(99, 99, 168), black);
+}
+h1.theme2,h2.theme2,h3.theme2,h4.theme2,h5.theme2,h6.theme2 {
+  background: linear-gradient(to bottom, cyan, rgb(99, 99, 168), black);
+  text-align: center;
+  color: white;
+}
+mainTop.theme2 {
+    justify-self: center;
+    align-self: center;
+    align-items: center;
+    display: flex;
+    padding: 10px;
+    background: linear-gradient(45deg, green, yellow, blue, red, pink, cyan);
+    background-size: cover;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.theme2 {
+    background: linear-gradient(to bottom, pink, rgb(99, 99, 168), black);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+}
+section.theme2 {
+    background: linear-gradient(to bottom, yellow, rgb(99, 99, 168), black);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+}
+aside.theme2 {
+    background: radial-gradient(circle, rgb(200, 71, 226), rgb(99, 99, 168), black);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+}
+ hr.theme2 {
+  border: none;
+  border-top: 1px solid magenta;
+  height: 5px;
+  width: 100%;
+  }
+/*Theme 3 Space*/
+p.space {
+  color: rgb(255, 255, 255);
+  text-shadow: white;
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.space {
+    height: 100%;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
+    background-size: cover;
+    background-image: url(https://th.bing.com/th/id/R.2233dd9dbbdc72fd46d1ae218bae965d?rik=mlwKyBXXRrJU6A&pid=ImgRaw&r=0);
+}
+/* Estilo para el contenido principal */
+main.space {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin-top: 30px;
+    background-image: url(https://th.bing.com/th/id/OIP.NdcwLYq7n6iTiiu1IUHLFAHaEv?rs=1&pid=ImgDetMain);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+h1.space,h2.space,h3.space,h4.space,h5.space,h6.space {
+  text-align: center;
+  color: white;
+  background-image: url(https://th.bing.com/th/id/R.bbc58b224e5d27d5648d8ae74e01bc2a?rik=MtYc%2bepoyXyjrw&pid=ImgRaw&r=0);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.space {
+    justify-self: center;
+    align-self: center;
+    align-items: center;
+    display: flex;
+    padding: 10px;
+    background-image: url(https://live.staticflickr.com/7060/6971643495_05dc317572_b.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.space {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://th.bing.com/th/id/OIP.kBY4LxAeo1gzY_un8PIWJAHaEb?rs=1&pid=ImgDetMain);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+section.space {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://th.bing.com/th/id/OIP.XhSnvyZ7S0hRkD_erqTc0QHaEo?rs=1&pid=ImgDetMain);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+aside.space {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://i.pinimg.com/originals/a5/d0/67/a5d0672466ca12f67241a1dc99171b75.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/*Theme 4 Star Wars*/
+/* Establece el fondo de toda la página a gris */
+p.starwars {
+  color: rgb(255, 255, 255);
+  text-shadow: white;
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.starwars {
+    height: 100%;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
+    background-size: cover;
+    background-image: url(https://th.bing.com/th/id/R.3fbda316a14ddd3aab94262076b8e2a3?rik=3HhcUrtxNNsI0A&riu=http%3a%2f%2fwww.hdwallpaper.nu%2fwp-content%2fuploads%2f2015%2f10%2fstar_wars_wallpaper_4.jpg&ehk=8r8j1xWoA1oe3BDMRVfVZWe2PU2qyQqAMKTweqefYhk%3d&risl=&pid=ImgRaw&r=0);
+}
+/* Estilo para el contenido principal */
+main.starwars {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin-top: 30px;
+    background-image: url(https://th.bing.com/th/id/OIP.npOsomw2bikOEQXahXpM0QHaEK?w=329&h=185&c=7&r=0&o=5&pid=1.7);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+h1.starwars,h2.starwars,h3.starwars,h4.starwars,h5.starwars,h6.starwars {
+  text-align: center;
+  color: white;
+  background-image: url(https://th.bing.com/th/id/OIP.fXzET8932QEAPm2_VL9h2wHaEK?w=316&h=180&c=7&r=0&o=5&pid=1.7);
+ background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.starwars {
+    justify-self: center;
+    align-self: center;
+    align-items: center;
+    display: flex;
+    padding: 10px;
+    background-image: url(https://images.squarespace-cdn.com/content/v1/531630f6e4b0fa5080a5596f/1845bb78-5fb1-4250-a2b9-e959c995cef9/Star+Wars+v2.jpg);
+   background-position: center;
+    background-size:cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.starwars {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://th.bing.com/th/id/OIP.Q0rcMIyko5F5ado-TefV6wHaEK?w=316&h=180&c=7&r=0&o=5&pid=1.7);
+   background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+section.starwars {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://th.bing.com/th/id/OIP.fXzET8932QEAPm2_VL9h2wHaEK?w=316&h=180&c=7&r=0&o=5&pid=1.7);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+aside.starwars {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://th.bing.com/th/id/OIP.JsQzo18AdsLv04LuKo4-9AHaEK?w=313&h=180&c=7&r=0&o=5&pid=1.7);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+ hr.starwars {
+  border: none;
+  height: 10px;
+  width: 100%;
+  background: url('https://img.freepik.com/fotos-premium/fondo-pantalla-planeta-estrellas-nubes-llamado-star-wars_910135-9709.jpg');
+  }
+/*Theme 5 Jurassic World*/
+p.jurassicworld {
+  color: rgb(255, 255, 255);
+  text-shadow: white;
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.jurassicworld {
+    height: 100%;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
+    background-size: cover;
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8k6I58I0r2yWS20ImbGZO2viw0K_ncxugsA&s);
+}
+/* Estilo para el contenido principal */
+main.jurassicworld {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin-top: 30px;
+    background-image: url(https://th.bing.com/th/id/OIP.J_Epz6FeCHuiohqcJU72oQHaDs?w=349&h=174&c=7&r=0&o=5&pid=1.7);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+h1.jurassicworld,h2.jurassicworld,h3.jurassicworld,h4.jurassicworld,h5.jurassicworld,h6.jurassicworld {
+  text-align: center;
+  color: white;
+  background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTspVYXunQxW8ToCzewEXHfrD74p2QtILTTZw&s);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.jurassicworld {
+    justify-self: center;
+    align-self: center;
+    align-items: center;
+    display: flex;
+    padding: 10px;
+    background-image: url(https://th.bing.com/th/id/OIP.TJK__-FIvQRNVUIPkvJQ9QHaEd);
+    background-position-y: -50px;
+    background-size:cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.jurassicworld {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNG2bTMhZUu7owtd-3a6dDjM6yeB_p3DpzYA&s);
+   background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+section.jurassicworld {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgUBGAIO4J6icDD29q9HqP7MA4Nae4IAwLsQ&s);
+    background-size: cover;
+   background-position: center;
+    background-repeat: no-repeat;
+}
+aside.jurassicworld {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCwwbTxxtBwVBs6rK7GigiCwkcIha0VOezXg&s);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/*Theme 5 Taylor Swifr*/
+p.taylorswift {
+  color: rgb(238, 13, 152);
+  text-shadow: white;
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.taylorswift {
+    height: 100%;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
+    background-size: cover;
+    background-image: url(https://th.bing.com/th/id/OIP.ZmgHb2BlqKPtoCS_pNH4pwHaQC?w=115&h=180&c=7&r=0&o=5&pid=1.7);
+}
+/* Estilo para el contenido principal */
+main.taylorswift {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin-top: 30px;
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHXyi8v9iFgQH_K_GH-JjUeqsmWcx-VCHhMdze264y2n2iLDjjDekdF-QVIYYBgUcTxXE&usqp=CAU);
+    background-repeat: repeat;
+}
+h1.taylorswift,h2.taylorswift,h3.taylorswift,h4.taylorswift,h5.taylorswift,h6.taylorswift {
+  text-align: center;
+  color: white;
+  background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJlo5xIOwnn-TWiURYLAg1mJ9Fo54oUBVsVw&s);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.taylorswift {
+    justify-self: center;
+    align-self: center;
+    align-items: center;
+    display: flex;
+    padding: 10px;
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgbFt-ngiiBOWghZHp8cO2TbaIPic31Wv6Qg&s);
+    background-size: cover;
+    background-position-y: -10px;
+    background-repeat: repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.taylorswift {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUSPNVF4QDrgiHN2AWmeWfis6Yts175pbWLQ&s);
+   background-position: center;
+    background-repeat: repeat;
+}
+section.taylorswift {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1ukN6qhXGOeh062E3_z3RH9o4WxyqFZS2oA&s);
+    background-repeat: repeat;
+}
+aside.taylorswift {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTN8YN7Ve2FszAe_VElFp4ep6F_7Aof7Gv1HQ&s);
+    background-position-y: -10px;
+    background-repeat: repeat;
+}
+
+/*Theme Pokemon*/
+/* Establece el fondo de toda la página a gris */
+p.pokemon {
+  color: rgb(255, 255, 255);
+  text-shadow: white;
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.pokemon {
+    height: 100%;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
+    background-size: cover;
+    background-image: url(https://th.bing.com/th/id/R.3fbda316a14ddd3aab94262076b8e2a3?rik=3HhcUrtxNNsI0A&riu=http%3a%2f%2fwww.hdwallpaper.nu%2fwp-content%2fuploads%2f2015%2f10%2fstar_wars_wallpaper_4.jpg&ehk=8r8j1xWoA1oe3BDMRVfVZWe2PU2qyQqAMKTweqefYhk%3d&risl=&pid=ImgRaw&r=0);
+}
+/* Estilo para el contenido principal */
+main.pokemon {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin-top: 30px;
+    background-image: url(https://th.bing.com/th/id/OIP.93-XtZpSnUMUofVyqLMZ2gHaNK?rs=1&pid=ImgDetMain);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+h1.pokemon,h2.pokemon,h3.pokemon,h4.pokemon,h5.pokemon,h6.pokemon {
+  text-align: center;
+  color: white;
+  background-image: url(https://th.bing.com/th/id/OIP.q4khjJEMKqXHNeEcDFdfOAHaEK?rs=1&pid=ImgDetMain);
+ background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.pokemon {
+    justify-self: center;
+    align-self: center;
+    align-items: center;
+    display: flex;
+    padding: 10px;
+    background-image: url(https://th.bing.com/th/id/OIP.JSYCbRX-KusrVVSgeYcOpQHaEK?w=297&h=180&c=7&r=0&o=5&pid=1.7);
+   background-position: center;
+    background-size:cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.pokemon {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYQ7jqd02fXQQMjVwbxlW4l-hbdQqircT4NQ&s);
+   background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+section.pokemon {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://th.bing.com/th/id/OIP.P_LxOVsyJfQaDltcpeXPuwHaEs?w=261&h=180&c=7&r=0&o=5&pid=1.7);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+aside.pokemon {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://th.bing.com/th/id/OIP.RzVl-RnbVt3LC_VoLCWZMgHaEK?w=308&h=180&c=7&r=0&o=5&pid=1.7);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/*Theme 6 Super Heroes*/
+p.superheroes {
+  color: rgb(243, 255, 248);
+  background-color: rgb(0, 0, 0);
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.superheroes {
+    height: 100%;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    padding: 0;
+    background-image: url(https://th.bing.com/th/id/R.6c83f52b1da153957504285959058b46?rik=5kwxZeA0BsJG%2fA&pid=ImgRaw&r=0);
+    background-position: center;
+    background-size: cover;
+}
+/* Estilo para el contenido principal */
+main.superheroes {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin-top: 30px;
+  background-size: cover;
+    background-image: url(https://www.tuexpertomovil.com/wp-content/uploads/2019/04/fondos-de-pantalla-vengadores-endgame-para-movil-01.jpg);
+    background-repeat: repeat;
+}
+h1.superheroes,h2.superheroes,h3.superheroes,h4.superheroes,h5.superheroes,h6.superheroes {
+  text-align: center;
+  color: white;
+  background-image: url(https://dam.smashmexico.com.mx/wp-content/uploads/2018/04/24160210/lo-que-debes-recordar-avengers-infinity-war.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.superheroes {
+    justify-self: center;
+    align-self: center;
+    align-items: center;
+    display: flex;
+    padding: 10px;
+    background-image: url(https://cdn2.mediotiempo.com/uploads/media/2019/05/05/avengers-internet.jpg);
+    background-position-y: -10px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.superheroes {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://images.hdqwalls.com/download/avengers-infinity-war-movie-bill-poster-7e-1440x900.jpg);
+   background-position: center;
+    background-repeat: no-repeat;
+  background-size: cover;
+}
+section.superheroes {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://th.bing.com/th/id/OIP.PtMZcfKCKBDrm5mTDmzHHgHaEW?rs=1&pid=ImgDetMain);
+    background-size:cover;
+    background-repeat: no-repeat;
+}
+aside.superheroes {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://static1.moviewebimages.com/wordpress/wp-content/uploads/article/vXIntIpv5EJCrh2WncQ634QBbOLsG3.jpg);
+    background-position-y: -10px;
+    background-repeat: repeat;
+    background-size: cover;
+}
+
+/*Theme The Wild Robot*/
+/* Establece el fondo de toda la página a gris */
+p.thewildrobot {
+  color: rgb(255, 255, 255);
+  text-shadow: white;
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.thewildrobot {
+    height: 100%;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
+    background-size: cover;
+    background-image: url(https://th.bing.com/th/id/OIP.9IJqsdTIYe-3tvaja3v8AwHaD3?w=1442&h=752&rs=1&pid=ImgDetMain);
+}
+/* Estilo para el contenido principal */
+main.thewildrobot {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin-top: 30px;
+    background-image: url(https://th.bing.com/th/id/OIP.PZFnac4UZPYzXyZb6MhehgHaDt?rs=1&pid=ImgDetMain);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+h1.thewildrobot,h2.thewildrobot,h3.thewildrobot,h4.thewildrobot,h5.thewildrobot,h6.thewildrobot {
+  text-align: center;
+  color: white;
+  background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsx1DJS9a81yuTwitR4oBTxSacXqax7aopQA&s);
+ background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.thewildrobot {
+    justify-self: center;
+    align-self: center;
+    align-items: center;
+    display: flex;
+    padding: 10px;
+    background-image: url(https://televitos.com/wp-content/uploads/2024/09/RobotSalvaje_01-1.webp);
+   background-position: center;
+    background-size:cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.thewildrobot {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://es.gizmodo.com/app/uploads/2024/10/Diseno-sin-titulo-15-2.jpg);
+   background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+section.thewildrobot {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8Jo95vwnlTwoejlcHIxUoDtVcePJKil0btA&s);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+aside.thewildrobot {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://images4.alphacoders.com/138/1380398.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/*Theme 7 Naturaleza: Atardecer/Amanecer*/
+p.naturaleza1 {
+  color: rgb(255, 255, 255);
+  background: linear-gradient(transparent, rgb(0, 0, 0), transparent);
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.naturaleza1 {
+    height: 100%; /* Cambiado a 100vh para ocupar toda la altura de la ventana */
+    display: flex; /* Flexbox para alinear contenido si es necesario */
+    flex-direction: column; /* Mantiene la dirección del contenido */
+    font-family: Arial, sans-serif; 
+    background-image: url(https://th.bing.com/th/id/R.33f8b44…?rik=A%2fDnI88HMj5p3Q&pid=ImgRaw&r=0);
+    background-size: cover; /* Asegura que la imagen cubra todo el fondo */
+    background-position: center; /* Centra la imagen de fondo */
+}
+
+/* Estilo para el contenido principal */
+main.naturaleza1 {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin-top: 30px;
+    background-image: url(https://th.bing.com/th/id/OIP.4XAJOA0-q2Aay_f3VfscXwHaEo?w=1920&h=1200&rs=1&pid=ImgDetMain);
+    background-repeat: repeat;
+}
+h1.naturaleza1,h2.naturaleza1,h3.naturaleza1,h4.naturaleza1,h5.naturaleza1,h6.naturaleza1 {
+  text-align: center;
+  color: white;
+  background-image: url(https://s1.1zoom.me/b5050/892/432626-svetik_1366x768.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.naturaleza1 {
+    justify-self: center;
+    align-self: center;
+    align-items: center;
+    display: flex;
+    padding: 10px;
+    background-image: url(https://th.bing.com/th/id/OIP.T5PqdU-B6jYYqzBPelW2EwHaFj?rs=1&pid=ImgDetMain);
+    background-position-y: -100px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.naturaleza1 {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://th.bing.com/th/id/R.efa3563dc34b39d6f6b087c20e014608?rik=rR0bIEpvuiFOwQ&pid=ImgRaw&r=0);
+   background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+section.naturaleza1 {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://w0.peakpx.com/wallpaper/1007/584/HD-wallpaper-nature-nature.jpg);
+    background-size:cover;
+    background-repeat: no-repeat;
+}
+aside.naturaleza1 {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://th.bing.com/th/id/R.d630144c16d6ca1072900d57415a2d72?rik=mZmAuzQBo4Ip9g&pid=ImgRaw&r=0);
+    background-position-y: -400px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/*Theme 7 Naturaleza: Polos*/
+p.naturaleza1 {
+  color: rgb(255, 255, 255);
+  background: linear-gradient(transparent, rgb(0, 0, 0), transparent);
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.naturaleza2 {
+    height: 100%; /* Cambiado a 100vh para ocupar toda la altura de la ventana */
+    display: flex; /* Flexbox para alinear contenido si es necesario */
+    flex-direction: column; /* Mantiene la dirección del contenido */
+    font-family: Arial, sans-serif; 
+    background-image: url(https://th.bing.com/th/id/R.36c399a1906a4e753e49a04b69f1e8c5?rik=F6xkD%2brClFTZWA&pid=ImgRaw&r=0);
+    background-size: cover; /* Asegura que la imagen cubra todo el fondo */
+    background-position: center; /* Centra la imagen de fondo */
+}
+
+/* Estilo para el contenido principal */
+main.naturaleza2 {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin-top: 30px;
+    background-image: url(https://th.bing.com/th/id/R.d1d3096e631e5795571d48fbb5844beb?rik=ApzRZjkI516j2w&riu=http%3a%2f%2fconhecimentocientifico.r7.com%2fwp-content%2fuploads%2f2015%2f12%2ficeberg-a-la-vista.jpg&ehk=1akT2oEISjtKpQjxzsCduyt9wncwtFaAfTqQG5T%2fGRc%3d&risl=&pid=ImgRaw&r=0);
+    background-repeat: repeat;
+}
+h1.naturaleza2,h2.naturaleza2,h3.naturaleza2,h4.naturaleza2,h5.naturaleza2,h6.naturaleza2 {
+  text-align: center;
+  color: white;
+  background-image: url(https://th.bing.com/th/id/OIP.QPJQJLqTcrngDPFnC9PIYAHaEp?rs=1&pid=ImgDetMain);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.naturaleza2 {
+    justify-self: center;
+    align-self: center;
+    align-items: center;
+    display: flex;
+    padding: 10px;
+    background-image: url(https://th.bing.com/th/id/OIP.aoYdHlS-eY68KaN3ZqXipQHaFB?rs=1&pid=ImgDetMain);
+    background-position-y: -100px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.naturaleza2 {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://th.bing.com/th/id/R.b9b0c57168515141e7e5d60eee0cec82?rik=vb765zkcnB7u4Q&riu=http%3a%2f%2fculturafotografica.es%2fwp-content%2fuploads%2f2016%2f04%2faurora-boreal-portada.jpg&ehk=4ftYiAYhifM1CfHof%2fVAo6KRfp%2b8FPE2lHhGWCV4ees%3d&risl=&pid=ImgRaw&r=0);
+   background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+section.naturaleza2 {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://p0.pikist.com/photos/577/451/northern-lights-aurora-borealis-northern-night-sky-green-lights-phenomenon-astronomy-thumbnail.jpg);
+    background-size:cover;
+    background-repeat: no-repeat;
+}
+aside.naturaleza2 {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://www.banditdenuit.com/wp-content/uploads/2022/08/aurore-boreale-polaire.jpg);
+    background-position-y: -400px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/*Theme Grouvex Studios 1*/
+p.gstudios1 {
+  background-color: rgba(0, 0, 0, 0);
+  color: rgb(255, 255, 255);
+  text-shadow: white;
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.gstudios1{
+    height: 100%;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
+    background-size: cover;
+    background-image: url(https://grouvex.com/port/Si%20Fuera.jpg);
+}
+/* Estilo para el contenido principal */
+main.gstudios1 {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin-top: 30px;
+    background-color: rgba(0, 0, 0, 0);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+h1.gstudios1,h2.gstudios1,h3.gstudios1,h4.gstudios1,h5.gstudios1,h6.gstudios1 {
+  text-align: center;
+  color: white;
+  background: linear-gradient(45deg, transparent,  yellow, red);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.gstudios1 {
+    justify-self: center;
+    align-self: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0);
+    display: flex;
+    padding: 10px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.gstudios1 {
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+section.gstudios1 {
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+aside.gstudios1 {
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/*Theme Grouvex Studios 2*/
+p.gstudios2 {
+  background-color: rgba(0, 0, 0, 0);
+  color: rgb(255, 255, 255);
+  text-shadow: white;
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.gstudios2 {
+    height: 100%;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
+    background-size: cover;
+    background-image: url(https://grouvex.github.io/port/The%20Night%20Sky.jpg);
+}
+/* Estilo para el contenido principal */
+main.gstudios2 {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin-top: 30px;
+    background-color: rgba(0, 0, 0, 0);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+h1.gstudios2,h2.gstudios2,h3.gstudios2,h4.gstudios2,h5.gstudios2,h6.gstudios2 {
+  text-align: center;
+  color: white;
+  background: linear-gradient(45deg, transparent,  yellow, red);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.gstudios2 {
+    justify-self: center;    
+    align-self: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0);
+    display: flex;
+    padding: 10px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.gstudios2 {
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+section.gstudios2 {
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+aside.gstudios2 {
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/*Theme Grouvex Studios 3*/
+p.gstudios3 {
+  background-color: rgba(0, 0, 0, 0);
+  color: rgb(255, 255, 255);
+  text-shadow: white;
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.gstudios3 {
+    height: 100%;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
+    background-size: cover;
+    background-image: url(https://grouvex.github.io/port/La%20Magia%20de%20la%20Estrella%20Polar.jpg);
+}
+/* Estilo para el contenido principal */
+main.gstudios3 {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin-top: 30px;
+    background-color: rgba(0, 0, 0, 0);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+h1.gstudios3,h2.gstudios3,h3.gstudios3,h4.gstudios3,h5.gstudios3,h6.gstudios3 {
+  text-align: center;
+  color: white;
+  background: linear-gradient(45deg, transparent,  yellow, red);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.gstudios3 {
+    justify-self: center;     
+    align-self: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0);
+    display: flex;
+    padding: 10px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.gstudios3 {
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+section.gstudios3 {
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+aside.gstudios3 {
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/*Theme Grouvex Studios 4*/
+p.gstudios4 {
+  background-color: rgba(0, 0, 0, 0);
+  color: rgb(255, 255, 255);
+  text-shadow: white;
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.gstudios4 {
+    height: 100%;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
+    background-size: cover;
+    background-image: url(https://grouvex.github.io/port/Unstoppable%20Friendship.jpg);
+}
+/* Estilo para el contenido principal */
+main.gstudios4 {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin-top: 30px;
+    background-color: rgba(0, 0, 0, 0);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+h1.gstudios4,h2.gstudios4,h3.gstudios4,h4.gstudios4,h5.gstudios4,h6.gstudios4 {
+  text-align: center;
+  color: white;
+  background: linear-gradient(45deg, transparent,  yellow, red);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.gstudios4 {
+    justify-self: center;     
+    align-self: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0);
+    display: flex;
+    padding: 10px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.gstudios4 {
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+section.gstudios4 {
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+aside.gstudios4 {
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/*Theme HTTYD*/
+p.httyd {
+  color: rgb(255, 255, 255);
+  text-shadow: white;
+  display: block;
+}
+/* Establece el fondo de toda la página a gris */
+body.httyd {
+    height: 100%;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Tipo de letra */
+    background-position: center;
+    background-size: cover;
+    background-image: url(https://th.bing.com/th/id/OIP.rNJ8l2pKgEYsDHFsVBNJZAHaKM?dpr=1,9&pid=ImgDetMain&PC=EMMX01);
+}
+/* Estilo para el contenido principal */
+main.httyd {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    flex: 0;
+    color: white;
+    margin-top: 30px;
+    background-color: rgba(0, 0, 0, 0);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+h1.httyd,h2.httyd,h3.httyd,h4.httyd,h5.httyd,h6.httyd {
+  text-align: center;
+  color: white;
+  background-image: url(https://images6.alphacoders.com/955/thumb-1920-955571.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+mainTop.httyd {
+    justify-self: center;     
+    align-self: center;
+    align-items: center;
+    display: flex;
+    padding: 10px;
+    background-image: url(https://th.bing.com/th/id/OIP.GSPiB_i4DFW__QygF3wa_wHaEK?dpr=1,9&pid=ImgDetMain&PC=EMMX01);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para los artículos, secciones y barras laterales */
+article.httyd {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgfWszYKfMi6AZJZWQXvsMU04jmoltIvQJUg&s);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+section.httyd {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-image: url(https://wallpapercave.com/wp/wp1969390.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+aside.httyd {
+    border: 1px solid #ddd; /* Borde gris */
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+    background-color: rgba(0, 0, 0, 0);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* Estilo para el pie de página */
+footer {
+    margin-top: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border: 2px solid white;
+    color: black;
+}
+.footer-text{
+  justify-content: left;
+  color: black;
+  word-wrap: break-word;
+  text-align: left;
+  display: flex;
+  align-items: center;
+}
+.footer-text img{
+  width: auto; /* Ancho automático para mantener la proporción */
+  height: auto; /* Altura automática para mantener la proporción */
+  max-width: 100px; /* Máximo ancho de 30px */
+  margin-right: 10px;
+}
+.footer-imagenes {
+  justify-content: left; /* Centra los elementos en el eje horizontal */
+}
+
+.footer-imagenes img {
+  width: auto; /* Ancho automático para mantener la proporción */
+  height: auto; /* Altura automática para mantener la proporción */
+  max-width: 60px; /* Máximo ancho de 30px */
+  max-height: 30px; /* Máximo altura de 30px */
+  margin: 5px; /* Margen de 5px para asegurar la separación */
+  
+}
+
+/* Cajetines*/
+.cajetin-fechas {
+  background: transparent;
+  overflow-y: auto;
+  box-sizing: border-box;
+  text-align: left; 
+  word-wrap: break-word; 
+  max-width: 100%;  
+  color: black;
+  display: block;
+  margin-bottom: 10px;
+  opacity: .8;
+  font-size: 10px;
+}
+.cajetin-titulo {
+  background: transparent;
+  overflow-y: auto;
+  box-sizing: border-box;
+  text-align: left; 
+  word-wrap: break-word; 
+  max-width: 100%;  
+  color: white;
+  display: inline-block;
+  padding-right: .8rem;
+  font-size: 15px;
+}
+.cajetin-description {
+  background: transparent;
+  overflow-y: auto;
+  box-sizing: border-box;
+  text-align: left; 
+  word-wrap: break-word; 
+  max-width: 100%;  
+  color: white;
+  display: inline-block;
+  padding-right: .8rem;
+  font-size: 11px;
+
+} 
+.cajetin-footer {
+  background: transparent;
+  overflow-y: auto;
+  box-sizing: border-box;
+  text-align: left; 
+  word-wrap: break-word; 
+  max-width: 100%;  
+  color: white;
+  display: block;
+  padding-right: .8rem;
+  opacity: .9;
+  font-size: 8px;
+}
+.cajetines {
+  display: flex;
+  overflow-y: auto; /* Agrega una barra de desplazamiento vertical */
+  max-height: 800px;
+  width: 100%;
+  flex-wrap: wrap; /* Muestra los cajetines en varias filas */
+  gap: 10px; /* Espacio entre los cajetines */
+}
+.cajetin {
+  width: 90%;
+  max-width: 300px;
+  height: auto;
+  /* Estilos para cada cajetín */
+  padding-top: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  flex-basis: calc(25% - 40px); /* 4 cajetines por fila */
+  background: linear-gradient(0deg, transparent, cyan, blue); /* Fondo del texto */
+}
+.cajetin img {
+  margin-top: 0px;
+  width: 100%;
+  height: auto;
+  vertical-align: middle; /* Alineación vertical con el texto */
+}
+
+.tarjetas{
+  display: flex;
+  overflow-y: auto; /* Agrega una barra de desplazamiento vertical */
+  max-height: 200px;
+  box-shadow: 0 2px 5px rgb(37,44,247);
+  width: 100%;
+  flex-wrap: wrap; /* Muestra los cajetines en varias filas */
+  gap: 10px; /* Espacio entre los cajetines */
+    }
+    .tarjeta { 
+      display: flex; 
+      align-items: center; 
+      border-radius: 10px; 
+      box-shadow: 0 2px 5px rgb(51,177,215);
+      margin: 20px; 
+      padding: 20px; 
+      width: 90%;
+      height: auto;
+      padding-top: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  flex-basis: calc(25% - 40px); /* 4 cajetines por fila */
+    }
+    .tarjeta img { 
+      border-radius: 50%; 
+      width: 50px; 
+      height: 50px; 
+      object-fit: cover; 
+      margin-right: 20px; 
+    }
+    .tarjeta h2 { margin: 0 0 5px; }
+    .tarjeta p { margin: 0 0 2.5px; color: #555; }
+    .tarjeta footer { font-size: 0.7em; color: #888; }
+
+.musica-section {
+display: flex;
+padding: 20px; 
+overflow: hidden;
+align-items: center;
+align-content: center;
+}
+.left-section {
+  flex: 1;
+  display: flex;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  justify-content: center;
+  align-items: center;
+}
+.left-section img {
+  max-width: 60%;
+  height: auto;
+}
+.right-section{
+  word-wrap: break-word;
+  text-align: left;
+  box-sizing: border-box;
+  flex: 1;
+  padding: 20px;
+  margin-right: 10px;
+  overflow-y: auto;
+  max-height: 300px;
+  max-width: 100%;
+}
+@media (max-width: 768px) {
+.img-container {
+  width: 200px; /* Puedes ajustar el tamaño según tus necesidades */
+  height: 80px; /* Ajusta la altura según sea necesario */
+  background-image: url('https://grouvex.github.io/img/Grouvex1.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+mainTop {
+    justify-items: center;
+    justify-content: normal;
+    display: grid;
+}
+mainTop.theme1 {
+    justify-items: center;
+    justify-content: normal;
+    display: grid;
+}
+
+mainTop.theme2 {
+    justify-items: center;
+    justify-content: normal;
+    display: grid;
+}
+
+mainTop.space {
+    justify-items: center;
+    justify-content: normal;
+    display: grid;
+}
+
+mainTop.starwars {
+    justify-items: center;
+    justify-content: normal;
+    display: grid;
+}
+
+mainTop.jurassicworld {
+    justify-items: center;
+    justify-content: normal;
+    display: grid;
+}
+
+mainTop.taylorswift {
+    justify-items: center;
+    justify-content: normal;
+    display: grid;
+}
+
+mainTop.superheroes {
+    justify-items: center;
+    justify-content: normal;
+    display: grid;
+}
+
+mainTop.naturaleza1 {
+    justify-items: center;
+    justify-content: normal;
+    display: grid;
+}
+
+mainTop.naturaleza2 {
+    justify-items: center;
+    justify-content: normal;
+    display: grid;
+}
+
+mainTop.naturaleza3 {
+    justify-items: center;
+    justify-content: normal;
+    display: grid;
+}
+
+mainTop.naturaleza4 {
+    justify-items: center;
+    justify-content: normal;
+    display: grid;
+}
+
+mainTop.pokemon {
+    justify-items: center;
+    justify-content: normal;
+    display: grid;
+}
+
+mainTop.thewildrobot {
+    justify-items: center;
+    justify-content: normal;
+    display: grid;
+}
+
+mainTop.httyd {
+    justify-items: center;
+    justify-content: normal;
+    display: grid;
+}
+
+mainTop.gstudios1 {
+    justify-items: center;
+    justify-content: normal;
+    display: grid;
+}
+
+mainTop.gstudios2 {
+    justify-items: center;
+    justify-content: normal;
+    display: grid;
+}
+
+mainTop.gstudios3 {
+    justify-items: center;
+    justify-content: normal;
+    display: grid;
+}
+
+mainTop.gstudios4 {
+    justify-items: center;
+    justify-content: normal;
+    display: grid;
+}
+.cajetin {
+   width: 100%;
+ } 
+.musica-section {
+display: block; 
+padding: 20px; 
+overflow: hidden;
+align-items: center;
+align-content: center;
+}
+.left-section {
+  display: flex;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  justify-content: center;
+  align-items: center;
+}
+.left-section img {
+  max-width: 80%;
+  height: auto;
+}
+.right-section{
+  word-wrap: break-word;
+  text-align: left;
+  box-sizing: border-box;
+  padding: 20px;
+  margin-right: 10px;
+  max-height: 100%;
+  max-width: 100%;
+}
+/* Estilo para el pie de página */
+footer {
+    margin-top: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border: 2px solid white;
+    color: black;
+    z-index: 1;
+}
+.footer-text{
+  justify-content: left;
+  display: block;
+  align-items: center;
+  color: black;
+  z-index: 2;
+}
+.footer-text img{
+  width: auto; /* Ancho automático para mantener la proporción */
+  height: auto; /* Altura automática para mantener la proporción */
+  max-width: 100px; /* Máximo ancho de 30px */
+  margin-right: 10px;
+}
+.footer-imagenes {
+  justify-content: left; /* Centra los elementos en el eje horizontal */
+}
+
+.footer-imagenes img {
+  width: auto; /* Ancho automático para mantener la proporción */
+  height: auto; /* Altura automática para mantener la proporción */
+  max-width: 60px; /* Máximo ancho de 30px */
+  max-height: 30px; /* Máximo altura de 30px */
+  margin: 5px; /* Margen de 5px para asegurar la separación */
+ }
+}
+>>>>>>> 953cfe9e8dc18a2cf4d19717b2a169173244cdef

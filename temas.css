@@ -112,7 +112,7 @@ body {
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-size: cover;
     background-repeat: no-repeat;
-    background: black;
+    background: linear-gradient(to right, #8e44ad, #3498db);
 }
 
 /* Estilo para el contenido principal */

@@ -575,8 +575,6 @@
                         spotifyVideo.style.display = 'none';
                     }
                  document.title = `${track.name} -  ${track.artist} (${track.album}) - Grouvex Studios`;
-                 let metaDescription = document.querySelector('meta[name="description"]');
-                 if (!metaDescription) { metaDescription = document.createElement('meta'); metaDescription.name = 'description'; document.head.appendChild(metaDescription); } metaDescription.content = `Escucha ${track.name} del album ${track.album}. El artista ${track.artist} y está compuesta por ${track.composer} y está producida por ${track.producer}, Label: ©${track.label}. Disponible desde ${startDateString} hasta ${endDateString}.`;
                 }
               // Función para actualizar el título de la página según el estado de reproducción 
                 function updatePageTitle() { if (audioPlayer.paused || audioPlayer.src === '') { document.title = 'Reproductor de música - Grouvex Studios'; document.title = `${currentTrack.name} -  ${currentTrack.artist} (${currentTrack.album}) - Grouvex Studios`;} } 

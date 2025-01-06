@@ -17,12 +17,13 @@ input {
 
 button {
     padding: 5px 10px;
-    color: white;
+    color: black;
     border-radius: 2px;
     cursor: pointer;
 }
 
 button:hover {
+    color: white;
     background: #218838;
 }
 

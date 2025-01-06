@@ -73,7 +73,7 @@ body {
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    background: linear-gradient(to right, #8e44ad, #3498db);
+    background: linear-gradient(120deg, magenta, cyan);
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -85,7 +85,7 @@ main {
     padding: 10px;
     color: white;
     margin-top: 30px;
-    background-color: #000000;
+    background: transparent;
 }
 h1,h2,h3,h4,h5,h6,h7,h8 {
    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
@@ -99,7 +99,7 @@ mainTop {
     display: flex;
     padding: 10px;
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
-    background: #000000;
+    background: transparent;
     align-items: center;
 }
 .img-container {
@@ -116,28 +116,27 @@ article {
     margin: 10px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1); /* Sombra suave */
-    background-color: rgb(77, 199, 221);
+    background: transparent;
 }
 section {
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(51, 255, 0, 0.1); /* Sombra suave */
-    background-color: rgb(202, 105, 105);
+    background: transparent;
 }
 aside {
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
-    background-color: rgb(48, 185, 66);
+    background: transparent;
 }
- hr {
-  border: none;
-  border-top: 1px solid #ccc;
-  height: 5px;
-  width: 100%;
-  }
+hr {
+    border: none;
+    height: 2px;
+    background: linear-gradient(45deg, red, blue, green, yellow);
+}
 /*Theme 1*/
 p.theme1 {
   color: rgb(255, 255, 255);

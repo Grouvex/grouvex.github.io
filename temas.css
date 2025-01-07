@@ -1,4 +1,3 @@
-
 /*Primavera*/
 .flower {
   position: fixed;
@@ -225,8 +224,7 @@ body.theme2 {
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-size: cover;
-    background-repeat: no-repeat;
-    background-color: lightcoral;
+    background: lightcoral;
 }
 /* Estilo para el contenido principal */
 main.theme2 {

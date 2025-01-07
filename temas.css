@@ -1,4 +1,5 @@
-/*Primavera*/
+
+/*Primavera*/
 .flower {
   position: fixed;
   top: 0;
@@ -133,7 +134,8 @@ aside {
     background: transparent;
 }
  hr {
-  border: none;
+  border: none;
+
   height: 5px;
   width: 100%;
   background: linear-gradient(120deg, silver, gold);
@@ -150,7 +152,7 @@ body.theme1 {
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
     background-size: cover;
-    background-repeat: no-repeat;
+    background: linear-gradient(120deg, red, yellow, blue, transparent);
 }
 /* Estilo para el contenido principal */
 

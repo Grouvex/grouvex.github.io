@@ -1,4 +1,4 @@
-/*Primavera*/
+/*Primavera*/
 .flower {
   position: fixed;
   top: 0;
@@ -70,13 +70,13 @@ p {
 /* Establece el fondo de toda la página a gris */
 body {
     height: 100%;
-    display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif; /* Tipo de letra */
-    background: linear-gradient(120deg, magenta, cyan);
     background-size: cover;
-    background-repeat: repeat;
+    background-repeat: no-repeat;
+    background: linear-gradient(120deg, magenta, cyan);
 }
+
 /* Estilo para el contenido principal */
 main {
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
@@ -90,7 +90,7 @@ main {
 h1,h2,h3,h4,h5,h6,h7,h8 {
    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
   text-align: center;
-  background-color: #000000;
+  background: transparent;
   color: rgb(255, 255, 255);
 }
 mainTop {
@@ -132,11 +132,12 @@ aside {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
     background: transparent;
 }
-hr {
-    border: none;
-    height: 2px;
-    background: linear-gradient(45deg, red, blue, green, yellow);
-}
+ hr {
+  border: none;
+  height: 5px;
+  width: 100%;
+  background: linear-gradient(120deg, silver, gold);
+  }
 /*Theme 1*/
 p.theme1 {
   color: rgb(255, 255, 255);

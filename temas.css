@@ -1718,6 +1718,11 @@ footer {
     width: 100%;
     align-items: flex-start;
 }
+  .footer-bottom {
+    display: block;
+    justify-content: space-between;
+    width: 100%;
+}
 .footer-imagenes {
   justify-content: left; /* Centra los elementos en el eje horizontal */
 }

@@ -1353,21 +1353,6 @@ footer {
     padding-left: 5px;
     padding-right: 5px;
     border: 2px solid white;
-    color: black;
-}
-.footer-text{
-  justify-content: left;
-  color: black;
-  word-wrap: break-word;
-  text-align: left;
-  display: flex;
-  align-items: center;
-}
-.footer-text img{
-  width: auto; /* Ancho automático para mantener la proporción */
-  height: auto; /* Altura automática para mantener la proporción */
-  max-width: 100px; /* Máximo ancho de 30px */
-  margin-right: 10px;
 }
 .footer-imagenes {
   justify-content: left; /* Centra los elementos en el eje horizontal */
@@ -1381,7 +1366,36 @@ footer {
   margin: 5px; /* Margen de 5px para asegurar la separación */
   
 }
-
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+.footer-column {
+    flex: 1;
+    text-align: center; /* Alinea el contenido al centro */
+}
+.footer-column img {
+    max-width: 100%;
+    height: auto;
+}
+.footer-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: flex-start;
+}
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.disabled-link {
+    color: gray;
+    pointer-events: none; /* Deshabilita el enlace */
+    cursor: default;
+}
 /* Cajetines*/
 .cajetin-fechas {
   background: transparent;
@@ -1684,18 +1698,25 @@ footer {
     color: black;
     z-index: 1;
 }
-.footer-text{
-  justify-content: left;
-  display: block;
-  align-items: center;
-  color: black;
-  z-index: 2;
+.footer-container {
+    display: block;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
 }
-.footer-text img{
-  width: auto; /* Ancho automático para mantener la proporción */
-  height: auto; /* Altura automática para mantener la proporción */
-  max-width: 100px; /* Máximo ancho de 30px */
-  margin-right: 10px;
+.footer-column {
+    flex: 1;
+    text-align: center; /* Alinea el contenido al centro */
+}
+.footer-column img {
+    max-width: 100%;
+    height: auto;
+}
+.footer-row {
+    display: block;
+    justify-content: space-between;
+    width: 100%;
+    align-items: flex-start;
 }
 .footer-imagenes {
   justify-content: left; /* Centra los elementos en el eje horizontal */

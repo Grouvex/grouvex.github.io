@@ -1,7 +1,3 @@
-<script>
-    alert( `Esta sección de la página no está disponible.\n\nSerás redirigido a la página de inicio.\nGracias por su paciencia.`);
-   if (window.location.href !== 'https://grouvex.com/') {window.location.href = 'https://grouvex.com/';}
-</script>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -53,56 +49,93 @@
     <script src="time.js"></script></script><script src="abc.js"></script><script src="index.js"></script>
 </head>
 <body>
-        <mainTop>
-            <a href="https://grouvex.github.io/"> <div class="img-container" loading="lazy"></div></a> 
-            <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
-                <span id="menuG"></span> <!-- General -->
-                <span id="menuT"></span> <!-- Temas/Idioma -->
-                <span id="menuU"></span> <!-- Usuario -->
-        </mainTop>
-        <!-- Anuncio -->
-        <div id="news"></div>
-        <main>
-            <!-- Publicado por -->
-            <div class="tarjeta" style="display: flex;align-items: center; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 10px; padding: 10px; height: 45px; width: 250px; padding-top: 10px;padding-bottom: 10px">
-                <img src="../img/GROUVEX.png" alt="" style="border-radius: 50%; width: 35px;height: 35px;object-fit: cover; margin-right: 10px;loading="lazy"">
-                <div>
-                    <h2 style="margin:2px; font-size: 7.5px">Publicado por:</h2>
-                    <h2 style="margin:2px; padding: 1px;font-size: 9px">Grouvex Studios</h2>
-                    <p style="color: white; font-size: 11px"><span id="ActualizadoDATE"></span></p>
-                    <a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@rouvex.com</footer></a>
-                </div>
-                <script>
-                    const uTActualizado = 1736344560;
-                    actualizarFechas(uTActualizado, "ActualizadoDATE");
-                </script>
+    <mainTop>
+        <a href="https://grouvex.github.io/"> <div class="img-container" loading="lazy"></div></a> 
+        <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
+            <span id="menuG"></span> <!-- General -->
+            <span id="menuT"></span> <!-- Temas/Idioma -->
+            <span id="menuU"></span> <!-- Usuario -->
+    </mainTop>
+    <!-- Anuncio -->
+    <div id="news"></div>
+    <main>
+        <!-- Publicado por -->
+        <div class="tarjeta" style="display: flex;align-items: center; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 10px; padding: 10px; height: 45px; width: 250px; padding-top: 10px;padding-bottom: 10px">
+            <img src="../img/GROUVEX.png" alt="" style="border-radius: 50%; width: 35px;height: 35px;object-fit: cover; margin-right: 10px;loading="lazy"">
+            <div>
+                <h2 style="margin:2px; font-size: 7.5px">Publicado por:</h2>
+                <h2 style="margin:2px; padding: 1px;font-size: 9px">Grouvex Studios</h2>
+                <p style="color: white; font-size: 11px"><span id="ActualizadoDATE"></span></p>
+                <a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@rouvex.com</footer></a>
             </div>
-            <!-- Título -->
-            <article>
-                <h1>Contacto de Grouvex Studios</h1>
-                <!-- Texto -->
-                <section id="Correo_Electronico">
-                    <a href="#Correo_Electronico"><h2>Por Correo Electrónico</h2></a>
-                    <p>Podrás ponerte en contacto con <span class="tooltip"><strong>Grouvex Studios</strong><span class="tooltiptext">En adelante GS. Los artistas, los de animación, y los miembros de los equipos de Grouvex Studios</span></span> con el siguiente correo: <a href="mailto:soporte@grouvex.com" style="color:white">soporte@grouvex.com</a></p>
-                    <p>Grouvex Studios cuenta con otros correos electrónicos. Para gestión, administración, moderación independientemente de si es de <span class="tooltip"><strong>GS, GSRecording, GSAnimation, GSEquipo, o ninguno de los anteriores</strong><span class="tooltiptext">En adelante Categoría.</span></span>.</p>
-                    <details disabled>
-                    <summary>Otros Correos Electrónicos</summary>
-                    <p>Gestión: <a href="mailto:gestion@grouvex.com" style="color:white">gestion@grouvex.com</a></p>
-                    <p>En este, los miembros de GSEquipo tienen permiso para escribir a dicho correo, como también solo aquellas personas, de cualquier Categoría, que hayan recibido un correo de Gestión.</p>
-                    <details>
-                    <p>Este correo sirve para gestionar y transmitir, sobre todo a los de GSEquipo sobre cosas de Grouvex Studios. También para momentos de urgencia de notificar o que solo los gestores saben como debe ir.</p>
-                    </details>
-                    <p>Administración: <a href="mailto:administracion@grouvex.com" style="color:white">administracion@grouvex.com</a></p>
-                    <p>En este, los del GS, tienen permiso para escribir a dicho correo, como también solo aquellas personas, de cualquier Categoría, que hayan recibido un correo de Administración.</p>
-                    <p>Moderación: <a href="mailto:moderacion@grouvex.com" style="color:white">moderacion@grouvex.com</a></p>
-                    <p>En este, cualquier Categoría tienen permiso para escribir a dicho correo.</p>
-                    <p>Soporte: <a href="mailto:soporte@grouvex.com" style="color:white">soporte@grouvex.com</a></p>
-                    <p>En este, cualquier Categoría tienen permiso para escribir a dicho correo.</p>
-                    </details>
-                </section>
-            </article>
-        </main>
-        <!-- Footer -->
-        <div id="footer"></div>
+            <script>
+                const uTActualizado = 1736344560;
+                actualizarFechas(uTActualizado, "ActualizadoDATE");
+            </script>
+        </div>
+        <!-- Título -->
+        <article>
+            <h1>Horario de Grouvex Studios</h1>
+            <p>Tenga en cuenta que la hora esta en el formato 24h. El horario significa, cuando te pueden responder los miembros, teniendo en cuenta que en casos aislados, respondan fuera del horario establecido.</p>
+            <details open>
+                <summary>Horario Habitual</summary>
+                    <p>Lunes: 12:00 a 14:30 - 16:00 a 20:00 (GMT)</p>
+                    <p>Martes: 12:00 a 14:30 - 16:00 a 20:00 (GMT)</p>
+                    <p>Miercoles: 12:00 a 14:30 - 16:00 a 20:00 (GMT)</p>
+                    <p>Jueves: 12:00 a 14:30 - 16:00 a 20:00 (GMT)</p>
+                    <p>Viernes: 12:00 a 14:30 - 16:00 a 20:00 (GMT)</p>
+                    <p>Sabado: 10:00 a 14:00 - 16:30 20:30 (GMT)</p>
+                    <p>Domingo: 10:00 a 14:00 - 16:00 20:00 (GMT)</p>
+            </details>
+            <hr>
+            <details>
+                <summary>Horario de Vacaciones</summary>
+                 <p>Las fechas de Vacaciones estan dictadas por la Seguridad social de España. Mire el <a href="https://www.seg-social.es/wps/portal/wss/internet/CalendarioLaboral/" style="color: white" targer="_blank">Calendario Laboral</a>. En alguna ocasión Grouvex Studios, puede dar vacaciones algunos de sus miembros o a todo el equipo. Siempre puede haber algun miembro que le pueda responder, cuando pueda dicho miembro.</p>
+                  <hr> 
+                    <p>Lunes: 12:00 a 14:00 - 16:00 a 20:00 (GMT)</p>
+                    <p>Martes: 12:00 a 14:00 - 16:00 a 20:00 (GMT)</p>
+                    <p>Miercoles: 12:00 a 14:00 - 16:00 a 20:00 (GMT)</p>
+                    <p>Jueves: 12:00 a 14:00 - 16:00 a 20:00 (GMT)</p>
+                    <p>Viernes: 12:00 a 14:00 - 16:00 a 20:00 (GMT)</p>
+                    <p>Sabado: 12:00 a 14:00 - 17:00 20:30 (GMT)</p>
+                    <p>Domingo: 12:00 a 14:00 - 17:00 20:00 (GMT)</p>
+            </details>
+        </article>
+        <article>
+            <h1>Contacto de Grouvex Studios</h1>
+            <p>Contactar con algun miembro del equipo por privado o por su correo corporativo, sin autorización de la persona u organización, tendrá consecuencias. Recuerde respetar los Términos de Servicio y Políticas de Privacidad.</p>
+            <!-- Texto -->
+            <section id="Correo_Electronico">
+                <a href="#Correo_Electronico"><h2>Por Correo Electrónico</h2></a>
+                <p>Podrás ponerte en contacto con <span class="tooltip"><strong>Grouvex Studios</strong><span class="tooltiptext">En adelante GS. Los artistas, los de animación, y los miembros de los equipos de Grouvex Studios</span></span> con el siguiente correo: <a href="mailto:soporte@grouvex.com" style="color:white">soporte@grouvex.com</a></p>
+                <p>Grouvex Studios cuenta con otros correos electrónicos. Para gestión, administración, moderación independientemente de si es de <span class="tooltip"><strong>GS, GSRecording, GSAnimation, GSEquipo, o ninguno de los anteriores</strong><span class="tooltiptext">En adelante Categoría.</span></span>.</p>
+                <details disabled>
+                <summary>Otros Correos Electrónicos</summary>
+                <p>Gestión: <a href="mailto:gestion@grouvex.com" style="color:white">gestion@grouvex.com</a></p>
+                <p>En este, los miembros de GSEquipo tienen permiso para escribir a dicho correo, como también solo aquellas personas, de cualquier Categoría, que hayan recibido un correo de Gestión.</p>
+                <details>
+                <p>Este correo sirve para gestionar y transmitir, a los de GSEquipo sobre cosas de Grouvex Studios. También para momentos de urgencia de notificar o que solo los gestores saben como debe ir. Solo los miembros del Equipo de Gestión podrán escribir a dicho correo. Si eres de otra Categoría, es muy poco probable de que su correo se apruebe, en caso de no aprobarse, se te notificará de que no se ha enviado tu correo y deberá enviar el correo a <a href="mailto:administracion@grouvex.com" style="color:white">Administración</a>. Si se aprueba, el equipo de gestión le responderá.</p>
+                </details>
+                <p>Administración: <a href="mailto:administracion@grouvex.com" style="color:white">administracion@grouvex.com</a></p>
+                <p>En este, los del GSEquipo, tienen permiso para escribir a dicho correo, como también solo aquellas personas, de cualquier Categoría, que hayan recibido un correo de Administración. </p>
+                <p>Moderación: <a href="mailto:moderacion@grouvex.com" style="color:white">moderacion@grouvex.com</a></p>
+                <p>En este, cualquier Categoría tienen permiso para escribir a dicho correo.</p>
+                <p>Soporte: <a href="mailto:soporte@grouvex.com" style="color:white">soporte@grouvex.com</a></p>
+                <p>En este, cualquier Categoría tienen permiso para escribir a dicho correo.</p>
+                </details>
+            </section>
+            <hr>
+            <section id="Chat Live">
+                <a href="#Chat_Live"><h2>Por Chat Live</h2></a>
+                <p>Puede escribir por el Chat Live, el cual lo encuentra un boton amarillo en la parte inferior a la izquierda, o debajo de este texto (Chat Live). Tambien puede acceder a traves de este <a href="https://tawk.to/chat/6525b3a66fcfe87d54b88bc4/1hcdkbgr3" style="color:white" target="_blank">enlace</a>.</p>
+                <details>
+                <summary><h2>Chat Live</h2></summary>
+                <iframe src="https://tawk.to/chat/6525b3a66fcfe87d54b88bc4/1hcdkbgr3" width="100%" height="500px" frameborder="0"></iframe>
+                </details>
+            </section>
+        </article>
+    </main>
+    <!-- Footer -->
+    <div id="footer"></div>
 </body>
 </html>

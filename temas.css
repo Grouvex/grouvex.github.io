@@ -1377,7 +1377,7 @@ footer {
     text-align: center; /* Alinea el contenido al centro */
 }
 .footer-column img {
-    max-width: 100%;
+    max-width: 80%;
     height: auto;
 }
 .footer-row {
@@ -1709,7 +1709,7 @@ footer {
     text-align: center; /* Alinea el contenido al centro */
 }
 .footer-column img {
-    max-width: 100%;
+    max-width: 80%;
     height: auto;
 }
 .footer-row {

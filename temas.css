@@ -1713,7 +1713,7 @@ footer {
     height: auto;
 }
 .footer-row {
-    display: block;
+    display: flex;
     justify-content: space-between;
     width: 100%;
     align-items: flex-start;

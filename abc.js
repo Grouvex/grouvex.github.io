@@ -27,7 +27,7 @@ auth.onAuthStateChanged((user) => {
     const correoElectronico = document.getElementById('correoElectronico');
     const usuario = document.getElementById('usuario');
     
-    if (authContainer && content && correoElectronico && usuario) {
+    if (authContainer && content) {
       authContainer.style.display = 'none';
       content.style.display = 'block';
       correoElectronico.textContent = user.email || 'Correo no definido';

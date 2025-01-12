@@ -24,10 +24,14 @@ auth.onAuthStateChanged((user) => {
     const authContainer = document.getElementById('auth-container');
     const content = document.getElementById('content');
     const logoutBtn = document.getElementById('logoutBtn');
+    const correoElectronico = document.getElementById('correoElectronico');
+    const usuario = document.getElementById('usuario');
     
-    if (authContainer && content) {
+    if (authContainer && content && correoElectronico && usuario) {
       authContainer.style.display = 'none';
       content.style.display = 'block';
+      correoElectronico.textContent = user.email || 'Correo no definido';
+      usuario.textContent = user.displayName || 'Usuario no definido';
     } else {
       console.error("Error: Uno o más elementos del DOM no se encontraron");
     }

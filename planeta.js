@@ -36,26 +36,25 @@ const createGradientBackground = () => {
 };
 scene.background = createGradientBackground();
 
-const generateStars = (count, spread, size) => {
-    const starMaterial = new THREE.MeshBasicMaterial({ color: 0xFFFFFF }); // Material básico para las estrellas
-    const starGroup = new THREE.Group(); // Crear un grupo para las estrellas
+const generateStars = (count, spread) => {
+    const starGeometry = new THREE.BufferGeometry();
+    const starMaterial = new THREE.PointsMaterial({ color: 0xFFFFFF, size: 1, sizeAttenuation: true });
+    const starVertices = [];
     for (let i = 0; i < count; i++) {
-        const starGeometry = new THREE.SphereGeometry(size, 8, 8); // Crear geometría de la esfera para cada estrella
-        const star = new THREE.Mesh(starGeometry, starMaterial); // Crear la malla de la estrella
-        star.position.set(
-            (Math.random() - 0.5) * spread,
-            (Math.random() - 0.5) * spread,
-            (Math.random() - 0.5) * spread
-        );
-        starGroup.add(star); // Añadir la estrella al grupo
+        const x = (Math.random() - 0.5) * spread;
+        const y = (Math.random() - 0.5) * spread;
+        const z = (Math.random() - 0.5) * spread;
+        starVertices.push(x, y, z);
     }
-    scene.add(starGroup); // Añadir el grupo de estrellas a la escena
-    return starGroup;
+    starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+    const stars = new THREE.Points(starGeometry, starMaterial);
+    scene.add(stars);
+    return stars
 };
 
-generateStars(100**4, 2000, 0.1); // Genera un montón de estrellas iniciales
+generateStars(100000, 20000); // Genera un montón de estrellas iniciales
 
-const fixedPositions = true;
+const fixedPositions = false;
 const constellations = [
     { name: 'Aries', stars: 4, position: { x: -500, y: 300, z: -500 } },
     { name: 'Taurus', stars: 9, position: { x: 500, y: 300, z: -500 } },
@@ -72,10 +71,11 @@ const constellations = [
     { name: 'Ursa Minor', stars: 7, position: { x: 0, y: 0, z: 500 } }
 ];
 const constellationStars = [];
-const constellationMaterial = new THREE.PointsMaterial({ color: 0x00FFFF });
+const constellationMaterial = new THREE.PointsMaterial({ color: 0x00FFFF, size: 3, sizeAttenuation: true });
 
 const createConstellation = (positions) => {
-    const constellationGeometry = new THREE.SphereGeometry(1, 32, 32);
+    const constellationGeometry = new THREE.BufferGeometry();
+    constellationGeometry.setFromPoints(positions);
     return new THREE.Points(constellationGeometry, constellationMaterial);
 };
 

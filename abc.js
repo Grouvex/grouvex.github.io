@@ -37,7 +37,6 @@ auth.onAuthStateChanged((user) => {
     }
   } else {
     console.log("Usuario no autenticado");
-    alert("Usuario no autenticado, autentifiquesé para acceder a las pagínas donde se requiere la autentificación.");
     const authContainer = document.getElementById('auth-container');
     const content = document.getElementById('content');
     inicializarFormularioDeAutenticacion()

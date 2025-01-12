@@ -24,10 +24,19 @@ button {
 }
 
 button:hover {
+    padding: 5px 10px;
+    border-radius: 2px;
     color: white;
+    cursor: pointer;
     background: linear-gradient(45deg,yellow,magenta,cyan)
 }
-
+button:disabled {
+    padding: 5px 10px;
+    border-radius: 2px;
+    color: black;
+    cursor: pointer;
+    background: linear-gradient(white,transparent,grey)
+}
 /*Página*/
 @media screen and (max-height: 450px) {
     .sidenav {padding-top: 15px;}

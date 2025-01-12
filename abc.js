@@ -20,6 +20,8 @@ console.log("Firebase inicializado correctamente");
 auth.onAuthStateChanged((user) => {
   if (user) {
     console.log("Usuario autenticado:", user.email);
+    alert("Hola, " + user.displayName + ". Disfruta de la Página Web. " + "Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. " + "Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.");
+
     checkAccess(user.uid);
     const authContainer = document.getElementById('auth-container');
     const content = document.getElementById('content');
@@ -243,7 +245,7 @@ if (resetPasswordBtn) {
 
 // Función para verificar acceso (debes definir esta función según tus necesidades)
 function checkAccess(uid) {
-  console.log("Verificando acceso para UID:", uid);
+  console.log("Verificando acceso para UID:");
   // Lógica para verificar el acceso del usuario
 }
 

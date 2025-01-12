@@ -1449,12 +1449,14 @@ footer {
   font-size: 8px;
 }
 .cajetines {
-  display: flex;
-  overflow-y: auto; /* Agrega una barra de desplazamiento vertical */
-  max-height: 800px;
-  width: 100%;
-  flex-wrap: wrap; /* Muestra los cajetines en varias filas */
-  gap: 10px; /* Espacio entre los cajetines */
+    display: flex;
+    overflow-y: auto;
+    max-height: 800px;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
 }
 .cajetin {
   width: 90%;

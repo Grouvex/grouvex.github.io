@@ -39,6 +39,7 @@ auth.onAuthStateChanged((user) => {
     }
   } else {
     console.log("Usuario no autenticado");
+    alert("Usuario no autenticado, autentifiquesé para acceder a las pagínas donde se requiere la autentificación.");
     const authContainer = document.getElementById('auth-container');
     const content = document.getElementById('content');
     inicializarFormularioDeAutenticacion()
@@ -195,7 +196,27 @@ if (resetPasswordBtn) {
     }
   });
 }
-
+// Restablecer contraseña
+const resetPasswordBtn1 = document.getElementById('resetPasswordBtn1');
+if (resetPasswordBtn1) {
+  resetPasswordBtn1.addEventListener('click', () => {
+    const email = prompt('Introduce tu correo electrónico para restablecer la contraseña:');
+    if (email) {
+      console.log("Enviando correo de restablecimiento a:", email);
+      auth.sendPasswordResetEmail(email)
+        .then(() => {
+          console.log("Correo de restablecimiento enviado");
+          alert('Correo para restablecer la contraseña enviado.');
+        })
+        .catch((error) => {
+          console.error("Error al enviar el correo de restablecimiento:", error.message);
+          alert('Error al enviar el correo de restablecimiento: ' + error.message);
+        });
+    } else {
+      console.log("No se proporcionó un correo electrónico para el restablecimiento");
+    }
+  });
+}
     // Verificar estado de usuario
     const checkVerificationBtn = document.getElementById('checkVerificationBtn');
     if (checkVerificationBtn) {

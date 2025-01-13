@@ -350,17 +350,27 @@ nav a {
 }
 
 .admin {
-    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/staff-experimental.png);
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/employee.png);
     background-size: contain; /* Ensures the image fits within the div */
     background-repeat: no-repeat; /* Prevents the image from repeating */
 }
 
 .mod {
-    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/certified-moderator.png);
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/moderator.png);
+    background-size: contain; /* Ensures the image fits within the div */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+}
+.vadmin {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-employee.gif);
     background-size: contain; /* Ensures the image fits within the div */
     background-repeat: no-repeat; /* Prevents the image from repeating */
 }
 
+.vmod {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-moderator.gif);
+    background-size: contain; /* Ensures the image fits within the div */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+}
 .owner {
     background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/owner.png);
     background-size: contain; /* Ensures the image fits within the div */

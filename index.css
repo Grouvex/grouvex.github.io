@@ -337,6 +337,45 @@ nav a {
   color: black; /* As the background is light, we use black for the text */
   box-shadow: 0 0 10px gold; /* Esto hace que la etiqueta "Edición limitada" destaque */
 }
+.insignea {
+    width: 20px;          /* Set width to 20px */
+    height: 20px;         /* Set height to 20px */
+    display: inline-block; /* Ensure it behaves like a block for dimensions */
+}
+
+.verify {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png);
+    background-size: contain; /* Ensures the image fits within the div */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+}
+
+.admin {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/staff-experimental.png);
+    background-size: contain; /* Ensures the image fits within the div */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+}
+
+.mod {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/certified-moderator.png);
+    background-size: contain; /* Ensures the image fits within the div */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+}
+
+.owner {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/owner.png);
+    background-size: contain; /* Ensures the image fits within the div */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+}
+.partner {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/partner.png);
+    background-size: contain; /* Ensures the image fits within the div */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+}
+.developer {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-developer-a.gif);
+    background-size: contain; /* Ensures the image fits within the div */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+}
 .tooltip {
     position: relative;
     display: inline-block;

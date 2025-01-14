@@ -133,7 +133,7 @@ function mostrarUsuarioYInsignias(nombreUsuario, elements) {
         spanNombre.textContent = nombreUsuario;
         element.appendChild(spanNombre);
 
-        const spanInsignias = document.createElement("span");
+        const spanInsignias = document.createElement("div");
         usuarios[nombreUsuario].forEach(insignia => {
             const spanInsignia = document.createElement("span");
             spanInsignia.classList.add("insignea", insignia);

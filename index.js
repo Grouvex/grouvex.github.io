@@ -121,32 +121,34 @@ function googleTranslateElementInit() {
 }
 // Variables
 const usuarios = {
-    "Grouvex Studios": ["verified", "admin", "mod"],
-    "Grouvex Phoenix": ["vmod", "partner"],
-    "Tharlight Etherall": ["owner", "developer"]
+    "Grouvex Studios": ["verified", "owner", "vadmin", "vmod"],
+    "Grouvex Phoenix": ["verified", "vadmin", "vmod"],
+    "Tharlight Etherall": ["verified", "admin", "vmod"]
 };
 
 // Función para mostrar el nombre de usuario y las insignias
-function mostrarUsuarioYInsignias(nombreUsuario) {
-    const spanNombreUsuario = document.getElementById(nombreUsuario);
-    spanNombreUsuario.textContent = nombreUsuario;
+function mostrarUsuarioYInsignias(nombreUsuario, elements) {
+    elements.forEach(element => {
+        const spanNombre = document.createElement("span");
+        spanNombre.textContent = nombreUsuario;
+        element.appendChild(spanNombre);
 
-    const insignias = usuarios[nombreUsuario] || []; // Obtener las insignias del usuario
-
-    // Crear y añadir las insignias
-    insignias.forEach(insignia => {
-        const spanInsignia = document.createElement("span");
-        spanInsignia.classList.add("insignea", insignia);
-        spanNombreUsuario.appendChild(spanInsignia);
+        const spanInsignias = document.createElement("span");
+        usuarios[nombreUsuario].forEach(insignia => {
+            const spanInsignia = document.createElement("span");
+            spanInsignia.classList.add("insignea", insignia);
+            spanInsignias.appendChild(spanInsignia);
+        });
+        element.appendChild(spanInsignias);
     });
 }
 
 // Llamar a la función cuando el DOM esté cargado
 document.addEventListener("DOMContentLoaded", () => {
-    const usuariosIDs = Object.keys(usuarios);
-    usuariosIDs.forEach(usuario => {
-        if(document.getElementById(usuario)) {
-            mostrarUsuarioYInsignias(usuario);
+    Object.keys(usuarios).forEach(usuario => {
+        const elements = document.querySelectorAll(`.${usuario.replace(/\s+/g, '-')}`);
+        if (elements.length > 0) {
+            mostrarUsuarioYInsignias(usuario, elements);
         }
     });
 });

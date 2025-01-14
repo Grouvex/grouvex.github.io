@@ -123,7 +123,7 @@ function googleTranslateElementInit() {
 const usuarios = {
     "Grouvex Studios": ["verified", "owner", "vadmin", "vmod"],
     "Grouvex Phoenix": ["verified", "vadmin", "vmod"],
-    "Tharlight Etherall": ["verified", "admin", "vmod"]
+    "Tarlight Etherall": ["verified", "admin", "vmod"]
 };
 
 // Función para mostrar el nombre de usuario y las insignias

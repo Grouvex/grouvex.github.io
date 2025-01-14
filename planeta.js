@@ -52,7 +52,7 @@ const generateStars = (count, spread) => {
     return stars
 };
 
-generateStars(1000000, 200000); // Genera un montón de estrellas iniciales
+generateStars(100000, 2000); // Genera un montón de estrellas iniciales
 
 const fixedPositions = false;
 const constellations = [
@@ -256,7 +256,7 @@ const generateGalaxies = (count, spread) => {
     scene.add(galaxyGroup);
 };
 
-generateGalaxies(1000, 50000); // Genera varias galaxias en el espacio
+generateGalaxies(1000, 3000); // Genera varias galaxias en el espacio
 
 function animate() {
     requestAnimationFrame(animate);

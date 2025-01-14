@@ -119,3 +119,34 @@ function googleTranslateElementInit() {
     console.error("Google Translate API no está disponible.");
   }
 }
+// Variables
+const usuarios = {
+    "JohnDoe": ["verified", "admin", "mod"],
+    "JaneSmith": ["vmod", "partner"],
+    "AliceWong": ["owner", "developer"]
+};
+
+// Función para mostrar el nombre de usuario y las insignias
+function mostrarUsuarioYInsignias(nombreUsuario) {
+    const spanNombreUsuario = document.getElementById(nombreUsuario);
+    spanNombreUsuario.textContent = nombreUsuario;
+
+    const insignias = usuarios[nombreUsuario] || []; // Obtener las insignias del usuario
+
+    // Crear y añadir las insignias
+    insignias.forEach(insignia => {
+        const spanInsignia = document.createElement("span");
+        spanInsignia.classList.add("insignea", insignia);
+        spanNombreUsuario.appendChild(spanInsignia);
+    });
+}
+
+// Llamar a la función cuando el DOM esté cargado
+document.addEventListener("DOMContentLoaded", () => {
+    const usuariosIDs = Object.keys(usuarios);
+    usuariosIDs.forEach(usuario => {
+        if(document.getElementById(usuario)) {
+            mostrarUsuarioYInsignias(usuario);
+        }
+    });
+});

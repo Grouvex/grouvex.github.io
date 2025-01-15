@@ -267,7 +267,7 @@ function mostrarUsuarioYInsignias(nombreUsuario, elements) {
         const spanInsigniasPrincipales = document.createElement("div");
         usuarios[nombreUsuario].principales.forEach(insignia => {
             const spanInsignia = document.createElement("span");
-            spanInsignia.classList.add("insignea", insignia);
+            spanInsignia.classList.add("insignia", insignia);
             spanInsigniasPrincipales.appendChild(spanInsignia);
         });
         element.appendChild(spanInsigniasPrincipales);
@@ -282,7 +282,7 @@ function mostrarUsuarioYInsignias(nombreUsuario, elements) {
         const spanInsigniasSecundarias = document.createElement("div");
         usuarios[nombreUsuario].secundarias.forEach(insignia => {
             const spanInsignia = document.createElement("span");
-            spanInsignia.classList.add("insignea", insignia);
+            spanInsignia.classList.add("insignia", insignia);
             spanInsigniasSecundarias.appendChild(spanInsignia);
         });
         detailsSecundarias.appendChild(spanInsigniasSecundarias);

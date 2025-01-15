@@ -374,7 +374,7 @@ nav a {
     background-repeat: no-repeat; /* Prevents the image from repeating */
 }
 .tmod {
-    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/Grouvex-patch-2/img/trial-moderator.png);
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/trial-moderator.png);
     background-size: contain; /* Ensures the image fits within the div */
     background-repeat: no-repeat; /* Prevents the image from repeating */
 }
@@ -389,12 +389,12 @@ nav a {
     background-repeat: no-repeat; /* Prevents the image from repeating */
 }
 .bughunter {
-    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/Grouvex-patch-2/img/BugHunter.png);
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/BugHunter.png);
     background-size: contain; /* Ensures the image fits within the div */
     background-repeat: no-repeat; /* Prevents the image from repeating */
 }
 .vbughunter {
-    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/Grouvex-patch-2/img/verified-bughunter.gif);
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-bughunter.gif);
     background-size: contain; /* Ensures the image fits within the div */
     background-repeat: no-repeat; /* Prevents the image from repeating */
 }
@@ -404,17 +404,17 @@ nav a {
     background-repeat: no-repeat; /* Prevents the image from repeating */
 }
 .vpartner {
-    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/Grouvex-patch-2/img/verified-partner.gif);
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-partner.gif);
     background-size: contain; /* Ensures the image fits within the div */
     background-repeat: no-repeat; /* Prevents the image from repeating */
 }
 .creador {
-    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/Grouvex-patch-2/img/Video_Creator.png);
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Video_Creator.png);
     background-size: contain; /* Ensures the image fits within the div */
     background-repeat: no-repeat; /* Prevents the image from repeating */
 }
 .diseñador {
-    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/Grouvex-patch-2/img/Palette.png);
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Palette.png);
     background-size: contain; /* Ensures the image fits within the div */
     background-repeat: no-repeat; /* Prevents the image from repeating */
 }

@@ -413,11 +413,6 @@ nav a {
     background-size: contain; /* Ensures the image fits within the div */
     background-repeat: no-repeat; /* Prevents the image from repeating */
 }
-.diseñador {
-    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/Grouvex-patch-2/img/Palette.png);
-    background-size: contain; /* Ensures the image fits within the div */
-    background-repeat: no-repeat; /* Prevents the image from repeating */
-}
 .tooltip {
     position: relative;
     display: inline-block;

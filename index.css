@@ -337,7 +337,7 @@ nav a {
   color: black; /* As the background is light, we use black for the text */
   box-shadow: 0 0 10px gold; /* Esto hace que la etiqueta "Edición limitada" destaque */
 }
-.insignea {
+.insignia {
     width: 20px;          /* Set width to 20px */
     height: 20px;         /* Set height to 20px */
     display: inline-block; /* Ensure it behaves like a block for dimensions */

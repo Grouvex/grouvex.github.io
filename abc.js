@@ -267,3 +267,36 @@ function checkAccess(uid) {
   // Lógica para verificar el acceso del usuario
 }
 
+// Función para verificar acceso
+function verificarAcceso(uidsPermitidos, pagina) {
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            const uid = user.uid;
+            if (uidsPermitidos.includes(uid)) {
+                // El usuario tiene acceso
+                console.log("Acceso permitido a la página:", pagina);
+            } else {
+                // El usuario no tiene acceso
+                alert("No tienes acceso a esta página.");
+                window.location.href = "https://grouvex.github.io";
+            }
+        } else {
+            // Usuario no autenticado, redirigir a la página de inicio de sesión
+            window.location.href = "https://grouvex.github.io/login"; 
+        }
+    });
+}
+
+// UIDs permitidos para cada clase
+const uidsArtistas = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "7Ta4FHPusqUFaMp2gZkA0d5wUaE2", "bY7fMyURlggvZyXDL9dCjwZEmU62"]; // Reemplaza con los UIDs permitidos
+const uidsStaff = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "7Ta4FHPusqUFaMp2gZkA0d5wUaE2"]; // Reemplaza con los UIDs permitidos
+
+// Lógica para determinar la página actual y verificar acceso
+const paginaActual = window.location.pathname.split("/").pop();
+if (paginaActual === "grouvex-studios-recording" || paginaActual === "grouvex-studios-animation") {
+    verificarAcceso(uidsArtistas, paginaActual);
+} else if (paginaActual === "team") {
+    verificarAcceso(uidsStaff, paginaActual);
+} else {
+
+}

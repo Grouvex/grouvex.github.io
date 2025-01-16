@@ -92,9 +92,9 @@ if (authForm) {
 
     if (isLogin) {
       auth.signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          console.log("Usuario inició sesión:", userCredential.user.email);
-          alert("Hola, " + userCredential.displayName + "(" + userCredential.user.email + ")" + ". Disfruta de la Página Web. " + "Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. " + "Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.");
+        .then((user) => {
+          console.log("Usuario inició sesión:", user.user.email);
+          alert("Hola, " + user.displayName + "(" + user.user.email + ")" + ". Disfruta de la Página Web. " + "Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. " + "Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.");
           window.history.back();
         })
         .catch((error) => {
@@ -103,9 +103,9 @@ if (authForm) {
         });
     } else {
       auth.createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          console.log("Usuario registrado:", userCredential.user.email);
-          alert("Hola, " + userCredential.displayName + "(" + userCredential.user.email + ")" + ". Disfruta de la Página Web. " + "Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. " + "Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.");
+        .then((user) => {
+          console.log("Usuario registrado:", user.user.email);
+          alert("Hola, " + user.displayName + "(" + user.user.email + ")" + ". Disfruta de la Página Web. " + "Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. " + "Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.");
           window.history.back();
         })
         .catch((error) => {
@@ -125,7 +125,7 @@ if (googleLoginBtn) {
         var user = result.user;
         console.log("Usuario inició sesión con Google:", user.email);
         checkAccess(user.uid);
-        alert("Hola, " + userCredential.displayName + "(" + userCredential.user.email + ")" + ". Disfruta de la Página Web. " + "Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. " + "Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.");
+        alert("Hola, " + user.displayName + "(" + user.user.email + ")" + ". Disfruta de la Página Web. " + "Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. " + "Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.");
         window.history.back();
       })
       .catch((error) => {
@@ -147,7 +147,7 @@ if (emailLoginBtn) {
         var user = result.user;
         console.log("Usuario inició sesión:", user.email);
         checkAccess(user.uid);
-        alert("Hola, " + userCredential.displayName + "(" + userCredential.user.email + ")" + ". Disfruta de la Página Web. " + "Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. " + "Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.");
+        alert("Hola, " + user.displayName + "(" + user.user.email + ")" + ". Disfruta de la Página Web. " + "Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. " + "Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.");
         window.history.back();
       })
       .catch((error) => {

@@ -61,20 +61,22 @@
   100% { top:  100%; 
       opacity: 0;}
 }
+
 /*Default Theme*/
 p {
   color: white;
   text-shadow: white;
   display: block;
 }
+
 /* Establece el fondo de toda la página a gris */
-body {
-    height: 100%;
-    flex-direction: column;
-    font-family: Arial, sans-serif; /* Tipo de letra */
+html, body {
+    height: auto;
+    margin: 0;
+    font-family: Arial, sans-serif;
     background-size: cover;
     background-repeat: no-repeat;
-    background: linear-gradient(120deg, magenta, cyan);
+    background: linear-gradient(120deg, magenta, cyan); 
 }
 
 /* Estilo para el contenido principal */
@@ -86,13 +88,16 @@ main {
     color: white;
     margin-top: 30px;
     background: transparent;
+    flex: 1; /* Permite que el main ocupe el espacio restante */
 }
-h1,h2,h3,h4,h5,h6,h7,h8 {
-   box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
-  text-align: center;
-  background: transparent;
-  color: rgb(255, 255, 255);
+
+h1, h2, h3, h4, h5, h6, h7, h8 {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
+    text-align: center;
+    background: transparent;
+    color: rgb(255, 255, 255);
 }
+
 mainTop {
     justify-self: center;
     align-self: center;
@@ -100,16 +105,17 @@ mainTop {
     padding: 10px;
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.75);
     background: transparent;
-    align-items: center;
 }
+
 .img-container {
-  width: 200px; /* Puedes ajustar el tamaño según tus necesidades */
-  height: 80px; /* Ajusta la altura según sea necesario */
-  background-image: url('https://grouvex.github.io/img/Grouvex1.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+    width: 200px; /* Ajusta el tamaño según tus necesidades */
+    height: 80px; /* Ajusta la altura según sea necesario */
+    background-image: url('https://grouvex.github.io/img/Grouvex1.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
+
 /* Estilo para los artículos, secciones y barras laterales */
 article {
     border: 1px solid #ddd; /* Borde gris */
@@ -118,6 +124,7 @@ article {
     box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1); /* Sombra suave */
     background: transparent;
 }
+
 section {
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;
@@ -125,6 +132,7 @@ section {
     box-shadow: 0 2px 5px rgba(51, 255, 0, 0.1); /* Sombra suave */
     background: transparent;
 }
+
 aside {
     border: 1px solid #ddd; /* Borde gris */
     margin: 10px;
@@ -132,13 +140,13 @@ aside {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
     background: transparent;
 }
- hr {
-  border: none;
 
-  height: 5px;
-  width: 100%;
-  background: linear-gradient(120deg, silver, gold);
-  }
+hr {
+    border: none;
+    height: 5px;
+    width: 100%;
+    background: linear-gradient(120deg, silver, gold);
+}
 /*Theme 1*/
 p.theme1 {
   color: rgb(255, 255, 255);
@@ -147,10 +155,11 @@ p.theme1 {
 }
 /* Establece el fondo de toda la página a gris */
 body.theme1 {
-    height: 100%;
-    flex-direction: column;
-    font-family: Arial, sans-serif; /* Tipo de letra */
+    height: auto;
+    margin: 0;
+    font-family: Arial, sans-serif;
     background-size: cover;
+    background-repeat: no-repeat;
     background: linear-gradient(120deg, red, yellow, blue, transparent);
 }
 /* Estilo para el contenido principal */
@@ -220,10 +229,11 @@ p.theme2 {
 }
 /* Establece el fondo de toda la página a gris */
 body.theme2 {
-    height: 100%;
-    flex-direction: column;
-    font-family: Arial, sans-serif; /* Tipo de letra */
+    height: auto;
+    margin: 0;
+    font-family: Arial, sans-serif;
     background-size: cover;
+    background-repeat: no-repeat;
     background: lightcoral;
 }
 /* Estilo para el contenido principal */
@@ -286,11 +296,11 @@ p.space {
 }
 /* Establece el fondo de toda la página a gris */
 body.space {
-    height: 100%;
-    flex-direction: column;
-    font-family: Arial, sans-serif; /* Tipo de letra */
-    background-position: center;
+    height: auto;
+    margin: 0;
+    font-family: Arial, sans-serif;
     background-size: cover;
+    background-repeat: no-repeat;
     background-image: url(https://th.bing.com/th/id/R.2233dd9dbbdc72fd46d1ae218bae965d?rik=mlwKyBXXRrJU6A&pid=ImgRaw&r=0);
 }
 /* Estilo para el contenido principal */
@@ -360,11 +370,11 @@ p.starwars {
 }
 /* Establece el fondo de toda la página a gris */
 body.starwars {
-    height: 100%;
-    flex-direction: column;
-    font-family: Arial, sans-serif; /* Tipo de letra */
-    background-position: center;
+    height: auto;
+    margin: 0;
+    font-family: Arial, sans-serif;
     background-size: cover;
+    background-repeat: no-repeat;
     background-image: url(https://th.bing.com/th/id/R.3fbda316a14ddd3aab94262076b8e2a3?rik=3HhcUrtxNNsI0A&riu=http%3a%2f%2fwww.hdwallpaper.nu%2fwp-content%2fuploads%2f2015%2f10%2fstar_wars_wallpaper_4.jpg&ehk=8r8j1xWoA1oe3BDMRVfVZWe2PU2qyQqAMKTweqefYhk%3d&risl=&pid=ImgRaw&r=0);
 }
 /* Estilo para el contenido principal */
@@ -442,11 +452,11 @@ p.jurassicworld {
 }
 /* Establece el fondo de toda la página a gris */
 body.jurassicworld {
-    height: 100%;
-    flex-direction: column;
-    font-family: Arial, sans-serif; /* Tipo de letra */
-    background-position: center;
+    height: auto;
+    margin: 0;
+    font-family: Arial, sans-serif;
     background-size: cover;
+    background-repeat: no-repeat;
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8k6I58I0r2yWS20ImbGZO2viw0K_ncxugsA&s);
 }
 /* Estilo para el contenido principal */
@@ -519,11 +529,11 @@ p.taylorswift {
 }
 /* Establece el fondo de toda la página a gris */
 body.taylorswift {
-    height: 100%;
-    flex-direction: column;
-    font-family: Arial, sans-serif; /* Tipo de letra */
-    background-position: center;
+    height: auto;
+    margin: 0;
+    font-family: Arial, sans-serif;
     background-size: cover;
+    background-repeat: no-repeat;
     background-image: url(https://th.bing.com/th/id/OIP.ZmgHb2BlqKPtoCS_pNH4pwHaQC?w=115&h=180&c=7&r=0&o=5&pid=1.7);
 }
 /* Estilo para el contenido principal */
@@ -593,11 +603,11 @@ p.pokemon {
 }
 /* Establece el fondo de toda la página a gris */
 body.pokemon {
-    height: 100%;
-    flex-direction: column;
-    font-family: Arial, sans-serif; /* Tipo de letra */
-    background-position: center;
+    height: auto;
+    margin: 0;
+    font-family: Arial, sans-serif;
     background-size: cover;
+    background-repeat: no-repeat;
     background-image: url(https://th.bing.com/th/id/R.3fbda316a14ddd3aab94262076b8e2a3?rik=3HhcUrtxNNsI0A&riu=http%3a%2f%2fwww.hdwallpaper.nu%2fwp-content%2fuploads%2f2015%2f10%2fstar_wars_wallpaper_4.jpg&ehk=8r8j1xWoA1oe3BDMRVfVZWe2PU2qyQqAMKTweqefYhk%3d&risl=&pid=ImgRaw&r=0);
 }
 /* Estilo para el contenido principal */
@@ -670,13 +680,13 @@ p.superheroes {
 }
 /* Establece el fondo de toda la página a gris */
 body.superheroes {
-    height: 100%;
-    flex-direction: column;
-    font-family: Arial, sans-serif; /* Tipo de letra */
-    padding: 0;
+    height: auto;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-size: cover;
+    background-repeat: no-repeat;
     background-image: url(https://th.bing.com/th/id/R.6c83f52b1da153957504285959058b46?rik=5kwxZeA0BsJG%2fA&pid=ImgRaw&r=0);
     background-position: center;
-    background-size: cover;
 }
 /* Estilo para el contenido principal */
 main.superheroes {
@@ -749,11 +759,11 @@ p.thewildrobot {
 }
 /* Establece el fondo de toda la página a gris */
 body.thewildrobot {
-    height: 100%;
-    flex-direction: column;
-    font-family: Arial, sans-serif; /* Tipo de letra */
-    background-position: center;
+    height: auto;
+    margin: 0;
+    font-family: Arial, sans-serif;
     background-size: cover;
+    background-repeat: no-repeat;
     background-image: url(https://th.bing.com/th/id/OIP.9IJqsdTIYe-3tvaja3v8AwHaD3?w=1442&h=752&rs=1&pid=ImgDetMain);
 }
 /* Estilo para el contenido principal */
@@ -826,13 +836,13 @@ p.naturaleza1 {
 }
 /* Establece el fondo de toda la página a gris */
 body.naturaleza1 {
-    height: 100%; /* Cambiado a 100vh para ocupar toda la altura de la ventana */
-    display: flex; /* Flexbox para alinear contenido si es necesario */
-    flex-direction: column; /* Mantiene la dirección del contenido */
-    font-family: Arial, sans-serif; 
+    height: auto;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-size: cover;
+    background-repeat: no-repeat;
     background-image: url(https://th.bing.com/th/id/R.33f8b44…?rik=A%2fDnI88HMj5p3Q&pid=ImgRaw&r=0);
-    background-size: cover; /* Asegura que la imagen cubra todo el fondo */
-    background-position: center; /* Centra la imagen de fondo */
+    background-position: center; 
 }
 
 /* Estilo para el contenido principal */
@@ -904,13 +914,13 @@ p.naturaleza1 {
 }
 /* Establece el fondo de toda la página a gris */
 body.naturaleza2 {
-    height: 100%; /* Cambiado a 100vh para ocupar toda la altura de la ventana */
-    display: flex; /* Flexbox para alinear contenido si es necesario */
-    flex-direction: column; /* Mantiene la dirección del contenido */
-    font-family: Arial, sans-serif; 
+    height: auto;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-size: cover;
+    background-repeat: no-repeat;
     background-image: url(https://th.bing.com/th/id/R.36c399a1906a4e753e49a04b69f1e8c5?rik=F6xkD%2brClFTZWA&pid=ImgRaw&r=0);
-    background-size: cover; /* Asegura que la imagen cubra todo el fondo */
-    background-position: center; /* Centra la imagen de fondo */
+    background-position: center;
 }
 
 /* Estilo para el contenido principal */
@@ -983,11 +993,11 @@ p.gstudios1 {
 }
 /* Establece el fondo de toda la página a gris */
 body.gstudios1{
-    height: 100%;
-    flex-direction: column;
-    font-family: Arial, sans-serif; /* Tipo de letra */
-    background-position: center;
+    height: auto;
+    margin: 0;
+    font-family: Arial, sans-serif;
     background-size: cover;
+    background-repeat: no-repeat;
     background-image: url(https://grouvex.com/port/Si%20Fuera.jpg);
 }
 /* Estilo para el contenido principal */
@@ -1058,11 +1068,11 @@ p.gstudios2 {
 }
 /* Establece el fondo de toda la página a gris */
 body.gstudios2 {
-    height: 100%;
-    flex-direction: column;
-    font-family: Arial, sans-serif; /* Tipo de letra */
-    background-position: center;
+    height: auto;
+    margin: 0;
+    font-family: Arial, sans-serif;
     background-size: cover;
+    background-repeat: no-repeat;
     background-image: url(https://grouvex.github.io/port/The%20Night%20Sky.jpg);
 }
 /* Estilo para el contenido principal */
@@ -1133,11 +1143,11 @@ p.gstudios3 {
 }
 /* Establece el fondo de toda la página a gris */
 body.gstudios3 {
-    height: 100%;
-    flex-direction: column;
-    font-family: Arial, sans-serif; /* Tipo de letra */
-    background-position: center;
+    height: auto;
+    margin: 0;
+    font-family: Arial, sans-serif;
     background-size: cover;
+    background-repeat: no-repeat;
     background-image: url(https://grouvex.github.io/port/La%20Magia%20de%20la%20Estrella%20Polar.jpg);
 }
 /* Estilo para el contenido principal */
@@ -1208,11 +1218,11 @@ p.gstudios4 {
 }
 /* Establece el fondo de toda la página a gris */
 body.gstudios4 {
-    height: 100%;
-    flex-direction: column;
-    font-family: Arial, sans-serif; /* Tipo de letra */
-    background-position: center;
+    height: auto;
+    margin: 0;
+    font-family: Arial, sans-serif;
     background-size: cover;
+    background-repeat: no-repeat;
     background-image: url(https://grouvex.github.io/port/Unstoppable%20Friendship.jpg);
 }
 /* Estilo para el contenido principal */
@@ -1282,11 +1292,11 @@ p.httyd {
 }
 /* Establece el fondo de toda la página a gris */
 body.httyd {
-    height: 100%;
-    flex-direction: column;
-    font-family: Arial, sans-serif; /* Tipo de letra */
-    background-position: center;
+    height: auto;
+    margin: 0;
+    font-family: Arial, sans-serif;
     background-size: cover;
+    background-repeat: no-repeat;
     background-image: url(https://th.bing.com/th/id/OIP.rNJ8l2pKgEYsDHFsVBNJZAHaKM?dpr=1,9&pid=ImgDetMain&PC=EMMX01);
 }
 /* Estilo para el contenido principal */

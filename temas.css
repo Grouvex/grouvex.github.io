@@ -626,7 +626,7 @@ main.pokemon {
 h1.pokemon,h2.pokemon,h3.pokemon,h4.pokemon,h5.pokemon,h6.pokemon {
   text-align: center;
   color: white;
-  background-image: url(https://th.bing.com/th/id/OIP.q4khjJEMKqXHNeEcDFdfOAHaEK?rs=1&pid=ImgDetMain);
+  background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYQ7jqd02fXQQMjVwbxlW4l-hbdQqircT4NQ&s);
  background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -648,7 +648,7 @@ article.pokemon {
     margin: 10px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
-    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYQ7jqd02fXQQMjVwbxlW4l-hbdQqircT4NQ&s);
+    background-image: url(https://i.pinimg.com/originals/24/cc/a4/24cca421862a694fffcf184eab118f52.gif);
    background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -804,19 +804,20 @@ article.thewildrobot {
     margin: 10px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
-    background-image: url(https://es.gizmodo.com/app/uploads/2024/10/Diseno-sin-titulo-15-2.jpg);
-   background-position: center;
+    background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
+    background-image: url(https://media.tenor.com/Od7045DYNKEAAAAM/glowing-roz.gif);
 }
 section.thewildrobot {
-    border: 1px solid #ddd; /* Borde gris */
+    border: 1px solid #ddd;
     margin: 10px;
     padding: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
-    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8Jo95vwnlTwoejlcHIxUoDtVcePJKil0btA&s);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
+    background-image: url(https://es.gizmodo.com/app/uploads/2024/10/Diseno-sin-titulo-15-2.jpg);
 }
 aside.thewildrobot {
     border: 1px solid #ddd; /* Borde gris */
@@ -1363,6 +1364,7 @@ footer {
     padding-left: 5px;
     padding-right: 5px;
     border: 2px solid white;
+    background: #0000009c;
 }
 .footer-imagenes {
   justify-content: left; /* Centra los elementos en el eje horizontal */
@@ -1712,6 +1714,7 @@ footer {
     border: 2px solid white;
     color: black;
     z-index: 1;
+    background: #0000009c;
 }
 .footer-container {
     display: block;

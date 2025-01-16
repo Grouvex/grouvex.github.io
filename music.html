@@ -63,7 +63,7 @@
 <!-- Publicado por -->
 <div class="tarjeta" style="display: flex;align-items: center; border-radius: 8px;  box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 10px;  padding: 10px;  height: 45px; width: 250px; padding-top: 10px;padding-bottom: 10px">
 <img src="../img/GROUVEX.png" alt="" style="border-radius: 50%; width: 35px;height: 35px;object-fit: cover; margin-right: 10px;"><div>
-<h2 style="margin:2px; font-size: 7.5px">Publicado por:</h2><h2 style="margin:2px; padding: 1px;font-size: 9px">Grouvex Studios</h2>
+<h2 style="margin:2px; font-size: 7.5px">Publicado por:</h2><h2 style="margin:2px; padding: 1px;font-size: 9px"><span id="Grouvex-Studios"></span></h2>
 <p style="color: white; font-size: 11px"><span id="ActualizadoDATE"></span></p><a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@rouvex.com</footer></a></div></div>
 <script>const uTActualizado = 1734710400; actualizarFechas(uTActualizado, "ActualizadoDATE");</script> 
   <!-- Título -->
@@ -885,7 +885,7 @@
             
             // Llamadas para habilitar/deshabilitar los controles
             try {
-                toggleControls(true, false, true);  
+                toggleControls(true, true, true);  
                 // Habilita audio, lista y botones
             } catch (error) {
                 console.error('Error in toggleControls:', error);

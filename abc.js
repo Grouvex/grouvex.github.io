@@ -282,6 +282,7 @@ function verificarAcceso(uidsPermitidos, pagina) {
             }
         } else {
             // Usuario no autenticado, redirigir a la página de inicio de sesión
+            alert("No estas registrado. Se te redirigirá a la página de registro.");
             window.location.href = "https://grouvex.github.io/login"; 
         }
     });

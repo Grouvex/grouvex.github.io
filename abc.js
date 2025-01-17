@@ -26,12 +26,14 @@ auth.onAuthStateChanged((user) => {
     const logoutBtn = document.getElementById('logoutBtn');
     const correoElectronico = document.getElementById('correoElectronico');
     const usuario = document.getElementById('usuario');
+    const userID = document.getElementById('userID') 
     
     if (authContainer && content) {
       authContainer.style.display = 'none';
       content.style.display = 'block';
       correoElectronico.textContent = user.email || 'Correo no definido';
       usuario.textContent = user.displayName || 'Usuario no definido';
+      userID.textContent = 'GS-' + user.uid
     } else {
       console.error("Error: Uno o más elementos del DOM no se encontraron");
     }

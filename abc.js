@@ -248,7 +248,7 @@ if (resetPasswordBtn1) {
                 alert('Error al enviar el correo de restablecimiento: ' + error.message);
               });
           } else {
-            console.log("El correo electrónico no está registrado. ");
+            console.log("El correo electrónico no está registrado");
             alert('El correo electrónico no está registrado. Registrese. En caso de no poder registrarse, solicite a oficina@grouvex.com que cree una cuenta para tí con la información que se necesite.');
           }
         })
@@ -261,7 +261,6 @@ if (resetPasswordBtn1) {
     }
   });
 }
-
     // Verificar estado de usuario
     const checkVerificationBtn = document.getElementById('checkVerificationBtn');
     if (checkVerificationBtn) {

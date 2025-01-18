@@ -32,62 +32,9 @@
             color: #666;
         }
     </style>
-    <script>
-        // Configuración de Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
-      authDomain: "grouvex-studios.firebaseapp.com",
-      databaseURL: "https://grouvex-studios-default-rtdb.firebaseio.com", // Asegúrate de incluir la URL de tu base de datos
-      projectId: "grouvex-studios",
-      storageBucket: "grouvex-studios.appspot.com",
-      messagingSenderId: "1070842606062",
-      appId: "1:1070842606062:web:5d887863048fd100b49eff",
-      measurementId: "G-75BR8D2CR3"
-};
-        firebase.initializeApp(firebaseConfig);
-
-        var auth = firebase.auth();
-        var db = firebase.firestore();
-
-        // Verificar si el usuario está autenticado
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                checkAccess(user.uid);
-            } else {
-                // Si no está autenticado, redirigir a la página de inicio de sesión
-                alert("No has iniciado sesión. Serás redirigido a la página de inicio de sesión.");
-                window.location.href = 'login.html';
-            }
-        });
-        // ID permitidos (por ejemplo, estos se podrían almacenar en Firestore)
-        const allowedIds = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "7Ta4FHPusqUFaMp2gZkA0d5wUaE2"];
-
-        // Función para verificar el acceso al cargar la página
-        function checkAccess(uid) {
-            db.collection("allowedUsers").doc(uid).get().then((doc) => {
-                if (doc.exists && allowedIds.includes(uid)) {
-                    // Acceso permitido
-                    console.log("Acceso concedido");
-                    document.getElementById('protected-container').style.display = 'block';
-                } else {
-                    // Acceso denegado
-                    alert("Acceso denegado. No tienes permiso para acceder a esta página. Solo puede el equipo");
-                    // Redirigir a la página anterior
-                    window.history.back();
-                }
-            }).catch((error) => {
-                console.error("Error al verificar el acceso:", error);
-                alert("Error al verificar el acceso.", error);
-                // Redirigir a la página anterior
-                window.history.back();
-            });
-        }
-    </script>
 </head>
 <body>
-    <div class="container" id="protected-container">
-        <h1>Página Protegida</h1>
-        <p>Bienvenido al contenido protegido</p>
-    </div>
+    <h1>Página en COnfiguración...</h1>
+    <p>Creando una página muy interesante...</p>
 </body>
 </html>

@@ -62,7 +62,7 @@ function inicializarFormularioDeAutenticacion() {
   const toggleButton = document.getElementById('toggleButton');
   let isLogin = true; // Estado inicial del formulario
 
-  toggleButton.disabled = 'true';
+  toggleButton.disabled = 'false';
 
   if (authForm && formTitle && authButton && emailLoginBtn && googleLoginBtn && toggleButton) {
     console.log("Todos los elementos del DOM fueron encontrados");
@@ -84,6 +84,8 @@ function inicializarFormularioDeAutenticacion() {
         formTitle.textContent = 'Registro';
         authButton.textContent = 'Registrar';
         toggleButton.textContent = '¿Ya tienes cuenta? Inicia Sesión';
+        emailLoginBtn.textContent = 'Registrarse con Email';
+        googleLoginBtn.textContent = 'Registrarse con Google';
       }
       console.log("Modo cambiado a", isLogin ? "Inicio de Sesión" : "Registro");
     });
@@ -148,18 +150,31 @@ if (emailLoginBtn) {
         var email = prompt("Introduce tu email:");
         var password = prompt("Introduce tu contraseña:");
         console.log("Intentando iniciar sesión con email:", email);
-        auth.signInWithEmailAndPassword(email, password)
-            .then((result) => {
-                var user = result.user;
-                console.log("Usuario inició sesión:", user.email);
-                checkAccess(user.uid);
-                alert("Hola, " + user.displayName + "(" + user.user.email + ")" + ". Disfruta de la Página Web. " + "Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. " + "Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.");
-                window.history.back();
-            })
-            .catch((error) => {
-                console.error("Error al iniciar sesión con Email/Password:", error.message);
-                alert('Error al iniciar sesión con Email/Password: ' + error.message);
-            });
+        if (isLogin) {
+            auth.signInWithEmailAndPassword(email, password)
+                .then((result) => {
+                    var user = result.user;
+                    console.log("Usuario inició sesión:", user.email);
+                    checkAccess(user.uid);
+                    alert("Hola, " + user.displayName + "(" + user.user.email + ")" + ". Disfruta de la Página Web. " + "Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. " + "Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.");
+                    window.history.back();
+                })
+                .catch((error) => {
+                    console.error("Error al iniciar sesión con Email/Password:", error.message);
+                    alert('Error al iniciar sesión con Email/Password: ' + error.message);
+                });
+        } else {
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((user) => {
+                    console.log("Usuario registrado:", user.user.email);
+                    alert("Hola, " + user.displayName + "(" + user.user.email + ")" + ". Disfruta de la Página Web. " + "Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. " + "Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.");
+                    window.history.back();
+                })
+                .catch((error) => {
+                    console.error("Error al registrar usuario:", error.message);
+                    alert('Error al registrar usuario: ' + error.message);
+                });
+        }
     });
 }
 
@@ -220,52 +235,6 @@ if (resetPasswordBtn1) {
     }
   });
 }
-    // Verificar estado de usuario
-    const checkVerificationBtn = document.getElementById('checkVerificationBtn');
-    if (checkVerificationBtn) {
-      checkVerificationBtn.addEventListener('click', () => {
-        const user = auth.currentUser;
-        if (user) {
-          if (user.emailVerified) {
-             console.log('El correo electrónico del usuario está verificado.');
-            alert('El correo electrónico del usuario está verificado.');
-        const authContainer = document.getElementById('auth-container');
-        const content = document.getElementById('content');
-        inicializarFormularioDeAutenticacion()
-        if (authContainer && content) {
-          authContainer.style.display = 'none';
-          content.style.display = 'block';
-        } else {
-          console.error("Error: Uno o más elementos del DOM no se encontraron");
-        }
-          } else {
-             console.log('El correo electrónico del usuario no está verificado.');
-            alert('El correo electrónico del usuario no está verificado.');
-                    const authContainer = document.getElementById('auth-container');
-        const content = document.getElementById('content');
-        inicializarFormularioDeAutenticacion()
-        if (authContainer && content) {
-          authContainer.style.display = 'block';
-          content.style.display = 'none';
-        } else {
-          console.error("Error: Uno o más elementos del DOM no se encontraron");
-        }
-          }
-        } else {
-           console.log('No hay ningún usuario autenticado.');
-          alert('No hay ningún usuario autenticado.');
-                  const authContainer = document.getElementById('auth-container');
-        const content = document.getElementById('content');
-        inicializarFormularioDeAutenticacion()
-        if (authContainer && content) {
-          authContainer.style.display = 'block';
-          content.style.display = 'none';
-        } else {
-          console.error("Error: Uno o más elementos del DOM no se encontraron");
-        }
-        }
-      });
-    }
 
 // Función para verificar acceso (debes definir esta función según tus necesidades)
 function checkAccess(uid) {

@@ -34,11 +34,6 @@ auth.onAuthStateChanged((user) => {
       content.style.display = 'block';
       correoElectronico.textContent = user.email || 'Correo no definido';
       userID.textContent = 'GS-' + user.uid;
-      var username = user.displayName.replace(/ /g, '-'); // Reemplaza espacios con guiones
-      var span = document.createElement('span');
-      span.className = username;
-      content.appendChild(span); // Añade el span al contenedor de contenido
-      usuario.textContent = user.displayName || 'Usuario no definido';
     } else {
       console.error("Error: Uno o más elementos del DOM no se encontraron");
     }

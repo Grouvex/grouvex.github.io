@@ -27,9 +27,8 @@ auth.onAuthStateChanged((user) => {
     const correoElectronico = document.getElementById('correoElectronico');
     const usuario = document.getElementById('usuario');
     const userID = document.getElementById('userID') 
-    
- if (authContainer && content) {
-      checkAccess(user.uid);
+
+    if (authContainer && content) {
       authContainer.style.display = 'none';
       content.style.display = 'block';
       correoElectronico.textContent = user.email || 'Correo no definido';
@@ -51,6 +50,7 @@ auth.onAuthStateChanged((user) => {
     }
   }
 });
+
 function inicializarFormularioDeAutenticacion() {
 const authForm = document.getElementById('authForm');
 const formTitle = document.getElementById('formTitle');

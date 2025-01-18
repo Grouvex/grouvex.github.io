@@ -247,11 +247,11 @@ const usuarios = {
         secundarias: ["verified","vadmin", "vmod"]
     },
     "Grouvex Phoenix": {
-        principales: ["verified-team", "vvadmin", "vdeveloper", "vbughunter", "diseñador"],
+        principales: ["verified-team", "owner-recording","vvadmin", "vdeveloper", "vbughunter", "diseñador"],
         secundarias: ["verified","vadmin", "vmod"]
     },
     "Tarlight Etherall": {
-        principales: ["verified-team", "vvadmin", "vmod", "diseñador"],
+        principales: ["verified-team", "owner-designs", "vvadmin", "vmod", "diseñador"],
         secundarias: ["verified","admin"]
     }
 };

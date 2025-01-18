@@ -26,8 +26,8 @@ auth.onAuthStateChanged((user) => {
     const logoutBtn = document.getElementById('logoutBtn');
     const correoElectronico = document.getElementById('correoElectronico');
     const usuario = document.getElementById('usuario');
-    const userID = document.getElementById('userID') 
-    
+    const userID = document.getElementById('userID');
+
     if (authContainer && content) {
       checkAccess(user.uid);
       authContainer.style.display = 'none';
@@ -42,7 +42,8 @@ auth.onAuthStateChanged((user) => {
     console.log("Usuario no autenticado");
     const authContainer = document.getElementById('auth-container');
     const content = document.getElementById('content');
-    inicializarFormularioDeAutenticacion()
+    inicializarFormularioDeAutenticacion();
+
     if (authContainer && content) {
       authContainer.style.display = 'block';
       content.style.display = 'none';
@@ -51,115 +52,117 @@ auth.onAuthStateChanged((user) => {
     }
   }
 });
+
 function inicializarFormularioDeAutenticacion() {
-const authForm = document.getElementById('authForm');
-const formTitle = document.getElementById('formTitle');
-const authButton = document.getElementById('authButton');
-const emailLoginBtn = document.getElementById('email-login-btn');
-const googleLoginBtn = document.getElementById('google-login-btn');
-const toggleButton = document.getElementById('toggleButton');
-let isLogin = true; // Estado inicial del formulario
-toggleButton.disabled = 'true';
-if (authForm && formTitle && authButton && emailLoginBtn && googleLoginBtn && toggleButton) {
-  console.log("Todos los elementos del DOM fueron encontrados");
-} else {
-  console.error("Error: No se encontraron todos los elementos del DOM");
-}
+  const authForm = document.getElementById('authForm');
+  const formTitle = document.getElementById('formTitle');
+  const authButton = document.getElementById('authButton');
+  const emailLoginBtn = document.getElementById('email-login-btn');
+  const googleLoginBtn = document.getElementById('google-login-btn');
+  const toggleButton = document.getElementById('toggleButton');
+  let isLogin = true; // Estado inicial del formulario
 
-// Toggle entre inicio de sesión y registro
-if (toggleButton) {
-  toggleButton.addEventListener('click', () => {
-    isLogin = !isLogin;
-    if (isLogin) {
-      formTitle.textContent = 'Inicio de Sesión';
-      authButton.textContent = 'Iniciar Sesión';
-      emailLoginBtn.textContent = 'Iniciar Sesión con Email';
-      googleLoginBtn.textContent = 'Iniciar Sesión con Google';
-      toggleButton.textContent = '¿No tienes cuenta? Regístrate';
-    } else {
-      formTitle.textContent = 'Registro';
-      authButton.textContent = 'Registrar';
-      toggleButton.textContent = '¿Ya tienes cuenta? Inicia Sesión';
-    }
-    console.log("Modo cambiado a", isLogin ? "Inicio de Sesión" : "Registro");
-  });
-}
+  toggleButton.disabled = 'true';
 
-// Manejo del formulario de autenticación
-if (authForm) {
-  authForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const email = document.getElementById('authEmail').value;
-    const password = document.getElementById('authPassword').value;
-    console.log("Formulario enviado, email:", email);
+  if (authForm && formTitle && authButton && emailLoginBtn && googleLoginBtn && toggleButton) {
+    console.log("Todos los elementos del DOM fueron encontrados");
+  } else {
+    console.error("Error: No se encontraron todos los elementos del DOM");
+  }
 
-    if (isLogin) {
-      auth.signInWithEmailAndPassword(email, password)
-        .then((user) => {
-          console.log("Usuario inició sesión:", user.user.email);
+  // Toggle entre inicio de sesión y registro
+  if (toggleButton) {
+    toggleButton.addEventListener('click', () => {
+      isLogin = !isLogin;
+      if (isLogin) {
+        formTitle.textContent = 'Inicio de Sesión';
+        authButton.textContent = 'Iniciar Sesión';
+        emailLoginBtn.textContent = 'Iniciar Sesión con Email';
+        googleLoginBtn.textContent = 'Iniciar Sesión con Google';
+        toggleButton.textContent = '¿No tienes cuenta? Regístrate';
+      } else {
+        formTitle.textContent = 'Registro';
+        authButton.textContent = 'Registrar';
+        toggleButton.textContent = '¿Ya tienes cuenta? Inicia Sesión';
+      }
+      console.log("Modo cambiado a", isLogin ? "Inicio de Sesión" : "Registro");
+    });
+  }
+
+  // Manejo del formulario de autenticación
+  if (authForm) {
+    authForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('authEmail').value;
+      const password = document.getElementById('authPassword').value;
+      console.log("Formulario enviado, email:", email);
+
+      if (isLogin) {
+        auth.signInWithEmailAndPassword(email, password)
+          .then((user) => {
+            console.log("Usuario inició sesión:", user.user.email);
+            alert("Hola, " + user.displayName + "(" + user.user.email + ")" + ". Disfruta de la Página Web. " + "Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. " + "Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.");
+            window.history.back();
+          })
+          .catch((error) => {
+            console.error("Error al iniciar sesión:", error.message);
+            alert('Error al iniciar sesión: ' + error.message);
+          });
+      } else {
+        auth.createUserWithEmailAndPassword(email, password)
+          .then((user) => {
+            console.log("Usuario registrado:", user.user.email);
+            alert("Hola, " + user.displayName + "(" + user.user.email + ")" + ". Disfruta de la Página Web. " + "Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. " + "Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.");
+            window.history.back();
+          })
+          .catch((error) => {
+            console.error("Error al registrar usuario:", error.message);
+            alert('Error al registrar usuario: ' + error.message);
+          });
+      }
+    });
+  }
+
+  // Función para iniciar sesión con Google
+  if (googleLoginBtn) {
+    googleLoginBtn.addEventListener('click', function() {
+      var provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider)
+        .then((result) => {
+          var user = result.user;
+          console.log("Usuario inició sesión con Google:", user.email);
+          checkAccess(user.uid);
           alert("Hola, " + user.displayName + "(" + user.user.email + ")" + ". Disfruta de la Página Web. " + "Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. " + "Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.");
           window.history.back();
         })
         .catch((error) => {
-          console.error("Error al iniciar sesión:", error.message);
-          alert('Error al iniciar sesión: ' + error.message);
+          console.error("Error al iniciar sesión con Google:", error.message);
+          alert('Error al iniciar sesión con Google: ' + error.message);
         });
-    } else {
-      auth.createUserWithEmailAndPassword(email, password)
-        .then((user) => {
-          console.log("Usuario registrado:", user.user.email);
-          alert("Hola, " + user.displayName + "(" + user.user.email + ")" + ". Disfruta de la Página Web. " + "Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. " + "Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.");
-          window.history.back();
-        })
-        .catch((error) => {
-          console.error("Error al registrar usuario:", error.message);
-          alert('Error al registrar usuario: ' + error.message);
-        });
-    }
-  });
-}
+    });
+  }
 
-// Función para iniciar sesión con Google
-if (googleLoginBtn) {
-  googleLoginBtn.addEventListener('click', function() {
-    var provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider)
-      .then((result) => {
-        var user = result.user;
-        console.log("Usuario inició sesión con Google:", user.email);
-        checkAccess(user.uid);
-        alert("Hola, " + user.displayName + "(" + user.user.email + ")" + ". Disfruta de la Página Web. " + "Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. " + "Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.");
-        window.history.back();
-      })
-      .catch((error) => {
-        console.error("Error al iniciar sesión con Google:", error.message);
-        alert('Error al iniciar sesión con Google: ' + error.message);
-      });
-  });
-}
-
-// Función para iniciar sesión con Email/Password
+  // Función para iniciar sesión con Email/Password
 if (emailLoginBtn) {
-  emailLoginBtn.addEventListener('click', function() {
-    var email = prompt("Introduce tu email:");
-    var password = prompt("Introduce tu contraseña:");
-    console.log("Intentando iniciar sesión con email:", email);
+    emailLoginBtn.addEventListener('click', function() {
+        var email = prompt("Introduce tu email:");
+        var password = prompt("Introduce tu contraseña:");
+        console.log("Intentando iniciar sesión con email:", email);
+        auth.signInWithEmailAndPassword(email, password)
+            .then((result) => {
+                var user = result.user;
+                console.log("Usuario inició sesión:", user.email);
+                checkAccess(user.uid);
+                alert("Hola, " + user.displayName + "(" + user.user.email + ")" + ". Disfruta de la Página Web. " + "Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. " + "Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.");
+                window.history.back();
+            })
+            .catch((error) => {
+                console.error("Error al iniciar sesión con Email/Password:", error.message);
+                alert('Error al iniciar sesión con Email/Password: ' + error.message);
+            });
+    });
+}
 
-    auth.signInWithEmailAndPassword(email, password)
-      .then((result) => {
-        var user = result.user;
-        console.log("Usuario inició sesión:", user.email);
-        checkAccess(user.uid);
-        alert("Hola, " + user.displayName + "(" + user.user.email + ")" + ". Disfruta de la Página Web. " + "Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. " + "Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.");
-        window.history.back();
-      })
-      .catch((error) => {
-        console.error("Error al iniciar sesión con Email/Password:", error.message);
-        alert('Error al iniciar sesión con Email/Password: ' + error.message);
-      });
-  });
-}
-}
 // Cerrar sesión de usuario
 const logoutBtn = document.getElementById('logoutBtn');
 if (logoutBtn) {

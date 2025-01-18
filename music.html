@@ -90,14 +90,14 @@
         <div id="spotifyVideo" style="display: none;"> <iframe style="border-radius:12px" id="spotifyPlayer" width="100%" height="152" frameBorder="0" allowfullscreen="false" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture" loading="lazy"></iframe>
         </div>
         <div id="controls">
-            <button id="prev">⏮️</button>
-            <button id="playPause">⏸️</button>
-            <button id="next">⏭️</button>
+            <button id="prev"><img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-previous.png" alt="" width="15" height="15"></button>
+            <button id="playPause"><img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-pause.png" alt="" width="15" height="15"></button>
+            <button id="next"><img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-next.png" alt="" width="15" height="15"></button>
              <hr> 
-            <button id="random">🔀</button>
-            <button id="repeat">🔁</button>
+            <button id="random"><img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-shuffle.png" alt="" width="15" height="15"></button>
+            <button id="repeat"><img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-refresh.png" alt="" width="15" height="15"></button>
         </div>
-     <p style="font-size:12px">Información de los Botones - <span class="tooltip" style="font-size:14px;color:red">?<span class="tooltiptext"style="font-size:12px;color:white">⏮️ Retroceder | ⏸️ Pausado | ▶️ Reproducir | ⏭️ Siguiente | 🔀 Aleatorio (Desactivado) | 🔀! Aleatorio (Activado) | 🔁 Repetir (Desactivado) | 🔁1 Repetir (Activado - Canción) | 🔁2 Repetir (Activado - Lista)</span></span></p>
+     <p style="font-size:12px">Información de los Botones - <span class="tooltip" style="font-size:14px;color:red">?<span class="tooltiptext"style="font-size:12px;color:white"><img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-previous.png" alt="" width="15" height="15"> Retroceder | <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-pause.png" alt="" width="15" height="15"> Pausado | ▶️ Reproducir | <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-next.png" alt="" width="15" height="15"> Siguiente | <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-shuffle.png" alt="" width="15" height="15"> Aleatorio (Desactivado) | <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-shuffle.png" alt="" width="15" height="15">! Aleatorio (Activado) | 🔁 Repetir (Desactivado) | 🔁1 Repetir (Activado - Canción) | 🔁2 Repetir (Activado - Lista)</span></span></p>
      <details>
   <summary href="#Playlist"><h3>Playlist</h3></summary>
         <div id="playlist" style="block">
@@ -617,7 +617,7 @@
                         console.error('Error trying to play audio:', error);
                     });
                     isPlaying = true;
-                    playPauseButton.textContent = '⏸️';
+                    playPauseButton.innerHTML = '⏸️';
                 } catch (error) {
                     console.error('Error in playTrack:', error);
                 }
@@ -628,7 +628,7 @@
                     if (isPlaying) {
                         audioPlayer.pause();
                         isPlaying = false;
-                        playPauseButton.textContent = '▶️';
+                        playPauseButton.innerHTML = '▶️';
                     } else {
                         audioPlayer.play().then(() => {
                             console.log('Audio is playing');
@@ -636,7 +636,7 @@
                             console.error('Error trying to play audio:', error);
                         });
                         isPlaying = true;
-                        playPauseButton.textContent = '⏸️';
+                        playPauseButton.innerHTML = '⏸️';
                     }
                 } catch (error) {
                     console.error('Error in playPause:', error);
@@ -668,7 +668,7 @@
             function toggleRandom() {
                 try {
                     isRandom = !isRandom;
-                    randomButton.textContent = isRandom ? '🔀!' : '🔀';
+                    randomButton.innerHTML = isRandom ? '<img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-shuffle.png" alt="" width="15" height="15">!' : '<img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-shuffle.png" alt="" width="15" height="15">';
                 } catch (error) {
                     console.error('Error in toggleRandom:', error);
                 }
@@ -679,13 +679,13 @@
                     repeatMode = (repeatMode + 1) % 3;
                     switch (repeatMode) {
                         case 0:
-                            repeatButton.textContent = '🔁';
+                            repeatButton.innerHTML = '🔁';
                             break;
                         case 1:
-                            repeatButton.textContent = '🔁1';
+                            repeatButton.innerHTML = '🔁1';
                             break;
                         case 2:
-                            repeatButton.textContent = '🔁2';
+                            repeatButton.innerHTML = '🔁2';
                             break;
                     }
                 } catch (error) {

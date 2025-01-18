@@ -59,7 +59,7 @@ const emailLoginBtn = document.getElementById('email-login-btn');
 const googleLoginBtn = document.getElementById('google-login-btn');
 const toggleButton = document.getElementById('toggleButton');
 let isLogin = true; // Estado inicial del formulario
-toggleButton.disabled = 'true';
+toggleButton.disabled = false;
 if (authForm && formTitle && authButton && emailLoginBtn && googleLoginBtn && toggleButton) {
   console.log("Todos los elementos del DOM fueron encontrados");
 } else {
@@ -67,23 +67,25 @@ if (authForm && formTitle && authButton && emailLoginBtn && googleLoginBtn && to
 }
 
 // Toggle entre inicio de sesión y registro
-if (toggleButton) {
-  toggleButton.addEventListener('click', () => {
-    isLogin = !isLogin;
-    if (isLogin) {
-      formTitle.textContent = 'Inicio de Sesión';
-      authButton.textContent = 'Iniciar Sesión';
-      emailLoginBtn.textContent = 'Iniciar Sesión con Email';
-      googleLoginBtn.textContent = 'Iniciar Sesión con Google';
-      toggleButton.textContent = '¿No tienes cuenta? Regístrate';
-    } else {
-      formTitle.textContent = 'Registro';
-      authButton.textContent = 'Registrar';
-      toggleButton.textContent = '¿Ya tienes cuenta? Inicia Sesión';
-    }
-    console.log("Modo cambiado a", isLogin ? "Inicio de Sesión" : "Registro");
-  });
-}
+  if (toggleButton) {
+    toggleButton.addEventListener('click', () => {
+      isLogin = !isLogin;
+      if (isLogin) {
+        formTitle.textContent = 'Inicio de Sesión';
+        authButton.textContent = 'Iniciar Sesión';
+        toggleButton.textContent = '¿No tienes cuenta? Regístrate';
+        emailLoginBtn.innerHTML = '<img src="https://static.vecteezy.com/system/resources/previews/022/484/508/non_2x/google-mail-gmail-icon-logo-symbol-free-png.png" alt="" width="20" height="20"> Iniciar Sesión con Email';
+        googleLoginBtn.innerHTML = '<img src="https://img.icons8.com/?size=512&id=17949&format=png" alt="" width="20" height="20"> Iniciar Sesión con Google';
+      } else {
+        formTitle.textContent = 'Registro';
+        authButton.textContent = 'Registrar';
+        toggleButton.textContent = '¿Ya tienes cuenta? Inicia Sesión';
+        emailLoginBtn.innerHTML = '<img src="https://static.vecteezy.com/system/resources/previews/022/484/508/non_2x/google-mail-gmail-icon-logo-symbol-free-png.png" alt="" width="20" height="20"> Registrarse con Email';
+        googleLoginBtn.innerHTML = '<img src="https://img.icons8.com/?size=512&id=17949&format=png" alt="" width="20" height="20"> Registrarse con Google';
+      }
+      console.log("Modo cambiado a", isLogin ? "Inicio de Sesión" : "Registro");
+    });
+  }
 
 // Manejo del formulario de autenticación
 if (authForm) {

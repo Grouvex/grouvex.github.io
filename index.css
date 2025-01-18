@@ -343,6 +343,11 @@ nav a {
     display: inline-block; /* Ensure it behaves like a block for dimensions */
 }
 
+.verified-team {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-team.png);
+    background-size: contain; /* Ensures the image fits within the div */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+}
 .verified {
     background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png);
     background-size: contain; /* Ensures the image fits within the div */

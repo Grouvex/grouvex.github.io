@@ -95,8 +95,7 @@ if (authForm) {
     e.preventDefault();
     const email = document.getElementById('authEmail').value;
     const password = document.getElementById('authPassword').value;
-    console.log("Formulario enviado, email:", email);
-
+    checkAccess(user.uid);
     if (isLogin) {
       auth.signInWithEmailAndPassword(email, password)
         .then((user) => {
@@ -131,8 +130,8 @@ if (googleLoginBtn) {
       .then((result) => {
         var user = result.user;
         console.log("Usuario inició sesión con Google:", user.email);
+        checkAccess(user.uid);
         if (isLogin) {
-          checkAccess(user.uid);
           alert("Hola, " + user.displayName + "(" + user.email + ")" + ". Disfruta de la Página Web. " + "Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. " + "Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.");
         } else {
           console.log("Usuario registrado a través de Google:", user.email);
@@ -241,7 +240,8 @@ if (resetPasswordBtn1) {
 }
 // Función para verificar acceso (debes definir esta función según tus necesidades)
 function checkAccess(uid) {
-  console.log("Verificando acceso para UID:");
+  checkAccess(user.uid);
+  console.log("Verificando acceso para UID");
   // Lógica para verificar el acceso del usuario
 }
 

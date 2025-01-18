@@ -36,8 +36,7 @@ auth.onAuthStateChanged((user) => {
       userID.textContent = 'GS-' + user.uid;
       var username = user.displayName.replace(/ /g, '-'); // Reemplaza espacios con guiones
       var span = document.createElement('span');
-      span.className = 'username';
-      span.textContent = username;
+      span.className = username;
       content.appendChild(span); // Añade el span al contenedor de contenido
       usuario.textContent = user.displayName || 'Usuario no definido';
     } else {

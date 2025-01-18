@@ -70,13 +70,19 @@ if (authForm && formTitle && authButton && emailLoginBtn && googleLoginBtn && to
   if (toggleButton) {
     toggleButton.addEventListener('click', () => {
       isLogin = !isLogin;
-      if (isLogin) {
-        formTitle.textContent = 'Inicio de Sesión';
-        authButton.innerHTML = '<img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png" alt="" width="15" height="15"> Iniciar Sesión';
-        toggleButton.textContent = '¿No tienes cuenta? Regístrate';
-        emailLoginBtn.innerHTML = '<img src="https://static.vecteezy.com/system/resources/previews/022/484/508/non_2x/google-mail-gmail-icon-logo-symbol-free-png.png" alt="" width="15" height="15"> Iniciar Sesión con Email';
-        googleLoginBtn.innerHTML = '<img src="https://img.icons8.com/?size=512&id=17949&format=png" alt="" width="15" height="15"> Iniciar Sesión con Google';
-      } else {
+    if (authContainer && content) {
+      checkAccess(user.uid);
+      authContainer.style.display = 'none';
+      content.style.display = 'block';
+      correoElectronico.textContent = user.email || 'Correo no definido';
+      userID.textContent = 'GS-' + user.uid;
+      var username = user.displayName.replace(/ /g, '-'); // Reemplaza espacios con guiones
+      var span = document.createElement('span');
+      span.className = 'username';
+      span.textContent = username;
+      content.appendChild(span); // Añade el span al contenedor de contenido
+      usuario.textContent = user.displayName || 'Usuario no definido';
+    } else {
         formTitle.textContent = 'Registro';
         authButton.textContent = 'Registrar';
         authButton.innerHTML = '<img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png" alt="" width="15" height="15"> Registrar';

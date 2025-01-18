@@ -32,6 +32,7 @@ auth.onAuthStateChanged((user) => {
       authContainer.style.display = 'none';
       content.style.display = 'block';
       correoElectronico.textContent = user.email || 'Correo no definido';
+      usuario.textContent = user.displayName || 'Usuario no definido';
       userID.textContent = 'GS-' + user.uid;
       mostrarUsuarioYInsignias(user.displayName, document.querySelectorAll('.insignias'));
     } else {
@@ -196,118 +197,50 @@ if (logoutBtn) {
 }
 
 // Restablecer contraseña
+// Restablecer contraseña
 const resetPasswordBtn = document.getElementById('resetPasswordBtn');
 if (resetPasswordBtn) {
   resetPasswordBtn.addEventListener('click', () => {
     const email = prompt('Introduce tu correo electrónico para restablecer la contraseña:');
     if (email) {
-      auth.fetchSignInMethodsForEmail(email)
-        .then((signInMethods) => {
-          if (signInMethods.length > 0) {
-            console.log("Enviando correo de restablecimiento a:", email);
-            auth.sendPasswordResetEmail(email)
-              .then(() => {
-                console.log("Correo de restablecimiento enviado");
-                alert('Correo para restablecer la contraseña enviado.');
-              })
-              .catch((error) => {
-                console.error("Error al enviar el correo de restablecimiento:", error.message);
-                alert('Error al enviar el correo de restablecimiento: ' + error.message);
-              });
-          } else {
-            console.log("El correo electrónico no está registrado");
-            alert('El correo electrónico no está registrado. Registrese. En caso de no poder registrarse, solicite a oficina@grouvex.com que cree una cuenta para tí con la información que se necesite.');
-          }
+      console.log("Enviando correo de restablecimiento a:", email);
+      auth.sendPasswordResetEmail(email)
+        .then(() => {
+          console.log("Correo de restablecimiento enviado");
+          alert('Correo para restablecer la contraseña enviado.');
         })
         .catch((error) => {
-          console.error("Error al verificar el correo electrónico:", error.message);
-          alert('Error al verificar el correo electrónico: ' + error.message);
+          console.error("Error al enviar el correo de restablecimiento:", error.message);
+          alert('Error al enviar el correo de restablecimiento: ' + error.message);
         });
     } else {
       console.log("No se proporcionó un correo electrónico para el restablecimiento");
     }
   });
 }
+
+// Restablecer contraseña
 // Restablecer contraseña
 const resetPasswordBtn1 = document.getElementById('resetPasswordBtn1');
 if (resetPasswordBtn1) {
   resetPasswordBtn1.addEventListener('click', () => {
     const email = prompt('Introduce tu correo electrónico para restablecer la contraseña:');
     if (email) {
-      auth.fetchSignInMethodsForEmail(email)
-        .then((signInMethods) => {
-          if (signInMethods.length > 0) {
-            console.log("Enviando correo de restablecimiento a:", email);
-            auth.sendPasswordResetEmail(email)
-              .then(() => {
-                console.log("Correo de restablecimiento enviado");
-                alert('Correo para restablecer la contraseña enviado.');
-              })
-              .catch((error) => {
-                console.error("Error al enviar el correo de restablecimiento:", error.message);
-                alert('Error al enviar el correo de restablecimiento: ' + error.message);
-              });
-          } else {
-            console.log("El correo electrónico no está registrado");
-            alert('El correo electrónico no está registrado. Registrese. En caso de no poder registrarse, solicite a oficina@grouvex.com que cree una cuenta para tí con la información que se necesite.');
-          }
+      console.log("Enviando correo de restablecimiento a:", email);
+      auth.sendPasswordResetEmail(email)
+        .then(() => {
+          console.log("Correo de restablecimiento enviado");
+          alert('Correo para restablecer la contraseña enviado.');
         })
         .catch((error) => {
-          console.error("Error al verificar el correo electrónico:", error.message);
-          alert('Error al verificar el correo electrónico: ' + error.message);
+          console.error("Error al enviar el correo de restablecimiento:", error.message);
+          alert('Error al enviar el correo de restablecimiento: ' + error.message);
         });
     } else {
       console.log("No se proporcionó un correo electrónico para el restablecimiento");
     }
   });
 }
-    // Verificar estado de usuario
-    const checkVerificationBtn = document.getElementById('checkVerificationBtn');
-    if (checkVerificationBtn) {
-      checkVerificationBtn.addEventListener('click', () => {
-        const user = auth.currentUser;
-        if (user) {
-          if (user.emailVerified) {
-             console.log('El correo electrónico del usuario está verificado.');
-            alert('El correo electrónico del usuario está verificado.');
-        const authContainer = document.getElementById('auth-container');
-        const content = document.getElementById('content');
-        inicializarFormularioDeAutenticacion()
-        if (authContainer && content) {
-          authContainer.style.display = 'none';
-          content.style.display = 'block';
-        } else {
-          console.error("Error: Uno o más elementos del DOM no se encontraron");
-        }
-          } else {
-             console.log('El correo electrónico del usuario no está verificado.');
-            alert('El correo electrónico del usuario no está verificado.');
-                    const authContainer = document.getElementById('auth-container');
-        const content = document.getElementById('content');
-        inicializarFormularioDeAutenticacion()
-        if (authContainer && content) {
-          authContainer.style.display = 'block';
-          content.style.display = 'none';
-        } else {
-          console.error("Error: Uno o más elementos del DOM no se encontraron");
-        }
-          }
-        } else {
-           console.log('No hay ningún usuario autenticado.');
-          alert('No hay ningún usuario autenticado.');
-                  const authContainer = document.getElementById('auth-container');
-        const content = document.getElementById('content');
-        inicializarFormularioDeAutenticacion()
-        if (authContainer && content) {
-          authContainer.style.display = 'block';
-          content.style.display = 'none';
-        } else {
-          console.error("Error: Uno o más elementos del DOM no se encontraron");
-        }
-        }
-      });
-    }
-
 // Función para verificar acceso (debes definir esta función según tus necesidades)
 function checkAccess(uid) {
   console.log("Verificando acceso para UID:");

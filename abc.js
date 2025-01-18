@@ -218,8 +218,6 @@ if (resetPasswordBtn) {
     }
   });
 }
-
-// Restablecer contraseña
 // Restablecer contraseña
 const resetPasswordBtn1 = document.getElementById('resetPasswordBtn1');
 if (resetPasswordBtn1) {

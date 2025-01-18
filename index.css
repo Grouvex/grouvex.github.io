@@ -358,6 +358,21 @@ nav a {
     background-size: contain; /* Ensures the image fits within the div */
     background-repeat: no-repeat; /* Prevents the image from repeating */
 }
+.owner-recording {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/ownerRecording.png);
+    background-size: contain; /* Ensures the image fits within the div */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+}
+.owner-animations {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/ownerAnimations.png);
+    background-size: contain; /* Ensures the image fits within the div */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+}
+.owner-designs {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/ownerDesigns.png);
+    background-size: contain; /* Ensures the image fits within the div */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+}
 .vvadmin {
     background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/sistema.png);
     background-size: contain; /* Ensures the image fits within the div */

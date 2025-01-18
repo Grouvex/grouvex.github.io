@@ -34,6 +34,7 @@ auth.onAuthStateChanged((user) => {
       content.style.display = 'block';
       correoElectronico.textContent = user.email || 'Correo no definido';
       userID.textContent = 'GS-' + user.uid;
+      mostrarUsuarioYInsignias(user.displayName, document.querySelectorAll('.insignias'));
     } else {
       console.error("Error: Uno o más elementos del DOM no se encontraron");
     }

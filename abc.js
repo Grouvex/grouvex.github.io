@@ -201,15 +201,27 @@ if (resetPasswordBtn) {
   resetPasswordBtn.addEventListener('click', () => {
     const email = prompt('Introduce tu correo electrónico para restablecer la contraseña:');
     if (email) {
-      console.log("Enviando correo de restablecimiento a:", email);
-      auth.sendPasswordResetEmail(email)
-        .then(() => {
-          console.log("Correo de restablecimiento enviado");
-          alert('Correo para restablecer la contraseña enviado.');
+      auth.fetchSignInMethodsForEmail(email)
+        .then((signInMethods) => {
+          if (signInMethods.length > 0) {
+            console.log("Enviando correo de restablecimiento a:", email);
+            auth.sendPasswordResetEmail(email)
+              .then(() => {
+                console.log("Correo de restablecimiento enviado");
+                alert('Correo para restablecer la contraseña enviado.');
+              })
+              .catch((error) => {
+                console.error("Error al enviar el correo de restablecimiento:", error.message);
+                alert('Error al enviar el correo de restablecimiento: ' + error.message);
+              });
+          } else {
+            console.log("El correo electrónico no está registrado");
+            alert('El correo electrónico no está registrado. Registrese. En caso de no poder registrarse, solicite a oficina@grouvex.com que cree una cuenta para tí con la información que se necesite.');
+          }
         })
         .catch((error) => {
-          console.error("Error al enviar el correo de restablecimiento:", error.message);
-          alert('Error al enviar el correo de restablecimiento: ' + error.message);
+          console.error("Error al verificar el correo electrónico:", error.message);
+          alert('Error al verificar el correo electrónico: ' + error.message);
         });
     } else {
       console.log("No se proporcionó un correo electrónico para el restablecimiento");
@@ -222,21 +234,34 @@ if (resetPasswordBtn1) {
   resetPasswordBtn1.addEventListener('click', () => {
     const email = prompt('Introduce tu correo electrónico para restablecer la contraseña:');
     if (email) {
-      console.log("Enviando correo de restablecimiento a:", email);
-      auth.sendPasswordResetEmail(email)
-        .then(() => {
-          console.log("Correo de restablecimiento enviado");
-          alert('Correo para restablecer la contraseña enviado.');
+      auth.fetchSignInMethodsForEmail(email)
+        .then((signInMethods) => {
+          if (signInMethods.length > 0) {
+            console.log("Enviando correo de restablecimiento a:", email);
+            auth.sendPasswordResetEmail(email)
+              .then(() => {
+                console.log("Correo de restablecimiento enviado");
+                alert('Correo para restablecer la contraseña enviado.');
+              })
+              .catch((error) => {
+                console.error("Error al enviar el correo de restablecimiento:", error.message);
+                alert('Error al enviar el correo de restablecimiento: ' + error.message);
+              });
+          } else {
+            console.log("El correo electrónico no está registrado. ");
+            alert('El correo electrónico no está registrado. Registrese. En caso de no poder registrarse, solicite a oficina@grouvex.com que cree una cuenta para tí con la información que se necesite.');
+          }
         })
         .catch((error) => {
-          console.error("Error al enviar el correo de restablecimiento:", error.message);
-          alert('Error al enviar el correo de restablecimiento: ' + error.message);
+          console.error("Error al verificar el correo electrónico:", error.message);
+          alert('Error al verificar el correo electrónico: ' + error.message);
         });
     } else {
       console.log("No se proporcionó un correo electrónico para el restablecimiento");
     }
   });
 }
+
     // Verificar estado de usuario
     const checkVerificationBtn = document.getElementById('checkVerificationBtn');
     if (checkVerificationBtn) {

@@ -240,8 +240,7 @@ if (resetPasswordBtn1) {
 }
 // Función para verificar acceso (debes definir esta función según tus necesidades)
 function checkAccess(uid) {
-  checkAccess(user.uid);
-  console.log("Verificando acceso para UID");
+  console.log("Verificando acceso para UID:", uid);
   // Lógica para verificar el acceso del usuario
 }
 

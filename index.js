@@ -243,16 +243,16 @@ function googleTranslateElementInit() {
 // Variables
 const usuarios = {
     "Grouvex Studios": {
-        principales: ["verified-team", "owner", "vvadmin", "vdeveloper", "vbughunter"],
-        secundarias: ["verified","vadmin", "vmod"]
+        principales: ["verified-team", "owner", "vdeveloper", "vbughunter"],
+        secundarias: ["verified","vvadmin","vadmin", "vmod"]
     },
     "Grouvex Phoenix": {
-        principales: ["verified-team", "owner-recording","vvadmin", "vdeveloper", "vbughunter", "diseñador"],
+        principales: ["verified-team", "vvadmin","owner-recording", "vdeveloper", "vbughunter", "diseñador"],
         secundarias: ["verified","vadmin", "vmod"]
     },
     "Tarlight Etherall": {
-        principales: ["verified-team", "owner-designs", "vvadmin", "vmod", "diseñador"],
-        secundarias: ["verified","admin"]
+        principales: ["verified-team","admin","vvadmin", "vmod", "owner-designs", "diseñador"],
+        secundarias: ["verified"]
     }
 };
 

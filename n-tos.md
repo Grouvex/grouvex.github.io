@@ -1,53 +1,75 @@
+<!DOCTYPE html>
 <html lang="es">
-<script src="jquery-3.5.1.min.js"></script>
- <script> 
-    $(function(){
-      $("#menu").load("menu.html"); 
-    });
-    $(function(){
-      $("#footer").load("footer.html"); 
-    });
-  $(function(){
-      $("#news").load("news.html"); 
-    });
-  $(function(){
-      $("#tosypp").load("tosypp.html"); 
-    });
- </script>
-<!-- header.html -->
 <head>
-<script src="index.js"></script> <script src="time.js"></script> <script src="temas.js"></script> <link rel="stylesheet" href="index.css"> <link rel="stylesheet" href="temas.css">
-<link rel="icon" href="img/GROUVEX.png"> <link rel="icon" href="GROUVEX.png" type="image/x-icon">
-<meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8"> <meta name="author" content="Grouvex Studios"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="copyright" content="Grouvex Studios"> <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"> <meta http-equiv="Content-Security-Policy" content="policy"> <meta http-equiv="Referrer-Policy" content="no-referrer"> <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects"> <meta name="theme-color" content="#hexcode"> <link rel="canonical" href="URL_canónica">
-  <!-- Clarity tracking code for https://grouvex.github.io/ -->
-  <script>    (function(c,l,a,r,i,t,y){        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "mdkjlz9c01");</script>
-<!-- Editable -->
-<meta property="og:title" content="Términos de Servicio Oficiales  - Grouvex Studios"> <meta property="og:description" content="Términos de Servicio Oficiales de ©Grouvex Studios"> <meta property="og:image" href="img/GROUVEX.png">
-<title>Términos de Servicio Oficiales - Grouvex Studios</title>
-<!-- Main Top -->
-<mainTop>
-<a href="https://grouvex.github.io/"><span style="font-family: Times New Roman; sans-serif; font-size: 30px;color:white">Grouvex Studios</span></a>
-<span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold"> <a href="https://grouvex.github.io/"><u style="color: blue"><span style="color: white">Inicio</span></u></a> | <a href="https://grouvex.github.io/artistas"><u style="color: blue"><span style="color: white">Artistas</span></u></a> | <a href="https://grouvex.github.io/sign-up" style="pointer-events: none"><u style="color: blue"><span style="color: white">Registrarse</span></u></a> <span id="menu"></span>
-</span>
-</mainTop>
+    <meta charset="UTF-8">
+    <title>Términos de Servicio Oficiales - Grouvex Studios</title>
+    <meta property="og:site_name" content="Grouvex Studios">
+    <meta property="og:title" content="Términos de Servicio Oficiales - Grouvex Studios">
+    <meta property="og:description" content="Términos de Servicio Oficiales de ©Grouvex Studios">
+    <meta property="og:type" content="website">
+    <meta property="og:image" href="img/GROUVEX.png">
+    <meta property="og:url" content="https://grouvex.com/">
+    <meta property="og:locale" content="es_ES">
+    <link rel="stylesheet" href="../index.css">
+    <link rel="stylesheet" href="../temas.css">
+    <link rel="icon" href="img/GROUVEX.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="MobileOptimized" content="width">
+    <meta name="author" content="Grouvex Studios">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="copyright" content="Grouvex Studios">
+    <meta name="google-site-verification" content="54a46b8f7ec187ad80dd5a45fff8f43b">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Referrer-Policy" content="no-referrer">
+    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects">
+    <meta name="theme-color" content="#hexcode">
+    <link rel="canonical" href="https://grouvex.com/">
+    <link rel="shortlink" href="https://grouvex.com/">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="HandheldFriendly" content="true">
+    <link rel="preconnect" href="https://example.com">
+    <link rel="dns-prefetch" href="https://example.com">
+    <!-- Scripts sin nonce -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+    <script src="../jquery-3.5.1.min.js"></script>
+    <script> 
+        document.addEventListener("DOMContentLoaded", function() { 
+            $("#menuG").load("menuG.html"); 
+            $("#menuE").load("menuE.html"); 
+            $("#menuT").load("menuT.html");
+            $("#menuU").load("menuU.html");
+            $("#footer").load("footer.html"); 
+            $("#news").load("news.html"); 
+            $("#tosypp").load("tosypp.html");
+        });
+    </script>
+    <script src="//www.youtube.com/player_api"></script><script src="https://www.youtube.com/iframe_api"></script>
+    <script src="time.js"></script></script><script src="abc.js"></script><script src="index.js"></script>
 </head>
+<body>
+        <mainTop>
+            <a href="https://grouvex.github.io/"> <div class="img-container"></div></a> 
+            <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
+                <span id="menuG"></span> <!-- General -->
+                <span id="menuT"></span> <!-- Temas/Idioma -->
+                <span id="menuU"></span> <!-- Usuario -->
+        </mainTop>
 <body>
  <!-- Anuncio -->
  <div id="news"></div>
  <div id="tosypp"></div>
- <div style="background: rgba(255, 255, 255, 0.5);border-left: 10px solid red;color: #000000;padding: 5px;display: flex; box-shadow: 0 0 20px red;margin-top:5px">
-    <div style="font-size: 20px; margin-right: 10px">⚠️</div>
-    <div style="flex-grow: 1">
-        <p style="color: white; background: rgba(0, 0, 0, 0.5);font-size: 18px; margin: 0">Nuevos Términos de Servicio y Politica de Privacidad</p>
-        <p style="background: rgba(255, 255, 255, 0.5);font-size: 14px; margin: 0;color:black">Los <a href="https://grouvex.github.io/tos"><u style="color white">Términos de Servicio Oficiales</u></a> y las <a href="https://grouvex.github.io/pp"><u style="color white">Políticas de Privacidad Oficiales</u></a> se están actualizando. Puesto que es un cambio general y urgente, se dejará 1 semana entre la fecha que se finaliza de redactar y la fecha en la que entra en vigor, los <a href="https://grouvex.github.io/n-tos"><u style="color white">NUEVOS Términos de Servicio Oficiales</u></a> y las <a href="https://grouvex.github.io/n-pp"><u style="color white">NUEVAS Politicas de Privacidad Oficiales</u></a>.</p>
-        <p style="background: rgba(255, 255, 255, 0.5);font-size: 14px; margin: 0;color:black">Debe tener en cuenta que actualmente, los <a href="https://grouvex.github.io/tos"><u style="color white">Términos de Servicio Oficiales</u></a> y las <a href="https://grouvex.github.io/pp"><u style="color white">Políticas de Privacidad Oficiales</u></a>, son las actuales y por tanto, los <a href="https://grouvex.github.io/n-tos"><u style="color white">NUEVOS Términos de Servicio Oficiales</u></a> y las <a href="https://grouvex.github.io/n-pp"><u style="color white">NUEVAS Politicas de Privacidad Oficiales</u></a> no son actualmente las que son validas.</p>
-<hr>
-<p style="background: rgba(255, 255, 255, 0.5);font-size: 12px;color:black;margin:0">©Grouvex Studios</p>
-    </div> 
-</div>
 <main>
+<!-- Publicado por -->
+<div class="tarjeta" style="display: flex;align-items: center; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 10px; padding: 10px; height: auto; width: auto; padding-top: 10px;padding-bottom: 10px">
+<img src="../img/GROUVEX.png" alt="" style="border-radius: 50%; width: 15%;height: 15%;object-fit: cover; margin-right: 10px;loading="lazy">
+<div style="width:100%;height:auto">
+<h2 style="margin:2px; font-size: 7.5px;width:100%;height:auto">Publicado por:</h2><h2 style="margin:2px; padding: 1px;font-size: 20px;width:100%;height:auto"><span class="Grouvex-Studios"></span></h2>
+<p style="color: white; font-size: 11px;width:100%;height:auto"><span id="ActualizadoDATE"></span></p><a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@grouvex.com</footer></a></div></div>
+<script>const uTActualizado = 1738429200; actualizarFechas(uTActualizado, "ActualizadoDATE");</script> 
   <!-- Título -->
- <h1>Términos de Servicio Oficiales <span class="status new">New</span></h1>
+ <h1>Términos de Servicio Oficiales</h1>
  <!--Text -->
   <aside style="background-color: red; color: black"><p>
       Los términos de servicio <n>no se aplican a las cuentas personales de los miembros del equipo de la comunidad</n>, y por lo tanto, los miembros son responsables de su seguridad.</p>
@@ -70,6 +92,8 @@
      <li><p>En caso de crear, subir, compartir y difundir sus propios contenidos musicales en la Plataforma, debe tener los correspondientes derechos de autor y licencias de uso, y que no infrinjan ninguna norma legal o moral.</p></li>
      <li><p>Comentar, calificar y participar en actividades sociales y comunitarias que se desarrollen en la comunidad, siempre y cuando lo haga con respeto y educación hacia los demás Usuarios y Administradores.</p></li>
      <li><p>Solicitar a los Administradores que modifiquen o eliminen sus datos personales, así como ejercer sus derechos de acceso, rectificación, cancelación y oposición, de acuerdo con la política de privacidad de la comunidad.</p></li>
+     <li><p>Todos los miembros tienen derecho a ser tratados con respeto y dignidad, independientemente de su rol o experiencia.</p></li>
+     <li><p>Todos los miembros tienen derecho a ser tratados de manera equitativa, sin discriminación por motivos de raza, género, orientación sexual, religión u otros factores.</p></li>
     </ol>
   </details>
  </section>
@@ -97,6 +121,22 @@
     <li><p>Bloquear o cancelar el acceso o registro de aquellos Usuarios que violen estos Términos o que hagan un uso indebido o abusivo de la comunidad.</p></li>
     <li><p>Proteger los datos personales de los Usuarios de acuerdo con la política de privacidad de la comunidad y la normativa vigente en materia de protección de datos.</p></li>
     <li><p>Resolver cualquier duda, queja o reclamación que pueda surgir en relación con el uso de la comunidad.</p></li>
+    <li><p>Expulsar temporalmente o definitivamente al usuario en caso de violar los términos, incluso si es un artista o diseñador, llegar a la terminación del contrato del artista o diseñador siguiendo el procedimiento de terminación de dicho contrato.</p></li>
+    <li><p>Los miembros tienen derecho a que se respete su tiempo personal y profesional, evitando demandas excesivas, reuniones innecesarias.</p></li>
+    <li><p>En caso de que un usuario esté constantemente pidiendo ayuda sobre el mismo tema, sin permitir que el miembro responda o si las solicitudes, son iguales o del mismo tema, son reiterativas, el miembro tiene derecho a establecer límites y comunicar la necesidad de esperar una respuesta antes de hacer más preguntas. Esto incluye:</p></li>
+    <ol>
+    <li>Establecer un límite de tiempo razonable para la resolución de consultas.</li>
+    <li>Informar al usuario que es importante permitir un tiempo de respuesta adecuado antes de reiterar la solicitud.</li>
+    <li>Definir claramente cuándo una consulta se considera reiterativa y cómo manejarla de manera efectiva.</li>
+    </ol>
+    <li><p>Los miembros tienen derecho a recibir comunicaciones claras y transparentes sobre expectativas, cambios y procedimientos.</p></li>
+    <li><p>Los miembros tienen derecho a solicitar ayuda y apoyo cuando lo necesiten, ya sea en tareas específicas o en el manejo de conflictos.</p></li>
+    <li><p>Todos los miembros tienen derecho a recibir formación y recursos necesarios para desempeñar sus funciones de manera efectiva.</p></li>
+    <li><p>Los miembros tienen derecho a recibir retroalimentación constructiva sobre su desempeño, con el fin de mejorar y crecer profesionalmente.</p></li>
+    <li><p>Los miembros tienen derecho a que se respete su privacidad, tanto en su información personal como en sus comunicaciones</p></li>
+    <li><p>Los miembros tienen derecho a participar en decisiones que afecten a su trabajo y al equipo, promoviendo un ambiente colaborativo.</p></li>
+    <li><p>Los miembros tienen derecho a trabajar en un ambiente seguro, donde se minimicen los riesgos y se promueva el bienestar.</p></li>
+    <li><p>Los miembros tienen derecho a dejar de ayudar a un usuario, en caso de incumplimiento de los términos o políticas de privacidad, con previa advertencia al usuario.</p></li>
    </ol>
  </details>
    </section>
@@ -126,6 +166,7 @@ Esta normativa busca equilibrar la necesidad de actuar con prontitud ante situac
  </details>
 </article>
 </main>
+<!-- Footer -->
 <div id="footer"></div>
 </body>
 </html>

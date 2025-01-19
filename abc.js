@@ -255,7 +255,7 @@ function verificarAcceso(uidsPermitidos, pagina) {
                 console.log("Acceso permitido a la página:", pagina);
             } else {
                 // El usuario no tiene acceso
-                alert("No tienes acceso a esta página.");
+                alert("No tienes acceso a esta página. Te enviaré a la página de inicio.");
                 window.location.href = "https://grouvex.github.io";
             }
         } else {
@@ -267,15 +267,18 @@ function verificarAcceso(uidsPermitidos, pagina) {
 }
 
 // UIDs permitidos para cada clase
-const uidsArtistas = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "7Ta4FHPusqUFaMp2gZkA0d5wUaE2", "bY7fMyURlggvZyXDL9dCjwZEmU62"]; // Reemplaza con los UIDs permitidos
-const uidsStaff = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "7Ta4FHPusqUFaMp2gZkA0d5wUaE2"]; // Reemplaza con los UIDs permitidos
+const uidsArtistas = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "7Ta4FHPusqUFaMp2gZkA0d5wUaE2", "bY7fMyURlggvZyXDL9dCjwZEmU62"];
+const uidsTeam = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "7Ta4FHPusqUFaMp2gZkA0d5wUaE2"];
+const uidsPremium = [""];
+const uidsPartner = [""];
+const uidsVPartner = [""];
 
 // Lógica para determinar la página actual y verificar acceso
 const paginaActual = window.location.pathname.split("/").pop();
 if (paginaActual === "grouvex-studios-recording" || paginaActual === "grouvex-studios-animation") {
     verificarAcceso(uidsArtistas, paginaActual);
 } else if (paginaActual === "team") {
-    verificarAcceso(uidsStaff, paginaActual);
+    verificarAcceso(uidsTeam, paginaActual);
 } else {
 
 }

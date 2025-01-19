@@ -269,9 +269,9 @@ function verificarAcceso(uidsPermitidos, pagina) {
 // UIDs permitidos para cada clase
 const uidsArtistas = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "7Ta4FHPusqUFaMp2gZkA0d5wUaE2", "bY7fMyURlggvZyXDL9dCjwZEmU62"];
 const uidsTeam = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "7Ta4FHPusqUFaMp2gZkA0d5wUaE2"];
-const uidsPremium = [""];
-const uidsPartner = [""];
-const uidsVPartner = [""];
+const uidsPremium = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"];
+const uidsPartner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"];
+const uidsVPartner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"];
 
 // Lógica para determinar la página actual y verificar acceso
 const paginaActual = window.location.pathname.split("/").pop();

@@ -21,12 +21,14 @@ auth.onAuthStateChanged((user) => {
   if (user) {
     console.log("Usuario autenticado:", user.email);
     checkAccess(user.uid);
+
     const authContainer = document.getElementById('auth-container');
     const content = document.getElementById('content');
     const logoutBtn = document.getElementById('logoutBtn');
     const correoElectronico = document.getElementById('correoElectronico');
     const usuario = document.getElementById('usuario');
-    const userID = document.getElementById('userID') 
+    const userID = document.getElementById('userID');
+    const fotoPerfil = document.getElementById('fotoPerfil'); // Añadido para la foto de perfil
 
     if (authContainer && content) {
       authContainer.style.display = 'none';
@@ -34,20 +36,18 @@ auth.onAuthStateChanged((user) => {
       correoElectronico.textContent = user.email || 'Correo no definido';
       usuario.textContent = user.displayName || 'Usuario no definido';
       userID.textContent = 'GS-' + user.uid;
+      fotoPerfil.src = user.photoURL || 'ruta/a/imagen/por/defecto.png'; // Asignar la foto de perfil
       mostrarUsuarioYInsignias(user.displayName, document.querySelectorAll('.insignias'));
-    } else {
-      console.error("Error: Uno o más elementos del DOM no se encontraron");
     }
   } else {
     console.log("Usuario no autenticado");
     const authContainer = document.getElementById('auth-container');
     const content = document.getElementById('content');
-    inicializarFormularioDeAutenticacion()
+    inicializarFormularioDeAutenticacion();
+
     if (authContainer && content) {
       authContainer.style.display = 'block';
       content.style.display = 'none';
-    } else {
-      console.error("Error: Uno o más elementos del DOM no se encontraron");
     }
   }
 });

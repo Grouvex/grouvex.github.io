@@ -240,7 +240,15 @@ if (resetPasswordBtn1) {
 }
 
 function uploadImage() {
-    var file = document.getElementById('fileInput').files[0];
+    var fileInput = document.getElementById('fileInput');
+    
+    // Comprobar que el elemento de entrada de archivo existe
+    if (!fileInput) {
+        alert('El elemento de entrada de archivo no se encontró.');
+        return;
+    }
+    
+    var file = fileInput.files[0];
     
     // Comprobar que se ha seleccionado un archivo
     if (!file) {

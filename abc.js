@@ -36,8 +36,8 @@ auth.onAuthStateChanged((user) => {
       correoElectronico.textContent = user.email || 'Correo no definido';
       usuario.textContent = user.displayName || 'Usuario no definido';
       userID.textContent = 'GS-' + user.uid;
-      fotoPerfil.src = user.photoURL || 'ruta/a/imagen/por/defecto.png'; // Asignar la foto de perfil
       mostrarUsuarioYInsignias(user.displayName, document.querySelectorAll('.insignias'));
+      fotoPerfil.src = user.photoURL || 'ruta/a/imagen/por/defecto.png'; // Asignar la foto de perfil
     }
   } else {
     console.log("Usuario no autenticado");

@@ -37,7 +37,7 @@ auth.onAuthStateChanged((user) => {
       usuario.textContent = user.displayName || 'Usuario no definido';
       userID.textContent = 'GS-' + user.uid;
       mostrarUsuarioYInsignias(user.displayName, document.querySelectorAll('.insignias'));
-      fotoPerfil.src = user.photoURL || 'ruta/a/imagen/por/defecto.png'; // Asignar la foto de perfil
+      fotoPerfil.src = user.photoURL || 'https://grouvex.github.io/img/GROUVEX.png'; // Asignar la foto de perfil
     }
   } else {
     console.log("Usuario no autenticado");
@@ -239,55 +239,55 @@ if (resetPasswordBtn1) {
   });
 }
 
-function uploadImage() {
-    var file = fileInput.files[0];
+//function uploadImage() {
+  //  var file = fileInput.files[0];
     
     // Comprobar que se ha seleccionado un archivo
-    if (!file) {
-        alert('Por favor, selecciona una imagen.');
-        return;
-    }
+  //  if (!file) {
+     // alert('Por favor, selecciona una imagen.');
+  //      return;
+//    }
 
-    var storageRef = firebase.storage().ref('profileImages/' + file.name);
-    var uploadTask = storageRef.put(file);
+ //   var storageRef = firebase.storage().ref('profileImages/' + file.name);
+//    var uploadTask = storageRef.put(file);
 
-    uploadTask.on('state_changed', 
-        function(snapshot) {
-            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log('Subida completada en un ' + progress + '%');
-        }, 
-        function(error) {
+ //   uploadTask.on('state_changed', 
+  //      function(snapshot) {
+  //          var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+  //          console.log('Subida completada en un ' + progress + '%');
+  //      }, 
+    //    function(error) {
             // Manejar errores
-            switch (error.code) {
-                case 'storage/unauthorized':
-                    alert('No tienes permiso para subir esta imagen.');
-                    break;
-                case 'storage/canceled':
-                    alert('La subida fue cancelada.');
-                    break;
-                case 'storage/unknown':
-                    alert('Ocurrió un error desconocido. Por favor, inténtalo nuevamente.');
-                    break;
-                default:
-                    alert('Error al subir la imagen: ' + error.message);
-            }
-            console.error('Error al subir la imagen:', error);
-        }, 
-        function() {
-            uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-                document.getElementById('profileImage').src = downloadURL;
-                console.log('Imagen disponible en:', downloadURL);
+       //     switch (error.code) {
+       //         case 'storage/unauthorized':
+         //           alert('No tienes permiso para subir esta imagen.');
+       //             break;
+        //        case 'storage/canceled':
+          //        alert('La subida fue cancelada.');
+           //         break;
+          //      case 'storage/unknown':
+           //         alert('Ocurrió un error desconocido. Por favor, inténtalo nuevamente.');
+            //        break;
+            //    default:
+         //           alert('Error al subir la imagen: ' + error.message);
+        //    }
+         //   console.error('Error al subir la imagen:', error);
+     //   }, 
+     //   function() {
+           // uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+         //       document.getElementById('profileImage').src = downloadURL;
+          //      console.log('Imagen disponible en:', downloadURL);
                 
                 // Mostrar alerta y recargar la página
-                alert('Imagen de perfil cambiada exitosamente.');
-                location.reload();
-            }).catch(function(error) {
-                alert('Error al obtener la URL de descarga: ' + error.message);
-                console.error('Error al obtener la URL de descarga:', error);
-            });
-        }
-    );
-}
+          //      alert('Imagen de perfil cambiada exitosamente.');
+            //    location.reload();
+       //     }).catch(function(error) {
+        //        alert('Error al obtener la URL de descarga: ' + error.message);
+           //     console.error('Error al obtener la URL de descarga:', error);
+       //     });
+  //      }
+//    );
+// }
 
 
 // Función para verificar acceso (debes definir esta función según tus necesidades)

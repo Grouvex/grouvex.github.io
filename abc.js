@@ -24,7 +24,6 @@ auth.onAuthStateChanged((user) => {
 
     const authContainer = document.getElementById('auth-container');
     const content = document.getElementById('content');
-    const logoutBtn = document.getElementById('logoutBtn');
     const correoElectronico = document.getElementById('correoElectronico');
     const usuario = document.getElementById('usuario');
     const userID = document.getElementById('userID');
@@ -44,7 +43,6 @@ auth.onAuthStateChanged((user) => {
     const authContainer = document.getElementById('auth-container');
     const content = document.getElementById('content');
     inicializarFormularioDeAutenticacion();
-
     if (authContainer && content) {
       authContainer.style.display = 'block';
       content.style.display = 'none';
@@ -195,7 +193,6 @@ if (logoutBtn) {
   });
 }
 
-// Restablecer contraseña
 // Restablecer contraseña
 const resetPasswordBtn = document.getElementById('resetPasswordBtn');
 if (resetPasswordBtn) {

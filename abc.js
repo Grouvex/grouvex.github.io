@@ -21,12 +21,14 @@ auth.onAuthStateChanged((user) => {
   if (user) {
     console.log("Usuario autenticado:", user.email);
     checkAccess(user.uid);
+
     const authContainer = document.getElementById('auth-container');
     const content = document.getElementById('content');
     const logoutBtn = document.getElementById('logoutBtn');
     const correoElectronico = document.getElementById('correoElectronico');
     const usuario = document.getElementById('usuario');
-    const userID = document.getElementById('userID') 
+    const userID = document.getElementById('userID');
+    const fotoPerfil = document.getElementById('fotoPerfil'); // Añadido para la foto de perfil
 
     if (authContainer && content) {
       authContainer.style.display = 'none';
@@ -35,19 +37,17 @@ auth.onAuthStateChanged((user) => {
       usuario.textContent = user.displayName || 'Usuario no definido';
       userID.textContent = 'GS-' + user.uid;
       mostrarUsuarioYInsignias(user.displayName, document.querySelectorAll('.insignias'));
-    } else {
-      console.error("Error: Uno o más elementos del DOM no se encontraron");
+      fotoPerfil.src = user.photoURL || 'ruta/a/imagen/por/defecto.png'; // Asignar la foto de perfil
     }
   } else {
     console.log("Usuario no autenticado");
     const authContainer = document.getElementById('auth-container');
     const content = document.getElementById('content');
-    inicializarFormularioDeAutenticacion()
+    inicializarFormularioDeAutenticacion();
+
     if (authContainer && content) {
       authContainer.style.display = 'block';
       content.style.display = 'none';
-    } else {
-      console.error("Error: Uno o más elementos del DOM no se encontraron");
     }
   }
 });
@@ -238,6 +238,66 @@ if (resetPasswordBtn1) {
     }
   });
 }
+
+function uploadImage() {
+    var fileInput = document.getElementById('fileInput');
+    
+    // Comprobar que el elemento de entrada de archivo existe
+    if (!fileInput) {
+        alert('El elemento de entrada de archivo no se encontró.');
+        return;
+    }
+    
+    var file = fileInput.files[0];
+    
+    // Comprobar que se ha seleccionado un archivo
+    if (!file) {
+        alert('Por favor, selecciona una imagen.');
+        return;
+    }
+
+    var storageRef = firebase.storage().ref('profileImages/' + file.name);
+    var uploadTask = storageRef.put(file);
+
+    uploadTask.on('state_changed', 
+        function(snapshot) {
+            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Subida completada en un ' + progress + '%');
+        }, 
+        function(error) {
+            // Manejar errores
+            switch (error.code) {
+                case 'storage/unauthorized':
+                    alert('No tienes permiso para subir esta imagen.');
+                    break;
+                case 'storage/canceled':
+                    alert('La subida fue cancelada.');
+                    break;
+                case 'storage/unknown':
+                    alert('Ocurrió un error desconocido. Por favor, inténtalo nuevamente.');
+                    break;
+                default:
+                    alert('Error al subir la imagen: ' + error.message);
+            }
+            console.error('Error al subir la imagen:', error);
+        }, 
+        function() {
+            uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                document.getElementById('profileImage').src = downloadURL;
+                console.log('Imagen disponible en:', downloadURL);
+                
+                // Mostrar alerta y recargar la página
+                alert('Imagen de perfil cambiada exitosamente.');
+                location.reload();
+            }).catch(function(error) {
+                alert('Error al obtener la URL de descarga: ' + error.message);
+                console.error('Error al obtener la URL de descarga:', error);
+            });
+        }
+    );
+}
+
+
 // Función para verificar acceso (debes definir esta función según tus necesidades)
 function checkAccess(uid) {
   console.log("Verificando acceso para UID:", uid);
@@ -280,4 +340,4 @@ if (paginaActual === "grouvex-studios-recording" || paginaActual === "grouvex-st
     verificarAcceso(uidsTeam, paginaActual);
 } else {
 
-  }
+}

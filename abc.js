@@ -110,19 +110,35 @@ function inicializarFormularioDeAutenticacion() {
                         alert('Error al iniciar sesión: ' + error.message);
                     });
             } else {
-                auth.createUserWithEmailAndPassword(email, password)
-                    .then((userCredential) => {
-                        const user = userCredential.user;
-                        console.log("Usuario registrado:", user.email);
-                        alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
-                    const previousPage = document.referrer;
-                    const domain = new URL(previousPage).hostname;
-                    if (domain.includes("grouvex.github.io")) { window.history.back();} else { window.location.href = "https://grouvex.github.io";} 
-                    })
-                    .catch((error) => {
-                        console.error("Error al registrar usuario:", error.message);
-                        alert('Error al registrar usuario: ' + error.message);
-                    });
+                    auth.createUserWithEmailAndPassword(email, password)
+                        .then((userCredential) => {
+                            const user = userCredential.user;
+                            console.log("Usuario registrado:", user.email);
+                            
+                            // Solicitar nombre y foto al usuario
+                            const displayName = prompt('Introduce tu nombre:');
+                            const photoURL = prompt('Introduce la URL de tu foto de perfil (debe ser una URL válida):');
+                            
+                            // Actualizar el perfil del usuario con el nombre y la foto
+                            user.updateProfile({
+                                displayName: displayName,
+                                photoURL: photoURL || 'ruta/a/imagen/por/defecto.png' // Utilizar una imagen por defecto si no se proporciona una URL válida
+                            }).then(() => {
+                                console.log("Perfil del usuario actualizado.");
+                                alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
+                                
+                                const previousPage = document.referrer;
+                                const domain = new URL(previousPage).hostname;
+                                if (domain.includes("grouvex.github.io")) {window.history.back();} else {window.location.href = "https://grouvex.github.io";}
+                            }).catch((error) => {
+                                console.error("Error al actualizar el perfil del usuario:", error.message);
+                                alert('Error al actualizar el perfil del usuario: ' + error.message);
+                            });
+                        })
+                        .catch((error) => {
+                            console.error("Error al registrar usuario:", error.message);
+                            alert('Error al registrar usuario: ' + error.message);
+                        });
             }
         });
     }
@@ -170,20 +186,35 @@ function inicializarFormularioDeAutenticacion() {
                         alert('Error al iniciar sesión con Email/Password: ' + error.message);
                     });
             } else {
-                auth.createUserWithEmailAndPassword(email, password)
-                    .then((userCredential) => {
-                        const user = userCredential.user;
-                        console.log("Usuario registrado:", user.email);
-                        alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
-                    const previousPage = document.referrer;
-                    const domain = new URL(previousPage).hostname;
-                    if (domain.includes("grouvex.github.io")) { window.history.back();} else { window.location.href = "https://grouvex.github.io";} 
-                    })
-                    .catch((error) => {
-                        console.error("Error al registrar usuario:", error.message);
-                        alert('Error al registrar usuario: ' + error.message);
-                    });
-            }
+    auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            console.log("Usuario registrado:", user.email);
+
+            // Solicitar nombre y foto al usuario
+            const displayName = prompt('Introduce tu nombre:');
+            const photoURL = prompt('Introduce la URL de tu foto de perfil (debe ser una URL válida):');
+
+            // Actualizar el perfil del usuario con el nombre y la foto
+            user.updateProfile({
+                displayName: displayName,
+                photoURL: photoURL || 'ruta/a/imagen/por/defecto.png' // Utilizar una imagen por defecto si no se proporciona una URL válida
+            }).then(() => {
+                console.log("Perfil del usuario actualizado.");
+                alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
+                const previousPage = document.referrer;
+                const domain = new URL(previousPage).hostname;
+                if (domain.includes("grouvex.github.io")) {window.history.back();} else {window.location.href = "https://grouvex.github.io";}
+            }).catch((error) => {
+                console.error("Error al actualizar el perfil del usuario:", error.message);
+                alert('Error al actualizar el perfil del usuario: ' + error.message);
+            });
+        })
+        .catch((error) => {
+            console.error("Error al registrar usuario:", error.message);
+            alert('Error al registrar usuario: ' + error.message);
+        });
+}
         });
     }
 }
@@ -301,7 +332,16 @@ function eliminarCuentaUsuario(user) {
         console.log("Cuenta de usuario eliminada de Firebase Authentication.");
     }).catch((error) => {
         console.error("Error al eliminar la cuenta de usuario:", error);
-        throw error;
+        switch (error.code) {
+            case 'auth/requires-recent-login':
+                alert('Por motivos de seguridad, debes volver a iniciar sesión para eliminar tu cuenta.');
+                // Redirigir al usuario a la página de inicio de sesión
+                window.location.href = "https://grouvex.github.io/login"; 
+                break;
+            default:
+                alert('Error al eliminar la cuenta de usuario: ' + error.message);
+        }
+        throw error;  // Importante: Re-lanzar el error para manejarlo en el nivel superior
     });
 }
 
@@ -314,8 +354,11 @@ function eliminarDatosUsuario(userId) {
         console.log("Datos del usuario eliminados de Firestore.");
     }).catch((error) => {
         console.error("Error al eliminar los datos del usuario:", error);
-        throw error;
+        alert('Error al eliminar los datos del usuario: ' + error.message);
+        throw error;  // Re-lanzar el error para manejarlo en el nivel superior
     });
+
+    // Añadir aquí eliminación de datos en otras colecciones relacionadas si es necesario
 }
 
 // Función combinada para eliminar cuenta y datos del usuario
@@ -333,6 +376,7 @@ function eliminarCuentaYDatosUsuario(userId) {
             alert('Tu cuenta y todos tus datos han sido eliminados.');
         })
         .catch((error) => {
+            console.error("Error al eliminar la cuenta y los datos del usuario:", error);
             alert('Error al eliminar la cuenta y los datos del usuario: ' + error.message);
         });
 }
@@ -341,8 +385,9 @@ function eliminarCuentaYDatosUsuario(userId) {
 const deleteBtn = document.getElementById('deleteBtn');
 if (deleteBtn) {
     deleteBtn.addEventListener('click', () => {
-        const userId = firebase.auth().currentUser.uid;
+        const userId = auth.currentUser.uid;
         eliminarCuentaYDatosUsuario(userId);
     });
 }
+
 });

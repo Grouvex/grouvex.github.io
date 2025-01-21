@@ -14,7 +14,7 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const database = firebase.database();
-
+const db = firebase.firestore();
 console.log("Firebase inicializado correctamente");
 
 // Verificar si el usuario está autenticado
@@ -347,7 +347,6 @@ function eliminarCuentaUsuario(user) {
 
 // Función para eliminar los datos del usuario en Firestore
 function eliminarDatosUsuario(userId) {
-    const db = firebase.firestore();
     const userRef = db.collection('users').doc(userId);
     
     return userRef.delete().then(() => {

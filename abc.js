@@ -1,6 +1,6 @@
 // Importar las funciones necesarias desde Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signOut, deleteUser, onAuthStateChanged ,GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getAuth, reauthenticateWithCredential, EmailAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signOut, deleteUser, onAuthStateChanged ,GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import { getFirestore, doc, deleteDoc , } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 import { getDatabase, ref, set, remove } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
@@ -349,9 +349,18 @@ if (resetPasswordBtn1) {
     });
 }
 
+// Función para reautenticar al usuario
+function reauthenticateUser(user, password) {
+    const credential = EmailAuthProvider.credential(user.email, password);
+    return reauthenticateWithCredential(user, credential);
+}
+
 // Función para eliminar la cuenta de usuario
 function eliminarCuentaUsuario(user) {
-    return deleteUser(user).then(() => {
+    const password = prompt("Para eliminar tu cuenta, por favor introduce tu contraseña:");
+    return reauthenticateUser(user, password).then(() => {
+        return deleteUser(user);
+    }).then(() => {
         console.log("Cuenta de usuario eliminada de Firebase Authentication.");
     }).catch((error) => {
         console.error("Error al eliminar la cuenta de usuario:", error);

@@ -108,13 +108,12 @@ function inicializarFormularioDeAutenticacion() {
                         console.log("Usuario inició sesión:", user.email);
                         checkAccess(user.uid);
                         alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
-                        const previousPage = document.referrer;
-                        const domain = new URL(previousPage).hostname;
-                        if (domain.includes("grouvex.github.io")) {
-                            window.history.back();
-                        } else {
-                            window.location.href = "https://grouvex.github.io";
-                        }
+               const previousPage = document.referrer;
+                try {
+                    const domain = new URL(previousPage).hostname;
+                    if (domain.includes("grouvex.github.io")) {window.history.back();} else {window.location.href = "https://grouvex.github.io";
+                    }
+                } catch (e) {console.error("Error al procesar la URL anterior:", e);window.location.href = "https://grouvex.github.io"; }
                     })
                     .catch((error) => {
                         console.error("Error al iniciar sesión:", error.message);
@@ -137,14 +136,12 @@ function inicializarFormularioDeAutenticacion() {
                         }).then(() => {
                             console.log("Perfil del usuario actualizado.");
                             alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
-                            
-                            const previousPage = document.referrer;
-                            const domain = new URL(previousPage).hostname;
-                            if (domain.includes("grouvex.github.io")) {
-                                window.history.back();
-                            } else {
-                                window.location.href = "https://grouvex.github.io";
-                            }
+               const previousPage = document.referrer;
+                try {
+                    const domain = new URL(previousPage).hostname;
+                    if (domain.includes("grouvex.github.io")) {window.history.back();} else {window.location.href = "https://grouvex.github.io";
+                    }
+                } catch (e) {console.error("Error al procesar la URL anterior:", e);window.location.href = "https://grouvex.github.io"; }
                         }).catch((error) => {
                             console.error("Error al actualizar el perfil del usuario:", error.message);
                             alert('Error al actualizar el perfil del usuario: ' + error.message);
@@ -168,13 +165,12 @@ function inicializarFormularioDeAutenticacion() {
                     console.log("Usuario inició sesión con Google:", user.email);
                     checkAccess(user.uid);
                     alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
-                    const previousPage = document.referrer;
+               const previousPage = document.referrer;
+                try {
                     const domain = new URL(previousPage).hostname;
-                    if (domain.includes("grouvex.github.io")) {
-                        window.history.back();
-                    } else {
-                        window.location.href = "https://grouvex.github.io";
+                    if (domain.includes("grouvex.github.io")) {window.history.back();} else {window.location.href = "https://grouvex.github.io";
                     }
+                } catch (e) {console.error("Error al procesar la URL anterior:", e);window.location.href = "https://grouvex.github.io"; }
                 })
                 .catch((error) => {
                     console.error("Error al iniciar sesión con Google:", error.message);
@@ -196,13 +192,12 @@ function inicializarFormularioDeAutenticacion() {
                         console.log("Usuario inició sesión:", user.email);
                         checkAccess(user.uid);
                         alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
-                        const previousPage = document.referrer;
-                        const domain = new URL(previousPage).hostname;
-                        if (domain.includes("grouvex.github.io")) {
-                            window.history.back();
-                        } else {
-                            window.location.href = "https://grouvex.github.io";
-                        }
+               const previousPage = document.referrer;
+                try {
+                    const domain = new URL(previousPage).hostname;
+                    if (domain.includes("grouvex.github.io")) {window.history.back();} else {window.location.href = "https://grouvex.github.io";
+                    }
+                } catch (e) {console.error("Error al procesar la URL anterior:", e);window.location.href = "https://grouvex.github.io"; }
                     })
                     .catch((error) => {
                         console.error("Error al iniciar sesión con Email/Password:", error.message);
@@ -225,13 +220,12 @@ function inicializarFormularioDeAutenticacion() {
                                             }).then(() => {
                         console.log("Perfil del usuario actualizado.");
                         alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
-                        const previousPage = document.referrer;
-                        const domain = new URL(previousPage).hostname;
-                        if (domain.includes("grouvex.github.io")) {
-                            window.history.back();
-                        } else {
-                            window.location.href = "https://grouvex.github.io";
-                        }
+               const previousPage = document.referrer;
+                try {
+                    const domain = new URL(previousPage).hostname;
+                    if (domain.includes("grouvex.github.io")) {window.history.back();} else {window.location.href = "https://grouvex.github.io";
+                    }
+                } catch (e) {console.error("Error al procesar la URL anterior:", e);window.location.href = "https://grouvex.github.io"; }
                     }).catch((error) => {
                         console.error("Error al actualizar el perfil del usuario:", error.message);
                         alert('Error al actualizar el perfil del usuario: ' + error.message);
@@ -264,9 +258,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     // El usuario no tiene acceso
                     alert("No tienes acceso a esta página. Se te redirigirá a la página de inicio o a la anterior.");
-                    const previousPage = document.referrer;
+               const previousPage = document.referrer;
+                try {
                     const domain = new URL(previousPage).hostname;
-                    if (domain.includes("grouvex.github.io")) { window.history.back();} else { window.location.href = "https://grouvex.github.io";} 
+                    if (domain.includes("grouvex.github.io")) {window.history.back();} else {window.location.href = "https://grouvex.github.io";
+                    }
+                } catch (e) {console.error("Error al procesar la URL anterior:", e);window.location.href = "https://grouvex.github.io"; } 
                 }
             } else {
                 // Usuario no autenticado, redirigir a la página de inicio de sesión

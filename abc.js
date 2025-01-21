@@ -274,11 +274,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // UIDs permitidos para cada clase
-    const uidsArtistas = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "7Ta4FHPusqUFaMp2gZkA0d5wUaE2", "bY7fMyURlggvZyXDL9dCjwZEmU62"];
-    const uidsTeam = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "7Ta4FHPusqUFaMp2gZkA0d5wUaE2"];
-    const uidsPremium = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"];
-    const uidsPartner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"];
-    const uidsVPartner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"];
+    const uidsArtistas = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2", "bY7fMyURlggvZyXDL9dCjwZEmU62"];
+    const uidsTeam = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
+    const uidsPremium = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
+    const uidsPartner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
+    const uidsVPartner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
 
     // Lógica para determinar la página actual y verificar acceso
     const paginaActual = window.location.pathname.split("/").pop();
@@ -286,6 +286,10 @@ document.addEventListener('DOMContentLoaded', function() {
         verificarAcceso(uidsArtistas, paginaActual);
     } else if (paginaActual === "team") {
         verificarAcceso(uidsTeam, paginaActual);
+    } else if (paginaActual === "planeta") {
+        verificarAcceso(uidsPartner, paginaActual);
+    } else if (paginaActual === "planeta") {
+        verificarAcceso(uidsVPartner, paginaActual);
     } else {
         console.log("Página no especificada para verificación de acceso:", paginaActual);
     }

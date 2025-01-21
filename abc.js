@@ -195,7 +195,8 @@ function inicializarFormularioDeAutenticacion() {
                const previousPage = document.referrer;
                 try {
                     const domain = new URL(previousPage).hostname;
-                    if (domain.includes("grouvex.github.io")) {window.history.back();} else {window.location.href = "https://grouvex.github.io";
+                    const allowedHosts = ["grouvex.github.io"];
+                    if (allowedHosts.includes(domain)) {window.history.back();} else {window.location.href = "https://grouvex.github.io";
                     }
                 } catch (e) {console.error("Error al procesar la URL anterior:", e);window.location.href = "https://grouvex.github.io"; }
                     })
@@ -223,7 +224,8 @@ function inicializarFormularioDeAutenticacion() {
                const previousPage = document.referrer;
                 try {
                     const domain = new URL(previousPage).hostname;
-                    if (domain.includes("grouvex.github.io")) {window.history.back();} else {window.location.href = "https://grouvex.github.io";
+                    const allowedHosts = ["grouvex.github.io"];
+                    if (allowedHosts.includes(domain)) {window.history.back();} else {window.location.href = "https://grouvex.github.io";
                     }
                 } catch (e) {console.error("Error al procesar la URL anterior:", e);window.location.href = "https://grouvex.github.io"; }
                     }).catch((error) => {

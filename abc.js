@@ -249,29 +249,37 @@ function checkAccess(uid) {
 document.addEventListener('DOMContentLoaded', function() {
     // Función para verificar acceso
     function verificarAcceso(uidsPermitidos, pagina) {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                const uid = user.uid;
-                if (uidsPermitidos.includes(uid)) {
-                    // El usuario tiene acceso
-                    console.log("Acceso permitido a la página:", pagina);
-                } else {
-                    // El usuario no tiene acceso
-                    alert("No tienes acceso a esta página. Se te redirigirá a la página de inicio o a la anterior.");
-               const previousPage = document.referrer;
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            const uid = user.uid;
+            const tieneAcceso = uidsPermitidos.some(lista => lista.includes(uid));
+            
+            if (tieneAcceso) {
+                // El usuario tiene acceso
+                console.log("Acceso permitido a la página:", pagina);
+            } else {
+                // El usuario no tiene acceso
+                alert("No tienes acceso a esta página. Se te redirigirá a la página de inicio o a la anterior.");
+                const previousPage = document.referrer;
                 try {
                     const domain = new URL(previousPage).hostname;
-                    if (domain.includes("grouvex.github.io")) {window.history.back();} else {window.location.href = "https://grouvex.github.io";
+                    if (domain.includes("grouvex.github.io")) {
+                        window.history.back();
+                    } else {
+                        window.location.href = "https://grouvex.github.io";
                     }
-                } catch (e) {console.error("Error al procesar la URL anterior:", e);window.location.href = "https://grouvex.github.io"; } 
+                } catch (e) {
+                    console.error("Error al procesar la URL anterior:", e);
+                    window.location.href = "https://grouvex.github.io";
                 }
-            } else {
-                // Usuario no autenticado, redirigir a la página de inicio de sesión
-                alert("No estás registrado. Se te redirigirá a la página de registro.");
-                window.location.href = "https://grouvex.github.io/login"; 
             }
-        });
-    }
+        } else {
+            // Usuario no autenticado, redirigir a la página de inicio de sesión
+            alert("No estás registrado. Se te redirigirá a la página de registro.");
+            window.location.href = "https://grouvex.github.io/login";
+        }
+    });
+}
 
     // UIDs permitidos para cada clase
     const uidsArtistas = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2", "bY7fMyURlggvZyXDL9dCjwZEmU62"];
@@ -283,13 +291,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Lógica para determinar la página actual y verificar acceso
     const paginaActual = window.location.pathname.split("/").pop();
     if (paginaActual === "grouvex-studios-recording" || paginaActual === "grouvex-studios-animation") {
-        verificarAcceso(uidsArtistas, paginaActual);
+        verificarAcceso([uidsArtistas], paginaActual);
     } else if (paginaActual === "team") {
-        verificarAcceso(uidsTeam, paginaActual);
+        verificarAcceso([uidsTeam], paginaActual);
     } else if (paginaActual === "planeta") {
-        verificarAcceso(uidsPartner, paginaActual);
-    } else if (paginaActual === "planeta") {
-        verificarAcceso(uidsVPartner, paginaActual);
+        verificarAcceso([uidsPartner,uidsVPartner] , paginaActual);
+    } else if (paginaActual === "pacman") {
+        verificarAcceso([uidsPremium,uidsPartner,uidsVPartner] , paginaActual);
     } else {
         console.log("Página no especificada para verificación de acceso:", paginaActual);
     }

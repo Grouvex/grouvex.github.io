@@ -17,7 +17,8 @@ const database = firebase.database();
 
 console.log("Firebase inicializado correctamente");
 
-// Verificar si el usuario está autenticado
+document.addEventListener('DOMContentLoaded', function() {
+  // Verificar si el usuario está autenticado
 auth.onAuthStateChanged((user) => {
   if (user) {
     console.log("Usuario autenticado:", user.email);
@@ -184,8 +185,6 @@ function checkAccess(uid) {
   // Lógica para verificar el acceso del usuario
 }
 
-
-document.addEventListener('DOMContentLoaded', function() {
     // Función para verificar acceso
     function verificarAcceso(uidsPermitidos, pagina) {
         auth.onAuthStateChanged(user => {

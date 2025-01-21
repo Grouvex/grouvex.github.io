@@ -178,65 +178,6 @@ function inicializarFormularioDeAutenticacion() {
     }
 }
 
-// Cerrar sesión de usuario
-const logoutBtn = document.getElementById('logoutBtn');
-if (logoutBtn) {
-  logoutBtn.addEventListener('click', () => {
-    auth.signOut().then(() => {
-      console.log("Usuario cerró sesión");
-      alert('Usuario cerró sesión');
-      location.reload();
-    }).catch((error) => {
-      console.error("Error al cerrar sesión:", error.message);
-      alert('Error al cerrar sesión: ' + error.message);
-    });
-  });
-}
-
-// Restablecer contraseña
-const resetPasswordBtn = document.getElementById('resetPasswordBtn');
-if (resetPasswordBtn) {
-  resetPasswordBtn.addEventListener('click', () => {
-    const email = prompt('Introduce tu correo electrónico para restablecer la contraseña:');
-    if (email) {
-      console.log("Enviando correo de restablecimiento a:", email);
-      auth.sendPasswordResetEmail(email)
-        .then(() => {
-          console.log("Correo de restablecimiento enviado");
-          alert('Correo para restablecer la contraseña enviado.');
-        })
-        .catch((error) => {
-          console.error("Error al enviar el correo de restablecimiento:", error.message);
-          alert('Error al enviar el correo de restablecimiento: ' + error.message);
-        });
-    } else {
-      console.log("No se proporcionó un correo electrónico para el restablecimiento");
-    }
-  });
-}
-
-// Restablecer contraseña adicional
-const resetPasswordBtn1 = document.getElementById('resetPasswordBtn1');
-if (resetPasswordBtn1) {
-  resetPasswordBtn1.addEventListener('click', () => {
-    const email = prompt('Introduce tu correo electrónico para restablecer la contraseña:');
-    if (email) {
-      console.log("Enviando correo de restablecimiento a:", email);
-      auth.sendPasswordResetEmail(email)
-        .then(() => {
-          console.log("Correo de restablecimiento enviado");
-          alert('Correo para restablecer la contraseña enviado.');
-        })
-        .catch((error) => {
-          console.error("Error al enviar el correo de restablecimiento:", error.message);
-          alert('Error al enviar el correo de restablecimiento: ' + error.message);
-        });
-    } else {
-      console.log("No se proporcionó un correo electrónico para el restablecimiento");
-    }
-  });
-}
-
 // Función para verificar acceso (debes definir esta función según tus necesidades)
 function checkAccess(uid) {
   console.log("Verificando acceso para UID:", uid);
@@ -244,40 +185,101 @@ function checkAccess(uid) {
 }
 
 
-// Función para verificar acceso
-function verificarAcceso(uidsPermitidos, pagina) {
-    auth.onAuthStateChanged(user => {
-        if (user) {
-            const uid = user.uid;
-            if (uidsPermitidos.includes(uid)) {
-                // El usuario tiene acceso
-                console.log("Acceso permitido a la página:", pagina);
+document.addEventListener('DOMContentLoaded', function() {
+    // Función para verificar acceso
+    function verificarAcceso(uidsPermitidos, pagina) {
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                const uid = user.uid;
+                if (uidsPermitidos.includes(uid)) {
+                    // El usuario tiene acceso
+                    console.log("Acceso permitido a la página:", pagina);
+                } else {
+                    // El usuario no tiene acceso
+                    alert("No tienes acceso a esta página. Te enviaré a la página de inicio.");
+                    window.location.href = "https://grouvex.github.io";
+                }
             } else {
-                // El usuario no tiene acceso
-                alert("No tienes acceso a esta página. Te enviaré a la página de inicio.");
-                window.location.href = "https://grouvex.github.io";
+                // Usuario no autenticado, redirigir a la página de inicio de sesión
+                alert("No estás registrado. Se te redirigirá a la página de registro.");
+                window.location.href = "https://grouvex.github.io/login"; 
             }
-        } else {
-            // Usuario no autenticado, redirigir a la página de inicio de sesión
-            alert("No estás registrado. Se te redirigirá a la página de registro.");
-            window.location.href = "https://grouvex.github.io/login"; 
-        }
-    });
-}
+        });
+    }
 
-// UIDs permitidos para cada clase
-const uidsArtistas = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "7Ta4FHPusqUFaMp2gZkA0d5wUaE2", "bY7fMyURlggvZyXDL9dCjwZEmU62"];
-const uidsTeam = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "7Ta4FHPusqUFaMp2gZkA0d5wUaE2"];
-const uidsPremium = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"];
-const uidsPartner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"];
-const uidsVPartner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"];
+    // UIDs permitidos para cada clase
+    const uidsArtistas = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "7Ta4FHPusqUFaMp2gZkA0d5wUaE2", "bY7fMyURlggvZyXDL9dCjwZEmU62"];
+    const uidsTeam = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "7Ta4FHPusqUFaMp2gZkA0d5wUaE2"];
+    const uidsPremium = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"];
+    const uidsPartner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"];
+    const uidsVPartner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"];
 
-// Lógica para determinar la página actual y verificar acceso
-const paginaActual = window.location.pathname.split("/").pop();
-if (paginaActual === "grouvex-studios-recording" || paginaActual === "grouvex-studios-animation") {
-    verificarAcceso(uidsArtistas, paginaActual);
-} else if (paginaActual === "team") {
-    verificarAcceso(uidsTeam, paginaActual);
-} else {
-    console.log("Página no especificada para verificación de acceso:", paginaActual);
-}
+    // Lógica para determinar la página actual y verificar acceso
+    const paginaActual = window.location.pathname.split("/").pop();
+    if (paginaActual === "grouvex-studios-recording" || paginaActual === "grouvex-studios-animation") {
+        verificarAcceso(uidsArtistas, paginaActual);
+    } else if (paginaActual === "team") {
+        verificarAcceso(uidsTeam, paginaActual);
+    } else {
+        console.log("Página no especificada para verificación de acceso:", paginaActual);
+    }
+
+    // Cerrar sesión de usuario
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            auth.signOut().then(() => {
+                console.log("Usuario cerró sesión");
+                alert('Usuario cerró sesión');
+                location.reload();
+            }).catch((error) => {
+                console.error("Error al cerrar sesión:", error.message);
+                alert('Error al cerrar sesión: ' + error.message);
+            });
+        });
+    }
+
+    // Restablecer contraseña
+    const resetPasswordBtn = document.getElementById('resetPasswordBtn');
+    if (resetPasswordBtn) {
+        resetPasswordBtn.addEventListener('click', () => {
+            const email = prompt('Introduce tu correo electrónico para restablecer la contraseña:');
+            if (email) {
+                console.log("Enviando correo de restablecimiento a:", email);
+                auth.sendPasswordResetEmail(email)
+                    .then(() => {
+                        console.log("Correo de restablecimiento enviado");
+                        alert('Correo para restablecer la contraseña enviado.');
+                    })
+                    .catch((error) => {
+                        console.error("Error al enviar el correo de restablecimiento:", error.message);
+                        alert('Error al enviar el correo de restablecimiento: ' + error.message);
+                    });
+            } else {
+                console.log("No se proporcionó un correo electrónico para el restablecimiento");
+            }
+        });
+    }
+
+    // Restablecer contraseña adicional
+    const resetPasswordBtn1 = document.getElementById('resetPasswordBtn1');
+    if (resetPasswordBtn1) {
+        resetPasswordBtn1.addEventListener('click', () => {
+            const email = prompt('Introduce tu correo electrónico para restablecer la contraseña:');
+            if (email) {
+                console.log("Enviando correo de restablecimiento a:", email);
+                auth.sendPasswordResetEmail(email)
+                    .then(() => {
+                        console.log("Correo de restablecimiento enviado");
+                        alert('Correo para restablecer la contraseña enviado.');
+                    })
+                    .catch((error) => {
+                        console.error("Error al enviar el correo de restablecimiento:", error.message);
+                        alert('Error al enviar el correo de restablecimiento: ' + error.message);
+                    });
+            } else {
+                console.log("No se proporcionó un correo electrónico para el restablecimiento");
+            }
+        });
+    }
+});

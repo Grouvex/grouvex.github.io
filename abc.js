@@ -363,7 +363,7 @@ function eliminarDatosUsuario(userId) {
 
 // Función combinada para eliminar cuenta y datos del usuario
 function eliminarCuentaYDatosUsuario(userId) {
-    const user = firebase.auth().currentUser;
+    const user = auth.currentUser;
 
     // Eliminar cuenta de Firebase Authentication
     eliminarCuentaUsuario(user)

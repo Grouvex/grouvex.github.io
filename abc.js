@@ -239,65 +239,6 @@ if (resetPasswordBtn1) {
   });
 }
 
-function uploadImage() {
-    var fileInput = document.getElementById('fileInput');
-    
-    // Comprobar que el elemento de entrada de archivo existe
-    if (!fileInput) {
-        alert('El elemento de entrada de archivo no se encontró.');
-        return;
-    }
-    
-    var file = fileInput.files[0];
-    
-    // Comprobar que se ha seleccionado un archivo
-    if (!file) {
-        alert('Por favor, selecciona una imagen.');
-        return;
-    }
-
-    var storageRef = firebase.storage().ref('profileImages/' + file.name);
-    var uploadTask = storageRef.put(file);
-
-    uploadTask.on('state_changed', 
-        function(snapshot) {
-            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log('Subida completada en un ' + progress + '%');
-        }, 
-        function(error) {
-            // Manejar errores
-            switch (error.code) {
-                case 'storage/unauthorized':
-                    alert('No tienes permiso para subir esta imagen.');
-                    break;
-                case 'storage/canceled':
-                    alert('La subida fue cancelada.');
-                    break;
-                case 'storage/unknown':
-                    alert('Ocurrió un error desconocido. Por favor, inténtalo nuevamente.');
-                    break;
-                default:
-                    alert('Error al subir la imagen: ' + error.message);
-            }
-            console.error('Error al subir la imagen:', error);
-        }, 
-        function() {
-            uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-                document.getElementById('profileImage').src = downloadURL;
-                console.log('Imagen disponible en:', downloadURL);
-                
-                // Mostrar alerta y recargar la página
-                alert('Imagen de perfil cambiada exitosamente.');
-                location.reload();
-            }).catch(function(error) {
-                alert('Error al obtener la URL de descarga: ' + error.message);
-                console.error('Error al obtener la URL de descarga:', error);
-            });
-        }
-    );
-}
-
-
 // Función para verificar acceso (debes definir esta función según tus necesidades)
 function checkAccess(uid) {
   console.log("Verificando acceso para UID:", uid);

@@ -36,8 +36,8 @@ auth.onAuthStateChanged((user) => {
       correoElectronico.textContent = user.email || 'Correo no definido';
       usuario.textContent = user.displayName || 'Usuario no definido';
       userID.textContent = 'GS-' + user.uid;
-      fotoPerfil.src = user.photoURL || 'https://grouvex.github.io/img/GROUVEX.png'; // Asignar la foto de perfil
-      mostrarUsuarioYInsignias(user.displayName, document.querySelectorAll('.insignias')); 
+      fotoPerfil.src = user.photoURL || 'ruta/a/imagen/por/defecto.png'; // Asignar la foto de perfil
+      mostrarUsuarioYInsignias(user.displayName, document.querySelectorAll('.insignias'));
     }
   } else {
     console.log("Usuario no autenticado");
@@ -196,6 +196,7 @@ if (logoutBtn) {
 }
 
 // Restablecer contraseña
+// Restablecer contraseña
 const resetPasswordBtn = document.getElementById('resetPasswordBtn');
 if (resetPasswordBtn) {
   resetPasswordBtn.addEventListener('click', () => {
@@ -237,7 +238,6 @@ if (resetPasswordBtn1) {
     }
   });
 }
-
 // Función para verificar acceso (debes definir esta función según tus necesidades)
 function checkAccess(uid) {
   console.log("Verificando acceso para UID:", uid);
@@ -280,4 +280,4 @@ if (paginaActual === "grouvex-studios-recording" || paginaActual === "grouvex-st
     verificarAcceso(uidsTeam, paginaActual);
 } else {
 
-}
+    }

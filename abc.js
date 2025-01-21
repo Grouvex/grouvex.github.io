@@ -294,4 +294,55 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+  // Función para eliminar la cuenta de usuario
+function eliminarCuentaUsuario(user) {
+    return user.delete().then(() => {
+        console.log("Cuenta de usuario eliminada de Firebase Authentication.");
+    }).catch((error) => {
+        console.error("Error al eliminar la cuenta de usuario:", error);
+        throw error;
+    });
+}
+
+// Función para eliminar los datos del usuario en Firestore
+function eliminarDatosUsuario(userId) {
+    const db = firebase.firestore();
+    const userRef = db.collection('users').doc(userId);
+    
+    return userRef.delete().then(() => {
+        console.log("Datos del usuario eliminados de Firestore.");
+    }).catch((error) => {
+        console.error("Error al eliminar los datos del usuario:", error);
+        throw error;
+    });
+}
+
+// Función combinada para eliminar cuenta y datos del usuario
+function eliminarCuentaYDatosUsuario(userId) {
+    const user = firebase.auth().currentUser;
+
+    // Eliminar cuenta de Firebase Authentication
+    eliminarCuentaUsuario(user)
+        .then(() => {
+            // Eliminar datos en Firestore
+            return eliminarDatosUsuario(userId);
+        })
+        .then(() => {
+            console.log("Eliminación completa de cuenta y datos de usuario.");
+            alert('Tu cuenta y todos tus datos han sido eliminados.');
+        })
+        .catch((error) => {
+            alert('Error al eliminar la cuenta y los datos del usuario: ' + error.message);
+        });
+}
+
+// Asignar la función al botón deleteBtn
+const deleteBtn = document.getElementById('deleteBtn');
+if (deleteBtn) {
+    deleteBtn.addEventListener('click', () => {
+        const userId = firebase.auth().currentUser.uid;
+        eliminarCuentaYDatosUsuario(userId);
+    });
+}
 });

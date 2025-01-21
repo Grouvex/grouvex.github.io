@@ -1,7 +1,7 @@
 // Importar las funciones necesarias desde Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, updateProfile, signOut, deleteUser } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-import { getFirestore, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signOut, deleteUser, onAuthStateChanged ,GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getFirestore, doc, deleteDoc , } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 import { getDatabase, ref, set, remove } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
 // Configuración de Firebase
@@ -94,7 +94,7 @@ function inicializarFormularioDeAutenticacion() {
         });
     }
 
-    // Manejo del formulario de autenticación
+       // Manejo del formulario de autenticación
     if (authForm) {
         authForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -102,50 +102,58 @@ function inicializarFormularioDeAutenticacion() {
             const password = document.getElementById('authPassword').value;
 
             if (isLogin) {
-                auth.signInWithEmailAndPassword(email, password)
+                signInWithEmailAndPassword(auth, email, password)
                     .then((userCredential) => {
                         const user = userCredential.user;
                         console.log("Usuario inició sesión:", user.email);
                         checkAccess(user.uid);
                         alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
-                    const previousPage = document.referrer;
-                    const domain = new URL(previousPage).hostname;
-                    if (domain.includes("grouvex.github.io")) { window.history.back();} else { window.location.href = "https://grouvex.github.io";} 
+                        const previousPage = document.referrer;
+                        const domain = new URL(previousPage).hostname;
+                        if (domain.includes("grouvex.github.io")) {
+                            window.history.back();
+                        } else {
+                            window.location.href = "https://grouvex.github.io";
+                        }
                     })
                     .catch((error) => {
                         console.error("Error al iniciar sesión:", error.message);
                         alert('Error al iniciar sesión: ' + error.message);
                     });
             } else {
-                    auth.createUserWithEmailAndPassword(email, password)
-                        .then((userCredential) => {
-                            const user = userCredential.user;
-                            console.log("Usuario registrado:", user.email);
+                createUserWithEmailAndPassword(auth, email, password)
+                    .then((userCredential) => {
+                        const user = userCredential.user;
+                        console.log("Usuario registrado:", user.email);
+                        
+                        // Solicitar nombre y foto al usuario
+                        const displayName = prompt('Introduce tu nombre:');
+                        const photoURL = prompt('Introduce la URL de tu foto de perfil (debe ser una URL válida):');
+                        
+                        // Actualizar el perfil del usuario con el nombre y la foto
+                        updateProfile(user, {
+                            displayName: displayName,
+                            photoURL: photoURL || 'ruta/a/imagen/por/defecto.png' // Utilizar una imagen por defecto si no se proporciona una URL válida
+                        }).then(() => {
+                            console.log("Perfil del usuario actualizado.");
+                            alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
                             
-                            // Solicitar nombre y foto al usuario
-                            const displayName = prompt('Introduce tu nombre:');
-                            const photoURL = prompt('Introduce la URL de tu foto de perfil (debe ser una URL válida):');
-                            
-                            // Actualizar el perfil del usuario con el nombre y la foto
-                            user.updateProfile({
-                                displayName: displayName,
-                                photoURL: photoURL || 'ruta/a/imagen/por/defecto.png' // Utilizar una imagen por defecto si no se proporciona una URL válida
-                            }).then(() => {
-                                console.log("Perfil del usuario actualizado.");
-                                alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
-                                
-                                const previousPage = document.referrer;
-                                const domain = new URL(previousPage).hostname;
-                                if (domain.includes("grouvex.github.io")) {window.history.back();} else {window.location.href = "https://grouvex.github.io";}
-                            }).catch((error) => {
-                                console.error("Error al actualizar el perfil del usuario:", error.message);
-                                alert('Error al actualizar el perfil del usuario: ' + error.message);
-                            });
-                        })
-                        .catch((error) => {
-                            console.error("Error al registrar usuario:", error.message);
-                            alert('Error al registrar usuario: ' + error.message);
+                            const previousPage = document.referrer;
+                            const domain = new URL(previousPage).hostname;
+                            if (domain.includes("grouvex.github.io")) {
+                                window.history.back();
+                            } else {
+                                window.location.href = "https://grouvex.github.io";
+                            }
+                        }).catch((error) => {
+                            console.error("Error al actualizar el perfil del usuario:", error.message);
+                            alert('Error al actualizar el perfil del usuario: ' + error.message);
                         });
+                    })
+                    .catch((error) => {
+                        console.error("Error al registrar usuario:", error.message);
+                        alert('Error al registrar usuario: ' + error.message);
+                    });
             }
         });
     }
@@ -153,8 +161,8 @@ function inicializarFormularioDeAutenticacion() {
     // Función para iniciar sesión con Google
     if (googleLoginBtn) {
         googleLoginBtn.addEventListener('click', function () {
-            var provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider)
+            const provider = new GoogleAuthProvider();
+            signInWithPopup(auth, provider)
                 .then((result) => {
                     const user = result.user;
                     console.log("Usuario inició sesión con Google:", user.email);
@@ -162,7 +170,11 @@ function inicializarFormularioDeAutenticacion() {
                     alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
                     const previousPage = document.referrer;
                     const domain = new URL(previousPage).hostname;
-                    if (domain.includes("grouvex.github.io")) { window.history.back();} else { window.location.href = "https://grouvex.github.io";} 
+                    if (domain.includes("grouvex.github.io")) {
+                        window.history.back();
+                    } else {
+                        window.location.href = "https://grouvex.github.io";
+                    }
                 })
                 .catch((error) => {
                     console.error("Error al iniciar sesión con Google:", error.message);
@@ -171,57 +183,64 @@ function inicializarFormularioDeAutenticacion() {
         });
     }
 
-    // Función para iniciar sesión con Email/Password
+    // Función para iniciar sesión con Email/Password desde prompt
     if (emailLoginBtn) {
         emailLoginBtn.addEventListener('click', function () {
-            var email = prompt("Introduce tu email:");
-            var password = prompt("Introduce tu contraseña:");
+            const email = prompt("Introduce tu email:");
+            const password = prompt("Introduce tu contraseña:");
             console.log("Intentando iniciar sesión con email:", email);
             if (isLogin) {
-                auth.signInWithEmailAndPassword(email, password)
+                signInWithEmailAndPassword(auth, email, password)
                     .then((result) => {
                         const user = result.user;
                         console.log("Usuario inició sesión:", user.email);
                         checkAccess(user.uid);
                         alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
-                    const previousPage = document.referrer;
-                    const domain = new URL(previousPage).hostname;
-                    if (domain.includes("grouvex.github.io")) { window.history.back();} else { window.location.href = "https://grouvex.github.io";} 
+                        const previousPage = document.referrer;
+                        const domain = new URL(previousPage).hostname;
+                        if (domain.includes("grouvex.github.io")) {
+                            window.history.back();
+                        } else {
+                            window.location.href = "https://grouvex.github.io";
+                        }
                     })
                     .catch((error) => {
                         console.error("Error al iniciar sesión con Email/Password:", error.message);
                         alert('Error al iniciar sesión con Email/Password: ' + error.message);
                     });
             } else {
-    auth.createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            console.log("Usuario registrado:", user.email);
+                createUserWithEmailAndPassword(auth, email, password)
+                    .then((userCredential) => {
+                        const user = userCredential.user;
+                        console.log("Usuario registrado:", user.email);
 
-            // Solicitar nombre y foto al usuario
-            const displayName = prompt('Introduce tu nombre:');
-            const photoURL = prompt('Introduce la URL de tu foto de perfil (debe ser una URL válida):');
+                        // Solicitar nombre y foto al usuario
+                        const displayName = prompt('Introduce tu nombre:');
+                        const photoURL = prompt('Introduce la URL de tu foto de perfil (debe ser una URL válida):');
 
-            // Actualizar el perfil del usuario con el nombre y la foto
-            user.updateProfile({
-                displayName: displayName,
-                photoURL: photoURL || 'ruta/a/imagen/por/defecto.png' // Utilizar una imagen por defecto si no se proporciona una URL válida
-            }).then(() => {
-                console.log("Perfil del usuario actualizado.");
-                alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
-                const previousPage = document.referrer;
-                const domain = new URL(previousPage).hostname;
-                if (domain.includes("grouvex.github.io")) {window.history.back();} else {window.location.href = "https://grouvex.github.io";}
-            }).catch((error) => {
-                console.error("Error al actualizar el perfil del usuario:", error.message);
-                alert('Error al actualizar el perfil del usuario: ' + error.message);
-            });
-        })
-        .catch((error) => {
-            console.error("Error al registrar usuario:", error.message);
-            alert('Error al registrar usuario: ' + error.message);
-        });
-}
+                        // Actualizar el perfil del usuario con el nombre y la foto
+                        updateProfile(user, {
+                            displayName: displayName,
+                            photoURL: photoURL || 'ruta/a/imagen/por/defecto.png' // Utilizar una imagen por defecto si no se proporciona una URL válida
+                                            }).then(() => {
+                        console.log("Perfil del usuario actualizado.");
+                        alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
+                        const previousPage = document.referrer;
+                        const domain = new URL(previousPage).hostname;
+                        if (domain.includes("grouvex.github.io")) {
+                            window.history.back();
+                        } else {
+                            window.location.href = "https://grouvex.github.io";
+                        }
+                    }).catch((error) => {
+                        console.error("Error al actualizar el perfil del usuario:", error.message);
+                        alert('Error al actualizar el perfil del usuario: ' + error.message);
+                    });
+                }).catch((error) => {
+                    console.error("Error al registrar usuario:", error.message);
+                    alert('Error al registrar usuario: ' + error.message);
+                });
+            }
         });
     }
 }
@@ -236,7 +255,7 @@ function checkAccess(uid) {
 document.addEventListener('DOMContentLoaded', function() {
     // Función para verificar acceso
     function verificarAcceso(uidsPermitidos, pagina) {
-        auth.onAuthStateChanged(user => {
+        onAuthStateChanged(auth, (user) => {
             if (user) {
                 const uid = user.uid;
                 if (uidsPermitidos.includes(uid)) {
@@ -274,68 +293,68 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log("Página no especificada para verificación de acceso:", paginaActual);
     }
 
-    // Cerrar sesión de usuario
-    const logoutBtn = document.getElementById('logoutBtn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', () => {
-            auth.signOut().then(() => {
-                console.log("Usuario cerró sesión");
-                alert('Usuario cerró sesión');
-                location.reload();
-            }).catch((error) => {
-                console.error("Error al cerrar sesión:", error.message);
-                alert('Error al cerrar sesión: ' + error.message);
-            });
+// Cerrar sesión de usuario
+const logoutBtn = document.getElementById('logoutBtn');
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+        signOut(auth).then(() => {
+            console.log("Usuario cerró sesión");
+            alert('Usuario cerró sesión');
+            location.reload();
+        }).catch((error) => {
+            console.error("Error al cerrar sesión:", error.message);
+            alert('Error al cerrar sesión: ' + error.message);
         });
-    }
+    });
+}
 
-    // Restablecer contraseña
-    const resetPasswordBtn = document.getElementById('resetPasswordBtn');
-    if (resetPasswordBtn) {
-        resetPasswordBtn.addEventListener('click', () => {
-            const email = prompt('Introduce tu correo electrónico para restablecer la contraseña:');
-            if (email) {
-                console.log("Enviando correo de restablecimiento a:", email);
-                auth.sendPasswordResetEmail(email)
-                    .then(() => {
-                        console.log("Correo de restablecimiento enviado");
-                        alert('Correo para restablecer la contraseña enviado.');
-                    })
-                    .catch((error) => {
-                        console.error("Error al enviar el correo de restablecimiento:", error.message);
-                        alert('Error al enviar el correo de restablecimiento: ' + error.message);
-                    });
-            } else {
-                console.log("No se proporcionó un correo electrónico para el restablecimiento");
-            }
-        });
-    }
+// Restablecer contraseña
+const resetPasswordBtn = document.getElementById('resetPasswordBtn');
+if (resetPasswordBtn) {
+    resetPasswordBtn.addEventListener('click', () => {
+        const email = prompt('Introduce tu correo electrónico para restablecer la contraseña:');
+        if (email) {
+            console.log("Enviando correo de restablecimiento a:", email);
+            sendPasswordResetEmail(auth, email)
+                .then(() => {
+                    console.log("Correo de restablecimiento enviado");
+                    alert('Correo para restablecer la contraseña enviado.');
+                })
+                .catch((error) => {
+                    console.error("Error al enviar el correo de restablecimiento:", error.message);
+                    alert('Error al enviar el correo de restablecimiento: ' + error.message);
+                });
+        } else {
+            console.log("No se proporcionó un correo electrónico para el restablecimiento");
+        }
+    });
+}
 
-    // Restablecer contraseña adicional
-    const resetPasswordBtn1 = document.getElementById('resetPasswordBtn1');
-    if (resetPasswordBtn1) {
-        resetPasswordBtn1.addEventListener('click', () => {
-            const email = prompt('Introduce tu correo electrónico para restablecer la contraseña:');
-            if (email) {
-                console.log("Enviando correo de restablecimiento a:", email);
-                auth.sendPasswordResetEmail(email)
-                    .then(() => {
-                        console.log("Correo de restablecimiento enviado");
-                        alert('Correo para restablecer la contraseña enviado.');
-                    })
-                    .catch((error) => {
-                        console.error("Error al enviar el correo de restablecimiento:", error.message);
-                        alert('Error al enviar el correo de restablecimiento: ' + error.message);
-                    });
-            } else {
-                console.log("No se proporcionó un correo electrónico para el restablecimiento");
-            }
-        });
-    }
+// Restablecer contraseña adicional
+const resetPasswordBtn1 = document.getElementById('resetPasswordBtn1');
+if (resetPasswordBtn1) {
+    resetPasswordBtn1.addEventListener('click', () => {
+        const email = prompt('Introduce tu correo electrónico para restablecer la contraseña:');
+        if (email) {
+            console.log("Enviando correo de restablecimiento a:", email);
+            sendPasswordResetEmail(auth, email)
+                .then(() => {
+                    console.log("Correo de restablecimiento enviado");
+                    alert('Correo para restablecer la contraseña enviado.');
+                })
+                .catch((error) => {
+                    console.error("Error al enviar el correo de restablecimiento:", error.message);
+                    alert('Error al enviar el correo de restablecimiento: ' + error.message);
+                });
+        } else {
+            console.log("No se proporcionó un correo electrónico para el restablecimiento");
+        }
+    });
+}
 
-  // Función para eliminar la cuenta de usuario
+// Función para eliminar la cuenta de usuario
 function eliminarCuentaUsuario(user) {
-    return user.delete().then(() => {
+    return deleteUser(user).then(() => {
         console.log("Cuenta de usuario eliminada de Firebase Authentication.");
     }).catch((error) => {
         console.error("Error al eliminar la cuenta de usuario:", error);
@@ -354,9 +373,9 @@ function eliminarCuentaUsuario(user) {
 
 // Función para eliminar los datos del usuario en Firestore
 function eliminarDatosUsuario(userId) {
-    const userRef = db.collection('users').doc(userId);
-    
-    return userRef.delete().then(() => {
+    const userRef = doc(db, 'users', userId);
+
+    return deleteDoc(userRef).then(() => {
         console.log("Datos del usuario eliminados de Firestore.");
     }).catch((error) => {
         console.error("Error al eliminar los datos del usuario:", error);

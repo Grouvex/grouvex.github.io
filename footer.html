@@ -10,10 +10,10 @@ hr {
     position: fixed;
     bottom: 15px;
     right: 8px;
-    width: 50px; /* Proporcional a la pantalla */
-    height: 50px; /* Proporcional a la pantalla */
+    width: 50px;
+    height: 50px;
     background-color: transparent;
-    border: 2px solid transparent;
+    border: 2px solid magenta;
     border-radius: 50%;
     cursor: pointer;
     color: white;
@@ -23,7 +23,7 @@ hr {
     z-index: 1000;
 }
 #goTopBtn:hover {
-    border: 2px solid transparent;
+    border: 2px solid cyan;
 }
 </style>
 
@@ -102,24 +102,6 @@ s0.parentNode.insertBefore(s1,s0);
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
-        });
-    }
-    // Ejemplo de implementación de la API de la Privacy Sandbox para publicidad
-    if ('document' in window && 'serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js').then(registration => {
-            console.log('Service Worker registrado:', registration);
-        }).catch(error => {
-            console.error('Error al registrar el Service Worker:', error);
-        });
-    }
-
-    // Implementar la API de la Privacy Sandbox para identidad
-    if ('document' in window && 'window' in window) {
-        window.addEventListener('message', (event) => {
-            if (event.data && event.data.type === 'identity') {
-                // Procesar la solicitud de identidad
-                console.log('Solicitud de identidad recibida:', event.data);
-            }
         });
     }
 </script>

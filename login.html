@@ -58,15 +58,6 @@
         </span>
     </mainTop>
     <main>
-<!-- Publicado por -->
-<div style="box-shadow: 0 2px 5px rgb(37, 44, 247);width: 100%;flex-wrap: wrap;gap: 10px;justify-content: center;align-items: center;align-content: center;flex-direction: row;">
-<div class="tarjeta" style="display: flex;align-items: center;border-radius: 10px;box-shadow: 0 2px 5px rgb(51, 177, 215);margin: 20px;padding: 20px;height: auto;padding-left: 10px;padding-right: 10px;">
-<img src="../img/GROUVEX.png" alt="" style="border-radius: 50%; width: 15%;height: 15%;object-fit: cover; margin-right: 10px;loading=" lazy"="">
-<div style="width:100%;height:auto">
-<h2 style="margin:2px; font-size: 7.5px;height:auto">Publicado por:</h2><h2 style="margin:2px; padding: 1px;font-size: 20px;height:auto"><span class="Grouvex-Studios"></span></h2>
-<p style="color: white; font-size: 11px;height:auto"><span id="ActualizadoDATE"></span></p><a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@grouvex.com</footer></a></div></div>
-</div>
-<script>const uTActualizado = 1738429200; actualizarFechas(uTActualizado, "ActualizadoDATE");</script>
         <h1>Autenticación de Usuarios en Grouvex Studios</h1>
         <div id="auth-container">
             <form id="authForm">
@@ -80,6 +71,7 @@
             <button id="google-login-btn"><img src="https://img.icons8.com/?size=512&id=17949&format=png" alt="" width="15" height="15">Iniciar Sesión con Google</button>
             <button id="email-login-btn"><img src="https://static.vecteezy.com/system/resources/previews/022/484/508/non_2x/google-mail-gmail-icon-logo-symbol-free-png.png" alt="" width="15" height="15">Iniciar Sesión con Email</button>
             <p>¿Olvidaste tu contraseña?. Pongase en contacto con: <a href="mailto:administracion@grouvex.com?subject=Cambiar%20contraseña&body=Hola,%0A%0ASoy%20[Nombre de Usuario],%20mi%20correo%20asociado%20es%20[Correo del Usuario]%20y%20mi%20GSUserID%20es:%20[UID del Usuario]%0ASe%20me%20ha%20olvidado%20mi%20contraseña%20y%20me%20gustaría%20cambiarla.%0A%0AGracias,%0A[Nombre de Usuario]" style="color:white">administracion@grouvex.com</a></p>
+            <p>Al registrarte o iniciar sesión en Grouvex Studios, acepta los <a href="https://grouvex.github.io/tos">Términos de Servicios</a> y <a href="https://grouvex.github.io/pp">Políticas de Privacidad del mismo</a>.</p>
         </div>
         <div id="content" style="display: none;">
             <h2>Bienvenido</h2>
@@ -88,9 +80,9 @@
             <p>Bienvenid@ <span id="usuario"></span>, si necesita ayuda, puede ponerse en <a href="https://grouvex.github.io/contacto" style="color:white">contacto</a> con el equipo.</p>
             <hr>
             <p>Información de la cuenta</p>
-    <div style="display: flex;overflow-y: auto;box-shadow: 0 2px 5px rgb(37, 44, 247);width: 100%;flex-wrap: wrap;gap: 10px;justify-content: center;align-items: center;align-content: center;flex-direction: row;">
-        <div style="display: flex;align-items: center;border-radius: 10px;box-shadow: 0 2px 5px rgb(51, 177, 215);margin: 20px;padding: 20px;height: auto;padding-left: 10px;padding-right: 10px;">
-    <img style="border-radius: 50%;width: 50px;height: 50px;object-fit: cover;margin-right: 20px;" id="fotoPerfil" src="https://grouvex.com/img/GROUVEX.png" alt="Foto de perfil">
+    <div class="tarjetas">
+        <div class="tarjeta">
+    <img id="fotoPerfil" src="https://grouvex.com/img/GROUVEX.png" alt="Foto de perfil">
     <div>
       <h2><span class="insignias"></span></h2>
       <hr>

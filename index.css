@@ -464,7 +464,7 @@ nav a {
 .diseñador:hover::after {visibility: visible;opacity: 1;}
 
 .artista {
-    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Palette.png);
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/artista.gif);
     background-size: contain;background-repeat: no-repeat;
 }
 .artista {position: relative;display: inline-block;}.artista img {display: block;}

@@ -1,6 +1,6 @@
 // Importar las funciones necesarias desde Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAuth, reauthenticateWithCredential, EmailAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signOut, deleteUser, onAuthStateChanged ,GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getAuth, reauthenticateWithCredential, EmailAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signOut, deleteUser, onAuthStateChanged ,GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, sendEmailVerification} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import { getFirestore, doc, deleteDoc , } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 import { getDatabase, ref, set, remove } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
@@ -120,38 +120,80 @@ function inicializarFormularioDeAutenticacion() {
                         alert('Error al iniciar sesión: ' + error.message);
                     });
             } else {
-                createUserWithEmailAndPassword(auth, email, password)
-                    .then((userCredential) => {
-                        const user = userCredential.user;
-                        console.log("Usuario registrado:", user.email);
-                        
-                        // Solicitar nombre y foto al usuario
-                        const displayName = prompt('Introduce tu nombre:');
-                        const photoURL = prompt('Introduce la URL de tu foto de perfil (debe ser una URL válida):');
-                        
-                        // Actualizar el perfil del usuario con el nombre y la foto
-                        updateProfile(user, {
-                            displayName: displayName,
-                            photoURL: photoURL || 'ruta/a/imagen/por/defecto.png' // Utilizar una imagen por defecto si no se proporciona una URL válida
-                        }).then(() => {
-                            console.log("Perfil del usuario actualizado.");
-                            alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
-               const previousPage = document.referrer;
-                try {
-                    const domain = new URL(previousPage).hostname;
-                    if (domain.includes("grouvex.github.io")) {window.history.back();} else {window.location.href = "https://grouvex.github.io";
-                    }
-                } catch (e) {console.error("Error al procesar la URL anterior:", e);window.location.href = "https://grouvex.github.io"; }
-                        }).catch((error) => {
-                            console.error("Error al actualizar el perfil del usuario:", error.message);
-                            alert('Error al actualizar el perfil del usuario: ' + error.message);
-                        });
-                    })
-                    .catch((error) => {
-                        console.error("Error al registrar usuario:", error.message);
-                        alert('Error al registrar usuario: ' + error.message);
+createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+        const user = userCredential.user;
+        console.log("Usuario registrado:", user.email);
+
+        // Enviar correo de verificación
+        sendEmailVerification(user)
+            .then(() => {
+                console.log('Correo de verificación enviado.');
+                alert('Por favor, verifica tu correo electrónico para continuar con su cuenta. Tiene 1h.');
+
+                // Configurar un temporizador para comprobar la verificación y eliminar la cuenta si no se verifica en 24 horas
+                const checkVerificationInterval = setInterval(() => {
+                    user.reload().then(() => {
+                        if (user.emailVerified) {
+                            clearInterval(checkVerificationInterval);
+                            clearTimeout(deleteAccountTimeout);
+                            console.log('Correo verificado.');
+
+                            // Solicitar nombre y foto al usuario
+                            const displayName = prompt('Introduce tu nombre:');
+                            const photoURL = prompt('Introduce la URL de tu foto de perfil (debe ser una URL válida):');
+
+                            // Actualizar el perfil del usuario con el nombre y la foto
+                            updateProfile(user, {
+                                displayName: displayName,
+                                photoURL: photoURL || 'ruta/a/imagen/por/defecto.png' // Utilizar una imagen por defecto si no se proporciona una URL válida
+                            }).then(() => {
+                                console.log("Perfil del usuario actualizado.");
+                                alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
+                                const previousPage = document.referrer;
+                                try {
+                                    const domain = new URL(previousPage).hostname;
+                                    if (domain.includes("grouvex.github.io")) {
+                                        window.history.back();
+                                    } else {
+                                        window.location.href = "https://grouvex.github.io";
+                                    }
+                                } catch (e) {
+                                    console.error("Error al procesar la URL anterior:", e);
+                                    window.location.href = "https://grouvex.github.io";
+                                }
+                            }).catch((error) => {
+                                console.error("Error al actualizar el perfil del usuario:", error.message);
+                                alert('Error al actualizar el perfil del usuario: ' + error.message);
+                            });
+                        }
+                    }).catch(error => {
+                        console.error('Error al recargar el estado del usuario:', error.message);
                     });
-            }
+                }, 1000); // Verificar cada segundo
+
+                // Configurar un temporizador para eliminar la cuenta después de 24 horas si no se verifica el correo
+                const deleteAccountTimeout = setTimeout(() => {
+                    user.delete().then(() => {
+                        console.log('Usuario eliminado debido a falta de verificación.');
+                        alert('Tu cuenta ha sido eliminada debido a la falta de verificación del correo electrónico.');
+                    }).catch(error => {
+                        console.error('Error al eliminar el usuario:', error.message);
+                    });
+                }, 1 * 60 * 60 * 1000); // 24 horas
+
+            })
+            .catch((error) => {
+                console.error("Error al enviar correo de verificación:", error.message);
+                alert('Error al enviar correo de verificación: ' + error.message);
+            });
+    })
+    .catch((error) => {
+        console.error("Error al registrar usuario:", error.message);
+        alert('Error al registrar usuario: ' + error.message);
+    });
+
+        }
         });
     }
 

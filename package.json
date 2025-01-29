@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "start": "live-server --port=8080",
-    "update": "npm update"
+    "update": "npm update",
+    "build": "echo 'Build script ejecutado'"
   },
   "dependencies": {
-    "live-server": "^1.2.1",
-    "mi-proyecto-web": "file:"
+    "live-server": "^1.2.1"
   },
   "devDependencies": {}
 }

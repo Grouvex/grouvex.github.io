@@ -197,29 +197,106 @@ createUserWithEmailAndPassword(auth, email, password)
         });
     }
 
-    // Función para iniciar sesión con Google
-    if (googleLoginBtn) {
-        googleLoginBtn.addEventListener('click', function () {
-            const provider = new GoogleAuthProvider();
-            signInWithPopup(auth, provider)
-                .then((result) => {
-                    const user = result.user;
-                    console.log("Usuario inició sesión con Google:", user.email);
+   // Función para iniciar sesión con Google
+if (googleLoginBtn) {
+    googleLoginBtn.addEventListener('click', function () {
+        const provider = new GoogleAuthProvider();
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                const user = result.user;
+                console.log("Usuario inició sesión con Google:", user.email);
+
+                // Verificar si el correo electrónico está verificado
+                if (!user.emailVerified) {
+                    // Enviar correo de verificación
+                    sendEmailVerification(user)
+                        .then(() => {
+                            console.log('Correo de verificación enviado.');
+                            alert('Por favor, verifica tu correo electrónico antes de continuar.');
+
+                            // Configurar un temporizador para comprobar la verificación y eliminar la cuenta si no se verifica en 10 segundos
+                            const checkVerificationInterval = setInterval(() => {
+                                user.reload().then(() => {
+                                    if (user.emailVerified) {
+                                        clearInterval(checkVerificationInterval);
+                                        clearTimeout(deleteAccountTimeout);
+                                        console.log('Correo verificado.');
+
+                                        // Solicitar nombre y foto al usuario (opcional, ya que Google proporciona esta información)
+                                        const displayName = prompt('Introduce tu nombre (opcional):', user.displayName || '');
+                                        const photoURL = prompt('Introduce la URL de tu foto de perfil (opcional, debe ser una URL válida):', user.photoURL || '');
+
+                                        // Actualizar el perfil del usuario con el nombre y la foto
+                                        updateProfile(user, {
+                                            displayName: displayName || user.displayName,
+                                            photoURL: photoURL || user.photoURL || 'ruta/a/imagen/por/defecto.png' // Utilizar una imagen por defecto si no se proporciona una URL válida
+                                        }).then(() => {
+                                            console.log("Perfil del usuario actualizado.");
+                                            checkAccess(user.uid);
+                                            alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
+                                            const previousPage = document.referrer;
+                                            try {
+                                                const domain = new URL(previousPage).hostname;
+                                                const allowedHosts = ["grouvex.github.io"];
+                                                if (allowedHosts.includes(domain)) {
+                                                    window.history.back();
+                                                } else {
+                                                    window.location.href = "https://grouvex.github.io";
+                                                }
+                                            } catch (e) {
+                                                console.error("Error al procesar la URL anterior:", e);
+                                                window.location.href = "https://grouvex.github.io";
+                                            }
+                                        }).catch((error) => {
+                                            console.error("Error al actualizar el perfil del usuario:", error.message);
+                                            alert('Error al actualizar el perfil del usuario: ' + error.message);
+                                        });
+                                    }
+                                }).catch(error => {
+                                    console.error('Error al recargar el estado del usuario:', error.message);
+                                });
+                            }, 1000); // Verificar cada segundo
+
+                            // Configurar un temporizador para eliminar la cuenta después de 10 segundos si no se verifica el correo
+                            const deleteAccountTimeout = setTimeout(() => {
+                                user.delete().then(() => {
+                                    console.log('Usuario eliminado debido a falta de verificación.');
+                                    alert('Tu cuenta ha sido eliminada debido a la falta de verificación del correo electrónico.');
+                                }).catch(error => {
+                                    console.error('Error al eliminar el usuario:', error.message);
+                                });
+                            }, 10 * 1000); // 10 segundos
+
+                        })
+                        .catch((error) => {
+                            console.error("Error al enviar correo de verificación:", error.message);
+                            alert('Error al enviar correo de verificación: ' + error.message);
+                        });
+                } else {
+                    // Si el correo ya está verificado, proceder con el flujo normal
                     checkAccess(user.uid);
                     alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
-               const previousPage = document.referrer;
-                try {
-                    const domain = new URL(previousPage).hostname;
-                    if (domain.includes("grouvex.github.io")) {window.history.back();} else {window.location.href = "https://grouvex.github.io";
+                    const previousPage = document.referrer;
+                    try {
+                        const domain = new URL(previousPage).hostname;
+                        const allowedHosts = ["grouvex.github.io"];
+                        if (allowedHosts.includes(domain)) {
+                            window.history.back();
+                        } else {
+                            window.location.href = "https://grouvex.github.io";
+                        }
+                    } catch (e) {
+                        console.error("Error al procesar la URL anterior:", e);
+                        window.location.href = "https://grouvex.github.io";
                     }
-                } catch (e) {console.error("Error al procesar la URL anterior:", e);window.location.href = "https://grouvex.github.io"; }
-                })
-                .catch((error) => {
-                    console.error("Error al iniciar sesión con Google:", error.message);
-                    alert('Error al iniciar sesión con Google: ' + error.message);
-                });
-        });
-    }
+                }
+            })
+            .catch((error) => {
+                console.error("Error al iniciar sesión con Google:", error.message);
+                alert('Error al iniciar sesión con Google: ' + error.message);
+            });
+    });
+}
 
     // Función para iniciar sesión con Email/Password desde prompt
     if (emailLoginBtn) {

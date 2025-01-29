@@ -246,60 +246,81 @@ function checkAccess(uid) {
 
 document.addEventListener('DOMContentLoaded', function() {
     // Función para verificar acceso
-    function verificarAcceso(uidsPermitidos, pagina) {
+    function verificarAcceso(uidsPermitidos, roles, pagina, esMantenimiento = false) {
     onAuthStateChanged(auth, (user) => {
         if (user) {
             const uid = user.uid;
             const tieneAcceso = uidsPermitidos.some(lista => lista.includes(uid));
-            
+
             if (tieneAcceso) {
-                // El usuario tiene acceso
-                console.log("Acceso permitido a la página:", pagina);
+                console.log("Acceso permitido a:", pagina);
             } else {
-                // El usuario no tiene acceso
-                alert("No tienes acceso a esta página. Se te redirigirá a la página de inicio o a la anterior.");
-                const previousPage = document.referrer;
-                try {
-                    const domain = new URL(previousPage).hostname;
-                    const allowedHosts = ["grouvex.github.io"];
-                    if (allowedHosts.includes(domain)) {
-                        window.history.back();
-                    } else {
-                        window.location.href = "https://grouvex.github.io";
-                    }
-                } catch (e) {
-                    console.error("Error al procesar la URL anterior:", e);
-                    window.location.href = "https://grouvex.github.io";
-                }
+                const mensaje = esMantenimiento 
+                    ? "⚠️ Sitio en mantenimiento. Solo el Team tiene acceso. Redirigiendo..." 
+                    : `⛔ Necesitas estar en ${roles.join(" o ")}. Redirigiendo...`;
+                alert(mensaje);
+                esMantenimiento 
+                    ? window.location.href = `https://grouvex.github.io/${paginaMantenimiento}`
+                    : redirigirUsuario();
             }
         } else {
-            // Usuario no autenticado, redirigir a la página de inicio de sesión
-            alert("No estás registrado. Se te redirigirá a la página de registro.");
+            alert(esMantenimiento 
+                ? "🔐 Identificación requerida (modo mantenimiento)" 
+                : "🔐 Debes iniciar sesión primero");
             window.location.href = "https://grouvex.github.io/login";
         }
     });
 }
 
-    // UIDs permitidos para cada clase
-    const uidsArtistas = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2", "bY7fMyURlggvZyXDL9dCjwZEmU62"];
-    const uidsTeam = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
-    const uidsPremium = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
-    const uidsPartner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
-    const uidsVPartner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
-
-    // Lógica para determinar la página actual y verificar acceso
-    const paginaActual = window.location.pathname.split("/").pop();
-    if (paginaActual === "grouvex-studios-recording" || paginaActual === "grouvex-studios-animation") {
-        verificarAcceso([uidsArtistas], paginaActual);
-    } else if (paginaActual === "team") {
-        verificarAcceso([uidsTeam], paginaActual);
-    } else if (paginaActual === "planeta") {
-        verificarAcceso([uidsPartner,uidsVPartner] , paginaActual);
-    } else if (paginaActual === "pacman") {
-        verificarAcceso([uidsPremium,uidsPartner,uidsVPartner] , paginaActual);
-    } else {
-        console.log("Página no especificada para verificación de acceso:", paginaActual);
+function redirigirUsuario() {
+    const allowedHosts = ["grouvex.github.io"];
+    try {
+        const domain = new URL(document.referrer).hostname;
+        allowedHosts.includes(domain) ? window.history.back() : window.location.href = "https://grouvex.github.io";
+    } catch (e) {
+        window.location.href = "https://grouvex.github.io";
     }
+}
+
+// Configuración
+const modoMantenimiento = true;
+const paginaMantenimiento = "mantenimiento.html";
+
+// Listas de acceso
+const uidsArtistas = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2", "bY7fMyURlggvZyXDL9dCjwZEmU62"];
+const uidsTeam = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
+const uidsPremium = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
+const uidsPartner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
+const uidsVPartner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
+
+// Lógica principal
+const paginaActual = window.location.pathname.split("/").pop();
+
+if (modoMantenimiento) {
+    if (paginaActual === paginaMantenimiento) {
+        console.log("Página de mantenimiento activa");
+    } else {
+        verificarAcceso([uidsTeam], ["Team"], paginaActual, true);
+    }
+} else {
+    if (paginaActual === paginaMantenimiento) {
+        alert("🚫 El modo mantenimiento no está activo");
+        redirigirUsuario();
+    } else {
+        // Verificación normal por páginas
+        if (paginaActual === "grouvex-studios-recording" || paginaActual === "grouvex-studios-animation") {
+            verificarAcceso([uidsArtistas], ["Artistas"], paginaActual);
+        } else if (paginaActual === "team") {
+            verificarAcceso([uidsTeam], ["Team"], paginaActual);
+        } else if (paginaActual === "planeta") {
+            verificarAcceso([uidsPartner, uidsVPartner], ["Partner", "VPartner"], paginaActual);
+        } else if (paginaActual === "pacman") {
+            verificarAcceso([uidsPremium, uidsPartner, uidsVPartner], ["Premium", "Partner", "VPartner"], paginaActual);
+        } else {
+            console.log("Página sin restricciones:", paginaActual);
+        }
+    }
+}
 
 // Cerrar sesión de usuario
 const logoutBtn = document.getElementById('logoutBtn');

@@ -10,7 +10,6 @@
   "dependencies": {
     "live-server": "^1.2.1",
     "mi-proyecto-web": "file:"
-  }
-    "live-server": "^1.2.1"
   },
   "devDependencies": {}
+}

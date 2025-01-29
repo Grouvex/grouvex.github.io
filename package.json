@@ -8,13 +8,10 @@
     "update": "npm update"
   },
   "dependencies": {
-<<<<<<< HEAD
     "live-server": "^1.2.1",
     "mi-proyecto-web": "file:"
   }
-=======
     "live-server": "^1.2.1"
   },
   "devDependencies": {}
->>>>>>> 953cfe9e8dc18a2cf4d19717b2a169173244cdef
 }

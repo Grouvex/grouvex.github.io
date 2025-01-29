@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "live-server --port=8080",
-    "update": "npm update",
-    "build": "echo 'Build script ejecutado'"
+    "update": "npm update"
   },
   "dependencies": {
     "live-server": "^1.2.1"

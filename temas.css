@@ -1397,6 +1397,7 @@ footer {
     justify-content: space-between;
     width: 100%;
     align-items: flex-start;
+    flex-wrap: wrap;
 }
 .footer-bottom {
     display: flex;
@@ -1735,6 +1736,7 @@ footer {
     justify-content: space-between;
     width: 100%;
     align-items: flex-start;
+    flex-wrap: wrap;
 }
     .footer-bottom {
         display: flex;

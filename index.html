@@ -3,37 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Sitio web Oficial - Grouvex Studios</title>
-    <meta property="og:site_name" content="Grouvex Studios">
+    <meta name="description" content="Sitio web oficial de Grouvex Studios, un sello discográfico y creador de contenido multimedia.">
+    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects">
+    <meta name="author" content="Grouvex Studios">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#hexcode">
     <meta property="og:title" content="Sitio web oficial - Grouvex Studios">
-    <meta property="og:description" content="Sitio web oficial de ©Grouvex Studios">
-    <meta property="og:type" content="website">
-    <meta property="og:image" href="img/GROUVEX.png">
+    <meta property="og:description" content="Sitio web oficial de Grouvex Studios, un sello discográfico y creador de contenido multimedia.">
+    <meta property="og:image" content="img/GROUVEX.png">
     <meta property="og:url" content="https://grouvex.com/">
+    <meta property="og:type" content="website">
     <meta property="og:locale" content="es_ES">
+    <link rel="canonical" href="https://grouvex.com/">
+    <link rel="icon" href="img/GROUVEX.png" type="image/x-icon">
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="temas.css">
-    <link rel="icon" href="img/GROUVEX.png" type="image/x-icon">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="MobileOptimized" content="width">
-    <meta name="author" content="Grouvex Studios">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="copyright" content="Grouvex Studios">
-    <meta name="google-site-verification" content="54a46b8f7ec187ad80dd5a45fff8f43b">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Referrer-Policy" content="no-referrer">
-    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects">
-    <meta name="theme-color" content="#hexcode">
-    <link rel="canonical" href="https://grouvex.com/">
-    <link rel="shortlink" href="https://grouvex.com/">
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <meta name="HandheldFriendly" content="true">
-    <link rel="preconnect" href="https://example.com">
-    <link rel="dns-prefetch" href="https://example.com">
-    <!-- Scripts sin nonce -->
-    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script> 
-    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js"></script> 
-    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-database.js"></script> 
-    <script src="jquery-3.5.1.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-database.js" defer></script>
+    <script src="jquery-3.5.1.min.js" defer></script>
+    <script src="time.js" defer></script>
+    <script type="module" src="abc.js" defer></script>
+    <script src="index.js" defer></script>
     <script> 
         document.addEventListener("DOMContentLoaded", function() { 
             $("#menuG").load("menuG.html"); 
@@ -45,34 +37,30 @@
             $("#tosypp").load("tosypp.html");
         });
     </script>
-    <script src="//www.youtube.com/player_api"></script><script src="https://www.youtube.com/iframe_api"></script>
-    <script src="time.js"></script></script><script src="abc.js"></script><script src="index.js"></script>
 </head>
 <body>
         <mainTop>
             <a href="https://grouvex.github.io/"> <div class="img-container" loading="lazy"></div></a> 
             <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
-                <span id="menuG"></span> <!-- General -->
-                <span id="menuT"></span> <!-- Temas/Idioma -->
-                <span id="menuU"></span> <!-- Usuario -->
+                <nav>
+                    <span id="menuG"></span> <!-- General -->
+                    <span id="menuT"></span> <!-- Temas/Idioma -->
+                    <span id="menuU"></span> <!-- Usuario -->
+                </nav>
+            </span>
         </mainTop>
         <!-- Anuncio -->
         <div id="news"></div>
         <main>
             <!-- Publicado por -->
-            <div class="tarjeta" style="display: flex;align-items: center; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 10px; padding: 10px; height: 45px; width: 250px; padding-top: 10px;padding-bottom: 10px">
-                <img src="../img/GROUVEX.png" alt="" style="border-radius: 50%; width: 35px;height: 35px;object-fit: cover; margin-right: 10px;loading="lazy"">
-                <div>
-                    <h2 style="margin:2px; font-size: 7.5px">Publicado por:</h2>
-                    <h2 style="margin:2px; padding: 1px;font-size: 9px"><span class="Grouvex-Studios"></span></h2>
-                    <p style="color: white; font-size: 11px"><span id="ActualizadoDATE"></span></p>
-                    <a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@grouvex.com</footer></a>
-                </div>
-                <script>
-                    const uTActualizado = 1734710400;
-                    actualizarFechas(uTActualizado, "ActualizadoDATE");
-                </script>
-            </div>
+<div style="box-shadow: 0 2px 5px rgb(37, 44, 247);width: 100%;flex-wrap: wrap;gap: 10px;justify-content: center;align-items: center;align-content: center;flex-direction: row;">
+<div class="tarjeta" style="display: flex;align-items: center;border-radius: 10px;box-shadow: 0 2px 5px rgb(51, 177, 215);margin: 20px;padding: 20px;height: auto;padding-left: 10px;padding-right: 10px;">
+<img src="../img/GROUVEX.png" alt="" style="border-radius: 50%; width: 15%;height: 15%;object-fit: cover; margin-right: 10px; loading="lazy">
+<div style="width:100%;height:auto">
+<h2 style="margin:2px; font-size: 7.5px;height:auto">Publicado por:</h2><h2 style="margin:2px; padding: 1px;font-size: 20px;height:auto"><span class="Grouvex-Studios"></span></h2>
+<p style="color: white; font-size: 11px;height:auto"><span id="ActualizadoDATE"></span></p><a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@grouvex.com</footer></a></div></div>
+</div>
+<script>const uTActualizado = 1738429200; actualizarFechas(uTActualizado, "ActualizadoDATE");</script> 
             <!-- Título -->
             <article>
                 <h1>Grouvex Studios</h1>

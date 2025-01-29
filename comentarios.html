@@ -46,7 +46,7 @@
         });
     </script>
     <script src="//www.youtube.com/player_api"></script><script src="https://www.youtube.com/iframe_api"></script>
-    <script src="time.js"></script></script><script src="abc.js"></script><script src="index.js"></script>
+    <script src="time.js"></script></script><script type="module"  src="abc.js"></script><script src="index.js"></script>
 </head>
 <body>
         <mainTop>
@@ -60,11 +60,13 @@
  <div id="news"></div>
 <main>
 <!-- Publicado por -->
-<div class="tarjeta" style="display: flex;align-items: center; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 10px; padding: 10px; height: auto; width: auto; padding-top: 10px;padding-bottom: 10px">
-<img src="../img/GROUVEX.png" alt="" style="border-radius: 50%; width: 15%;height: 15%;object-fit: cover; margin-right: 10px;loading="lazy">
+<div style="box-shadow: 0 2px 5px rgb(37, 44, 247);width: 100%;flex-wrap: wrap;gap: 10px;justify-content: center;align-items: center;align-content: center;flex-direction: row;">
+<div class="tarjeta" style="display: flex;align-items: center;border-radius: 10px;box-shadow: 0 2px 5px rgb(51, 177, 215);margin: 20px;padding: 20px;height: auto;padding-left: 10px;padding-right: 10px;">
+<img src="../img/GROUVEX.png" alt="" style="border-radius: 50%; width: 15%;height: 15%;object-fit: cover; margin-right: 10px;loading=" lazy"="">
 <div style="width:100%;height:auto">
-<h2 style="margin:2px; font-size: 7.5px;width:100%;height:auto">Publicado por:</h2><h2 style="margin:2px; padding: 1px;font-size: 20px;width:100%;height:auto"><span class="Grouvex-Studios"></span></h2>
-<p style="color: white; font-size: 11px;width:100%;height:auto"><span id="ActualizadoDATE"></span></p><a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@grouvex.com</footer></a></div></div>
+<h2 style="margin:2px; font-size: 7.5px;height:auto">Publicado por:</h2><h2 style="margin:2px; padding: 1px;font-size: 20px;height:auto"><span class="Grouvex-Studios"></span></h2>
+<p style="color: white; font-size: 11px;height:auto"><span id="ActualizadoDATE"></span></p><a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@grouvex.com</footer></a></div></div>
+</div>
 <script>const uTActualizado = 1738429200; actualizarFechas(uTActualizado, "ActualizadoDATE");</script> 
   <!-- Título -->
     <style>

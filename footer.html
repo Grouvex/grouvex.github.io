@@ -10,10 +10,10 @@ hr {
     position: fixed;
     bottom: 15px;
     right: 8px;
-    width: 50px; /* Proporcional a la pantalla */
-    height: 50px; /* Proporcional a la pantalla */
+    width: 50px;
+    height: 50px;
     background-color: transparent;
-    border: 2px solid transparent;
+    border: 2px solid magenta;
     border-radius: 50%;
     cursor: pointer;
     color: white;
@@ -23,7 +23,7 @@ hr {
     z-index: 1000;
 }
 #goTopBtn:hover {
-    border: 2px solid transparent;
+    border: 2px solid cyan;
 }
 </style>
 
@@ -53,21 +53,31 @@ hr {
                 </div>
             <div class="footer-row">
                 <div>
-                    <h4>Página y Grouvex Studios</h4>
+                    <h4>Grouvex Studio Security</h4>
                     <p><a href="https://grouvex.github.io/tos" style="color:white">Términos de Servicio</a></p> 
                     <p><a href="https://grouvex.github.io/pp" style="color:white">Políticas de Privacidad</a></p>
-                    <p><a href="https://grouvex.github.io/faqs" style="color:white">Preguntas Frecuentes (FAQS)</a></p>
                     <p><a href="https://grouvex.github.io/contacto" style="color:white">Contacto</a></p>
+                </div>
+                <div>
+                    <h4>Grouvex Studios Páginas</h4>
+                    <p><a href="https://grouvex.github.io/faqs" style="color:white">Preguntas Frecuentes (FAQS)</a></p>
+                    <p><a href="https://grouvex.github.io/planeta" style="color:white"><span class="insignias partner"></span><span class="insignias vpartner"></span>Sistema Planetario 3D <span class="tooltip"><strong>⚠</strong><span class="tooltiptext">Suele tardar bastante en cargar la página y puede que haya errores.</span></span></a></p>
                 </div>
                 <div>
                     <h4>GSRecording</h4>
                     <p><a href="https://grouvex.com/gsrecording" style="color:white">GSRecording</a></p>
-                    <p><a href="https://grouvex.com/grouvex-studios-recording" style="color:white"><img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png" alt="" width="15" height="15">GSRecording For Artists</a></p>
+                    <p><a href="https://grouvex.com/grouvex-studios-recording" style="color:white"><span class="insignias artista"></span>GSRecording For Artists</a></p>
+                    <p><a href="https://www.routenote.com/" style="color:white" target="_blank">Distribuidora RouteNote</a></p>
                 </div>
                 <div>
                     <h4>GSAnimation</h4>
                     <p><a href="https://grouvex.com/gsanimation" class="disabled-link">GSAnimation</a></p>
-                    <p><a href="https://grouvex.com/grouvex-studios-animation" class="disabled-link"><img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Video_Creator.png" alt="" width="15" height="15">GSAnimation For Animator</a></p>
+                    <p><a href="https://grouvex.com/grouvex-studios-animation" class="disabled-link"><span class="insignias creador"></span>GSAnimation For Animator</a></p>
+                </div>
+                <div>
+                    <h4>GSDesign</h4>
+                    <p><a href="https://grouvex.com/gsdesign" class="disabled-link">GSDesign</a></p>
+                    <p><a href="https://grouvex.com/grouvex-studios-animation" class="disabled-link"><span class="insignias diseñador"></span>GSDesign For Designers</a></p>
                 </div>
             </div>
         </div>
@@ -102,24 +112,6 @@ s0.parentNode.insertBefore(s1,s0);
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
-        });
-    }
-    // Ejemplo de implementación de la API de la Privacy Sandbox para publicidad
-    if ('document' in window && 'serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js').then(registration => {
-            console.log('Service Worker registrado:', registration);
-        }).catch(error => {
-            console.error('Error al registrar el Service Worker:', error);
-        });
-    }
-
-    // Implementar la API de la Privacy Sandbox para identidad
-    if ('document' in window && 'window' in window) {
-        window.addEventListener('message', (event) => {
-            if (event.data && event.data.type === 'identity') {
-                // Procesar la solicitud de identidad
-                console.log('Solicitud de identidad recibida:', event.data);
-            }
         });
     }
 </script>

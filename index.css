@@ -463,6 +463,14 @@ nav a {
     content: "Diseñador de Contenido";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
 .diseñador:hover::after {visibility: visible;opacity: 1;}
 
+.artista {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/artista.gif);
+    background-size: contain;background-repeat: no-repeat;
+}
+.artista {position: relative;display: inline-block;}.artista img {display: block;}
+.artista::after {
+    content: "Artista de Contenido";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.artista:hover::after {visibility: visible;opacity: 1;}
 .tooltip {
     position: relative;
     display: inline-block;

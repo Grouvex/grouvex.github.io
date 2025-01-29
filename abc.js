@@ -5,7 +5,16 @@ import { getFirestore, doc, deleteDoc , } from "https://www.gstatic.com/firebase
 import { getDatabase, ref, set, remove } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
 // Configuración de Firebase
-import firebaseConfig from './firebaseConfig.js';
+var firebaseConfig = {
+  apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
+  authDomain: "grouvex-studios.firebaseapp.com",
+  databaseURL: "https://grouvex-studios-default-rtdb.firebaseio.com",
+  projectId: "grouvex-studios",
+  storageBucket: "grouvex-studios.appspot.com",
+  messagingSenderId: "1070842606062",
+  appId: "1:1070842606062:web:5d887863048fd100b49eff",
+  measurementId: "G-75BR8D2CR3"
+};
 
 // Inicializar Firebase
 const app = initializeApp(firebaseConfig);

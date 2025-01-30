@@ -292,7 +292,7 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 // Configuración
-const modoMantenimiento = true;
+const modoMantenimiento = false;
 const paginaMantenimiento = "mantenimiento.html";
 
 // Listas de acceso

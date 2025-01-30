@@ -334,9 +334,9 @@ function mostrarNotificacionRegistro() {
         max-width: 300px;
     `;
     notificacion.innerHTML = `
-        <p>🎁 ¡Regístrate para acceder a contenido exclusivo!</p>
+        <p>🎁 ¡Regístrate Gratis para acceder a contenido exclusivo!</p>
         <div style="margin-top: 10px; display: flex; gap: 10px;">
-            <a href="/registro" style="color: white; text-decoration: underline;">Registrarme</a>
+            <a href="https://grouvex.github.io/login" style="color: white; text-decoration: underline;">Registrarme</a>
             <button onclick="this.parentElement.parentElement.remove()" 
                     style="background: none; border: none; color: white; cursor: pointer;">
                 Cerrar

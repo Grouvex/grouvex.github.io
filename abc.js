@@ -282,9 +282,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             if (!permisos[paginaActual].includes(user.uid)) {
-alert(`⛔ Requieres insignias especiales. Visita Team → Insignias`);
-                mostrarNotificacion(`⛔ Requieres insignias especiales. Visita Team → Insignias`);
-                window.location.href = "https://grouvex.github.io/team#insignias";
+alert(`⛔ Requieres insignias especiales: ${Object.keys(permisos).find(key => key === paginaActual)}. Visita Equipo → Insignias`);
+                mostrarNotificacion(`⛔ Requieres insignias especiales: ${Object.keys(permisos).find(key => key === paginaActual)}. Visita Equipo → Insignias`);
+                window.location.href = "https://grouvex.github.io/equipo#insignias";
                 return;
             }
         }

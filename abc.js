@@ -282,6 +282,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             if (!permisos[paginaActual].includes(user.uid)) {
+alert(`⛔ Requieres insignias especiales. Visita Team → Insignias`);
                 mostrarNotificacion(`⛔ Requieres insignias especiales. Visita Team → Insignias`);
                 window.location.href = "https://grouvex.github.io/team#insignias";
                 return;
@@ -331,7 +332,7 @@ function mostrarNotificacionRegistro() {
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         z-index: 1000;
-        max-width: 300px;
+        max-width: 250px;
     `;
     notificacion.innerHTML = `
         <p>🎁 ¡Regístrate Gratis para acceder a contenido exclusivo!</p>

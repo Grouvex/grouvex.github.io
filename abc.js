@@ -246,36 +246,23 @@ function checkAccess(uid) {
 
 document.addEventListener('DOMContentLoaded', function() {
     // Función para verificar acceso
-    function verificarAcceso(pagina) {
+    function verificarAcceso() {
     onAuthStateChanged(auth, (user) => {
-        // Páginas públicas (acceso sin verificación)
-        const paginasPublicas = ["index.html", "login.html", "about.html"];
-        
-        // Verificar si es página pública
-        if (paginasPublicas.includes(pagina)) {
-            console.log("Acceso público permitido");
-            return;
-        }
+        // Configuración general
+        const mantenimientoActivo = false; // Cambiar a `true` cuando haya mantenimiento
+        const paginaMantenimiento = "mantenimiento.html";
+        const paginaActual = window.location.pathname.split("/").pop();
 
-        // Lógica de mantenimiento
-        if (modoMantenimiento) {
-            if (user && uidsTeam.includes(user.uid)) {
-                console.log("Acceso Team permitido durante mantenimiento");
-            } else {
+        // 1. Lógica de mantenimiento
+        if (mantenimientoActivo) {
+            if (paginaActual !== paginaMantenimiento && !(user && uidsTeam.includes(user.uid))) {
                 alert("🚧 Sitio en mantenimiento. Redirigiendo...");
                 window.location.href = `https://grouvex.github.io/${paginaMantenimiento}`;
+                return;
             }
-            return;
         }
 
-        // Lógica normal sin mantenimiento
-        if (!user) {
-            alert("🔐 Acceso restringido. Debes iniciar sesión");
-            window.location.href = "https://grouvex.github.io/login";
-            return;
-        }
-
-        // Verificación de roles
+        // 2. Definición de permisos
         const permisos = {
             "grouvex-studios-recording": uidsArtistas,
             "grouvex-studios-animation": uidsArtistas,
@@ -284,34 +271,46 @@ document.addEventListener('DOMContentLoaded', function() {
             "pacman": [...uidsPremium, ...uidsPartner, ...uidsVPartner]
         };
 
-        if (permisos[pagina] && !permisos[pagina].includes(user.uid)) {
-            alert("⛔ No tienes permisos para esta sección");
-            window.history.back();
+        // 3. Verificación de acceso para páginas restringidas
+        if (permisos[paginaActual]) {
+            if (!user || !permisos[paginaActual].includes(user.uid)) {
+                alert("⛔ No tienes permisos para esta sección");
+                window.history.back();
+                return;
+            }
+        }
+
+        // 4. Acceso general para otras páginas
+        if (!user) {
+            if (!notificacionMostrada) {
+                mostrarNotificacion();
+                notificacionMostrada = true;
+            }
+        } else if (user) {
+            // Opcional: lógica para usuarios verificados
+            // Si necesita permisos para acceder a una página específica, puede comprobarlo aquí
         }
     });
 }
 
-// Configuración
-const modoMantenimiento = false;
-const paginaMantenimiento = "mantenimiento.html";
+function mostrarNotificacion() {
+    const notificacion = document.createElement("div");
+    notificacion.innerHTML = "🔔 Acceso público - Regístrate para más funciones";
+    // Estilos y lógica adicional para la notificación...
+    document.body.appendChild(notificacion);
+}
 
-// Listas de acceso
+// Listas de acceso (deben estar en el ámbito global)
 const uidsTeam = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
 const uidsArtistas = [...uidsTeam, "bY7fMyURlggvZyXDL9dCjwZEmU62"];
 const uidsPremium = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
 const uidsPartner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
 const uidsVPartner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
 
-// Lógica principal
-const paginaActual = window.location.pathname.split("/").pop();
+let notificacionMostrada = false;
 
-// Bloquear acceso a mantenimiento si no está activo
-if (!modoMantenimiento && paginaActual === paginaMantenimiento) {
-    alert("⚠️ Esta página no está disponible actualmente");
-    window.location.href = "https://grouvex.github.io";
-} else {
-    verificarAcceso(paginaActual);
-}
+// Iniciar verificación
+verificarAcceso();
 
 // Cerrar sesión de usuario
 const logoutBtn = document.getElementById('logoutBtn');

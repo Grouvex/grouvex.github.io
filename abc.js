@@ -296,7 +296,65 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 }
 
-// (El resto del código se mantiene igual...)
+// Función para notificaciones personalizadas
+function mostrarNotificacion(mensaje) {
+    const notificacion = document.createElement("div");
+    notificacion.style = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px;
+        background: #ff4444;
+        color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        z-index: 1000;
+    `;
+    notificacion.textContent = mensaje;
+    document.body.appendChild(notificacion);
+
+    setTimeout(() => {
+        notificacion.remove();
+    }, 5000);
+}
+
+// Notificación de registro no intrusiva
+function mostrarNotificacionRegistro() {
+    const notificacion = document.createElement("div");
+    notificacion.style = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 15px;
+        background: #4CAF50;
+        color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        z-index: 1000;
+        max-width: 300px;
+    `;
+    notificacion.innerHTML = `
+        <p>🎁 ¡Regístrate para acceder a contenido exclusivo!</p>
+        <div style="margin-top: 10px; display: flex; gap: 10px;">
+            <a href="/registro" style="color: white; text-decoration: underline;">Registrarme</a>
+            <button onclick="this.parentElement.parentElement.remove()" 
+                    style="background: none; border: none; color: white; cursor: pointer;">
+                Cerrar
+            </button>
+        </div>
+    `;
+    document.body.appendChild(notificacion);
+}
+
+// Listas de acceso
+const uidsTeam = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
+const uidsArtistas = [...uidsTeam, "bY7fMyURlggvZyXDL9dCjwZEmU62"];
+const uidsPremium = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
+const uidsPartner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
+const uidsVPartner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
+
+// Iniciar verificación
+verificarAcceso();
 
 // Cerrar sesión de usuario
 const logoutBtn = document.getElementById('logoutBtn');

@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // 2. Definición de permisos (solo estas páginas serán restringidas)
+        // 2. Definición de permisos y nombres de equipos
         const permisos = {
             "grouvex-studios-recording": uidsArtistas,
             "grouvex-studios-animation": uidsArtistas,
@@ -273,17 +273,26 @@ document.addEventListener('DOMContentLoaded', function() {
             "pacman": [...uidsPremium, ...uidsPartner, ...uidsVPartner]
         };
 
+        const nombresEquipos = {
+            "grouvex-studios-recording": "Artista",
+            "grouvex-studios-animation": "Artista",
+            "team": "Team",
+            "planeta": "Partner o VPartner",
+            "pacman": "Premium, Partner o VPartner"
+        };
+
         // 3. Verificación SOLO para páginas con permisos
         if (permisos[paginaActual]) {
             if (!user) {
-                mostrarNotificacion(`🔒 Necesitas registro y permisos de ${Object.keys(permisos).find(key => key === paginaActual)}`);
+                mostrarNotificacion(`🔒 Necesitas estar registrado y ser ${nombresEquipos[paginaActual]}`);
                 window.history.back();
                 return;
             }
-            
+
             if (!permisos[paginaActual].includes(user.uid)) {
-alert(`⛔ Requieres insignias especiales: ${Object.keys(permisos).find(key => key === paginaActual)}. Visita Equipo → Insignias`);
-                mostrarNotificacion(`⛔ Requieres insignias especiales: ${Object.keys(permisos).find(key => key === paginaActual)}. Visita Equipo → Insignias`);
+                const equipoRequerido = nombresEquipos[paginaActual];
+                alert(`⛔ Requieres ser ${equipoRequerido}. Visita Equipo → Insignias`);
+                mostrarNotificacion(`⛔ Requieres ser ${equipoRequerido}. Visita Equipo → Insignias`);
                 window.location.href = "https://grouvex.github.io/equipo#insignias";
                 return;
             }

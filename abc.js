@@ -285,7 +285,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (permisos[paginaActual]) {
             if (!user) {
                 mostrarNotificacion(`🔒 Necesitas estar registrado y ser ${nombresEquipos[paginaActual]}`);
-                setTimeout(() => window.history.back(), 7000); // Retraso de 7 segundos
+                setTimeout(() => window.history.back(), 5000); // Retraso de 7 segundos
                 return;
             }
 
@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 mostrarNotificacion(`⛔ Requieres ser ${equipoRequerido}. Redirigiendo a Equipo → Insignias...`);
                 setTimeout(() => {
                     window.location.href = "https://grouvex.github.io/equipo#insignias";
-                }, 7000); // Retraso de 7 segundos
+                }, 5000); // Retraso de 7 segundos
                 return;
             }
         }
@@ -365,7 +365,7 @@ function mostrarNotificacionRegistro() {
 
     setTimeout(() => {
         notificacion.remove();
-    }, 10000); // Duración de 10 segundos
+    }, 8000); // Duración de 10 segundos
 }
 
 // Listas de acceso

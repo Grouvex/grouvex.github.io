@@ -285,15 +285,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (permisos[paginaActual]) {
             if (!user) {
                 mostrarNotificacion(`🔒 Necesitas estar registrado y ser ${nombresEquipos[paginaActual]}`);
-                window.history.back();
+                setTimeout(() => window.history.back(), 7000); // Retraso de 7 segundos
                 return;
             }
 
             if (!permisos[paginaActual].includes(user.uid)) {
                 const equipoRequerido = nombresEquipos[paginaActual];
-                alert(`⛔ Requieres ser ${equipoRequerido}. Visita Equipo → Insignias`);
-                mostrarNotificacion(`⛔ Requieres ser ${equipoRequerido}. Visita Equipo → Insignias`);
-                window.location.href = "https://grouvex.github.io/equipo#insignias";
+                mostrarNotificacion(`⛔ Requieres ser ${equipoRequerido}. Redirigiendo a Equipo → Insignias...`);
+                setTimeout(() => {
+                    window.location.href = "https://grouvex.github.io/equipo#insignias";
+                }, 7000); // Retraso de 7 segundos
                 return;
             }
         }
@@ -319,13 +320,17 @@ function mostrarNotificacion(mensaje) {
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         z-index: 1000;
+        max-width: 90%;
+        width: 300px;
+        text-align: center;
+        font-size: 14px;
     `;
     notificacion.textContent = mensaje;
     document.body.appendChild(notificacion);
 
     setTimeout(() => {
         notificacion.remove();
-    }, 5000);
+    }, 7000); // Duración de 7 segundos
 }
 
 // Notificación de registro no intrusiva
@@ -341,11 +346,14 @@ function mostrarNotificacionRegistro() {
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         z-index: 1000;
-        max-width: 250px;
+        max-width: 90%;
+        width: 300px;
+        text-align: center;
+        font-size: 14px;
     `;
     notificacion.innerHTML = `
         <p>🎁 ¡Regístrate Gratis para acceder a contenido exclusivo!</p>
-        <div style="margin-top: 10px; display: flex; gap: 10px;">
+        <div style="margin-top: 10px; display: flex; justify-content: center; gap: 10px;">
             <a href="https://grouvex.github.io/login" style="color: white; text-decoration: underline;">Registrarme</a>
             <button onclick="this.parentElement.parentElement.remove()" 
                     style="background: none; border: none; color: white; cursor: pointer;">
@@ -354,6 +362,10 @@ function mostrarNotificacionRegistro() {
         </div>
     `;
     document.body.appendChild(notificacion);
+
+    setTimeout(() => {
+        notificacion.remove();
+    }, 10000); // Duración de 10 segundos
 }
 
 // Listas de acceso

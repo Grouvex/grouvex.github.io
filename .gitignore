@@ -1,1 +1,49 @@
+# Ignorar archivos de credenciales
+/service-account.json
+/functions/.env
+
+# Ignorar node_modules (dependencias de Node.js)
+node_modules/
+/functions/node_modules/
+
+# Ignorar archivos de entorno
 .env
+.env.local
+.env.development
+.env.production
+
+# Ignorar archivos generados por Firebase
+.firebase/
+.firebaserc
+
+# Ignorar archivos de configuración local
+.firebase-debug.log
+firebase-debug.log
+
+# Ignorar archivos de IDE
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Ignorar archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Ignorar archivos de compilación
+dist/
+build/
+*.tmp
+*.bak
+
+# Ignorar archivos de logs
+*.log
+logs/
+
+# Ignorar archivos de npm/yarn
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

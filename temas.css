@@ -1,66 +1,52 @@
-/*Primavera*/
+/* Estilos comunes */
+.falling-object {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  animation: fall linear infinite;
+}
+
+/* Primavera */
 .flower {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 10px;
-  height: 10px;
+  @extend .falling-object;
   background: pink;
-  border-radius: 50%;
-  animation: fall linear infinite;
 }
-/*Verano*/
+
+/* Verano */
 .sun {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 10px;
-  height: 10px;
+  @extend .falling-object;
   background: yellow;
-  border-radius: 50%;
-  animation: fall linear infinite;
 }
-/*Verano*/
+
 .leaf {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 10px;
-  height: 10px;
+  @extend .falling-object;
   background: orange;
-  border-radius: 50%;
-  animation: fall linear infinite;
 }
-/*Navidad*/
+
+/* Navidad */
 .snowflake {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 10px;
-  height: 10px;
+  @extend .falling-object;
   background: white;
-  border-radius: 50%;
-  animation: fall linear infinite;
 }
-/*Aniversario*/
+
+/* Aniversario */
 .aniversario {
   position: absolute;
-  top: 0;
-  left: 0;
   width: 10px;
   height: 10px;
-  background: conic-gradient(
-        from 90deg, #FF0000,  /* Rojo */ #FF7F00,  /* Naranja */ #FFFF00,  /* Amarillo */ #90EE90,  /* Verde claro */ #00FF00,  /* Verde */ #00FFFF,  /* Cyan */ #0000FF,  /* Azul */ #4B0082,  /* Índigo */ #800080   /* Violeta */
-      );
   border-radius: 50%;
+  background: conic-gradient(from 90deg, #FF0000, #FF7F00, #FFFF00, #90EE90, #00FF00, #00FFFF, #0000FF, #4B0082, #800080);
   animation: fall linear infinite;
 }
+
+/* Animación de caída */
 @keyframes fall {
-  0% { top: 0px; 
-   opacity: 1;}
-  100% { top:  100%; 
-      opacity: 0;}
-}
+  0% { top: 0; opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+} 
 
 /*Default Theme*/
 p {

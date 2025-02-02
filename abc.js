@@ -245,6 +245,37 @@ function checkAccess(uid) {
 
 
 document.addEventListener('DOMContentLoaded', function() {
+function mostrarnewsAdv() {
+    const newsAdv = document.createElement("div");
+    newsAdv.style = `
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        padding: 15px;
+        background: #4CAF50;
+        color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        z-index: 1000;
+        max-width: 90%;
+        width: 300px;
+        text-align: center;
+        font-size: 14px;
+    `;
+    newsAdv.innerHTML = `
+        <p>Nuevos ToS y PP</p>
+        <div style="margin-top: 10px; display: flex; justify-content: center; gap: 10px;">
+            <a href="https://grouvex.github.io/tos" style="color: white; text-decoration: underline;">ToS</a>
+            <a href="https://grouvex.github.io/pp" style="color: white; text-decoration: underline;">PP</a>
+            <button onclick="this.parentElement.parentElement.remove()" 
+                    style="background: none; border: none; color: white; cursor: pointer;">
+                Cerrar
+            </button>
+        </div>
+     `;
+    document.body.appendChild(newsAdv);
+}
+  
     // Función para verificar acceso
     function verificarAcceso() {
     onAuthStateChanged(auth, (user) => {
@@ -257,6 +288,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (mantenimientoActivo) {
             if (paginaActual !== paginaMantenimiento && !(user && uidsTeam.includes(user.uid))) {
                 window.location.href = `https://grouvex.github.io/${paginaMantenimiento}`;
+                mostrarNotificacion(`🚧 La Página está en mantenimiento, se te refirigirá a ${paginaMantenimiento}.`);
+                setTimeout(() => window.history.back(), 5000); // Retraso de 7 segundos
                 return;
             }
         } else if (paginaActual === paginaMantenimiento) {
@@ -284,6 +317,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // 3. Verificación SOLO para páginas con permisos
         if (permisos[paginaActual]) {
             if (!user) {
+                alert(`🔒 Necesitas estar registrado y ser ${nombresEquipos[paginaActual]}`);
                 mostrarNotificacion(`🔒 Necesitas estar registrado y ser ${nombresEquipos[paginaActual]}`);
                 setTimeout(() => window.history.back(), 5000); // Retraso de 7 segundos
                 return;
@@ -291,6 +325,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (!permisos[paginaActual].includes(user.uid)) {
                 const equipoRequerido = nombresEquipos[paginaActual];
+                alert(`⛔ Requieres ser ${equipoRequerido}. Redirigiendo a Equipo → Insignias...`);
                 mostrarNotificacion(`⛔ Requieres ser ${equipoRequerido}. Redirigiendo a Equipo → Insignias...`);
                 setTimeout(() => {
                     window.location.href = "https://grouvex.github.io/equipo#insignias";

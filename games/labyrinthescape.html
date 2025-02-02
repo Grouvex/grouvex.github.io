@@ -74,18 +74,45 @@ document.addEventListener('DOMContentLoaded', () => {
     let maze;
 
     function generateMaze() {
-        return [
-            [0, 0, 1, 0, 0, 0, 0, 1, 0, 2],
-            [0, 1, 1, 1, 0, 1, 0, 1, 0, 0],
-            [0, 0, 0, 1, 0, 1, 0, 1, 0, 0],
-            [0, 1, 0, 0, 0, 0, 0, 1, 1, 0],
-            [0, 1, 0, 1, 1, 1, 0, 1, 0, 0],
-            [0, 1, 0, 0, 0, 0, 0, 1, 0, 0],
-            [0, 0, 0, 1, 0, 1, 0, 1, 0, 0],
-            [1, 1, 0, 1, 0, 1, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 1, 1, 1, 1, 0],
-            [3, 1, 0, 0, 0, 0, 0, 0, 0, 0]
-        ];
+        const width = 10;
+        const height = 10;
+        const maze = Array.from({ length: height }, () => Array(width).fill(0));
+        // Paredes al azar
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                if (Math.random() < 0.3) maze[y][x] = 1;
+            }
+        }
+        return maze;
+    }
+
+    function ensurePath(maze) {
+        // Crear un camino del inicio al final usando DFS
+        const stack = [{ x: 0, y: 0 }];
+        maze[0][0] = 0; // Asegurar que el inicio no sea una pared
+        maze[maze.length - 1][maze[0].length - 1] = 2; // Asegurar el final
+
+        while (stack.length > 0) {
+            const { x, y } = stack.pop();
+            if (x === maze[0].length - 1 && y === maze.length - 1) break; // Llegar al final
+
+            const directions = [
+                { dx: 1, dy: 0 },
+                { dx: -1, dy: 0 },
+                { dx: 0, dy: 1 },
+                { dx: 0, dy: -1 }
+            ];
+
+            for (const { dx, dy } of directions) {
+                const nx = x + dx;
+                const ny = y + dy;
+                if (nx >= 0 && ny >= 0 && nx < maze[0].length && ny < maze.length && maze[ny][nx] === 0) {
+                    maze[ny][nx] = 0; // Limpiar el camino
+                    stack.push({ x: nx, y: ny });
+                }
+            }
+        }
+        return maze;
     }
 
     function createMaze() {
@@ -146,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     startBtn.addEventListener('click', () => {
-        maze = generateMaze(); // Ensure a solvable maze
+        maze = ensurePath(generateMaze());
         createMaze();
         startBtn.disabled = true;
         document.addEventListener('keydown', handleKeyPress);

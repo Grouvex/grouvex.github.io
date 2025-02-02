@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Labyrinth Escape</title>
+    <style>
+      body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #E0F7FA;
+    font-family: Arial, sans-serif;
+}
+
+#game {
+    margin-top: 50px;
+    text-align: center;
+}
+
+#maze {
+    display: grid;
+    grid-template-columns: repeat(10, 30px);
+    grid-template-rows: repeat(10, 30px);
+    gap: 2px;
+    margin-top: 20px;
+}
+
+.cell {
+    width: 30px;
+    height: 30px;
+    background-color: #B2DFDB;
+}
+
+.wall {
+    background-color: #00796B;
+}
+
+.start, .end, .character {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+}
+
+.start {
+    background-color: #FF8A80;
+}
+
+.end {
+    background-color: #FF6F00;
+}
+
+.character {
+    background-color: #F06292;
+}
+
+    </style>
+</head>
+<body>
+    <div id="game">
+        <h1>Labyrinth Escape</h1>
+        <p>Aunque esto parezca lo que es, no siempre es así. Muestra que apesar de las dificultades, puedes llegar a la meta.</p>
+        <div id="maze"></div>
+        <button id="start-btn">Iniciar Juego</button>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+    const mazeContainer = document.getElementById('maze');
+    const startBtn = document.getElementById('start-btn');
+    let characterPosition = { x: 0, y: 0 };
+    let characterElement;
+    let maze;
+
+    function generateMaze() {
+        return [
+            [0, 0, 1, 0, 0, 0, 0, 1, 0, 2],
+            [0, 1, 1, 1, 0, 1, 0, 1, 0, 0],
+            [0, 0, 0, 1, 0, 1, 0, 1, 0, 0],
+            [0, 1, 0, 0, 0, 0, 0, 1, 1, 0],
+            [0, 1, 0, 1, 1, 1, 0, 1, 0, 0],
+            [0, 1, 0, 0, 0, 0, 0, 1, 0, 0],
+            [0, 0, 0, 1, 0, 1, 0, 1, 0, 0],
+            [1, 1, 0, 1, 0, 1, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 1, 1, 1, 1, 0],
+            [3, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+        ];
+    }
+
+    function shuffleMaze(maze) {
+        const shuffledMaze = maze.flat();
+        for (let i = shuffledMaze.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffledMaze[i], shuffledMaze[j]] = [shuffledMaze[j], shuffledMaze[i]];
+        }
+        return Array.from({ length: maze.length }, (v, i) =>
+            shuffledMaze.slice(i * maze[0].length, i * maze[0].length + maze[0].length)
+        );
+    }
+
+    function createMaze() {
+        mazeContainer.innerHTML = '';
+        maze.forEach((row, y) => {
+            row.forEach((cell, x) => {
+                const cellDiv = document.createElement('div');
+                cellDiv.classList.add('cell');
+                if (cell === 1) cellDiv.classList.add('wall');
+                if (cell === 2) {
+                    cellDiv.classList.add('end');
+                    cellDiv.innerHTML = '💖';
+                }
+                if (cell === 3) {
+                    cellDiv.classList.add('start');
+                    characterPosition = { x, y };
+                    cellDiv.innerHTML = '👩';
+                }
+                mazeContainer.appendChild(cellDiv);
+            });
+        });
+        createCharacter();
+    }
+
+    function createCharacter() {
+        characterElement = document.createElement('div');
+        characterElement.classList.add('cell', 'character');
+        characterElement.innerHTML = '👩';
+        updateCharacterPosition();
+        mazeContainer.appendChild(characterElement);
+    }
+
+    function updateCharacterPosition() {
+        characterElement.style.gridColumnStart = characterPosition.x + 1;
+        characterElement.style.gridRowStart = characterPosition.y + 1;
+    }
+
+    function moveCharacter(dx, dy) {
+        const newX = characterPosition.x + dx;
+        const newY = characterPosition.y + dy;
+        if (newX >= 0 && newX < maze[0].length && newY >= 0 && newY < maze.length && maze[newY][newX] !== 1) {
+            characterPosition.x = newX;
+            characterPosition.y = newY;
+            updateCharacterPosition();
+            if (maze[newY][newX] === 2) {
+                alert('¡Has llegado al corazón! ❤️');
+                startBtn.disabled = false;
+                document.removeEventListener('keydown', handleKeyPress);
+            }
+        }
+    }
+
+    function handleKeyPress(e) {
+        if (e.key === 'ArrowUp') moveCharacter(0, -1);
+        if (e.key === 'ArrowDown') moveCharacter(0, 1);
+        if (e.key === 'ArrowLeft') moveCharacter(-1, 0);
+        if (e.key === 'ArrowRight') moveCharacter(1, 0);
+    }
+
+    startBtn.addEventListener('click', () => {
+        maze = shuffleMaze(generateMaze());
+        createMaze();
+        startBtn.disabled = true;
+        document.addEventListener('keydown', handleKeyPress);
+    });
+});
+    </script>
+</body>
+</html>

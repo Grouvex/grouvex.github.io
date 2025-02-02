@@ -1,3 +1,9 @@
+<script>
+    const date = new Date();
+  if(date >= new Date(date.getFullYear(), 1, 1) && date <= new Date(date.getFullYear(), 1, 15)){
+   alert( `Sección web no disponible\n\n\t-Inicio: 1 Feb 00:00:00 GMT\n\t-Fin: 15 Feb 00:00:00 GMT\n\nSerás redirigido a la página de inicio\nGracias por su paciencia.`);
+   window.location.href = 'https://grouvex.com/';}
+</script> 
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -27,7 +33,7 @@
         .heart {
             position: absolute;
             font-size: 30px;
-            transition: all 0.3s;
+            transition: all 0.2s;
             cursor: pointer;
             user-select: none;
         }
@@ -62,6 +68,7 @@
 </head>
 <body>
     <h1>¡Atrapa los Corazones! ❤️</h1>
+    <p>Tienes 60s para atrapar todos los ❤️ posibles!</p>
     <div id="score">Puntuación: 0</div>
     <div id="timer">Tiempo: 30</div>
     <button id="startButton">Comenzar Juego</button>
@@ -74,7 +81,7 @@
         const startButton = document.getElementById('startButton');
         
         let score = 0;
-        let timeLeft = 30;
+        let timeLeft = 60;
         let gameInterval;
         let timerInterval;
 
@@ -86,7 +93,7 @@
             heart.style.top = '-30px';
             
             heart.addEventListener('click', () => {
-                score += 10;
+                score += 1;
                 scoreElement.textContent = `Puntuación: ${score}`;
                 heart.remove();
             });
@@ -96,7 +103,7 @@
             // Animación de caída
             let position = -30;
             const fall = () => {
-                position += 2;
+                position += 3;
                 heart.style.top = position + 'px';
                 
                 if (position < gameContainer.offsetHeight) {
@@ -111,7 +118,7 @@
         function startGame() {
             // Reiniciar variables
             score = 0;
-            timeLeft = 30;
+            timeLeft = 60;
             scoreElement.textContent = `Puntuación: ${score}`;
             timerElement.textContent = `Tiempo: ${timeLeft}`;
             

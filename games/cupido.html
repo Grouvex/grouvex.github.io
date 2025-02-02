@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caza de Cupidos</title>
+    <style>
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #FFEBEE;
+    font-family: Arial, sans-serif;
+}
+
+#game {
+    margin-top: 50px;
+    text-align: center;
+}
+
+#score, #timer {
+    margin: 10px 0;
+    font-size: 24px;
+    color: #FF1744;
+}
+
+#start-btn {
+    padding: 10px 20px;
+    font-size: 18px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+#cupid-container {
+    position: relative;
+    width: 80vw;
+    height: 60vh;
+    border: 2px solid #FF1744;
+    overflow: hidden;
+}
+
+.cupid {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: #FF8A80;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+    animation: fly 3s linear infinite;
+}
+
+@keyframes fly {
+    from {
+        transform: translate(0, 0);
+    }
+    to {
+        transform: translate(80vw, 60vh);
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div id="game">
+        <h1>Caza de Cupidos</h1>
+        <div id="score">Puntuación: 0</div>
+        <div id="timer">Tiempo: 60s</div>
+        <button id="start-btn">Iniciar Juego</button>
+        <div id="cupid-container"></div>
+    </div>
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const cupidContainer = document.getElementById('cupid-container');
+    const scoreDisplay = document.getElementById('score');
+    const timerDisplay = document.getElementById('timer');
+    const startBtn = document.getElementById('start-btn');
+    let score = 0;
+    let gameInterval;
+    let countdown;
+
+    function createCupid() {
+        const cupid = document.createElement('div');
+        cupid.classList.add('cupid');
+        cupid.textContent = '👼';
+        cupid.style.left = `${Math.random() * (cupidContainer.clientWidth - 50)}px`;
+        cupid.style.top = `${Math.random() * (cupidContainer.clientHeight - 50)}px`;
+        cupidContainer.appendChild(cupid);
+
+        cupid.addEventListener('animationend', () => {
+            cupid.remove();
+        });
+
+        cupid.addEventListener('click', () => {
+            score++;
+            cupid.remove();
+            scoreDisplay.textContent = `Puntuación: ${score}`;
+        });
+    }
+
+    function startGame() {
+        score = 0;
+        scoreDisplay.textContent = `Puntuación: ${score}`;
+        timerDisplay.textContent = `Tiempo: 60s`;
+        startBtn.disabled = true;
+
+        gameInterval = setInterval(createCupid, 1000);
+        let timer = 60;
+
+        countdown = setInterval(() => {
+            timer--;
+            timerDisplay.textContent = `Tiempo: ${timer}s`;
+
+            if (timer === 0) {
+                clearInterval(countdown);
+                stopGame();
+            }
+        }, 1000);
+    }
+
+    function stopGame() {
+        clearInterval(gameInterval);
+        startBtn.disabled = false;
+        alert(`¡Tiempo terminado! Puntuación final: ${score}`);
+        removeCupids();
+    }
+
+    function removeCupids() {
+        const cupids = document.querySelectorAll('.cupid');
+        cupids.forEach(cupid => cupid.remove());
+    }
+
+    startBtn.addEventListener('click', startGame);
+});
+
+    </script>
+</body>
+</html>

@@ -65,8 +65,8 @@
         <div id="maze"></div>
         <button id="start-btn">Iniciar Juego</button>
     </div>
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
+<script>
+document.addEventListener('DOMContentLoaded', () => {
     const mazeContainer = document.getElementById('maze');
     const startBtn = document.getElementById('start-btn');
     let characterPosition = { x: 0, y: 0 };
@@ -86,17 +86,6 @@
             [0, 0, 0, 0, 0, 1, 1, 1, 1, 0],
             [3, 1, 0, 0, 0, 0, 0, 0, 0, 0]
         ];
-    }
-
-    function shuffleMaze(maze) {
-        const shuffledMaze = maze.flat();
-        for (let i = shuffledMaze.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shuffledMaze[i], shuffledMaze[j]] = [shuffledMaze[j], shuffledMaze[i]];
-        }
-        return Array.from({ length: maze.length }, (v, i) =>
-            shuffledMaze.slice(i * maze[0].length, i * maze[0].length + maze[0].length)
-        );
     }
 
     function createMaze() {
@@ -157,12 +146,12 @@
     }
 
     startBtn.addEventListener('click', () => {
-        maze = shuffleMaze(generateMaze());
+        maze = generateMaze(); // Ensure a solvable maze
         createMaze();
         startBtn.disabled = true;
         document.addEventListener('keydown', handleKeyPress);
     });
 });
-    </script>
+</script>
 </body>
 </html>

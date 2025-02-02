@@ -53,7 +53,8 @@ p {
   color: white;
   text-shadow: white;
   display: block;
-}
+}
+
 
 /* Variables y estilos base */
 :root {
@@ -392,29 +393,33 @@ footer {
   vertical-align: middle; /* Alineación vertical con el texto */
 }
 
-.tarjetas{
-  display: flex;
-  overflow-y: auto; /* Agrega una barra de desplazamiento vertical */
-  max-height: 200px;
-  box-shadow: 0 2px 5px rgb(37,44,247);
-  width: 100%;
-  flex-wrap: wrap; /* Muestra los cajetines en varias filas */
-  gap: 10px; /* Espacio entre los cajetines */
-    }
-    .tarjeta { 
-      display: flex; 
-      align-items: center; 
-      border-radius: 10px; 
-      box-shadow: 0 2px 5px rgb(51,177,215);
-      margin: 20px; 
-      padding: 20px; 
-      width: 90%;
-      height: auto;
-      padding-top: 0px;
-  padding-left: 10px;
-  padding-right: 10px;
-  flex-basis: calc(25% - 40px); /* 4 cajetines por fila */
-    }
+.tarjetas {
+    display: flex;
+    overflow-y: auto;
+    max-height: 200px;
+    box-shadow: 0 2px 5px rgb(37, 44, 247);
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+.tarjeta {
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgb(51, 177, 215);
+    margin: 20px;
+    padding: 20px;
+    width: 90%;
+    height: auto;
+    padding-top: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    flex-basis: calc(45% - 40px);
+    justify-content: center;
+}
     .tarjeta img { 
       border-radius: 50%; 
       width: 50px; 

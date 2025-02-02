@@ -403,15 +403,20 @@ function mostrarNotificacionRegistro() {
 }
 
 // Listas de acceso
-const uidsTeam = [...uidsOwner, ...uidsVAdmin, ...uidsAdmin, ...uidsVMod, ...uidsMod, ...uidsVBug, ...uidsBug];
-const uidsOwner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"]
-const uidsVAdmin = ["cQRgzlky1eNHjUh61GMPTTRnIZq2"]
-const uidsAdmin = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2"]
-const uidsVMod = [""]
-const uidsMod = [""]
-const uidsVBug = [""]
-const uidsBug = [""]
-const uidsArtistas = [...uidsTeam, "bY7fMyURlggvZyXDL9dCjwZEmU62"];
+const uidsOwnerGS = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"]
+// Grouvex Studios Team
+const uidsGSOwner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"]
+const uidsGSVAdmin = ["cQRgzlky1eNHjUh61GMPTTRnIZq2"]
+const uidsGSAdmin = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2"]
+const uidsGSVMod = [""]
+const uidsGSMod = [""]
+const uidsGSVBug = [""]
+const uidsGSBug = [""]
+const uidsGSTeamAdmins = [...uidsVAdmin, ...uidsAdmin]
+const uidsTeamMods = [...uidsVMod, ...uidsMod]
+const uidsTeamBugs = [...uidsVBug, ...uidsBug]
+const uidsTeam = [...uidsOwner, ...uidsTeamAdmins, ...uidsTeamMods, ...uidsVBug, ...uidsTeamBugs];
+const uidsArtistas = [...uidsTeamOwners, ...uidsTeamAdmins, "bY7fMyURlggvZyXDL9dCjwZEmU62"];
 const uidsPremium = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
 const uidsPartner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
 const uidsVPartner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];

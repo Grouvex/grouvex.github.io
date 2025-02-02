@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Adivina la Pareja</title>
+    <style>
+        body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #FCE4EC;
+    font-family: Arial, sans-serif;
+}
+
+#game {
+    display: grid;
+    grid-template-columns: repeat(4, 100px);
+    grid-gap: 10px;
+}
+
+.card {
+    width: 100px;
+    height: 100px;
+    background-color: #F06292;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.card.flipped {
+    transform: rotateY(180deg);
+    background-color: #FFF176;
+}
+
+.emoji {
+    display: none;
+}
+
+.card.flipped .emoji {
+    display: block;
+}
+    </style>
+</head>
+
+<body>
+    <div id="game"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const game = document.getElementById('game');
+    const pairs = [
+        '❤️', '💘', '💕', '💖', '💗', '💓', '💞', '💝',
+        '❤️', '💘', '💕', '💖', '💗', '💓', '💞', '💝'
+    ];
+    let flippedCards = [];
+    let matchedPairs = 0;
+    let isChecking = false;
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function createCard(pair) {
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.innerHTML = `<span class="emoji">${pair}</span>`;
+        card.dataset.pair = pair;
+        card.addEventListener('click', flipCard);
+        game.appendChild(card);
+    }
+
+    function flipCard() {
+        if (isChecking || this.classList.contains('flipped')) return;
+        this.classList.add('flipped');
+        flippedCards.push(this);
+        if (flippedCards.length === 2) {
+            isChecking = true;
+            checkMatch();
+        }
+    }
+
+    function checkMatch() {
+        const [firstCard, secondCard] = flippedCards;
+        if (firstCard.dataset.pair === secondCard.dataset.pair) {
+            matchedPairs++;
+            flippedCards = [];
+            isChecking = false;
+            if (matchedPairs === pairs.length / 2) {
+                alert('¡Has encontrado todas las parejas! 🎉');
+            }
+        } else {
+            setTimeout(() => {
+                firstCard.classList.remove('flipped');
+                secondCard.classList.remove('flipped');
+                flippedCards = [];
+                isChecking = false;
+            }, 1000);
+        }
+    }
+
+    shuffle(pairs);
+    pairs.forEach(pair => createCard(pair));
+});
+    </script>
+</body>
+</html>

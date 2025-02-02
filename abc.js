@@ -403,23 +403,15 @@ function mostrarNotificacionRegistro() {
 }
 
 // Listas de acceso
-const uidsOwnerGS = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"]
-// Grouvex Studios Team
-const uidsGSOwner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"]
-const uidsGSVAdmin = ["cQRgzlky1eNHjUh61GMPTTRnIZq2"]
-const uidsGSAdmin = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2"]
-const uidsGSVMod = [""]
-const uidsGSMod = [""]
-const uidsGSVBug = [""]
-const uidsGSBug = [""]
-const uidsGSTeamAdmins = [...uidsVAdmin, ...uidsAdmin]
-const uidsTeamMods = [...uidsVMod, ...uidsMod]
-const uidsTeamBugs = [...uidsVBug, ...uidsBug]
+const uidsOwner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"]
+const uidsTeamAdmins = ["cQRgzlky1eNHjUh61GMPTTRnIZq2", "aO5Y2hQVl9Zn7KlElpgI7jqsFfc2"]
+const uidsTeamMods = [""]
+const uidsTeamBugs = [""]
 const uidsTeam = [...uidsOwner, ...uidsTeamAdmins, ...uidsTeamMods, ...uidsVBug, ...uidsTeamBugs];
 const uidsArtistas = [...uidsTeamOwners, ...uidsTeamAdmins, "bY7fMyURlggvZyXDL9dCjwZEmU62"];
-const uidsPremium = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
-const uidsPartner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
-const uidsVPartner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
+const uidsPremium = [...uidsOwner, ...uidsTeamAdmins];
+const uidsPartner = [...uidsOwner, ...uidsTeamAdmins];
+const uidsVPartner = [...uidsOwner, ...uidsTeamAdmins];
 
 // Iniciar verificación
 verificarAcceso();

@@ -287,9 +287,8 @@ function mostrarnewsAdv() {
         // 1. Lógica de mantenimiento
         if (mantenimientoActivo) {
             if (paginaActual !== paginaMantenimiento && !(user && uidsTeam.includes(user.uid))) {
-                window.location.href = `https://grouvex.github.io/${paginaMantenimiento}`;
-                mostrarNotificacion(`🚧 La Página está en mantenimiento, se te refirigirá a ${paginaMantenimiento}.`);
-                setTimeout(() => window.history.back(), 5000); // Retraso de 7 segundos
+                alert(`🚧 La Página está en mantenimiento, se te refirigirá a ${paginaMantenimiento}.`);
+              setTimeout(() => {window.location.href = "https://grouvex.github.io/${paginaMantenimiento}";}, 5000);
                 return;
             }
         } else if (paginaActual === paginaMantenimiento) {

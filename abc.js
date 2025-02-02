@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function verificarAcceso() {
     onAuthStateChanged(auth, (user) => {
         // Configuración
-        const mantenimientoActivo = false;
+        const mantenimientoActivo = true;
         const paginaMantenimiento = "mantenimiento.html";
         const paginaActual = window.location.pathname.split("/").pop();
 

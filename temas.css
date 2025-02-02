@@ -1,34 +1,23 @@
-/* Estilos comunes */
-.falling-object {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  animation: fall linear infinite;
-}
-
 /* Primavera */
 .flower {
-  @extend .falling-object;
+  position: fixed;top: 0;left: 0;width: 10px;height: 10px;border-radius: 50%;animation: fall linear infinite;
   background: pink;
 }
 
 /* Verano */
 .sun {
-  @extend .falling-object;
+  position: fixed;top: 0;left: 0;width: 10px;height: 10px;border-radius: 50%;animation: fall linear infinite;
   background: yellow;
 }
 
 .leaf {
-  @extend .falling-object;
+  position: fixed;top: 0;left: 0;width: 10px;height: 10px;border-radius: 50%;animation: fall linear infinite;
   background: orange;
 }
 
 /* Navidad */
 .snowflake {
-  @extend .falling-object;
+  position: fixed;top: 0;left: 0;width: 10px;height: 10px;border-radius: 50%;animation: fall linear infinite;
   background: white;
 }
 
@@ -88,7 +77,7 @@ h1, h2, h3, h4, h5, h6, h7, h8 {
   color: white;
 }
 
-.mainTop {
+header {
   justify-self: center;
   align-self: center;
   display: flex;
@@ -129,7 +118,7 @@ main.theme1 { background: radial-gradient(circle, red, rgb(99, 99, 168), black);
 h1.theme1, h2.theme1, h3.theme1, h4.theme1, h5.theme1, h6.theme1 {
   background: linear-gradient(to bottom, green, rgb(99, 99, 168), black);
 }
-.mainTop.theme1 { background: linear-gradient(45deg, red, white, blue); }
+header.theme1 { background: linear-gradient(45deg, red, white, blue); }
 article.theme1 { background: linear-gradient(to bottom, pink, rgb(99, 99, 168), black); }
 section.theme1 { background: linear-gradient(to bottom, yellow, rgb(99, 99, 168), black); }
 aside.theme1 { background: radial-gradient(circle, rgb(200, 71, 226), rgb(99, 99, 168), black); }
@@ -141,7 +130,7 @@ main.theme2 { background: radial-gradient(circle, pink, rgb(99, 99, 168), black)
 h1.theme2, h2.theme2, h3.theme2, h4.theme2, h5.theme2, h6.theme2 {
   background: linear-gradient(to bottom, cyan, rgb(99, 99, 168), black);
 }
-.mainTop.theme2 { background: linear-gradient(45deg, green, yellow, blue, red, pink, cyan); }
+header.theme2 { background: linear-gradient(45deg, green, yellow, blue, red, pink, cyan); }
 
 /* Theme Space */
 body.space { background-image: url(https://th.bing.com/th/id/R.2233dd9dbbdc72fd46d1ae218bae965d?rik=mlwKyBXXRrJU6A&pid=ImgRaw&r=0); }
@@ -149,7 +138,7 @@ main.space { background-image: url(https://th.bing.com/th/id/OIP.NdcwLYq7n6iTiiu
 h1.space, h2.space, h3.space, h4.space, h5.space, h6.space {
   background-image: url(https://th.bing.com/th/id/R.bbc58b224e5d27d5648d8ae74e01bc2a?rik=MtYc%2bepoyXyjrw&pid=ImgRaw&r=0);
 }
-.mainTop.space { background-image: url(https://live.staticflickr.com/7060/6971643495_05dc317572_b.jpg); }
+header.space { background-image: url(https://live.staticflickr.com/7060/6971643495_05dc317572_b.jpg); }
 article.space { background-image: url(https://th.bing.com/th/id/OIP.kBY4LxAeo1gzY_un8PIWJAHaEb?rs=1&pid=ImgDetMain); }
 section.space { background-image: url(https://th.bing.com/th/id/OIP.XhSnvyZ7S0hRkD_erqTc0QHaEo?rs=1&pid=ImgDetMain); }
 aside.space { background-image: url(https://i.pinimg.com/originals/a5/d0/67/a5d0672466ca12f67241a1dc99171b75.jpg); }
@@ -160,7 +149,7 @@ main.starwars { background-image: url(https://th.bing.com/th/id/OIP.npOsomw2bikO
 h1.starwars, h2.starwars, h3.starwars, h4.starwars, h5.starwars, h6.starwars { 
   background-image: url(https://th.bing.com/th/id/OIP.fXzET8932QEAPm2_VL9h2wHaEK?w=316&h=180&c=7&r=0&o=5&pid=1.7); 
 }
-.mainTop.starwars { background-image: url(https://images.squarespace-cdn.com/content/v1/531630f6e4b0fa5080a5596f/1845bb78-5fb1-4250-a2b9-e959c995cef9/Star+Wars+v2.jpg); }
+header.starwars { background-image: url(https://images.squarespace-cdn.com/content/v1/531630f6e4b0fa5080a5596f/1845bb78-5fb1-4250-a2b9-e959c995cef9/Star+Wars+v2.jpg); }
 article.starwars { background-image: url(https://th.bing.com/th/id/OIP.Q0rcMIyko5F5ado-TefV6wHaEK?w=316&h=180&c=7&r=0&o=5&pid=1.7); }
 section.starwars { background-image: url(https://th.bing.com/th/id/OIP.fXzET8932QEAPm2_VL9h2wHaEK?w=316&h=180&c=7&r=0&o=5&pid=1.7); }
 aside.starwars { background-image: url(https://th.bing.com/th/id/OIP.JsQzo18AdsLv04LuKo4-9AHaEK?w=313&h=180&c=7&r=0&o=5&pid=1.7); }
@@ -172,7 +161,7 @@ main.jurassicworld { background-image: url(https://th.bing.com/th/id/OIP.J_Epz6F
 h1.jurassicworld, h2.jurassicworld, h3.jurassicworld, h4.jurassicworld, h5.jurassicworld, h6.jurassicworld { 
   background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTspVYXunQxW8ToCzewEXHfrD74p2QtILTTZw&s); 
 }
-.mainTop.jurassicworld { background-image: url(https://th.bing.com/th/id/OIP.TJK__-FIvQRNVUIPkvJQ9QHaEd); background-position-y: -50px; }
+header.jurassicworld { background-image: url(https://th.bing.com/th/id/OIP.TJK__-FIvQRNVUIPkvJQ9QHaEd); background-position-y: -50px; }
 article.jurassicworld { background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNG2bTMhZUu7owtd-3a6dDjM6yeB_p3DpzYA&s); }
 section.jurassicworld { background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgUBGAIO4J6icDD29q9HqP7MA4Nae4IAwLsQ&s); }
 aside.jurassicworld { background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCwwbTxxtBwVBs6rK7GigiCwkcIha0VOezXg&s); }
@@ -183,7 +172,7 @@ main.taylorswift { background-image: url(https://encrypted-tbn0.gstatic.com/imag
 h1.taylorswift, h2.taylorswift, h3.taylorswift, h4.taylorswift, h5.taylorswift, h6.taylorswift { 
   background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJlo5xIOwnn-TWiURYLAg1mJ9Fo54oUBVsVw&s); 
 }
-.mainTop.taylorswift { background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgbFt-ngiiBOWghZHp8cO2TbaIPic31Wv6Qg&s); }
+header.taylorswift { background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgbFt-ngiiBOWghZHp8cO2TbaIPic31Wv6Qg&s); }
 article.taylorswift { background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUSPNVF4QDrgiHN2AWmeWfis6Yts175pbWLQ&s); }
 section.taylorswift { background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1ukN6qhXGOeh062E3_z3RH9o4WxyqFZS2oA&s); }
 aside.taylorswift { background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTN8YN7Ve2FszAe_VElFp4ep6F_7Aof7Gv1HQ&s); }
@@ -194,7 +183,7 @@ main.pokemon { background-image: url(https://th.bing.com/th/id/OIP.93-XtZpSnUMUo
 h1.pokemon, h2.pokemon, h3.pokemon, h4.pokemon, h5.pokemon, h6.pokemon { 
   background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYQ7jqd02fXQQMjVwbxlW4l-hbdQqircT4NQ&s); 
 }
-.mainTop.pokemon { background-image: url(https://th.bing.com/th/id/OIP.JSYCbRX-KusrVVSgeYcOpQHaEK?w=297&h=180&c=7&r=0&o=5&pid=1.7); }
+header.pokemon { background-image: url(https://th.bing.com/th/id/OIP.JSYCbRX-KusrVVSgeYcOpQHaEK?w=297&h=180&c=7&r=0&o=5&pid=1.7); }
 article.pokemon { background-image: url(https://i.pinimg.com/originals/24/cc/a4/24cca421862a694fffcf184eab118f52.gif); }
 section.pokemon { background-image: url(https://th.bing.com/th/id/OIP.P_LxOVsyJfQaDltcpeXPuwHaEs?w=261&h=180&c=7&r=0&o=5&pid=1.7); }
 aside.pokemon { background-image: url(https://th.bing.com/th/id/OIP.RzVl-RnbVt3LC_VoLCWZMgHaEK?w=308&h=180&c=7&r=0&o=5&pid=1.7); }
@@ -205,7 +194,7 @@ main.superheroes { background-image: url(https://www.tuexpertomovil.com/wp-conte
 h1.superheroes, h2.superheroes, h3.superheroes, h4.superheroes, h5.superheroes, h6.superheroes { 
   background-image: url(https://dam.smashmexico.com.mx/wp-content/uploads/2018/04/24160210/lo-que-debes-recordar-avengers-infinity-war.jpg); 
 }
-.mainTop.superheroes { background-image: url(https://cdn2.mediotiempo.com/uploads/media/2019/05/05/avengers-internet.jpg); }
+header.superheroes { background-image: url(https://cdn2.mediotiempo.com/uploads/media/2019/05/05/avengers-internet.jpg); }
 article.superheroes { background-image: url(https://images.hdqwalls.com/download/avengers-infinity-war-movie-bill-poster-7e-1440x900.jpg); }
 section.superheroes { background-image: url(https://th.bing.com/th/id/OIP.PtMZcfKCKBDrm5mTDmzHHgHaEW?rs=1&pid=ImgDetMain); }
 aside.superheroes { background-image: url(https://static1.moviewebimages.com/wordpress/wp-content/uploads/article/vXIntIpv5EJCrh2WncQ634QBbOLsG3.jpg); }
@@ -216,7 +205,7 @@ main.thewildrobot { background-image: url(https://th.bing.com/th/id/OIP.PZFnac4U
 h1.thewildrobot, h2.thewildrobot, h3.thewildrobot, h4.thewildrobot, h5.thewildrobot, h6.thewildrobot { 
   background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsx1DJS9a81yuTwitR4oBTxSacXqax7aopQA&s); 
 }
-.mainTop.thewildrobot { background-image: url(https://televitos.com/wp-content/uploads/2024/09/RobotSalvaje_01-1.webp); }
+header.thewildrobot { background-image: url(https://televitos.com/wp-content/uploads/2024/09/RobotSalvaje_01-1.webp); }
 article.thewildrobot { background-image: url(https://media.tenor.com/Od7045DYNKEAAAAM/glowing-roz.gif); }
 section.thewildrobot { background-image: url(https://es.gizmodo.com/app/uploads/2024/10/Diseno-sin-titulo-15-2.jpg); }
 aside.thewildrobot { background-image: url(https://images4.alphacoders.com/138/1380398.jpg); }
@@ -227,7 +216,7 @@ main.naturaleza1 { background-image: url(https://th.bing.com/th/id/OIP.4XAJOA0-q
 h1.naturaleza1, h2.naturaleza1, h3.naturaleza1, h4.naturaleza1, h5.naturaleza1, h6.naturaleza1 { 
   background-image: url(https://s1.1zoom.me/b5050/892/432626-svetik_1366x768.jpg); 
 }
-.mainTop.naturaleza1 { background-image: url(https://th.bing.com/th/id/OIP.T5PqdU-B6jYYqzBPelW2EwHaFj?rs=1&pid=ImgDetMain); }
+header.naturaleza1 { background-image: url(https://th.bing.com/th/id/OIP.T5PqdU-B6jYYqzBPelW2EwHaFj?rs=1&pid=ImgDetMain); }
 article.naturaleza1 { background-image: url(https://th.bing.com/th/id/R.efa3563dc34b39d6f6b087c20e014608?rik=rR0bIEpvuiFOwQ&pid=ImgRaw&r=0); }
 section.naturaleza1 { background-image: url(https://w0.peakpx.com/wallpaper/1007/584/HD-wallpaper-nature-nature.jpg); }
 aside.naturaleza1 { background-image: url(https://th.bing.com/th/id/R.d630144c16d6ca1072900d57415a2d72?rik=mZmAuzQBo4Ip9g&pid=ImgRaw&r=0); }
@@ -238,7 +227,7 @@ main.naturaleza2 { background-image: url(https://th.bing.com/th/id/R.d1d3096e631
 h1.naturaleza2, h2.naturaleza2, h3.naturaleza2, h4.naturaleza2, h5.naturaleza2, h6.naturaleza2 { 
   background-image: url(https://th.bing.com/th/id/OIP.QPJQJLqTcrngDPFnC9PIYAHaEp?rs=1&pid=ImgDetMain); 
 }
-.mainTop.naturaleza2 { background-image: url(https://th.bing.com/th/id/OIP.aoYdHlS-eY68KaN3ZqXipQHaFB?rs=1&pid=ImgDetMain); }
+header.naturaleza2 { background-image: url(https://th.bing.com/th/id/OIP.aoYdHlS-eY68KaN3ZqXipQHaFB?rs=1&pid=ImgDetMain); }
 article.naturaleza2 { background-image: url(https://th.bing.com/th/id/R.b9b0c57168515141e7e5d60eee0cec82?rik=vb765zkcnB7u4Q&pid=ImgRaw&r=0); }
 section.naturaleza2 { background-image: url(https://p0.pikist.com/photos/577/451/northern-lights-aurora-borealis-northern-night-sky-green-lights-phenomenon-astronomy-thumbnail.jpg); }
 aside.naturaleza2 { background-image: url(https://www.banditdenuit.com/wp-content/uploads/2022/08/aurore-boreale-polaire.jpg); }
@@ -255,7 +244,7 @@ main.httyd { background-color: transparent; }
 h1.httyd, h2.httyd, h3.httyd, h4.httyd, h5.httyd, h6.httyd { 
   background-image: url(https://images6.alphacoders.com/955/thumb-1920-955571.jpg); 
 }
-.mainTop.httyd { background-image: url(https://th.bing.com/th/id/OIP.GSPiB_i4DFW__QygF3wa_wHaEK?dpr=1,9&pid=ImgDetMain&PC=EMMX01); }
+header.httyd { background-image: url(https://th.bing.com/th/id/OIP.GSPiB_i4DFW__QygF3wa_wHaEK?dpr=1,9&pid=ImgDetMain&PC=EMMX01); }
 article.httyd { background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgfWszYKfMi6AZJZWQXvsMU04jmoltIvQJUg&s); }
 section.httyd { background-image: url(https://wallpapercave.com/wp/wp1969390.jpg); }
 
@@ -470,114 +459,114 @@ align-content: center;
   background-repeat: no-repeat;
   background-position: center;
 }
-mainTop {
+header {
     justify-items: center;
     justify-content: normal;
     display: grid;
 }
-mainTop.theme1 {
-    justify-items: center;
-    justify-content: normal;
-    display: grid;
-}
-
-mainTop.theme2 {
+header.theme1 {
     justify-items: center;
     justify-content: normal;
     display: grid;
 }
 
-mainTop.space {
+header.theme2 {
     justify-items: center;
     justify-content: normal;
     display: grid;
 }
 
-mainTop.starwars {
+header.space {
     justify-items: center;
     justify-content: normal;
     display: grid;
 }
 
-mainTop.jurassicworld {
+header.starwars {
     justify-items: center;
     justify-content: normal;
     display: grid;
 }
 
-mainTop.taylorswift {
+header.jurassicworld {
     justify-items: center;
     justify-content: normal;
     display: grid;
 }
 
-mainTop.superheroes {
+header.taylorswift {
     justify-items: center;
     justify-content: normal;
     display: grid;
 }
 
-mainTop.naturaleza1 {
+header.superheroes {
     justify-items: center;
     justify-content: normal;
     display: grid;
 }
 
-mainTop.naturaleza2 {
+header.naturaleza1 {
     justify-items: center;
     justify-content: normal;
     display: grid;
 }
 
-mainTop.naturaleza3 {
+header.naturaleza2 {
     justify-items: center;
     justify-content: normal;
     display: grid;
 }
 
-mainTop.naturaleza4 {
+header.naturaleza3 {
     justify-items: center;
     justify-content: normal;
     display: grid;
 }
 
-mainTop.pokemon {
+header.naturaleza4 {
     justify-items: center;
     justify-content: normal;
     display: grid;
 }
 
-mainTop.thewildrobot {
+header.pokemon {
     justify-items: center;
     justify-content: normal;
     display: grid;
 }
 
-mainTop.httyd {
+header.thewildrobot {
     justify-items: center;
     justify-content: normal;
     display: grid;
 }
 
-mainTop.gstudios1 {
+header.httyd {
     justify-items: center;
     justify-content: normal;
     display: grid;
 }
 
-mainTop.gstudios2 {
+header.gstudios1 {
     justify-items: center;
     justify-content: normal;
     display: grid;
 }
 
-mainTop.gstudios3 {
+header.gstudios2 {
     justify-items: center;
     justify-content: normal;
     display: grid;
 }
 
-mainTop.gstudios4 {
+header.gstudios3 {
+    justify-items: center;
+    justify-content: normal;
+    display: grid;
+}
+
+header.gstudios4 {
     justify-items: center;
     justify-content: normal;
     display: grid;

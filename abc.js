@@ -288,7 +288,7 @@ function mostrarnewsAdv() {
         if (mantenimientoActivo) {
             if (paginaActual !== paginaMantenimiento && !(user && uidsTeam.includes(user.uid))) {
                 alert(`🚧 La Página está en mantenimiento, se te refirigirá a ${paginaMantenimiento}.`);
-              setTimeout(() => {window.location.href = "https://grouvex.github.io/${paginaMantenimiento}";}, 5000);
+              setTimeout(() => {window.location.href = `https://grouvex.github.io/${paginaMantenimiento}`;}, 5000);
                 return;
             }
         } else if (paginaActual === paginaMantenimiento) {
@@ -403,7 +403,14 @@ function mostrarNotificacionRegistro() {
 }
 
 // Listas de acceso
-const uidsTeam = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2", "qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
+const uidsTeam = [...uidsOwner, ...uidsVAdmin, ...uidsAdmin, ...uidsVMod, ...uidsMod, ...uidsVBug, ...uidsBug];
+const uidsOwner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"]
+const uidsVAdmin = ["cQRgzlky1eNHjUh61GMPTTRnIZq2"]
+const uidsAdmin = ["aO5Y2hQVl9Zn7KlElpgI7jqsFfc2"]
+const uidsVMod = [""]
+const uidsMod = [""]
+const uidsVBug = [""]
+const uidsBug = [""]
 const uidsArtistas = [...uidsTeam, "bY7fMyURlggvZyXDL9dCjwZEmU62"];
 const uidsPremium = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];
 const uidsPartner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32", "cQRgzlky1eNHjUh61GMPTTRnIZq2"];

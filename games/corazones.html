@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Catch the Love - San Valentín</title>
+    <style>
+        body {
+            margin: 0;
+            background: #ffe6f2;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #gameContainer {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            margin-top: 20px;
+            border: 3px solid #ff6699;
+            border-radius: 10px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 30px;
+            transition: all 0.3s;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        #score {
+            font-size: 24px;
+            color: #ff3366;
+            margin: 10px;
+        }
+
+        #timer {
+            font-size: 20px;
+            color: #ff3366;
+            margin: 10px;
+        }
+
+        #startButton {
+            padding: 10px 20px;
+            font-size: 18px;
+            background: #ff3366;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        #startButton:hover {
+            background: #ff1a53;
+        }
+    </style>
+</head>
+<body>
+    <h1>¡Atrapa los Corazones! ❤️</h1>
+    <div id="score">Puntuación: 0</div>
+    <div id="timer">Tiempo: 30</div>
+    <button id="startButton">Comenzar Juego</button>
+    <div id="gameContainer"></div>
+
+    <script>
+        const gameContainer = document.getElementById('gameContainer');
+        const scoreElement = document.getElementById('score');
+        const timerElement = document.getElementById('timer');
+        const startButton = document.getElementById('startButton');
+        
+        let score = 0;
+        let timeLeft = 30;
+        let gameInterval;
+        let timerInterval;
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * (gameContainer.offsetWidth - 30) + 'px';
+            heart.style.top = '-30px';
+            
+            heart.addEventListener('click', () => {
+                score += 10;
+                scoreElement.textContent = `Puntuación: ${score}`;
+                heart.remove();
+            });
+
+            gameContainer.appendChild(heart);
+            
+            // Animación de caída
+            let position = -30;
+            const fall = () => {
+                position += 2;
+                heart.style.top = position + 'px';
+                
+                if (position < gameContainer.offsetHeight) {
+                    requestAnimationFrame(fall);
+                } else {
+                    heart.remove();
+                }
+            }
+            requestAnimationFrame(fall);
+        }
+
+        function startGame() {
+            // Reiniciar variables
+            score = 0;
+            timeLeft = 30;
+            scoreElement.textContent = `Puntuación: ${score}`;
+            timerElement.textContent = `Tiempo: ${timeLeft}`;
+            
+            // Limpiar contenedor
+            gameContainer.innerHTML = '';
+            
+            // Iniciar intervalos
+            gameInterval = setInterval(createHeart, 1000);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = `Tiempo: ${timeLeft}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(gameInterval);
+                    clearInterval(timerInterval);
+                    alert(`¡Juego terminado! Puntuación final: ${score}`);
+                }
+            }, 1000);
+        }
+
+        startButton.addEventListener('click', startGame);
+    </script>
+</body>
+</html>

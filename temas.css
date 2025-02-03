@@ -277,7 +277,7 @@ footer {
 }
 .footer-row {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     width: 100%;
     align-items: flex-start;
     flex-wrap: wrap;
@@ -311,7 +311,6 @@ footer {
 }
 .cajetin-titulo {
   background: transparent;
-  overflow-y: auto;
   box-sizing: border-box;
   text-align: left; 
   word-wrap: break-word; 
@@ -358,18 +357,19 @@ footer {
     justify-content: center;
 }
 .cajetin {
-  width: 90%;
-  max-width: 300px;
-  height: auto;
-  /* Estilos para cada cajetín */
-  padding-top: 0px;
-  padding-left: 10px;
-  padding-right: 10px;
-  flex-basis: calc(25% - 40px); /* 4 cajetines por fila */
-  background: linear-gradient(0deg, transparent, cyan, blue); /* Fondo del texto */
+    display: flex;
+    width: 90%;
+    max-width: 300px;
+    height: auto;
+    padding-top: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    flex-basis: calc(25% - 40px);
+    background: linear-gradient(0deg, transparent, cyan, blue);
+    flex-wrap: wrap;
+    justify-content: center;
 }
 .cajetin img {
-  margin-top: 0px;
   width: 100%;
   height: auto;
   vertical-align: middle; /* Alineación vertical con el texto */

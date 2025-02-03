@@ -29,7 +29,7 @@
             .then(txt => {const s = document.createElement('script');s.type = type;if (defer) s.defer = true;s.innerHTML = txt;document.head.appendChild(s);})
             .catch(err => console.error('Error cargando el script:', err));}
     loadScript('abc.js', 'module');
-    loadScript('time.js');
+    loadScript('time.js', 'text/javascript');
     loadScript('index.js', 'text/javascript', true);
  // Función para cargar CSS dinámicamente
         function loadCSS(url) {

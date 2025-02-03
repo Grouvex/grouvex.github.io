@@ -28,9 +28,12 @@
             .then(res => res.text())
             .then(txt => {const s = document.createElement('script');s.type = type;if (defer) s.defer = true;s.innerHTML = txt;document.head.appendChild(s);})
             .catch(err => console.error('Error cargando el script:', err));}
-    loadScript('abc.js', 'module');
-    loadScript('time.js', 'text/javascript');
-    loadScript('index.js', 'text/javascript', true);
+        const loadScripts = async () => {
+            await loadScript('time.js');
+            await loadScript('abc.js', 'module');
+            await loadScript('index.js', 'text/javascript', true);
+        };
+        loadScripts();
  // Función para cargar CSS dinámicamente
         function loadCSS(url) {
             fetch(url)
@@ -77,8 +80,7 @@
       <p><span id="ActualizadoDATE"></span></p>
       <p><a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@grouvex.com</footer></a></p>
     </div></div></div>
-
-<script>const uTActualizado = 1738429200; actualizarFechas(uTActualizado, "ActualizadoDATE");</script> 
+  <script>window.addEventListener('load', () => {const uTActualizado = 1738429200;if (typeof actualizarFechas === 'function') {actualizarFechas(uTActualizado, "ActualizadoDATE");} else {console.error('La función actualizarFechas no está definida');}});</script>
             <!-- Título -->
             <article>
                 <h1>Grouvex Studios</h1>

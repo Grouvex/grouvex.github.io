@@ -17,16 +17,6 @@
     <meta property="og:locale" content="es_ES">
     <link rel="canonical" href="https://grouvex.com/">
     <link rel="icon" href="img/GROUVEX.png" type="image/x-icon">
-    <script>
-        // Función para cargar CSS dinámicamente
-        function loadCSS(url) {
-            fetch(url)
-                .then(res => res.text())
-                .then(css => {const style = document.createElement('style');style.innerHTML = css;document.head.appendChild(style);})
-                .catch(err => console.error('Error cargando el CSS:', err));}
-        loadCSS('index.css');
-        loadCSS('temas.css');
-    </script>
     <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-database.js" defer></script>

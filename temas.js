@@ -1,9 +1,14 @@
-// Encapsular las variables dentro de una IIFE
 (function() {
+    const themeSelect = document.getElementById('themeSelect');
+
+    // Deshabilitar el botón al inicio
+    themeSelect.disabled = true;
+
     // Cuando se carga la página
     window.addEventListener('load', () => {
         checkThemes();
         loadSelectedTheme();
+        themeSelect.disabled = false;
     });
 
     function checkThemes() {
@@ -38,9 +43,6 @@
         }
     }
 
-    const themeSelect = document.getElementById('themeSelect');
-
-    // Cuando se cambia el tema
     themeSelect.addEventListener('change', function() {
         changeTheme(this.value);
         localStorage.setItem('selectedTheme', this.value);

@@ -10,8 +10,6 @@
     <meta property="og:image" href="img/GROUVEX.png">
     <meta property="og:url" content="https://grouvex.com/">
     <meta property="og:locale" content="es_ES">
-    <link rel="stylesheet" href="../index.css">
-    <link rel="stylesheet" href="../temas.css">
     <link rel="icon" href="img/GROUVEX.png" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="MobileOptimized" content="width">
@@ -29,6 +27,28 @@
     <meta name="HandheldFriendly" content="true">
     <link rel="preconnect" href="https://example.com">
     <link rel="dns-prefetch" href="https://example.com">
+    <script>
+    // Función para cargar JS dinámicamente
+    function loadScript(url, type = 'text/javascript', defer = false) {
+        return fetch(url)
+            .then(res => res.text())
+            .then(txt => {const s = document.createElement('script');s.type = type;if (defer) s.defer = true;s.innerHTML = txt;document.head.appendChild(s);})
+            .catch(err => console.error('Error cargando el script:', err));}
+        const loadScripts = async () => {
+            await loadScript('time.js');
+            await loadScript('abc.js', 'module');
+            await loadScript('index.js', 'text/javascript', true);
+        };
+        loadScripts();
+    // Función para cargar CSS dinámicamente
+        function loadCSS(url) {
+            fetch(url)
+                .then(res => res.text())
+                .then(css => {const style = document.createElement('style');style.innerHTML = css;document.head.appendChild(style);})
+                .catch(err => console.error('Error cargando el CSS:', err));}
+        loadCSS('index.css');
+        loadCSS('temas.css');
+    </script>
     <!-- Scripts sin nonce -->
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
@@ -46,16 +66,15 @@
         });
     </script>
     <script src="//www.youtube.com/player_api"></script><script src="https://www.youtube.com/iframe_api"></script>
-    <script src="time.js"></script></script><script type="module" src="abc.js"></script><script src="index.js"></script>
 </head>
 <body>
-        <mainTop>
+        <header>
             <a href="https://grouvex.github.io/"> <div class="img-container"></div></a> 
             <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
                 <span id="menuG"></span> <!-- General -->
                 <span id="menuT"></span> <!-- Temas/Idioma -->
                 <span id="menuU"></span> <!-- Usuario -->
-        </mainTop>
+        </header>
 <body>
  <!-- Anuncio -->
  <div id="news"></div>

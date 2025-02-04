@@ -175,7 +175,7 @@ const planetsConfig = [
         name: 'tierra',
         size: 10,
         color: 0x0066CC,
-        distance: 140,
+        distance: 150,
         speed: 0.012,
         ringConfig: {
         },
@@ -189,7 +189,7 @@ const planetsConfig = [
         name: 'marte',
         size: 5.3,
         color: 0xFF4500,
-        distance: 170,
+        distance: 190,
         speed: 0.01,
         ringConfig: {
         },
@@ -203,7 +203,7 @@ const planetsConfig = [
         name: 'jupiter',
         size: 25,
         color: 0xD4AF37,
-        distance: 250,
+        distance: 280,
         speed: 0.008,
         ringConfig: {
         },
@@ -217,7 +217,7 @@ const planetsConfig = [
         name: 'saturn',
         size: 21,
         color: 0xF4A460,
-        distance: 320,
+        distance: 360,
         speed: 0.006,
         ringConfig: {
             innerRadius: 30,
@@ -235,7 +235,7 @@ const planetsConfig = [
         name: 'uranus',
         size: 18,
         color: 0x40E0D0,
-        distance: 380,
+        distance: 420,
         speed: 0.004,
         ringConfig: {
             innerRadius: 22,
@@ -253,7 +253,7 @@ const planetsConfig = [
         name: 'neptuno',
         size: 17,
         color: 0x4169E1,
-        distance: 420,
+        distance: 500,
         speed: 0.002,
         ringConfig: {
         },

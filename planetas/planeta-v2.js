@@ -15,7 +15,7 @@ const ambientLight = new THREE.AmbientLight(0x404040);
 scene.add(ambientLight);
 
 // Sol realista
-const sunGeometry = new THREE.SphereGeometry(30, 64, 64);
+const sunGeometry = new THREE.SphereGeometry(60, 64, 64);
 const sunMaterial = new THREE.MeshPhongMaterial({
     color: 0xFFD700,
     emissive: 0xFFA500,
@@ -107,7 +107,7 @@ const createConstellation = () => {
         new THREE.LineBasicMaterial({ 
             color: 0x3A5FCD,
             transparent: true,
-            opacity: 0.1
+            opacity: 0.0
         })
     );
     
@@ -156,7 +156,7 @@ const planetsConfig = [
         name: 'mecury',
         size: 3.8,
         color: 0x808080,
-        distance: 70,
+        distance: 80,
         speed: 0.02,
         ringConfig: {},
         moons: {}
@@ -165,7 +165,7 @@ const planetsConfig = [
         name: 'venus',
         size: 9.5,
         color: 0xFFD700,
-        distance: 90,
+        distance: 100,
         speed: 0.015,
         ringConfig: {
         },
@@ -175,7 +175,7 @@ const planetsConfig = [
         name: 'tierra',
         size: 10,
         color: 0x0066CC,
-        distance: 120,
+        distance: 140,
         speed: 0.012,
         ringConfig: {
         },
@@ -189,7 +189,7 @@ const planetsConfig = [
         name: 'marte',
         size: 5.3,
         color: 0xFF4500,
-        distance: 150,
+        distance: 170,
         speed: 0.01,
         ringConfig: {
         },
@@ -203,7 +203,7 @@ const planetsConfig = [
         name: 'jupiter',
         size: 25,
         color: 0xD4AF37,
-        distance: 220,
+        distance: 250,
         speed: 0.008,
         ringConfig: {
         },
@@ -217,7 +217,7 @@ const planetsConfig = [
         name: 'saturn',
         size: 21,
         color: 0xF4A460,
-        distance: 280,
+        distance: 320,
         speed: 0.006,
         ringConfig: {
             innerRadius: 30,
@@ -235,7 +235,7 @@ const planetsConfig = [
         name: 'uranus',
         size: 18,
         color: 0x40E0D0,
-        distance: 340,
+        distance: 380,
         speed: 0.004,
         ringConfig: {
             innerRadius: 22,
@@ -253,7 +253,7 @@ const planetsConfig = [
         name: 'neptuno',
         size: 17,
         color: 0x4169E1,
-        distance: 400,
+        distance: 420,
         speed: 0.002,
         ringConfig: {
         },
@@ -264,7 +264,6 @@ const planetsConfig = [
         }
     }
 ];
-    // [Tamaño, Distancia, Color, Velocidad, Lunas]
     
 const planets = planetsConfig.map(config => {
     const planet = createPlanet(

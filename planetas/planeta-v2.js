@@ -1,6 +1,6 @@
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 3000);
-camera.position.z = 500;
+camera.position.z = 600;
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -189,7 +189,7 @@ const planetsConfig = [
         name: 'marte',
         size: 5.3,
         color: 0xFF4500,
-        distance: 190,
+        distance: 200,
         speed: 0.01,
         ringConfig: {
         },
@@ -203,7 +203,7 @@ const planetsConfig = [
         name: 'jupiter',
         size: 25,
         color: 0xD4AF37,
-        distance: 280,
+        distance: 330,
         speed: 0.008,
         ringConfig: {
         },
@@ -217,7 +217,7 @@ const planetsConfig = [
         name: 'saturn',
         size: 21,
         color: 0xF4A460,
-        distance: 360,
+        distance: 400,
         speed: 0.006,
         ringConfig: {
             innerRadius: 30,
@@ -235,7 +235,7 @@ const planetsConfig = [
         name: 'uranus',
         size: 18,
         color: 0x40E0D0,
-        distance: 420,
+        distance: 480,
         speed: 0.004,
         ringConfig: {
             innerRadius: 22,
@@ -253,7 +253,7 @@ const planetsConfig = [
         name: 'neptuno',
         size: 17,
         color: 0x4169E1,
-        distance: 500,
+        distance: 560,
         speed: 0.002,
         ringConfig: {
         },

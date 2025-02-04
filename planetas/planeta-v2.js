@@ -199,10 +199,24 @@ const planetsConfig = [
             distance: 10
         }
     },
+        {
+        name: 'jupiter',
+        size: 25,
+        color: 0xD4AF37,
+        distance: 220,
+        speed: 0.008,
+        ringConfig: {
+        },
+        moons: {
+            count: 4,
+            size: 3,
+            distance: 30
+        }
+    },
     {
         name: 'saturn',
-        size: 25,
-        color: 0xC0A070,
+        size: 21,
+        color: 0xF4A460,
         distance: 280,
         speed: 0.006,
         ringConfig: {
@@ -213,8 +227,8 @@ const planetsConfig = [
         },
         moons: {
             count: 7,
-            size: 3,
-            distance: 35
+            size: 2,
+            distance: 25
         }
     },
     {
@@ -231,12 +245,26 @@ const planetsConfig = [
         },
         moons: {
             count: 5,
+            size: 1.5,
+            distance: 20
+        }
+    },
+    {
+        name: 'neptuno',
+        size: 17,
+        color: 0x4169E1,
+        distance: 400,
+        speed: 0.002,
+        ringConfig: {
+        },
+        moons: {
+            count: 2,
             size: 2,
-            distance: 25
+            distance: 18
         }
     }
 ];
-    // [Tamaño, Distancia, Color, Velocidad, Lunas]  [25, 220, 0xD4AF37, 0.008, { count: 4, size: 3, distance: 30 }], // Júpiter    [21, 280, 0xF4A460, 0.006, { count: 7, size: 2, distance: 25 }], // Saturno    [18, 340, 0x40E0D0, 0.004, { count: 5, size: 1.5, distance: 20 }], // Urano    [17, 400, 0x4169E1, 0.002, { count: 2, size: 2, distance: 18 }]  // Neptuno
+    // [Tamaño, Distancia, Color, Velocidad, Lunas]
     
 const planets = planetsConfig.map(config => {
     const planet = createPlanet(

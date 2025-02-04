@@ -10,11 +10,11 @@ const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
 
-// Iluminación mejorada
+// Iluminación
 const ambientLight = new THREE.AmbientLight(0x404040);
 scene.add(ambientLight);
 
-// Sol realista
+// Sol
 const sunGeometry = new THREE.SphereGeometry(60, 64, 64);
 const sunMaterial = new THREE.MeshPhongMaterial({
     color: 0xFFD700,
@@ -26,7 +26,7 @@ const sun = new THREE.Mesh(sunGeometry, sunMaterial);
 sun.add(new THREE.PointLight(0xFFFFFF, 2, 2000));
 scene.add(sun);
 
-// Fondo estelar mejorado
+// Fondo estelar
 const createStarField = () => {
     const geometry = new THREE.BufferGeometry();
     const positions = [];
@@ -39,7 +39,6 @@ const createStarField = () => {
             (Math.random() - 0.5) * 2500
         );
         
-        // Colores estelares variables
         const color = new THREE.Color();
         color.setHSL(
             Math.random() * 0.1 + 0.5,
@@ -64,64 +63,172 @@ const createStarField = () => {
 };
 scene.add(createStarField());
 
-// Constelaciones
+// Sistema de Constelaciones Zodiacales (12 patrones)
 const createConstellation = () => {
     const group = new THREE.Group();
-    const starCount = 15;
-    const starGeometry = new THREE.SphereGeometry(0.5, 8, 8);
-    const starMaterial = new THREE.MeshPhongMaterial({ 
-        color: 0x7EC0EE,
-        emissive: 0x3A5FCD,
-        emissiveIntensity: 0.3
+    
+    const zodiacConstellations = [
+        { // Aries
+            pattern: [
+                {x:0,y:0,z:0}, {x:35,y:10,z:5}, {x:70,y:-5,z:-3}, {x:105,y:15,z:7},
+                {x:50,y:40,z:-5}, {x:90,y:30,z:2}
+            ],
+            color: 0xFF4500,
+            stars: 6
+        },
+        { // Tauro
+            pattern: [
+                {x:0,y:0,z:0}, {x:30,y:45,z:8}, {x:60,y:25,z:-5}, {x:45,y:-20,z:10},
+                {x:75,y:-10,z:-3}, {x:105,y:15,z:5}, {x:90,y:40,z:-7}
+            ],
+            color: 0xCD5C5C,
+            stars: 7
+        },
+        { // Géminis
+            pattern: [
+                {x:0,y:0,z:0}, {x:40,y:0,z:0}, {x:80,y:0,z:0}, {x:0,y:50,z:10},
+                {x:40,y:50,z:-5}, {x:80,y:50,z:5}
+            ],
+            color: 0x00BFFF,
+            stars: 6
+        },
+        { // Cáncer
+            pattern: [
+                {x:0,y:0,z:0}, {x:25,y:35,z:8}, {x:50,y:0,z:-5}, {x:75,y:35,z:5},
+                {x:100,y:0,z:-3}, {x:50,y:-30,z:10}
+            ],
+            color: 0x9370DB,
+            stars: 6
+        },
+        { // Leo
+            pattern: [
+                {x:0,y:0,z:0}, {x:40,y:30,z:5}, {x:80,y:50,z:-3}, {x:120,y:30,z:7},
+                {x:160,y:0,z:-5}, {x:120,y:-30,z:3}, {x:80,y:-50,z:-7}
+            ],
+            color: 0xFFD700,
+            stars: 7
+        },
+        { // Virgo
+            pattern: [
+                {x:0,y:0,z:0}, {x:50,y:40,z:8}, {x:100,y:20,z:-5}, {x:150,y:0,z:5},
+                {x:100,y:-20,z:-3}, {x:50,y:-40,z:10}, {x:0,y:-60,z:0}
+            ],
+            color: 0x32CD32,
+            stars: 7
+        },
+        { // Libra
+            pattern: [
+                {x:0,y:0,z:0}, {x:40,y:0,z:5}, {x:80,y:0,z:-3}, {x:40,y:40,z:7},
+                {x:80,y:40,z:-5}, {x:40,y:-40,z:3}
+            ],
+            color: 0xFF69B4,
+            stars: 6
+        },
+        { // Escorpio
+            pattern: [
+                {x:0,y:0,z:0}, {x:30,y:25,z:8}, {x:60,y:50,z:-5}, {x:90,y:25,z:5},
+                {x:120,y:0,z:-3}, {x:150,y:-25,z:10}, {x:180,y:-50,z:0}
+            ],
+            color: 0xDC143C,
+            stars: 7
+        },
+        { // Sagitario
+            pattern: [
+                {x:0,y:0,z:0}, {x:40,y:30,z:5}, {x:80,y:60,z:-3}, {x:120,y:30,z:7},
+                {x:80,y:0,z:-5}, {x:120,y:-30,z:3}, {x:160,y:-60,z:-7}
+            ],
+            color: 0x20B2AA,
+            stars: 7
+        },
+        { // Capricornio
+            pattern: [
+                {x:0,y:0,z:0}, {x:35,y:40,z:8}, {x:70,y:20,z:-5}, {x:105,y:0,z:5},
+                {x:140,y:-20,z:-3}, {x:175,y:-40,z:10}
+            ],
+            color: 0x808080,
+            stars: 6
+        },
+        { // Acuario
+            pattern: [
+                {x:0,y:0,z:0}, {x:30,y:50,z:5}, {x:60,y:0,z:-3}, {x:90,y:50,z:7},
+                {x:120,y:0,z:-5}, {x:150,y:50,z:3}, {x:180,y:0,z:-7}
+            ],
+            color: 0x4169E1,
+            stars: 7
+        },
+        { // Piscis
+            pattern: [
+                {x:0,y:0,z:0}, {x:40,y:30,z:8}, {x:80,y:0,z:-5}, {x:120,y:30,z:5},
+                {x:160,y:0,z:-3}, {x:200,y:30,z:10}, {x:240,y:0,z:0}
+            ],
+            color: 0x87CEEB,
+            stars: 7
+        }
+    ];
+
+    const type = zodiacConstellations[Math.floor(Math.random() * zodiacConstellations.length)];
+    const starGeometry = new THREE.SphereGeometry(1, 16, 16);
+    const starMaterial = new THREE.MeshPhongMaterial({
+        color: type.color,
+        emissive: type.color,
+        emissiveIntensity: 1.5,
+        specular: 0xFFFFFF,
+        shininess: 100
     });
-    
-    // Estrellas
-    const stars = new THREE.InstancedMesh(starGeometry, starMaterial, starCount);
+
+    const basePosition = new THREE.Vector3(
+        (Math.random() - 0.5) * 2000,
+        (Math.random() - 0.5) * 2000,
+        (Math.random() - 0.5) * 2000
+    );
+
+    const stars = new THREE.InstancedMesh(starGeometry, starMaterial, type.stars);
     const dummy = new THREE.Object3D();
-    
-    for(let i = 0; i < starCount; i++) {
-        dummy.position.set(
-            (Math.random() - 0.5) * 2000,
-            (Math.random() - 0.5) * 2000,
-            (Math.random() - 0.5) * 2000
+
+    type.pattern.forEach((pos, i) => {
+        const variation = new THREE.Vector3(
+            (Math.random() - 0.5) * 15,
+            (Math.random() - 0.5) * 15,
+            (Math.random() - 0.5) * 15
         );
+
+        dummy.position.copy(basePosition)
+            .add(new THREE.Vector3(pos.x, pos.y, pos.z))
+            .add(variation);
+
+        dummy.rotation.set(
+            Math.random() * Math.PI,
+            Math.random() * Math.PI,
+            Math.random() * Math.PI
+        );
+        
         dummy.updateMatrix();
         stars.setMatrixAt(i, dummy.matrix);
-    }
-    
-    // Líneas de conexión
-    const lineGeometry = new THREE.BufferGeometry();
-    const linePositions = [];
-    
-    for(let i = 0; i < starCount * 3; i++) {
-        linePositions.push(
-            (Math.random() - 0.5) * 2000,
-            (Math.random() - 0.5) * 2000,
-            (Math.random() - 0.5) * 2000
-        );
-    }
-    
-    lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
-    const lines = new THREE.LineSegments(
-        lineGeometry,
-        new THREE.LineBasicMaterial({ 
-            color: 0x3A5FCD,
-            transparent: true,
-            opacity: 0.0
-        })
-    );
-    
+    });
+
     group.add(stars);
-    group.add(lines);
+    
+    group.userData = {
+        blinkSpeed: 0.02 + Math.random() * 0.04,
+        rotationSpeed: (Math.random() - 0.5) * 0.005,
+        intensity: Math.random() * 2
+    };
+    
     return group;
 };
 
-// Añadir múltiples constelaciones
-for(let i = 0; i < 15; i++) {
-    scene.add(createConstellation());
+// Generar 24 constelaciones (2 de cada tipo zodiacal)
+for(let i = 0; i < 24; i++) {
+    const constellation = createConstellation();
+    constellation.rotation.set(
+        Math.random() * Math.PI * 2,
+        Math.random() * Math.PI * 2,
+        Math.random() * Math.PI * 2
+    );
+    scene.add(constellation);
 }
 
-// Sistema planetario mejorado
+// Sistema Planetario
 const createPlanet = (size, color, ringConfig = null) => {
     const planet = new THREE.Mesh(
         new THREE.SphereGeometry(size, 32, 32),
@@ -203,7 +310,7 @@ const planetsConfig = [
         name: 'jupiter',
         size: 25,
         color: 0xD4AF37,
-        distance: 330,
+        distance: 340,
         speed: 0.008,
         ringConfig: {
         },
@@ -217,7 +324,7 @@ const planetsConfig = [
         name: 'saturn',
         size: 21,
         color: 0xF4A460,
-        distance: 400,
+        distance: 450,
         speed: 0.006,
         ringConfig: {
             innerRadius: 30,
@@ -235,7 +342,7 @@ const planetsConfig = [
         name: 'uranus',
         size: 18,
         color: 0x40E0D0,
-        distance: 480,
+        distance: 550,
         speed: 0.004,
         ringConfig: {
             innerRadius: 22,
@@ -253,7 +360,7 @@ const planetsConfig = [
         name: 'neptuno',
         size: 17,
         color: 0x4169E1,
-        distance: 560,
+        distance: 650,
         speed: 0.002,
         ringConfig: {
         },
@@ -264,55 +371,41 @@ const planetsConfig = [
         }
     }
 ];
-    
+
 const planets = planetsConfig.map(config => {
-    const planet = createPlanet(
-        config.size,
-        config.color,
-        config.ringConfig
-    );
-    
-    planet.userData = {
-        angle: Math.random() * Math.PI * 2,
-        speed: config.speed,
-        distance: config.distance
-    };
-    
-    // Añadir lunas
-    for(let i = 0; i < config.moons.count; i++) {
-        const moon = createPlanet(config.moons.size, 0x888888);
-        const angle = (i / config.moons.count) * Math.PI * 2;
-        moon.position.set(
-            Math.cos(angle) * (config.size + config.moons.distance),
-            0,
-            Math.sin(angle) * (config.size + config.moons.distance)
-        );
-        moon.userData = {
-            angle: angle,
-            speed: 0.02 + Math.random() * 0.02
-        };
-        planet.add(moon);
+    const planet = createPlanet(config.size, config.color, config.ringConfig);
+    planet.userData = { angle: Math.random() * Math.PI * 2, speed: config.speed, distance: config.distance };
+
+    if(config.moons) {
+        for(let i = 0; i < config.moons.count; i++) {
+            const moon = createPlanet(config.moons.size, 0x888888);
+            const angle = (i / config.moons.count) * Math.PI * 2;
+            moon.position.set(
+                Math.cos(angle) * (config.size + config.moons.distance),
+                0,
+                Math.sin(angle) * (config.size + config.moons.distance)
+            );
+            moon.userData = { angle: angle, speed: 0.02 + Math.random() * 0.02 };
+            planet.add(moon);
+        }
     }
-    
+
     scene.add(planet);
     return planet;
 });
 
-// Animación mejorada
+// Animación
 function animate() {
     requestAnimationFrame(animate);
     
-    // Rotación del Sol
     sun.rotation.y += 0.002;
     
-    // Movimiento planetario
     planets.forEach(planet => {
         planet.userData.angle += planet.userData.speed;
         planet.position.x = Math.cos(planet.userData.angle) * planet.userData.distance;
         planet.position.z = Math.sin(planet.userData.angle) * planet.userData.distance;
         planet.rotation.y += 0.005;
         
-        // Rotación de las lunas
         planet.children.forEach(child => {
             if(child instanceof THREE.Mesh) {
                 child.userData.angle += child.userData.speed;
@@ -325,13 +418,24 @@ function animate() {
         });
     });
     
+    scene.children.forEach(child => {
+        if(child instanceof THREE.Group && child.userData){
+            child.userData.intensity += child.userData.blinkSpeed;
+            child.children[0].material.emissiveIntensity = 
+                Math.abs(Math.sin(child.userData.intensity)) * 1.5 + 0.5;
+            
+            child.rotation.x += child.userData.rotationSpeed;
+            child.rotation.y += child.userData.rotationSpeed * 0.8;
+        }
+    });
+    
     controls.update();
     renderer.render(scene, camera);
 }
 
 animate();
 
-// Manejo de redimensión
+// Resize Handler
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();

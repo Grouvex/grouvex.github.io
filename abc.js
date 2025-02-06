@@ -67,10 +67,6 @@ function inicializarFormularioDeAutenticacion() {
   const toggleButton = document.getElementById('toggleButton');
   let isLogin = true;
 
-  if (!authForm || !formTitle || !authButton || !emailLoginBtn || !googleLoginBtn || !toggleButton) {
-    console.log("Error: No se encontraron todos los elementos del DOM");
-  }
-
   // Toggle entre inicio de sesión y registro
   toggleButton.addEventListener('click', () => {
     isLogin = !isLogin;

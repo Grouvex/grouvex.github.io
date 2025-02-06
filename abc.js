@@ -68,8 +68,8 @@ function inicializarFormularioDeAutenticacion() {
   let isLogin = true;
 
   if (!authForm || !formTitle || !authButton || !emailLoginBtn || !googleLoginBtn || !toggleButton) {
-    console.error("Error: No se encontraron todos los elementos del DOM");
-  } else {
+    console.log("Error: No se encontraron todos los elementos del DOM");
+  }
 
   // Toggle entre inicio de sesión y registro
   toggleButton.addEventListener('click', () => {
@@ -116,7 +116,6 @@ function inicializarFormularioDeAutenticacion() {
       handleEmailRegistration(email, password);
     }
   });
-  }
 }
 
 function handleEmailLogin(email, password) {

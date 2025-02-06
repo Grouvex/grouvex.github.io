@@ -69,8 +69,7 @@ function inicializarFormularioDeAutenticacion() {
 
   if (!authForm || !formTitle || !authButton || !emailLoginBtn || !googleLoginBtn || !toggleButton) {
     console.error("Error: No se encontraron todos los elementos del DOM");
-    return;
-  }
+  } else {
 
   // Toggle entre inicio de sesión y registro
   toggleButton.addEventListener('click', () => {
@@ -117,6 +116,7 @@ function inicializarFormularioDeAutenticacion() {
       handleEmailRegistration(email, password);
     }
   });
+  }
 }
 
 function handleEmailLogin(email, password) {
@@ -281,14 +281,14 @@ function mostrarnewsAdv() {
     onAuthStateChanged(auth, (user) => {
         // Configuración
         const mantenimientoActivo = true;
-        const paginaMantenimiento = "mantenimiento.html";
+        const paginaMantenimiento = "mantenimiento";
         const paginaActual = window.location.pathname.split("/").pop();
 
         // 1. Lógica de mantenimiento
         if (mantenimientoActivo) {
             if (paginaActual !== paginaMantenimiento && !(user && uidsTeam.includes(user.uid))) {
                 alert(`🚧 La Página está en mantenimiento, se te refirigirá a ${paginaMantenimiento}.`);
-              setTimeout(() => {window.location.href = `https://grouvex.github.io/${paginaMantenimiento}`;}, 5000);
+              setTimeout(() => {window.location.href = `https://grouvex.github.io/${paginaMantenimiento}`;}, 2000);
                 return;
             }
         } else if (paginaActual === paginaMantenimiento) {

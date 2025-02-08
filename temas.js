@@ -1,6 +1,6 @@
 (function() {
     const themeSelect = document.getElementById('themeSelect');
-
+    const defaultTheme = 'gstudios4';
     // Deshabilitar el botón al inicio
     themeSelect.disabled = true;
 
@@ -51,9 +51,12 @@
     function changeTheme(theme) {
         const elements = document.querySelectorAll('p, body, main, mainTop, h1, h2, h3, h4, h5, h6, article, section, aside, panel, hr');
         const themeClasses = [
-            'theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes',
-            'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'pokemon', 'thewildrobot',
-            'httyd', 'gstudios1', 'gstudios2', 'gstudios3', 'gstudios4'
+            'theme1', 'theme2',
+            'space', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 
+            'pokemon',
+            'taylorswift',
+            'thewildrobot', 'httyd',
+            'gstudios1', 'gstudios2', 'gstudios3', 'gstudios4', 'starwars', 'jurassicworld', 'superheroes'
         ];
 
         elements.forEach(element => {
@@ -65,7 +68,7 @@
     }
 
     function loadSelectedTheme() {
-        const selectedTheme = localStorage.getItem('selectedTheme');
+        const selectedTheme = localStorage.getItem('selectedTheme') || defaultTheme;
         if (selectedTheme && selectedTheme !== 'default') {
             changeTheme(selectedTheme);
             themeSelect.value = selectedTheme;

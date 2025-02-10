@@ -240,42 +240,45 @@ function checkAccess(uid) {
 
 
 document.addEventListener('DOMContentLoaded', function() {
+if (true){
 function mostrarnewsAdv() {
     const newsAdv = document.createElement("div");
     newsAdv.style = `
         position: fixed;
-        top: 20px;
-        left: 20px;
-        padding: 15px;
-        background: #4CAF50;
+        top: 3px;
+        left: 3px;
+        padding: 1px;
+        background: rgb(5 59 219);
         color: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        z-index: 1000;
-        max-width: 90%;
-        width: 300px;
+        border-radius: 9px;
+        box-shadow: 2px 2px 2px gold;
+        z-index: 1;
+        width: 99%;
+        max-height: 80px;
+        overflow-y: auto;
         text-align: center;
-        font-size: 14px;
+        font-size: 11px;
     `;
-    newsAdv.innerHTML = `
-        <p>Nuevos ToS y PP</p>
-        <div style="margin-top: 10px; display: flex; justify-content: center; gap: 10px;">
-            <a href="https://grouvex.github.io/tos" style="color: white; text-decoration: underline;">ToS</a>
-            <a href="https://grouvex.github.io/pp" style="color: white; text-decoration: underline;">PP</a>
+    newsAdv.innerHTML = ` 
+        <h1 style="color: black"><span class="insignia vvadmin"></span> | Nuevos ToS y PP</h1>
+        <div style="margin-top: 10px; display: flex; justify-content: center; gap: 10px;flex-wrap: wrap;flex-direction: column;align-content: center;">
+        <p>Para mejorar la seguridad de los usuarios, así como el del equipo, se han modificado los Términos de Servicio (ToS) y la Política de Privacidad (PP)</p>
+        <p><a href="https://grouvex.github.io/tos" style="color: white; text-decoration: underline;">ToS</a> | <a href="https://grouvex.github.io/pp" style="color: white; text-decoration: underline;">PP</a></p>
             <button onclick="this.parentElement.parentElement.remove()" 
-                    style="background: none; border: none; color: white; cursor: pointer;">
+                    style="background: none; border: none; color: red; cursor: pointer;">
                 Cerrar
             </button>
         </div>
      `;
     document.body.appendChild(newsAdv);
 }
-  
+  mostrarnewsAdv();
+}
     // Función para verificar acceso
     function verificarAcceso() {
     onAuthStateChanged(auth, (user) => {
         // Configuración
-        const mantenimientoActivo = true;
+        const mantenimientoActivo = false;
         const paginaMantenimiento = "mantenimiento";
         const paginaActual = window.location.pathname.split("/").pop();
 
@@ -283,7 +286,7 @@ function mostrarnewsAdv() {
         if (mantenimientoActivo) {
             if (paginaActual !== paginaMantenimiento && !(user && uidsTeam.includes(user.uid))) {
                 alert(`🚧 La Página está en mantenimiento, se te refirigirá a ${paginaMantenimiento}.`);
-              setTimeout(() => {window.location.href = `https://grouvex.github.io/${paginaMantenimiento}`;}, 2000);
+              setTimeout(() => {window.location.href = `https://grouvex.github.io/${paginaMantenimiento}`;}, 3000);
                 return;
             }
         } else if (paginaActual === paginaMantenimiento) {
@@ -313,7 +316,7 @@ function mostrarnewsAdv() {
             if (!user) {
                 alert(`🔒 Necesitas estar registrado y ser ${nombresEquipos[paginaActual]}`);
                 mostrarNotificacion(`🔒 Necesitas estar registrado y ser ${nombresEquipos[paginaActual]}`);
-                setTimeout(() => window.history.back(), 5000); // Retraso de 7 segundos
+                setTimeout(() => window.history.back(), 5000);
                 return;
             }
 
@@ -323,14 +326,14 @@ function mostrarnewsAdv() {
                 mostrarNotificacion(`⛔ Requieres ser ${equipoRequerido}. Redirigiendo a Equipo → Insignias...`);
                 setTimeout(() => {
                     window.location.href = "https://grouvex.github.io/equipo#insignias";
-                }, 5000); // Retraso de 7 segundos
+                }, 5000);
                 return;
             }
         }
         // 4. Páginas públicas (cualquier otra no listada en permisos)
         else {
             if (!user) {
-                mostrarNotificacionRegistro(); // Notificación solo en páginas públicas
+                mostrarNotificacionRegistro();
             }
         }
     });
@@ -359,7 +362,7 @@ function mostrarNotificacion(mensaje) {
 
     setTimeout(() => {
         notificacion.remove();
-    }, 7000); // Duración de 7 segundos
+    }, 8000);
 }
 
 // Notificación de registro no intrusiva
@@ -394,7 +397,7 @@ function mostrarNotificacionRegistro() {
 
     setTimeout(() => {
         notificacion.remove();
-    }, 8000); // Duración de 10 segundos
+    }, 8000);
 }
 
 // Listas de acceso

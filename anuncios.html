@@ -10,7 +10,7 @@
     <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects"><meta name="author" content="Grouvex Studios"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="theme-color" content="#hexcode"><meta property="og:url" content="https://grouvex.com/"><meta property="og:type" content="website"><meta property="og:locale" content="es_ES"><link rel="canonical" href="https://grouvex.com/"><link rel="icon" href="img/GROUVEX.png" type="image/x-icon"><meta property="og:site_name" content="Grouvex Studios">
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script><script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script><script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
     <link rel="stylesheet" href="index.css"><link rel="stylesheet" href="temas.css">
-    <script src="time.js"></script></script><script type="module" src="abc.js"></script><script src="index.js"></script>
+    <script src="time.js"></script><script type="module" src="abc.js"></script><script src="index.js"></script>
     <script src="jquery-3.5.1.min.js"></script>
         <script> 
             document.addEventListener("DOMContentLoaded", function() { 
@@ -83,9 +83,10 @@
         const anunciosData = [
             {
                 id: "1696118400",
-                uT: "1696118400",actualizadoID: "Anuncio1",
-                user: "Grouvex-Studios", userimagen: "../img/GROUVEX.png",
-                fecha: "2023-10-01",
+                uT: "1696118400",
+                actualizadoID: "Anuncio1",
+                user: "Grouvex-Studios",
+                userimagen: "../img/GROUVEX.png",
                 titulo: "🎊 Feliz Año Nuevo 2025 🎄",
                 contenido: `Felices Fiestas a todos`,
                 masInfo: `
@@ -103,7 +104,16 @@
                     </div>
                 `
             },
-            { id: "1696204800", uT: "1696204800",actualizadoID: "Anuncio2", user: "Grouvex-Studios", userimagen: "../img/GROUVEX.png", fecha: "2023-10-02", titulo: `Anuncio 2`, contenido: `Nuevo lanzamiento de consola.`, masInfo: `Más detalles sobre el anuncio 2.` },
+            {
+                id: "1696204800",
+                uT: "1696204800",
+                actualizadoID: "Anuncio2",
+                user: "Grouvex-Studios",
+                userimagen: "../img/GROUVEX.png",
+                titulo: `Anuncio 2`,
+                contenido: `Nuevo lanzamiento de consola.`,
+                masInfo: `Más detalles sobre el anuncio 2.`
+            }
         ];
 
         // Variables para controlar la carga de anuncios
@@ -121,8 +131,7 @@
                         <div class="cabecera-anuncio">
                             <img src="${anuncio.userimagen}" alt="">
                             <span class="${anuncio.user}"></span>
-                            <p><span>${anuncio.actualizadoID}</span></p>
-                            <script>const uT${anuncio.actualizadoID} = ${anuncio.uT}; actualizarFechas(uT${anuncio.actualizadoID}, "${anuncio.actualizadoID}");</script>
+                            <p><span id="${anuncio.actualizadoID}"></span></p>
                         </div>
                         <div class="contenido-anuncio">
                             <h1>${anuncio.titulo}</h1>
@@ -135,6 +144,9 @@
                     </div>
                 `;
                 content.insertAdjacentHTML('beforeend', anuncioHTML);
+
+                // Llamar a la función actualizarFechas después de insertar el HTML
+                actualizarFechas(anuncio.uT, anuncio.actualizadoID);
             });
 
             anunciosCargados += anunciosPorCarga;
@@ -160,6 +172,6 @@
             }
         });
     </script>
- <div id="footer"></div>
+    <div id="footer"></div>
 </body>
 </html>

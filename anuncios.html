@@ -25,7 +25,7 @@
         .index ul { list-style: none; padding: 0; }
         .index ul li { margin: 10px 0; }
         .index ul li a { text-decoration: none; color: #333; }
-        .content { width: 80%; padding: 10px; box-sizing: border-box; }
+        .content { width: 100%; padding: 10px; box-sizing: border-box; }
         .anuncio { display: flex; margin-bottom: 20px; padding: 20px; background: transparent; border: 1px solid #ddd; border-radius: 5px; position: relative; }
         .cabecera-anuncio { width: 150px; background: #333; color: white; padding: 10px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; text-align: center; margin-right: 20px; }
         .cabecera-anuncio img { width: 50px; height: auto; margin-bottom: 10px; }
@@ -40,9 +40,11 @@
         .ver-mas:hover { background: #0056b3; }
         .cargar-mas { margin: 20px auto; padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; display: block; }
         .cargar-mas:disabled { background: #6c757d; cursor: not-allowed; }
+        .toggle-indice { margin: 10px; padding: 5px 10px; background: #ffc107; color: black; border: none; border-radius: 3px; cursor: pointer; }
+        .toggle-indice:hover { background: #e0a800; }
         @media (max-width: 768px) {
             .anuncios { flex-direction: column; }
-            .index { width: 100%; height: 25vh; position: relative; }
+            .index { width: 100%; height: 40vh; position: relative; }
             .content { width: 100%; }
             .anuncio { flex-direction: column; }
             .cabecera-anuncio { width: 100%; margin-right: 0; margin-bottom: 10px; }
@@ -50,19 +52,24 @@
     </style>
 </head>
 <body>
-<header>
-    <a href="https://grouvex.github.io/"> <div class="img-container" loading="lazy"></div></a> 
-    <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
-        <nav>
-            <span id="menuG"></span>
-            <span id="menuT"></span>
-            <span id="menuU"></span>
-        </nav>
-    </span>
-</header>
+    <header>
+        <a href="https://grouvex.github.io/">
+            <div class="img-container" loading="lazy"></div>
+        </a>
+        <span style="font-family: Times New Roman; color: white; box-shadow: 0 0 10px gold; width: 100%">
+            <nav>
+                <span id="menuG"></span>
+                <span id="menuT"></span>
+                <span id="menuU"></span>
+            </nav>
+        </span>
+    </header>
+    <!-- Botón para ocultar/mostrar el índice -->
+    <button class="toggle-indice">Ocultar Índice</button>
+
     <div class="anuncios">
         <!-- Índice -->
-        <div class="index">
+        <div class="index" id="indice">
             <ul>
                 <li><a href="#1696118400">🎊 Feliz Año Nuevo 2025 🎄</a></li>
                 <hr>
@@ -169,6 +176,20 @@
             if (e.target.classList.contains('ver-mas')) {
                 const anuncio = e.target.closest('.anuncio');
                 anuncio.classList.toggle('maximizado');
+            }
+        });
+
+        // Función para ocultar/mostrar el índice
+        const toggleIndice = document.querySelector('.toggle-indice');
+        const indice = document.getElementById('indice');
+
+        toggleIndice.addEventListener('click', () => {
+            if (indice.style.display === "none") {
+                indice.style.display = "block";
+                toggleIndice.textContent = "Ocultar Índice";
+            } else {
+                indice.style.display = "none";
+                toggleIndice.textContent = "Mostrar Índice";
             }
         });
     </script>

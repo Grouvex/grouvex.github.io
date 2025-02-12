@@ -4,73 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anuncios</title>
-    <style>
-    .anuncios {display: flex;flex-direction: row;}
-    /* Índice */
-    .index {width: 20%;background-color: #f4f4f4;padding: 10px;box-sizing: border-box;position: sticky;top: 0;height: 100vh;overflow-y: auto;}
-    .index ul {list-style-type: none;padding: 0;}
-    .index ul li {margin: 10px 0;}
-    .index ul li a {text-decoration: none;color: #333;}
-
-    /* Contenido de anuncios */
-    .content {
-        width: 66.66%; /* 2/3 de la pantalla en ordenador */
-        padding: 10px;
-        box-sizing: border-box;
-    }
-    
-    .anuncio {
-        margin-bottom: 20px;
-        padding: 20px;
-        background-color: transparent;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        position: relative;
-    }
-    
-    .anuncio .mas-info {
-        display: none; /* Oculto por defecto */
-        margin-top: 10px;
-        padding: 10px;
-        background-color: transparent;
-        border-top: 1px solid #ddd;
-    }
-    
-    .anuncio.maximizado .mas-info {
-        display: block; /* Mostrar cuando esté maximizado */
-    }
-    
-    .ver-mas {
-        margin-top: 10px;
-        padding: 5px 10px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 3px;
-        cursor: pointer;
-    }
-    
-    .ver-mas:hover {
-        background-color: #0056b3;
-    }
-    
-    /* Estilos para móviles */
+<style>
+    .anuncios { display: flex; flex-direction: row; }
+    .index { width: 20%; background: #f4f4f4; padding: 10px; box-sizing: border-box; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+    .index ul { list-style: none; padding: 0; }
+    .index ul li { margin: 10px 0; }
+    .index ul li a { text-decoration: none; color: #333; }
+    .content { width: 80%; padding: 10px; box-sizing: border-box; }
+    .anuncio { display: flex; margin-bottom: 20px; padding: 20px; background: transparent; border: 1px solid #ddd; border-radius: 5px; position: relative; }
+    .cabecera-anuncio { width: 150px; background: #333; color: white; padding: 10px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; text-align: center; margin-right: 20px; }
+    .cabecera-anuncio img { width: 50px; height: auto; margin-bottom: 10px; }
+    .cabecera-anuncio span { font-size: 14px; margin-bottom: 5px; }
+    .cabecera-anuncio p { margin: 2px 0; font-size: 12px; }
+    .cabecera-anuncio a { color: white; text-decoration: none; }
+    .contenido-anuncio { flex: 1; }
+    .contenido-anuncio h2 { font-size: 24px; margin-bottom: 10px; }
+    .contenido-anuncio .mas-info { display: none; margin-top: 10px; padding: 10px; background: transparent; border-top: 1px solid #ddd; }
+    .anuncio.maximizado .mas-info { display: block; }
+    .ver-mas { margin-top: 10px; padding: 5px 10px; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer; }
+    .ver-mas:hover { background: #0056b3; }
     @media (max-width: 768px) {
-        .anuncios {
-            flex-direction: column;
-        }
-    
-        .index {
-            width: 100%;
-            height: 25vh; /* 1/4 de la pantalla en móvil */
-            position: relative;
-        }
-    
-        .content {
-            width: 100%;
-        }
+        .anuncios { flex-direction: column; }
+        .index { width: 100%; height: 25vh; position: relative; }
+        .content { width: 100%; }
+        .anuncio { flex-direction: column; }
+        .cabecera-anuncio { width: 100%; margin-right: 0; margin-bottom: 10px; }
     }
-    </style>
+</style>
 </head>
 <body>
     <div class="anuncios">
@@ -92,74 +52,102 @@
 
         <!-- Contenido de anuncios -->
         <div class="content">
-          
+            <!-- Anuncio 1 -->
             <div id="1696118400" class="anuncio">
-                <h2>Anuncio 1 (2023-10-01)</h2>
-                <p>¡Gran oferta en smartphones! No te pierdas los descuentos en las últimas marcas.</p>
-                <div class="mas-info">
-                  <h2>🎊 Feliz Año Nuevo 2025 🎄</h2>
-                  <div style="background: transparent;border-left: 10px solid white;color: #000000;padding: 5px;display: flex; box-shadow: 0 0 20px green;margin-top:5px">
-                      <div style="font-size: 20px; margin-right: 10px">🎄</div>
-                      <div style="flex-grow: 1">
-                          <p style="color: white; background: green;font-size: 18px; margin: 0">Feliz Año Nuevo 2025</p>
-                          <hr>
-                          <p style="background: rgba(255, 255, 255, 0.5);font-size: 14px; margin: 0;color:black">Muchas Gracias a Todos por vuestra colaboración para que la web siga activa. Y muchas gracias a todos los artistas. Los artistas pueden escribir un comentario en <a href="https://grouvex.com/comentarios" style="color:white">Chat de Artistas</a> para que otros usuarios puedan ver vuestros comentarios ⛄ <span class="status recommended">Recommended</span></p>
-                          <p style="background: rgba(255, 255, 255, 0.5);font-size: 14px; margin: 0;color:black">⚠️ Por motivos de navidad.Aunqué el servicio de atención al cliente este disponible, la respuesta del equipo puede tardar bastante. Necesitan descansar tambien. ⚠️ </p>
-                  <hr>
-                   <p style="background: rgba(255, 255, 255, 0.5);font-size: 12px;color:black;margin:0">©Grouvex Studios</p>
-                      </div> 
-                  </div>
+                <div class="cabecera-anuncio">
+                    <img src="../img/GROUVEX.png" alt="Logo de Grouvex">
+                    <span class="Grouvex-Studios"></span>
+                    <p><span id="ActualizadoDATE1"></span></p>
+                    <p>
+                        <a href="mailto:grouvex.studio@grouvex.com" style="color: white;">
+                            grouvex.studio@grouvex.com
+                        </a>
+                    </p>
                 </div>
-                <button class="ver-mas">Ver más</button>
+                <div class="contenido-anuncio">
+                    <h2>🎊 Feliz Año Nuevo 2025 🎄</h2>
+                    <p>¡Gran oferta en smartphones! No te pierdas los descuentos en las últimas marcas.</p>
+                    <div class="mas-info">
+                        <h2>🎊 Feliz Año Nuevo 2025 🎄</h2>
+                        <div style="background: transparent; border-left: 10px solid white; color: #000000; padding: 5px; display: flex; box-shadow: 0 0 20px green; margin-top: 5px">
+                            <div style="font-size: 20px; margin-right: 10px">🎄</div>
+                            <div style="flex-grow: 1">
+                                <p style="color: white; background: green; font-size: 18px; margin: 0">Feliz Año Nuevo 2025</p>
+                                <hr>
+                                <p style="background: rgba(255, 255, 255, 0.5); font-size: 14px; margin: 0; color: black">Muchas Gracias a Todos por vuestra colaboración para que la web siga activa. Y muchas gracias a todos los artistas. Los artistas pueden escribir un comentario en <a href="https://grouvex.com/comentarios" style="color: white">Chat de Artistas</a> para que otros usuarios puedan ver vuestros comentarios ⛄ <span class="status recommended">Recommended</span></p>
+                                <p style="background: rgba(255, 255, 255, 0.5); font-size: 14px; margin: 0; color: black">⚠️ Por motivos de navidad. Aunqué el servicio de atención al cliente este disponible, la respuesta del equipo puede tardar bastante. Necesitan descansar tambien. ⚠️</p>
+                                <hr>
+                                <p style="background: rgba(255, 255, 255, 0.5); font-size: 12px; color: black; margin: 0">©Grouvex Studios</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="ver-mas">Ver más</button>
+                </div>
             </div>
 
             <!-- Anuncio 2 -->
             <div id="1696204800" class="anuncio">
-                <h2>Anuncio 2 (2023-10-02)</h2>
-                <p>Nuevo lanzamiento: La consola de próxima generación ya está disponible.</p>
-                <div class="mas-info">
-                    <p>Más información sobre el anuncio 2. ¡No te quedes sin tu consola de próxima generación!</p>
+                <div class="cabecera-anuncio">
+                    <img src="../img/GROUVEX.png" alt="Logo de Grouvex">
+                    <span class="Grouvex-Studios"></span>
+                    <p><span id="ActualizadoDATE2"></span></p>
+                    <p><a href="mailto:grouvex.studio@grouvex.com" style="color: white;">grouvex.studio@grouvex.com</a></p>
                 </div>
-                <button class="ver-mas">Ver más</button>
+                <div class="contenido-anuncio">
+                    <h2>Anuncio 2</h2>
+                    <p>Nuevo lanzamiento: La consola de próxima generación ya está disponible.</p>
+                    <div class="mas-info">
+                        <p>Más información sobre el anuncio 2. ¡No te quedes sin tu consola de próxima generación!</p>
+                    </div>
+                    <button class="ver-mas">Ver más</button>
+                </div>
             </div>
-
         </div>
     </div>
-
     <script>
-      // Función para cargar más anuncios al hacer scroll
-window.addEventListener('scroll', () => {
-    const content = document.querySelector('.content');
-    const anuncios = document.querySelectorAll('.anuncio');
-    const lastAnuncio = anuncios[anuncios.length - 1];
-    const lastAnuncioOffset = lastAnuncio.offsetTop + lastAnuncio.clientHeight;
-    const pageOffset = window.pageYOffset + window.innerHeight;
+        // Actualizar las fechas en los anuncios
+        const uTActualizado1 = 1738429200;
+        const uTActualizado2 = 1738515600;
+        actualizarFechas(uTActualizado1, "ActualizadoDATE1");
+        actualizarFechas(uTActualizado2, "ActualizadoDATE2");
 
-    if (pageOffset > lastAnuncioOffset) {
-        // Aquí podrías cargar más anuncios dinámicamente
-        console.log('Cargar más anuncios...');
-    }
-});
+        // Función para cargar más anuncios al hacer scroll
+        window.addEventListener('scroll', () => {
+            const content = document.querySelector('.content');
+            const anuncios = document.querySelectorAll('.anuncio');
+            const lastAnuncio = anuncios[anuncios.length - 1];
+            const lastAnuncioOffset = lastAnuncio.offsetTop + lastAnuncio.clientHeight;
+            const pageOffset = window.pageYOffset + window.innerHeight;
 
-// Función para ocultar el índice al subir
-let lastScrollTop = 0;
-window.addEventListener('scroll', () => {
-    const index = document.querySelector('.index');
-    let st = window.pageYOffset || document.documentElement.scrollTop;
+            if (pageOffset > lastAnuncioOffset) {
+                // Aquí podrías cargar más anuncios dinámicamente
+                console.log('Cargar más anuncios...');
+            }
+        });
 
-    if (st > lastScrollTop) {
-        // Scroll hacia abajo
-        index.style.top = '0';
-    } else {
-        // Scroll hacia arriba
-        index.style.top = '-100%';
-    }
-    lastScrollTop = st <= 0 ? 0 : st;
-});
+        // Función para ocultar el índice al subir
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', () => {
+            const index = document.querySelector('.index');
+            let st = window.pageYOffset || document.documentElement.scrollTop;
 
-document.querySelectorAll('.ver-mas').forEach((boton) => {
-    boton.addEventListener('click', () => {const anuncio = boton.closest('.anuncio');anuncio.classList.toggle('maximizado');});
-});
+            if (st > lastScrollTop) {
+                // Scroll hacia abajo
+                index.style.top = '0';
+            } else {
+                // Scroll hacia arriba
+                index.style.top = '-100%';
+            }
+            lastScrollTop = st <= 0 ? 0 : st;
+        });
+
+        // Función para maximizar el anuncio
+        document.querySelectorAll('.ver-mas').forEach((boton) => {
+            boton.addEventListener('click', () => {
+                const anuncio = boton.closest('.anuncio');
+                anuncio.classList.toggle('maximizado');
+            });
+        });
     </script>
 </body>
 </html>

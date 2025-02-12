@@ -83,6 +83,7 @@
         const anunciosData = [
             {
                 id: "1696118400",
+                uT: "1696118400",actualizadoID: "Anuncio1",
                 user: "Grouvex-Studios", userimagen: "../img/GROUVEX.png",
                 fecha: "2023-10-01",
                 titulo: "🎊 Feliz Año Nuevo 2025 🎄",
@@ -102,7 +103,7 @@
                     </div>
                 `
             },
-            { id: "1696204800", user: "Grouvex-Studios", userimagen: "../img/GROUVEX.png", fecha: "2023-10-02", titulo: `Anuncio 2`, contenido: `Nuevo lanzamiento de consola.`, masInfo: `Más detalles sobre el anuncio 2.` },
+            { id: "1696204800", uT: "1696204800",actualizadoID: "Anuncio2", user: "Grouvex-Studios", userimagen: "../img/GROUVEX.png", fecha: "2023-10-02", titulo: `Anuncio 2`, contenido: `Nuevo lanzamiento de consola.`, masInfo: `Más detalles sobre el anuncio 2.` },
         ];
 
         // Variables para controlar la carga de anuncios
@@ -120,7 +121,8 @@
                         <div class="cabecera-anuncio">
                             <img src="${anuncio.userimagen}" alt="">
                             <span class="${anuncio.user}"></span>
-                            <p><span>${anuncio.fecha}</span></p>
+                            <p><span>${anuncio.actualizadoID}</span></p>
+                            <script>const uT${anuncio.actualizadoID} = ${anuncio.uT}; actualizarFechas(uT${anuncio.actualizadoID}, "${anuncio.actualizadoID}");</script>
                         </div>
                         <div class="contenido-anuncio">
                             <h1>${anuncio.titulo}</h1>

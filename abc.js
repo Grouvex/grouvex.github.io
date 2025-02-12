@@ -246,7 +246,7 @@ function mostrarnewsAdv() {
     newsAdv.style = `
         position: fixed;
         top: 3px;
-        left: 3px;
+        left: 1px;
         padding: 1px;
         background: rgb(5 59 219);
         color: white;

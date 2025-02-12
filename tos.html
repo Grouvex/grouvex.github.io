@@ -54,20 +54,6 @@
 <p style="color: white; font-size: 11px;height:auto"><span id="ActualizadoDATE"></span></p><a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@grouvex.com</footer></a></div></div>
 </div>
 <script>const uTActualizado = 1738429200; actualizarFechas(uTActualizado, "ActualizadoDATE");</script>
-<style>.contents { display: flex; flex-direction: row; }
-        .index { width: 20%; background: #f4f4f4; padding: 10px; box-sizing: border-box; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
-        .index ul { list-style: none; padding: 0; }
-        .index ul li { margin: 10px 0; }
-        .index ul li a { text-decoration: none; color: #333; }
-        .content { width: 100%; padding: 10px; box-sizing: border-box; }
-        
-        .toggle-indice { margin: 10px; padding: 5px 10px; background: #ffc107; color: black; border: none; border-radius: 3px; cursor: pointer; }
-        .toggle-indice:hover { background: #e0a800; }
-        @media (max-width: 768px) {
-            .contents { flex-direction: column; }
-            .index { width: 100%; height: 40vh; position: relative; }
-            .content { width: 100%; }
-        }</style>
   <!-- Título -->
    <button class="toggle-indice">Ocultar Índice</button>
     <div class="contents">
@@ -75,7 +61,16 @@
         <div class="index" id="indice">
             <ul>
                 <li><a href="#Introducción">Introducción</a></li>
-                <hr>
+                <li><a href="#Derechos_y_Obligaciones_del_Usuario">Derechos y obligaciones del Usuario</a></li>
+                <ul>
+                    <li><a href="#Derechos_del_Usuario">Derechos del Usuario</a></li>
+                    <li><a href="#Compromisos_del_Usuario">Compromisos del Usuario</a></li>
+                </ul>
+                <li><a href="#Derechos_y_Obligaciones_de_los_Equipos">Derechos y obligaciones de los Equipos</a></li>
+                <ul>
+                    <li><a href="#Derechos_de_los_Equipos">Derechos de los Equipos</a></li>
+                    <li><a href="#Compromisos_de_los_Equipos">Compromisos de los Equipos</a></li>
+                </ul>
             </ul>
         </div>
         <div class="content">
@@ -122,9 +117,9 @@
 <article id="Derechos_y_Obligaciones_de_los_Equipos">
  <details>
    <summary href="#Derechos_y_Obligaciones_de_los_Equipos"><h2>Derechos y obligaciones de los Equipos</h2></summary>
-<section id="Derechos_de_los_Administradores">
+<section id="Derechos_de_los_Equipos">
 <details>
-  <summary href="#Derechos_de_los_Administradores"><h3>Derechos de los Administradores</h3></summary>
+  <summary href="#Derechos_de_los_Equipos"><h3>Derechos de los Equipos</h3></summary>
    <ol>
     <li><p>Establecer las condiciones de acceso, registro y uso de la comunidad, así como modificarlas en cualquier momento, respetando la normativa general de modificación de las normas.</p></li>
     <li><p>Supervisar y moderar los contenidos musicales y las actividades sociales y comunitarias que se lleven a cabo en la comunidad, así como eliminar aquellos que considere inapropiados o contrarios a estos Términos.</p></li>
@@ -150,9 +145,9 @@
    </ol>
  </details>
    </section>
-<section id="Compromisos_de_los_Administradores"> 
+<section id="Compromisos_de_los_Equipos"> 
 <details>
-  <summary href="#Compromisos_de_los_Administradores"><h3>Compromisos de los Administradores</h3></summary>
+  <summary href="#Compromisos_de_los_Equipos"><h3>Compromisos de los Equipos</h3></summary>
     <ol>
     <li><p>Garantizar el correcto funcionamiento y disponibilidad de la comunidad, salvo por causas ajenas a su control o por razones técnicas o de mantenimiento.</p></li>
     <li><p>Respetar los derechos de propiedad intelectual e industrial de los Usuarios y terceros sobre los contenidos musicales que se publiquen en la comunidad.</p></li>
@@ -181,19 +176,8 @@ Esta normativa busca equilibrar la necesidad de actuar con prontitud ante situac
 <!-- Footer -->
 <div id="footer"></div>
 <script>
-        // Función para ocultar/mostrar el índice
-        const toggleIndice = document.querySelector('.toggle-indice');
-        const indice = document.getElementById('indice');
-
-        toggleIndice.addEventListener('click', () => {
-            if (indice.style.display === "none") {
-                indice.style.display = "block";
-                toggleIndice.textContent = "Ocultar Índice";
-            } else {
-                indice.style.display = "none";
-                toggleIndice.textContent = "Mostrar Índice";
-            }
-        });
+// Función para ocultar/mostrar el índice
+const toggleIndice = document.querySelector('.toggle-indice');const indice = document.getElementById('indice');toggleIndice.addEventListener('click', () => {if (indice.style.display === "none") {indice.style.display = "block";toggleIndice.textContent = "Ocultar Índice";} else {indice.style.display = "none";toggleIndice.textContent = "Mostrar Índice";}});
 </script>
 </body>
 </html>

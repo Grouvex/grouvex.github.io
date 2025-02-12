@@ -238,13 +238,6 @@
     </div>
 
     <script>
-        // Función para actualizar la fecha
-        function actualizarFechas(unixTimestamp, elementId) {
-            const fecha = new Date(unixTimestamp * 1000);
-            const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById(elementId).textContent = `Actualizado: ${fecha.toLocaleDateString('es-ES', opciones)}`;
-        }
-
         // Actualizar las fechas en los anuncios
         const uTActualizado1 = 1738429200;
         const uTActualizado2 = 1738515600;

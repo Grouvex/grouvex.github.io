@@ -54,7 +54,31 @@
 <p style="color: white; font-size: 11px;height:auto"><span id="ActualizadoDATE"></span></p><a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@grouvex.com</footer></a></div></div>
 </div>
 <script>const uTActualizado = 1738429200; actualizarFechas(uTActualizado, "ActualizadoDATE");</script>
+<style>.contents { display: flex; flex-direction: row; }
+        .index { width: 20%; background: #f4f4f4; padding: 10px; box-sizing: border-box; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+        .index ul { list-style: none; padding: 0; }
+        .index ul li { margin: 10px 0; }
+        .index ul li a { text-decoration: none; color: #333; }
+        .content { width: 100%; padding: 10px; box-sizing: border-box; }
+        
+        .toggle-indice { margin: 10px; padding: 5px 10px; background: #ffc107; color: black; border: none; border-radius: 3px; cursor: pointer; }
+        .toggle-indice:hover { background: #e0a800; }
+        @media (max-width: 768px) {
+            .contents { flex-direction: column; }
+            .index { width: 100%; height: 40vh; position: relative; }
+            .content { width: 100%; }
+        }</style>
   <!-- Título -->
+   <button class="toggle-indice">Ocultar Índice</button>
+    <div class="contents">
+        <!-- Índice -->
+        <div class="index" id="indice">
+            <ul>
+                <li><a href="#Introducción">Introducción</a></li>
+                <hr>
+            </ul>
+        </div>
+        <div class="content">
  <h1>Términos de Servicio Oficiales</h1>
  <!--Text -->
   <aside style="background-color: red; color: black"><p>
@@ -151,8 +175,25 @@ Esta normativa busca equilibrar la necesidad de actuar con prontitud ante situac
 </section>
  </details>
 </article>
+        </div>
+    </div>
 </main>
 <!-- Footer -->
 <div id="footer"></div>
+<script>
+        // Función para ocultar/mostrar el índice
+        const toggleIndice = document.querySelector('.toggle-indice');
+        const indice = document.getElementById('indice');
+
+        toggleIndice.addEventListener('click', () => {
+            if (indice.style.display === "none") {
+                indice.style.display = "block";
+                toggleIndice.textContent = "Ocultar Índice";
+            } else {
+                indice.style.display = "none";
+                toggleIndice.textContent = "Mostrar Índice";
+            }
+        });
+</script>
 </body>
 </html>

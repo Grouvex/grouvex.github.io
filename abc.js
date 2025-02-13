@@ -255,7 +255,7 @@ function mostrarnewsAdv() {
         z-index: 1;
         width: 99%;
         max-height: 80px;
-        overflow-y: auto;
+        overflow-y: scroll;
         text-align: center;
         font-size: 11px;
     `;

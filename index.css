@@ -527,7 +527,7 @@ flex: 1;
   height: auto;
 }
 .contents { display: flex; flex-direction: row; }
-.index { width: 20%; background: #f4f4f4; padding: 10px; box-sizing: border-box; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+.index {display: none; width: 20%; background: #f4f4f4; padding: 10px; box-sizing: border-box; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
 .index ul { list-style: none; padding: 0; }
 .index ul li { margin: 10px 0; }
 .index ul li a { text-decoration: none; color: #333; }

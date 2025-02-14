@@ -259,12 +259,12 @@ function mostrarnewsAdv() {
         text-align: center;
         font-size: 12px;
     `;
-    newsAdv.innerHTML = ` 
-        <button onclick="this.parentElement.parentElement.remove()" style="background: none; color: red; cursor: pointer;">Cerrar</button>
+    newsAdv.innerHTML = `
         <h1 style="color: black"><span class="insignia vvadmin"></span> | Nuevos ToS y PP</h1>
         <div style="margin-top: 10px; display: flex; justify-content: center; gap: 10px;flex-wrap: wrap;flex-direction: column;align-content: center;">
         <p>Para mejorar la seguridad de los usuarios, así como el del equipo, se han modificado los Términos de Servicio (ToS) y la Política de Privacidad (PP)</p>
         <p><a href="https://grouvex.github.io/tos" style="color: white; text-decoration: underline;">ToS</a> | <a href="https://grouvex.github.io/pp" style="color: white; text-decoration: underline;">PP</a></p>
+        <button onclick="this.parentElement.parentElement.remove()" style="background: none; color: red; cursor: pointer;">Cerrar</button>
         </div>
      `;
     document.body.appendChild(newsAdv);

@@ -240,7 +240,7 @@ function checkAccess(uid) {
 
 
 document.addEventListener('DOMContentLoaded', function() {
-if (true){
+if (false){
 function mostrarnewsAdv() {
     const newsAdv = document.createElement("div");
     newsAdv.style = `

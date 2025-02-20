@@ -34,8 +34,8 @@
         .index ul li { margin: 10px 0; }
         .index ul li a { text-decoration: none; color: #333; }
         .content { width: 100%; padding: 10px; box-sizing: border-box; }
-        .anuncio { display: flex; margin-bottom: 20px; padding: 20px; background: transparent; border: 1px solid #ddd; border-radius: 5px; position: relative; transition: background-color 0.3s; flex-direction: column;}
-        .anuncio:hover { background-color: #f0f0f0; }
+        .anuncio { display: flex; margin-bottom: 20px; padding: 20px; background: transparent; border: 1px solid #ddd; border-radius: 5px; position: relative; transition: background-color 0.3s; flex-direction: column; }
+        .anuncio:hover { background: linear-gradient(120deg, rgb(214, 105, 214), rgb(24, 151, 151));}
         .anuncio a { text-decoration: none; color: inherit; display: flex; width: 100%; }
         .cabecera-anuncio { width: 150px; background: #333; color: white; padding: 10px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; text-align: center; margin-right: 20px; }
         .cabecera-anuncio img { width: 50px; height: auto; margin-bottom: 10px; }
@@ -197,7 +197,7 @@
             listaIndice.innerHTML = ''; // Limpiar el índice actual
 
             anunciosFiltrados.forEach(anuncio => {
-                const urlAnuncio = `${window.location.pathname}/${generarURL(anuncio.titulo)}`;
+                const urlAnuncio = `anuncio/${generarURL(anuncio.titulo)}`;
                 const itemIndice = `
                     <li><a href="${urlAnuncio}">${anuncio.titulo}</a></li>
                 `;
@@ -210,7 +210,7 @@
             const anunciosFiltrados = filtro === 'all' ? anunciosData : anunciosData.filter(anuncio => anuncio.tipo === filtro);
             const anunciosParaCargar = anunciosFiltrados.slice(anunciosCargados, anunciosCargados + anunciosPorCarga);
             anunciosParaCargar.forEach(anuncio => {
-                const urlAnuncio = `anuncio.html/${generarURL(anuncio.titulo)}`; // Cambia "anuncio.html" por la página de destino
+                const urlAnuncio = `anuncio/${generarURL(anuncio.titulo)}`;
                 const anuncioHTML = `
                     <div id="${anuncio.id}" class="anuncio">
                         <a href="${urlAnuncio}" style="text-decoration: none; color: inherit; display: block;">
@@ -218,7 +218,7 @@
                                 <img src="${anuncio.userimagen}" alt="">
                                 <span class="${anuncio.user}"></span>
                                 <p><span id="${anuncio.actualizadoID}"></span></p>
-                                <p>Tipo: ${anuncio.tipo}</p>
+                                <p>${anuncio.tipo}</p>
                             </div>
                             <div class="contenido-anuncio">
                                 <h1>${anuncio.titulo}</h1>

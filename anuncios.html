@@ -3,21 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>Anuncios - Grouvex Studios</title>
-    <meta name="description" content="Anuncios de Grouvex Studios, un sello discográfic, distribuidor de contenido multimedia y diseño.">
+    <meta name="description" content="Anuncios de Grouvex Studios, un sello discográfico, distribuidor de contenido multimedia y diseño.">
     <meta property="og:title" content="Grouvex Studios">
     <meta property="og:description" content="Sitio web oficial de Grouvex Studios, un sello discográfico, distribuidor de contenido multimedia y diseño.">
     <meta property="og:image" content="img/GROUVEX.png">
-    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects"><meta name="author" content="Grouvex Studios"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="theme-color" content="#hexcode"><meta property="og:url" content="https://grouvex.com/"><meta property="og:type" content="website"><meta property="og:locale" content="es_ES"><link rel="canonical" href="https://grouvex.com/"><link rel="icon" href="img/GROUVEX.png" type="image/x-icon"><meta property="og:site_name" content="Grouvex Studios">
-    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script><script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script><script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
-    <link rel="stylesheet" href="index.css"><link rel="stylesheet" href="temas.css">
-    <script src="time.js"></script><script type="module" src="abc.js"></script><script src="index.js"></script>
+    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects">
+    <meta name="author" content="Grouvex Studios">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#hexcode">
+    <meta property="og:url" content="https://grouvex.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_ES">
+    <link rel="canonical" href="https://grouvex.com/">
+    <link rel="icon" href="img/GROUVEX.png" type="image/x-icon">
+    <meta property="og:site_name" content="Grouvex Studios">
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="temas.css">
+    <script src="time.js"></script>
+    <script type="module" src="abc.js"></script>
+    <script src="index.js"></script>
     <script src="jquery-3.5.1.min.js"></script>
-        <script> 
-            document.addEventListener("DOMContentLoaded", function() { 
-                $("#menuG").load("menuG.html");$("#menuE").load("menuE.html");$("#menuT").load("menuT.html");$("#menuU").load("menuU.html");
-                $("#footer").load("footer.html"); 
-                $("#news").load("news.html"); $("#tosypp").load("tosypp.html");
-            });
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            $("#menuG").load("menuG.html");
+            $("#menuE").load("menuE.html");
+            $("#menuT").load("menuT.html");
+            $("#menuU").load("menuU.html");
+            $("#footer").load("footer.html");
+            $("#news").load("news.html");
+            $("#tosypp").load("tosypp.html");
+        });
     </script>
     <style>
         .anuncios { display: flex; flex-direction: row; }
@@ -26,7 +45,9 @@
         .index ul li { margin: 10px 0; }
         .index ul li a { text-decoration: none; color: #333; }
         .content { width: 100%; padding: 10px; box-sizing: border-box; }
-        .anuncio { display: flex; margin-bottom: 20px; padding: 20px; background: transparent; border: 1px solid #ddd; border-radius: 5px; position: relative; }
+        .anuncio { display: flex; margin-bottom: 20px; padding: 20px; background: transparent; border: 1px solid #ddd; border-radius: 5px; position: relative; transition: background-color 0.3s; }
+        .anuncio:hover { background-color: #f0f0f0; }
+        .anuncio a { text-decoration: none; color: inherit; display: block; width: 100%; }
         .cabecera-anuncio { width: 150px; background: #333; color: white; padding: 10px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; text-align: center; margin-right: 20px; }
         .cabecera-anuncio img { width: 50px; height: auto; margin-bottom: 10px; }
         .cabecera-anuncio span { font-size: 14px; margin-bottom: 5px; }
@@ -42,12 +63,40 @@
         .cargar-mas:disabled { background: #6c757d; cursor: not-allowed; }
         .toggle-indice { margin: 10px; padding: 5px 10px; background: #ffc107; color: black; border: none; border-radius: 3px; cursor: pointer; }
         .toggle-indice:hover { background: #e0a800; }
+        .filtro-topicos {
+            margin: 10px;
+            padding: 5px 10px;
+            background: #17a2b8;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 16px;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            padding-right: 35px;
+        }
+        .filtro-topicos:hover { background: #138496; }
+        .header-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+        }
         @media (max-width: 768px) {
             .anuncios { flex-direction: column; }
             .index { width: 100%; height: 40vh; position: relative; }
             .content { width: 100%; }
             .anuncio { flex-direction: column; }
             .cabecera-anuncio { width: 100%; margin-right: 0; margin-bottom: 10px; }
+            .header-controls { flex-direction: column; align-items: flex-start; }
+            .filtro-topicos { width: 100%; margin: 5px 0; }
         }
     </style>
 </head>
@@ -64,15 +113,28 @@
             </nav>
         </span>
     </header>
-    <!-- Botón para ocultar/mostrar el índice -->
-    <button class="toggle-indice">Ocultar Índice</button>
+
+    <!-- Controles superiores (botón de índice y selector) -->
+    <div class="header-controls">
+        <!-- Botón para ocultar/mostrar el índice -->
+        <button class="toggle-indice">Ocultar Índice</button>
+
+        <!-- Selector de filtrado por tópicos -->
+        <select class="filtro-topicos" onchange="filtrarAnuncios(this.value)">
+            <option value="all">Todas las noticias</option>
+            <option value="Recording">Recording</option>
+            <option value="Animation">Animation</option>
+            <option value="Design">Design</option>
+            <option value="Web">Web</option>
+            <option value="Reglamentos">Reglamentos</option>
+        </select>
+    </div>
 
     <div class="anuncios">
         <!-- Índice -->
         <div class="index" id="indice">
-            <ul>
-                <li><a href="#1696118400">🎊 Feliz Año Nuevo 2025 🎄</a></li>
-                <hr>
+            <ul id="lista-indice">
+                <!-- Índice se cargará dinámicamente -->
             </ul>
         </div>
 
@@ -86,6 +148,15 @@
     <button class="cargar-mas">Cargar más anuncios</button>
 
     <script>
+        // Función para generar una URL válida a partir del título
+        function generarURL(titulo) {
+            return titulo
+                .toLowerCase() // Convertir a minúsculas
+                .replace(/[^a-z0-9áéíóúüñ\s-]/g, '') // Eliminar caracteres no válidos
+                .replace(/\s+/g, '-') // Reemplazar espacios con guiones
+                .replace(/-+/g, '-'); // Eliminar guiones múltiples
+        }
+
         // Datos de ejemplo para los anuncios
         const anunciosData = [
             {
@@ -96,6 +167,7 @@
                 userimagen: "../img/GROUVEX.png",
                 titulo: "🎊 Feliz Año Nuevo 2025 🎄",
                 contenido: `Felices Fiestas a todos`,
+                tipo: "Recording",
                 masInfo: `
                     <h2>🎊 Feliz Año Nuevo 2025 🎄</h2>
                     <div style="background: transparent; border-left: 10px solid white; color: #000000; padding: 5px; display: flex; box-shadow: 0 0 20px green; margin-top: 5px">
@@ -119,35 +191,56 @@
                 userimagen: "../img/GROUVEX.png",
                 titulo: `Anuncio 2`,
                 contenido: `Nuevo lanzamiento de consola.`,
+                tipo: "Animation",
                 masInfo: `Más detalles sobre el anuncio 2.`
             }
         ];
 
         // Variables para controlar la carga de anuncios
-        const anunciosPorCarga = 5;
+        const anunciosPorCarga = 9;
         let anunciosCargados = 0;
         const content = document.querySelector('.content');
         const botonCargarMas = document.querySelector('.cargar-mas');
+        const listaIndice = document.getElementById('lista-indice');
+
+        // Función para actualizar el índice
+        function actualizarIndice(filtro = 'all') {
+            const anunciosFiltrados = filtro === 'all' ? anunciosData : anunciosData.filter(anuncio => anuncio.tipo === filtro);
+            listaIndice.innerHTML = ''; // Limpiar el índice actual
+
+            anunciosFiltrados.forEach(anuncio => {
+                const urlAnuncio = `${window.location.pathname}#${generarURL(anuncio.titulo)}`;
+                const itemIndice = `
+                    <li><a href="${urlAnuncio}">${anuncio.titulo}</a></li>
+                `;
+                listaIndice.insertAdjacentHTML('beforeend', itemIndice);
+            });
+        }
 
         // Función para cargar anuncios
-        function cargarAnuncios() {
-            const anunciosParaCargar = anunciosData.slice(anunciosCargados, anunciosCargados + anunciosPorCarga);
+        function cargarAnuncios(filtro = 'all') {
+            const anunciosFiltrados = filtro === 'all' ? anunciosData : anunciosData.filter(anuncio => anuncio.tipo === filtro);
+            const anunciosParaCargar = anunciosFiltrados.slice(anunciosCargados, anunciosCargados + anunciosPorCarga);
             anunciosParaCargar.forEach(anuncio => {
+                const urlAnuncio = `${window.location.pathname}#${generarURL(anuncio.titulo)}`;
                 const anuncioHTML = `
                     <div id="${anuncio.id}" class="anuncio">
-                        <div class="cabecera-anuncio">
-                            <img src="${anuncio.userimagen}" alt="">
-                            <span class="${anuncio.user}"></span>
-                            <p><span id="${anuncio.actualizadoID}"></span></p>
-                        </div>
-                        <div class="contenido-anuncio">
-                            <h1>${anuncio.titulo}</h1>
-                            <p>${anuncio.contenido}</p>
-                            <div class="mas-info">
-                                ${anuncio.masInfo}
+                        <a href="${urlAnuncio}">
+                            <div class="cabecera-anuncio">
+                                <img src="${anuncio.userimagen}" alt="">
+                                <span class="${anuncio.user}"></span>
+                                <p><span id="${anuncio.actualizadoID}"></span></p>
+                                <p>Tipo: ${anuncio.tipo}</p>
                             </div>
-                            <button class="ver-mas">Ver más</button>
-                        </div>
+                            <div class="contenido-anuncio">
+                                <h1>${anuncio.titulo}</h1>
+                                <p>${anuncio.contenido}</p>
+                                <div class="mas-info">
+                                    ${anuncio.masInfo}
+                                </div>
+                                <button class="ver-mas">Ver más</button>
+                            </div>
+                        </a>
                     </div>
                 `;
                 content.insertAdjacentHTML('beforeend', anuncioHTML);
@@ -159,17 +252,28 @@
             anunciosCargados += anunciosPorCarga;
 
             // Desactivar el botón si no hay más anuncios por cargar
-            if (anunciosCargados >= anunciosData.length) {
+            if (anunciosCargados >= anunciosFiltrados.length) {
                 botonCargarMas.disabled = true;
                 botonCargarMas.textContent = "No hay más anuncios";
             }
         }
 
-        // Cargar los primeros 5 anuncios al inicio
-        cargarAnuncios();
+        // Función para filtrar anuncios por tópico
+        function filtrarAnuncios(tipo) {
+            content.innerHTML = ''; // Limpiar el contenido actual
+            anunciosCargados = 0; // Reiniciar el contador de anuncios cargados
+            cargarAnuncios(tipo); // Cargar anuncios filtrados
+            actualizarIndice(tipo); // Actualizar el índice
+        }
+
+        // Cargar los primeros 9 anuncios al inicio
+        const urlParams = new URLSearchParams(window.location.search);
+        const topicoArticulo = urlParams.get('topicoArticulo') || 'all';
+        cargarAnuncios(topicoArticulo);
+        actualizarIndice(topicoArticulo);
 
         // Evento para cargar más anuncios al hacer clic en el botón
-        botonCargarMas.addEventListener('click', cargarAnuncios);
+        botonCargarMas.addEventListener('click', () => cargarAnuncios(topicoArticulo));
 
         // Función para maximizar el anuncio
         document.addEventListener('click', (e) => {

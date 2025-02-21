@@ -425,7 +425,24 @@
                         <a href="${urlAnuncio}" style="text-decoration: none; color: inherit; display: block;">
                             <div class="cabecera-anuncio">
                                 <img src="${anuncio.userimagen}" alt="${anuncio.user}">
-                                <span class="${anuncio.user}"></span>
+                                <span class="${anuncio.user}">
+                                    ${anuncio.user} <!-- Mostrar el nombre del usuario -->
+                                    ${usuarios[anuncio.user] ? `
+                                        <div class="insignias-principales">
+                                            ${usuarios[anuncio.user].principales.map(insignia => `
+                                                <span class="insignia ${insignia}"></span>
+                                            `).join('')}
+                                        </div>
+                                        <details>
+                                            <summary style="font-size: 10px;">Insignias Secundarias</summary>
+                                            <div class="insignias-secundarias">
+                                                ${usuarios[anuncio.user].secundarias.map(insignia => `
+                                                    <span class="insignia ${insignia}"></span>
+                                                `).join('')}
+                                            </div>
+                                        </details>
+                                    ` : ''}
+                                </span>
                                 <p><span id="${anuncio.actualizadoID}"></span></p>
                                 <p>${anuncio.tipo}</p>
                                 ${esNuevoAnuncio ? '<span class="etiqueta-nuevo">Nuevo</span>' : ''}

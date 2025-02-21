@@ -454,7 +454,6 @@
 
             // Generar el índice con los anuncios cargados
             generarIndice(anunciosFiltrados);
-            mostrarUsuariosYInsignias();
         }
 
         function filtrarAnuncios(tipo) {
@@ -463,6 +462,7 @@
             topicoActual = tipo;
             cargarAnuncios(tipo);
             actualizarContadorNuevos();
+            mostrarUsuariosYInsignias();
         }
 
         const urlParams = new URLSearchParams(window.location.search);

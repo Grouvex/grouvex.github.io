@@ -172,172 +172,199 @@
     <!-- Botón para cargar más anuncios -->
     <button class="cargar-mas">Cargar más anuncios</button>
 
-    <script>
-        // Función para generar una URL válida a partir del título
-        function generarURL(titulo) {
-            return titulo
-                .toLowerCase()
-                .replace(/[\u{1F600}-\u{1F64F}]/gu, '') // Eliminar emojis
-                .replace(/[^a-z0-9áéíóúüñ\s-]/gi, '') // Eliminar caracteres no válidos
-                .trim() // Eliminar espacios al inicio y al final
-                .replace(/\s+/g, '-') // Reemplazar espacios con guiones
-                .replace(/-+/g, '-'); // Eliminar guiones múltiples
-        }
+ <script>
+    // Función para generar una URL válida a partir del título
+    function generarURL(titulo) {
+        return titulo
+            .toLowerCase()
+            .replace(/[\u{1F600}-\u{1F64F}]/gu, '') // Eliminar emojis
+            .replace(/[^a-z0-9áéíóúüñ\s-]/gi, '') // Eliminar caracteres no válidos
+            .trim() // Eliminar espacios al inicio y al final
+            .replace(/\s+/g, '-') // Reemplazar espacios con guiones
+            .replace(/-+/g, '-'); // Eliminar guiones múltiples
+    }
 
-        // Datos de ejemplo para los anuncios
-        const anunciosData = [
-            {
-                id: "1696118400",
-                uT: "1696118400",
-                actualizadoID: "Anuncio1",
-                user: "Grouvex-Studios",
-                userimagen: "../img/GROUVEX.png",
-                titulo: "🎊 Feliz Año Nuevo 2025 🎄",
-                contenido: `Felices Fiestas a todos`,
-                tipo: "Recording",
-                masInfo: `
-                    <h2>🎊 Feliz Año Nuevo 2025 🎄</h2>
-                    <div style="background: transparent; border-left: 10px solid white; color: #000000; padding: 5px; display: flex; box-shadow: 0 0 20px green; margin-top: 5px">
-                        <div style="font-size: 20px; margin-right: 10px">🎄</div>
-                        <div style="flex-grow: 1">
-                            <p style="color: white; background: green; font-size: 18px; margin: 0">Feliz Año Nuevo 2025</p>
-                            <hr>
-                            <p style="background: rgba(255, 255, 255, 0.5); font-size: 14px; margin: 0; color: black">Muchas Gracias a Todos por vuestra colaboración para que la web siga activa. Y muchas gracias a todos los artistas. Los artistas pueden escribir un comentario en <a href="https://grouvex.com/comentarios" style="color: white">Chat de Artistas</a> para que otros usuarios puedan ver vuestros comentarios ⛄ <span class="status recommended">Recommended</span></p>
-                            <p style="background: rgba(255, 255, 255, 0.5); font-size: 14px; margin: 0; color: black">⚠️ Por motivos de navidad. Aunqué el servicio de atención al cliente este disponible, la respuesta del equipo puede tardar bastante. Necesitan descansar tambien. ⚠️</p>
-                            <hr>
-                            <p style="background: rgba(255, 255, 255, 0.5); font-size: 12px; color: black; margin: 0">©Grouvex Studios</p>
-                        </div>
+    // Función para verificar si un anuncio es nuevo (publicado en la última semana)
+    function esNuevo(uT) {
+        const unaSemanaEnMilisegundos = 7 * 24 * 60 * 60 * 1000; // Una semana en milisegundos
+        const fechaActual = new Date(); // Fecha actual
+        const fechaAnuncio = new Date(parseInt(uT) * 1000); // Convertir uT a fecha
+        return (fechaActual - fechaAnuncio) < unaSemanaEnMilisegundos; // Comparar fechas
+    }
+
+    // Datos de ejemplo para los anuncios
+    const anunciosData = [
+        {
+            id: "1696118400",
+            uT: "1696118400", // Fecha de publicación en formato timestamp
+            actualizadoID: "Anuncio1",
+            user: "Grouvex-Studios",
+            userimagen: "../img/GROUVEX.png",
+            titulo: "🎊 Feliz Año Nuevo 2025 🎄",
+            contenido: `Felices Fiestas a todos`,
+            tipo: "Recording",
+            masInfo: `
+                <h2>🎊 Feliz Año Nuevo 2025 🎄</h2>
+                <div style="background: transparent; border-left: 10px solid white; color: #000000; padding: 5px; display: flex; box-shadow: 0 0 20px green; margin-top: 5px">
+                    <div style="font-size: 20px; margin-right: 10px">🎄</div>
+                    <div style="flex-grow: 1">
+                        <p style="color: white; background: green; font-size: 18px; margin: 0">Feliz Año Nuevo 2025</p>
+                        <hr>
+                        <p style="background: rgba(255, 255, 255, 0.5); font-size: 14px; margin: 0; color: black">Muchas Gracias a Todos por vuestra colaboración para que la web siga activa. Y muchas gracias a todos los artistas. Los artistas pueden escribir un comentario en <a href="https://grouvex.com/comentarios" style="color: white">Chat de Artistas</a> para que otros usuarios puedan ver vuestros comentarios ⛄ <span class="status recommended">Recommended</span></p>
+                        <p style="background: rgba(255, 255, 255, 0.5); font-size: 14px; margin: 0; color: black">⚠️ Por motivos de navidad. Aunqué el servicio de atención al cliente este disponible, la respuesta del equipo puede tardar bastante. Necesitan descansar tambien. ⚠️</p>
+                        <hr>
+                        <p style="background: rgba(255, 255, 255, 0.5); font-size: 12px; color: black; margin: 0">©Grouvex Studios</p>
                     </div>
-                `
-            },
-            {
-                id: "1696204800",
-                uT: "1696204800",
-                actualizadoID: "Anuncio2",
-                user: "Grouvex-Studios",
-                userimagen: "../img/GROUVEX.png",
-                titulo: `Anuncio 2`,
-                contenido: `Nuevo lanzamiento de consola.`,
-                tipo: "Animation",
-                masInfo: `Más detalles sobre el anuncio 2.`
-            }
-        ];
-
-        // Variables para controlar la carga de anuncios
-        const anunciosPorCarga = 9;
-        let anunciosCargados = 0;
-        let topicoActual = 'all'; // Variable para almacenar el tópico actual
-        const content = document.querySelector('.content');
-        const botonCargarMas = document.querySelector('.cargar-mas');
-        const listaIndice = document.getElementById('lista-indice');
-
-        // Función para actualizar el índice
-        function actualizarIndice(filtro = 'all') {
-            const anunciosFiltrados = filtro === 'all' ? anunciosData : anunciosData.filter(anuncio => anuncio.tipo === filtro);
-            listaIndice.innerHTML = ''; // Limpiar el índice actual
-
-            anunciosFiltrados.forEach(anuncio => {
-                const urlAnuncio = `anuncio/${generarURL(anuncio.titulo)}`;
-                const itemIndice = `
-                    <li><a href="${urlAnuncio}">${anuncio.titulo}</a></li>
-                `;
-                listaIndice.insertAdjacentHTML('beforeend', itemIndice);
-            });
+                </div>
+            `
+        },
+        {
+            id: "1696204800",
+            uT: "1696204800", // Fecha de publicación en formato timestamp
+            actualizadoID: "Anuncio2",
+            user: "Grouvex-Studios",
+            userimagen: "../img/GROUVEX.png",
+            titulo: `Anuncio 2`,
+            contenido: `Nuevo lanzamiento de consola.`,
+            tipo: "Animation",
+            masInfo: `Más detalles sobre el anuncio 2.`
         }
+    ];
 
-        // Función para cargar anuncios
-        function cargarAnuncios(filtro = 'all') {
-            const anunciosFiltrados = filtro === 'all' ? anunciosData : anunciosData.filter(anuncio => anuncio.tipo === filtro);
-            const anunciosParaCargar = anunciosFiltrados.slice(anunciosCargados, anunciosCargados + anunciosPorCarga);
-            anunciosParaCargar.forEach(anuncio => {
-                const urlAnuncio = `anuncio/${generarURL(anuncio.titulo)}`;
-                const anuncioHTML = `
-                    <div id="${anuncio.id}" class="anuncio">
-                        <a href="${urlAnuncio}" style="text-decoration: none; color: inherit; display: block;">
-                            <div class="cabecera-anuncio">
-                                <img src="${anuncio.userimagen}" alt="">
-                                <span class="${anuncio.user}"></span>
-                                <p><span id="${anuncio.actualizadoID}"></span></p>
-                                <p>Tipo: ${anuncio.tipo}</p>
-                            </div>
-                            <div class="contenido-anuncio">
-                                <h1>${anuncio.titulo}</h1>
-                                <p>${anuncio.contenido}</p>
-                                <div class="mas-info">
-                                    ${anuncio.masInfo}
-                                </div>
-                                <button class="ver-mas">Ver más</button>
-                            </div>
-                        </a>
-                    </div>
-                `;
-                content.insertAdjacentHTML('beforeend', anuncioHTML);
+    // Variables para controlar la carga de anuncios
+    const anunciosPorCarga = 9;
+    let anunciosCargados = 0;
+    let topicoActual = 'all'; // Variable para almacenar el tópico actual
+    const content = document.querySelector('.content');
+    const botonCargarMas = document.querySelector('.cargar-mas');
+    const listaIndice = document.getElementById('lista-indice');
+    const filtroTopicos = document.querySelector('.filtro-topicos');
 
-                // Llamar a la función actualizarFechas después de insertar el HTML
-                actualizarFechas(anuncio.uT, anuncio.actualizadoID);
-            });
+    // Función para contar anuncios nuevos por tópico
+    function contarAnunciosNuevos(filtro = 'all') {
+        const anunciosFiltrados = filtro === 'all' ? anunciosData : anunciosData.filter(anuncio => anuncio.tipo === filtro);
+        return anunciosFiltrados.filter(anuncio => esNuevo(anuncio.uT)).length;
+    }
 
-            anunciosCargados += anunciosParaCargar.length;
-
-            // Desactivar el botón si no hay más anuncios por cargar
-            if (anunciosCargados >= anunciosFiltrados.length) {
-                botonCargarMas.disabled = true;
-                botonCargarMas.textContent = "No hay más anuncios";
-            }
-        }
-
-        // Función para filtrar anuncios por tópico
-        function filtrarAnuncios(tipo) {
-            content.innerHTML = ''; // Limpiar el contenido actual
-            anunciosCargados = 0; // Reiniciar el contador de anuncios cargados
-            topicoActual = tipo; // Actualizar el tópico actual
-            cargarAnuncios(tipo); // Cargar anuncios filtrados
-            actualizarIndice(tipo); // Actualizar el índice
-
-            // Habilitar el botón "Cargar más" si hay más anuncios para cargar
-            botonCargarMas.disabled = false;
-            botonCargarMas.textContent = "Cargar más anuncios";
-        }
-
-        // Cargar los primeros 9 anuncios al inicio
-        const urlParams = new URLSearchParams(window.location.search);
-        const topicoArticulo = urlParams.get('topicoArticulo') || 'all';
-        filtrarAnuncios(topicoArticulo);
-
-        // Evento para cargar más anuncios al hacer clic en el botón
-        botonCargarMas.addEventListener('click', () => cargarAnuncios(topicoActual));
-
-        // Función para maximizar el anuncio y cambiar el texto del botón
-        document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('ver-mas')) {
-                e.preventDefault(); // Evitar que el enlace se active
-                const anuncio = e.target.closest('.anuncio');
-                const boton = e.target;
-                anuncio.classList.toggle('maximizado');
-
-                // Cambiar el texto del botón
-                if (anuncio.classList.contains('maximizado')) {
-                    boton.textContent = "Ver menos";
-                } else {
-                    boton.textContent = "Ver más";
-                }
-            }
-        });
-
-        // Función para ocultar/mostrar el índice
-        const toggleIndice = document.querySelector('.toggle-indice');
-        const indice = document.getElementById('indice');
-
-        toggleIndice.addEventListener('click', () => {
-            if (indice.style.display === "none") {
-                indice.style.display = "block";
-                toggleIndice.textContent = "Ocultar Índice";
+    // Función para actualizar el contador de anuncios nuevos en los tópicos
+    function actualizarContadorNuevos() {
+        const opciones = filtroTopicos.querySelectorAll('option');
+        opciones.forEach(opcion => {
+            const contador = contarAnunciosNuevos(opcion.value);
+            if (contador > 0) {
+                opcion.textContent = `${opcion.textContent.split(' (')[0]} (${contador})`;
             } else {
-                indice.style.display = "none";
-                toggleIndice.textContent = "Mostrar Índice";
+                opcion.textContent = opcion.textContent.split(' (')[0];
             }
         });
-    </script>
+    }
+
+    // Función para cargar anuncios
+    function cargarAnuncios(filtro = 'all') {
+        const anunciosFiltrados = filtro === 'all' ? anunciosData : anunciosData.filter(anuncio => anuncio.tipo === filtro);
+        const anunciosParaCargar = anunciosFiltrados.slice(anunciosCargados, anunciosCargados + anunciosPorCarga);
+        anunciosParaCargar.forEach(anuncio => {
+            const urlAnuncio = `anuncio/${generarURL(anuncio.titulo)}`;
+            const esNuevoAnuncio = esNuevo(anuncio.uT);
+            const anuncioHTML = `
+                <div id="${anuncio.id}" class="anuncio">
+                    <a href="${urlAnuncio}" style="text-decoration: none; color: inherit; display: block;">
+                        <div class="cabecera-anuncio">
+                            <img src="${anuncio.userimagen}" alt="">
+                            <span class="${anuncio.user}"></span>
+                            <p><span id="${anuncio.actualizadoID}"></span></p>
+                            <p>Tipo: ${anuncio.tipo}</p>
+                            ${esNuevoAnuncio ? '<span class="etiqueta-nuevo">Nuevo</span>' : ''}
+                        </div>
+                        <div class="contenido-anuncio">
+                            <h1>${anuncio.titulo}</h1>
+                            <p>${anuncio.contenido}</p>
+                            <div class="mas-info">
+                                ${anuncio.masInfo}
+                            </div>
+                            <button class="ver-mas">Ver más</button>
+                        </div>
+                    </a>
+                </div>
+            `;
+            content.insertAdjacentHTML('beforeend', anuncioHTML);
+
+            // Llamar a la función actualizarFechas después de insertar el HTML
+            actualizarFechas(anuncio.uT, anuncio.actualizadoID);
+        });
+
+        anunciosCargados += anunciosParaCargar.length;
+
+        // Desactivar el botón si no hay más anuncios por cargar
+        if (anunciosCargados >= anunciosFiltrados.length) {
+            botonCargarMas.disabled = true;
+            botonCargarMas.textContent = "No hay más anuncios";
+        }
+    }
+
+    // Función para filtrar anuncios por tópico
+    function filtrarAnuncios(tipo) {
+        content.innerHTML = ''; // Limpiar el contenido actual
+        anunciosCargados = 0; // Reiniciar el contador de anuncios cargados
+        topicoActual = tipo; // Actualizar el tópico actual
+        cargarAnuncios(tipo); // Cargar anuncios filtrados
+        actualizarContadorNuevos(); // Actualizar el contador de anuncios nuevos
+    }
+
+    // Cargar los primeros 9 anuncios al inicio
+    const urlParams = new URLSearchParams(window.location.search);
+    const topicoArticulo = urlParams.get('topicoArticulo') || 'all';
+    filtrarAnuncios(topicoArticulo);
+
+    // Evento para cargar más anuncios al hacer clic en el botón
+    botonCargarMas.addEventListener('click', () => cargarAnuncios(topicoActual));
+
+    // Función para maximizar el anuncio y cambiar el texto del botón
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('ver-mas')) {
+            e.preventDefault(); // Evitar que el enlace se active
+            const anuncio = e.target.closest('.anuncio');
+            const boton = e.target;
+            anuncio.classList.toggle('maximizado');
+
+            // Cambiar el texto del botón
+            if (anuncio.classList.contains('maximizado')) {
+                boton.textContent = "Ver menos";
+            } else {
+                boton.textContent = "Ver más";
+            }
+        }
+    });
+
+    // Función para ocultar/mostrar el índice
+    const toggleIndice = document.querySelector('.toggle-indice');
+    const indice = document.getElementById('indice');
+
+    toggleIndice.addEventListener('click', () => {
+        if (indice.style.display === "none") {
+            indice.style.display = "block";
+            toggleIndice.textContent = "Ocultar Índice";
+        } else {
+            indice.style.display = "none";
+            toggleIndice.textContent = "Mostrar Índice";
+        }
+    });
+
+    // Estilo para la etiqueta "Nuevo"
+    const estiloEtiquetaNuevo = document.createElement('style');
+    estiloEtiquetaNuevo.textContent = `
+        .etiqueta-nuevo {
+            background-color: red;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+    `;
+    document.head.appendChild(estiloEtiquetaNuevo);
+</script>
     <div id="footer"></div>
 </body>
 </html>

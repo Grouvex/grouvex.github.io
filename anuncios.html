@@ -52,13 +52,13 @@
             flex-direction: column;
             margin-bottom: 20px;
             padding: 20px;
-            background: transparent;
+            background: linear-gradient(137deg, #63eb25, #17cb80);
             border: 1px solid #ddd;
             border-radius: 5px;
             position: relative;
             transition: background-color 0.3s;
         }
-        .anuncio:hover { background-color: #f0f0f0; }
+        .anuncio:hover { background: linear-gradient(137deg, #610b69, #f9ad22); }
         .anuncio a { text-decoration: none; color: inherit; display: block; width: 100%; }
         .cabecera-anuncio {
             width: 100%;
@@ -118,7 +118,6 @@
             .content {
                 grid-template-columns: repeat(1, 1fr); /* 1 anuncio por fila en móviles */
             }
-            .anuncio { flex-direction: column; }
             .cabecera-anuncio { width: 100%; margin-right: 0; margin-bottom: 10px; }
             .header-controls { flex-direction: column; align-items: flex-start; }
             .filtro-topicos { width: 100%; margin: 5px 0; }

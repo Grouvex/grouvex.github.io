@@ -454,6 +454,10 @@
 
             // Generar el índice con los anuncios cargados
             generarIndice(anunciosFiltrados);
+      const elements = document.querySelectorAll(`.${anuncio.user.replace(/\s+/g, '-')}`);
+        if (elements.length > 0) {
+            mostrarUsuarioYInsignias(usuario, elements); // Pasar "usuarios", "usuario" y "elements"
+        }
         }
 
         function filtrarAnuncios(tipo) {
@@ -463,12 +467,6 @@
             cargarAnuncios(tipo);
             actualizarContadorNuevos();
             // Llamar a la función para mostrar usuarios e insignias
-    Object.keys(usuarios).forEach(usuario => {
-        const elements = document.querySelectorAll(`.${usuario.replace(/\s+/g, '-')}`);
-        if (elements.length > 0) {
-            mostrarUsuarioYInsignias(usuarios, usuario, elements); // Pasar "usuarios", "usuario" y "elements"
-        }
-    });
         }
 
         const urlParams = new URLSearchParams(window.location.search);

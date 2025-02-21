@@ -454,11 +454,14 @@
 
             // Generar el índice con los anuncios cargados
             generarIndice(anunciosFiltrados);
-      const elements = document.querySelectorAll(`.${anuncio.user.replace(/\s+/g, '-')}`);
+    // Llamar a la función para mostrar usuarios e insignias
+    Object.keys(usuarios).forEach(usuario => {
+        const elements = document.querySelectorAll(`.${usuario.replace(/\s+/g, '-')}`);
         if (elements.length > 0) {
-            mostrarUsuarioYInsignias(usuario, elements); // Pasar "usuarios", "usuario" y "elements"
+            mostrarUsuarioYInsignias(usuarios, usuario, elements);
         }
-        }
+    });
+}
 
         function filtrarAnuncios(tipo) {
             content.innerHTML = '';

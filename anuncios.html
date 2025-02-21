@@ -279,11 +279,12 @@
         <button class="toggle-indice">Ocultar Índice</button>
         <select class="filtro-topicos" onchange="filtrarAnuncios(this.value)">
             <option value="all">Todas las noticias</option>
+            <option value="General">General</option>
+            <option value="Reglamentos">Reglamentos</option>
             <option value="Recording">Recording</option>
             <option value="Animation">Animation</option>
             <option value="Design">Design</option>
             <option value="Web">Web</option>
-            <option value="Reglamentos">Reglamentos</option>
         </select>
     </div>
 
@@ -298,6 +299,17 @@
   <script>
     // { id: "1740145769",uT: "1740145769", actualizadoID: "Anuncio2", user: "Grouvex-Studios", userimagen: "../img/GROUVEX.png", titulo: `Anuncio 2`, contenido: `Nuevo lanzamiento de consola.`, tipo: "Animation", masInfo: `Más detalles sobre el anuncio 2.` }
     const anunciosData = [
+        {
+            id: "1740169682",
+            uT: "1740169682",
+            actualizadoID: "ModifFormsGSR",
+            user: "Grouvex-Phoenix",
+            userimagen: "../img/GROUVEX.png",
+            titulo: `Modificación de Formularios`,
+            contenido: `Informamos a los Artistas de GSRecording, que los formularios Google, se han modificado para mejor comprensión.`,
+            tipo: "Web",
+            masInfo: `<ul><li>Respecto al del contrato, se ha modificado el correo de contacto a oficina@grouvex.com. Así como la expresión del formulario.</li><li>En el formulario de contrato de proyecto, se ha añadido la pregunta Cover, puesto que la Distribuidora, nos permite ahora decidir si es un Cover o no.</li></ul>`
+        },
          {
             id: "1739034000",
             uT: "1739034000",
@@ -317,7 +329,7 @@
             userimagen: "../img/GROUVEX.png",
             titulo: "🎊 Feliz Año Nuevo 2025 🎄",
             contenido: `Les deseamos felices fiestas a todos.`,
-            tipo: "Recording",
+            tipo: "General",
             masInfo: `
                 <div style="background: transparent; border-left: 10px solid white; color: #000000; padding: 5px; display: flex; box-shadow: 0 0 20px green; margin-top: 5px">
                     <div style="font-size: 20px; margin-right: 10px">🎄</div>

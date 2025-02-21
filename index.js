@@ -82,7 +82,7 @@ function googleTranslateElementInit() {
 }
 
 // Datos de usuarios y sus insignias
-var usuarios = {
+const usuarios = {
   "Grouvex Studios": {
     principales: ["verified-team", "owner", "vdeveloper", "vbughunter"],
     secundarias: ["verified","vvadmin","vadmin", "vmod"]

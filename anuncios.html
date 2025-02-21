@@ -454,13 +454,6 @@
 
             // Generar el índice con los anuncios cargados
             generarIndice(anunciosFiltrados);
-    // Llamar a la función para mostrar usuarios e insignias
-    Object.keys(usuarios).forEach(usuario => {
-        const elements = document.querySelectorAll(`.${usuario.replace(/\s+/g, '-')}`);
-        if (elements.length > 0) {
-            mostrarUsuarioYInsignias(usuarios, usuario, elements);
-        }
-    });
 }
 
         function filtrarAnuncios(tipo) {
@@ -469,7 +462,6 @@
             topicoActual = tipo;
             cargarAnuncios(tipo);
             actualizarContadorNuevos();
-            // Llamar a la función para mostrar usuarios e insignias
         }
 
         const urlParams = new URLSearchParams(window.location.search);

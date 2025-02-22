@@ -422,11 +422,11 @@
             const anunciosFiltrados = filtro === 'all' ? anunciosData : anunciosData.filter(anuncio => anuncio.tipo === filtro);
             const anunciosParaCargar = anunciosFiltrados.slice(anunciosCargados, anunciosCargados + anunciosPorCarga);
             anunciosParaCargar.forEach(anuncio => {
-                const urlAnuncio = `anuncio/${generarURL(anuncio.titulo)}`;
+                const urlAnuncio = `anuncios/${generarURL(anuncio.titulo)}`;
                 const esNuevoAnuncio = esNuevo(anuncio.uT);
                 const anuncioHTML = `
                     <div id="${anuncio.id}" class="anuncio">
-                       <a href="${anuncio.urlT ? urlAnuncio : '#'}" style="text-decoration: none; color: inherit; display: block;">
+                       <a href="#${anuncio.id}">
                             <div class="cabecera-anuncio">
                                 <img src="${anuncio.userimagen}" alt="${anuncio.user}">
                                 <span class="${anuncio.user}"></span>
@@ -434,6 +434,8 @@
                                 <p>${anuncio.tipo}</p>
                                 ${esNuevoAnuncio ? '<span class="etiqueta-nuevo">Nuevo</span>' : ''}
                             </div>
+                            </a>
+                        <a href="${anuncio.urlT ? urlAnuncio : '#'}" style="text-decoration: none; color: inherit; display: block;">
                             <div class="contenido-anuncio">
                                 <h1>${anuncio.titulo}</h1>
                                 <p>${anuncio.contenido}</p>

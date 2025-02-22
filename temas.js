@@ -1,6 +1,6 @@
 (function() {
     const themeSelect = document.getElementById('themeSelect');
-    const defaultTheme = 'naturaleza1'; // Define aquí el tema predeterminado
+    const defaultTheme = 'httyd'; // Define aquí el tema predeterminado
     const currentUrl = window.location.href;
 
     // Deshabilitar el botón al inicio
@@ -60,7 +60,7 @@
 
         elements.forEach(element => {
             themeClasses.forEach(cls => element.classList.remove(cls));
-            if (theme !== 'default') {
+            if (theme !== defaultTheme) {
                 element.classList.add(theme);
             }
         });
@@ -70,7 +70,7 @@
         const selectedTheme = localStorage.getItem('selectedTheme');
         const themesAvailability = checkThemesAvailability();
         
-        if (selectedTheme && (themesAvailability[selectedTheme] || currentUrl === 'https://grouvex.com/temas')) {
+        if (selectedTheme && (themesAvailability[selectedTheme] || currentUrl === 'https://grouvex.github.io/temas')) {
             changeTheme(selectedTheme);
             themeSelect.value = selectedTheme;
         } else {

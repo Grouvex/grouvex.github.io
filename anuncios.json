@@ -9,7 +9,7 @@
         "contenido": "<p>Informamos a los Artistas de GSRecording, que los formularios Google, se han modificado para mejor comprensión.</p>",
         "tipo": "Recording",
         "urlT": true,
-        "masInfo": "<p><ul><li>Respecto al del contrato, se ha modificado el correo de contacto a oficina@grouvex.com. Así como la expresión del formulario.</li><li>En el formulario de contrato de proyecto, se ha añadido la pregunta Cover, puesto que la Distribuidora, nos permite ahora decidir si es un Cover o no.</li></ul></p>",
+        "masInfo": "<ul><li><p>Respecto al del contrato, se ha modificado el correo de contacto a oficina@grouvex.com. Así como la expresión del formulario.</p></li><li><p>En el formulario de contrato de proyecto, se ha añadido la pregunta Cover, puesto que la Distribuidora, nos permite ahora decidir si es un Cover o no.</p></li></ul>",
         "infoAdicional": "<article><p>Se ha modificado <a href=\"https://docs.google.com/forms/d/e/1FAIpQLSe9CFEvsM9iLjF6dA_78v7rOMnL_kqYt9BZ4QFPVI_4tv9h_A/viewform\" target=\"_blank\">Formulario de Solicitud de Aceptación de Contrato</a> y <a href=\"https://docs.google.com/forms/d/e/1FAIpQLSe9CFEvsM9iLjF6dA_78v7rOMnL_kqYt9BZ4QFPVI_4tv9h_A/viewform\" target=\"_blank\">Formulario de Contrato de lanzamientos de Álbums/EP/Canciones</a></p></article>"
     },
     {
@@ -22,7 +22,7 @@
         "contenido": "<p>Hemos traido mejoras a nuestra web. Hecha un vistazo a <a href=\"https://github.com/Grouvex/grouvex.github.io/tree/v6.0.1\" style=\"color: white;\" target=\"_blank\">©2025-v6.0.1</a></p>",
         "tipo": "Web",
         "urlT": false,
-        "masInfo": "<p><ul><li>Nuevas temáticas</li><li>Nuevas ToS y PP</li><li>Se añaden insigneas</li><li>Nueva estructura de la Web</li><li>Nueva versión de Sistema Planetario</li></ul> Y mucho más...</p>",
+        "masInfo": "<ul><li><p>Nuevas temáticas</p></li><li><p>Nuevas ToS y PP</p></li><li><p>Se añaden insigneas</p></li><li><p>Nueva estructura de la Web</p></li><li><p>Nueva versión de <a href=\"https://grouvex.com/planeta\" style=\"color: white;\">Sistema Planetario</a></p></li></ul><p>Y mucho más...</p>",
         "infoAdicional": ""
     },
     {

@@ -421,7 +421,7 @@
                 content.insertAdjacentHTML('beforeend', anuncioHTML);
 
                 // Asignar la clase dinámica al elemento .user
-                const userSpan = document.querySelector(`#${sanitizeHTML(anuncio.id)} .user`);
+                const userSpan = document.querySelector(`.user`);
                 if (userSpan) {
                     userSpan.className = anuncio.user.replace(/\s+/g, '-');
                 }

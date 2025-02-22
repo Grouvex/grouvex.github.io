@@ -402,7 +402,7 @@
                         <a href="${sanitizeHTML(urlAnuncio)}">
                             <div class="cabecera-anuncio">
                                 <img src="${sanitizeHTML(anuncio.userimagen)}" alt="${sanitizeHTML(anuncio.user)}">
-                                <span class="${sanitizeHTML(anuncio.user)}"></span>
+                                <span class="user"></span>
                                 <p><span id="${sanitizeHTML(anuncio.actualizadoID)}"></span></p>
                                 <p>${sanitizeHTML(anuncio.tipo)}</p>
                                 ${esNuevoAnuncio ? '<span class="etiqueta-nuevo">Nuevo</span>' : ''}
@@ -419,13 +419,14 @@
                     </div>
                 `;
                 content.insertAdjacentHTML('beforeend', anuncioHTML);
-                actualizarFechas(anuncio.uT, anuncio.actualizadoID);
 
-                // Mostrar insignias del usuario
-                const elements = document.querySelectorAll(`.${anuncio.user}`);
-                if (elements.length > 0) {
-                    mostrarUsuarioYInsignias(anuncio.user, elements);
+                // Asignar la clase dinámica al elemento .user
+                const userSpan = document.querySelector(`#${sanitizeHTML(anuncio.id)} .user`);
+                if (userSpan) {
+                    userSpan.className = anuncio.user.replace(/\s+/g, '-');
                 }
+
+                actualizarFechas(anuncio.uT, anuncio.actualizadoID);
             });
 
             anunciosCargados += anunciosParaCargar.length;

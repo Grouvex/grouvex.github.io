@@ -413,6 +413,12 @@ function cargarAnuncios(filtro = 'all') {
         `;
         content.insertAdjacentHTML('beforeend', anuncioHTML);
         actualizarFechas(anuncio.uT, anuncio.actualizadoID);
+
+        // Mostrar insignias del usuario
+        const elements = document.querySelectorAll(`.${anuncio.user}`);
+        if (elements.length > 0) {
+            mostrarUsuarioYInsignias(anuncio.user, elements);
+        }
     });
 
     anunciosCargados += anunciosParaCargar.length;

@@ -412,7 +412,6 @@ function cargarAnuncios(filtro = 'all') {
             </div>
         `;
         content.insertAdjacentHTML('beforeend', anuncioHTML);
-        actualizarFechas(anuncio.uT, anuncio.actualizadoID);
     });
 
     anunciosCargados += anunciosParaCargar.length;
@@ -479,6 +478,7 @@ function cargarAnuncios(filtro = 'all') {
         // Cargar los datos de los anuncios al iniciar la página
         cargarDatosAnuncios();
         actualizarFechas(anuncio.uT, anuncio.actualizadoID);
+        mostrarUsuarioYInsignias(nombreUsuario, elements)
     </script>
     <div id="footer"></div>
 </body>

@@ -308,6 +308,7 @@
             titulo: `Modificación de Formularios`,
             contenido: `Informamos a los Artistas de GSRecording, que los formularios Google, se han modificado para mejor comprensión.`,
             tipo: "Recording",
+            urlT: false,
             masInfo: `<ul><li>Respecto al del contrato, se ha modificado el correo de contacto a oficina@grouvex.com. Así como la expresión del formulario.</li><li>En el formulario de contrato de proyecto, se ha añadido la pregunta Cover, puesto que la Distribuidora, nos permite ahora decidir si es un Cover o no.</li></ul>`
         },
          {
@@ -319,6 +320,7 @@
             titulo: `v6.0.1`,
             contenido: `Hemos traido mejoras a nuestra web. Hecha un vistazo a <a href="https://github.com/Grouvex/grouvex.github.io/tree/v6.0.1" style="color:white" target="_blank">©2025-v6.0.1</a>`,
             tipo: "Web",
+            urlT: false,
             masInfo: `<ul><li>Nuevas temáticas</li><li>Nuevas ToS y PP</li><li>Se añaden insigneas</li><li>Nueva estructura de la Web</li><li>Nueva versión de Sistema Planetario</li></ul> Y mucho más...`
         },
         {
@@ -330,6 +332,7 @@
             titulo: "🎊 Feliz Año Nuevo 2025 🎄",
             contenido: `Les deseamos felices fiestas a todos.`,
             tipo: "General",
+            urlT: false,
             masInfo: `
                 <div style="background: transparent; border-left: 10px solid white; color: #000000; padding: 5px; display: flex; box-shadow: 0 0 20px green; margin-top: 5px">
                     <div style="font-size: 20px; margin-right: 10px">🎄</div>
@@ -353,6 +356,7 @@
             titulo: `Anuncios Anteriores a 2025`,
             contenido: `Los anuncios anteriores a 2025 no salen en la Página Web.`,
             tipo: "Web",
+            urlT: false,
             masInfo: `Esto se debe a que no tenemos la información de los anteriores anuncios.`
         }
     ];
@@ -422,11 +426,10 @@
                 const esNuevoAnuncio = esNuevo(anuncio.uT);
                 const anuncioHTML = `
                     <div id="${anuncio.id}" class="anuncio">
-                        <a href="${urlAnuncio}" style="text-decoration: none; color: inherit; display: block;">
+                     ${anuncio.urlT ? <a href="${urlAnuncio}" style="text-decoration: none; color: inherit; display: block;"> : ''} 
                             <div class="cabecera-anuncio">
                                 <img src="${anuncio.userimagen}" alt="${anuncio.user}">
                                 <span class="${anuncio.user}">
-                                    ${anuncio.user} <!-- Mostrar el nombre del usuario -->
                                     ${usuarios[anuncio.user] ? `
                                         <div class="insignias-principales">
                                             ${usuarios[anuncio.user].principales.map(insignia => `
@@ -455,7 +458,7 @@
                                 </div>
                                 <button class="ver-mas">Ver más</button>
                             </div>
-                        </a>
+                      ${anuncio.urlT ? '</a>' : ''}
                     </div>
                 `;
                 content.insertAdjacentHTML('beforeend', anuncioHTML);

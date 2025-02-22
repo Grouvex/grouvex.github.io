@@ -426,7 +426,7 @@
                 const esNuevoAnuncio = esNuevo(anuncio.uT);
                 const anuncioHTML = `
                     <div id="${anuncio.id}" class="anuncio">
-                       ${anuncio.urlT ? '<a href="${urlAnuncio}" style="text-decoration: none; color: inherit; display: block;">' : ''} 
+                       <a href= "${anuncio.urlT ? ${urlAnuncio}: '#'}" style="text-decoration: none; color: inherit; display: block;"> 
                             <div class="cabecera-anuncio">
                                 <img src="${anuncio.userimagen}" alt="${anuncio.user}">
                                 <span class="${anuncio.user}"></span>
@@ -442,7 +442,7 @@
                                 </div>
                                 <button class="ver-mas">Ver más</button>
                             </div>
-                        ${anuncio.urlT ? '</a>' : ''}
+                        </a>
                     </div>
                 `;
                 content.insertAdjacentHTML('beforeend', anuncioHTML);

@@ -402,21 +402,30 @@
             });
         }
 
-        function generarIndice(anuncios) {
-            listaIndice.innerHTML = ''; // Limpiar el índice anterior
-            anuncios.forEach(anuncio => {
-                const li = document.createElement('li');
-                const a = document.createElement('a');
-                a.href = `#${anuncio.id}`;
-                a.textContent = anuncio.titulo;
-                a.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    document.querySelector(`#${anuncio.id}`).scrollIntoView({ behavior: 'smooth' });
-                });
-                li.appendChild(a);
-                listaIndice.appendChild(li);
-            });
-        }
+function generarIndice(anuncios) {
+    listaIndice.innerHTML = '';
+
+    anuncios.forEach(anuncio => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = `#${anuncio.id}`;
+        a.textContent = anuncio.titulo;
+
+        // Evento de clic para el desplazamiento suave
+        a.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Obtener el elemento del anuncio
+            const elementoAnuncio = document.getElementById(anuncio.id);
+            if (elementoAnuncio) {
+                elementoAnuncio.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                console.error(`No se encontró el anuncio con id: ${anuncio.id}`);
+            }
+        });
+        li.appendChild(a);
+        listaIndice.appendChild(li);
+    });
+}
 
         function cargarAnuncios(filtro = 'all') {
             const anunciosFiltrados = filtro === 'all' ? anunciosData : anunciosData.filter(anuncio => anuncio.tipo === filtro);

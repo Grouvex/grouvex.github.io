@@ -275,7 +275,6 @@
                 document.getElementById('contenido').textContent = anuncio.contenido;
                 document.getElementById('info-adicional').innerHTML = anuncio.infoAdicional || ''; // Mostrar info adicional
                 const userSpan = document.querySelector('.user');
-                userSpan.textContent = anuncio.user;
                 userSpan.className = anuncio.user.replace(/\s+/g, '-'); // Sanitizar el id
                 document.getElementById('userimagen').src = anuncio.userimagen;
                 document.getElementById('tipo').textContent = anuncio.tipo;

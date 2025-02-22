@@ -218,20 +218,20 @@
         }
 
         #info-adicional {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-}
+            margin-top: 20px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
 
-#info-adicional a {
-    color: var(--color-primary);
-    text-decoration: none;
-}
+        #info-adicional a {
+            color: var(--color-primary);
+            text-decoration: none;
+        }
 
-#info-adicional a:hover {
-    text-decoration: underline;
-}
+        #info-adicional a:hover {
+            text-decoration: underline;
+        }
 
         @media (max-width: 768px) {
             .anuncios {
@@ -274,7 +274,10 @@
                 document.getElementById('titulo').textContent = anuncio.titulo;
                 document.getElementById('contenido').textContent = anuncio.contenido;
                 document.getElementById('info-adicional').innerHTML = anuncio.infoAdicional || ''; // Mostrar info adicional
-                document.getElementById('user').textContent = anuncio.user || "../img/GROUVEX.png";
+                // Asignar el id dinámico al <span> usando el valor de anuncio.user
+                const userSpan = document.getElementById('user');
+                userSpan.textContent = anuncio.user;
+                userSpan.id = anuncio.user.replace(/\s+/g, '-'); // Sanitizar el id
                 document.getElementById('userimagen').src = anuncio.userimagen;
                 document.getElementById('tipo').textContent = anuncio.tipo;
             } else {
@@ -300,21 +303,21 @@
         </span>
     </header>
     <main>
-    <div class="anuncio">
-        <div class="cabecera-anuncio">
-            <img id="userimagen" src="" alt="Usuario">
-            <span id="user"></span>
-            <p><span id="tipo"></span></p>
+        <div class="anuncio">
+            <div class="cabecera-anuncio">
+                <img id="userimagen" src="" alt="Usuario">
+                <span id="user"></span>
+                <p><span id="tipo"></span></p>
+            </div>
+            <div class="contenido-anuncio">
+                <h1 id="titulo"></h1>
+                <p id="contenido"></p>
+                <hr>
+                <div id="info-adicional"></div>
+            </div>
         </div>
-        <div class="contenido-anuncio">
-            <h1 id="titulo"></h1>
-            <p id="contenido"></p>
-            <hr>
-            <div id="info-adicional"></div>
-        </div>
-    </div>
-      <a href="anuncios" style="display: inline-block; padding: 10px 20px; background: linear-gradient(135deg, #6a11cb, #2575fc); color: white; text-decoration: none; border-radius: 5px; font-size: 16px; text-align: center; transition: background 0.3s ease; border: none; cursor: pointer;" onmouseover="this.style.background='linear-gradient(135deg, #ff7e5f, #feb47b)'" onmouseout="this.style.background='linear-gradient(135deg, #6a11cb, #2575fc)'"> Volver a la lista de anuncios </a>
-  </main>
-<div id="footer"></div>
+        <a href="anuncios" style="display: inline-block; padding: 10px 20px; background: linear-gradient(135deg, #6a11cb, #2575fc); color: white; text-decoration: none; border-radius: 5px; font-size: 16px; text-align: center; transition: background 0.3s ease; border: none; cursor: pointer;" onmouseover="this.style.background='linear-gradient(135deg, #ff7e5f, #feb47b)'" onmouseout="this.style.background='linear-gradient(135deg, #6a11cb, #2575fc)'"> Volver a la lista de anuncios </a>
+    </main>
+    <div id="footer"></div>
 </body>
 </html>

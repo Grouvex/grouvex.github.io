@@ -277,7 +277,7 @@
                 // Asignar el id dinámico al <span> usando el valor de anuncio.user
                 const userSpan = document.getElementById('user');
                 userSpan.textContent = anuncio.user;
-                userSpan.id = anuncio.user.replace(/\s+/g, '-'); // Sanitizar el id
+                userSpan.className = anuncio.user.replace(/\s+/g, '-'); // Sanitizar el id
                 document.getElementById('userimagen').src = anuncio.userimagen;
                 document.getElementById('tipo').textContent = anuncio.tipo;
             } else {
@@ -306,7 +306,7 @@
         <div class="anuncio">
             <div class="cabecera-anuncio">
                 <img id="userimagen" src="" alt="Usuario">
-                <span id="user"></span>
+                <span cass="user"></span>
                 <p><span id="tipo"></span></p>
             </div>
             <div class="contenido-anuncio">

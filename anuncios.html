@@ -389,6 +389,7 @@
                             <div class="cabecera-anuncio">
                                 <img src="${anuncio.userimagen}" alt="${anuncio.user}">
                                 <span>${anuncio.user}</span>
+                                <p><span id="${anuncio.actualizadoID}"></span></p>
                                 <p>${anuncio.tipo}</p>
                                 ${esNuevoAnuncio ? '<span class="etiqueta-nuevo">Nuevo</span>' : ''}
                             </div>
@@ -469,6 +470,7 @@
 
         // Cargar los datos de los anuncios al iniciar la página
         cargarDatosAnuncios();
+        actualizarFechas(anuncio.uT, anuncio.actualizadoID);
     </script>
     <div id="footer"></div>
 </body>

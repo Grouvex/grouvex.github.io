@@ -395,7 +395,7 @@ function cargarAnuncios(filtro = 'all') {
                 <a href="${sanitizeHTML(urlAnuncio)}">
                     <div class="cabecera-anuncio">
                         <img src="${sanitizeHTML(anuncio.userimagen)}" alt="${sanitizeHTML(anuncio.user)}">
-                        <span class="${sanitizeHTML(anuncio.user.replace(/\s+/g, '-'))}"></span>
+                        <span class="${sanitizeHTML(anuncio.user)}"></span>
                         <p><span id="${sanitizeHTML(anuncio.actualizadoID)}"></span></p>
                         <p>${sanitizeHTML(anuncio.tipo)}</p>
                         ${esNuevoAnuncio ? '<span class="etiqueta-nuevo">Nuevo</span>' : ''}
@@ -412,6 +412,7 @@ function cargarAnuncios(filtro = 'all') {
             </div>
         `;
         content.insertAdjacentHTML('beforeend', anuncioHTML);
+        actualizarFechas(anuncio.uT, anuncio.actualizadoID);
     });
 
     anunciosCargados += anunciosParaCargar.length;

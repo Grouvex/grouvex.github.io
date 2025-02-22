@@ -6,11 +6,11 @@
         "user": "Grouvex Phoenix",
         "userimagen": "../img/GROUVEX.png",
         "titulo": "Modificación de Formularios",
-        "contenido": "Informamos a los Artistas de GSRecording, que los formularios Google, se han modificado para mejor comprensión.",
+        "contenido": "<p>Informamos a los Artistas de GSRecording, que los formularios Google, se han modificado para mejor comprensión.</p>",
         "tipo": "Recording",
         "urlT": true,
-        "masInfo": "<ul><li>Respecto al del contrato, se ha modificado el correo de contacto a oficina@grouvex.com. Así como la expresión del formulario.</li><li>En el formulario de contrato de proyecto, se ha añadido la pregunta Cover, puesto que la Distribuidora, nos permite ahora decidir si es un Cover o no.</li></ul>",
-        "infoAdicional": "<article>Se ha modificado <a href=\"https://docs.google.com/forms/d/e/1FAIpQLSe9CFEvsM9iLjF6dA_78v7rOMnL_kqYt9BZ4QFPVI_4tv9h_A/viewform\" target=\"_blank\">Formulario de Solicitud de Aceptación de Contrato</a> y <a href=\"https://docs.google.com/forms/d/e/1FAIpQLSe9CFEvsM9iLjF6dA_78v7rOMnL_kqYt9BZ4QFPVI_4tv9h_A/viewform\" target=\"_blank\">Formulario de Contrato de lanzamientos de Álbums/EP/Canciones</a></article>"
+        "masInfo": "<p><ul><li>Respecto al del contrato, se ha modificado el correo de contacto a oficina@grouvex.com. Así como la expresión del formulario.</li><li>En el formulario de contrato de proyecto, se ha añadido la pregunta Cover, puesto que la Distribuidora, nos permite ahora decidir si es un Cover o no.</li></ul></p>",
+        "infoAdicional": "<article><p>Se ha modificado <a href=\"https://docs.google.com/forms/d/e/1FAIpQLSe9CFEvsM9iLjF6dA_78v7rOMnL_kqYt9BZ4QFPVI_4tv9h_A/viewform\" target=\"_blank\">Formulario de Solicitud de Aceptación de Contrato</a> y <a href=\"https://docs.google.com/forms/d/e/1FAIpQLSe9CFEvsM9iLjF6dA_78v7rOMnL_kqYt9BZ4QFPVI_4tv9h_A/viewform\" target=\"_blank\">Formulario de Contrato de lanzamientos de Álbums/EP/Canciones</a></p></article>"
     },
     {
         "id": "1739034000",
@@ -19,10 +19,10 @@
         "user": "Grouvex Studios",
         "userimagen": "../img/GROUVEX.png",
         "titulo": "v6.0.1",
-        "contenido": "Hemos traido mejoras a nuestra web. Hecha un vistazo a <a href=\"https://github.com/Grouvex/grouvex.github.io/tree/v6.0.1\" style=\"color: white;\" target=\"_blank\">©2025-v6.0.1</a>",
+        "contenido": "<p>Hemos traido mejoras a nuestra web. Hecha un vistazo a <a href=\"https://github.com/Grouvex/grouvex.github.io/tree/v6.0.1\" style=\"color: white;\" target=\"_blank\">©2025-v6.0.1</a></p>",
         "tipo": "Web",
         "urlT": false,
-        "masInfo": "<ul><li>Nuevas temáticas</li><li>Nuevas ToS y PP</li><li>Se añaden insigneas</li><li>Nueva estructura de la Web</li><li>Nueva versión de Sistema Planetario</li></ul> Y mucho más...",
+        "masInfo": "<p><ul><li>Nuevas temáticas</li><li>Nuevas ToS y PP</li><li>Se añaden insigneas</li><li>Nueva estructura de la Web</li><li>Nueva versión de Sistema Planetario</li></ul> Y mucho más...</p>",
         "infoAdicional": ""
     },
     {
@@ -45,9 +45,9 @@
         "user": "Grouvex Studios",
         "userimagen": "../img/GROUVEX.png",
         "titulo": "Anuncios Anteriores a 2025",
-        "contenido": "Los anuncios anteriores a 2025 no salen en la Página Web.",
+        "contenido": "<p>Los anuncios anteriores a 2025 no salen en la Página Web.</p>",
         "tipo": "Web",
-        "masInfo": "Esto se debe a que no tenemos la información de los anteriores anuncios.",
+        "masInfo": "<p>Esto se debe a que no tenemos la información de los anteriores anuncios.</p>",
         "infoAdicional": ""
     }
 ]

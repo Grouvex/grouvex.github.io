@@ -271,13 +271,13 @@
         
             if (anuncio) {
                 document.title = anuncio.titulo;
-                document.getElementById('titulo').textContent = anuncio.titulo;
-                document.getElementById('contenido').textContent = anuncio.contenido;
+                document.getElementById('titulo').innerHTML = anuncio.titulo;
+                document.getElementById('contenido').innerHTML = anuncio.contenido;
                 document.getElementById('info-adicional').innerHTML = anuncio.infoAdicional || ''; // Mostrar info adicional
                 const userSpan = document.querySelector('.user');
                 userSpan.className = anuncio.user.replace(/\s+/g, '-'); // Sanitizar el id
                 document.getElementById('userimagen').src = anuncio.userimagen;
-                document.getElementById('tipo').textContent = anuncio.tipo;
+                document.getElementById('tipo').innerHTML = anuncio.tipo;
         
                 // Mostrar insignias del usuario
                 const elements = document.querySelectorAll(`.${anuncio.user.replace(/\s+/g, '-')}`);

@@ -377,6 +377,12 @@
             });
         }
 
+function sanitizeHTML(str) {
+    const temp = document.createElement('div');
+    temp.textContent = str;
+    return temp.innerHTML;
+}
+
 function cargarAnuncios(filtro = 'all') {
     const anunciosFiltrados = filtro === 'all' ? anunciosData : anunciosData.filter(anuncio => anuncio.tipo === filtro);
     const anunciosParaCargar = anunciosFiltrados.slice(anunciosCargados, anunciosCargados + anunciosPorCarga);
@@ -385,20 +391,20 @@ function cargarAnuncios(filtro = 'all') {
         const urlAnuncio = `anuncio.html?id=${anuncio.id}`;
         const esNuevoAnuncio = esNuevo(anuncio.uT);
         const anuncioHTML = `
-            <div id="${anuncio.id}" class="anuncio">
-                <a href="${urlAnuncio}">
+            <div id="${sanitizeHTML(anuncio.id)}" class="anuncio">
+                <a href="${sanitizeHTML(urlAnuncio)}">
                     <div class="cabecera-anuncio">
-                        <img src="${anuncio.userimagen}" alt="${anuncio.user}">
-                        <span>${anuncio.user}</span>
-                        <p><span id="${anuncio.actualizadoID}"></span></p>
-                        <p>${anuncio.tipo}</p>
+                        <img src="${sanitizeHTML(anuncio.userimagen)}" alt="${sanitizeHTML(anuncio.user)}">
+                        <span>${sanitizeHTML(anuncio.user)}</span>
+                        <p><span id="${sanitizeHTML(anuncio.actualizadoID)}"></span></p>
+                        <p>${sanitizeHTML(anuncio.tipo)}</p>
                         ${esNuevoAnuncio ? '<span class="etiqueta-nuevo">Nuevo</span>' : ''}
                     </div>
                     <div class="contenido-anuncio">
-                        <h1>${anuncio.titulo}</h1>
-                        <p>${anuncio.contenido}</p>
+                        <h1>${sanitizeHTML(anuncio.titulo)}</h1>
+                        <p>${sanitizeHTML(anuncio.contenido)}</p>
                         <div class="mas-info">
-                            ${anuncio.masInfo}
+                            ${sanitizeHTML(anuncio.masInfo)}
                         </div>
                         <button class="ver-mas">Ver más</button>
                     </div>
@@ -407,7 +413,6 @@ function cargarAnuncios(filtro = 'all') {
         `;
         content.insertAdjacentHTML('beforeend', anuncioHTML);
 
-        // Llamar a actualizarFechas después de insertar el anuncio en el DOM
         actualizarFechas(anuncio.uT, anuncio.actualizadoID);
     });
 

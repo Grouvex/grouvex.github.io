@@ -383,11 +383,9 @@
         }
 
         // Función para sanitizar el HTML
-        function sanitizeHTML(str) {
-            const temp = document.createElement('div');
-            temp.textContent = str;
-            return temp.innerHTML;
-        }
+function sanitizeHTML(str) {
+    return DOMPurify.sanitize(str);
+}
 
         // Función para cargar los anuncios
         function cargarAnuncios(filtro = 'all') {
@@ -395,7 +393,7 @@
             const anunciosParaCargar = anunciosFiltrados.slice(anunciosCargados, anunciosCargados + anunciosPorCarga);
 
             anunciosParaCargar.forEach(anuncio => {
-    const urlAnuncio = `anuncio.html?id=${anuncio.id}`;
+    const urlAnuncio = `anuncio?id=${anuncio.id}`;
     const esNuevoAnuncio = esNuevo(anuncio.uT);
     const anuncioHTML = `
         <div id="anuncio-${sanitizeHTML(anuncio.id)}" class="anuncio">
@@ -527,6 +525,7 @@
         // Cargar los datos de los anuncios al iniciar la página
         cargarDatosAnuncios();
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
     <div id="footer"></div>
 </body>
 </html>

@@ -259,7 +259,7 @@
                 document.getElementById('contenido').textContent = anuncio.contenido;
                 document.getElementById('mas-info').innerHTML = anuncio.masInfo;
                 document.getElementById('info-adicional').innerHTML = anuncio.infoAdicional || ''; // Mostrar info adicional
-                document.getElementById('user').textContent = anuncio.user;
+                document.getElementById('user').textContent = anuncio.user || "../img/GROUVEX.png";
                 document.getElementById('userimagen').src = anuncio.userimagen;
                 document.getElementById('tipo').textContent = anuncio.tipo;
             } else {

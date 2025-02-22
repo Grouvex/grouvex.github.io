@@ -368,7 +368,7 @@
             anuncios.forEach(anuncio => {
                 const li = document.createElement('li');
                 const a = document.createElement('a');
-                a.href = `#${anuncio.id}`;
+                a.href = `#anuncio-${sanitizeHTML(anuncio.id)}`;
                 a.textContent = anuncio.titulo;
                 a.addEventListener('click', (e) => {
                     e.preventDefault();

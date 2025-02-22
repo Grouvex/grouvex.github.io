@@ -9,7 +9,8 @@
         "contenido": "Informamos a los Artistas de GSRecording, que los formularios Google, se han modificado para mejor comprensión.",
         "tipo": "Recording",
         "urlT": true,
-        "masInfo": "<ul><li>Respecto al del contrato, se ha modificado el correo de contacto a oficina@grouvex.com. Así como la expresión del formulario.</li><li>En el formulario de contrato de proyecto, se ha añadido la pregunta Cover, puesto que la Distribuidora, nos permite ahora decidir si es un Cover o no.</li></ul>"
+        "masInfo": "<ul><li>Respecto al del contrato, se ha modificado el correo de contacto a oficina@grouvex.com. Así como la expresión del formulario.</li><li>En el formulario de contrato de proyecto, se ha añadido la pregunta Cover, puesto que la Distribuidora, nos permite ahora decidir si es un Cover o no.</li></ul>",
+        "infoAdicional": "<hr><article>Se ha modificado <a href=\"https://docs.google.com/forms/d/e/1FAIpQLSe9CFEvsM9iLjF6dA_78v7rOMnL_kqYt9BZ4QFPVI_4tv9h_A/viewform\" target=\"_blank\">Formulario de Solicitud de Aceptación de Contrato</a> y <a href=\"https://docs.google.com/forms/d/e/1FAIpQLSe9CFEvsM9iLjF6dA_78v7rOMnL_kqYt9BZ4QFPVI_4tv9h_A/viewform\" target=\"_blank\">Formulario de Contrato de lanzamientos de Álbums/EP/Canciones</a></article>"
     },
     {
         "id": "1739034000",
@@ -18,7 +19,7 @@
         "user": "Grouvex-Studios",
         "userimagen": "../img/GROUVEX.png",
         "titulo": "v6.0.1",
-        "contenido": "Hemos traido mejoras a nuestra web. Hecha un vistazo a <a href='https://github.com/Grouvex/grouvex.github.io/tree/v6.0.1' style='color:white' target='_blank'>©2025-v6.0.1</a>",
+        "contenido": "Hemos traido mejoras a nuestra web. Hecha un vistazo a <a href=\"https://github.com/Grouvex/grouvex.github.io/tree/v6.0.\" style=\"color:white\" target=\"_blank\">©2025-v6.0.1</a>",
         "tipo": "Web",
         "urlT": false,
         "masInfo": "<ul><li>Nuevas temáticas</li><li>Nuevas ToS y PP</li><li>Se añaden insigneas</li><li>Nueva estructura de la Web</li><li>Nueva versión de Sistema Planetario</li></ul> Y mucho más..."
@@ -33,7 +34,7 @@
         "contenido": "Les deseamos felices fiestas a todos.",
         "tipo": "General",
         "urlT": false,
-        "masInfo": "<div style='background: transparent; border-left: 10px solid white; color: #000000; padding: 5px; display: flex; box-shadow: 0 0 20px green; margin-top: 5px'><div style='font-size: 20px; margin-right: 10px'>🎄</div><div style='flex-grow: 1'><p style='color: white; background: green; font-size: 18px; margin: 0'>Feliz Año Nuevo 2025</p><hr><p style='background: rgba(255, 255, 255, 0.5); font-size: 14px; margin: 0; color: black'>Muchas Gracias a Todos por vuestra colaboración para que la web siga activa. Y muchas gracias a todos los artistas. Los artistas pueden escribir un comentario en <a href='https://grouvex.com/comentarios' style='color: white'>Chat de Artistas</a> para que otros usuarios puedan ver vuestros comentarios ⛄ <span class='status recommended'>Recommended</span></p><p style='background: rgba(255, 255, 255, 0.5); font-size: 14px; margin: 0; color: black'>⚠️ Por motivos de navidad. Aunqué el servicio de atención al cliente este disponible, la respuesta del equipo puede tardar bastante. Necesitan descansar tambien. ⚠️</p><hr><p style='background: rgba(255, 255, 255, 0.5); font-size: 12px; color: black; margin: 0'>©Grouvex Studios</p></div></div>"
+        "masInfo": "<div style=\"background: transparent; border-left: 10px solid white; color: #000000; padding: 5px; display: flex; box-shadow: 0 0 20px green; margin-top: 5px\"><div style=\"font-size: 20px; margin-right: 10px\">🎄</div><div style=\"flex-grow: 1\"><p style=\"color: white; background: green; font-size: 18px; margin: 0\">Feliz Año Nuevo 2025</p><hr><p style=\"background: rgba(255, 255, 255, 0.5); font-size: 14px; margin: 0; color: black\">Muchas Gracias a Todos por vuestra colaboración para que la web siga activa. Y muchas gracias a todos los artistas. Los artistas pueden escribir un comentario en <a href=\"https://grouvex.com/comentarios\" style=\"color: white\">Chat de Artistas</a> para que otros usuarios puedan ver vuestros comentarios ⛄ <span class=\"status recommended\">Recommended</span></p><p style=\"background: rgba(255, 255, 255, 0.5); font-size: 14px; margin: 0; color: black\">⚠️ Por motivos de navidad. Aunqué el servicio de atención al cliente este disponible, la respuesta del equipo puede tardar bastante. Necesitan descansar tambien. ⚠️</p><hr><p style=\"background: rgba(255, 255, 255, 0.5); font-size: 12px; color: black; margin: 0\">©Grouvex Studios</p></div></div>"
     },
     {
         "id": "1735685999",

@@ -481,7 +481,9 @@ function cargarAnuncios(filtro = 'all') {
             }
         `;
         document.head.appendChild(estiloEtiquetaNuevo);
-
+console.log("Anuncios cargados:", anunciosData);
+console.log("Anuncios filtrados:", anunciosFiltrados);
+console.log("Anuncios para cargar:", anunciosParaCargar);
         // Cargar los datos de los anuncios al iniciar la página
         cargarDatosAnuncios();
         actualizarFechas(anuncio.uT, anuncio.actualizadoID);

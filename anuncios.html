@@ -384,7 +384,8 @@
 
         // Función para sanitizar el HTML
 function sanitizeHTML(str) {
-    return DOMPurify.sanitize(str);
+    // Elimina solo scripts y otros elementos peligrosos
+    return str.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
 }
 
         // Función para cargar los anuncios
@@ -525,7 +526,6 @@ function sanitizeHTML(str) {
         // Cargar los datos de los anuncios al iniciar la página
         cargarDatosAnuncios();
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
     <div id="footer"></div>
 </body>
 </html>

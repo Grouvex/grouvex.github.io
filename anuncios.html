@@ -396,7 +396,7 @@ function cargarAnuncios(filtro = 'all') {
                     <div class="cabecera-anuncio">
                         <img src="${sanitizeHTML(anuncio.userimagen)}" alt="${sanitizeHTML(anuncio.user)}">
                         <span>${sanitizeHTML(anuncio.user)}</span>
-                        <span id="${sanitizeHTML(anuncio.user)}"></span>
+                        <span class="${sanitizeHTML(anuncio.user)}"></span>
                         <p><span id="${sanitizeHTML(anuncio.actualizadoID)}"></span></p>
                         <p>${sanitizeHTML(anuncio.tipo)}</p>
                         ${esNuevoAnuncio ? '<span class="etiqueta-nuevo">Nuevo</span>' : ''}

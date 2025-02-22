@@ -381,7 +381,7 @@
             const anunciosFiltrados = filtro === 'all' ? anunciosData : anunciosData.filter(anuncio => anuncio.tipo === filtro);
             const anunciosParaCargar = anunciosFiltrados.slice(anunciosCargados, anunciosCargados + anunciosPorCarga);
             anunciosParaCargar.forEach(anuncio => {
-                const urlAnuncio = `anuncio.html?id=${anuncio.id}`;
+                const urlAnuncio = `anuncio?id=${anuncio.id}`;
                 const esNuevoAnuncio = esNuevo(anuncio.uT);
                 const anuncioHTML = `
                     <div id="${anuncio.id}" class="anuncio">

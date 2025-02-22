@@ -268,18 +268,23 @@
             const response = await fetch('anuncios.json');
             const anunciosData = await response.json();
             const anuncio = anunciosData.find(a => a.id === idAnuncio);
-
+        
             if (anuncio) {
                 document.title = anuncio.titulo;
                 document.getElementById('titulo').textContent = anuncio.titulo;
                 document.getElementById('contenido').textContent = anuncio.contenido;
                 document.getElementById('info-adicional').innerHTML = anuncio.infoAdicional || ''; // Mostrar info adicional
-                // Asignar el id dinámico al <span> usando el valor de anuncio.user
                 const userSpan = document.getElementById('user');
                 userSpan.textContent = anuncio.user;
                 userSpan.className = anuncio.user.replace(/\s+/g, '-'); // Sanitizar el id
                 document.getElementById('userimagen').src = anuncio.userimagen;
                 document.getElementById('tipo').textContent = anuncio.tipo;
+        
+                // Mostrar insignias del usuario
+                const elements = document.querySelectorAll(`.${anuncio.user.replace(/\s+/g, '-')}`);
+                if (elements.length > 0) {
+                    mostrarUsuarioYInsignias(anuncio.user, elements);
+                }
             } else {
                 document.getElementById('contenido').textContent = "Anuncio no encontrado.";
             }

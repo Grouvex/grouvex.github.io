@@ -372,7 +372,7 @@
                 a.textContent = anuncio.titulo;
                 a.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const elementoAnuncio = document.getElementById(anuncio.id);
+                    const elementoAnuncio = document.getElementById(anuncio-${sanitizeHTML(anuncio.id)});
                     if (elementoAnuncio) {
                         elementoAnuncio.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }

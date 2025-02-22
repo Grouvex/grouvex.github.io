@@ -27,7 +27,8 @@
     <script type="module" src="abc.js"></script>
     <script src="index.js"></script>
     <script src="jquery-3.5.1.min.js"></script>
-    <script>  document.addEventListener("DOMContentLoaded", function() { 
+    <script>  
+    document.addEventListener("DOMContentLoaded", function() { 
         $("#menuG").load("menuG.html");$("#menuE").load("menuE.html");$("#menuT").load("menuT.html");$("#menuU").load("menuU.html");
         $("#footer").load("footer.html"); 
         $("#news").load("news.html"); $("#tosypp").load("tosypp.html");
@@ -297,7 +298,7 @@
 
     <button class="cargar-mas">Cargar más anuncios</button>
   <script>
-    // { id: "1740145769",uT: "1740145769", actualizadoID: "Anuncio2", user: "Grouvex-Studios", userimagen: "../img/GROUVEX.png", titulo: `Anuncio 2`, contenido: `Nuevo lanzamiento de consola.`, tipo: "Animation", masInfo: `Más detalles sobre el anuncio 2.` }
+    // { id: "1740145769",uT: "1740145769", actualizadoID: "Anuncio2", user: "Grouvex-Studios", userimagen: "../img/GROUVEX.png", titulo: `Anuncio 2`, contenido: `Nuevo lanzamiento de consola.`, tipo: "Animation", urlT: false,asInfo: `Más detalles sobre el anuncio 2.` }
     const anunciosData = [
         {
             id: "1740169682",
@@ -356,7 +357,6 @@
             titulo: `Anuncios Anteriores a 2025`,
             contenido: `Los anuncios anteriores a 2025 no salen en la Página Web.`,
             tipo: "Web",
-            urlT: false,
             masInfo: `Esto se debe a que no tenemos la información de los anteriores anuncios.`
         }
     ];
@@ -426,26 +426,10 @@
                 const esNuevoAnuncio = esNuevo(anuncio.uT);
                 const anuncioHTML = `
                     <div id="${anuncio.id}" class="anuncio">
-                     ${anuncio.urlT ? <a href="${urlAnuncio}" style="text-decoration: none; color: inherit; display: block;"> : ''} 
+                       ${anuncio.urlT ? '<a href="${urlAnuncio}" style="text-decoration: none; color: inherit; display: block;">' : ''} 
                             <div class="cabecera-anuncio">
                                 <img src="${anuncio.userimagen}" alt="${anuncio.user}">
-                                <span class="${anuncio.user}">
-                                    ${usuarios[anuncio.user] ? `
-                                        <div class="insignias-principales">
-                                            ${usuarios[anuncio.user].principales.map(insignia => `
-                                                <span class="insignia ${insignia}"></span>
-                                            `).join('')}
-                                        </div>
-                                        <details>
-                                            <summary style="font-size: 10px;">Insignias Secundarias</summary>
-                                            <div class="insignias-secundarias">
-                                                ${usuarios[anuncio.user].secundarias.map(insignia => `
-                                                    <span class="insignia ${insignia}"></span>
-                                                `).join('')}
-                                            </div>
-                                        </details>
-                                    ` : ''}
-                                </span>
+                                <span class="${anuncio.user}"></span>
                                 <p><span id="${anuncio.actualizadoID}"></span></p>
                                 <p>${anuncio.tipo}</p>
                                 ${esNuevoAnuncio ? '<span class="etiqueta-nuevo">Nuevo</span>' : ''}
@@ -458,7 +442,7 @@
                                 </div>
                                 <button class="ver-mas">Ver más</button>
                             </div>
-                      ${anuncio.urlT ? '</a>' : ''}
+                        ${anuncio.urlT ? '</a>' : ''}
                     </div>
                 `;
                 content.insertAdjacentHTML('beforeend', anuncioHTML);

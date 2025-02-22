@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Anuncio - Grouvex Studios</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        // Función para obtener el parámetro 'id' de la URL
+        function obtenerParametroURL(nombre) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(nombre);
+        }
+
+        // Función para cargar el anuncio correspondiente
+        async function cargarAnuncio() {
+            const idAnuncio = obtenerParametroURL('id');
+            const response = await fetch('anuncios.json');
+            const anunciosData = await response.json();
+            const anuncio = anunciosData.find(a => a.id === idAnuncio);
+
+            if (anuncio) {
+                document.title = anuncio.titulo;
+                document.getElementById('titulo').textContent = anuncio.titulo;
+                document.getElementById('contenido').textContent = anuncio.contenido;
+                document.getElementById('mas-info').innerHTML = anuncio.masInfo;
+                document.getElementById('info-adicional').innerHTML = anuncio.infoAdicional || ''; // Mostrar info adicional
+                document.getElementById('user').textContent = anuncio.user;
+                document.getElementById('userimagen').src = anuncio.userimagen;
+                document.getElementById('tipo').textContent = anuncio.tipo;
+            } else {
+                document.getElementById('contenido').textContent = "Anuncio no encontrado.";
+            }
+        }
+
+        // Cargar el anuncio cuando la página esté lista
+        document.addEventListener("DOMContentLoaded", cargarAnuncio);
+    </script>
+</head>
+<body>
+    <div class="anuncio">
+        <div class="cabecera-anuncio">
+            <img id="userimagen" src="" alt="Usuario">
+            <span id="user"></span>
+            <p><span id="tipo"></span></p>
+        </div>
+        <div class="contenido-anuncio">
+            <h1 id="titulo"></h1>
+            <p id="contenido"></p>
+            <div id="mas-info"></div>
+        </div>
+      <div id="info-adicional"></div>
+      <a href="anuncios.html" 
+         style="display: inline-block; padding: 10px 20px; background: linear-gradient(135deg, #6a11cb, #2575fc); color: white; text-decoration: none; border-radius: 5px; font-size: 16px; text-align: center; transition: background 0.3s ease; border: none; cursor: pointer;"
+         onmouseover="this.style.background='linear-gradient(135deg, #ff7e5f, #feb47b)'"
+         onmouseout="this.style.background='linear-gradient(135deg, #6a11cb, #2575fc)'">
+          Volver a la lista de anuncios
+      </a>
+    </div>
+</body>
+</html>

@@ -456,7 +456,7 @@ async function mostrarUsuarios() {
 
 // Añadir al DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function() {
-    if (false){
+    if (true){
 function mostrarnewsAdv() {
     const newsAdv = document.createElement("div");
     newsAdv.style = `
@@ -476,10 +476,11 @@ function mostrarnewsAdv() {
         font-size: 12px;
     `;
     newsAdv.innerHTML = `
-        <h1 style="color: black"><span class="insignia vvadmin"></span> | Nuevos ToS y PP</h1>
+        <h1 style="color: black"><span class="insignia owner-recording"></span> | Modifiacón de Tiempos</h1>
         <div style="margin-top: 10px; display: flex; justify-content: center; gap: 10px;flex-wrap: wrap;flex-direction: column;align-content: center;">
-        <p>Para mejorar la seguridad de los usuarios, así como el del equipo, se han modificado los Términos de Servicio (ToS) y la Política de Privacidad (PP)</p>
-        <p><a href="https://grouvex.github.io/tos" style="color: white; text-decoration: underline;">ToS</a> | <a href="https://grouvex.github.io/pp" style="color: white; text-decoration: underline;">PP</a></p>
+        <p>El Equipo de Grouvex Studios Recording está satudado actualmente, por tanto, durante un periodo, la entrega del proyecto para lanzarlo, deberá ser <n>6 semanas antes de la fecha de venta</n> que indique el artista.</p>
+        <p>Entra en vigor el <n>2 de Marzo de 2025</n></p>
+        <p>Esto modifica por tanto, la sección de <n>Obligaciones del Artista > Entrega de Material</n> <a href="https://grouvex.com/grouvex-studios-recording#Entrega_de_Material" style="color: white; text-decoration: underline;">GSRecording > Entrega de Material</a></p>
         <button onclick="this.parentElement.parentElement.remove()" style="background: none; color: red; cursor: pointer;">Cerrar</button>
         </div>
      `;

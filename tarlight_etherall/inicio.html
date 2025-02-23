@@ -3,36 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Tarlight Etherall - Grouvex Studios</title>
-    <meta property="og:site_name" content="Grouvex Studios">
-    <meta property="og:title" content=">Tarlight Etherall - Grouvex Studios">
-    <meta property="og:description" content=">Tarlight Etherall de ©Grouvex Studios">
-    <meta property="og:type" content="website">
-    <meta property="og:image" href="../../img/GROUVEX.png">
-    <meta property="og:url" content="https://grouvex.com/">
-    <meta property="og:locale" content="es_ES">
-    <link rel="stylesheet" href="../index.css">
-    <link rel="stylesheet" href="../temas.css">
-    <link rel="icon" href="img/GROUVEX.png" type="image/x-icon">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="MobileOptimized" content="width">
-    <meta name="author" content="Grouvex Studios">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="copyright" content="Grouvex Studios">
-    <meta name="google-site-verification" content="54a46b8f7ec187ad80dd5a45fff8f43b">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Referrer-Policy" content="no-referrer">
-    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects">
-    <meta name="theme-color" content="#hexcode">
-    <link rel="canonical" href="https://grouvex.com/">
-    <link rel="shortlink" href="https://grouvex.com/">
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <meta name="HandheldFriendly" content="true">
-    <link rel="preconnect" href="https://example.com">
-    <link rel="dns-prefetch" href="https://example.com">
- <!-- Scripts sin nonce -->
-    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script> 
-    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js"></script> 
-    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-database.js"></script> 
+    <meta name="description" content="Mira la información sobre el artista Tarlight Etherall.">
+    <meta property="og:title" content="Grouvex Studios">
+    <meta property="og:description" content="Sitio web oficial de Grouvex Studios, un sello discográfico, distribuidor de contenido multimedia y diseño.">
+    <meta property="og:image" content="img/GROUVEX.png">
+    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects"><meta name="author" content="Grouvex Studios"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="theme-color" content="#hexcode"><meta property="og:url" content="https://grouvex.com/"><meta property="og:type" content="website"><meta property="og:locale" content="es_ES"><link rel="canonical" href="https://grouvex.com/"><link rel="icon" href="img/GROUVEX.png" type="image/x-icon"><meta property="og:site_name" content="Grouvex Studios">
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script><script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script><script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+    <link rel="stylesheet" href="index.css"><link rel="stylesheet" href="temas.css">
+    <script src="time.js"></script></script><script type="module" src="abc.js"></script><script src="index.js"></script>
     <script src="jquery-3.5.1.min.js"></script>
     <script> 
         document.addEventListener("DOMContentLoaded", function() { 
@@ -49,25 +27,31 @@
     <script src="time.js"></script></script><script src="index.js"></script>
 </head>
 <mainTop>
-        <mainTop>
+        <header>
             <a href="https://grouvex.github.io/"> <div class="img-container"></div></a> 
             <a href="https://grouvex.github.io/tarlight_etherall/inicio"><div style="font-size: 15px;color:white;margin-top:5px;margin-bottom:15px">Artista Tarlight Etherall - Grouvex Studios</div></a>
             <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
                 <span id="menuG"></span> <!-- General -->
+                <span id="menuE"></span> <!-- Especifico -->
                 <span id="menuT"></span> <!-- Temas/Idioma -->
                 <span id="menuU"></span> <!-- Usuario -->
-        </mainTop>
+        </header>
 <body>
  <!-- Anuncio -->
   <div id="news"></div>
 <main>
-<!-- Publicado por -->
-<div class="tarjeta" style="display: flex;align-items: center; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 10px; padding: 10px; height: auto; width: auto; padding-top: 10px;padding-bottom: 10px">
-<img src="../img/GROUVEX.png" alt="" style="border-radius: 50%; width: 15%;height: 15%;object-fit: cover; margin-right: 10px;loading="lazy">
-<div style="width:100%;height:auto">
-<h2 style="margin:2px; font-size: 7.5px;width:100%;height:auto">Publicado por:</h2><h2 style="margin:2px; padding: 1px;font-size: 20px;width:100%;height:auto"><span class="Grouvex-Studios"></span></h2>
-<p style="color: white; font-size: 11px;width:100%;height:auto"><span id="ActualizadoDATE"></span></p><a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@grouvex.com</footer></a></div></div>
-<script>const uTActualizado = 1738429200; actualizarFechas(uTActualizado, "ActualizadoDATE");</script> 
+     <!-- Publicado por -->
+        <div class="tarjetas">
+            <div class="tarjeta">
+        <img src="../img/GROUVEX.png" alt="">
+        <div>
+          <h2 style="margin:2px; font-size: 7.5px;height:auto">Publicado por:</h2>
+          <h2><span class="Grouvex-Studios"></span></h2>
+          <hr>
+          <p><span id="ActualizadoDATE"></span></p>
+          <p><a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@grouvex.com</footer></a></p>
+        </div></div></div>
+        <script>const uTActualizado = 1738429200; actualizarFechas(uTActualizado, "ActualizadoDATE");</script>
   <!-- Título -->
 <article>
  <h1>Tarlight Etherall</h1>
@@ -79,12 +63,6 @@
   </section>
 </article>
  </main>
- <!-- Publicado por -->
-<div class="tarjeta" style="display: flex;align-items: center; border-radius: 8px;  box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 5px;  padding: 5px;  height: 50px; width: 300px; padding-top: 10px;padding-bottom: 10px">
-<img src="../img/Tarlight Etherall.png" alt="" style="border-radius: 50%; width: 40px;height: 40px;object-fit: cover; margin-right: 10px;"><div>
-<h2 style="margin: 0 0 3px;font-size: 8px">Publicado por:</h2><h2 style="margin: 0 0 2px; padding: 3px;font-size: 11px">Tarlight Etherall</h2>
-<p style="color: white; font-size: 10px"><span id="ActualizadoDATE"></span></p><a href="mailto:tarlight.etherall@grouvex.com" style="color:white"><footer style="font-size: 0.7em; color: white; font-size: 6px;padding:3px">tarlight.etherall@grouvex.com</footer></a></div></div>
-<script>const uTActualizado = 1734710400; actualizarFechas(uTActualizado, "ActualizadoDATE");</script> 
 <!-- Footer -->
  <div id="footer"></div>
 </body>

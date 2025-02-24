@@ -254,83 +254,85 @@ async function cargarLanzamientosRecientes() {
     }
 }
 
-                // Función para cargar las canciones
-                function cargarCanciones() {
-                    fetch('canciones-grouvex.json')
-                        .then(response => response.json())
-                        .then(data => {
-                            const canciones = data.canciones;
-                            const letras = {};
+ function cargarCanciones() {
+    fetch('canciones-grouvex.json')
+        .then(response => response.json())
+        .then(data => {
+            const canciones = data.canciones;
 
-                            // Organizar canciones por letra inicial
-                            canciones.forEach(cancion => {
-                                const letraInicial = cancion.titulo.charAt(0).toUpperCase();
-                                if (!letras[letraInicial]) {
-                                    letras[letraInicial] = [];
-                                }
-                                letras[letraInicial].push(cancion);
-                            });
+            // Ordenar las canciones alfabéticamente por título
+            canciones.sort((a, b) => a.titulo.localeCompare(b.titulo));
 
-                            // Mostrar canciones por letra
-                            const contenido = document.getElementById('contenido');
-                            if (contenido) {
-                                contenido.innerHTML = `
-                                    <style>
-                                        .letra {
-                                            font-size: 40px;
-                                            font-family: Times New Roman;
-                                            color: white;
-                                            transition: color 0.3s;
-                                        }
-                                        .letra:hover {
-                                            color: inherit;
-                                        }
-                                        li { font-family: Times New Roman; }
-                                        summary { font-size: 25px; cursor: pointer; }
-                                        details { border: 2px solid white; }
-                                        details[open] { border-image: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet) 1; border-width: 2px; border-style: solid; }
-                                        .r-img { width: 30px; }
-                                        @media only screen and (max-width: 600px) {
-                                            .r-img { max-width: 30px; max-height: 30px; }
-                                        }
-                                    </style>
-                                    <h2>Música</h2>
-                                    <a href="#top" style="font-size: 30px; font-family: Times New Roman; color: white">#</a>
-                                    ${'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(letra => `
-                                        <a href="#${letra}" class="letra" onclick="this.style.color='red';">${letra}</a>
-                                    `).join('')}
-                                    <article>
-                                        ${Object.keys(letras).map(letra => `
-                                            <div id="${letra}"><a href="#${letra}" class="letra" onclick="this.style.color='red';">${letra}</a></div>
-                                            <details>
-                                                <summary style="font-family: Times New Roman">Start with ${letra}</summary>
-                                                <ol>
-                                                    ${letras[letra].map(cancion => `
-                                                        <li>
-                                                            <a href="${cancion.titulo.toLowerCase().replace(/ /g, '_')}">
-                                                                <div style="display: flex; padding: 3px; box-shadow: 0 0 3px cyan;">
-                                                                    <img src="${cancion.portada}" alt="" class="r-img" style="margin-right: 2px;">
-                                                                    <span style="font-family: Times New Roman; color: white; display: flex; justify-content: space-between; width: 100%;">
-                                                                        <span>${cancion.titulo}</span>
-                                                                        <span>${cancion.album}</span>
-                                                                    </span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                    `).join('')}
-                                                </ol>
-                                            </details>
-                                        `).join('')}
-                                    </article>
-                                `;
-                            } else {
-                                console.error('El elemento con id="contenido" no existe en el DOM.');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error al cargar las canciones:', error);
-                        });
+            // Organizar canciones por letra inicial
+            const letras = {};
+            canciones.forEach(cancion => {
+                const letraInicial = cancion.titulo.charAt(0).toUpperCase();
+                if (!letras[letraInicial]) {
+                    letras[letraInicial] = [];
                 }
+                letras[letraInicial].push(cancion);
+            });
+
+            // Mostrar canciones por letra
+            const contenido = document.getElementById('contenido');
+            if (contenido) {
+                contenido.innerHTML = `
+                    <style>
+                        .letra {
+                            font-size: 40px;
+                            font-family: Times New Roman;
+                            color: white;
+                            transition: color 0.3s;
+                        }
+                        .letra:hover {
+                            color: inherit;
+                        }
+                        li { font-family: Times New Roman; }
+                        summary { font-size: 25px; cursor: pointer; }
+                        details { border: 2px solid white; }
+                        details[open] { border-image: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet) 1; border-width: 2px; border-style: solid; }
+                        .r-img { width: 30px; }
+                        @media only screen and (max-width: 600px) {
+                            .r-img { max-width: 30px; max-height: 30px; }
+                        }
+                    </style>
+                    <h2>Música</h2>
+                    <a href="#top" style="font-size: 30px; font-family: Times New Roman; color: white">#</a>
+                    ${'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(letra => `
+                        <a href="#${letra}" class="letra" onclick="this.style.color='red';">${letra}</a>
+                    `).join('')}
+                    <article>
+                        ${Object.keys(letras).map(letra => `
+                            <div id="${letra}"><a href="#${letra}" class="letra" onclick="this.style.color='red';">${letra}</a></div>
+                            <details>
+                                <summary style="font-family: Times New Roman">Start with ${letra}</summary>
+                                <ol>
+                                    ${letras[letra].map(cancion => `
+                                        <li>
+                                            <a href="${cancion.titulo.toLowerCase().replace(/ /g, '_')}">
+                                                <div style="display: flex; padding: 3px; box-shadow: 0 0 3px cyan;">
+                                                    <img src="${cancion.portada}" alt="" class="r-img" style="margin-right: 2px;">
+                                                    <span style="font-family: Times New Roman; color: white; display: flex; justify-content: space-between; width: 100%;">
+                                                        <span>${cancion.titulo}</span>
+                                                        <span>${cancion.album}</span>
+                                                    </span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    `).join('')}
+                                </ol>
+                            </details>
+                        `).join('')}
+                    </article>
+                `;
+            } else {
+                console.error('El elemento con id="contenido" no existe en el DOM.');
+            }
+        })
+        .catch(error => {
+            console.error('Error al cargar las canciones:', error);
+        });
+}
 
                 // Función para cargar los álbumes
                 function cargarAlbumes() {

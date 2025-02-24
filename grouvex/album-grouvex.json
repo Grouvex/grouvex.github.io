@@ -1,0 +1,7 @@
+{
+  "albumes": [
+    {"titulo": "The Night Sky", "portada": "../port/The Night Sky.jpg", "fecha": 1735689600},
+    {"titulo": "Spheres of Life", "portada": "../port/Spheres of Life.jpg", "fecha": 1707523200},
+    {"titulo": "Alpha Version", "portada": "../port/Alpha_Version.jpg", "fecha": 1703203200}
+  ]
+}

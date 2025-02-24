@@ -103,288 +103,339 @@
                 <div id="lanzamientos-recientes" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
             </article>
             <script>
-                function mostrarSeccion(seccion) {
-                    const contenido = document.getElementById('contenido');
-                    if (seccion === 'lanzamientos') {
-                        cargarProximosLanzamientos();
-                        cargarLanzamientosRecientes();
-                    } else if (seccion === 'discografia') {
-                        contenido.innerHTML = `
-                            <h2>Discografía</h2>
-                            <p>Aquí puedes ver toda la discografía del artista...</p>
-                        `;
-                    } else if (seccion === 'musica') {
-                        cargarCanciones();
-                    } else if (seccion === 'albumes') {
-                        cargarAlbumes();
-                    } else if (seccion === 'ep') {
-                        cargarEP();
+                document.addEventListener("DOMContentLoaded", function() {
+    // Función para mostrar la sección seleccionada
+    function mostrarSeccion(seccion) {
+        const contenido = document.getElementById('contenido');
+        if (!contenido) {
+            console.error('El elemento con id="contenido" no existe en el DOM.');
+            return;
+        }
+
+        if (seccion === 'lanzamientos') {
+            cargarProximosLanzamientos();
+            cargarLanzamientosRecientes();
+        } else if (seccion === 'discografia') {
+            contenido.innerHTML = `<h2>Discografía</h2><p>Aquí puedes ver toda la discografía del artista...</p>`;
+        } else if (seccion === 'musica') {
+            cargarCanciones();
+        } else if (seccion === 'albumes') {
+            cargarAlbumes();
+        } else if (seccion === 'ep') {
+            cargarEP();
+        }
+    }
+
+    // Función para cargar los próximos lanzamientos
+    function cargarProximosLanzamientos() {
+        const ahora = Math.floor(Date.now() / 1000); // Fecha actual en segundos
+        const unDiaAntes = ahora - 86400; // Un día antes en segundos
+
+        Promise.all([
+            fetch('canciones-grouvex.json').then(res => res.json()),
+            fetch('album-grouvex.json').then(res => res.json()),
+            fetch('ep-grouvex.json').then(res => res.json())
+        ])
+        .then(([cancionesData, albumesData, epData]) => {
+            const todosLosLanzamientos = [
+                ...cancionesData.canciones.map(c => ({ ...c, tipo: 'cancion' })),
+                ...albumesData.albumes.map(a => ({ ...a, tipo: 'album' })),
+                ...epData.ep.map(e => ({ ...e, tipo: 'ep' }))
+            ];
+
+            const proximosLanzamientos = todosLosLanzamientos.filter(lanzamiento => lanzamiento.fecha > unDiaAntes);
+
+            const contenedor = document.getElementById('proximos-lanzamientos');
+            if (contenedor) {
+                contenedor.innerHTML = proximosLanzamientos.map(lanzamiento => `
+                    <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px;">
+                        <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px;">
+                        <h3>${lanzamiento.titulo}</h3>
+                        <p>${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}</p>
+                        <p>Fecha: <span id="fecha-${lanzamiento.fecha}"></span></p>
+                        ${lanzamiento.label ? `<p>Label: ${lanzamiento.label}</p>` : ''}
+                    </div>
+                `).join('');
+
+                proximosLanzamientos.forEach(lanzamiento => {
+                    actualizarFechas(lanzamiento.fecha, `fecha-${lanzamiento.fecha}`);
+                });
+            } else {
+                console.error('El contenedor "proximos-lanzamientos" no existe.');
+            }
+        })
+        .catch(error => {
+            console.error('Error al cargar los próximos lanzamientos:', error);
+        });
+    }
+
+    // Función para cargar los lanzamientos recientes
+    function cargarLanzamientosRecientes() {
+        const ahora = Math.floor(Date.now() / 1000); // Fecha actual en segundos
+        const unMesAntes = ahora - 2592000; // Un mes antes en segundos
+
+        Promise.all([
+            fetch('canciones-grouvex.json').then(res => res.json()),
+            fetch('album-grouvex.json').then(res => res.json()),
+            fetch('ep-grouvex.json').then(res => res.json())
+        ])
+        .then(([cancionesData, albumesData, epData]) => {
+            const todosLosLanzamientos = [
+                ...cancionesData.canciones.map(c => ({ ...c, tipo: 'cancion' })),
+                ...albumesData.albumes.map(a => ({ ...a, tipo: 'album' })),
+                ...epData.ep.map(e => ({ ...e, tipo: 'ep' }))
+            ];
+
+            const lanzamientosRecientes = todosLosLanzamientos.filter(lanzamiento => lanzamiento.fecha >= unMesAntes && lanzamiento.fecha <= ahora);
+
+            const contenedor = document.getElementById('lanzamientos-recientes');
+            if (contenedor) {
+                contenedor.innerHTML = lanzamientosRecientes.map(lanzamiento => `
+                    <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px;">
+                        <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px;">
+                        <h3>${lanzamiento.titulo}</h3>
+                        <p>${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}</p>
+                        <p>Fecha: <span id="fecha-${lanzamiento.fecha}"></span></p>
+                        ${lanzamiento.label ? `<p>Label: ${lanzamiento.label}</p>` : ''}
+                    </div>
+                `).join('');
+
+                lanzamientosRecientes.forEach(lanzamiento => {
+                    actualizarFechas(lanzamiento.fecha, `fecha-${lanzamiento.fecha}`);
+                });
+            } else {
+                console.error('El contenedor "lanzamientos-recientes" no existe.');
+            }
+        })
+        .catch(error => {
+            console.error('Error al cargar los lanzamientos recientes:', error);
+        });
+    }
+
+    // Función para cargar las canciones
+    function cargarCanciones() {
+        fetch('canciones-grouvex.json')
+            .then(response => response.json())
+            .then(data => {
+                const canciones = data.canciones;
+                const letras = {};
+
+                // Organizar canciones por letra inicial
+                canciones.forEach(cancion => {
+                    const letraInicial = cancion.titulo.charAt(0).toUpperCase();
+                    if (!letras[letraInicial]) {
+                        letras[letraInicial] = [];
                     }
+                    letras[letraInicial].push(cancion);
+                });
+
+                // Mostrar canciones por letra
+                const contenido = document.getElementById('contenido');
+                if (contenido) {
+                    contenido.innerHTML = `
+                        <style>
+                            .letra {
+                                font-size: 40px;
+                                font-family: Times New Roman;
+                                color: white;
+                                transition: color 0.3s;
+                            }
+                            .letra:hover {
+                                color: inherit;
+                            }
+                            li { font-family: Times New Roman; }
+                            summary { font-size: 25px; cursor: pointer; }
+                            details { border: 2px solid white; }
+                            details[open] { border-image: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet) 1; border-width: 2px; border-style: solid; }
+                            .r-img { width: 30px; }
+                            @media only screen and (max-width: 600px) {
+                                .r-img { max-width: 30px; max-height: 30px; }
+                            }
+                        </style>
+                        <h2>Música</h2>
+                        <a href="#top" style="font-size: 30px; font-family: Times New Roman; color: white">#</a>
+                        ${'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(letra => `
+                            <a href="#${letra}" class="letra" onclick="this.style.color='red';">${letra}</a>
+                        `).join('')}
+                        <article>
+                            ${Object.keys(letras).map(letra => `
+                                <div id="${letra}"><a href="#${letra}" class="letra" onclick="this.style.color='red';">${letra}</a></div>
+                                <details>
+                                    <summary style="font-family: Times New Roman">Start with ${letra}</summary>
+                                    <ol>
+                                        ${letras[letra].map(cancion => `
+                                            <li>
+                                                <a href="${cancion.titulo.toLowerCase().replace(/ /g, '_')}">
+                                                    <div style="display: flex; padding: 3px; box-shadow: 0 0 3px cyan;">
+                                                        <img src="${cancion.portada}" alt="" class="r-img" style="margin-right: 2px;">
+                                                        <span style="font-family: Times New Roman; color: white; display: flex; justify-content: space-between; width: 100%;">
+                                                            <span>${cancion.titulo}</span>
+                                                            <span>${cancion.album}</span>
+                                                        </span>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        `).join('')}
+                                    </ol>
+                                </details>
+                            `).join('')}
+                        </article>
+                    `;
+                } else {
+                    console.error('El elemento con id="contenido" no existe en el DOM.');
                 }
+            })
+            .catch(error => {
+                console.error('Error al cargar las canciones:', error);
+            });
+    }
 
-                function cargarProximosLanzamientos() {
-                    const ahora = Math.floor(Date.now() / 1000); // Fecha actual en segundos
-                    const unDiaAntes = ahora - 86400; // Un día antes en segundos
-
-                    Promise.all([
-                        fetch('canciones-grouvex.json').then(res => res.json()),
-                        fetch('album-grouvex.json').then(res => res.json()),
-                        fetch('ep-grouvex.json').then(res => res.json())
-                    ]).then(([cancionesData, albumesData, epData]) => {
-                        const todosLosLanzamientos = [
-                            ...cancionesData.canciones.map(c => ({ ...c, tipo: 'cancion' })),
-                            ...albumesData.albumes.map(a => ({ ...a, tipo: 'album' })),
-                            ...epData.ep.map(e => ({ ...e, tipo: 'ep' }))
-                        ];
-
-                        const proximosLanzamientos = todosLosLanzamientos.filter(lanzamiento => lanzamiento.fecha > unDiaAntes);
-
-                        const contenedor = document.getElementById('proximos-lanzamientos');
-                        contenedor.innerHTML = proximosLanzamientos.map(lanzamiento => `
-                            <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px;">
-                                <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px;">
-                                <h3>${lanzamiento.titulo}</h3>
-                                <p>${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}</p>
-                                <p>Fecha: <span id="fecha-${lanzamiento.fecha}"></span></p>
-                                ${lanzamiento.label ? `<p>Label: ${lanzamiento.label}</p>` : ''}
-                            </div>
-                        `).join('');
-
-                        proximosLanzamientos.forEach(lanzamiento => {
-                            actualizarFechas(lanzamiento.fecha, `fecha-${lanzamiento.fecha}`);
-                        });
-                    });
-                }
-
-                function cargarLanzamientosRecientes() {
-                    const ahora = Math.floor(Date.now() / 1000); // Fecha actual en segundos
-                    const unMesAntes = ahora - 2592000; // Un mes antes en segundos
-
-                    Promise.all([
-                        fetch('canciones-grouvex.json').then(res => res.json()),
-                        fetch('album-grouvex.json').then(res => res.json()),
-                        fetch('ep-grouvex.json').then(res => res.json())
-                    ]).then(([cancionesData, albumesData, epData]) => {
-                        const todosLosLanzamientos = [
-                            ...cancionesData.canciones.map(c => ({ ...c, tipo: 'cancion' })),
-                            ...albumesData.albumes.map(a => ({ ...a, tipo: 'album' })),
-                            ...epData.ep.map(e => ({ ...e, tipo: 'ep' }))
-                        ];
-
-                        const lanzamientosRecientes = todosLosLanzamientos.filter(lanzamiento => lanzamiento.fecha >= unMesAntes && lanzamiento.fecha <= ahora);
-
-                        const contenedor = document.getElementById('lanzamientos-recientes');
-                        contenedor.innerHTML = lanzamientosRecientes.map(lanzamiento => `
-                            <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px;">
-                                <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px;">
-                                <h3>${lanzamiento.titulo}</h3>
-                                <p>${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}</p>
-                                <p>Fecha: <span id="fecha-${lanzamiento.fecha}"></span></p>
-                                ${lanzamiento.label ? `<p>Label: ${lanzamiento.label}</p>` : ''}
-                            </div>
-                        `).join('');
-
-                        lanzamientosRecientes.forEach(lanzamiento => {
-                            actualizarFechas(lanzamiento.fecha, `fecha-${lanzamiento.fecha}`);
-                        });
-                    });
-                }
-
-                function cargarCanciones() {
-                    fetch('canciones-grouvex.json')
-                        .then(response => response.json())
-                        .then(data => {
-                            const canciones = data.canciones;
-                            const letras = {};
-
-                            // Organizar canciones por letra inicial
-                            canciones.forEach(cancion => {
-                                const letraInicial = cancion.titulo.charAt(0).toUpperCase();
-                                if (!letras[letraInicial]) {
-                                    letras[letraInicial] = [];
-                                }
-                                letras[letraInicial].push(cancion);
-                            });
-
-                            // Mostrar canciones por letra
-                            const contenido = document.getElementById('contenido');
-                            contenido.innerHTML = `
-                                <style>
-                                    .letra {
-                                        font-size: 40px;
-                                        font-family: Times New Roman;
-                                        color: white;
-                                        transition: color 0.3s;
-                                    }
-                                    .letra:hover {
-                                        color: inherit;
-                                    }
-                                    li { font-family: Times New Roman; }
-                                    summary { font-size: 25px; cursor: pointer; }
-                                    details { border: 2px solid white; }
-                                    details[open] { border-image: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet) 1; border-width: 2px; border-style: solid; }
-                                    .r-img { width: 30px; }
-                                    @media only screen and (max-width: 600px) {
-                                        .r-img { max-width: 30px; max-height: 30px; }
-                                    }
-                                </style>
-                                <h2>Música</h2>
-                                <a href="#top" style="font-size: 30px; font-family: Times New Roman; color: white">#</a>
-                                ${'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(letra => `
-                                    <a href="#${letra}" class="letra" onclick="this.style.color='red';">${letra}</a>
+    // Función para cargar los álbumes
+    function cargarAlbumes() {
+        fetch('album-grouvex.json')
+            .then(response => response.json())
+            .then(data => {
+                const albumes = data.albumes;
+                const contenido = document.getElementById('contenido');
+                if (contenido) {
+                    contenido.innerHTML = `
+                        <h2>Álbums</h2>
+                        <article>
+                            <select class="orden-button" id="ordenSelector" onchange="cambiarOrden()" style="margin:5px;margin-left:0px">
+                                <option value="" disabled selected>Order</option>
+                                <option value="ascT">⬇ a ⬆</option>
+                                <option value="desT">⬆ a ⬇</option>
+                            </select>
+                            <div class="cajetines">
+                                ${albumes.map(album => `
+                                    <a href="lanzamientos/${album.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetin" data-ut="${album.fecha}">
+                                        <img src="${album.portada}" alt="" style="width:300px">
+                                        <p class="cajetin-fechas"><span id="f1_${album.fecha}"></span></p>
+                                        <p class="cajetin-titulo">${album.titulo}</p>
+                                        <p class="cajetin-footer">${album.label || '©Grouvex Studios Recording'}</p>
+                                    </a>
                                 `).join('')}
-                                <article>
-                                    ${Object.keys(letras).map(letra => `
-                                        <div id="${letra}"><a href="#${letra}" class="letra" onclick="this.style.color='red';">${letra}</a></div>
-                                        <details>
-                                            <summary style="font-family: Times New Roman">Start with ${letra}</summary>
-                                            <ol>
-                                                ${letras[letra].map(cancion => `
-                                                    <li>
-                                                        <a href="${cancion.titulo.toLowerCase().replace(/ /g, '_')}">
-                                                            <div style="display: flex; padding: 3px; box-shadow: 0 0 3px cyan;">
-                                                                <img src="${cancion.portada}" alt="" class="r-img" style="margin-right: 2px;">
-                                                                <span style="font-family: Times New Roman; color: white; display: flex; justify-content: space-between; width: 100%;">
-                                                                    <span>${cancion.titulo}</span>
-                                                                    <span>${cancion.album}</span>
-                                                                </span>
-                                                            </div>
-                                                        </a>
-                                                    </li>
-                                                `).join('')}
-                                            </ol>
-                                        </details>
-                                    `).join('')}
-                                </article>
-                            `;
-                        });
+                            </div>
+                        </article>
+                    `;
+
+                    albumes.forEach(album => {
+                        actualizarFechas(album.fecha, `f1_${album.fecha}`);
+                    });
+                } else {
+                    console.error('El elemento con id="contenido" no existe en el DOM.');
                 }
+            })
+            .catch(error => {
+                console.error('Error al cargar los álbumes:', error);
+            });
+    }
 
-                function cargarAlbumes() {
-                    fetch('album-grouvex.json')
-                        .then(response => response.json())
-                        .then(data => {
-                            const albumes = data.albumes;
-                            const contenido = document.getElementById('contenido');
-                            contenido.innerHTML = `
-                                <h2>Álbums</h2>
-                                <article>
-                                    <select class="orden-button" id="ordenSelector" onchange="cambiarOrden()" style="margin:5px;margin-left:0px">
-                                        <option value="" disabled selected>Order</option>
-                                        <option value="ascT">⬇ a ⬆</option>
-                                        <option value="desT">⬆ a ⬇</option>
-                                    </select>
-                                    <div class="cajetines">
-                                        ${albumes.map(album => `
-                                            <a href="lanzamientos/${album.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetin" data-ut="${album.fecha}">
-                                                <img src="${album.portada}" alt="" style="width:300px">
-                                                <p class="cajetin-fechas"><span id="f1_${album.fecha}"></span></p>
-                                                <p class="cajetin-titulo">${album.titulo}</p>
-                                                <p class="cajetin-footer">${album.label || '©Grouvex Studios Recording'}</p>
-                                            </a>
-                                        `).join('')}
-                                    </div>
-                                </article>
-                            `;
-                            albumes.forEach(album => {
-                                actualizarFechas(album.fecha, `f1_${album.fecha}`);
-                            });
-                        });
+    // Función para cargar los EP
+    function cargarEP() {
+        fetch('ep-grouvex.json')
+            .then(response => response.json())
+            .then(data => {
+                const ep = data.ep;
+                const contenido = document.getElementById('contenido');
+                if (contenido) {
+                    contenido.innerHTML = `
+                        <h2>Reproducción Extendida (EP)</h2>
+                        <article>
+                            <select class="orden-button" id="ordenSelectorEP" onchange="cambiarOrdenEP()" style="margin:5px;margin-left:0px">
+                                <option value="" disabled selected>Order</option>
+                                <option value="ascT">⬇ to ⬆</option>
+                                <option value="desT">⬆ to ⬇</option>
+                            </select>
+                            <div class="cajetines">
+                                ${ep.map(ep => `
+                                    <a href="${ep.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetin" data-ut="${ep.fecha}">
+                                        <img src="${ep.portada}" alt="" style="width:300px">
+                                        <p class="cajetin-fechas"><span id="f1_${ep.fecha}"></span></p>
+                                        <p class="cajetin-titulo">${ep.titulo}</p>
+                                        <p class="cajetin-footer">${ep.label || '©Grouvex Studios Recording'}</p>
+                                    </a>
+                                `).join('')}
+                            </div>
+                        </article>
+                    `;
+
+                    ep.forEach(ep => {
+                        actualizarFechas(ep.fecha, `f1_${ep.fecha}`);
+                    });
+                } else {
+                    console.error('El elemento con id="contenido" no existe en el DOM.');
                 }
+            })
+            .catch(error => {
+                console.error('Error al cargar los EP:', error);
+            });
+    }
 
-                function cargarEP() {
-                    fetch('ep-grouvex.json')
-                        .then(response => response.json())
-                        .then(data => {
-                            const ep = data.ep;
-                            const contenido = document.getElementById('contenido');
-                            contenido.innerHTML = `
-                                <h2>Reproducción Extendida (EP)</h2>
-                                <article>
-                                    <select class="orden-button" id="ordenSelectorEP" onchange="cambiarOrdenEP()" style="margin:5px;margin-left:0px">
-                                        <option value="" disabled selected>Order</option>
-                                        <option value="ascT">⬇ to ⬆</option>
-                                        <option value="desT">⬆ to ⬇</option>
-                                    </select>
-                                    <div class="cajetines">
-                                        ${ep.map(ep => `
-                                            <a href="${ep.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetin" data-ut="${ep.fecha}">
-                                                <img src="${ep.portada}" alt="" style="width:300px">
-                                                <p class="cajetin-fechas"><span id="f1_${ep.fecha}"></span></p>
-                                                <p class="cajetin-titulo">${ep.titulo}</p>
-                                                <p class="cajetin-footer">${ep.label || '©Grouvex Studios Recording'}</p>
-                                            </a>
-                                        `).join('')}
-                                    </div>
-                                </article>
-                            `;
-                            ep.forEach(ep => {
-                                actualizarFechas(ep.fecha, `f1_${ep.fecha}`);
-                            });
-                        });
-                }
+    // Función para cambiar el orden de los álbumes
+    function cambiarOrden() {
+        const selector = document.getElementById('ordenSelector');
+        const orden = selector.value;
+        const cajetinesContainer = document.querySelector('.cajetines');
+        const cajetines = document.querySelectorAll('.cajetin');
 
-                function cambiarOrden() {
-                    const selector = document.getElementById('ordenSelector');
-                    const orden = selector.value;
-                    const cajetinesContainer = document.querySelector('.cajetines');
-                    const cajetines = document.querySelectorAll('.cajetin');
+        // Convertir los atributos data-ut a números para una comparación numérica
+        const elementosConUT = Array.from(cajetines).map(cajetin => {
+            return {
+                elemento: cajetin,
+                uT: parseInt(cajetin.dataset.ut)
+            };
+        });
 
-                    // Convertir los atributos data-ut a números para una comparación numérica
-                    const elementosConUT = Array.from(cajetines).map(cajetin => {
-                        return {
-                            elemento: cajetin,
-                            uT: parseInt(cajetin.dataset.ut)
-                        };
-                    });
+        // Ordenar los elementos según el valor de uT y el orden seleccionado
+        elementosConUT.sort((a, b) => {
+            if (orden === 'ascT') {
+                return a.uT - b.uT;
+            } else if (orden === 'desT') {
+                return b.uT - a.uT;
+            }
+            return 0; // No ordenar si no se seleccionó ninguna opción
+        });
 
-                    // Ordenar los elementos según el valor de uT y el orden seleccionado
-                    elementosConUT.sort((a, b) => {
-                        if (orden === 'ascT') {
-                            return a.uT - b.uT;
-                        } else if (orden === 'desT') {
-                            return b.uT - a.uT;
-                        }
-                        return 0; // No ordenar si no se seleccionó ninguna opción
-                    });
+        // Vaciar el contenedor y agregar los elementos ordenados
+        cajetinesContainer.innerHTML = '';
+        elementosConUT.forEach(elemento => {
+            cajetinesContainer.appendChild(elemento.elemento);
+        });
+    }
 
-                    // Vaciar el contenedor y agregar los elementos ordenados
-                    cajetinesContainer.innerHTML = '';
-                    elementosConUT.forEach(elemento => {
-                        cajetinesContainer.appendChild(elemento.elemento);
-                    });
-                }
+    // Función para cambiar el orden de los EP
+    function cambiarOrdenEP() {
+        const selector = document.getElementById('ordenSelectorEP');
+        const orden = selector.value;
+        const cajetinesContainer = document.querySelector('.cajetines');
+        const cajetines = document.querySelectorAll('.cajetin');
 
-                function cambiarOrdenEP() {
-                    const selector = document.getElementById('ordenSelectorEP');
-                    const orden = selector.value;
-                    const cajetinesContainer = document.querySelector('.cajetines');
-                    const cajetines = document.querySelectorAll('.cajetin');
+        // Convertir los atributos data-ut a números para una comparación numérica
+        const elementosConUT = Array.from(cajetines).map(cajetin => {
+            return {
+                elemento: cajetin,
+                uT: parseInt(cajetin.dataset.ut)
+            };
+        });
 
-                    // Convertir los atributos data-ut a números para una comparación numérica
-                    const elementosConUT = Array.from(cajetines).map(cajetin => {
-                        return {
-                            elemento: cajetin,
-                            uT: parseInt(cajetin.dataset.ut)
-                        };
-                    });
+        // Ordenar los elementos según el valor de uT y el orden seleccionado
+        elementosConUT.sort((a, b) => {
+            if (orden === 'ascT') {
+                return a.uT - b.uT;
+            } else if (orden === 'desT') {
+                return b.uT - a.uT;
+            }
+            return 0; // No ordenar si no se seleccionó ninguna opción
+        });
 
-                    // Ordenar los elementos según el valor de uT y el orden seleccionado
-                    elementosConUT.sort((a, b) => {
-                        if (orden === 'ascT') {
-                            return a.uT - b.uT;
-                        } else if (orden === 'desT') {
-                            return b.uT - a.uT;
-                        }
-                        return 0; // No ordenar si no se seleccionó ninguna opción
-                    });
-
-                    // Vaciar el contenedor y agregar los elementos ordenados
-                    cajetinesContainer.innerHTML = '';
-                    elementosConUT.forEach(elemento => {
-                        cajetinesContainer.appendChild(elemento.elemento);
-                    });
-                }
+        // Vaciar el contenedor y agregar los elementos ordenados
+        cajetinesContainer.innerHTML = '';
+        elementosConUT.forEach(elemento => {
+            cajetinesContainer.appendChild(elemento.elemento);
+        });
+    }
+});
             </script>
         </main>
     </body>

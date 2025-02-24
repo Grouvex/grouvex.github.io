@@ -4,96 +4,67 @@
     <meta charset="UTF-8">
     <title>Space - Grouvex Studios</title>
     <meta name="description" content="Espacio de Grouvex Studios">
-    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects">
-    <meta name="author" content="Grouvex Studios">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="theme-color" content="#hexcode">
-    <meta property="og:title" content="Sitio web oficial - Grouvex Studios">
-    <meta property="og:description" content="Sitio web oficial de Grouvex Studios, un sello discográfico y creador de contenido multimedia y diseño.">
+    <meta property="og:title" content="Grouvex Studios">
+    <meta property="og:description" content="Sitio web oficial de Grouvex Studios, un sello discográfico, distribuidor de contenido multimedia y diseño.">
     <meta property="og:image" content="img/GROUVEX.png">
-    <meta property="og:url" content="https://grouvex.com/">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="es_ES">
-    <link rel="canonical" href="https://grouvex.com/">
-    <link rel="icon" href="img/GROUVEX.png" type="image/x-icon">
-    <script>
-     // Función para cargar JS dinámicamente
-        function loadScript(url, type = 'text/javascript', defer = false) {
-            return fetch(url)
-                .then(res => res.text())
-                .then(txt => {const s = document.createElement('script');s.type = type;if (defer) s.defer = true;s.innerHTML = txt;document.head.appendChild(s);})
-                .catch(err => console.error('Error cargando el script:', err));}
-            const loadScripts = async () => {
-                await loadScript('time.js');
-                await loadScript('abc.js', 'module');
-                await loadScript('index.js', 'text/javascript', true);
-            };
-            loadScripts();
-     // Función para cargar CSS dinámicamente
-            function loadCSS(url) {
-                fetch(url)
-                    .then(res => res.text())
-                    .then(css => {const style = document.createElement('style');style.innerHTML = css;document.head.appendChild(style);})
-                    .catch(err => console.error('Error cargando el CSS:', err));}
-            loadCSS('index.css');
-            loadCSS('temas.css');
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-database.js" defer></script>
-    <script src="jquery-3.5.1.min.js" defer></script>
-    <script> 
-        document.addEventListener("DOMContentLoaded", function() { 
-            $("#menuG").load("menuG.html"); 
-            $("#menuE").load("menuE.html"); 
-            $("#menuT").load("menuT.html");
-            $("#menuU").load("menuU.html");
-            $("#footer").load("footer.html"); 
-            $("#news").load("news.html"); 
-            $("#tosypp").load("tosypp.html");
-        });
+    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects"><meta name="author" content="Grouvex Studios"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="theme-color" content="#hexcode"><meta property="og:url" content="https://grouvex.com/"><meta property="og:type" content="website"><meta property="og:locale" content="es_ES"><link rel="canonical" href="https://grouvex.com/"><link rel="icon" href="img/GROUVEX.png" type="image/x-icon"><meta property="og:site_name" content="Grouvex Studios">
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script><script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script><script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+    <link rel="stylesheet" href="index.css"><link rel="stylesheet" href="temas.css">
+    <script src="time.js"></script></script><script type="module" src="abc.js"></script><script src="index.js"></script>
+    <script src="jquery-3.5.1.min.js"></script>
+        <script> 
+            document.addEventListener("DOMContentLoaded", function() { 
+                $("#menuG").load("menuG.html");$("#menuE").load("menuE.html");$("#menuT").load("menuT.html");$("#menuU").load("menuU.html");
+                $("#footer").load("footer.html"); 
+                $("#news").load("news.html"); $("#tosypp").load("tosypp.html");
+            });
     </script>
 </head>
 <body>
-        <header>
-            <a href="https://grouvex.github.io/"> <div class="img-container" loading="lazy"></div></a> 
-            <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
-                <nav>
-                    <span id="menuG"></span> <!-- General -->
-                    <span id="menuT"></span> <!-- Temas/Idioma -->
-                    <span id="menuU"></span> <!-- Usuario -->
-                </nav>
-            </span>
-        </header>
-        <!-- Anuncio -->
-        <div id="news"></div>
-        <main>
-            <!-- Publicado por -->
-    <div class="tarjetas">
-        <div class="tarjeta">
-    <img src="../img/GROUVEX.png" alt="">
-    <div>
-      <h2 style="margin:2px; font-size: 7.5px;height:auto">Publicado por:</h2>
-      <h2><span class="Grouvex-Studios"></span></h2>
-      <hr>
-      <p><span id="ActualizadoDATE"></span></p>
-      <p><a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@grouvex.com</footer></a></p>
-    </div></div></div>
-<script>const uTActualizado = 1738429200; actualizarFechas(uTActualizado, "ActualizadoDATE");</script> 
-            <!-- Título -->
-            <article>
-                <h1>Espacio de Grouvex Studios</h1>
-                <!-- Texto -->
-                <section id="Intro">
-                    <a href="#Intro"><h2>Introducción</h2></a>
-                    <p>Interesados en Astronomía, o en el Espacio... Pues estás en el mejor lugar. Solo necesitas la insignia de <span class="insignia partner"></span> o <span class="insignia vpartner"></span>. Puedes ver las insignias <a href="https://grouvex.github.io/equipo">aquí</a>.</p>
-                    <p>La <n>versión 1</n> suele tardar bastante en cargar la página y puede que haya errores.</p>
-                </section>
-              <p>Puedes acceder a: <a href="https://grouvex.github.io/planetas/planeta-v1">Sistema Planetario 3D - v1</a> o <a href="https://grouvex.github.io/planetas/planeta-v2">Sistema Planetario 3D - v2</a></p>
-            </article>
-        </main>
-        <!-- Footer -->
-        <div id="footer"></div>
+    <header>
+        <a href="https://grouvex.github.io/"> <div class="img-container" loading="lazy"></div></a> 
+        <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
+            <nav>
+                <span id="menuG"></span>
+                <span id="menuT"></span>
+                <span id="menuU"></span>
+            </nav>
+        </span>
+    </header>
+    <!-- Anuncio -->
+    <div id="news"></div>
+    <main>
+     <!-- Publicado por -->
+        <div class="tarjetas">
+            <div class="tarjeta">
+        <img src="../img/GROUVEX.png" alt="">
+        <div>
+          <h2 style="margin:2px; font-size: 7.5px;height:auto">Publicado por:</h2>
+          <h2><span class="Grouvex-Studios"></span></h2>
+          <hr>
+          <p><span id="ActualizadoDATE"></span></p>
+          <p><a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@grouvex.com</footer></a></p>
+        </div></div></div>
+        <script>const uTActualizado = 1738429200; actualizarFechas(uTActualizado, "ActualizadoDATE");</script>
+    <!-- Título -->
+    <article>
+        <h1>Espacio de Grouvex Studios</h1>
+        <!-- Texto -->
+        <section id="Intro">
+            <a href="#Intro"><h2>Introducción</h2></a>
+            <p>Interesados en Astronomía, o en el Espacio... Pues estás en el mejor lugar. Solo necesitas la insignia de <span class="insignia partner"></span> o <span class="insignia vpartner"></span>. Puedes ver las insignias <a href="https://grouvex.github.io/equipo">aquí</a>.</p>
+            <p>La <n>versión 1</n> suele tardar bastante en cargar la página y puede que haya errores.</p>
+        </section>
+      <p>Puedes acceder a: 
+        <a href="https://grouvex.github.io/planetas/planeta-v1">Sistema Planetario 3D - v1</a>
+       <iframe src="https://grouvex.com/planetas/planeta-v1"></iframe>
+       <a href="https://grouvex.github.io/planetas/planeta-v2">Sistema Planetario 3D - v2</a>
+        <iframe src="https://grouvex.com/planetas/planeta-v2"></iframe></p>
+
+    <p> Estos mini cuadrántes son modelos, al acceder a ellos, irán mejor. El v1 tarda más en cargar</p>
+    </article>
+</main>
+<!-- Footer -->
+<div id="footer"></div>
 </body>
 </html>

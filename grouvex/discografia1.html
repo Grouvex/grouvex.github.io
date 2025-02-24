@@ -155,14 +155,14 @@
                             <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px; text-align: center;">
                                 <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
                                 <h3 style="margin: 5px 0; font-size: 16px;">${lanzamiento.titulo}</h3>
-                                <p style="margin: 5px 0; font-size: 14px; color: #666;">
-                                    ${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}
+                                <p style="margin: 5px 0; font-size: 10px; color: #666;">
+                                    Categoría: ${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}
                                 </p>
-                                <p style="margin: 5px 0; font-size: 14px; color: #666;">
+                                <p style="margin: 5px 0; font-size: 14px; color: white;">
                                     Fecha: <span id="fecha-${lanzamiento.fecha}"></span>
                                 </p>
                                 ${lanzamiento.label ? `
-                                    <p style="margin: 5px 0; font-size: 14px; color: #666;">
+                                    <p style="margin: 5px 0; font-size: 14px; color: white;">
                                         Label: ${lanzamiento.label}
                                     </p>
                                 ` : ''}

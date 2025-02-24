@@ -124,6 +124,11 @@ function mostrarSeccion(seccion) {
         cargarEP();
     }
 }
+
+const contenedorProximos = document.getElementById('proximos-lanzamientos');
+const contenedorRecientes = document.getElementById('lanzamientos-recientes');
+console.log(contenedorProximos, contenedorRecientes);
+document.addEventListener("DOMContentLoaded", function () {
     // Función para cargar los próximos lanzamientos
     function cargarProximosLanzamientos() {
         const ahora = Math.floor(Date.now() / 1000); // Fecha actual en segundos
@@ -134,37 +139,37 @@ function mostrarSeccion(seccion) {
             fetch('album-grouvex.json').then(res => res.json()),
             fetch('ep-grouvex.json').then(res => res.json())
         ])
-        .then(([cancionesData, albumesData, epData]) => {
-            const todosLosLanzamientos = [
-                ...cancionesData.canciones.map(c => ({ ...c, tipo: 'cancion' })),
-                ...albumesData.albumes.map(a => ({ ...a, tipo: 'album' })),
-                ...epData.ep.map(e => ({ ...e, tipo: 'ep' }))
-            ];
+            .then(([cancionesData, albumesData, epData]) => {
+                const todosLosLanzamientos = [
+                    ...cancionesData.canciones.map(c => ({ ...c, tipo: 'cancion' })),
+                    ...albumesData.albumes.map(a => ({ ...a, tipo: 'album' })),
+                    ...epData.ep.map(e => ({ ...e, tipo: 'ep' }))
+                ];
 
-            const proximosLanzamientos = todosLosLanzamientos.filter(lanzamiento => lanzamiento.fecha > unDiaAntes);
+                const proximosLanzamientos = todosLosLanzamientos.filter(lanzamiento => lanzamiento.fecha > unDiaAntes);
 
-            const contenedor = document.getElementById('proximos-lanzamientos');
-            if (contenedor) {
-                contenedor.innerHTML = proximosLanzamientos.map(lanzamiento => `
-                    <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px;">
-                        <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px;">
-                        <h3>${lanzamiento.titulo}</h3>
-                        <p>${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}</p>
-                        <p>Fecha: <span id="fecha-${lanzamiento.fecha}"></span></p>
-                        ${lanzamiento.label ? `<p>Label: ${lanzamiento.label}</p>` : ''}
-                    </div>
-                `).join('');
+                const contenedor = document.getElementById('proximos-lanzamientos');
+                if (contenedor) {
+                    contenedor.innerHTML = proximosLanzamientos.map(lanzamiento => `
+                        <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px;">
+                            <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px;">
+                            <h3>${lanzamiento.titulo}</h3>
+                            <p>${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}</p>
+                            <p>Fecha: <span id="fecha-${lanzamiento.fecha}"></span></p>
+                            ${lanzamiento.label ? `<p>Label: ${lanzamiento.label}</p>` : ''}
+                        </div>
+                    `).join('');
 
-                proximosLanzamientos.forEach(lanzamiento => {
-                    actualizarFechas(lanzamiento.fecha, `fecha-${lanzamiento.fecha}`);
-                });
-            } else {
-                console.error('El contenedor "proximos-lanzamientos" no existe.');
-            }
-        })
-        .catch(error => {
-            console.error('Error al cargar los próximos lanzamientos:', error);
-        });
+                    proximosLanzamientos.forEach(lanzamiento => {
+                        actualizarFechas(lanzamiento.fecha, `fecha-${lanzamiento.fecha}`);
+                    });
+                } else {
+                    console.error('El contenedor "proximos-lanzamientos" no existe.');
+                }
+            })
+            .catch(error => {
+                console.error('Error al cargar los próximos lanzamientos:', error);
+            });
     }
 
     // Función para cargar los lanzamientos recientes
@@ -177,38 +182,43 @@ function mostrarSeccion(seccion) {
             fetch('album-grouvex.json').then(res => res.json()),
             fetch('ep-grouvex.json').then(res => res.json())
         ])
-        .then(([cancionesData, albumesData, epData]) => {
-            const todosLosLanzamientos = [
-                ...cancionesData.canciones.map(c => ({ ...c, tipo: 'cancion' })),
-                ...albumesData.albumes.map(a => ({ ...a, tipo: 'album' })),
-                ...epData.ep.map(e => ({ ...e, tipo: 'ep' }))
-            ];
+            .then(([cancionesData, albumesData, epData]) => {
+                const todosLosLanzamientos = [
+                    ...cancionesData.canciones.map(c => ({ ...c, tipo: 'cancion' })),
+                    ...albumesData.albumes.map(a => ({ ...a, tipo: 'album' })),
+                    ...epData.ep.map(e => ({ ...e, tipo: 'ep' }))
+                ];
 
-            const lanzamientosRecientes = todosLosLanzamientos.filter(lanzamiento => lanzamiento.fecha >= unMesAntes && lanzamiento.fecha <= ahora);
+                const lanzamientosRecientes = todosLosLanzamientos.filter(lanzamiento => lanzamiento.fecha >= unMesAntes && lanzamiento.fecha <= ahora);
 
-            const contenedor = document.getElementById('lanzamientos-recientes');
-            if (contenedor) {
-                contenedor.innerHTML = lanzamientosRecientes.map(lanzamiento => `
-                    <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px;">
-                        <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px;">
-                        <h3>${lanzamiento.titulo}</h3>
-                        <p>${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}</p>
-                        <p>Fecha: <span id="fecha-${lanzamiento.fecha}"></span></p>
-                        ${lanzamiento.label ? `<p>Label: ${lanzamiento.label}</p>` : ''}
-                    </div>
-                `).join('');
+                const contenedor = document.getElementById('lanzamientos-recientes');
+                if (contenedor) {
+                    contenedor.innerHTML = lanzamientosRecientes.map(lanzamiento => `
+                        <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px;">
+                            <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px;">
+                            <h3>${lanzamiento.titulo}</h3>
+                            <p>${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}</p>
+                            <p>Fecha: <span id="fecha-${lanzamiento.fecha}"></span></p>
+                            ${lanzamiento.label ? `<p>Label: ${lanzamiento.label}</p>` : ''}
+                        </div>
+                    `).join('');
 
-                lanzamientosRecientes.forEach(lanzamiento => {
-                    actualizarFechas(lanzamiento.fecha, `fecha-${lanzamiento.fecha}`);
-                });
-            } else {
-                console.error('El contenedor "lanzamientos-recientes" no existe.');
-            }
-        })
-        .catch(error => {
-            console.error('Error al cargar los lanzamientos recientes:', error);
-        });
+                    lanzamientosRecientes.forEach(lanzamiento => {
+                        actualizarFechas(lanzamiento.fecha, `fecha-${lanzamiento.fecha}`);
+                    });
+                } else {
+                    console.error('El contenedor "lanzamientos-recientes" no existe.');
+                }
+            })
+            .catch(error => {
+                console.error('Error al cargar los lanzamientos recientes:', error);
+            });
     }
+
+    // Llamar a las funciones para cargar los lanzamientos
+    cargarProximosLanzamientos();
+    cargarLanzamientosRecientes();
+});
 
     // Función para cargar las canciones
     function cargarCanciones() {

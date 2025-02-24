@@ -459,22 +459,43 @@ document.addEventListener('DOMContentLoaded', function() {
     if (true){
 function mostrarnewsAdv() {
     const newsAdv = document.createElement("div");
-    newsAdv.style = `
-        position: fixed;
-        top: 3px;
-        left: 1px;
-        padding: 1px;
-        background: rgb(5 59 219);
-        color: white;
-        border-radius: 9px;
-        box-shadow: 2px 2px 2px gold;
-        z-index: 1;
-        width: 99%;
-        max-height: 80px;
-        overflow-y: auto;
-        text-align: center;
-        font-size: 12px;
-    `;
+if (window.innerWidth < 768) {
+        // Estilo para pantallas móviles
+        newsAdv.style = `
+            position: fixed;
+            top: 3px;
+            left: 1px;
+            padding: 1px;
+            background: rgb(5 59 219);
+            color: white;
+            border-radius: 9px;
+            box-shadow: 2px 2px 2px gold;
+            z-index: 1;
+            width: 99%;
+            max-height: 80px;
+            overflow-y: auto;
+            text-align: center;
+            font-size: 12px;
+        `;
+    } else {
+        // Estilo para pantallas más grandes
+        newsAdv.style = `
+            position: fixed;
+            top: 3px;
+            left: 1px;
+            padding: 1px;
+            background: rgb(5 59 219);
+            color: white;
+            border-radius: 9px;
+            box-shadow: 2px 2px 2px gold;
+            z-index: 1;
+            width: 28%;
+            max-height: 180px;
+            overflow-y: auto;
+            text-align: center;
+            font-size: 12px;
+        `;
+    }
     newsAdv.innerHTML = `
         <h1 style="color: black"><span class="insignia owner-recording"></span> | Modifiacón de Tiempos</h1>
         <div style="margin-top: 10px; display: flex; justify-content: center; gap: 10px;flex-wrap: wrap;flex-direction: column;align-content: center;">

@@ -99,15 +99,16 @@
                 <!-- Contenido inicial -->
                 <h2>Lanzamientos</h2>
                 <p>Los próximos lanzamientos son:</p>
+                <div id="proximos-lanzamientos" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                <h2>Lanzamientos recientes</h2>
+                <div id="lanzamientos-recientes" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
             </article>
             <script>
                 function mostrarSeccion(seccion) {
                     const contenido = document.getElementById('contenido');
                     if (seccion === 'lanzamientos') {
-                        contenido.innerHTML = `
-                            <h2>Lanzamientos</h2>
-                            <p>Aquí están los lanzamientos más recientes...</p>
-                        `;
+                        cargarProximosLanzamientos();
+                        cargarLanzamientosRecientes();
                     } else if (seccion === 'discografia') {
                         contenido.innerHTML = `
                             <h2>Discografía</h2>
@@ -122,8 +123,76 @@
                     }
                 }
 
+                function cargarProximosLanzamientos() {
+                    const ahora = Math.floor(Date.now() / 1000); // Fecha actual en segundos
+                    const unDiaAntes = ahora - 86400; // Un día antes en segundos
+
+                    Promise.all([
+                        fetch('canciones.json').then(res => res.json()),
+                        fetch('albumes.json').then(res => res.json()),
+                        fetch('ep.json').then(res => res.json())
+                    ]).then(([cancionesData, albumesData, epData]) => {
+                        const todosLosLanzamientos = [
+                            ...cancionesData.canciones.map(c => ({ ...c, tipo: 'cancion' })),
+                            ...albumesData.albumes.map(a => ({ ...a, tipo: 'album' })),
+                            ...epData.ep.map(e => ({ ...e, tipo: 'ep' }))
+                        ];
+
+                        const proximosLanzamientos = todosLosLanzamientos.filter(lanzamiento => lanzamiento.fecha > unDiaAntes);
+
+                        const contenedor = document.getElementById('proximos-lanzamientos');
+                        contenedor.innerHTML = proximosLanzamientos.map(lanzamiento => `
+                            <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px;">
+                                <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px;">
+                                <h3>${lanzamiento.titulo}</h3>
+                                <p>${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}</p>
+                                <p>Fecha: <span id="fecha-${lanzamiento.fecha}"></span></p>
+                                ${lanzamiento.label ? `<p>Label: ${lanzamiento.label}</p>` : ''}
+                            </div>
+                        `).join('');
+
+                        proximosLanzamientos.forEach(lanzamiento => {
+                            actualizarFechas(lanzamiento.fecha, `fecha-${lanzamiento.fecha}`);
+                        });
+                    });
+                }
+
+                function cargarLanzamientosRecientes() {
+                    const ahora = Math.floor(Date.now() / 1000); // Fecha actual en segundos
+                    const unMesAntes = ahora - 2592000; // Un mes antes en segundos
+
+                    Promise.all([
+                        fetch('canciones.json').then(res => res.json()),
+                        fetch('albumes.json').then(res => res.json()),
+                        fetch('ep.json').then(res => res.json())
+                    ]).then(([cancionesData, albumesData, epData]) => {
+                        const todosLosLanzamientos = [
+                            ...cancionesData.canciones.map(c => ({ ...c, tipo: 'cancion' })),
+                            ...albumesData.albumes.map(a => ({ ...a, tipo: 'album' })),
+                            ...epData.ep.map(e => ({ ...e, tipo: 'ep' }))
+                        ];
+
+                        const lanzamientosRecientes = todosLosLanzamientos.filter(lanzamiento => lanzamiento.fecha >= unMesAntes && lanzamiento.fecha <= ahora);
+
+                        const contenedor = document.getElementById('lanzamientos-recientes');
+                        contenedor.innerHTML = lanzamientosRecientes.map(lanzamiento => `
+                            <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px;">
+                                <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px;">
+                                <h3>${lanzamiento.titulo}</h3>
+                                <p>${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}</p>
+                                <p>Fecha: <span id="fecha-${lanzamiento.fecha}"></span></p>
+                                ${lanzamiento.label ? `<p>Label: ${lanzamiento.label}</p>` : ''}
+                            </div>
+                        `).join('');
+
+                        lanzamientosRecientes.forEach(lanzamiento => {
+                            actualizarFechas(lanzamiento.fecha, `fecha-${lanzamiento.fecha}`);
+                        });
+                    });
+                }
+
                 function cargarCanciones() {
-                    fetch('canciones-grouvex.json')
+                    fetch('canciones.json')
                         .then(response => response.json())
                         .then(data => {
                             const canciones = data.canciones;
@@ -168,7 +237,7 @@
                 }
 
                 function cargarAlbumes() {
-                    fetch('albumes-grouvex.json')
+                    fetch('albumes.json')
                         .then(response => response.json())
                         .then(data => {
                             const albumes = data.albumes;
@@ -187,7 +256,7 @@
                                                 <img src="${album.portada}" alt="" style="width:300px">
                                                 <p class="cajetin-fechas"><span id="f1_${album.fecha}"></span></p>
                                                 <p class="cajetin-titulo">${album.titulo}</p>
-                                                <p class="cajetin-footer">©Grouvex Studios Recording</p>
+                                                <p class="cajetin-footer">${album.label || '©Grouvex Studios Recording'}</p>
                                             </a>
                                         `).join('')}
                                     </div>
@@ -200,7 +269,7 @@
                 }
 
                 function cargarEP() {
-                    fetch('ep-grouvex.json')
+                    fetch('ep.json')
                         .then(response => response.json())
                         .then(data => {
                             const ep = data.ep;
@@ -219,7 +288,7 @@
                                                 <img src="${ep.portada}" alt="" style="width:300px">
                                                 <p class="cajetin-fechas"><span id="f1_${ep.fecha}"></span></p>
                                                 <p class="cajetin-titulo">${ep.titulo}</p>
-                                                <p class="cajetin-footer">©Grouvex Studios Recording</p>
+                                                <p class="cajetin-footer">${ep.label || '©Grouvex Studios Recording'}</p>
                                             </a>
                                         `).join('')}
                                     </div>

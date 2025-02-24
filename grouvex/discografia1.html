@@ -97,9 +97,9 @@
             <article id="contenido">
                 <!-- Contenido inicial -->
                 <h2>Lanzamientos</h2>
-                <p>Los próximos lanzamientos son:</p>
+                <h3>Próximos Lanzamientos</h3>
                 <div id="proximos-lanzamientos" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
-                <h2>Lanzamientos recientes</h2>
+                <h3>Lanzamientos recientes</h3>
                 <div id="lanzamientos-recientes" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
             </article>
             <script>
@@ -124,7 +124,6 @@ function mostrarSeccion(seccion) {
         cargarEP();
     }
 }
-                document.addEventListener("DOMContentLoaded", function() {
     // Función para cargar los próximos lanzamientos
     function cargarProximosLanzamientos() {
         const ahora = Math.floor(Date.now() / 1000); // Fecha actual en segundos
@@ -434,7 +433,6 @@ function mostrarSeccion(seccion) {
             cajetinesContainer.appendChild(elemento.elemento);
         });
     }
-});
             </script>
         </main>
     </body>

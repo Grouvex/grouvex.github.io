@@ -1,11 +1,11 @@
 {
   "ep": [
-    {"titulo": "Si Fuera", "portada": "../port/Si Fuera.jpg", "fecha": 1733911200},
-    {"titulo": "La Magia de la Estrella Polar", "portada": "../port/La Magia de la Estrella Polar.jpg", "fecha": 1733011200},
-    {"titulo": "Esferas Brillantes", "portada": "../port/Esferas Brillantes.jpg", "fecha": 1727308800},
-    {"titulo": "Unforgettable Memories", "portada": "../port/Unforgettable Memories.jpg", "fecha": 1704067200},
-    {"titulo": "Omega Version", "portada": "../port/Omega_Version.jpg", "fecha": 1703203200},
-    {"titulo": "Sentimental", "portada": "../port/Sentimental.jpg", "fecha": 1700784000},
-    {"titulo": "The Life", "portada": "../port/The Life.jpg", "fecha": 1699660800}
+    {"titulo": "Si Fuera", "portada": "../port/Si Fuera.jpg", "fecha": 1733911200, "label": "Grouvex Studios Recording"},
+    {"titulo": "La Magia de la Estrella Polar", "portada": "../port/La Magia de la Estrella Polar.jpg", "fecha": 1733011200, "label": "Grouvex Studios Recording"},
+    {"titulo": "Esferas Brillantes", "portada": "../port/Esferas Brillantes.jpg", "fecha": 1727308800, "label": "Grouvex Studios Recording"},
+    {"titulo": "Unforgettable Memories", "portada": "../port/Unforgettable Memories.jpg", "fecha": 1704067200, "label": "Grouvex Studios Recording"},
+    {"titulo": "Omega Version", "portada": "../port/Omega_Version.jpg", "fecha": 1703203200, "label": "Grouvex Studios Recording"},
+    {"titulo": "Sentimental", "portada": "../port/Sentimental.jpg", "fecha": 1700784000, "label": "Grouvex Studios Recording"},
+    {"titulo": "The Life", "portada": "../port/The Life.jpg", "fecha": 1699660800, "label": "Grouvex Studios Recording"}
   ]
 }

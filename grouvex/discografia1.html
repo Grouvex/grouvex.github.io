@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -103,7 +104,7 @@
                 <div id="lanzamientos-recientes" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
             </article>
             <script>
-                // Mover la función mostrarSeccion al ámbito global
+                // Función para mostrar la sección seleccionada
                 function mostrarSeccion(seccion) {
                     const contenido = document.getElementById('contenido');
                     if (!contenido) {
@@ -112,47 +113,8 @@
                     }
 
                     if (seccion === 'lanzamientos') {
-                        cargarProximosLanzamientos().then(proximosLanzamientos => {
-                            const contenedorProximos = document.getElementById('proximos-lanzamientos');
-                            if (contenedorProximos) {
-                                contenedorProximos.innerHTML = proximosLanzamientos.map(lanzamiento => `
-                                    <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px;">
-                                        <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px;">
-                                        <h3>${lanzamiento.titulo}</h3>
-                                        <p>${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}</p>
-                                        <p>Fecha: <span id="fecha-${lanzamiento.fecha}"></span></p>
-                                        ${lanzamiento.label ? `<p>Label: ${lanzamiento.label}</p>` : ''}
-                                    </div>
-                                `).join('');
-
-                                proximosLanzamientos.forEach(lanzamiento => {
-                                    actualizarFechas(lanzamiento.fecha, `fecha-${lanzamiento.fecha}`);
-                                });
-                            } else {
-                                console.error('El contenedor "proximos-lanzamientos" no existe.');
-                            }
-                        });
-
-                        cargarLanzamientosRecientes().then(lanzamientosRecientes => {
-                            const contenedorRecientes = document.getElementById('lanzamientos-recientes');
-                            if (contenedorRecientes) {
-                                contenedorRecientes.innerHTML = lanzamientosRecientes.map(lanzamiento => `
-                                    <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px;">
-                                        <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px;">
-                                        <h3>${lanzamiento.titulo}</h3>
-                                        <p>${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}</p>
-                                        <p>Fecha: <span id="fecha-${lanzamiento.fecha}"></span></p>
-                                        ${lanzamiento.label ? `<p>Label: ${lanzamiento.label}</p>` : ''}
-                                    </div>
-                                `).join('');
-
-                                lanzamientosRecientes.forEach(lanzamiento => {
-                                    actualizarFechas(lanzamiento.fecha, `fecha-${lanzamiento.fecha}`);
-                                });
-                            } else {
-                                console.error('El contenedor "lanzamientos-recientes" no existe.');
-                            }
-                        });
+                        cargarProximosLanzamientos();
+                        cargarLanzamientosRecientes();
                     } else if (seccion === 'discografia') {
                         contenido.innerHTML = `<h2>Discografía</h2><p>Aquí puedes ver toda la discografía del artista...</p>`;
                     } else if (seccion === 'musica') {
@@ -181,7 +143,26 @@
                         ...epData.ep.map(e => ({ ...e, tipo: 'ep' }))
                     ];
 
-                    return todosLosLanzamientos.filter(lanzamiento => lanzamiento.fecha > unDiaAntes);
+                    const proximosLanzamientos = todosLosLanzamientos.filter(lanzamiento => lanzamiento.fecha > unDiaAntes);
+
+                    const contenedorProximos = document.getElementById('proximos-lanzamientos');
+                    if (contenedorProximos) {
+                        contenedorProximos.innerHTML = proximosLanzamientos.map(lanzamiento => `
+                            <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px;">
+                                <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px;">
+                                <h3>${lanzamiento.titulo}</h3>
+                                <p>${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}</p>
+                                <p>Fecha: <span id="fecha-${lanzamiento.fecha}"></span></p>
+                                ${lanzamiento.label ? `<p>Label: ${lanzamiento.label}</p>` : ''}
+                            </div>
+                        `).join('');
+
+                        proximosLanzamientos.forEach(lanzamiento => {
+                            actualizarFechas(lanzamiento.fecha, `fecha-${lanzamiento.fecha}`);
+                        });
+                    } else {
+                        console.error('El contenedor "proximos-lanzamientos" no existe.');
+                    }
                 }
 
                 // Función para cargar los lanzamientos recientes
@@ -201,7 +182,26 @@
                         ...epData.ep.map(e => ({ ...e, tipo: 'ep' }))
                     ];
 
-                    return todosLosLanzamientos.filter(lanzamiento => lanzamiento.fecha >= unMesAntes && lanzamiento.fecha <= ahora);
+                    const lanzamientosRecientes = todosLosLanzamientos.filter(lanzamiento => lanzamiento.fecha >= unMesAntes && lanzamiento.fecha <= ahora);
+
+                    const contenedorRecientes = document.getElementById('lanzamientos-recientes');
+                    if (contenedorRecientes) {
+                        contenedorRecientes.innerHTML = lanzamientosRecientes.map(lanzamiento => `
+                            <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px;">
+                                <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px;">
+                                <h3>${lanzamiento.titulo}</h3>
+                                <p>${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}</p>
+                                <p>Fecha: <span id="fecha-${lanzamiento.fecha}"></span></p>
+                                ${lanzamiento.label ? `<p>Label: ${lanzamiento.label}</p>` : ''}
+                            </div>
+                        `).join('');
+
+                        lanzamientosRecientes.forEach(lanzamiento => {
+                            actualizarFechas(lanzamiento.fecha, `fecha-${lanzamiento.fecha}`);
+                        });
+                    } else {
+                        console.error('El contenedor "lanzamientos-recientes" no existe.');
+                    }
                 }
 
                 // Función para cargar las canciones

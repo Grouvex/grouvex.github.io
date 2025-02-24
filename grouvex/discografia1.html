@@ -97,11 +97,8 @@
             </nav>
             <article id="contenido">
                 <!-- Contenido inicial -->
-                <h2>Lanzamientos</h2>
-                <h3>Próximos Lanzamientos</h3>
-                <div id="proximos-lanzamientos" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
-                <h3>Lanzamientos recientes</h3>
-                <div id="lanzamientos-recientes" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                <h2>Discografía</h2>
+                <p>Aquí podrás ver toda la información sobre el Artista Grouvex</p>
             </article>
             <script>
                 // Función para mostrar la sección seleccionada
@@ -113,6 +110,13 @@
                     }
 
                     if (seccion === 'lanzamientos') {
+                            contenido.innerHTML = `
+                            <h2>Lanzamientos</h2>
+                            <h3>Próximos Lanzamientos</h3>
+                            <div id="proximos-lanzamientos" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                            <h3>Lanzamientos recientes</h3>
+                            <div id="lanzamientos-recientes" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                        `;
                         cargarProximosLanzamientos();
                         cargarLanzamientosRecientes();
                     } else if (seccion === 'discografia') {

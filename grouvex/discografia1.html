@@ -130,95 +130,129 @@
                     }
                 }
 
-                // Función para cargar los próximos lanzamientos
-                async function cargarProximosLanzamientos() {
-                    const ahora = Math.floor(Date.now() / 1000); // Fecha actual en segundos
-                    const unDiaAntes = ahora - 86400; // Un día antes en segundos
-                
-                    const [cancionesData, albumesData, epData] = await Promise.all([
-                        fetch('canciones-grouvex.json').then(res => res.json()),
-                        fetch('album-grouvex.json').then(res => res.json()),
-                        fetch('ep-grouvex.json').then(res => res.json())
-                    ]);
-                
-                    const todosLosLanzamientos = [
-                        ...cancionesData.canciones.map(c => ({ ...c, tipo: 'cancion' })),
-                        ...albumesData.albumes.map(a => ({ ...a, tipo: 'album' })),
-                        ...epData.ep.map(e => ({ ...e, tipo: 'ep' }))
-                    ];
-                
-                    const proximosLanzamientos = todosLosLanzamientos.filter(lanzamiento => lanzamiento.fecha > unDiaAntes);
-                
-                    const contenedorProximos = document.getElementById('proximos-lanzamientos');
-                    if (contenedorProximos) {
-                        contenedorProximos.innerHTML = proximosLanzamientos.map(lanzamiento => `
-                            <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px; text-align: center;">
-                                <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
-                                <h3 style="margin: 5px 0; font-size: 16px;">${lanzamiento.titulo}</h3>
-                                <p style="margin: 5px 0; font-size: 10px; color: #666;">
-                                    Categoría: ${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}
-                                </p>
-                                <p style="margin: 5px 0; font-size: 14px; color: white;">
-                                    Fecha: <span id="fecha-${lanzamiento.fecha}"></span>
-                                </p>
-                                ${lanzamiento.label ? `
-                                    <p style="margin: 5px 0; font-size: 14px; color: white;">
-                                        Label: ${lanzamiento.label}
-                                    </p>
-                                ` : ''}
-                                ${lanzamiento.presaveUrl ? `<a href="${lanzamiento.presaveUrl}" style="display: inline-block; background: linear-gradient(45deg, #ff7e5f, #feb47b); border: none; padding: 8px 16px; border-radius: 20px; color: white; text-decoration: none; cursor: pointer; margin-top: 10px;">
-                                    Presaved
-                                </a>` : ''}
-                            </div>
-                        `).join('');
-                
-                        // Actualizar fechas
-                        proximosLanzamientos.forEach(lanzamiento => {
-                            actualizarFechas(lanzamiento.fecha, `fecha-${lanzamiento.fecha}`);
-                        });
-                    } else {
-                        console.error('El contenedor "proximos-lanzamientos" no existe.');
-                    }
-                }
+async function cargarProximosLanzamientos() {
+    const ahora = Math.floor(Date.now() / 1000); // Fecha actual en segundos
+    const unDiaAntes = ahora - 86400; // Un día antes en segundos
 
-                // Función para cargar los lanzamientos recientes
-                async function cargarLanzamientosRecientes() {
-                    const ahora = Math.floor(Date.now() / 1000); // Fecha actual en segundos
-                    const unMesAntes = ahora - 2592000; // Un mes antes en segundos
+    const [cancionesData, albumesData, epData] = await Promise.all([
+        fetch('canciones-grouvex.json').then(res => res.json()),
+        fetch('album-grouvex.json').then(res => res.json()),
+        fetch('ep-grouvex.json').then(res => res.json())
+    ]);
 
-                    const [cancionesData, albumesData, epData] = await Promise.all([
-                        fetch('canciones-grouvex.json').then(res => res.json()),
-                        fetch('album-grouvex.json').then(res => res.json()),
-                        fetch('ep-grouvex.json').then(res => res.json())
-                    ]);
+    const todosLosLanzamientos = [
+        ...cancionesData.canciones.map(c => ({ ...c, tipo: 'cancion' })),
+        ...albumesData.albumes.map(a => ({ ...a, tipo: 'album' })),
+        ...epData.ep.map(e => ({ ...e, tipo: 'ep' }))
+    ];
 
-                    const todosLosLanzamientos = [
-                        ...cancionesData.canciones.map(c => ({ ...c, tipo: 'cancion' })),
-                        ...albumesData.albumes.map(a => ({ ...a, tipo: 'album' })),
-                        ...epData.ep.map(e => ({ ...e, tipo: 'ep' }))
-                    ];
+    // Filtrar lanzamientos próximos
+    const proximosLanzamientos = todosLosLanzamientos.filter(lanzamiento => lanzamiento.fecha > unDiaAntes);
 
-                    const lanzamientosRecientes = todosLosLanzamientos.filter(lanzamiento => lanzamiento.fecha >= unMesAntes && lanzamiento.fecha <= ahora);
+    // Ordenar lanzamientos por fecha (de más reciente a más antiguo)
+    proximosLanzamientos.sort((a, b) => a.fecha - b.fecha);
 
-                    const contenedorRecientes = document.getElementById('lanzamientos-recientes');
-                    if (contenedorRecientes) {
-                        contenedorRecientes.innerHTML = lanzamientosRecientes.map(lanzamiento => `
-                            <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px;">
-                                <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px;">
-                                <h3>${lanzamiento.titulo}</h3>
-                                <p>${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}</p>
-                                <p>Fecha: <span id="fecha-${lanzamiento.fecha}"></span></p>
-                                ${lanzamiento.label ? `<p>Label: ${lanzamiento.label}</p>` : ''}
-                            </div>
-                        `).join('');
+    const contenedorProximos = document.getElementById('proximos-lanzamientos');
+    if (contenedorProximos) {
+        if (proximosLanzamientos.length === 0) {
+            contenedorProximos.innerHTML = `
+                <p style="text-align: center; color: #666; font-size: 16px;">
+                    No hay lanzamientos programados.
+                </p>
+            `;
+        } else {
+            // Mostrar tarjetas de lanzamientos
+            contenedorProximos.innerHTML = proximosLanzamientos.map(lanzamiento => `
+                <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px; text-align: center;">
+                    <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
+                    <h3 style="margin: 5px 0; font-size: 16px;">${lanzamiento.titulo}</h3>
+                    <p style="margin: 5px 0; font-size: 14px; color: #666;">
+                        ${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}
+                    </p>
+                    <p style="margin: 5px 0; font-size: 14px; color: #666;">
+                        Fecha: <span id="fecha-${lanzamiento.fecha}"></span>
+                    </p>
+                    ${lanzamiento.label ? `
+                        <p style="margin: 5px 0; font-size: 14px; color: #666;">
+                            Label: ${lanzamiento.label}
+                        </p>
+                    ` : ''}
+                    ${lanzamiento.presaveUrl ? `<a href="${lanzamiento.presaveUrl}" style="display: inline-block; background: linear-gradient(45deg, #ff7e5f, #feb47b); border: none; padding: 8px 16px; border-radius: 20px; color: white; text-decoration: none; cursor: pointer; margin-top: 10px;">
+                        Presaved
+                    </a>` : ''}
+                </div>
+            `).join('');
 
-                        lanzamientosRecientes.forEach(lanzamiento => {
-                            actualizarFechas(lanzamiento.fecha, `fecha-${lanzamiento.fecha}`);
-                        });
-                    } else {
-                        console.error('El contenedor "lanzamientos-recientes" no existe.');
-                    }
-                }
+            // Actualizar fechas
+            proximosLanzamientos.forEach(lanzamiento => {
+                actualizarFechas(lanzamiento.fecha, `fecha-${lanzamiento.fecha}`);
+            });
+        }
+    } else {
+        console.error('El contenedor "proximos-lanzamientos" no existe.');
+    }
+}
+
+async function cargarLanzamientosRecientes() {
+    const ahora = Math.floor(Date.now() / 1000); // Fecha actual en segundos
+    const unMesAntes = ahora - 2592000; // Un mes antes en segundos
+
+    const [cancionesData, albumesData, epData] = await Promise.all([
+        fetch('canciones-grouvex.json').then(res => res.json()),
+        fetch('album-grouvex.json').then(res => res.json()),
+        fetch('ep-grouvex.json').then(res => res.json())
+    ]);
+
+    const todosLosLanzamientos = [
+        ...cancionesData.canciones.map(c => ({ ...c, tipo: 'cancion' })),
+        ...albumesData.albumes.map(a => ({ ...a, tipo: 'album' })),
+        ...epData.ep.map(e => ({ ...e, tipo: 'ep' }))
+    ];
+
+    // Filtrar lanzamientos recientes
+    const lanzamientosRecientes = todosLosLanzamientos.filter(lanzamiento => lanzamiento.fecha >= unMesAntes && lanzamiento.fecha <= ahora);
+
+    // Ordenar lanzamientos por fecha (de más reciente a más antiguo)
+    lanzamientosRecientes.sort((a, b) => b.fecha - a.fecha);
+
+    const contenedorRecientes = document.getElementById('lanzamientos-recientes');
+    if (contenedorRecientes) {
+        if (lanzamientosRecientes.length === 0) {
+            // Mostrar mensaje si no hay lanzamientos
+            contenedorRecientes.innerHTML = `
+                <p style="text-align: center; color: #666; font-size: 16px;">
+                    No hay lanzamientos desde el último mes.
+                </p>
+            `;
+        } else {
+            // Mostrar tarjetas de lanzamientos
+            contenedorRecientes.innerHTML = lanzamientosRecientes.map(lanzamiento => `
+                <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px; text-align: center;">
+                    <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
+                    <h3 style="margin: 5px 0; font-size: 16px;">${lanzamiento.titulo}</h3>
+                    <p style="margin: 5px 0; font-size: 14px; color: #666;">
+                        ${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}
+                    </p>
+                    <p style="margin: 5px 0; font-size: 14px; color: #666;">
+                        Fecha: <span id="fecha-${lanzamiento.fecha}"></span>
+                    </p>
+                    ${lanzamiento.label ? `
+                        <p style="margin: 5px 0; font-size: 14px; color: #666;">
+                            Label: ${lanzamiento.label}
+                        </p>
+                    ` : ''}
+                </div>
+            `).join('');
+
+            // Actualizar fechas
+            lanzamientosRecientes.forEach(lanzamiento => {
+                actualizarFechas(lanzamiento.fecha, `fecha-${lanzamiento.fecha}`);
+            });
+        }
+    } else {
+        console.error('El contenedor "lanzamientos-recientes" no existe.');
+    }
+}
 
                 // Función para cargar las canciones
                 function cargarCanciones() {

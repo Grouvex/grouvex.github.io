@@ -128,9 +128,9 @@
                     const unDiaAntes = ahora - 86400; // Un día antes en segundos
 
                     Promise.all([
-                        fetch('canciones.json').then(res => res.json()),
-                        fetch('albumes.json').then(res => res.json()),
-                        fetch('ep.json').then(res => res.json())
+                        fetch('canciones-grouvex.json').then(res => res.json()),
+                        fetch('albumes-grouvex.json').then(res => res.json()),
+                        fetch('ep-grouvex.json').then(res => res.json())
                     ]).then(([cancionesData, albumesData, epData]) => {
                         const todosLosLanzamientos = [
                             ...cancionesData.canciones.map(c => ({ ...c, tipo: 'cancion' })),
@@ -162,9 +162,9 @@
                     const unMesAntes = ahora - 2592000; // Un mes antes en segundos
 
                     Promise.all([
-                        fetch('canciones.json').then(res => res.json()),
-                        fetch('albumes.json').then(res => res.json()),
-                        fetch('ep.json').then(res => res.json())
+                        fetch('canciones-grouvex.json').then(res => res.json()),
+                        fetch('album-grouvex.json').then(res => res.json()),
+                        fetch('ep-grouvex.json').then(res => res.json())
                     ]).then(([cancionesData, albumesData, epData]) => {
                         const todosLosLanzamientos = [
                             ...cancionesData.canciones.map(c => ({ ...c, tipo: 'cancion' })),
@@ -192,7 +192,7 @@
                 }
 
                 function cargarCanciones() {
-                    fetch('canciones.json')
+                    fetch('canciones-grouvex.json')
                         .then(response => response.json())
                         .then(data => {
                             const canciones = data.canciones;
@@ -209,35 +209,60 @@
 
                             // Mostrar canciones por letra
                             const contenido = document.getElementById('contenido');
-                            contenido.innerHTML = '<h2>Música</h2>';
-                            for (let letra in letras) {
-                                contenido.innerHTML += `
-                                    <div id="${letra}"><a href="#${letra}" class="letra" onclick="this.style.color='red';">${letra}</a></div>
-                                    <details>
-                                        <summary style="font-family: Times New Roman">Start with ${letra}</summary>
-                                        <ol>
-                                            ${letras[letra].map(cancion => `
-                                                <li>
-                                                    <a href="${cancion.titulo.toLowerCase().replace(/ /g, '_')}">
-                                                        <div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
-                                                            <img src="${cancion.portada}" alt="" class="r-img" style="margin-right:2px">
-                                                            <span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;">
-                                                                <span>${cancion.titulo}</span>
-                                                                <span>${cancion.album}</span>
-                                                            </span>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                            `).join('')}
-                                        </ol>
-                                    </details>
-                                `;
-                            }
+                            contenido.innerHTML = `
+                                <style>
+                                    .letra {
+                                        font-size: 40px;
+                                        font-family: Times New Roman;
+                                        color: white;
+                                        transition: color 0.3s;
+                                    }
+                                    .letra:hover {
+                                        color: inherit;
+                                    }
+                                    li { font-family: Times New Roman; }
+                                    summary { font-size: 25px; cursor: pointer; }
+                                    details { border: 2px solid white; }
+                                    details[open] { border-image: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet) 1; border-width: 2px; border-style: solid; }
+                                    .r-img { width: 30px; }
+                                    @media only screen and (max-width: 600px) {
+                                        .r-img { max-width: 30px; max-height: 30px; }
+                                    }
+                                </style>
+                                <h2>Música</h2>
+                                <a href="#top" style="font-size: 30px; font-family: Times New Roman; color: white">#</a>
+                                ${'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(letra => `
+                                    <a href="#${letra}" class="letra" onclick="this.style.color='red';">${letra}</a>
+                                `).join('')}
+                                <article>
+                                    ${Object.keys(letras).map(letra => `
+                                        <div id="${letra}"><a href="#${letra}" class="letra" onclick="this.style.color='red';">${letra}</a></div>
+                                        <details>
+                                            <summary style="font-family: Times New Roman">Start with ${letra}</summary>
+                                            <ol>
+                                                ${letras[letra].map(cancion => `
+                                                    <li>
+                                                        <a href="${cancion.titulo.toLowerCase().replace(/ /g, '_')}">
+                                                            <div style="display: flex; padding: 3px; box-shadow: 0 0 3px cyan;">
+                                                                <img src="${cancion.portada}" alt="" class="r-img" style="margin-right: 2px;">
+                                                                <span style="font-family: Times New Roman; color: white; display: flex; justify-content: space-between; width: 100%;">
+                                                                    <span>${cancion.titulo}</span>
+                                                                    <span>${cancion.album}</span>
+                                                                </span>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                `).join('')}
+                                            </ol>
+                                        </details>
+                                    `).join('')}
+                                </article>
+                            `;
                         });
                 }
 
                 function cargarAlbumes() {
-                    fetch('albumes.json')
+                    fetch('albumes-grouvex.json')
                         .then(response => response.json())
                         .then(data => {
                             const albumes = data.albumes;
@@ -269,7 +294,7 @@
                 }
 
                 function cargarEP() {
-                    fetch('ep.json')
+                    fetch('ep-grouvex.json')
                         .then(response => response.json())
                         .then(data => {
                             const ep = data.ep;

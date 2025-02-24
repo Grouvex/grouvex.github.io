@@ -103,30 +103,28 @@
                 <div id="lanzamientos-recientes" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
             </article>
             <script>
-                let mostrarSeccion;
-                document.addEventListener("DOMContentLoaded", function() {
-    // Función para mostrar la sección seleccionada
-    function mostrarSeccion(seccion) {
-        const contenido = document.getElementById('contenido');
-        if (!contenido) {
-            console.error('El elemento con id="contenido" no existe en el DOM.');
-            return;
-        }
-
-        if (seccion === 'lanzamientos') {
-            cargarProximosLanzamientos();
-            cargarLanzamientosRecientes();
-        } else if (seccion === 'discografia') {
-            contenido.innerHTML = `<h2>Discografía</h2><p>Aquí puedes ver toda la discografía del artista...</p>`;
-        } else if (seccion === 'musica') {
-            cargarCanciones();
-        } else if (seccion === 'albumes') {
-            cargarAlbumes();
-        } else if (seccion === 'ep') {
-            cargarEP();
-        }
+                // Mover la función mostrarSeccion al ámbito global
+function mostrarSeccion(seccion) {
+    const contenido = document.getElementById('contenido');
+    if (!contenido) {
+        console.error('El elemento con id="contenido" no existe en el DOM.');
+        return;
     }
 
+    if (seccion === 'lanzamientos') {
+        cargarProximosLanzamientos();
+        cargarLanzamientosRecientes();
+    } else if (seccion === 'discografia') {
+        contenido.innerHTML = `<h2>Discografía</h2><p>Aquí puedes ver toda la discografía del artista...</p>`;
+    } else if (seccion === 'musica') {
+        cargarCanciones();
+    } else if (seccion === 'albumes') {
+        cargarAlbumes();
+    } else if (seccion === 'ep') {
+        cargarEP();
+    }
+}
+                document.addEventListener("DOMContentLoaded", function() {
     // Función para cargar los próximos lanzamientos
     function cargarProximosLanzamientos() {
         const ahora = Math.floor(Date.now() / 1000); // Fecha actual en segundos

@@ -128,7 +128,6 @@ function mostrarSeccion(seccion) {
 const contenedorProximos = document.getElementById('proximos-lanzamientos');
 const contenedorRecientes = document.getElementById('lanzamientos-recientes');
 console.log(contenedorProximos, contenedorRecientes);
-document.addEventListener("DOMContentLoaded", function () {
     // Función para cargar los próximos lanzamientos
     function cargarProximosLanzamientos() {
         const ahora = Math.floor(Date.now() / 1000); // Fecha actual en segundos
@@ -218,7 +217,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Llamar a las funciones para cargar los lanzamientos
     cargarProximosLanzamientos();
     cargarLanzamientosRecientes();
-});
 
     // Función para cargar las canciones
     function cargarCanciones() {

@@ -134,33 +134,45 @@
                 async function cargarProximosLanzamientos() {
                     const ahora = Math.floor(Date.now() / 1000); // Fecha actual en segundos
                     const unDiaAntes = ahora - 86400; // Un día antes en segundos
-
+                
                     const [cancionesData, albumesData, epData] = await Promise.all([
                         fetch('canciones-grouvex.json').then(res => res.json()),
                         fetch('album-grouvex.json').then(res => res.json()),
                         fetch('ep-grouvex.json').then(res => res.json())
                     ]);
-
+                
                     const todosLosLanzamientos = [
                         ...cancionesData.canciones.map(c => ({ ...c, tipo: 'cancion' })),
                         ...albumesData.albumes.map(a => ({ ...a, tipo: 'album' })),
                         ...epData.ep.map(e => ({ ...e, tipo: 'ep' }))
                     ];
-
+                
                     const proximosLanzamientos = todosLosLanzamientos.filter(lanzamiento => lanzamiento.fecha > unDiaAntes);
-
+                
                     const contenedorProximos = document.getElementById('proximos-lanzamientos');
                     if (contenedorProximos) {
                         contenedorProximos.innerHTML = proximosLanzamientos.map(lanzamiento => `
-                            <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px;">
-                                <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px;">
-                                <h3>${lanzamiento.titulo}</h3>
-                                <p>${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}</p>
-                                <p>Fecha: <span id="fecha-${lanzamiento.fecha}"></span></p>
-                                ${lanzamiento.label ? `<p>Label: ${lanzamiento.label}</p>` : ''}
+                            <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px; text-align: center;">
+                                <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
+                                <h3 style="margin: 5px 0; font-size: 16px;">${lanzamiento.titulo}</h3>
+                                <p style="margin: 5px 0; font-size: 14px; color: #666;">
+                                    ${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}
+                                </p>
+                                <p style="margin: 5px 0; font-size: 14px; color: #666;">
+                                    Fecha: <span id="fecha-${lanzamiento.fecha}"></span>
+                                </p>
+                                ${lanzamiento.label ? `
+                                    <p style="margin: 5px 0; font-size: 14px; color: #666;">
+                                        Label: ${lanzamiento.label}
+                                    </p>
+                                ` : ''}
+                                ${lanzamiento.presaveUrl ? `<a href="${lanzamiento.presaveUrl}" style="display: inline-block; background: linear-gradient(45deg, #ff7e5f, #feb47b); border: none; padding: 8px 16px; border-radius: 20px; color: white; text-decoration: none; cursor: pointer; margin-top: 10px;">
+                                    Presaved
+                                </a>` : ''}
                             </div>
                         `).join('');
-
+                
+                        // Actualizar fechas
                         proximosLanzamientos.forEach(lanzamiento => {
                             actualizarFechas(lanzamiento.fecha, `fecha-${lanzamiento.fecha}`);
                         });

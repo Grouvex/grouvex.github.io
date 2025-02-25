@@ -463,7 +463,7 @@ if (window.innerWidth < 768) {
         // Estilo para pantallas móviles
         newsAdv.style = `
             position: fixed;
-            top: 3px;
+            bottom: 3px;
             left: 1px;
             padding: 1px;
             background: rgb(5 59 219);

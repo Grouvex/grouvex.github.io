@@ -2,10 +2,10 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Discografía Tarlight Etherall - Grouvex Studios</title>
+    <title>Discografía Clara Langa - Grouvex Studios</title>
     <meta property="og:site_name" content="Grouvex Studios">
-    <meta property="og:title" content=">Discografía Tarlight Etherall - Grouvex Studios">
-    <meta property="og:description" content=">Discografía Tarlight Etherall de ©Grouvex Studios">
+    <meta property="og:title" content="Discografía Clara Langa - Grouvex Studios">
+    <meta property="og:description" content="Discografía Clara Langa de ©Grouvex Studios">
     <meta property="og:type" content="website">
     <meta property="og:image" href="../../img/GROUVEX.png">
     <meta property="og:url" content="https://grouvex.com/">
@@ -29,368 +29,459 @@
     <meta name="HandheldFriendly" content="true">
     <link rel="preconnect" href="https://example.com">
     <link rel="dns-prefetch" href="https://example.com">
- <!-- Scripts sin nonce -->
-    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script> 
-    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js"></script> 
-    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-database.js"></script> 
-    <script src="jquery-3.5.1.min.js"></script>
-    <script> 
-        document.addEventListener("DOMContentLoaded", function() { 
-            $("#menuG").load("menuG.html"); 
-            $("#menuE").load("menuE.html"); 
-            $("#menuT").load("menuT.html");
-            $("#menuU").load("menuU.html");
-            $("#footer").load("footer.html"); 
-            $("#news").load("news.html"); 
-            $("#tosypp").load("tosypp.html");
+    <!-- Scripts sin nonce -->
+    <script src="../jquery-3.5.1.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            $("#menuG").load("../menuG.html");
+            $("#menuE").load("../menuE.html");
+            $("#menuT").load("../menuT.html");
+            $("#menuU").load("../menuU.html");
+            $("#footer").load("../footer.html");
+            $("#news").load("../news.html");
+            $("#tosypp").load("../tosypp.html");
         });
     </script>
-    <script src="//www.youtube.com/player_api"></script><script src="https://www.youtube.com/iframe_api"></script>
-    <script src="time.js"></script></script><script src="index.js"></script>
+    <script src="//www.youtube.com/player_api"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="../time.js"></script>
+    <script type="module" src="../abc.js"></script>
+    <script src="../index.js"></script>
 </head>
-<mainTop>
-        <mainTop>
-            <a href="https://grouvex.github.io/"> <div class="img-container"></div></a> 
-            <a href="https://grouvex.github.io/tarlight_etherall/inicio"><div style="font-size: 15px;color:white;margin-top:5px;margin-bottom:15px">Artista Tarlight Etherall - Grouvex Studios</div></a>
-            <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
-                <span id="menuG"></span> <!-- General -->
-                <span id="menuT"></span> <!-- Temas/Idioma -->
-                <span id="menuU"></span> <!-- Usuario -->
-        </mainTop>
 <body>
- <!-- Anuncio -->
-  <div id="news"></div>
-<main id="top">
-<!-- Publicado por -->
-<div class="tarjeta" style="display: flex;align-items: center; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 10px; padding: 10px; height: auto; width: auto; padding-top: 10px;padding-bottom: 10px">
-<img src="../img/GROUVEX.png" alt="" style="border-radius: 50%; width: 15%;height: 15%;object-fit: cover; margin-right: 10px;loading="lazy">
-<div style="width:100%;height:auto">
-<h2 style="margin:2px; font-size: 7.5px;width:100%;height:auto">Publicado por:</h2><h2 style="margin:2px; padding: 1px;font-size: 20px;width:100%;height:auto"><span class="Grouvex-Studios"></span></h2>
-<p style="color: white; font-size: 11px;width:100%;height:auto"><span id="ActualizadoDATE"></span></p><a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@grouvex.com</footer></a></div></div>
-<script>const uTActualizado = 1738429200; actualizarFechas(uTActualizado, "ActualizadoDATE");</script> 
-  <!-- Título -->
-  <h1>Discografía Tarlight Etherall</h1>
-  <nav>
-    <span style="font-family: Times New Roman;color:white"><a onclick="mostrarSeccion('lanzamientos')"><span style="color: white">Lanzamientos</span></a> | <a onclick="mostrarSeccion('discografia')"><span style="color: white">Discografía</span></a><hr><a onclick="mostrarSeccion('musica')"><span style="color: white">Música</span></a> <a onclick="mostrarSeccion('albumes')"><span style="color: white">Álbumes</span></a> <a onclick="mostrarSeccion('ep')"><span style="color: white">Reproducción Extendida (EP)</span></a>
-  </nav>
-  <article id="contenido">
-    <!-- Contenido inicial -->
-    <h2>Lanzamientos</h2>
-    <p>Los proximos lanzamientos son:</p>
-  </article>
+    <header>
+        <a href="https://grouvex.github.io/">
+            <div class="img-container"></div>
+        </a>
+        <a href="https://grouvex.github.io/grouvex/inicio">
+            <div style="font-size: 15px;color:white;margin-top:5px;margin-bottom:15px">Artista Clara Langa - Grouvex Studios</div>
+        </a>
+        <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
+            <span id="menuG"></span> <!-- General -->
+            <span id="menuE"></span> <!-- Especifico -->
+            <span id="menuT"></span> <!-- Temas/Idioma -->
+            <span id="menuU"></span> <!-- Usuario -->
+        </span>
+    </header>
+    <body>
+        <!-- Anuncio -->
+        <div id="news"></div>
+        <main id="top">
+            <!-- Publicado por -->
+            <div class="tarjeta" style="display: flex;align-items: center; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 10px; padding: 10px; height: auto; width: auto; padding-top: 10px;padding-bottom: 10px">
+                <img src="../img/GROUVEX.png" alt="" style="border-radius: 50%; width: 15%;height: 15%;object-fit: cover; margin-right: 10px;loading="lazy">
+                <div style="width:100%;height:auto">
+                    <h2 style="margin:2px; font-size: 7.5px;width:100%;height:auto">Publicado por:</h2>
+                    <h2 style="margin:2px; padding: 1px;font-size: 20px;width:100%;height:auto"><span class="Grouvex-Studios"></span></h2>
+                    <p style="color: white; font-size: 11px;width:100%;height:auto"><span id="ActualizadoDATE"></span></p>
+                    <a href="mailto:grouvex.studio@grouvex.com" style="color:white">
+                        <footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@grouvex.com</footer>
+                    </a>
+                </div>
+            </div>
+            <script>
+                const uTActualizado = 1738429200;
+                actualizarFechas(uTActualizado, "ActualizadoDATE");
+            </script>
+            <!-- Título -->
+            <h1>Discografía</h1>
+            <nav>
+                <span style="font-family: Times New Roman;color:white">
+                    <a onclick="mostrarSeccion('lanzamientos')"><span style="color: white">Lanzamientos</span></a> |
+                    <a onclick="mostrarSeccion('discografia')"><span style="color: white">Discografía</span></a>
+                    <hr>
+                    <a onclick="mostrarSeccion('musica')"><span style="color: white">Música</span></a>
+                    <a onclick="mostrarSeccion('albumes')"><span style="color: white">Álbumes</span></a>
+                    <a onclick="mostrarSeccion('ep')"><span style="color: white">Reproducción Extendida (EP)</span></a>
+                </span>
+            </nav>
+            <article id="contenido">
+                <!-- Contenido inicial -->
+                <h2>Discografía</h2>
+                <p>Aquí podrás ver toda la información sobre el Artista Clara Langa</p>
+            </article>
+            <script>
+                // Función para mostrar la sección seleccionada
+                function mostrarSeccion(seccion) {
+                    const contenido = document.getElementById('contenido');
+                    if (!contenido) {
+                        console.error('El elemento con id="contenido" no existe en el DOM.');
+                        return;
+                    }
 
-  <script>
-    function mostrarSeccion(seccion) {
-      const contenido = document.getElementById('contenido');
-      if (seccion === 'lanzamientos') {
-        contenido.innerHTML = `
-          <h2>Lanzamientos</h2>
-          <p>Aquí están los lanzamientos más recientes...</p>
-        `;
-      } else if (seccion === 'discografia') {
-        contenido.innerHTML = `
-          <h2>Discografía</h2>
-          <p>Aquí puedes ver toda la discografía del artista...</p>
-        `;
-      } else if (seccion === 'musica') {
-        contenido.innerHTML = `
-        <style>
-        .letra {
-            font-size: 40px;
-            font-family: Times New Roman;
-            color: white;
-            transition: color 0.3s;
+                    if (seccion === 'lanzamientos') {
+                            contenido.innerHTML = `
+                            <h2>Lanzamientos</h2>
+                            <h3>Próximos Lanzamientos</h3>
+                            <div id="proximos-lanzamientos" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                            <h3>Lanzamientos recientes</h3>
+                            <div id="lanzamientos-recientes" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                        `;
+                        cargarProximosLanzamientos();
+                        cargarLanzamientosRecientes();
+                    } else if (seccion === 'discografia') {
+                        contenido.innerHTML = `<h2>Discografía</h2><p>Clara Langa es un artista del Pop, que lleva desde 29 de Septiembre de 2024 ideando música y cantando canciones que han creado otros.</p>`;
+                    } else if (seccion === 'musica') {
+                        cargarCanciones();
+                    } else if (seccion === 'albumes') {
+                        cargarAlbumes();
+                    } else if (seccion === 'ep') {
+                        cargarEP();
+                    }
+                }
+
+async function cargarProximosLanzamientos() {
+    const ahora = Math.floor(Date.now() / 1000); // Fecha actual en segundos
+    const unDiaAntes = ahora - 86400; // Un día antes en segundos
+
+    const [cancionesData, albumesData, epData] = await Promise.all([
+        fetch('canciones-tarlight_etherall.json').then(res => res.json()),
+        fetch('album-tarlight_etherall.json').then(res => res.json()),
+        fetch('ep-tarlight_etherall.json').then(res => res.json())
+    ]);
+
+    const todosLosLanzamientos = [
+        ...cancionesData.canciones.map(c => ({ ...c, tipo: 'cancion' })),
+        ...albumesData.albumes.map(a => ({ ...a, tipo: 'album' })),
+        ...epData.ep.map(e => ({ ...e, tipo: 'ep' }))
+    ];
+
+    // Filtrar lanzamientos próximos
+    const proximosLanzamientos = todosLosLanzamientos.filter(lanzamiento => lanzamiento.fecha > unDiaAntes);
+
+    // Ordenar lanzamientos por fecha (de más reciente a más antiguo)
+    proximosLanzamientos.sort((a, b) => a.fecha - b.fecha);
+
+    const contenedorProximos = document.getElementById('proximos-lanzamientos');
+    if (contenedorProximos) {
+        if (proximosLanzamientos.length === 0) {
+            contenedorProximos.innerHTML = `
+                <p style="text-align: center; color: white; font-size: 16px;">
+                    No hay lanzamientos programados.
+                </p>
+            `;
+        } else {
+            // Mostrar tarjetas de lanzamientos
+            contenedorProximos.innerHTML = proximosLanzamientos.map(lanzamiento => `
+                <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px; text-align: center;">
+                    <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
+                    <h3 style="margin: 5px 0; font-size: 16px;">${lanzamiento.titulo}</h3>
+                    <p style="margin: 5px 0; font-size: 14px; color: white;">
+                        ${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}
+                    </p>
+                    <p style="margin: 5px 0; font-size: 14px; color: white;">
+                        Fecha: <span id="fecha-${lanzamiento.fecha}"></span>
+                    </p>
+                    ${lanzamiento.label ? `
+                        <p style="margin: 5px 0; font-size: 14px; color: white;">
+                            Label: ${lanzamiento.label}
+                        </p>
+                    ` : ''}
+                    ${lanzamiento.presaveUrl ? `<a href="${lanzamiento.presaveUrl}" style="display: inline-block; background: linear-gradient(45deg, #ff7e5f, #feb47b); border: none; padding: 8px 16px; border-radius: 20px; color: white; text-decoration: none; cursor: pointer; margin-top: 10px;">
+                        Presaved
+                    </a>` : ''}
+                </div>
+            `).join('');
+
+            // Actualizar fechas
+            proximosLanzamientos.forEach(lanzamiento => {
+                actualizarFechas(lanzamiento.fecha, `fecha-${lanzamiento.fecha}`);
+            });
         }
-        .letra:hover {
-            color: inherit;
-        }
-    </style>
-          <h2>Música</h2>
-          <a href="#top" style="font-size: 30px ;font-family: Times New Roman;color:white">#</a> <a href="#a" class="letra" onclick="this.style.color='red';">A</a>
-    <a href="#b" class="letra" onclick="this.style.color='darkorange';">B</a>
-    <a href="#c" class="letra" onclick="this.style.color='orange';">C</a>
-    <a href="#d" class="letra" onclick="this.style.color='gold';">D</a>
-    <a href="#e" class="letra" onclick="this.style.color='yellow';">E</a>
-    <a href="#f" class="letra" onclick="this.style.color='greenyellow';">F</a>
-    <a href="#g" class="letra" onclick="this.style.color='lime';">G</a>
-    <a href="#h" class="letra" onclick="this.style.color='springgreen';">H</a>
-    <a href="#i" class="letra" onclick="this.style.color='cyan';">I</a>
-    <a href="#j" class="letra" onclick="this.style.color='deepskyblue';">J</a>
-    <a href="#k" class="letra" onclick="this.style.color='dodgerblue';">K</a>
-    <a href="#l" class="letra" onclick="this.style.color='blue';">L</a>
-    <a href="#m" class="letra" onclick="this.style.color='blueviolet';">M</a>
-    <a href="#n" class="letra" onclick="this.style.color='indigo';">N</a>
-    <a href="#o" class="letra" onclick="this.style.color='darkviolet';">O</a>
-    <a href="#p" class="letra" onclick="this.style.color='violet';">P</a>
-    <a href="#q" class="letra" onclick="this.style.color='orchid';">Q</a>
-    <a href="#r" class="letra" onclick="this.style.color='magenta';">R</a>
-    <a href="#s" class="letra" onclick="this.style.color='deeppink';">S</a>
-    <a href="#t" class="letra" onclick="this.style.color='crimson';">T</a>
-    <a href="#u" class="letra" onclick="this.style.color='red';">U</a>
-    <a href="#v" class="letra" onclick="this.style.color='darkorange';">V</a>
-    <a href="#w" class="letra" onclick="this.style.color='orange';">W</a>
-    <a href="#x" class="letra" onclick="this.style.color='gold';">X</a>
-    <a href="#y" class="letra" onclick="this.style.color='yellow';">Y</a>
-    <a href="#z" class="letra" onclick="this.style.color='greenyellow';">Z</a>
- <article>
-<style>li {font-family: Times New Roman} summary{font-size:25px; cursor: pointer} details{border: 2px solid white} details[open] {border-image: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet) 1; border-width: 2px;border-style: solid;} .r-img{width: 30px;} @media only screen and (max-width: 600px) {.r-img {max-width: 30px;max-height: 30px;}}</style>
-<!-- Abecedario -->
-<div id="top"><a href="#top" style="font-size: 50px ;font-family: Times New Roman;color:white">#</a></div>
-<details>
-<summary style="font-family: Times New Roman" >Does not contain a letter</summary>
-</details>
-<div id="a"><a href="#a" class="letra" onclick="this.style.color='red';">A</a></div>
-<details>
-<summary style="font-family: Times New Roman" >Start with A</summary>
-
-</details>
-<div id="b"><a href="#b" class="letra" onclick="this.style.color='darkorange';">B</a></div>
-<details>
-<summary style="font-family: Times New Roman" >Start with B</summary>
-
-</details>
-<div id="c"><a href="#c" style="font-size: 50px; font-family: Times New Roman; color:white">C</a></div>
-<details>
-<summary style="font-family: Times New Roman" >Start with C</summary>
-</details>
-<div id="d"><a href="#d" style="font-size: 50px; font-family: Times New Roman; color:white">D</a></div>
-<details>
-<summary style="font-family: Times New Roman" >Start with D</summary>
-
-</details>
-<div id="e"><a href="#e" style="font-size: 50px; font-family: Times New Roman; color:white">E</a></div>
-<details>
-<summary style="font-family: Times New Roman" >Start with E</summary> 
-
-</details>
-<div id="f"><a href="#f" style="font-size: 50px; font-family: Times New Roman; color:white">F</a></div>
-<details>
-<summary style="font-family: Times New Roman" >Start with F</summary>
-<ol>
-<li><a href="forward">
-<div style="display: flex;padding: 3px; box-shadow: 0 0 3px cyan">
-<img src="../port/The Life.jpg" alt="" class="r-img" style="margin-right:2px">
-<span style="font-family: Times New Roman;color:white;display:flex;justify-content: space-between; width: 100%;"><span>Forward</span><span>The Life</span></span>
-</div></a>
-</li> 
-</ol>
-</details>
-<div id="g"><a href="#g" style="font-size: 50px; font-family: Times New Roman; color:white">G</a></div>
-<details>
-<summary style="font-family: Times New Roman" >Start with G</summary>
-</details>
-<div id="h"><a href="#h" style="font-size: 50px; font-family: Times New Roman; color:white">H</a></div>
-<details>
-<summary style="font-family: Times New Roman" >Start with H</summary>
-</details>
-<div id="i"><a href="#i" style="font-size: 50px; font-family: Times New Roman; color:white">I</a></div>
-<details>
-<summary style="font-family: Times New Roman" >Start with I</summary>
-</details>
-<div id="j"><a href="#j" style="font-size: 50px; font-family: Times New Roman; color:white">J</a></div>
-<details>
-<summary style="font-family: Times New Roman" >Start with J</summary>
-</details>
-<div id="k"><a href="#k" style="font-size: 50px; font-family: Times New Roman; color:white">K</a></div>
-<details>
-<summary style="font-family: Times New Roman" >Start with K</summary>
-
-</details>
-<div id="l"><a href="#l" style="font-size: 50px; font-family: Times New Roman; color:white">L</a></div>
-<details>
-<summary style="font-family: Times New Roman" >Start with L</summary>
-
-</details>
-<div id="m"><a href="#m" style="font-size: 50px; font-family: Times New Roman; color:white">M</a></div>
-<details>
-<summary style="font-family: Times New Roman" >Start with M</summary>
-
-</details>
-<div id="n"><a href="#n" style="font-size: 50px; font-family: Times New Roman; color:white">N</a></div>
-<details>
-<summary style="font-family: Times New Roman" >Start with N</summary>
-</details>
-<div id="o"><a href="#o" style="font-size: 50px; font-family: Times New Roman; color:white">O</a></div>
-<details>
-<summary style="font-family: Times New Roman">Start with O</summary>
-</details>
-<div id="p"><a href="#p" style="font-size: 50px; font-family: Times New Roman; color:white">P</a></div>
-<details>
-<summary style="font-family: Times New Roman">Start with P</summary>
-
-</details>
-<div id="q"><a href="#q" style="font-size: 50px; font-family: Times New Roman; color:white">Q</a></div>
-<details>
-<summary style="font-family: Times New Roman">Start with Q</summary>
-</details>
-<div id="r"><a href="#r" style="font-size: 50px; font-family: Times New Roman; color:white">R</a></div>
-<details>
-<summary style="font-family: Times New Roman">Start with R</summary>
-</details>
-<div id="s"><a href="#s" style="font-size: 50px; font-family: Times New Roman; color:white">S</a></div>
-<details>
-<summary style="font-family: Times New Roman">Start with S</summary>
-
-</details>
-<div id="t"><a href="#t" style="font-size: 50px; font-family: Times New Roman; color:white">T</a></div>
-<details>
-<summary style="font-family: Times New Roman">Start with T</summary>
-
-</details>
-<div id="u"><a href="#u" style="font-size: 50px; font-family: Times New Roman; color:white">U</a></div>
-<details>
-<summary style="font-family: Times New Roman">Start with U</summary>
-
-</details>
-<div id="v"><a href="#v" style="font-size: 50px; font-family: Times New Roman; color:white">V</a></div>
-<details>
-<summary style="font-family: Times New Roman">Start with V</summary>
-
-</details>
-<div id="w"><a href="#w" style="font-size: 50px; font-family: Times New Roman; color:white">W</a></div>
-<details>
-<summary style="font-family: Times New Roman">Start with W</summary>
-
-</details>
-<div id="x"><a href="#x" style="font-size: 50px; font-family: Times New Roman; color:white">X</a></div>
-<details>
-<summary style="font-family: Times New Roman">Start with X</summary>
-</details>
-<div id="y"><a href="#y" style="font-size: 50px; font-family: Times New Roman; color:white">Y</a></div>
-<details>
-<summary style="font-family: Times New Roman">Start with Y</summary>
-
-</details>
-<div id="z"><a href="#z" style="font-size: 50px; font-family: Times New Roman; color:white">Z</a></div>
-<details>
-<summary style="font-family: Times New Roman">Start with Z</summary>
-</details>
- </article>
-        `;
-      } else if (seccion === 'albumes') {
-        contenido.innerHTML = `
-  <!-- Título -->
-  <h2>Álbums</h2>
- <article>
-  <select class="orden-button" id="ordenSelector" onchange="cambiarOrden()" style="margin:5px;margin-left:0px">
-        <option value="" disabled selected>Order</option>
-        <option value="ascT">⬇ to ⬆ (Tiempo)</option>
-        <option value="desT">⬆ to ⬇ (Tiempo)</option>
-        <option value="ascA">A-Z (Alfabeto)</option>
-        <option value="desA">Z-A (Alfabeto)</option>
-    </select>
- <div class="cajetines">
-    
-    </div>
- </article>
-        `;
-        actualizarFechas(03, "f1_3")
-        actualizarFechas(02, "f1_2")
-        actualizarFechas(01, "f1_1")
-        const marcasDeTiempo = [uT1, uT2, uT3];
-// NO tocar
-// function cambiarOrden() {if(document.getElementById('ordenSelector').value == 'ascT') {marcasDeTiempo.sort((a, b) => b - a);}if(document.getElementById('ordenSelector').value == 'desT') {marcasDeTiempo.sort((a, b) => a - b);}const cajetinesContainer = document.querySelector('.cajetines');marcasDeTiempo.forEach((uT) => {const cajetin = document.querySelector(`[data-ut="${uT}"]`);cajetinesContainer.appendChild(cajetin);});}
-      } else if (seccion === 'ep') {
-        contenido.innerHTML = `
-<h2>Reproducción Extendida (EP)</h2>
-  <!-- Título -->
- <article>
-  <select class="orden-button" id="ordenSelectorEP" onchange="cambiarOrdenEP()" style="margin:5px;margin-left:0px">
-        <option value="" disabled selected>Order</option>
-        <option value="ascT">⬇ to ⬆ (Tiempo)</option>
-        <option value="desT">⬆ to ⬇ (Tiempo)</option>
-        <option value="ascA">A-Z (Alfabeto)</option>
-        <option value="desA">Z-A (Alfabeto)</option>
-    </select>
- <div class="cajetines">
-     
-    </div>
- </article>
-        `;
-        actualizarFechas(01, "f1_6")
-        actualizarFechas(02, "f1_5")
-        actualizarFechas(03, "f1_4")
-        actualizarFechas(04, "f1_3")
-        actualizarFechas(05, "f1_2")
-        actualizarFechas(06, "f1_5")
-        actualizarFechas(07, "f1_1")
-      }
+    } else {
+        console.error('El contenedor "proximos-lanzamientos" no existe.');
     }
+}
 
-    function cambiarOrden() {
-      const selector = document.getElementById('ordenSelector');
-      const orden = selector.value;
-      const cajetinesContainer = document.querySelector('.cajetines');
-      const cajetines = document.querySelectorAll('.cajetin');
+async function cargarLanzamientosRecientes() {
+    const ahora = Math.floor(Date.now() / 1000); // Fecha actual en segundos
+    const unMesAntes = ahora - 2592000; // Un mes antes en segundos
 
-      // Convertir los atributos data-ut a números para una comparación numérica
-      const elementosConUT = Array.from(cajetines).map(cajetin => {
-        return {
-          elemento: cajetin,
-          uT: parseInt(cajetin.dataset.ut),
-          title: cajetin.querySelector('.cajetin-titulo').innerText.toLowerCase()
-        };
-      });
+    const [cancionesData, albumesData, epData] = await Promise.all([
+        fetch('canciones-tarlight_etherall.json').then(res => res.json()),
+        fetch('album-tarlight_etherall.json').then(res => res.json()),
+        fetch('ep-tarlight_etherall.json').then(res => res.json())
+    ]);
 
-      // Ordenar los elementos según el valor de orden seleccionado
-      elementosConUT.sort((a, b) => {
-        if (orden === 'ascT') {
-          return a.uT - b.uT;
-        } else if (orden === 'desT') {
-          return b.uT - a.uT;
-        } else if (orden === 'ascA') {
-          return a.title.localeCompare(b.title);
-        } else if (orden === 'desA') {
-          return b.title.localeCompare(a.title);
+    const todosLosLanzamientos = [
+        ...cancionesData.canciones.map(c => ({ ...c, tipo: 'cancion' })),
+        ...albumesData.albumes.map(a => ({ ...a, tipo: 'album' })),
+        ...epData.ep.map(e => ({ ...e, tipo: 'ep' }))
+    ];
+
+    // Filtrar lanzamientos recientes
+    const lanzamientosRecientes = todosLosLanzamientos.filter(lanzamiento => lanzamiento.fecha >= unMesAntes && lanzamiento.fecha <= ahora);
+
+    // Ordenar lanzamientos por fecha (de más reciente a más antiguo)
+    lanzamientosRecientes.sort((a, b) => b.fecha - a.fecha);
+
+    const contenedorRecientes = document.getElementById('lanzamientos-recientes');
+    if (contenedorRecientes) {
+        if (lanzamientosRecientes.length === 0) {
+            // Mostrar mensaje si no hay lanzamientos
+            contenedorRecientes.innerHTML = `
+                <p style="text-align: center; color: white; font-size: 16px;">
+                    No hay lanzamientos desde el último mes.
+                </p>
+            `;
+        } else {
+            // Mostrar tarjetas de lanzamientos
+            contenedorRecientes.innerHTML = lanzamientosRecientes.map(lanzamiento => `
+                <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px; text-align: center;">
+                    <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
+                    <h3 style="margin: 5px 0; font-size: 16px;">${lanzamiento.titulo}</h3>
+                    <p style="margin: 5px 0; font-size: 14px; color: white;">
+                        ${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}
+                    </p>
+                    <p style="margin: 5px 0; font-size: 14px; color: white;">
+                        Fecha: <span id="fecha-${lanzamiento.fecha}"></span>
+                    </p>
+                    ${lanzamiento.label ? `
+                        <p style="margin: 5px 0; font-size: 14px; color: white;">
+                            Label: ${lanzamiento.label}
+                        </p>
+                    ` : ''}
+                </div>
+            `).join('');
+
+            // Actualizar fechas
+            lanzamientosRecientes.forEach(lanzamiento => {
+                actualizarFechas(lanzamiento.fecha, `fecha-${lanzamiento.fecha}`);
+            });
         }
-        return 0; // No ordenar si no se seleccionó ninguna opción
-      });
-
-      // Vaciar el contenedor y agregar los elementos ordenados
-      cajetinesContainer.innerHTML = '';
-      elementosConUT.forEach(elemento => {
-        cajetinesContainer.appendChild(elemento.elemento);
-      });
+    } else {
+        console.error('El contenedor "lanzamientos-recientes" no existe.');
     }
+}
 
-    function cambiarOrdenEP() {
-      const selector = document.getElementById('ordenSelectorEP');
-      const orden = selector.value;
-      const cajetinesContainer = document.querySelector('.cajetines');
-      const cajetines = document.querySelectorAll('.cajetin');
+ function cargarCanciones() {
+    fetch('canciones-tarlight_etherall.json')
+        .then(response => response.json())
+        .then(data => {
+            const canciones = data.canciones;
 
-      // Convertir los atributos data-ut a números para una comparación numérica
-      const elementosConUT = Array.from(cajetines).map(cajetin => {
-        return {
-          elemento: cajetin,
-          uT: parseInt(cajetin.dataset.ut),
-          title: cajetin.querySelector('.cajetin-titulo').innerText.toLowerCase()
-        };
-      });
+            // Ordenar las canciones alfabéticamente por título
+            canciones.sort((a, b) => a.titulo.localeCompare(b.titulo));
 
-      // Ordenar los elementos según el valor de orden seleccionado
-      elementosConUT.sort((a, b) => {
-        if (orden === 'ascT') {
-          return a.uT - b.uT;
-        } else if (orden === 'desT') {
-          return b.uT - a.uT;
-        } else if (orden === 'ascA') {
-          return a.title.localeCompare(b.title);
-        } else if (orden === 'desA') {
-          return b.title.localeCompare(a.title);
-        }
-        return 0; // No ordenar si no se seleccionó ninguna opción
-      });
+            // Organizar canciones por letra inicial
+            const letras = {};
+            canciones.forEach(cancion => {
+                const letraInicial = cancion.titulo.charAt(0).toUpperCase();
+                if (!letras[letraInicial]) {
+                    letras[letraInicial] = [];
+                }
+                letras[letraInicial].push(cancion);
+            });
 
-      // Vaciar el contenedor y agregar los elementos ordenados
-      cajetinesContainer.innerHTML = '';
-      elementosConUT.forEach(elemento => {
-        cajetinesContainer.appendChild(elemento.elemento);
-      });
-    }
-  </script>
-</main>
-</body>
-<div id="footer"></div>
-<script src="../time.js"></script>
+            // Mostrar canciones por letra
+            const contenido = document.getElementById('contenido');
+            if (contenido) {
+                contenido.innerHTML = `
+                    <style>
+                        .letra {
+                            font-size: 40px;
+                            font-family: Times New Roman;
+                            color: white;
+                            transition: color 0.3s;
+                        }
+                        .letra:hover {
+                            color: inherit;
+                        }
+                        li { font-family: Times New Roman; }
+                        summary { font-size: 25px; cursor: pointer; }
+                        details { border: 2px solid white; }
+                        details[open] { border-image: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet) 1; border-width: 2px; border-style: solid; }
+                        .r-img { width: 30px; }
+                        @media only screen and (max-width: 600px) {
+                            .r-img { max-width: 30px; max-height: 30px; }
+                        }
+                    </style>
+                    <h2>Música</h2>
+                    <a href="#top" style="font-size: 30px; font-family: Times New Roman; color: white">#</a>
+                    ${'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(letra => `
+                        <a href="#${letra}" class="letra" onclick="this.style.color='red';">${letra}</a>
+                    `).join('')}
+                    <article>
+                        ${Object.keys(letras).map(letra => `
+                            <div id="${letra}"><a href="#${letra}" class="letra" onclick="this.style.color='red';">${letra}</a></div>
+                            <details>
+                                <summary style="font-family: Times New Roman">Start with ${letra}</summary>
+                                <ol>
+                                    ${letras[letra].map(cancion => `
+                                        <li>
+                                            <a href="${cancion.titulo.toLowerCase().replace(/ /g, '_')}">
+                                                <div style="display: flex; padding: 3px; box-shadow: 0 0 3px cyan;">
+                                                    <img src="${cancion.portada}" alt="" class="r-img" style="margin-right: 2px;">
+                                                    <span style="font-family: Times New Roman; color: white; display: flex; justify-content: space-between; width: 100%;">
+                                                        <span>${cancion.titulo}</span>
+                                                        <span>${cancion.album}</span>
+                                                    </span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    `).join('')}
+                                </ol>
+                            </details>
+                        `).join('')}
+                    </article>
+                `;
+            } else {
+                console.error('El elemento con id="contenido" no existe en el DOM.');
+            }
+        })
+        .catch(error => {
+            console.error('Error al cargar las canciones:', error);
+        });
+}
+
+                // Función para cargar los álbumes
+                function cargarAlbumes() {
+                    fetch('album-tarlight_etherall.json')
+                        .then(response => response.json())
+                        .then(data => {
+                            const albumes = data.albumes;
+                            const contenido = document.getElementById('contenido');
+                            if (contenido) {
+                                contenido.innerHTML = `
+                                    <h2>Álbums</h2>
+                                    <article>
+                                        <select class="orden-button" id="ordenSelector" onchange="cambiarOrden()" style="margin:5px;margin-left:0px">
+                                            <option value="" disabled selected>Order</option>
+                                            <option value="ascT">⬇ a ⬆</option>
+                                            <option value="desT">⬆ a ⬇</option>
+                                        </select>
+                                        <div class="cajetines">
+                                            ${albumes.map(album => `
+                                                <a href="lanzamientos/${album.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetin" data-ut="${album.fecha}">
+                                                    <img src="${album.portada}" alt="" style="width:300px">
+                                                    <p class="cajetin-fechas"><span id="f1_${album.fecha}"></span></p>
+                                                    <p class="cajetin-titulo">${album.titulo}</p>
+                                                    <p class="cajetin-footer">${album.label || '©Grouvex Studios Recording'}</p>
+                                                </a>
+                                            `).join('')}
+                                        </div>
+                                    </article>
+                                `;
+
+                                albumes.forEach(album => {
+                                    actualizarFechas(album.fecha, `f1_${album.fecha}`);
+                                });
+                            } else {
+                                console.error('El elemento con id="contenido" no existe en el DOM.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error al cargar los álbumes:', error);
+                        });
+                }
+
+                // Función para cargar los EP
+                function cargarEP() {
+                    fetch('ep-tarlight_etherall.json')
+                        .then(response => response.json())
+                        .then(data => {
+                            const ep = data.ep;
+                            const contenido = document.getElementById('contenido');
+                            if (contenido) {
+                                contenido.innerHTML = `
+                                    <h2>Reproducción Extendida (EP)</h2>
+                                    <article>
+                                        <select class="orden-button" id="ordenSelectorEP" onchange="cambiarOrdenEP()" style="margin:5px;margin-left:0px">
+                                            <option value="" disabled selected>Order</option>
+                                            <option value="ascT">⬇ to ⬆</option>
+                                            <option value="desT">⬆ to ⬇</option>
+                                        </select>
+                                        <div class="cajetines">
+                                            ${ep.map(ep => `
+                                                <a href="${ep.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetin" data-ut="${ep.fecha}">
+                                                    <img src="${ep.portada}" alt="" style="width:300px">
+                                                    <p class="cajetin-fechas"><span id="f1_${ep.fecha}"></span></p>
+                                                    <p class="cajetin-titulo">${ep.titulo}</p>
+                                                    <p class="cajetin-footer">${ep.label || '©Grouvex Studios Recording'}</p>
+                                                </a>
+                                            `).join('')}
+                                        </div>
+                                    </article>
+                                `;
+
+                                ep.forEach(ep => {
+                                    actualizarFechas(ep.fecha, `f1_${ep.fecha}`);
+                                });
+                            } else {
+                                console.error('El elemento con id="contenido" no existe en el DOM.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error al cargar los EP:', error);
+                        });
+                }
+
+                // Función para cambiar el orden de los álbumes
+                function cambiarOrden() {
+                    const selector = document.getElementById('ordenSelector');
+                    const orden = selector.value;
+                    const cajetinesContainer = document.querySelector('.cajetines');
+                    const cajetines = document.querySelectorAll('.cajetin');
+
+                    // Convertir los atributos data-ut a números para una comparación numérica
+                    const elementosConUT = Array.from(cajetines).map(cajetin => {
+                        return {
+                            elemento: cajetin,
+                            uT: parseInt(cajetin.dataset.ut)
+                        };
+                    });
+
+                    // Ordenar los elementos según el valor de uT y el orden seleccionado
+                    elementosConUT.sort((a, b) => {
+                        if (orden === 'ascT') {
+                            return a.uT - b.uT;
+                        } else if (orden === 'desT') {
+                            return b.uT - a.uT;
+                        }
+                        return 0; // No ordenar si no se seleccionó ninguna opción
+                    });
+
+                    // Vaciar el contenedor y agregar los elementos ordenados
+                    cajetinesContainer.innerHTML = '';
+                    elementosConUT.forEach(elemento => {
+                        cajetinesContainer.appendChild(elemento.elemento);
+                    });
+                }
+
+                // Función para cambiar el orden de los EP
+                function cambiarOrdenEP() {
+                    const selector = document.getElementById('ordenSelectorEP');
+                    const orden = selector.value;
+                    const cajetinesContainer = document.querySelector('.cajetines');
+                    const cajetines = document.querySelectorAll('.cajetin');
+
+                    // Convertir los atributos data-ut a números para una comparación numérica
+                    const elementosConUT = Array.from(cajetines).map(cajetin => {
+                        return {
+                            elemento: cajetin,
+                            uT: parseInt(cajetin.dataset.ut)
+                        };
+                    });
+
+                    // Ordenar los elementos según el valor de uT y el orden seleccionado
+                    elementosConUT.sort((a, b) => {
+                        if (orden === 'ascT') {
+                            return a.uT - b.uT;
+                        } else if (orden === 'desT') {
+                            return b.uT - a.uT;
+                        }
+                        return 0; // No ordenar si no se seleccionó ninguna opción
+                    });
+
+                    // Vaciar el contenedor y agregar los elementos ordenados
+                    cajetinesContainer.innerHTML = '';
+                    elementosConUT.forEach(elemento => {
+                        cajetinesContainer.appendChild(elemento.elemento);
+                    });
+                }
+            </script>
+        </main>
+    </body>
+    <div id="footer"></div>
+    <script src="../time.js"></script>
 </html>

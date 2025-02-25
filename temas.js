@@ -13,6 +13,13 @@
         themeSelect.disabled = false;
     });
 
+    // Función para restablecer el tema predeterminado
+    document.getElementById('predeterminado').addEventListener('click', () => {
+        localStorage.removeItem('selectedTheme'); // Elimina el tema guardado
+        changeTheme(defaultTheme); // Cambia al tema predeterminado
+        themeSelect.value = defaultTheme; // Actualiza el selector
+    });
+
     function checkThemes() {
         const date = new Date();
         const month = date.getMonth();
@@ -62,7 +69,7 @@
             themeClasses.forEach(cls => element.classList.remove(cls));
             if (theme !== defaultTheme) {
                 element.classList.add(theme);
-            }
+            } else { element.classList.add(theme); }
         });
     }
 
@@ -70,12 +77,13 @@
         const selectedTheme = localStorage.getItem('selectedTheme');
         const themesAvailability = checkThemesAvailability();
         
-        if (selectedTheme && (themesAvailability[selectedTheme] || currentUrl === 'https://grouvex.github.io/temas')) {
-            changeTheme(selectedTheme);
-            themeSelect.value = selectedTheme;
-        } else {
+        // Si no hay tema seleccionado o el tema seleccionado no está disponible, usa el predeterminado
+        if (!selectedTheme || !themesAvailability[selectedTheme]) {
             changeTheme(defaultTheme);
             themeSelect.value = defaultTheme;
+        } else {
+            changeTheme(selectedTheme);
+            themeSelect.value = selectedTheme;
         }
     }
 

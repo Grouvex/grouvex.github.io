@@ -233,7 +233,9 @@ async function cargarLanzamientosRecientes() {
                         ${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}
                     </p>
                     <p style="margin: 5px 0; font-size: 14px; color: white;">
-                        Fecha: <span id="fecha-${lanzamiento.fecha}"></span>
+                        Fecha Original: <span id="fecha-${lanzamiento.fechaO}"></span>
+                        Fecha Lanzamiento: <span id="fecha-${lanzamiento.fechaL}"></span>
+                        Fecha Pre-Saved: <span id="fecha-${lanzamiento.fechaPS}"></span>
                     </p>
                     ${lanzamiento.label ? `
                         <p style="margin: 5px 0; font-size: 14px; color: white;">
@@ -246,7 +248,9 @@ async function cargarLanzamientosRecientes() {
 
             // Actualizar fechas
             lanzamientosRecientes.forEach(lanzamiento => {
-                actualizarFechas(lanzamiento.fecha, `fecha-${lanzamiento.fecha}`);
+                if (lanzamiento.fechaO) {actualizarFechas(lanzamiento.fechaO, `fecha-${lanzamiento.fechaO}`);}
+                if (lanzamiento.fechaL) {actualizarFechas(lanzamiento.fechaL, `fecha-${lanzamiento.fechaL}`);}
+                if (lanzamiento.fechaPS) {actualizarFechas(lanzamiento.fechaPS, `fecha-${lanzamiento.fechaPS}`);}
             });
         }
     } else {
@@ -354,7 +358,8 @@ async function cargarLanzamientosRecientes() {
                                             ${albumes.map(album => `
                                                 <a href="lanzamientos/${album.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetin" data-ut="${album.fecha}">
                                                     <img src="${album.portada}" alt="" style="width:300px">
-                                                    <p class="cajetin-fechas"><span id="f1_${album.fecha}"></span></p>
+                                                    <p class="cajetin-fechas">Fecha Original: <span id="f1_${album.fechaO}"></span></p>
+                                                    ${album.fechaL ? `<p class="cajetin-fechas">Fecha Lanzamiento: <span id="f1_${album.fechaL}"></span></p>` : ''}
                                                     <p class="cajetin-titulo">${album.titulo}</p>
                                                     <p class="cajetin-footer">${album.label || '©Grouvex Studios Recording'}</p>
                                                 </a>
@@ -395,7 +400,8 @@ async function cargarLanzamientosRecientes() {
                                             ${ep.map(ep => `
                                                 <a href="${ep.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetin" data-ut="${ep.fecha}">
                                                     <img src="${ep.portada}" alt="" style="width:300px">
-                                                    <p class="cajetin-fechas"><span id="f1_${ep.fecha}"></span></p>
+                                                    <p class="cajetin-fechas"><span id="f1_${ep.fechaO}"></span></p>
+                                                    ${ep.fechaL ? `<p class="cajetin-fechas">Fecha Lanzamiento: <span id="f1_${ep.fechaL}"></span></p>` : ''}
                                                     <p class="cajetin-titulo">${ep.titulo}</p>
                                                     <p class="cajetin-footer">${ep.label || '©Grouvex Studios Recording'}</p>
                                                 </a>

@@ -147,10 +147,9 @@ async function cargarProximosLanzamientos() {
     ];
 
     // Filtrar lanzamientos próximos
-    const proximosLanzamientos = todosLosLanzamientos.filter(lanzamiento => lanzamiento.fecha > unDiaAntes);
-
+    const proximosLanzamientos = todosLosLanzamientos.filter(lanzamiento => lanzamiento.fechaL > unDiaAntes);
     // Ordenar lanzamientos por fecha (de más reciente a más antiguo)
-    proximosLanzamientos.sort((a, b) => a.fecha - b.fecha);
+    proximosLanzamientos.sort((a, b) => a.fechaL - b.fechaL);
 
     const contenedorProximos = document.getElementById('proximos-lanzamientos');
     if (contenedorProximos) {
@@ -170,16 +169,16 @@ async function cargarProximosLanzamientos() {
                         ${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}
                     </p>
                     <p style="margin: 5px 0; font-size: 14px; color: white;">
-                        Fecha: <span id="fecha-${lanzamiento.fecha}"></span>
+                        Fecha Original: <span id="fecha-${lanzamiento.fechaO}"></span>
+                        Fecha Lanzamiento: <span id="fecha-${lanzamiento.fechaL}"></span>
+                        Fecha Pre-Saved: <span id="fecha-${lanzamiento.fechaPS}"></span>
                     </p>
                     ${lanzamiento.label ? `
                         <p style="margin: 5px 0; font-size: 14px; color: white;">
                             Label: ${lanzamiento.label}
                         </p>
                     ` : ''}
-                    ${lanzamiento.presaveUrl ? `<a href="${lanzamiento.presaveUrl}" style="display: inline-block; background: linear-gradient(45deg, #ff7e5f, #feb47b); border: none; padding: 8px 16px; border-radius: 20px; color: white; text-decoration: none; cursor: pointer; margin-top: 10px;">
-                        Presaved
-                    </a>` : ''}
+                  ${lanzamiento.fechaPS <= ahora ? (lanzamiento.presaveUrl ? `<a href="${lanzamiento.presaveUrl}" style="display: inline-block; background: linear-gradient(45deg, #ff7e5f, #feb47b); border: none; padding: 8px 16px; border-radius: 20px; color: white; text-decoration: none; cursor: pointer; margin-top: 10px;">Presaved</a>` : '') : ''}
                 </div>
             `).join('');
 
@@ -241,6 +240,7 @@ async function cargarLanzamientosRecientes() {
                             Label: ${lanzamiento.label}
                         </p>
                     ` : ''}
+                    ${lanzamiento.fechaPS <= ahora ? (lanzamiento.presaveUrl ? `<a href="${lanzamiento.presaveUrl}" style="display: inline-block; background: linear-gradient(45deg, #ff7e5f, #feb47b); border: none; padding: 8px 16px; border-radius: 20px; color: white; text-decoration: none; cursor: pointer; margin-top: 10px;">Presaved</a>` : '') : ''}
                 </div>
             `).join('');
 
@@ -259,7 +259,7 @@ async function cargarLanzamientosRecientes() {
         .then(response => response.json())
         .then(data => {
             const canciones = data.canciones;
-
+            const ahora = Math.floor(Date.now() / 1000);
             // Ordenar las canciones alfabéticamente por título
             canciones.sort((a, b) => a.titulo.localeCompare(b.titulo));
 

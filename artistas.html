@@ -7,17 +7,44 @@
     <meta property="og:title" content="Artistas - Grouvex Studios">
     <meta property="og:description" content="Artistas de Grouvex Studios.">
     <meta property="og:image" content="img/GROUVEX.png">
-    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects"><meta name="author" content="Grouvex Studios"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="theme-color" content="#hexcode"><meta property="og:url" content="https://grouvex.com/"><meta property="og:type" content="website"><meta property="og:locale" content="es_ES"><link rel="canonical" href="https://grouvex.com/"><link rel="icon" href="img/GROUVEX.png" type="image/x-icon">
+    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects">
+    <meta name="author" content="Grouvex Studios">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#hexcode">
+    <meta property="og:url" content="https://grouvex.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_ES">
+    <link rel="canonical" href="https://grouvex.com/">
+    <link rel="icon" href="img/GROUVEX.png" type="image/x-icon">
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="temas.css">
-    <script src="time.js"></script></script><script type="module" src="abc.js"></script><script src="index.js"></script>
+    <script src="time.js"></script>
+    <script type="module" src="abc.js"></script>
+    <script src="index.js"></script>
     <script src="jquery-3.5.1.min.js"></script>
-        <script> 
-            document.addEventListener("DOMContentLoaded", function() { 
-                $("#menuG").load("menuG.html");$("#menuE").load("menuE.html");$("#menuT").load("menuT.html");$("#menuU").load("menuU.html");
-                $("#footer").load("footer.html"); 
-                $("#news").load("news.html"); $("#tosypp").load("tosypp.html");
-            });
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            $("#menuG").load("menuG.html");$("#menuE").load("menuE.html");$("#menuT").load("menuT.html");$("#menuU").load("menuU.html");
+            $("#footer").load("footer.html"); $("#news").load("news.html");$("#tosypp").load("tosypp.html");
+
+            fetch('artistas.json')
+                .then(response => response.json())
+                .then(data => {
+                    const artistasContainer = document.querySelector('.cajetines');
+                    data.artistas.forEach(artista => {
+                        const artistaHTML = `
+                            <a href="${artista.enlace}" class="cajetin">   
+                                <img src="${artista.imagen}" alt="${artista.nombre}" style="width:300px">
+                                <p class="cajetin-titulo" style="color:white">${artista.nombre}</p>
+                                <p class="cajetin-description">${artista.descripcion}</p>
+                            </a>
+                        `;
+                        artistasContainer.innerHTML += artistaHTML;
+                    });
+                })
+                .catch(error => console.error('Error al cargar el JSON:', error));
+        });
     </script>
 </head>
 <body>
@@ -34,46 +61,33 @@
     <!-- Anuncio -->
     <div id="news"></div>
     <main>
-     <!-- Publicado por -->
+        <!-- Publicado por -->
         <div class="tarjetas">
             <div class="tarjeta">
-        <img src="../img/GROUVEX.png" alt="">
-        <div>
-          <h2 style="margin:2px; font-size: 7.5px;height:auto">Publicado por:</h2>
-          <h2><span class="Grouvex-Studios"></span></h2>
-          <hr>
-          <p><span id="ActualizadoDATE"></span></p>
-          <p><a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@grouvex.com</footer></a></p>
-        </div></div></div>
+                <img src="../img/GROUVEX.png" alt="">
+                <div>
+                    <h2 style="margin:2px; font-size: 7.5px;height:auto">Publicado por:</h2>
+                    <h2><span class="Grouvex-Studios"></span></h2>
+                    <hr>
+                    <p><span id="ActualizadoDATE"></span></p>
+                    <p><a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@grouvex.com</footer></a></p>
+                </div>
+            </div>
+        </div>
         <script>const uTActualizado = 1738429200; actualizarFechas(uTActualizado, "ActualizadoDATE");</script>
-    <!-- Título -->
+        <!-- Título -->
         <article>
- <h1>Grouvex Studios</h1>
- <!--Texto -->
-  <section id="Intro">
-   <a href="#Intro"><h2>Introducción</h2></a>
-    <p>Grouvex Studios es un grupo que se encarga de crear videos y también un <n>sello discográfico</n> que trabaja con artistas como: Grouvex, Maiki Dran,Tarlight Etherall, Clara Langa</p>
-  </section>
- <div class="cajetines">
-     <a href="grouvex/inicio" class="cajetin">   
-      <img src="../img/GROUVEX.png" alt="" style="width:300px">
-      <p class="cajetin-titulo" style="color:white"><span class="Grouvex-Phoenix"></span></p>
-      <p class="cajetin-description">Grouvex es un grupo compuesto por Tarlight Etherall y Maiki Dran</p>
-     </a> 
-     <a href="tarlight_etherall/inicio" class="cajetin">   
-      <img src="../img/Tarlight_Etherall.png" alt="" style="width:300px">
-      <p class="cajetin-titulo" style="color:white"><span class="Tarlight-Etherall"></span></p>
-      <p class="cajetin-description">Tarlight Etherall es un artista novato que quiere aprender música.</p>
-     </a> 
-     <a href="clara_langa/inicio" class="cajetin">   
-      <img src="../img/Clara_Langa.png" alt="" style="width:300px">
-      <p class="cajetin-titulo" style="color:white"><span class="Clara-Langa"></span></p>
-      <p class="cajetin-description">Clara Langa es una artista que quiere aprender música y querer ser escuchada en muchos sitios.</p>
-     </a> 
-</div>
-</article>
- </main>
- <!-- Footer -->
- <div id="footer"></div>
+            <h1>Grouvex Studios</h1>
+            <!--Texto -->
+            <section id="Intro">
+                <a href="#Intro"><h2>Introducción</h2></a>
+                <p>Grouvex Studios es un grupo que se encarga de crear videos y también un <n>sello discográfico</n> que trabaja con artistas como: Grouvex, Maiki Dran, Tarlight Etherall, Clara Langa</p>
+            </section>
+            <div class="cajetines">
+            </div>
+        </article>
+    </main>
+    <!-- Footer -->
+    <div id="footer"></div>
 </body>
 </html>

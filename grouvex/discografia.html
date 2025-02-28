@@ -170,9 +170,13 @@ async function cargarProximosLanzamientos() {
                     </p>
                     <p style="margin: 5px 0; font-size: 14px; color: white;">
                         Fecha Original: <span id="fecha-${lanzamiento.fechaO}"></span>
-                        Fecha Lanzamiento: <span id="fecha-${lanzamiento.fechaL}"></span>
-                        Fecha Pre-Saved: <span id="fecha-${lanzamiento.fechaPS}"></span>
                     </p>
+                    <p style="margin: 5px 0; font-size: 14px; color: white;">
+                        Fecha Lanzamiento: <span id="fecha-${lanzamiento.fechaL}"></span>
+                    </p>
+                    ${lanzamiento.fechaPS ? `<p style="margin: 5px 0; font-size: 14px; color: white;">
+                        Fecha Pre-Saved: <span id="fecha-${lanzamiento.fechaPS}"></span>
+                    </p>` : ''}
                     ${lanzamiento.label ? `
                         <p style="margin: 5px 0; font-size: 14px; color: white;">
                             Label: ${lanzamiento.label}
@@ -234,9 +238,13 @@ async function cargarLanzamientosRecientes() {
                     </p>
                     <p style="margin: 5px 0; font-size: 14px; color: white;">
                         Fecha Original: <span id="fecha-${lanzamiento.fechaO}"></span>
-                        Fecha Lanzamiento: <span id="fecha-${lanzamiento.fechaL}"></span>
-                        Fecha Pre-Saved: <span id="fecha-${lanzamiento.fechaPS}"></span>
                     </p>
+                    <p style="margin: 5px 0; font-size: 14px; color: white;">
+                        Fecha Lanzamiento: <span id="fecha-${lanzamiento.fechaL}"></span>
+                    </p>
+                    ${lanzamiento.fechaPS ? `<p style="margin: 5px 0; font-size: 14px; color: white;">
+                        Fecha Pre-Saved: <span id="fecha-${lanzamiento.fechaPS}"></span>
+                    </p>` : ''}
                     ${lanzamiento.label ? `
                         <p style="margin: 5px 0; font-size: 14px; color: white;">
                             Label: ${lanzamiento.label}
@@ -248,9 +256,9 @@ async function cargarLanzamientosRecientes() {
 
             // Actualizar fechas
             lanzamientosRecientes.forEach(lanzamiento => {
-                if (lanzamiento.fechaO) {actualizarFechas(lanzamiento.fechaO, `fecha-${lanzamiento.fechaO}`);}
-                if (lanzamiento.fechaL) {actualizarFechas(lanzamiento.fechaL, `fecha-${lanzamiento.fechaL}`);}
-                if (lanzamiento.fechaPS) {actualizarFechas(lanzamiento.fechaPS, `fecha-${lanzamiento.fechaPS}`);}
+                if (lanzamiento.fechaO != null) {actualizarFechas(lanzamiento.fechaO, `fecha-${lanzamiento.fechaO}`);}
+                if (lanzamiento.fechaL != null) {actualizarFechas(lanzamiento.fechaL, `fecha-${lanzamiento.fechaL}`);}
+                if (lanzamiento.fechaPS != null) {actualizarFechas(lanzamiento.fechaPS, `fecha-${lanzamiento.fechaPS}`);}
             });
         }
     } else {

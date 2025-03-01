@@ -72,7 +72,7 @@
             <div style="width:100%;height:auto">
                 <h2 style="margin:2px; font-size: 7.5px;width:100%;height:auto">Publicado por:</h2>
                 <h2 style="margin:2px; padding: 1px;font-size: 20px;width:100%;height:auto"><span class="Grouvex-Studios"></span></h2>
-                <p style="color: white; font-size: 11px;width:100%;height:auto"><span class="ActualizadoDATE"></span></p>
+                <p style="color: white; font-size: 11px;width:100%;height:auto"><span id="ActualizadoDATE"></span></p>
                 <a href="mailto:grouvex.studio@grouvex.com" style="color:white">
                     <footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@grouvex.com</footer>
                 </a>
@@ -168,13 +168,13 @@
                                     ${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}
                                 </p>
                                 <p style="margin: 5px 0; font-size: 14px; color: white;">
-                                    Fecha Original: <span class="fecha-${lanzamiento.fechaO}"></span>
+                                    Fecha Original: <span id="fecha-${lanzamiento.fechaO}"></span>
                                 </p>
                                 <p style="margin: 5px 0; font-size: 14px; color: white;">
-                                    Fecha Lanzamiento: <span class="fecha-${lanzamiento.fechaL}"></span>
+                                    Fecha Lanzamiento: <span id="fecha-${lanzamiento.fechaL}"></span>
                                 </p>
                                 ${lanzamiento.fechaPS ? `<p style="margin: 5px 0; font-size: 14px; color: white;">
-                                    Fecha Pre-Saved: <span class="fecha-${lanzamiento.fechaPS}"></span>
+                                    Fecha Pre-Saved: <span id="fecha-${lanzamiento.fechaPS}"></span>
                                 </p>` : ''}
                                 ${lanzamiento.label ? `
                                     <p style="margin: 5px 0; font-size: 14px; color: white;">
@@ -187,7 +187,9 @@
 
                         // Actualizar fechas
                         proximosLanzamientos.forEach(lanzamiento => {
-                            actualizarFechas(lanzamiento.fecha, `fecha-${lanzamiento.fecha}`);
+                            if (lanzamiento.fechaO != null) {actualizarFechas(lanzamiento.fechaO, `fechaO-${lanzamiento.fechaO}`);}
+                            if (lanzamiento.fechaL != null) {actualizarFechas(lanzamiento.fechaL, `fechaL-${lanzamiento.fechaL}`);}
+                            if (lanzamiento.fechaPS != null) {actualizarFechas(lanzamiento.fechaPS, `fechaPS-${lanzamiento.fechaPS}`);}
                         });
                     }
                 } else {
@@ -236,13 +238,13 @@
                                     ${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}
                                 </p>
                                 <p style="margin: 5px 0; font-size: 14px; color: white;">
-                                    Fecha Original: <span class="fecha-${lanzamiento.fechaO}"></span>
+                                    Fecha Original: <span id="fecha-${lanzamiento.fechaO}"></span>
                                 </p>
                                 <p style="margin: 5px 0; font-size: 14px; color: white;">
-                                    Fecha Lanzamiento: <span class="fecha-${lanzamiento.fechaL}"></span>
+                                    Fecha Lanzamiento: <span id="fecha-${lanzamiento.fechaL}"></span>
                                 </p>
                                 ${lanzamiento.fechaPS ? `<p style="margin: 5px 0; font-size: 14px; color: white;">
-                                    Fecha Pre-Saved: <span class="fecha-${lanzamiento.fechaPS}"></span>
+                                    Fecha Pre-Saved: <span id="fecha-${lanzamiento.fechaPS}"></span>
                                 </p>` : ''}
                                 ${lanzamiento.label ? `
                                     <p style="margin: 5px 0; font-size: 14px; color: white;">
@@ -255,9 +257,9 @@
 
                         // Actualizar fechas
                         lanzamientosRecientes.forEach(lanzamiento => {
-                            if (lanzamiento.fechaO != null) {actualizarFechas(lanzamiento.fechaO, `fecha-${lanzamiento.fechaO}`);}
-                            if (lanzamiento.fechaL != null) {actualizarFechas(lanzamiento.fechaL, `fecha-${lanzamiento.fechaL}`);}
-                            if (lanzamiento.fechaPS != null) {actualizarFechas(lanzamiento.fechaPS, `fecha-${lanzamiento.fechaPS}`);}
+                            if (lanzamiento.fechaO != null) {actualizarFechas(lanzamiento.fechaO, `fechaO-${lanzamiento.fechaO}`);}
+                            if (lanzamiento.fechaL != null) {actualizarFechas(lanzamiento.fechaL, `fechaL-${lanzamiento.fechaL}`);}
+                            if (lanzamiento.fechaPS != null) {actualizarFechas(lanzamiento.fechaPS, `fechaPS-${lanzamiento.fechaPS}`);}
                         });
                     }
                 } else {
@@ -365,8 +367,8 @@
                                         ${albumes.map(album => `
                                             <a href="lanzamientos/${album.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetin" data-ut="${album.fecha}">
                                                 <img src="${album.portada}" alt="" style="width:300px">
-                                                <p class="cajetin-fechas">Fecha Original: <span class="f1_${album.fechaO}"></span></p>
-                                                ${album.fechaL ? `<p class="cajetin-fechas">Fecha Lanzamiento: <span class="f1_${album.fechaL}"></span></p>` : ''}
+                                                <p class="cajetin-fechas">Fecha Original: <span id="f1_${album.fechaO}"></span></p>
+                                                ${album.fechaL ? `<p class="cajetin-fechas">Fecha Lanzamiento: <span id="f1_${album.fechaL}"></span></p>` : ''}
                                                 <p class="cajetin-titulo">${album.titulo}</p>
                                                 <p class="cajetin-footer">${album.label || '©Grouvex Studios Recording'}</p>
                                             </a>
@@ -376,9 +378,9 @@
                             `;
 
                             albumes.forEach(album => {
-                          if (album.fechaO != null) {actualizarFechas(album.fechaO, `fecha-${album.fechaO}`);}
-                            if (album.fechaL != null) {actualizarFechas(album.fechaL, `fecha-${album.fechaL}`);}
-                            if (album.fechaPS != null) {actualizarFechas(album.fechaPS, `fecha-${album.fechaPS}`);}
+                          if (album.fechaO != null) {actualizarFechas(album.fechaO, `fechaO-${album.fechaO}`);}
+                            if (album.fechaL != null) {actualizarFechas(album.fechaL, `fechaL-${album.fechaL}`);}
+                            if (album.fechaPS != null) {actualizarFechas(album.fechaPS, `fechaPS-${album.fechaPS}`);}
                             });
                         } else {
                             console.error('El elemento con id="contenido" no existe en el DOM.');
@@ -409,8 +411,8 @@
                                         ${ep.map(ep => `
                                             <a href="${ep.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetin" data-ut="${ep.fecha}">
                                                 <img src="${ep.portada}" alt="" style="width:300px">
-                                                <p class="cajetin-fechas"><span class="f1_${ep.fechaO}"></span></p>
-                                                ${ep.fechaL ? `<p class="cajetin-fechas">Fecha Lanzamiento: <span class="f1_${ep.fechaL}"></span></p>` : ''}
+                                                <p class="cajetin-fechas"><span id="f1_${ep.fechaO}"></span></p>
+                                                ${ep.fechaL ? `<p class="cajetin-fechas">Fecha Lanzamiento: <span id="f1_${ep.fechaL}"></span></p>` : ''}
                                                 <p class="cajetin-titulo">${ep.titulo}</p>
                                                 <p class="cajetin-footer">${ep.label || '©Grouvex Studios Recording'}</p>
                                             </a>
@@ -420,9 +422,9 @@
                             `;
 
                             ep.forEach(ep => {
-                          if (ep.fechaO != null) {actualizarFechas(ep.fechaO, `fecha-${ep.fechaO}`);}
-                            if (ep.fechaL != null) {actualizarFechas(ep.fechaL, `fecha-${ep.fechaL}`);}
-                            if (ep.fechaPS != null) {actualizarFechas(ep.fechaPS, `fecha-${ep.fechaPS}`);}
+                          if (ep.fechaO != null) {actualizarFechas(ep.fechaO, `fechaO-${ep.fechaO}`);}
+                            if (ep.fechaL != null) {actualizarFechas(ep.fechaL, `fechaL-${ep.fechaL}`);}
+                            if (ep.fechaPS != null) {actualizarFechas(ep.fechaPS, `fechaPS-${ep.fechaPS}`);}
                             });
                         } else {
                             console.error('El elemento con id="contenido" no existe en el DOM.');

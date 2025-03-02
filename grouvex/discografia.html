@@ -100,6 +100,15 @@
             <p>Aquí podrás ver toda la información sobre el Artista Grouvex</p>
         </article>
         <script>
+            // Función para generar un ID único
+            function generarIdUnico(item) {
+                const datosConcatenados = `${item.titulo}-${item.album}-${item.fechaO}-${item.label}`;
+                return datosConcatenados
+                    .toLowerCase()
+                    .replace(/ /g, '_')
+                    .replace(/[^a-z0-9_]/g, '');
+            }
+
             // Función para mostrar la sección seleccionada
             function mostrarSeccion(seccion) {
                 const contenido = document.getElementById('contenido');
@@ -160,42 +169,38 @@
                         `;
                     } else {
                         // Mostrar tarjetas de lanzamientos
-                        contenedorProximos.innerHTML = proximosLanzamientos.map(lanzamiento => `
-                            <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px; text-align: center;">
-                                <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
-                                <h3 style="margin: 5px 0; font-size: 16px;">${lanzamiento.titulo}</h3>
-                                <p style="margin: 5px 0; font-size: 14px; color: white;">
-                                    ${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}
-                                </p>
-                                <p style="margin: 5px 0; font-size: 14px; color: white;">
-                                    Fecha Original: <span id="fechaO-${lanzamientoidUnico}"></span>
-                                </p>
-                                <p style="margin: 5px 0; font-size: 14px; color: white;">
-                                    Fecha Lanzamiento: <span id="fechaL-${lanzamientoidUnico}"></span>
-                                </p>
-                                ${lanzamiento.fechaPS ? `<p style="margin: 5px 0; font-size: 14px; color: white;">
-                                    Fecha Pre-Saved: <span id="fechaPS-${lanzamientoidUnico}"></span>
-                                </p>` : ''}
-                                ${lanzamiento.label ? `
+                        contenedorProximos.innerHTML = proximosLanzamientos.map(lanzamiento => {
+                            const lanzamientoidUnico = generarIdUnico(lanzamiento);
+                            return `
+                                <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px; text-align: center;">
+                                    <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
+                                    <h3 style="margin: 5px 0; font-size: 16px;">${lanzamiento.titulo}</h3>
                                     <p style="margin: 5px 0; font-size: 14px; color: white;">
-                                        Label: ${lanzamiento.label}
+                                        ${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}
                                     </p>
-                                ` : ''}
-                                ${lanzamiento.fechaPS <= ahora ? (lanzamiento.presaveUrl ? `<a href="${lanzamiento.presaveUrl}" style="display: inline-block; background: linear-gradient(45deg, #ff7e5f, #feb47b); border: none; padding: 8px 16px; border-radius: 20px; color: white; text-decoration: none; cursor: pointer; margin-top: 10px;">Presaved</a>` : '') : ''}
-                            </div>
-                        `).join('');
-                            function generarIdUnico(lanzamiento) {
-    const datosConcatenados = `${lanzamiento.titulo}-${lanzamiento.album}-${lanzamiento.fechaO}-${lanzamiento.label}`;
-    const cancionidUnico = datosConcatenados
-        .toLowerCase()
-        .replace(/ /g, '_')
-        .replace(/[^a-z0-9_]/g, '');
-    return `${lanzamientoidUnico}`;}
-const lanzamientoidUnico = generarIdUnico(lanzamiento);
+                                    <p style="margin: 5px 0; font-size: 14px; color: white;">
+                                        Fecha Original: <span id="fechaO-${lanzamientoidUnico}"></span>
+                                    </p>
+                                    <p style="margin: 5px 0; font-size: 14px; color: white;">
+                                        Fecha Lanzamiento: <span id="fechaL-${lanzamientoidUnico}"></span>
+                                    </p>
+                                    ${lanzamiento.fechaPS ? `<p style="margin: 5px 0; font-size: 14px; color: white;">
+                                        Fecha Pre-Saved: <span id="fechaPS-${lanzamientoidUnico}"></span>
+                                    </p>` : ''}
+                                    ${lanzamiento.label ? `
+                                        <p style="margin: 5px 0; font-size: 14px; color: white;">
+                                            Label: ${lanzamiento.label}
+                                        </p>
+                                    ` : ''}
+                                    ${lanzamiento.fechaPS <= ahora ? (lanzamiento.presaveUrl ? `<a href="${lanzamiento.presaveUrl}" style="display: inline-block; background: linear-gradient(45deg, #ff7e5f, #feb47b); border: none; padding: 8px 16px; border-radius: 20px; color: white; text-decoration: none; cursor: pointer; margin-top: 10px;">Presaved</a>` : '') : ''}
+                                </div>
+                            `;
+                        }).join('');
                         proximosLanzamientos.forEach(lanzamiento => {
-                            if (lanzamiento.fechaO != null) {actualizarFechas(lanzamiento.fechaO, `fechaO-${lanzamientoidUnico}`);}
-                            if (lanzamiento.fechaL != null) {actualizarFechas(lanzamiento.fechaL, `fechaL-${lanzamientoidUnico}`);}
-                            if (lanzamiento.fechaPS != null) {actualizarFechas(lanzamiento.fechaPS, `fechaPS-${lanzamientoidUnico}`);}
+                            const lanzamientoidUnico = generarIdUnico(lanzamiento);
+                            if (lanzamiento.fechaO != null) { actualizarFechas(lanzamiento.fechaO, `fechaO-${lanzamientoidUnico}`); }
+                            if (lanzamiento.fechaL != null) { actualizarFechas(lanzamiento.fechaL, `fechaL-${lanzamientoidUnico}`); }
+                            if (lanzamiento.fechaPS != null) { actualizarFechas(lanzamiento.fechaPS, `fechaPS-${lanzamientoidUnico}`); }
                         });
                     }
                 } else {
@@ -236,42 +241,38 @@ const lanzamientoidUnico = generarIdUnico(lanzamiento);
                         `;
                     } else {
                         // Mostrar tarjetas de lanzamientos
-                        contenedorRecientes.innerHTML = lanzamientosRecientes.map(lanzamiento => `
-                            <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px; text-align: center;">
-                                <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
-                                <h3 style="margin: 5px 0; font-size: 16px;">${lanzamiento.titulo}</h3>
-                                <p style="margin: 5px 0; font-size: 14px; color: white;">
-                                    ${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}
-                                </p>
-                                <p style="margin: 5px 0; font-size: 14px; color: white;">
-                                    Fecha Original: <span id="fechaO-${lanzamientoidUnico}"></span>
-                                </p>
-                                <p style="margin: 5px 0; font-size: 14px; color: white;">
-                                    Fecha Lanzamiento: <span id="fechaL-${lanzamientoidUnico}"></span>
-                                </p>
-                                ${lanzamiento.fechaPS ? `<p style="margin: 5px 0; font-size: 14px; color: white;">
-                                    Fecha Pre-Saved: <span id="fechaPS-${lanzamientoidUnico}"></span>
-                                </p>` : ''}
-                                ${lanzamiento.label ? `
+                        contenedorRecientes.innerHTML = lanzamientosRecientes.map(lanzamiento => {
+                            const lanzamientoidUnico = generarIdUnico(lanzamiento);
+                            return `
+                                <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; width: 200px; text-align: center;">
+                                    <img src="${lanzamiento.portada}" alt="${lanzamiento.titulo}" style="width: 100%; border-radius: 8px; margin-bottom: 10px;">
+                                    <h3 style="margin: 5px 0; font-size: 16px;">${lanzamiento.titulo}</h3>
                                     <p style="margin: 5px 0; font-size: 14px; color: white;">
-                                        Label: ${lanzamiento.label}
+                                        ${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}
                                     </p>
-                                ` : ''}
-                                ${lanzamiento.fechaPS <= ahora ? (lanzamiento.presaveUrl ? `<a href="${lanzamiento.presaveUrl}" style="display: inline-block; background: linear-gradient(45deg, #ff7e5f, #feb47b); border: none; padding: 8px 16px; border-radius: 20px; color: white; text-decoration: none; cursor: pointer; margin-top: 10px;">Presaved</a>` : '') : ''}
-                            </div>
-                        `).join('');
-                            function generarIdUnico(lanzamiento) {
-    const datosConcatenados = `${lanzamiento.titulo}-${lanzamiento.album}-${lanzamiento.fechaO}-${lanzamiento.label}`;
-    const cancionidUnico = datosConcatenados
-        .toLowerCase()
-        .replace(/ /g, '_')
-        .replace(/[^a-z0-9_]/g, '');
-    return `${lanzamientoidUnico}`;}
-const lanzamientoidUnico = generarIdUnico(lanzamiento);
+                                    <p style="margin: 5px 0; font-size: 14px; color: white;">
+                                        Fecha Original: <span id="fechaO-${lanzamientoidUnico}"></span>
+                                    </p>
+                                    <p style="margin: 5px 0; font-size: 14px; color: white;">
+                                        Fecha Lanzamiento: <span id="fechaL-${lanzamientoidUnico}"></span>
+                                    </p>
+                                    ${lanzamiento.fechaPS ? `<p style="margin: 5px 0; font-size: 14px; color: white;">
+                                        Fecha Pre-Saved: <span id="fechaPS-${lanzamientoidUnico}"></span>
+                                    </p>` : ''}
+                                    ${lanzamiento.label ? `
+                                        <p style="margin: 5px 0; font-size: 14px; color: white;">
+                                            Label: ${lanzamiento.label}
+                                        </p>
+                                    ` : ''}
+                                    ${lanzamiento.fechaPS <= ahora ? (lanzamiento.presaveUrl ? `<a href="${lanzamiento.presaveUrl}" style="display: inline-block; background: linear-gradient(45deg, #ff7e5f, #feb47b); border: none; padding: 8px 16px; border-radius: 20px; color: white; text-decoration: none; cursor: pointer; margin-top: 10px;">Presaved</a>` : '') : ''}
+                                </div>
+                            `;
+                        }).join('');
                         lanzamientosRecientes.forEach(lanzamiento => {
-                            if (lanzamiento.fechaO != null) {actualizarFechas(lanzamiento.fechaO, `fechaO-${lanzamientoidUnico}`);}
-                            if (lanzamiento.fechaL != null) {actualizarFechas(lanzamiento.fechaL, `fechaL-${lanzamientoidUnico}`);}
-                            if (lanzamiento.fechaPS != null) {actualizarFechas(lanzamiento.fechaPS, `fechaPS-${lanzamientoidUnico}`);}
+                            const lanzamientoidUnico = generarIdUnico(lanzamiento);
+                            if (lanzamiento.fechaO != null) { actualizarFechas(lanzamiento.fechaO, `fechaO-${lanzamientoidUnico}`); }
+                            if (lanzamiento.fechaL != null) { actualizarFechas(lanzamiento.fechaL, `fechaL-${lanzamientoidUnico}`); }
+                            if (lanzamiento.fechaPS != null) { actualizarFechas(lanzamiento.fechaPS, `fechaPS-${lanzamientoidUnico}`); }
                         });
                     }
                 } else {
@@ -332,37 +333,33 @@ const lanzamientoidUnico = generarIdUnico(lanzamiento);
                                         <details>
                                             <summary style="font-family: Times New Roman">Start with ${letra}</summary>
                                             <ol>
-                                                ${letras[letra].map(cancion => `
-                                                  <li>
-                                                    <a href="${cancion.titulo.toLowerCase().replace(/ /g, '_')}">
-                                                        <div style="display: flex; padding: 3px; box-shadow: 0 0 3px cyan;">
-                                                            <img src="${cancion.portada}" alt="" class="r-img" style="margin-right: 2px;">
-                                                            <div style="display: flex; justify-content: space-between; width: 100%;">
-                                                                <div style="display: flex; flex-direction: column; align-items: flex-start;">
-                                                                    <span style="font-family: Times New Roman; color: white;">${cancion.titulo}</span>
-                                                                    <span id="fechaO-${cancionidUnico}" style="font-family: Times New Roman; color: white; font-size: 0.8em;"></span>
+                                                ${letras[letra].map(cancion => {
+                                                    const cancionidUnico = generarIdUnico(cancion);
+                                                    return `
+                                                        <li>
+                                                            <a href="${cancion.titulo.toLowerCase().replace(/ /g, '_')}">
+                                                                <div style="display: flex; padding: 3px; box-shadow: 0 0 3px cyan;">
+                                                                    <img src="${cancion.portada}" alt="" class="r-img" style="margin-right: 2px;">
+                                                                    <div style="display: flex; justify-content: space-between; width: 100%;">
+                                                                        <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                                                                            <span style="font-family: Times New Roman; color: white;">${cancion.titulo}</span>
+                                                                            <span id="fechaO-${cancionidUnico}" style="font-family: Times New Roman; color: white; font-size: 0.8em;"></span>
+                                                                        </div>
+                                                                        <span style="font-family: Times New Roman; color: white;">${cancion.album}</span>
+                                                                    </div>
                                                                 </div>
-                                                                <span style="font-family: Times New Roman; color: white;">${cancion.album}</span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                                `).join('')}
+                                                            </a>
+                                                        </li>
+                                                    `;
+                                                }).join('')}
                                             </ol>
                                         </details>
                                     `).join('')}
                                 </article>
                             `;
-                            function generarIdUnico(cancion) {
-    const datosConcatenados = `${cancion.titulo}-${cancion.album}-${cancion.fechaO}-${cancion.label}`;
-    const cancionidUnico = datosConcatenados
-        .toLowerCase()
-        .replace(/ /g, '_')
-        .replace(/[^a-z0-9_]/g, '');
-    return `${cancionidUnico}`;}
-const cancionidUnico = generarIdUnico(cancion);
                             canciones.forEach(cancion => {
-                          if (cancion.fechaO != null) {actualizarFechas(cancion.fechaO, `fechaO-${cancionidUnico}`);}
+                                const cancionidUnico = generarIdUnico(cancion);
+                                if (cancion.fechaO != null) { actualizarFechas(cancion.fechaO, `fechaO-${cancionidUnico}`); }
                             });
                         } else {
                             console.error('El elemento con id="contenido" no existe en el DOM.');
@@ -390,31 +387,27 @@ const cancionidUnico = generarIdUnico(cancion);
                                         <option value="desT">⬆ a ⬇</option>
                                     </select>
                                     <div class="cajetines">
-                                        ${albumes.map(album => `
-                                            <a href="lanzamientos/${album.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetin" data-ut="${album.fecha}">
-                                                <img src="${album.portada}" alt="" style="width:300px">
-                                                <p class="cajetin-fechas"><span id="fechaO-${albumidUnico}"></span></p>
-                                                <p class="cajetin-fechas">Fecha Lanzamiento: <span id="fechaL-${albumidUnico}"></span></p>
-                                                ${ep.fechaPS ? `<p class="cajetin-fechas">Fecha Pre-Saved: <span id="fechaL-${albumidUnico}"></span></p>` : ''}
-                                                <p class="cajetin-titulo">${album.titulo}</p>
-                                                <p class="cajetin-footer">${album.label || '©Grouvex Studios Recording'}</p>
-                                            </a>
-                                        `).join('')}
+                                        ${albumes.map(album => {
+                                            const albumidUnico = generarIdUnico(album);
+                                            return `
+                                                <a href="lanzamientos/${album.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetin" data-ut="${album.fecha}">
+                                                    <img src="${album.portada}" alt="" style="width:300px">
+                                                    <p class="cajetin-fechas"><span id="fechaO-${albumidUnico}"></span></p>
+                                                    <p class="cajetin-fechas">Fecha Lanzamiento: <span id="fechaL-${albumidUnico}"></span></p>
+                                                    ${album.fechaPS ? `<p class="cajetin-fechas">Fecha Pre-Saved: <span id="fechaPS-${albumidUnico}"></span></p>` : ''}
+                                                    <p class="cajetin-titulo">${album.titulo}</p>
+                                                    <p class="cajetin-footer">${album.label || '©Grouvex Studios Recording'}</p>
+                                                </a>
+                                            `;
+                                        }).join('')}
                                     </div>
                                 </article>
                             `;
-function generarIdUnico(album) {
-    const datosConcatenados = `${album.titulo}-${album.album}-${album.fechaO}-${album.label}`;
-    const albumidUnico = datosConcatenados
-        .toLowerCase()
-        .replace(/ /g, '_')
-        .replace(/[^a-z0-9_]/g, '');
-    return `${albumidUnico}`;}
-const albumidUnico = generarIdUnico(album);
                             albumes.forEach(album => {
-                          if (album.fechaO != null) {actualizarFechas(album.fechaO, `fechaO-${albumidUnico}`);}
-                            if (album.fechaL != null) {actualizarFechas(album.fechaL, `fechaL-${albumidUnico}`);}
-                            if (album.fechaPS != null) {actualizarFechas(album.fechaPS, `fechaPS-${albumidUnico}`);}
+                                const albumidUnico = generarIdUnico(album);
+                                if (album.fechaO != null) { actualizarFechas(album.fechaO, `fechaO-${albumidUnico}`); }
+                                if (album.fechaL != null) { actualizarFechas(album.fechaL, `fechaL-${albumidUnico}`); }
+                                if (album.fechaPS != null) { actualizarFechas(album.fechaPS, `fechaPS-${albumidUnico}`); }
                             });
                         } else {
                             console.error('El elemento con id="contenido" no existe en el DOM.');
@@ -442,40 +435,36 @@ const albumidUnico = generarIdUnico(album);
                                         <option value="desT">⬆ to ⬇</option>
                                     </select>
                                     <div class="cajetines">
-                                        ${ep.map(ep => `
-                                            <a href="${ep.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetin" data-ut="${ep.fecha}">
-                                                <img src="${ep.portada}" alt="" style="width:300px">
-                                                <p class="cajetin-fechas"><span id="fechaO-${epidUnico}"></span></p>
-                                                <p class="cajetin-fechas">Fecha Lanzamiento: <span id="fechaL-${epidUnico}"></span></p>
-                                                ${ep.fechaPS ? `<p class="cajetin-fechas">Fecha Pre-Saved: <span id="fechaL-${epidUnico}"></span></p>` : ''}
-                                                <p class="cajetin-titulo">${ep.titulo}</p>
-                                                <p class="cajetin-footer">${ep.label || '©Grouvex Studios Recording'}</p>
-                                            </a>
-                                        `).join('')}
+                                        ${ep.map(ep => {
+                                            const epidUnico = generarIdUnico(ep);
+                                            return `
+                                                <a href="${ep.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetin" data-ut="${ep.fecha}">
+                                                    <img src="${ep.portada}" alt="" style="width:300px">
+                                                    <p class="cajetin-fechas"><span id="fechaO-${epidUnico}"></span></p>
+                                                    <p class="cajetin-fechas">Fecha Lanzamiento: <span id="fechaL-${epidUnico}"></span></p>
+                                                    ${ep.fechaPS ? `<p class="cajetin-fechas">Fecha Pre-Saved: <span id="fechaPS-${epidUnico}"></span></p>` : ''}
+                                                    <p class="cajetin-titulo">${ep.titulo}</p>
+                                                    <p class="cajetin-footer">${ep.label || '©Grouvex Studios Recording'}</p>
+                                                </a>
+                                            `;
+                                        }).join('')}
                                     </div>
                                 </article>
                             `;
-function generarIdUnico(ep) {
-    const datosConcatenados = `${ep.titulo}-${ep.album}-${ep.fechaO}-${ep.label}`;
-    const epidUnico = datosConcatenados
-        .toLowerCase()
-        .replace(/ /g, '_')
-        .replace(/[^a-z0-9_]/g, '');
-    return `${epidUnico}`;}
-const epidUnico = generarIdUnico(ep);
-                    ep.forEach(ep => {
-                  if (ep.fechaO != null) {actualizarFechas(ep.fechaO, `fechaO-${epidUnico}`);}
-                    if (ep.fechaL != null) {actualizarFechas(ep.fechaL, `fechaL-${epidUnico}`);}
-                    if (ep.fechaPS != null) {actualizarFechas(ep.fechaPS, `fechaPS-${epidUnico}`);}
+                            ep.forEach(ep => {
+                                const epidUnico = generarIdUnico(ep);
+                                if (ep.fechaO != null) { actualizarFechas(ep.fechaO, `fechaO-${epidUnico}`); }
+                                if (ep.fechaL != null) { actualizarFechas(ep.fechaL, `fechaL-${epidUnico}`); }
+                                if (ep.fechaPS != null) { actualizarFechas(ep.fechaPS, `fechaPS-${epidUnico}`); }
+                            });
+                        } else {
+                            console.error('El elemento con id="contenido" no existe en el DOM.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al cargar los EP:', error);
                     });
-                } else {
-                    console.error('El elemento con id="contenido" no existe en el DOM.');
-                }
-            })
-            .catch(error => {
-                console.error('Error al cargar los EP:', error);
-            });
-        }
+            }
 
             // Función para cambiar el orden de los álbumes
             function cambiarOrden() {

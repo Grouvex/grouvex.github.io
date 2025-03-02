@@ -367,8 +367,9 @@
                                         ${albumes.map(album => `
                                             <a href="lanzamientos/${album.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetin" data-ut="${album.fecha}">
                                                 <img src="${album.portada}" alt="" style="width:300px">
-                                                <p class="cajetin-fechas">Fecha Original: <span id="fechaO_${album.fechaO}"></span></p>
-                                                ${album.fechaL ? `<p class="cajetin-fechas">Fecha Lanzamiento: <span id="fechaL_${album.fechaL}"></span></p>` : ''}
+                                                <p class="cajetin-fechas"><span id="fechaO-${ep.fechaO}"></span></p>
+                                                <p class="cajetin-fechas">Fecha Lanzamiento: <span id="fechaL-${ep.fechaL}"></span></p>
+                                                ${ep.fechaPS ? `<p class="cajetin-fechas">Fecha Pre-Saved: <span id="fechaL-${ep.fechaPS}"></span></p>` : ''}
                                                 <p class="cajetin-titulo">${album.titulo}</p>
                                                 <p class="cajetin-footer">${album.label || '©Grouvex Studios Recording'}</p>
                                             </a>
@@ -411,8 +412,9 @@
                                         ${ep.map(ep => `
                                             <a href="${ep.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetin" data-ut="${ep.fecha}">
                                                 <img src="${ep.portada}" alt="" style="width:300px">
-                                                <p class="cajetin-fechas"><span id="fechaO_${ep.fechaO}"></span></p>
-                                                ${ep.fechaL ? `<p class="cajetin-fechas">Fecha Lanzamiento: <span id="fechaL_${ep.fechaL}"></span></p>` : ''}
+                                                <p class="cajetin-fechas"><span id="fechaO-${ep.fechaO}"></span></p>
+                                                <p class="cajetin-fechas">Fecha Lanzamiento: <span id="fechaL-${ep.fechaL}"></span></p>
+                                                ${ep.fechaPS ? `<p class="cajetin-fechas">Fecha Pre-Saved: <span id="fechaL-${ep.fechaPS}"></span></p>` : ''}
                                                 <p class="cajetin-titulo">${ep.titulo}</p>
                                                 <p class="cajetin-footer">${ep.label || '©Grouvex Studios Recording'}</p>
                                             </a>

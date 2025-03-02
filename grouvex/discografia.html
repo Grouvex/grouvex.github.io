@@ -168,13 +168,13 @@
                                     ${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}
                                 </p>
                                 <p style="margin: 5px 0; font-size: 14px; color: white;">
-                                    Fecha Original: <span id="fechaO-${lanzamiento.fechaO}"></span>
+                                    Fecha Original: <span id="fechaO-${lanzamientoidUnico}"></span>
                                 </p>
                                 <p style="margin: 5px 0; font-size: 14px; color: white;">
-                                    Fecha Lanzamiento: <span id="fechaL-${lanzamiento.fechaL}"></span>
+                                    Fecha Lanzamiento: <span id="fechaL-${lanzamientoidUnico}"></span>
                                 </p>
                                 ${lanzamiento.fechaPS ? `<p style="margin: 5px 0; font-size: 14px; color: white;">
-                                    Fecha Pre-Saved: <span id="fechaPS-${lanzamiento.fechaPS}"></span>
+                                    Fecha Pre-Saved: <span id="fechaPS-${lanzamientoidUnico}"></span>
                                 </p>` : ''}
                                 ${lanzamiento.label ? `
                                     <p style="margin: 5px 0; font-size: 14px; color: white;">
@@ -184,12 +184,18 @@
                                 ${lanzamiento.fechaPS <= ahora ? (lanzamiento.presaveUrl ? `<a href="${lanzamiento.presaveUrl}" style="display: inline-block; background: linear-gradient(45deg, #ff7e5f, #feb47b); border: none; padding: 8px 16px; border-radius: 20px; color: white; text-decoration: none; cursor: pointer; margin-top: 10px;">Presaved</a>` : '') : ''}
                             </div>
                         `).join('');
-
-                        // Actualizar fechas
+                            function generarIdUnico(lanzamiento) {
+    const datosConcatenados = `${lanzamiento.titulo}-${lanzamiento.album}-${lanzamiento.fechaO}-${lanzamiento.label}`;
+    const cancionidUnico = datosConcatenados
+        .toLowerCase()
+        .replace(/ /g, '_')
+        .replace(/[^a-z0-9_]/g, '');
+    return `${lanzamientoidUnico}`;}
+const lanzamientoidUnico = generarIdUnico(lanzamiento);
                         proximosLanzamientos.forEach(lanzamiento => {
-                            if (lanzamiento.fechaO != null) {actualizarFechas(lanzamiento.fechaO, `fechaO-${lanzamiento.fechaO}`);}
-                            if (lanzamiento.fechaL != null) {actualizarFechas(lanzamiento.fechaL, `fechaL-${lanzamiento.fechaL}`);}
-                            if (lanzamiento.fechaPS != null) {actualizarFechas(lanzamiento.fechaPS, `fechaPS-${lanzamiento.fechaPS}`);}
+                            if (lanzamiento.fechaO != null) {actualizarFechas(lanzamiento.fechaO, `fechaO-${lanzamientoidUnico}`);}
+                            if (lanzamiento.fechaL != null) {actualizarFechas(lanzamiento.fechaL, `fechaL-${lanzamientoidUnico}`);}
+                            if (lanzamiento.fechaPS != null) {actualizarFechas(lanzamiento.fechaPS, `fechaPS-${lanzamientoidUnico}`);}
                         });
                     }
                 } else {
@@ -238,13 +244,13 @@
                                     ${lanzamiento.tipo === 'cancion' ? 'Canción' : lanzamiento.tipo === 'album' ? 'Álbum' : 'EP'}
                                 </p>
                                 <p style="margin: 5px 0; font-size: 14px; color: white;">
-                                    Fecha Original: <span id="fechaO-${lanzamiento.fechaO}"></span>
+                                    Fecha Original: <span id="fechaO-${lanzamientoidUnico}"></span>
                                 </p>
                                 <p style="margin: 5px 0; font-size: 14px; color: white;">
-                                    Fecha Lanzamiento: <span id="fechaL-${lanzamiento.fechaL}"></span>
+                                    Fecha Lanzamiento: <span id="fechaL-${lanzamientoidUnico}"></span>
                                 </p>
                                 ${lanzamiento.fechaPS ? `<p style="margin: 5px 0; font-size: 14px; color: white;">
-                                    Fecha Pre-Saved: <span id="fechaPS-${lanzamiento.fechaPS}"></span>
+                                    Fecha Pre-Saved: <span id="fechaPS-${lanzamientoidUnico}"></span>
                                 </p>` : ''}
                                 ${lanzamiento.label ? `
                                     <p style="margin: 5px 0; font-size: 14px; color: white;">
@@ -254,12 +260,18 @@
                                 ${lanzamiento.fechaPS <= ahora ? (lanzamiento.presaveUrl ? `<a href="${lanzamiento.presaveUrl}" style="display: inline-block; background: linear-gradient(45deg, #ff7e5f, #feb47b); border: none; padding: 8px 16px; border-radius: 20px; color: white; text-decoration: none; cursor: pointer; margin-top: 10px;">Presaved</a>` : '') : ''}
                             </div>
                         `).join('');
-
-                        // Actualizar fechas
+                            function generarIdUnico(lanzamiento) {
+    const datosConcatenados = `${lanzamiento.titulo}-${lanzamiento.album}-${lanzamiento.fechaO}-${lanzamiento.label}`;
+    const cancionidUnico = datosConcatenados
+        .toLowerCase()
+        .replace(/ /g, '_')
+        .replace(/[^a-z0-9_]/g, '');
+    return `${lanzamientoidUnico}`;}
+const lanzamientoidUnico = generarIdUnico(lanzamiento);
                         lanzamientosRecientes.forEach(lanzamiento => {
-                            if (lanzamiento.fechaO != null) {actualizarFechas(lanzamiento.fechaO, `fechaO-${lanzamiento.fechaO}`);}
-                            if (lanzamiento.fechaL != null) {actualizarFechas(lanzamiento.fechaL, `fechaL-${lanzamiento.fechaL}`);}
-                            if (lanzamiento.fechaPS != null) {actualizarFechas(lanzamiento.fechaPS, `fechaPS-${lanzamiento.fechaPS}`);}
+                            if (lanzamiento.fechaO != null) {actualizarFechas(lanzamiento.fechaO, `fechaO-${lanzamientoidUnico}`);}
+                            if (lanzamiento.fechaL != null) {actualizarFechas(lanzamiento.fechaL, `fechaL-${lanzamientoidUnico}`);}
+                            if (lanzamiento.fechaPS != null) {actualizarFechas(lanzamiento.fechaPS, `fechaPS-${lanzamientoidUnico}`);}
                         });
                     }
                 } else {
@@ -328,7 +340,7 @@
                                                             <div style="display: flex; justify-content: space-between; width: 100%;">
                                                                 <div style="display: flex; flex-direction: column; align-items: flex-start;">
                                                                     <span style="font-family: Times New Roman; color: white;">${cancion.titulo}</span>
-                                                                    <span id="fechaO-${cancion.fechaO}" style="font-family: Times New Roman; color: white; font-size: 0.8em;"></span>
+                                                                    <span id="fechaO-${cancionidUnico}" style="font-family: Times New Roman; color: white; font-size: 0.8em;"></span>
                                                                 </div>
                                                                 <span style="font-family: Times New Roman; color: white;">${cancion.album}</span>
                                                             </div>
@@ -381,9 +393,9 @@ const cancionidUnico = generarIdUnico(cancion);
                                         ${albumes.map(album => `
                                             <a href="lanzamientos/${album.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetin" data-ut="${album.fecha}">
                                                 <img src="${album.portada}" alt="" style="width:300px">
-                                                <p class="cajetin-fechas"><span id="fechaO-${ep.fechaO}"></span></p>
-                                                <p class="cajetin-fechas">Fecha Lanzamiento: <span id="fechaL-${ep.fechaL}"></span></p>
-                                                ${ep.fechaPS ? `<p class="cajetin-fechas">Fecha Pre-Saved: <span id="fechaL-${ep.fechaPS}"></span></p>` : ''}
+                                                <p class="cajetin-fechas"><span id="fechaO-${albumidUnico}"></span></p>
+                                                <p class="cajetin-fechas">Fecha Lanzamiento: <span id="fechaL-${albumidUnico}"></span></p>
+                                                ${ep.fechaPS ? `<p class="cajetin-fechas">Fecha Pre-Saved: <span id="fechaL-${albumidUnico}"></span></p>` : ''}
                                                 <p class="cajetin-titulo">${album.titulo}</p>
                                                 <p class="cajetin-footer">${album.label || '©Grouvex Studios Recording'}</p>
                                             </a>
@@ -433,9 +445,9 @@ const albumidUnico = generarIdUnico(album);
                                         ${ep.map(ep => `
                                             <a href="${ep.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetin" data-ut="${ep.fecha}">
                                                 <img src="${ep.portada}" alt="" style="width:300px">
-                                                <p class="cajetin-fechas"><span id="fechaO-${ep.fechaO}"></span></p>
-                                                <p class="cajetin-fechas">Fecha Lanzamiento: <span id="fechaL-${ep.fechaL}"></span></p>
-                                                ${ep.fechaPS ? `<p class="cajetin-fechas">Fecha Pre-Saved: <span id="fechaL-${ep.fechaPS}"></span></p>` : ''}
+                                                <p class="cajetin-fechas"><span id="fechaO-${epidUnico}"></span></p>
+                                                <p class="cajetin-fechas">Fecha Lanzamiento: <span id="fechaL-${epidUnico}"></span></p>
+                                                ${ep.fechaPS ? `<p class="cajetin-fechas">Fecha Pre-Saved: <span id="fechaL-${epidUnico}"></span></p>` : ''}
                                                 <p class="cajetin-titulo">${ep.titulo}</p>
                                                 <p class="cajetin-footer">${ep.label || '©Grouvex Studios Recording'}</p>
                                             </a>

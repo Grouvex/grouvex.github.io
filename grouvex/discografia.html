@@ -392,11 +392,11 @@
                                             return `
                                                 <a href="lanzamientos/${album.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetinMusica" data-ut="${album.fecha}">
                                                     <img src="${album.portada}" alt="" style="width:300px">
-                                                    <p class="cajetin-fechas">Fecha Original: <span id="fechaO-${albumidUnico}"></span></p>
-                                                    <p class="cajetin-fechas">Fecha Lanzamiento: <span id="fechaL-${albumidUnico}"></span></p>
-                                                    ${album.fechaPS ? `<p class="cajetin-fechas">Fecha Pre-Saved: <span id="fechaPS-${albumidUnico}"></span></p>` : ''}
-                                                    <p class="cajetin-titulo">${album.titulo}</p>
-                                                    <p class="cajetin-footer">${album.label || '©Grouvex Studios Recording'}</p>
+                                                    <p class="cajetin-fechasMusica">Fecha Original: <span id="fechaO-${albumidUnico}"></span></p>
+                                                    <p class="cajetin-fechasMusica">Fecha Lanzamiento: <span id="fechaL-${albumidUnico}"></span></p>
+                                                    ${album.fechaPS ? `<p class="cajetin-fechasMusica">Fecha Pre-Saved: <span id="fechaPS-${albumidUnico}"></span></p>` : ''}
+                                                    <p class="cajetin-tituloMusica">${album.titulo}</p>
+                                                    <p class="cajetin-footerMusica">${album.label || '©Grouvex Studios Recording'}</p>
                                                 </a>
                                             `;
                                         }).join('')}
@@ -440,11 +440,11 @@
                                             return `
                                                 <a href="${ep.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetinMusica" data-ut="${ep.fecha}">
                                                     <img src="${ep.portada}" alt="" style="width:300px">
-                                                    <p class="cajetin-fechas">Fecha Original: <span id="fechaO-${epidUnico}"></span></p>
-                                                    <p class="cajetin-fechas">Fecha Lanzamiento: <span id="fechaL-${epidUnico}"></span></p>
-                                                    ${ep.fechaPS ? `<p class="cajetin-fechas">Fecha Pre-Saved: <span id="fechaPS-${epidUnico}"></span></p>` : ''}
-                                                    <p class="cajetin-titulo">${ep.titulo}</p>
-                                                    <p class="cajetin-footer">${ep.label || '©Grouvex Studios Recording'}</p>
+                                                    <p class="cajetin-fechasMusica">Fecha Original: <span id="fechaO-${epidUnico}"></span></p>
+                                                    <p class="cajetin-fechasMusica">Fecha Lanzamiento: <span id="fechaL-${epidUnico}"></span></p>
+                                                    ${ep.fechaPS ? `<p class="cajetin-fechasMusica">Fecha Pre-Saved: <span id="fechaPS-${epidUnico}"></span></p>` : ''}
+                                                    <p class="cajetin-tituloMusica">${ep.titulo}</p>
+                                                    <p class="cajetin-footerMusica">${ep.label || '©Grouvex Studios Recording'}</p>
                                                 </a>
                                             `;
                                         }).join('')}

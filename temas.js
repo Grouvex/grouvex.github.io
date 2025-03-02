@@ -57,21 +57,36 @@
         localStorage.setItem('selectedTheme', this.value);
     });
 
-    function changeTheme(theme) {
-        const elements = document.querySelectorAll('p, body, main, mainTop, h1, h2, h3, h4, h5, h6, article, section, aside, panel, hr');
-        const themeClasses = [
-            'theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes',
-            'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'pokemon', 'thewildrobot',
-            'httyd', 'gstudios1', 'gstudios2', 'gstudios3', 'gstudios4'
-        ];
+function changeTheme(theme) {
+    const elements = document.querySelectorAll('p, body, main, mainTop, h1, h2, h3, h4, h5, h6, article, section, aside, panel, hr');
+    const themeClasses = [
+        'theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes',
+        'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'pokemon', 'thewildrobot',
+        'httyd', 'gstudios1', 'gstudios2', 'gstudios3', 'gstudios4'
+    ];
 
+    // Aplicar la clase de animación
+    elements.forEach(element => {
+        element.classList.add('fade-effect');
+    });
+
+    // Eliminar las clases de tema anteriores y aplicar la nueva
+    elements.forEach(element => {
+        themeClasses.forEach(cls => element.classList.remove(cls));
+        if (theme !== defaultTheme) {
+            element.classList.add(theme);
+        } else {
+            element.classList.add(theme);
+        }
+    });
+
+    // Eliminar la clase de animación después de que termine
+    setTimeout(() => {
         elements.forEach(element => {
-            themeClasses.forEach(cls => element.classList.remove(cls));
-            if (theme !== defaultTheme) {
-                element.classList.add(theme);
-            } else { element.classList.add(theme); }
+            element.classList.remove('fade-effect');
         });
-    }
+    }, 500); // Duración de la animación (0.5s)
+}
 
     function loadSelectedTheme() {
         const selectedTheme = localStorage.getItem('selectedTheme');

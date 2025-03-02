@@ -386,11 +386,11 @@
                                         <option value="ascT">⬇ a ⬆</option>
                                         <option value="desT">⬆ a ⬇</option>
                                     </select>
-                                    <div class="cajetines">
+                                    <div class="cajetinesMusica">
                                         ${albumes.map(album => {
                                             const albumidUnico = generarIdUnico(album);
                                             return `
-                                                <a href="lanzamientos/${album.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetin" data-ut="${album.fecha}">
+                                                <a href="lanzamientos/${album.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetinMusica" data-ut="${album.fecha}">
                                                     <img src="${album.portada}" alt="" style="width:300px">
                                                     <p class="cajetin-fechas"><span id="fechaO-${albumidUnico}"></span></p>
                                                     <p class="cajetin-fechas">Fecha Lanzamiento: <span id="fechaL-${albumidUnico}"></span></p>
@@ -434,11 +434,11 @@
                                         <option value="ascT">⬇ to ⬆</option>
                                         <option value="desT">⬆ to ⬇</option>
                                     </select>
-                                    <div class="cajetines">
+                                    <div class="cajetinesMusica">
                                         ${ep.map(ep => {
                                             const epidUnico = generarIdUnico(ep);
                                             return `
-                                                <a href="${ep.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetin" data-ut="${ep.fecha}">
+                                                <a href="${ep.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetinMusica" data-ut="${ep.fecha}">
                                                     <img src="${ep.portada}" alt="" style="width:300px">
                                                     <p class="cajetin-fechas"><span id="fechaO-${epidUnico}"></span></p>
                                                     <p class="cajetin-fechas">Fecha Lanzamiento: <span id="fechaL-${epidUnico}"></span></p>

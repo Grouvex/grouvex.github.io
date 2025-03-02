@@ -321,23 +321,31 @@
                                             <summary style="font-family: Times New Roman">Start with ${letra}</summary>
                                             <ol>
                                                 ${letras[letra].map(cancion => `
-                                                    <li>
-                                                        <a href="${cancion.titulo.toLowerCase().replace(/ /g, '_')}">
-                                                            <div style="display: flex; padding: 3px; box-shadow: 0 0 3px cyan;">
-                                                                <img src="${cancion.portada}" alt="" class="r-img" style="margin-right: 2px;">
-                                                                <span style="font-family: Times New Roman; color: white; display: flex; justify-content: space-between; width: 100%;">
-                                                                    <span>${cancion.titulo}</span>
-                                                                    <span>${cancion.album}</span>
-                                                                </span>
+                                                  <li>
+                                                    <a href="${cancion.titulo.toLowerCase().replace(/ /g, '_')}">
+                                                        <div style="display: flex; padding: 3px; box-shadow: 0 0 3px cyan;">
+                                                            <img src="${cancion.portada}" alt="" class="r-img" style="margin-right: 2px;">
+                                                            <div style="display: flex; justify-content: space-between; width: 100%;">
+                                                                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                                                                    <span style="font-family: Times New Roman; color: white;">${cancion.titulo}</span>
+                                                                    <span id="fechaO-${cancion.fechaO}" style="font-family: Times New Roman; color: white; font-size: 0.8em;">${cancion.fechaO}</span>
+                                                                </div>
+                                                                <span style="font-family: Times New Roman; color: white;">${cancion.album}</span>
                                                             </div>
-                                                        </a>
-                                                    </li>
+                                                        </div>
+                                                    </a>
+                                                </li>
                                                 `).join('')}
                                             </ol>
                                         </details>
                                     `).join('')}
                                 </article>
                             `;
+                            canciones.forEach(album => {
+                          if (cancion.fechaO != null) {actualizarFechas(cancion.fechaO, `fechaO-${cancion.fechaO}`);}
+                            if (cancion.fechaL != null) {actualizarFechas(cancion.fechaL, `fechaL-${cancion.fechaL}`);}
+                            if (cancion.fechaPS != null) {actualizarFechas(cancion.fechaPS, `fechaPS-${cancion.fechaPS}`);}
+                            });
                         } else {
                             console.error('El elemento con id="contenido" no existe en el DOM.');
                         }

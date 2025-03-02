@@ -372,6 +372,85 @@ footer {
   vertical-align: middle; /* Alineación vertical con el texto */
 }
 
+/* Cajetines*/
+.cajetin-fechasMusica {
+  background: transparent;
+  overflow-y: auto;
+  box-sizing: border-box;
+  text-align: left; 
+  word-wrap: break-word; 
+  max-width: 100%;  
+  color: black;
+  display: block;
+  margin-bottom: 10px;
+  opacity: .8;
+  font-size: 8px;
+}
+.cajetin-tituloMusica {
+  background: transparent;
+  box-sizing: border-box;
+  text-align: left; 
+  word-wrap: break-word; 
+  max-width: 100%;  
+  color: white;
+  display: inline-block;
+  font-size: 15px;
+}
+.cajetin-descriptionMusica {
+  background: transparent;
+  overflow-y: auto;
+  box-sizing: border-box;
+  text-align: left; 
+  word-wrap: break-word; 
+  max-width: 100%;  
+  color: white;
+  display: inline-block;
+  padding-right: .8rem;
+  font-size: 11px;
+
+} 
+.cajetin-footerMusica {
+    overflow-y: auto;
+    box-sizing: border-box;
+    text-align: left;
+    word-wrap: break-word;
+    max-width: 100%;
+    color: #000000;
+    background: #00ff5087;
+    display: block;
+    font-size: 8px;
+}
+.cajetinesMusica {
+    display: flex;
+    overflow-y: auto;
+    max-height: 800px;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+.cajetinMusica {
+    display: flex;
+    width: 90%;
+    max-width: 300px;
+    height: auto;
+    padding-top: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    flex-basis: calc(25% - 40px);
+    background: linear-gradient(0deg, transparent, cyan, blue);
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+}
+.cajetinMusica img {
+  width: 100%;
+  height: auto;
+  vertical-align: middle; /* Alineación vertical con el texto */
+}
+
 .tarjetas {
     display: flex;
     overflow-y: auto;

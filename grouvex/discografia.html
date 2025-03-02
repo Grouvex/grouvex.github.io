@@ -341,8 +341,16 @@
                                     `).join('')}
                                 </article>
                             `;
+                            function generarIdUnico(cancion) {
+    const datosConcatenados = `${cancion.titulo}-${cancion.album}-${cancion.fechaO}-${cancion.label}`;
+    const cancionidUnico = datosConcatenados
+        .toLowerCase()
+        .replace(/ /g, '_')
+        .replace(/[^a-z0-9_]/g, '');
+    return `${cancionidUnico}`;}
+const cancionidUnico = generarIdUnico(cancion);
                             canciones.forEach(cancion => {
-                          if (cancion.fechaO != null) {actualizarFechas(cancion.fechaO, `fechaO-${cancion.fechaO}`);}
+                          if (cancion.fechaO != null) {actualizarFechas(cancion.fechaO, `fechaO-${cancionidUnico}`);}
                             });
                         } else {
                             console.error('El elemento con id="contenido" no existe en el DOM.');
@@ -383,11 +391,18 @@
                                     </div>
                                 </article>
                             `;
-
+function generarIdUnico(album) {
+    const datosConcatenados = `${album.titulo}-${album.album}-${album.fechaO}-${album.label}`;
+    const albumidUnico = datosConcatenados
+        .toLowerCase()
+        .replace(/ /g, '_')
+        .replace(/[^a-z0-9_]/g, '');
+    return `${albumidUnico}`;}
+const albumidUnico = generarIdUnico(album);
                             albumes.forEach(album => {
-                          if (album.fechaO != null) {actualizarFechas(album.fechaO, `fechaO-${album.fechaO}`);}
-                            if (album.fechaL != null) {actualizarFechas(album.fechaL, `fechaL-${album.fechaL}`);}
-                            if (album.fechaPS != null) {actualizarFechas(album.fechaPS, `fechaPS-${album.fechaPS}`);}
+                          if (album.fechaO != null) {actualizarFechas(album.fechaO, `fechaO-${albumidUnico}`);}
+                            if (album.fechaL != null) {actualizarFechas(album.fechaL, `fechaL-${albumidUnico}`);}
+                            if (album.fechaPS != null) {actualizarFechas(album.fechaPS, `fechaPS-${albumidUnico}`);}
                             });
                         } else {
                             console.error('El elemento con id="contenido" no existe en el DOM.');
@@ -428,20 +443,27 @@
                                     </div>
                                 </article>
                             `;
-
-                            ep.forEach(ep => {
-                          if (ep.fechaO != null) {actualizarFechas(ep.fechaO, `fechaO-${ep.fechaO}`);}
-                            if (ep.fechaL != null) {actualizarFechas(ep.fechaL, `fechaL-${ep.fechaL}`);}
-                            if (ep.fechaPS != null) {actualizarFechas(ep.fechaPS, `fechaPS-${ep.fechaPS}`);}
-                            });
-                        } else {
-                            console.error('El elemento con id="contenido" no existe en el DOM.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error al cargar los EP:', error);
+function generarIdUnico(ep) {
+    const datosConcatenados = `${ep.titulo}-${ep.album}-${ep.fechaO}-${ep.label}`;
+    const epidUnico = datosConcatenados
+        .toLowerCase()
+        .replace(/ /g, '_')
+        .replace(/[^a-z0-9_]/g, '');
+    return `${epidUnico}`;}
+const epidUnico = generarIdUnico(ep);
+                    ep.forEach(ep => {
+                  if (ep.fechaO != null) {actualizarFechas(ep.fechaO, `fechaO-${epidUnico}`);}
+                    if (ep.fechaL != null) {actualizarFechas(ep.fechaL, `fechaL-${epidUnico}`);}
+                    if (ep.fechaPS != null) {actualizarFechas(ep.fechaPS, `fechaPS-${epidUnico}`);}
                     });
-            }
+                } else {
+                    console.error('El elemento con id="contenido" no existe en el DOM.');
+                }
+            })
+            .catch(error => {
+                console.error('Error al cargar los EP:', error);
+            });
+        }
 
             // Función para cambiar el orden de los álbumes
             function cambiarOrden() {

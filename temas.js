@@ -1,6 +1,6 @@
 (function() {
     const themeSelect = document.getElementById('themeSelect');
-    const defaultTheme = 'httyd'; // Define aquí el tema predeterminado
+    const defaultTheme = 'pokemon'; // Define aquí el tema predeterminado
     const currentUrl = window.location.href;
 
     // Deshabilitar el botón al inicio

@@ -203,16 +203,10 @@ function inicializarFormularioDeAutenticacion() {
     isLogin = !isLogin;
     if (isLogin) {
       formTitle.textContent = 'Inicio de Sesión';
-      authButton.innerHTML = '<img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png" alt="" width="15" height="15"> Iniciar Sesión';
-      toggleButton.textContent = '¿No tienes cuenta? Regístrate';
-      emailLoginBtn.innerHTML = '<img src="https://static.vecteezy.com/system/resources/previews/022/484/508/non_2x/google-mail-gmail-icon-logo-symbol-free-png.png" alt="" width="15" height="15"> Iniciar Sesión con Email';
-      googleLoginBtn.innerHTML = '<img src="https://img.icons8.com/?size=512&id=17949&format=png" alt="" width="15" height="15"> Iniciar Sesión con Google';
+      authButton.innerHTML = '<img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png" alt="" width="15" height="15">';
     } else {
       formTitle.textContent = 'Registro';
-      authButton.innerHTML = '<img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png" alt="" width="15" height="15"> Registrar';
-      toggleButton.textContent = '¿Ya tienes cuenta? Inicia Sesión';
-      emailLoginBtn.innerHTML = '<img src="https://static.vecteezy.com/system/resources/previews/022/484/508/non_2x/google-mail-gmail-icon-logo-symbol-free-png.png" alt="" width="15" height="15"> Registrarse con Email';
-      googleLoginBtn.innerHTML = '<img src="https://img.icons8.com/?size=512&id=17949&format=png" alt="" width="15" height="15"> Registrarse con Google';
+      authButton.innerHTML = '<img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png" alt="" width="15" height="15">';
     }
     console.log("Modo cambiado a", isLogin ? "Inicio de Sesión" : "Registro");
   });

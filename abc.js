@@ -466,7 +466,7 @@ if (window.innerWidth < 768) {
             box-shadow: 2px 2px 2px gold;
             z-index: 1;
             width: 99%;
-            max-height: 80px;
+            max-height: 90px;
             overflow-y: auto;
             text-align: center;
             font-size: 12px;

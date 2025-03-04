@@ -47,6 +47,132 @@
     </script>
     <script src="//www.youtube.com/player_api"></script><script src="https://www.youtube.com/iframe_api"></script>
     <script src="time.js"></script><script type="module" src="abc.js"></script><script src="index.js"></script>
+    <style>
+        /* Estilos específicos para el formulario de autenticación */
+#auth-container {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1); /* Fondo semitransparente */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px); /* Efecto de desenfoque */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#authForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#formTitle {
+    text-align: center;
+    font-size: 24px;
+    color: white;
+    margin-bottom: 10px;
+}
+
+#authForm input {
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+#authForm input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+#authForm input:focus {
+    border-color: #6200ea; /* Color morado */
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.icon-button {
+    background-color: #6200ea; /* Color morado */
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%; /* Botones circulares */
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.icon-button:hover {
+    background-color: #3700b3; /* Color morado más oscuro al pasar el mouse */
+    transform: scale(1.1); /* Efecto de escala al pasar el mouse */
+}
+
+.icon-button:active {
+    transform: scale(0.9); /* Efecto de escala al hacer clic */
+}
+
+.icon-button.secondary {
+    background-color: #757575; /* Color gris */
+}
+
+.icon-button.secondary:hover {
+    background-color: #616161; /* Color gris más oscuro al pasar el mouse */
+}
+
+.icon-button.google {
+    background-color: #db4437; /* Color rojo de Google */
+}
+
+.icon-button.google:hover {
+    background-color: #c1351d; /* Color rojo más oscuro al pasar el mouse */
+}
+
+.icon-button.email {
+    background-color: #4285f4; /* Color azul de Gmail */
+}
+
+.icon-button.email:hover {
+    background-color: #357abf; /* Color azul más oscuro al pasar el mouse */
+}
+
+.icon-button img {
+    width: 15px;
+    height: 15px;
+    filter: brightness(0) invert(1); /* Convertir imágenes a blanco */
+}
+
+/* Estilos para el texto debajo del formulario */
+#auth-container p {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+#auth-container a {
+    color: #6200ea; /* Color morado */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+#auth-container a:hover {
+    color: #3700b3; /* Color morado más oscuro */
+}
+    </style>
 </head>
 <body>
     <mainTop>
@@ -59,20 +185,31 @@
     </mainTop>
     <main>
         <h1>Autenticación de Usuarios en Grouvex Studios</h1>
-        <div id="auth-container">
-            <form id="authForm">
-                <h2 id="formTitle">Inicio de Sesión</h2>
-                <input type="email" id="authEmail" placeholder="Email" required>
-                <input type="password" id="authPassword" placeholder="Password" required>
-                <input type="text" id="authDisplayName" placeholder="Nombre de Usuario" style="display:none;">
-                <button type="submit" id="authButton"><img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png" alt="" width="15" height="15">Iniciar Sesión</button>
-                <button type="button" id="toggleButton">¿No tienes cuenta? Regístrate</button>
-            </form>
-            <button id="google-login-btn"><img src="https://img.icons8.com/?size=512&id=17949&format=png" alt="" width="15" height="15">Iniciar Sesión con Google</button>
-            <button id="email-login-btn"><img src="https://static.vecteezy.com/system/resources/previews/022/484/508/non_2x/google-mail-gmail-icon-logo-symbol-free-png.png" alt="" width="15" height="15">Iniciar Sesión con Email</button>
-            <p>¿Olvidaste tu contraseña?. Pongase en contacto con: <a href="mailto:administracion@grouvex.com?subject=Cambiar%20contraseña&body=Hola,%0A%0ASoy%20[Nombre de Usuario],%20mi%20correo%20asociado%20es%20[Correo del Usuario]%20y%20mi%20GSUserID%20es:%20[UID del Usuario]%0ASe%20me%20ha%20olvidado%20mi%20contraseña%20y%20me%20gustaría%20cambiarla.%0A%0AGracias,%0A[Nombre de Usuario]" style="color:white">administracion@grouvex.com</a></p>
-            <p>Al registrarte o iniciar sesión en Grouvex Studios, acepta los <a href="https://grouvex.github.io/tos">Términos de Servicios</a> y <a href="https://grouvex.github.io/pp">Políticas de Privacidad del mismo</a>.</p>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<div id="auth-container">
+    <form id="authForm">
+        <h2 id="formTitle">Inicio de Sesión</h2>
+        <input type="email" id="authEmail" placeholder="Email" required>
+        <input type="password" id="authPassword" placeholder="Password" required>
+        <input type="text" id="authDisplayName" placeholder="Nombre de Usuario" style="display:none;">
+        <div class="button-container">
+            <button type="submit" id="authButton" class="icon-button" title="Verificar Autenticación">
+                <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png" alt="Iniciar Sesión" width="15" height="15">
+            </button>
+            <button type="button" id="toggleButton" class="icon-button secondary" title="Cambia de Iniciar Sesión a Registrarse y viceversa">
+                <i class="fas fa-sync-alt"></i> <!-- Ícono de cambio -->
+            </button>
+            <button id="google-login-btn" class="icon-button google" title="Iniciar Sesión con Google">
+                <img src="https://img.icons8.com/?size=512&id=17949&format=png" alt="Google" width="15" height="15">
+            </button>
+            <button id="email-login-btn" class="icon-button email" title="Iniciar Sesión con Email">
+                <img src="https://static.vecteezy.com/system/resources/previews/022/484/508/non_2x/google-mail-gmail-icon-logo-symbol-free-png.png" alt="Email" width="15" height="15">
+            </button>
         </div>
+    </form>
+    <p>¿Olvidaste tu contraseña? Póngase en contacto con: <a href="mailto:administracion@grouvex.com?subject=Cambiar%20contraseña&body=Hola,%0A%0ASoy%20[Nombre de Usuario],%20mi%20correo%20asociado%20es%20[Correo del Usuario]%20y%20mi%20GSUserID%20es:%20[UID del Usuario]%0ASe%20me%20ha%20olvidado%20mi%20contraseña%20y%20me%20gustaría%20cambiarla.%0A%0AGracias,%0A[Nombre de Usuario]" style="color:white">administracion@grouvex.com</a></p>
+    <p>Al registrarte o iniciar sesión en Grouvex Studios, acepta los <a href="https://grouvex.github.io/tos">Términos de Servicios</a> y <a href="https://grouvex.github.io/pp">Políticas de Privacidad del mismo</a>.</p>
+</div>
         <div id="content" style="display: none;">
             <h2>Bienvenido</h2>
             <p>Este contenido es visible solo para usuarios autenticados.</p>

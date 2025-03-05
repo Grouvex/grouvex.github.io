@@ -46,7 +46,7 @@ document.head.appendChild(style);
 // Crear el HTML del modal
 const modalHTML = `
     <div id="customModal" class="modal">
-        <img src="https://github.com/Grouvex/grouvex.github.io/blob/main/img%2FGrouvex1.png" alt="">
+        <img src="https://github.com/Grouvex/grouvex.github.io/blob/main/img%2FGrouvex1.png" alt="Logo">
         <p>¿Estás seguro de que deseas salir de nuestro sitio?</p>
         <button class="cancel">Cancelar</button>
         <button class="continue">Continuar</button>

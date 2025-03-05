@@ -18,6 +18,7 @@
   <option value="gstudios2">Tema G.Studios: The Night Sky</option>
     <option value="gstudios3">Tema G.Studios: La Magia de la Estrella Polar</option>
   <option value="gstudios4">Tema G.Studios: Unstoppable Friendship</option>
+  <option value="gstudios5">Tema G.Studios: Libra</option>
   <!-- Añade tantas opciones como diseños tengas -->
 </select></span>
 </html>
@@ -30,7 +31,7 @@ themeSelect.addEventListener('change', function() {
 
     // Elimina las clases de las opciones antiguas
     elements.forEach(function(element) {
-        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'pokemon', 'thewildrobot', 'httyd', 'gstudios1', 'gstudios2', 'gstudios3', 'gstudios4');
+        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'pokemon', 'thewildrobot', 'httyd', 'gstudios1', 'gstudios2', 'gstudios3', 'gstudios4', 'gstudios5');
     });
 
     // Si la opción seleccionada no es "default", añade la clase de la opción seleccionada
@@ -55,7 +56,7 @@ window.addEventListener('load', function() {
         elements.forEach(function(element) {
             element.classList.add(selectedTheme);
         });
-        themeSelect.value = selectedTheme; // Asegúrate de que el menú desplegable muestre el tema correcto
+        themeSelect.value = selectedTheme;
     }
 });
 </script>

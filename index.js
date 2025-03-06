@@ -14,31 +14,31 @@ style.innerHTML = `
         width: 300px;
         padding: 20px;
         box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        background: white;
+        background: black;
         text-align: center;
         border-radius: 10px;
         z-index: 1000;
     }
     .modal img {
-        width: 200px;
+        width: 50px;
         height: auto;
     }
     .modal p {
         margin: 20px 0;
-        color: black;
+        color: white;
     }
     .modal button {
-        padding: 5px 10px;
-        margin: 3px;
+        padding: 10px 20px;
+        margin: 5px;
         border: none;
         border-radius: 5px;
         cursor: pointer;
     }
     .modal button.cancel {
-        background: linear-gradient(45deg, red, blue, green);
+        background-color: #ccc;
     }
     .modal button.continue {
-        background: linear-gradient(45deg, green, blue);
+        background-color: #4CAF50;
         color: white;
     }
 `;
@@ -62,6 +62,20 @@ const continueButton = modal.querySelector('.continue');
 let targetLink = null;
 let targetAttribute = null;
 
+// Dominios permitidos
+const allowedDomains = ['grouvex.com', 'Grouvex.github.io'];
+
+// Función para verificar si un enlace es externo
+function isExternalLink(href) {
+    if (!href) return false;
+    try {
+        const url = new URL(href, window.location.origin);
+        return !allowedDomains.includes(url.hostname);
+    } catch (e) {
+        return false; // Si no es una URL válida, no es un enlace externo
+    }
+}
+
 // Función para manejar clics en elementos con href
 function handleLinkClick(event) {
     const element = event.target.closest('[href]'); // Busca el elemento más cercano con href
@@ -69,22 +83,29 @@ function handleLinkClick(event) {
         const href = element.getAttribute('href');
 
         // Verificar si el enlace es externo
-        if (href && !href.startsWith('#') && !href.startsWith('javascript:')) {
-            const domain = new URL(href, window.location.origin).hostname;
-
-            // Mostrar el modal si el dominio no es permitido
-            if (domain !== 'grouvex.com' && domain !== 'Grouvex.github.io') {
-                event.preventDefault(); // Evitar la acción predeterminada
-                targetLink = href; // Guardar el enlace objetivo
-                targetAttribute = element.getAttribute('target'); // Guardar el atributo target
-                modal.style.display = 'block'; // Mostrar el modal
-            }
+        if (isExternalLink(href)) {
+            event.preventDefault(); // Evitar la acción predeterminada
+            targetLink = href; // Guardar el enlace objetivo
+            targetAttribute = element.getAttribute('target'); // Guardar el atributo target
+            modal.style.display = 'block'; // Mostrar el modal
         }
     }
 }
 
-// Añadir event listeners a todos los elementos con href (incluso los dinámicos)
+// Interceptar clics en todos los enlaces (incluso los dinámicos)
 document.addEventListener('click', handleLinkClick);
+
+// Interceptar redirecciones mediante JavaScript
+const originalWindowOpen = window.open;
+window.open = function(url, target, features) {
+    if (isExternalLink(url)) {
+        targetLink = url;
+        targetAttribute = target || '_self';
+        modal.style.display = 'block';
+        return null; // Evitar que se abra la ventana inmediatamente
+    }
+    return originalWindowOpen(url, target, features);
+};
 
 // Event listener para el botón "Cancelar"
 cancelButton.addEventListener('click', function () {

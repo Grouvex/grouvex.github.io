@@ -14,31 +14,31 @@ style.innerHTML = `
         width: 300px;
         padding: 20px;
         box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        background: black;
+        background: white;
         text-align: center;
         border-radius: 10px;
         z-index: 1000;
     }
     .modal img {
-        width: 50px;
+        width: 200px;
         height: auto;
     }
     .modal p {
         margin: 20px 0;
-        color: white;
+        color: black;
     }
     .modal button {
-        padding: 10px 20px;
-        margin: 5px;
+        padding: 5px 10px;
+        margin: 3px;
         border: none;
         border-radius: 5px;
         cursor: pointer;
     }
     .modal button.cancel {
-        background-color: #ccc;
+        background: linear-gradient(45deg, red, blue, green);
     }
     .modal button.continue {
-        background-color: #4CAF50;
+        background: linear-gradient(45deg, green, blue);
         color: white;
     }
 `;
@@ -47,8 +47,8 @@ document.head.appendChild(style);
 // Crear el HTML del modal
 const modalHTML = `
     <div id="customModal" class="modal">
-        <img src="https://github.com/Grouvex/grouvex.github.io/blob/main/img%2FGrouvex1.png" alt="Logo">
-        <p>¿Estás seguro de que deseas salir de nuestro sitio?</p>
+        <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png" alt="Logo">
+        <p>Estás a punto de salir de <n>Grouvex Studios</n>. Grouvex Studios no se responsabiliza por el contenido, la seguridad, las políticas de privacidad o las prácticas de los sitios de terceros, fuera del dominio, puesto que los Términos de Servicio y Políticas de Privacidad, de Grouvex Studios, solo tienen validez dentro del dominio o donde el equipo tenga permiso para actuar.</p>
         <button class="cancel">Cancelar</button>
         <button class="continue">Continuar</button>
     </div>

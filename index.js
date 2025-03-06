@@ -5,42 +5,52 @@
 // Crear el estilo CSS dinámicamente
 const style = document.createElement('style');
 style.innerHTML = `
-    .modal {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 300px;
-        padding: 20px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        background: black;
-        text-align: center;
-        border-radius: 10px;
-        z-index: 1000;
-    }
-    .modal img {
-        width: 200px;
-        height: auto;
-    }
-    .modal p {
-        margin: 20px 0;
-        color: white;
-    }
-    .modal button {
-        padding: 5px 10px;
-        margin: 3px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    .modal button.cancel {
-     background: linear-gradient(45deg, red, blue);
-    }
-    .modal button.continue {
-        background: linear-gradient(45deg, green, blue);
-        color: white;
-    }
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%; /* Ajusta el ancho para que no sobresalga */
+    max-width: 300px; /* Máximo ancho para mantener el diseño */
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    background: black;
+    text-align: center;
+    border-radius: 10px;
+    z-index: 1000;
+    margin: 20px; /* Margen para evitar que toque los bordes de la pantalla */
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+}
+
+.modal img {
+    width: 100%; /* Ajusta la imagen al ancho del modal */
+    max-width: 200px; /* Máximo ancho para la imagen */
+    height: auto;
+}
+
+.modal p {
+    margin: 20px 0;
+    color: white;
+    font-size: 14px; /* Ajusta el tamaño de la fuente para mejor legibilidad */
+}
+
+.modal button {
+    padding: 5px 10px;
+    margin: 3px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal button.cancel {
+    background: linear-gradient(45deg, red, blue);
+}
+
+.modal button.continue {
+    background: linear-gradient(45deg, green, blue);
+    color: white;
+}
 `;
 document.head.appendChild(style);
 
@@ -280,4 +290,3 @@ continueButton.addEventListener('click', function () {
             mostrarUsuarioYInsignias(usuario, elements);
         }
     });
-});

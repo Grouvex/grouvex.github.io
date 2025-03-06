@@ -73,7 +73,7 @@ let targetLink = null;
 let targetAttribute = null;
 
 // Dominios permitidos
-const allowedDomains = ['grouvex.com', 'Grouvex.github.io'];
+const allowedDomains = ['grouvex.com', 'grouvex.github.io'];
 
 // Función para verificar si un enlace es externo
 function isExternalLink(href) {

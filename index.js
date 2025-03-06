@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
             width: 300px;
             padding: 20px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            background: white;
+            background: black;
             text-align: center;
             border-radius: 10px;
             z-index: 1000;
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const cancelButton = modal.querySelector('.cancel');
     const continueButton = modal.querySelector('.continue');
     let targetLink = null;
-    let targetAttribute = null; // Para guardar el valor del atributo target
+    let targetAttribute = null;
 
     // Función para manejar clics en elementos con href
     function handleLinkClick(event) {
@@ -72,41 +72,39 @@ document.addEventListener('DOMContentLoaded', function () {
             const domain = new URL(href, window.location.origin).hostname;
 
             // Mostrar el modal si el dominio no es permitido
-            if (domain !== 'grouvex.com' && domain !== 'Grouvex.github.io') {
-                event.preventDefault(); // Evitar la acción predeterminada
-                targetLink = href; // Guardar el enlace objetivo
-                targetAttribute = element.getAttribute('target'); // Guardar el atributo target
-                modal.style.display = 'block'; // Mostrar el modal
+            if (domain !== 'grouvex.com' && domain !== 'grouvex.github.io') {
+                event.preventDefault();
+                targetLink = href;
+                targetAttribute = element.getAttribute('target');
+                modal.style.display = 'block';
             }
         }
     }
 
     // Añadir event listeners a todos los elementos con href
-    const elementsWithHref = document.querySelectorAll('[href]'); // Seleccionar todos los elementos con href
+    const elementsWithHref = document.querySelectorAll('[href]');
     elementsWithHref.forEach(element => {
         element.addEventListener('click', handleLinkClick);
     });
 
     // Event listener para el botón "Cancelar"
     cancelButton.addEventListener('click', function () {
-        modal.style.display = 'none'; // Ocultar el modal
-        targetLink = null; // Limpiar el enlace objetivo
-        targetAttribute = null; // Limpiar el atributo target
+        modal.style.display = 'none';
+        targetLink = null;
+        targetAttribute = null;
     });
 
     // Event listener para el botón "Continuar"
     continueButton.addEventListener('click', function () {
         if (targetLink) {
             if (targetAttribute === '_blank') {
-                // Abrir en una nueva pestaña si tiene target="_blank"
                 window.open(targetLink, '_blank');
             } else {
-                // Abrir en la misma pestaña si no tiene target="_blank"
                 window.location.href = targetLink;
             }
-            modal.style.display = 'none'; // Ocultar el modal
-            targetLink = null; // Limpiar el enlace objetivo
-            targetAttribute = null; // Limpiar el atributo target
+            modal.style.display = 'none';
+            targetLink = null;
+            targetAttribute = null;
         }
     });
 

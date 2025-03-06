@@ -63,7 +63,7 @@ function changeTheme(theme) {
     const themeClasses = [
         'theme1', 'theme2',
         'space', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4',
-        'taylorswift'
+        'taylorswift',
         'pokemon', 'thewildrobot', 'httyd','starwars', 'jurassicworld', 'superheroes',
         'gstudios1', 'gstudios2', 'gstudios3', 'gstudios4', 'gstudios5'
     ];

@@ -2,111 +2,112 @@
 // Código para manejar enlaces y el modal
 // ============================================
 
-// Esperar a que el DOM esté completamente cargado
-document.addEventListener('DOMContentLoaded', function () {
-    // Crear el estilo CSS dinámicamente
-    const style = document.createElement('style');
-    style.innerHTML = `
-        .modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            background: black;
-            text-align: center;
-            border-radius: 10px;
-            z-index: 1000;
-        }
-        .modal img {
-            width: 50px;
-            height: auto;
-        }
-        .modal p {
-            margin: 20px 0;
-        }
-        .modal button {
-            padding: 10px 20px;
-            margin: 5px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .modal button.cancel {
-            background-color: #ccc;
-        }
-        .modal button.continue {
-            background-color: #4CAF50;
-            color: white;
-        }
-    `;
-    document.head.appendChild(style);
+// Crear el estilo CSS dinámicamente
+const style = document.createElement('style');
+style.innerHTML = `
+    .modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        background: black;
+        text-align: center;
+        border-radius: 10px;
+        z-index: 1000;
+    }
+    .modal img {
+        width: 50px;
+        height: auto;
+    }
+    .modal p {
+        margin: 20px 0;
+        color: white;
+    }
+    .modal button {
+        padding: 10px 20px;
+        margin: 5px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .modal button.cancel {
+        background-color: #ccc;
+    }
+    .modal button.continue {
+        background-color: #4CAF50;
+        color: white;
+    }
+`;
+document.head.appendChild(style);
 
-    // Crear el HTML del modal
-    const modalHTML = `
-        <div id="customModal" class="modal">
-            <img src="https://github.com/Grouvex/grouvex.github.io/blob/main/img%2FGrouvex1.png" alt="Logo">
-            <p>¿Estás seguro de que deseas salir de nuestro sitio?</p>
-            <button class="cancel">Cancelar</button>
-            <button class="continue">Continuar</button>
-        </div>
-    `;
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
+// Crear el HTML del modal
+const modalHTML = `
+    <div id="customModal" class="modal">
+        <img src="https://github.com/Grouvex/grouvex.github.io/blob/main/img%2FGrouvex1.png" alt="Logo">
+        <p>¿Estás seguro de que deseas salir de nuestro sitio?</p>
+        <button class="cancel">Cancelar</button>
+        <button class="continue">Continuar</button>
+    </div>
+`;
+document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-    // Obtener referencias a los elementos del modal
-    const modal = document.getElementById('customModal');
-    const cancelButton = modal.querySelector('.cancel');
-    const continueButton = modal.querySelector('.continue');
-    let targetLink = null;
-    let targetAttribute = null;
+// Obtener referencias a los elementos del modal
+const modal = document.getElementById('customModal');
+const cancelButton = modal.querySelector('.cancel');
+const continueButton = modal.querySelector('.continue');
+let targetLink = null;
+let targetAttribute = null;
 
-    // Función para manejar clics en elementos con href
-    function handleLinkClick(event) {
-        const element = event.target;
+// Función para manejar clics en elementos con href
+function handleLinkClick(event) {
+    const element = event.target.closest('[href]'); // Busca el elemento más cercano con href
+    if (element) {
         const href = element.getAttribute('href');
 
-        if (href) {
+        // Verificar si el enlace es externo
+        if (href && !href.startsWith('#') && !href.startsWith('javascript:')) {
             const domain = new URL(href, window.location.origin).hostname;
 
             // Mostrar el modal si el dominio no es permitido
-            if (domain !== 'grouvex.com' && domain !== 'grouvex.github.io') {
-                event.preventDefault();
-                targetLink = href;
-                targetAttribute = element.getAttribute('target');
-                modal.style.display = 'block';
+            if (domain !== 'grouvex.com' && domain !== 'Grouvex.github.io') {
+                event.preventDefault(); // Evitar la acción predeterminada
+                targetLink = href; // Guardar el enlace objetivo
+                targetAttribute = element.getAttribute('target'); // Guardar el atributo target
+                modal.style.display = 'block'; // Mostrar el modal
             }
         }
     }
+}
 
-    // Añadir event listeners a todos los elementos con href
-    const elementsWithHref = document.querySelectorAll('[href]');
-    elementsWithHref.forEach(element => {
-        element.addEventListener('click', handleLinkClick);
-    });
+// Añadir event listeners a todos los elementos con href (incluso los dinámicos)
+document.addEventListener('click', handleLinkClick);
 
-    // Event listener para el botón "Cancelar"
-    cancelButton.addEventListener('click', function () {
-        modal.style.display = 'none';
-        targetLink = null;
-        targetAttribute = null;
-    });
+// Event listener para el botón "Cancelar"
+cancelButton.addEventListener('click', function () {
+    modal.style.display = 'none'; // Ocultar el modal
+    targetLink = null; // Limpiar el enlace objetivo
+    targetAttribute = null; // Limpiar el atributo target
+});
 
-    // Event listener para el botón "Continuar"
-    continueButton.addEventListener('click', function () {
-        if (targetLink) {
-            if (targetAttribute === '_blank') {
-                window.open(targetLink, '_blank');
-            } else {
-                window.location.href = targetLink;
-            }
-            modal.style.display = 'none';
-            targetLink = null;
-            targetAttribute = null;
+// Event listener para el botón "Continuar"
+continueButton.addEventListener('click', function () {
+    if (targetLink) {
+        if (targetAttribute === '_blank') {
+            // Abrir en una nueva pestaña si tiene target="_blank"
+            window.open(targetLink, '_blank');
+        } else {
+            // Abrir en la misma pestaña si no tiene target="_blank"
+            window.location.href = targetLink;
         }
-    });
+        modal.style.display = 'none'; // Ocultar el modal
+        targetLink = null; // Limpiar el enlace objetivo
+        targetAttribute = null; // Limpiar el atributo target
+    }
+});
 
     // ============================================
     // Código para animaciones estacionales

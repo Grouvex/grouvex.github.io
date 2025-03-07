@@ -20,7 +20,7 @@ style.innerHTML = `
         z-index: 1000;
     }
     .modal img {
-        width: 50px;
+        width: 200px;
         height: auto;
     }
     .modal p {
@@ -28,8 +28,8 @@ style.innerHTML = `
         color: white;
     }
     .modal button {
-        padding: 10px 20px;
-        margin: 5px;
+        padding: 5px 10px;
+        margin: 3px;
         border: none;
         border-radius: 5px;
         cursor: pointer;

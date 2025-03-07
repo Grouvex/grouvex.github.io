@@ -11,28 +11,28 @@ style.innerHTML = `
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 80%; /* Ajusta el ancho para que no sobresalga */
-    max-width: 300px; /* Máximo ancho para mantener el diseño */
+    width: 80%;
+    max-width: 300px;
     padding: 20px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     background: black;
     text-align: center;
     border-radius: 10px;
     z-index: 1000;
-    margin: 20px; /* Margen para evitar que toque los bordes de la pantalla */
-    box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+    margin: 20px;
+    box-sizing: border-box;
 }
 
 .modal img {
-    width: 100%; /* Ajusta la imagen al ancho del modal */
-    max-width: 200px; /* Máximo ancho para la imagen */
+    width: 100%;
+    max-width: 200px;
     height: auto;
 }
 
 .modal p {
     margin: 20px 0;
     color: white;
-    font-size: 14px; /* Ajusta el tamaño de la fuente para mejor legibilidad */
+    font-size: 14px;
 }
 
 .modal button {
@@ -83,27 +83,21 @@ function isExternalLink(href) {
         const url = new URL(href, window.location.origin);
         return !allowedDomains.includes(url.hostname);
     } catch (e) {
-        return false; // Si no es una URL válida, no es un enlace externo
+        return false;
     }
 }
 
 // Función para manejar clics en elementos con href
 function handleLinkClick(event) {
-    const element = event.target.closest('[href]'); // Busca el elemento más cercano con href
-    if (element) {
-        const href = element.getAttribute('href');
-
-        // Verificar si el enlace es externo
-        if (isExternalLink(href)) {
-            event.preventDefault(); // Evitar la acción predeterminada
-            targetLink = href; // Guardar el enlace objetivo
-            targetAttribute = element.getAttribute('target'); // Guardar el atributo target
-            modal.style.display = 'block'; // Mostrar el modal
-        }
+    const element = event.target.closest('[href]');
+    if (element && isExternalLink(element.getAttribute('href'))) {
+        event.preventDefault();
+        targetLink = element.getAttribute('href');
+        targetAttribute = element.getAttribute('target');
+        modal.style.display = 'block';
     }
 }
 
-// Interceptar clics en todos los enlaces (incluso los dinámicos)
 document.addEventListener('click', handleLinkClick);
 
 // Interceptar redirecciones mediante JavaScript
@@ -113,181 +107,170 @@ window.open = function(url, target, features) {
         targetLink = url;
         targetAttribute = target || '_self';
         modal.style.display = 'block';
-        return null; // Evitar que se abra la ventana inmediatamente
+        return null;
     }
     return originalWindowOpen(url, target, features);
 };
 
-// Event listener para el botón "Cancelar"
-cancelButton.addEventListener('click', function () {
-    modal.style.display = 'none'; // Ocultar el modal
-    targetLink = null; // Limpiar el enlace objetivo
-    targetAttribute = null; // Limpiar el atributo target
+cancelButton.addEventListener('click', () => {
+    modal.style.display = 'none';
+    targetLink = null;
+    targetAttribute = null;
 });
 
-// Event listener para el botón "Continuar"
-continueButton.addEventListener('click', function () {
+continueButton.addEventListener('click', () => {
     if (targetLink) {
         if (targetAttribute === '_blank') {
-            // Abrir en una nueva pestaña si tiene target="_blank"
             window.open(targetLink, '_blank');
         } else {
-            // Abrir en la misma pestaña si no tiene target="_blank"
             window.location.href = targetLink;
         }
-        modal.style.display = 'none'; // Ocultar el modal
-        targetLink = null; // Limpiar el enlace objetivo
-        targetAttribute = null; // Limpiar el atributo target
+        modal.style.display = 'none';
+        targetLink = null;
+        targetAttribute = null;
     }
 });
 
-    // ============================================
-    // Código para animaciones estacionales
-    // ============================================
+// ============================================
+// Código para animaciones estacionales
+// ============================================
 
-    // Cuando se carga la página
-    window.addEventListener('load', () => {
-        flower();
-        sol();
-        leaf();
-        nieve();
-        aniversario();
-        googleTranslateElementInit();
-    });
+window.addEventListener('load', () => {
+    flower();
+    sol();
+    leaf();
+    nieve();
+    aniversario();
+    googleTranslateElementInit();
+});
 
-    // Funciones optimizadas para cada evento estacional
-    function flower() {
-        const today = new Date();
-        const month = today.getMonth();
-        const day = today.getDate();
-        if ((month === 2 && day >= 20) || (month === 2 && day <= 27)) {
-            createElements('flower', 200, 3, 2, 7);
-        }
+function flower() {
+    const today = new Date();
+    const month = today.getMonth();
+    const day = today.getDate();
+    if ((month === 2 && day >= 20) || (month === 2 && day <= 27)) {
+        createElements('flower', 200, 3, 2, 7);
     }
+}
 
-    function sol() {
-        const today = new Date();
-        const month = today.getMonth();
-        const day = today.getDate();
-        if ((month === 5 && day >= 21) || (month === 5 && day <= 28)) {
-            createElements('sun', 200, 3, 2, 7);
-        }
+function sol() {
+    const today = new Date();
+    const month = today.getMonth();
+    const day = today.getDate();
+    if ((month === 5 && day >= 21) || (month === 5 && day <= 28)) {
+        createElements('sun', 200, 3, 2, 7);
     }
+}
 
-    function leaf() {
-        const today = new Date();
-        const month = today.getMonth();
-        const day = today.getDate();
-        if ((month === 8 && day >= 20) || (month === 8 && day <= 30)) {
-            createElements('leaf', 200, 3, 2, 7);
-        }
+function leaf() {
+    const today = new Date();
+    const month = today.getMonth();
+    const day = today.getDate();
+    if ((month === 8 && day >= 20) || (month === 8 && day <= 30)) {
+        createElements('leaf', 200, 3, 2, 7);
     }
+}
 
-    function nieve() {
-        const today = new Date();
-        const month = today.getMonth();
-        const day = today.getDate();
-        if ((month >= 11 && day >= 1) || (month === 0 && day <= 5)) {
-            createElements('snowflake', 250, 6, 2, 10);
-        }
+function nieve() {
+    const today = new Date();
+    const month = today.getMonth();
+    const day = today.getDate();
+    if ((month >= 11 && day >= 1) || (month === 0 && day <= 5)) {
+        createElements('snowflake', 250, 6, 2, 10);
     }
+}
 
-    function aniversario() {
-        const today = new Date();
-        const month = today.getMonth();
-        const day = today.getDate();
-        if ((month === 6 && day >= 30) || (month === 7 && day <= 7)) {
-            createElements('aniversario', 200, 3, 2, 7);
-        }
+function aniversario() {
+    const today = new Date();
+    const month = today.getMonth();
+    const day = today.getDate();
+    if ((month === 6 && day >= 30) || (month === 7 && day <= 7)) {
+        createElements('aniversario', 200, 3, 2, 7);
     }
+}
 
-    // Función para crear elementos con animación
-    function createElements(className, count, animDurationBase, animDurationOffset, animDelay) {
-        for (let i = 0; i < count; i++) {
-            const element = document.createElement('div');
-            element.className = className;
-            element.style.left = `${Math.random() * window.innerWidth}px`;
-            element.style.animationDuration = `${Math.random() * animDurationBase + animDurationOffset}s`;
-            element.style.animationDelay = `${Math.random() * animDelay}s`;
-            element.style.opacity = Math.random();
-            element.style.transform = `scale(${Math.random()})`;
-            document.body.appendChild(element);
-        }
+function createElements(className, count, animDurationBase, animDurationOffset, animDelay) {
+    for (let i = 0; i < count; i++) {
+        const element = document.createElement('div');
+        element.className = className;
+        element.style.left = `${Math.random() * window.innerWidth}px`;
+        element.style.animationDuration = `${Math.random() * animDurationBase + animDurationOffset}s`;
+        element.style.animationDelay = `${Math.random() * animDelay}s`;
+        element.style.opacity = Math.random();
+        element.style.transform = `scale(${Math.random()})`;
+        document.body.appendChild(element);
     }
+}
 
-    // ============================================
-    // Código para Google Translate
-    // ============================================
+// ============================================
+// Código para Google Translate
+// ============================================
 
-    // Función para inicializar el elemento de Google Translate
-    function googleTranslateElementInit() {
-        if (typeof google !== 'undefined' && google.translate) {
-            new google.translate.TranslateElement({
-                pageLanguage: 'es',
-                includedLanguages: 'es,en,fr,de,it,pt,zh-CN,ja,ko,ru,ar',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-            }, 'google_translate_element');
-        } else {
-            console.error("Google Translate API no está disponible.");
-        }
+function googleTranslateElementInit() {
+    if (typeof google !== 'undefined' && google.translate) {
+        new google.translate.TranslateElement({
+            pageLanguage: 'es',
+            includedLanguages: 'es,en,fr,de,it,pt,zh-CN,ja,ko,ru,ar',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, 'google_translate_element');
+    } else {
+        console.error("Google Translate API no está disponible.");
     }
+}
 
-    // ============================================
-    // Código para insignias de usuarios
-    // ============================================
+// ============================================
+// Código para insignias de usuarios
+// ============================================
 
-    // Datos de usuarios y sus insignias
-    const usuarios = {
-        "Grouvex Studios": {
-            principales: ["verified-team", "owner", "vdeveloper", "vbughunter"],
-            secundarias: ["verified", "vvadmin", "vadmin", "vmod"]
-        },
-        "Grouvex Phoenix": {
-            principales: ["verified-team", "vvadmin", "owner-recording", "vdeveloper", "vbughunter", "artista", "diseñador"],
-            secundarias: ["verified", "vadmin", "vmod"]
-        },
-        "Tarlight Etherall": {
-            principales: ["verified-team", "admin", "vvadmin", "vmod", "owner-designs", "artista", "diseñador"],
-            secundarias: ["verified"]
-        }
-    };
+const usuarios = {
+    "Grouvex Studios": {
+        principales: ["verified-team", "owner", "vdeveloper", "vbughunter"],
+        secundarias: ["verified", "vvadmin", "vadmin", "vmod"]
+    },
+    "Grouvex Phoenix": {
+        principales: ["verified-team", "vvadmin", "owner-recording", "vdeveloper", "vbughunter", "artista", "diseñador"],
+        secundarias: ["verified", "vadmin", "vmod"]
+    },
+    "Tarlight Etherall": {
+        principales: ["verified-team", "admin", "vvadmin", "vmod", "owner-designs", "artista", "diseñador"],
+        secundarias: ["verified"]
+    }
+};
 
-    // Mostrar nombre de usuario y sus insignias
-    function mostrarUsuarioYInsignias(nombreUsuario, elements) {
-        elements.forEach(element => {
-            const spanNombre = document.createElement("span");
-            spanNombre.textContent = nombreUsuario;
-            element.appendChild(spanNombre);
+function mostrarUsuarioYInsignias(nombreUsuario, elements) {
+    elements.forEach(element => {
+        const spanNombre = document.createElement("span");
+        spanNombre.textContent = nombreUsuario;
+        element.appendChild(spanNombre);
 
-            const spanInsigniasPrincipales = document.createElement("div");
-            usuarios[nombreUsuario].principales.forEach(insignia => {
-                const spanInsignia = document.createElement("span");
-                spanInsignia.classList.add("insignia", insignia);
-                spanInsigniasPrincipales.appendChild(spanInsignia);
-            });
-            element.appendChild(spanInsigniasPrincipales);
-
-            const detailsSecundarias = document.createElement("details");
-            const summarySecundarias = document.createElement("summary");
-            summarySecundarias.textContent = "Insignias Secundarias";
-            summarySecundarias.style.fontSize = "10px";
-
-            detailsSecundarias.appendChild(summarySecundarias);
-            const spanInsigniasSecundarias = document.createElement("div");
-            usuarios[nombreUsuario].secundarias.forEach(insignia => {
-                const spanInsignia = document.createElement("span");
-                spanInsignia.classList.add("insignia", insignia);
-                spanInsigniasSecundarias.appendChild(spanInsignia);
-            });
-            detailsSecundarias.appendChild(spanInsigniasSecundarias);
-            element.appendChild(detailsSecundarias);
+        const spanInsigniasPrincipales = document.createElement("div");
+        usuarios[nombreUsuario].principales.forEach(insignia => {
+            const spanInsignia = document.createElement("span");
+            spanInsignia.classList.add("insignia", insignia);
+            spanInsigniasPrincipales.appendChild(spanInsignia);
         });
-    }
+        element.appendChild(spanInsigniasPrincipales);
 
-    // Llamar a la función cuando el DOM esté cargado
-    Object.keys(usuarios).forEach(usuario => {
-        const elements = document.querySelectorAll(`.${usuario.replace(/\s+/g, '-')}`);
-        if (elements.length > 0) {
-            mostrarUsuarioYInsignias(usuario, elements);
-        }
+        const detailsSecundarias = document.createElement("details");
+        const summarySecundarias = document.createElement("summary");
+        summarySecundarias.textContent = "Insignias Secundarias";
+        summarySecundarias.style.fontSize = "10px";
+
+        detailsSecundarias.appendChild(summarySecundarias);
+        const spanInsigniasSecundarias = document.createElement("div");
+        usuarios[nombreUsuario].secundarias.forEach(insignia => {
+            const spanInsignia = document.createElement("span");
+            spanInsignia.classList.add("insignia", insignia);
+            spanInsigniasSecundarias.appendChild(spanInsignia);
+        });
+        detailsSecundarias.appendChild(spanInsigniasSecundarias);
+        element.appendChild(detailsSecundarias);
     });
+}
+
+Object.keys(usuarios).forEach(usuario => {
+    const elements = document.querySelectorAll(`.${usuario.replace(/\s+/g, '-')}`);
+    if (elements.length > 0) {
+        mostrarUsuarioYInsignias(usuario, elements);
+    }
+}); 

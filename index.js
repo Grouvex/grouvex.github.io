@@ -2,74 +2,50 @@
 // Código para manejar enlaces y el modal
 // ============================================
 
-// Crear el estilo CSS dinámicamente
+// Crear el estilo CSS dinámicamente (lo más rápido posible)
 const style = document.createElement('style');
 style.innerHTML = `
-.modal {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    max-width: 300px;
-    padding: 20px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    background: black;
-    text-align: center;
-    border-radius: 10px;
-    z-index: 1000;
-    margin: 20px;
-    box-sizing: border-box;
-}
-
-.modal img {
-    width: 100%;
-    max-width: 200px;
-    height: auto;
-}
-
-.modal p {
-    margin: 20px 0;
-    color: white;
-    font-size: 14px;
-}
-
-.modal button {
-    padding: 5px 10px;
-    margin: 3px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.modal button.cancel {
-    background: linear-gradient(45deg, red, blue);
-}
-
-.modal button.continue {
-    background: linear-gradient(45deg, green, blue);
-    color: white;
-}
+    .modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        background: black;
+        text-align: center;
+        border-radius: 10px;
+        z-index: 1000;
+    }
+    .modal img {
+        width: 50px;
+        height: auto;
+    }
+    .modal p {
+        margin: 20px 0;
+        color: white;
+    }
+    .modal button {
+        padding: 10px 20px;
+        margin: 5px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .modal button.cancel {
+        background-color: #ccc;
+    }
+    .modal button.continue {
+        background-color: #4CAF50;
+        color: white;
+    }
 `;
 document.head.appendChild(style);
 
-// Crear el HTML del modal
-const modalHTML = `
-    <div id="customModal" class="modal">
-        <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png" alt="Logo">
-        <p>Estás a punto de salir de <n>Grouvex Studios</n>. Grouvex Studios no se responsabiliza por el contenido, la seguridad, las políticas de privacidad o las prácticas de los sitios de terceros, fuera del dominio, puesto que los Términos de Servicio y Políticas de Privacidad, de Grouvex Studios, solo tienen validez dentro del dominio o donde el equipo tenga permiso para actuar.</p>
-        <ul><li>Si le da a Cancelar, permanecerá dentro de Grouvex Studios.</li><li>Si le da a Continuar, se le redirigirá a la página seleccionada.</li></ul>
-        <button class="cancel">Cancelar</button>
-        <button class="continue">Continuar</button>
-    </div>
-`;
-document.body.insertAdjacentHTML('beforeend', modalHTML);
-
-// Obtener referencias a los elementos del modal
-const modal = document.getElementById('customModal');
-const cancelButton = modal.querySelector('.cancel');
-const continueButton = modal.querySelector('.continue');
+// Variables globales para el modal
+let modal, cancelButton, continueButton;
 let targetLink = null;
 let targetAttribute = null;
 
@@ -83,21 +59,80 @@ function isExternalLink(href) {
         const url = new URL(href, window.location.origin);
         return !allowedDomains.includes(url.hostname);
     } catch (e) {
-        return false;
+        return false; // Si no es una URL válida, no es un enlace externo
     }
 }
 
 // Función para manejar clics en elementos con href
 function handleLinkClick(event) {
-    const element = event.target.closest('[href]');
-    if (element && isExternalLink(element.getAttribute('href'))) {
-        event.preventDefault();
-        targetLink = element.getAttribute('href');
-        targetAttribute = element.getAttribute('target');
-        modal.style.display = 'block';
+    const element = event.target.closest('[href]'); // Busca el elemento más cercano con href
+    if (element) {
+        const href = element.getAttribute('href');
+
+        // Verificar si el enlace es externo
+        if (isExternalLink(href)) {
+            event.preventDefault(); // Evitar la acción predeterminada
+            targetLink = href; // Guardar el enlace objetivo
+            targetAttribute = element.getAttribute('target'); // Guardar el atributo target
+
+            // Si el modal no existe, crearlo
+            if (!modal) {
+                createModal();
+            }
+            modal.style.display = 'block'; // Mostrar el modal
+        }
     }
 }
 
+// Función para crear el modal dinámicamente
+function createModal() {
+    const modalHTML = `
+        <div id="customModal" class="modal">
+            <img src="https://github.com/Grouvex/grouvex.github.io/blob/main/img%2FGrouvex1.png" alt="Logo">
+            <p>
+                ¿Estás seguro de que deseas salir de nuestro sitio? 
+                Al hacer clic en "Continuar", serás redirigido a un sitio web externo. 
+                Grouvex Studios no se responsabiliza por el contenido, la seguridad, 
+                las políticas de privacidad o las prácticas de los sitios de terceros. 
+                Te recomendamos revisar los términos y condiciones, así como las políticas 
+                de privacidad del sitio al que accederás.
+            </p>
+            <button class="cancel">Cancelar</button>
+            <button class="continue">Continuar</button>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+    // Obtener referencias a los elementos del modal
+    modal = document.getElementById('customModal');
+    cancelButton = modal.querySelector('.cancel');
+    continueButton = modal.querySelector('.continue');
+
+    // Event listener para el botón "Cancelar"
+    cancelButton.addEventListener('click', function () {
+        modal.style.display = 'none'; // Ocultar el modal
+        targetLink = null; // Limpiar el enlace objetivo
+        targetAttribute = null; // Limpiar el atributo target
+    });
+
+    // Event listener para el botón "Continuar"
+    continueButton.addEventListener('click', function () {
+        if (targetLink) {
+            if (targetAttribute === '_blank') {
+                // Abrir en una nueva pestaña si tiene target="_blank"
+                window.open(targetLink, '_blank');
+            } else {
+                // Abrir en la misma pestaña si no tiene target="_blank"
+                window.location.href = targetLink;
+            }
+            modal.style.display = 'none'; // Ocultar el modal
+            targetLink = null; // Limpiar el enlace objetivo
+            targetAttribute = null; // Limpiar el atributo target
+        }
+    });
+}
+
+// Interceptar clics en todos los enlaces (incluso antes de que el DOM esté listo)
 document.addEventListener('click', handleLinkClick);
 
 // Interceptar redirecciones mediante JavaScript
@@ -106,30 +141,14 @@ window.open = function(url, target, features) {
     if (isExternalLink(url)) {
         targetLink = url;
         targetAttribute = target || '_self';
+        if (!modal) {
+            createModal();
+        }
         modal.style.display = 'block';
-        return null;
+        return null; // Evitar que se abra la ventana inmediatamente
     }
     return originalWindowOpen(url, target, features);
 };
-
-cancelButton.addEventListener('click', () => {
-    modal.style.display = 'none';
-    targetLink = null;
-    targetAttribute = null;
-});
-
-continueButton.addEventListener('click', () => {
-    if (targetLink) {
-        if (targetAttribute === '_blank') {
-            window.open(targetLink, '_blank');
-        } else {
-            window.location.href = targetLink;
-        }
-        modal.style.display = 'none';
-        targetLink = null;
-        targetAttribute = null;
-    }
-});
 
 // ============================================
 // Código para animaciones estacionales

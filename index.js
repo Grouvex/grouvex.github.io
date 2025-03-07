@@ -281,9 +281,12 @@ function mostrarUsuarioYInsignias(nombreUsuario, elements) {
     });
 }
 
-Object.keys(usuarios).forEach(usuario => {
-    const elements = document.querySelectorAll(`.${usuario.replace(/\s+/g, '-')}`);
-    if (elements.length > 0) {
-        mostrarUsuarioYInsignias(usuario, elements);
-    }
-}); 
+// Esperar a que el DOM esté completamente cargado
+document.addEventListener("DOMContentLoaded", () => {
+    Object.keys(usuarios).forEach(usuario => {
+        const elements = document.querySelectorAll(`.${usuario.replace(/\s+/g, '-')}`);
+        if (elements.length > 0) {
+            mostrarUsuarioYInsignias(usuario, elements);
+        }
+    });
+});

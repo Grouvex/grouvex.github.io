@@ -66,19 +66,13 @@ function isExternalLink(href) {
 // Función para crear el modal dinámicamente
 function createModal() {
     const modalHTML = `
-        <div id="customModal" class="modal">
-            <img src="https://github.com/Grouvex/grouvex.github.io/blob/main/img%2FGrouvex1.png" alt="Logo">
-            <p>
-                ¿Estás seguro de que deseas salir de nuestro sitio? 
-                Al hacer clic en "Continuar", serás redirigido a un sitio web externo. 
-                Grouvex Studios no se responsabiliza por el contenido, la seguridad, 
-                las políticas de privacidad o las prácticas de los sitios de terceros. 
-                Te recomendamos revisar los términos y condiciones, así como las políticas 
-                de privacidad del sitio al que accederás.
-            </p>
-            <button class="cancel">Cancelar</button>
-            <button class="continue">Continuar</button>
-        </div>
+    <div id="customModal" class="modal">
+        <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png" alt="Logo">
+        <p>Estás a punto de salir de <n>Grouvex Studios</n>. Grouvex Studios no se responsabiliza por el contenido, la seguridad, las políticas de privacidad o las prácticas de los sitios de terceros, fuera del dominio, puesto que los Términos de Servicio y Políticas de Privacidad, de Grouvex Studios, solo tienen validez dentro del dominio o donde el equipo tenga permiso para actuar.</p>
+        <ul><li>Si le da a Cancelar, permanecerá dentro de Grouvex Studios.</li><li>Si le da a Continuar, se le redirigirá a la página seleccionada.</li></ul>
+        <button class="cancel">Cancelar</button>
+        <button class="continue">Continuar</button>
+    </div>
     `;
     document.body.insertAdjacentHTML('beforeend', modalHTML);
 

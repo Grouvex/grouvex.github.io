@@ -50,7 +50,7 @@ let targetLink = null;
 let targetAttribute = null;
 
 // Dominios permitidos
-const allowedDomains = ['grouvex.com', 'grouvex.github.io'];
+const allowedDomains = ['grouvex.com', 'Grouvex.github.io'];
 
 // Función para verificar si un enlace es externo
 function isExternalLink(href) {
@@ -60,27 +60,6 @@ function isExternalLink(href) {
         return !allowedDomains.includes(url.hostname);
     } catch (e) {
         return false; // Si no es una URL válida, no es un enlace externo
-    }
-}
-
-// Función para manejar clics en elementos con href
-function handleLinkClick(event) {
-    const element = event.target.closest('[href]'); // Busca el elemento más cercano con href
-    if (element) {
-        const href = element.getAttribute('href');
-
-        // Verificar si el enlace es externo
-        if (isExternalLink(href)) {
-            event.preventDefault(); // Evitar la acción predeterminada
-            targetLink = href; // Guardar el enlace objetivo
-            targetAttribute = element.getAttribute('target'); // Guardar el atributo target
-
-            // Si el modal no existe, crearlo
-            if (!modal) {
-                createModal();
-            }
-            modal.style.display = 'block'; // Mostrar el modal
-        }
     }
 }
 
@@ -130,6 +109,27 @@ function createModal() {
             targetAttribute = null; // Limpiar el atributo target
         }
     });
+}
+
+// Función para manejar clics en elementos con href
+function handleLinkClick(event) {
+    const element = event.target.closest('[href]'); // Busca el elemento más cercano con href
+    if (element) {
+        const href = element.getAttribute('href');
+
+        // Verificar si el enlace es externo
+        if (isExternalLink(href)) {
+            event.preventDefault(); // Evitar la acción predeterminada
+            targetLink = href; // Guardar el enlace objetivo
+            targetAttribute = element.getAttribute('target'); // Guardar el atributo target
+
+            // Si el modal no existe, crearlo
+            if (!modal) {
+                createModal();
+            }
+            modal.style.display = 'block'; // Mostrar el modal
+        }
+    }
 }
 
 // Interceptar clics en todos los enlaces (incluso antes de que el DOM esté listo)

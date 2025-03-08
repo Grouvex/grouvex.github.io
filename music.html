@@ -183,7 +183,7 @@
             background-color: #1db954;
         }
         /* Deshabilitar el menú contextual para evitar la descarga del audio */ 
-        audio { -webkit-user-select: none; /* Prevenir selección del texto */ -moz-user-select: none; -ms-user-select: none; user-select: none; }
+        audio { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
         audio::-webkit-media-controls-enclosure { display: none !important; }
         audio::controls {display: none !important; }
          #warning {
@@ -233,6 +233,7 @@
         </div>
         <script>const uTActualizado = 1738429200; actualizarFechas(uTActualizado, "ActualizadoDATE");</script>
         <!-- Título -->
+        <div id="player">
         <details>
             <summary>Términos de Servicio y Políticas de Privacidad</summary>
               <details>
@@ -244,19 +245,6 @@
                   <p>Puesto que las canciones pertenecen a los respectivos artistas y la información está administrada por <a href="https://grouvex.github.io/gsrecording">Grouvex Studios Recording</a>, éste mantendrá la información privada del artista (aquella información que no se nos ha concedido permiso para compartir), se mantendrá en privado. También, los usuarios que usen estas funciones, deberán usarlo según el proposito de este reproductor, el cúal es poder disfurtar de las canciones SIN ANUNCIOS y algunas veces, antes de su lanzamiento.</p>
               </details>
         </details>
-        <details id="warning">
-            <summary>Estado de las funcionalidades</summary>
-        <div>
-            <ul>
-                <li id="warningControls">Controles: Habilitados</li>
-                <li id="warningPlaylist">Lista de reproducción: Habilitada</li>
-                <li id="warningVolume">Volumen: Habilitado</li>
-                <li id="warningProgress">Barra de progreso: Habilitada</li>
-                <li id="warningAudio">Reproducción de audio: Habilitada</li>
-            </ul>
-        </div>
-            </details>
-        <div id="player">
             <h1>Reproductor de Música</h1>
             <div id="currentTrackInfo">
                 <h2 id="trackName"></h2>
@@ -310,6 +298,18 @@
                         <!-- La lista de canciones se generará dinámicamente aquí -->
                     </ul>
                 </div>
+            </details>
+                    <details id="warning">
+            <summary>Estado de las funcionalidades</summary>
+        <div>
+            <ul>
+                <li id="warningControls">Controles: Habilitados</li>
+                <li id="warningPlaylist">Lista de reproducción: Habilitada</li>
+                <li id="warningVolume">Volumen: Habilitado</li>
+                <li id="warningProgress">Barra de progreso: Habilitada</li>
+                <li id="warningAudio">Reproducción de audio: Habilitada</li>
+            </ul>
+        </div>
             </details>
             <audio id="audioPlayer" controls></audio>
         </div>

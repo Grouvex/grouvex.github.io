@@ -71,6 +71,36 @@ function isExternalLink(href) {
     }
 }
 
+// Función para manejar clics en elementos con href
+function handleLinkClick(event) {
+    console.log("Clic detectado en un elemento con href.");
+    const element = event.target.closest('[href]'); // Busca el elemento más cercano con href
+    if (element) {
+        const href = element.getAttribute('href');
+        console.log(`Enlace clickeado: ${href}`);
+
+        // Verificar si el enlace es externo
+        if (isExternalLink(href)) {
+            console.log("El enlace es externo. Mostrando modal...");
+            event.preventDefault(); // Evitar la acción predeterminada
+            targetLink = href; // Guardar el enlace objetivo
+            targetAttribute = element.getAttribute('target'); // Guardar el atributo target
+            console.log(`Enlace objetivo: ${targetLink}, Atributo target: ${targetAttribute}`);
+
+            // Si el modal no existe, crearlo
+            if (!modal) {
+                console.log("El modal no existe. Creándolo...");
+                createModal();
+            }
+            modal.style.display = 'block'; // Mostrar el modal
+        } else {
+            console.log("El enlace no es externo. No se muestra el modal.");
+        }
+    } else {
+        console.log("El clic no fue en un elemento con href.");
+    }
+}
+
 // Función para crear el modal dinámicamente
 function createModal() {
     console.log("Creando el modal...");
@@ -104,6 +134,7 @@ function createModal() {
 
     // Event listener para el botón "Continuar"
     continueButton.addEventListener('click', function () {
+        const href = element.getAttribute('href');
         console.log("Botón Continuar clickeado.");
         if (targetLink) {
             console.log(`Redirigiendo a: ${targetLink}`);
@@ -125,36 +156,6 @@ function createModal() {
             console.log("No hay enlace objetivo (targetLink es null).");
         }
     });
-}
-
-// Función para manejar clics en elementos con href
-function handleLinkClick(event) {
-    console.log("Clic detectado en un elemento con href.");
-    const element = event.target.closest('[href]'); // Busca el elemento más cercano con href
-    if (element) {
-        const href = element.getAttribute('href');
-        console.log(`Enlace clickeado: ${href}`);
-
-        // Verificar si el enlace es externo
-        if (isExternalLink(href)) {
-            console.log("El enlace es externo. Mostrando modal...");
-            event.preventDefault(); // Evitar la acción predeterminada
-            targetLink = href; // Guardar el enlace objetivo
-            targetAttribute = element.getAttribute('target'); // Guardar el atributo target
-            console.log(`Enlace objetivo: ${targetLink}, Atributo target: ${targetAttribute}`);
-
-            // Si el modal no existe, crearlo
-            if (!modal) {
-                console.log("El modal no existe. Creándolo...");
-                createModal();
-            }
-            modal.style.display = 'block'; // Mostrar el modal
-        } else {
-            console.log("El enlace no es externo. No se muestra el modal.");
-        }
-    } else {
-        console.log("El clic no fue en un elemento con href.");
-    }
 }
 
 // Interceptar clics en todos los enlaces (incluso antes de que el DOM esté listo)

@@ -223,22 +223,20 @@
                 <div id="infoLine1">
                     <span id="trackArtist"></span> - <span id="trackAlbum"></span>
                 </div>
+                <details>
+                <summary>Créditos</summary>
                 <div id="infoLine2">
                     <span id="trackLabel"></span> | 
                     <span id="trackComposer"></span> | 
                     <span id="trackProducer"></span>
                 </div>
+                </details>
+                <details>
                 <div id="trackDates"> 
                     <p>Información de la fecha de reproducción: mes/día</p>  
                     <span id="startDate"></span> - <span id="endDate"></span> 
                 </div>
-                <p id="trackSpotify"><a href="" target="_blank" id="spotifyLink">Escuchar en Spotify</a></p>
-            </div>
-            <div id="youtubeVideo" style="display: none;"> 
-                <iframe id="youtubePlayer" width="100%" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe>
-            </div>
-            <div id="spotifyVideo" style="display: none;"> 
-                <iframe style="border-radius:12px" id="spotifyPlayer" width="100%" height="152" frameBorder="0" allowfullscreen="false" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture" loading="lazy"></iframe>
+                </details>
             </div>
             <div id="controls">
                 <button id="random"><i class="fas fa-random"></i></button>
@@ -257,6 +255,13 @@
             <p>Volume</p>
             <div id="volumeBar">
                 <div id="volume"></div>
+            </div>
+             <p id="trackSpotify"><a href="" target="_blank" id="spotifyLink">Escuchar en Spotify</a></p>
+              <div id="spotifyVideo" style="display: none;"> 
+                 <iframe style="border-radius:12px" id="spotifyPlayer" width="100%" height="152" frameBorder="0" allowfullscreen="false" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture" loading="lazy"></iframe>
+              </div>
+            <div id="youtubeVideo" style="display: none;"> 
+            <iframe id="youtubePlayer" width="100%" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe>
             </div>
             <details>
                 <summary href="#Playlist"><h3>Playlist</h3></summary>

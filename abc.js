@@ -150,7 +150,7 @@ onAuthStateChanged(auth, async (user) => {
     console.log("Usuario no autenticado");
     const authContainer = document.getElementById('auth-container');
     const content = document.getElementById('content');
-    inicializarFormularioDeAutenticacion();
+    if (window.location.pathname.includes('login')) {inicializarFormularioDeAutenticacion();}
     if (authContainer && content) {
       authContainer.style.display = 'block';
       content.style.display = 'none';
@@ -276,34 +276,48 @@ function handleEmailRegistration(email, password) {
     });
 }
 
+// Función para iniciar sesión con Google usando redirección
 function handleGoogleLogin() {
-  const provider = new GoogleAuthProvider();
-  signInWithPopup(auth, provider)
+    const provider = new GoogleAuthProvider();
+    signInWithRedirect(auth, provider)
+        .then(() => {
+            console.log("Redirigiendo para autenticación con Google...");
+        })
+        .catch((error) => {
+            console.error("Error al redirigir para autenticación:", error.message);
+            alert('Error al iniciar sesión con Google: ' + error.message);
+        });
+}
+
+getRedirectResult(auth)
     .then((result) => {
-      const user = result.user;
-      console.log("Usuario inició sesión con Google:", user.email);
-      if (!user.emailVerified) {
-        sendEmailVerification(user)
-          .then(() => {
-            console.log('Correo de verificación enviado.');
-            alert('Por favor, verifica tu correo electrónico antes de continuar.');
-            verifyEmailAndUpdateProfile(user);
-          })
-          .catch((error) => {
-            console.error("Error al enviar correo de verificación:", error.message);
-            alert('Error al enviar correo de verificación: ' + error.message);
-          });
-      } else {
-        checkAccess(user.uid);
-        alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
-        redirectUser();
-      }
+        if (result) {
+            const user = result.user;
+            console.log("Usuario autenticado con Google:", user.email);
+
+            // Verificar si el correo electrónico está verificado
+            if (!user.emailVerified) {
+                sendEmailVerification(user)
+                    .then(() => {
+                        console.log('Correo de verificación enviado.');
+                        alert('Por favor, verifica tu correo electrónico antes de continuar.');
+                        verifyEmailAndUpdateProfile(user);
+                    })
+                    .catch((error) => {
+                        console.error("Error al enviar correo de verificación:", error.message);
+                        alert('Error al enviar correo de verificación: ' + error.message);
+                    });
+            } else {
+                checkAccess(user.uid);
+                alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
+                redirectUser();
+            }
+        }
     })
     .catch((error) => {
-      console.error("Error al iniciar sesión con Google:", error.message);
-      alert('Error al iniciar sesión con Google: ' + error.message);
+        console.error("Error al obtener el resultado de la redirección:", error.message);
+        alert('Error al iniciar sesión con Google: ' + error.message);
     });
-}
 
 function verifyEmailAndUpdateProfile(user) {
   const checkVerificationInterval = setInterval(() => {

@@ -43,7 +43,6 @@ style.innerHTML = `
     }
 `;
 document.head.appendChild(style);
-console.log("Estilos CSS del modal añadidos correctamente.");
 
 // Variables globales para el modal
 let modal, cancelButton, continueButton;
@@ -52,28 +51,20 @@ let targetAttribute = null;
 
 // Dominios permitidos
 const allowedDomains = ['grouvex.com', 'grouvex.github.io'];
-console.log("Dominios permitidos:", allowedDomains);
 
 // Función para verificar si un enlace es externo
 function isExternalLink(href) {
-    if (!href) {
-        console.log("El enlace no tiene href.");
-        return false;
-    }
+    if (!href) return false;
     try {
         const url = new URL(href, window.location.origin);
-        const isExternal = !allowedDomains.includes(url.hostname);
-        console.log(`Enlace: ${href}, ¿Es externo? ${isExternal}`);
-        return isExternal;
+        return !allowedDomains.includes(url.hostname);
     } catch (e) {
-        console.log(`Error al procesar el enlace ${href}:`, e);
         return false; // Si no es una URL válida, no es un enlace externo
     }
 }
 
 // Función para crear el modal dinámicamente
 function createModal() {
-    console.log("Creando el modal...");
     const modalHTML = `
     <div id="customModal" class="modal">
         <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png" alt="Logo">
@@ -87,7 +78,6 @@ function createModal() {
     </div>
     `;
     document.body.insertAdjacentHTML('beforeend', modalHTML);
-    console.log("Modal creado y añadido al DOM.");
 
     // Obtener referencias a los elementos del modal
     modal = document.getElementById('customModal');
@@ -96,7 +86,6 @@ function createModal() {
 
     // Event listener para el botón "Cancelar"
     cancelButton.addEventListener('click', function () {
-        console.log("Botón Cancelar clickeado.");
         modal.style.display = 'none'; // Ocultar el modal
         targetLink = null; // Limpiar el enlace objetivo
         targetAttribute = null; // Limpiar el atributo target
@@ -104,25 +93,19 @@ function createModal() {
 
     // Event listener para el botón "Continuar"
     continueButton.addEventListener('click', function () {
-        console.log("Botón Continuar clickeado.");
         if (targetLink) {
-            console.log(`Redirigiendo a: ${targetLink}`);
             modal.style.display = 'none'; // Ocultar el modal primero
 
             // Redirigir según el atributo target
             if (targetAttribute === '_blank') {
-                console.log("Abriendo en una nueva pestaña.");
                 window.open(targetLink, '_blank'); // Abrir en una nueva pestaña
             } else {
-                console.log("Abriendo en la misma pestaña.");
                 window.location.href = targetLink; // Abrir en la misma pestaña
             }
 
             // Limpiar las variables
             targetLink = null;
             targetAttribute = null;
-        } else {
-            console.log("No hay enlace objetivo (targetLink es null).");
         }
     });
 }
@@ -159,30 +142,23 @@ function handleLinkClick(event) {
 
 // Interceptar clics en todos los enlaces (incluso antes de que el DOM esté listo)
 document.addEventListener('click', handleLinkClick);
-console.log("Listener de clics añadido.");
 
 // Interceptar redirecciones mediante JavaScript
 const originalWindowOpen = window.open;
 window.open = function (url, target, features) {
-    console.log(`Interceptando window.open: ${url}`);
     if (isExternalLink(url)) {
-        console.log("El enlace es externo. Mostrando modal...");
         targetLink = url;
         targetAttribute = target || '_self';
-        console.log(`Enlace objetivo: ${targetLink}, Atributo target: ${targetAttribute}`);
 
         // Si el modal no existe, crearlo
         if (!modal) {
-            console.log("El modal no existe. Creándolo...");
             createModal();
         }
         modal.style.display = 'block'; // Mostrar el modal
         return null; // Evitar que se abra la ventana inmediatamente
     }
-    console.log("El enlace no es externo. Redirigiendo normalmente.");
     return originalWindowOpen(url, target, features); // Redirigir normalmente si no es un enlace externo
 };
-console.log("Interceptación de window.open configurada.");
 
 // ============================================
 // Código para animaciones estacionales

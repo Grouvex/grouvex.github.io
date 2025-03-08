@@ -186,6 +186,23 @@
         audio { -webkit-user-select: none; /* Prevenir selección del texto */ -moz-user-select: none; -ms-user-select: none; user-select: none; }
         audio::-webkit-media-controls-enclosure { display: none !important; }
         audio::controls {display: none !important; }
+         #warning {
+            background-color: #ffcc00;
+            color: #000;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        #warning ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        #warning ul li {
+            margin: 5px 0;
+        }
     </style>
 </head>
 <body>
@@ -216,6 +233,18 @@
         </div>
         <script>const uTActualizado = 1738429200; actualizarFechas(uTActualizado, "ActualizadoDATE");</script>
         <!-- Título -->
+        <details id="warning">
+            <summary>Estado de las funcionalidades</summary>
+        <div>
+            <ul>
+                <li id="warningControls">Controles: Habilitados</li>
+                <li id="warningPlaylist">Lista de reproducción: Habilitada</li>
+                <li id="warningVolume">Volumen: Habilitado</li>
+                <li id="warningProgress">Barra de progreso: Habilitada</li>
+                <li id="warningAudio">Reproducción de audio: Habilitada</li>
+            </ul>
+        </div>
+            </details>
         <div id="player">
             <h1>Reproductor de Música</h1>
             <div id="currentTrackInfo">
@@ -313,7 +342,62 @@
             let isRandom = false;
             let repeatMode = 0; // 0: No repetir, 1: Repetir lista, 2: Repetir canción
             let previousRandomIndex = -1; // Para evitar repetir la misma canción en modo aleatorio
+// Variables de control
+            const controlsEnabled = true;
+            const playlistEnabled = false;
+            const volumeEnabled = false;
+            const progressEnabled = false;
+            const audioEnabled = true;
 
+            // Elementos de la advertencia
+            const warning = document.getElementById('warning');
+            const warningControls = document.getElementById('warningControls');
+            const warningPlaylist = document.getElementById('warningPlaylist');
+            const warningVolume = document.getElementById('warningVolume');
+            const warningProgress = document.getElementById('warningProgress');
+            const warningAudio = document.getElementById('warningAudio');
+
+            // Mostrar advertencia con el estado de las funcionalidades
+            if (controlsEnabled && playlistEnabled && volumeEnabled && progressEnabled && audioEnabled) {warning.style.display = 'none'; } else {warning.style.display = 'block';}
+            warningControls.textContent = `Controles: ${controlsEnabled ? 'Habilitados' : 'Deshabilitados'}`;
+            warningPlaylist.textContent = `Lista de reproducción: ${playlistEnabled ? 'Habilitada' : 'Deshabilitada'}`;
+            warningVolume.textContent = `Volumen: ${volumeEnabled ? 'Habilitado' : 'Deshabilitado'}`;
+            warningProgress.textContent = `Barra de progreso: ${progressEnabled ? 'Habilitada' : 'Deshabilitada'}`;
+            warningAudio.textContent = `Reproducción de audio: ${audioEnabled ? 'Habilitada' : 'Deshabilitada'}`;
+
+            // Deshabilitar controles si no están habilitados
+            if (!controlsEnabled) {
+                document.querySelectorAll('#controls button').forEach(button => {
+                    button.disabled = true;
+                });
+            }
+
+            // Deshabilitar lista de reproducción si no está habilitada
+            if (!playlistEnabled) {
+                document.getElementById('playlist').style.pointerEvents = 'none';
+                document.getElementById('playlist').style.opacity = '0.5';
+            }
+
+            // Deshabilitar volumen si no está habilitado
+            if (!volumeEnabled) {
+                volumeBar.style.pointerEvents = 'none';
+                volumeBar.style.opacity = '0.5';
+                audioPlayer.volume = 1; // Fijar volumen al máximo
+            }
+
+            // Deshabilitar barra de progreso si no está habilitada
+            if (!progressEnabled) {
+                progressBar.style.pointerEvents = 'none';
+                progressBar.style.opacity = '0.5';
+            }
+
+            // Deshabilitar reproducción de audio si no está habilitada
+            if (!audioEnabled) {
+                audioPlayer.style.pointerEvents = 'none';
+                audioPlayer.style.opacity = '0.5';
+                audioPlayer.pause();
+                playPauseButton.disabled = true;
+            }
             const tracks = [
                 {
             name: 'A Parallel Universe',

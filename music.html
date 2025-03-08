@@ -29,6 +29,8 @@
     <meta name="HandheldFriendly" content="true">
     <link rel="preconnect" href="https://example.com">
     <link rel="dns-prefetch" href="https://example.com">
+    <!-- FontAwesome para los íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Scripts sin nonce -->
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
@@ -97,6 +99,7 @@
             font-size: 24px;
             cursor: pointer;
             transition: color 0.3s;
+            padding: 10px;
         }
 
         #controls button:hover {
@@ -170,9 +173,9 @@
             background-color: #1db954;
         }
         /* Deshabilitar el menú contextual para evitar la descarga del audio */ 
-audio { -webkit-user-select: none; /* Prevenir selección del texto */ -moz-user-select: none; -ms-user-select: none; user-select: none; }
-audio::-webkit-media-controls-enclosure { display: none !important; }
-audio::controls {display: none !important; }
+        audio { -webkit-user-select: none; /* Prevenir selección del texto */ -moz-user-select: none; -ms-user-select: none; user-select: none; }
+        audio::-webkit-media-controls-enclosure { display: none !important; }
+        audio::controls {display: none !important; }
     </style>
 </head>
 <body>

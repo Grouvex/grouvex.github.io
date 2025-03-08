@@ -58,7 +58,6 @@
             background-color: #181818;
             border-radius: 10px;
             padding: 20px;
-            width: 350px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
@@ -290,7 +289,8 @@
             let currentTrackIndex = 0;
             let isPlaying = false;
             let isRandom = false;
-            let repeatMode = 0; // 0: No repetir, 1: Repetir canción, 2: Repetir álbum
+            let repeatMode = 0; // 0: No repetir, 1: Repetir lista, 2: Repetir canción
+            let previousRandomIndex = -1; // Para evitar repetir la misma canción en modo aleatorio
 
             const tracks = [
                 {
@@ -776,20 +776,54 @@
             }
 
             function nextTrack() {
-                do {
-                    currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
-                } while (!isTrackAvailable(tracks[currentTrackIndex]));
+                if (repeatMode === 2) {
+                    // Repetición de canción: no cambia de canción
+                    playTrack(currentTrackIndex);
+                    return;
+                }
+
+                if (isRandom) {
+                    // Modo random: selecciona una canción aleatoria que no sea la anterior
+                    let randomIndex;
+                    do {
+                        randomIndex = Math.floor(Math.random() * tracks.length);
+                    } while (randomIndex === previousRandomIndex || !isTrackAvailable(tracks[randomIndex]));
+                    previousRandomIndex = randomIndex;
+                    currentTrackIndex = randomIndex;
+                } else {
+                    // Modo normal: siguiente canción en la lista
+                    do {
+                        currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+                    } while (!isTrackAvailable(tracks[currentTrackIndex]));
+                }
+
                 playTrack(currentTrackIndex);
             }
 
             function prevTrack() {
+                if (repeatMode === 2) {
+                    // Repetición de canción: no cambia de canción
+                    playTrack(currentTrackIndex);
+                    return;
+                }
+
+                // Modo normal: canción anterior en la lista
                 do {
                     currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
                 } while (!isTrackAvailable(tracks[currentTrackIndex]));
+
                 playTrack(currentTrackIndex);
             }
 
             function toggleRandom() {
+                if (tracks.filter(track => isTrackAvailable(track)).length <= 2) {
+                    // Si hay 0, 1 o 2 canciones, deshabilitar el modo aleatorio
+                    isRandom = false;
+                    randomButton.disabled = true;
+                    randomButton.innerHTML = '<i class="fas fa-random"></i>';
+                    return;
+                }
+
                 isRandom = !isRandom;
                 randomButton.innerHTML = isRandom ? '<i class="fas fa-random"></i>!' : '<i class="fas fa-random"></i>';
             }
@@ -838,6 +872,11 @@
                 }
             });
 
+            // Deshabilitar el botón de aleatorio si hay 0, 1 o 2 canciones
+            if (tracks.filter(track => isTrackAvailable(track)).length <= 2) {
+                randomButton.disabled = true;
+            }
+
             // Barra de progreso
             audioPlayer.addEventListener('timeupdate', () => {
                 const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
@@ -862,6 +901,21 @@
                 const volumeBarWidth = volumeBar.clientWidth;
                 const newVolume = clickX / volumeBarWidth;
                 audioPlayer.volume = newVolume;
+            });
+
+            // Reproducir automáticamente la siguiente canción al terminar
+            audioPlayer.addEventListener('ended', () => {
+                if (repeatMode === 2) {
+                    // Repetición de canción: repetir la misma canción
+                    playTrack(currentTrackIndex);
+                } else if (repeatMode === 1 || isRandom) {
+                    // Repetición de lista o random: pasar a la siguiente canción
+                    nextTrack();
+                } else {
+                    // Sin repetición: detener la reproducción
+                    isPlaying = false;
+                    playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+                }
             });
 
             // Event listeners

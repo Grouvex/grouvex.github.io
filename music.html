@@ -46,70 +46,228 @@
             $("#tosypp").load("tosypp.html");
         });
     </script>
-    <script src="//www.youtube.com/player_api"></script><script src="https://www.youtube.com/iframe_api"></script>
-    <script src="time.js"></script></script><script type="module"  src="abc.js"></script><script src="index.js"></script>
+    <script src="//www.youtube.com/player_api"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="time.js"></script>
+    <script type="module" src="abc.js"></script>
+    <!-- Estilos adicionales -->
+    <style>
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #player {
+            background-color: #181818;
+            border-radius: 10px;
+            padding: 20px;
+            width: 350px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        #currentTrackInfo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #trackName {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        #trackArtist {
+            font-size: 14px;
+            color: #b3b3b3;
+            margin: 5px 0;
+        }
+
+        #trackAlbum, #trackLabel, #trackComposer, #trackProducer {
+            font-size: 12px;
+            color: #b3b3b3;
+            margin: 2px 0;
+        }
+
+        #controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        #controls button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        #controls button:hover {
+            color: #1db954;
+        }
+
+        #playPause {
+            font-size: 36px;
+        }
+
+        #progressBar {
+            width: 100%;
+            height: 5px;
+            background-color: #333;
+            border-radius: 5px;
+            margin-top: 10px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        #progress {
+            height: 100%;
+            background-color: #1db954;
+            border-radius: 5px;
+            width: 0%;
+        }
+
+        #volumeBar {
+            width: 100%;
+            height: 5px;
+            background-color: #333;
+            border-radius: 5px;
+            margin-top: 10px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        #volume {
+            height: 100%;
+            background-color: blue;
+            border-radius: 5px;
+            width: 50%;
+        }
+
+        #playlist {
+            margin-top: 20px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        #playlist ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #playlist li {
+            padding: 10px;
+            background-color: #282828;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #playlist li:hover {
+            background-color: #383838;
+        }
+
+        #playlist li.active {
+            background-color: #1db954;
+        }
+        /* Deshabilitar el menú contextual para evitar la descarga del audio */ 
+audio { -webkit-user-select: none; /* Prevenir selección del texto */ -moz-user-select: none; -ms-user-select: none; user-select: none; }
+audio::-webkit-media-controls-enclosure { display: none !important; }
+audio::controls {display: none !important; }
+    </style>
 </head>
-        <mainTop>
-            <a href="https://grouvex.github.io/"> <div class="img-container"></div></a> 
-            <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
-                <span id="menuG"></span> <!-- General -->
-                <span id="menuT"></span> <!-- Temas/Idioma -->
-                <span id="menuU"></span> <!-- Usuario -->
-        </mainTop>
 <body>
- <!-- Anuncio -->
- <div id="news"></div>
-<main>
-<!-- Publicado por -->
-<div style="box-shadow: 0 2px 5px rgb(37, 44, 247);width: 100%;flex-wrap: wrap;gap: 10px;justify-content: center;align-items: center;align-content: center;flex-direction: row;">
-<div class="tarjeta" style="display: flex;align-items: center;border-radius: 10px;box-shadow: 0 2px 5px rgb(51, 177, 215);margin: 20px;padding: 20px;height: auto;padding-left: 10px;padding-right: 10px;">
-<img src="../img/GROUVEX.png" alt="" style="border-radius: 50%; width: 15%;height: 15%;object-fit: cover; margin-right: 10px;loading=" lazy"="">
-<div style="width:100%;height:auto">
-<h2 style="margin:2px; font-size: 7.5px;height:auto">Publicado por:</h2><h2 style="margin:2px; padding: 1px;font-size: 20px;height:auto"><span class="Grouvex-Studios"></span></h2>
-<p style="color: white; font-size: 11px;height:auto"><span id="ActualizadoDATE"></span></p><a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@grouvex.com</footer></a></div></div>
-</div>
-<script>const uTActualizado = 1738429200; actualizarFechas(uTActualizado, "ActualizadoDATE");</script>
-  <!-- Título -->
-    <div id="player">
-        <h1>Reproductor de Música</h1>
-        <div id="currentTrackInfo">
-          <h2 id="trackName"></h2>
-            <div id="infoLine1">
-                  <span id="trackArtist"></span> - <span id="trackAlbum"></span>
+    <header>
+        <a href="https://grouvex.github.io/"> <div class="img-container"></div></a> 
+        <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
+            <span id="menuG"></span> <!-- General -->
+            <span id="menuT"></span> <!-- Temas/Idioma -->
+            <span id="menuU"></span> <!-- Usuario -->
+        </span>
+    </header>
+    <!-- Anuncio -->
+    <div id="news"></div>
+    <main>
+        <!-- Publicado por -->
+        <div style="box-shadow: 0 2px 5px rgb(37, 44, 247);width: 100%;flex-wrap: wrap;gap: 10px;justify-content: center;align-items: center;align-content: center;flex-direction: row;">
+            <div class="tarjeta" style="display: flex;align-items: center;border-radius: 10px;box-shadow: 0 2px 5px rgb(51, 177, 215);margin: 20px;padding: 20px;height: auto;padding-left: 10px;padding-right: 10px;">
+                <img src="../img/GROUVEX.png" alt="" style="border-radius: 50%; width: 15%;height: 15%;object-fit: cover; margin-right: 10px;loading=" lazy"="">
+                <div style="width:100%;height:auto">
+                    <h2 style="margin:2px; font-size: 7.5px;height:auto">Publicado por:</h2>
+                    <h2 style="margin:2px; padding: 1px;font-size: 20px;height:auto"><span class="Grouvex-Studios"></span></h2>
+                    <p style="color: white; font-size: 11px;height:auto"><span id="ActualizadoDATE"></span></p>
+                    <a href="mailto:grouvex.studio@grouvex.com" style="color:white">
+                        <footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@grouvex.com</footer>
+                    </a>
+                </div>
             </div>
-            <div id="infoLine2">
-                <span id="trackLabel"></span> | 
-                <span id="trackComposer"></span> | 
-                <span id="trackProducer"></span>
+        </div>
+        <script>const uTActualizado = 1738429200; actualizarFechas(uTActualizado, "ActualizadoDATE");</script>
+        <!-- Título -->
+        <div id="player">
+            <h1>Reproductor de Música</h1>
+            <div id="currentTrackInfo">
+                <h2 id="trackName"></h2>
+                <div id="infoLine1">
+                    <span id="trackArtist"></span> - <span id="trackAlbum"></span>
+                </div>
+                <div id="infoLine2">
+                    <span id="trackLabel"></span> | 
+                    <span id="trackComposer"></span> | 
+                    <span id="trackProducer"></span>
+                </div>
+                <div id="trackDates"> 
+                    <p>Información de la fecha de reproducción: mes/día</p>  
+                    <span id="startDate"></span> - <span id="endDate"></span> 
+                </div>
+                <p id="trackSpotify"><a href="" target="_blank" id="spotifyLink">Escuchar en Spotify</a></p>
             </div>
-            <div id="trackDates"> 
-              <p>Información de la fecha de reproducción: mes/día</p>  
-                <span id="startDate"></span> - <span id="endDate"></span> 
+            <div id="youtubeVideo" style="display: none;"> 
+                <iframe id="youtubePlayer" width="100%" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe>
             </div>
-            <p id="trackSpotify"><a href="" target="_blank" id="spotifyLink">Escuchar en Spotify</a></p>
+            <div id="spotifyVideo" style="display: none;"> 
+                <iframe style="border-radius:12px" id="spotifyPlayer" width="100%" height="152" frameBorder="0" allowfullscreen="false" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture" loading="lazy"></iframe>
+            </div>
+            <div id="controls">
+                <button id="random"><i class="fas fa-random"></i></button>
+                <button id="prev"><i class="fas fa-step-backward"></i></button>
+                <button id="playPause"><i class="fas fa-play"></i></button>
+                <button id="next"><i class="fas fa-step-forward"></i></button>
+                <button id="repeat"><i class="fas fa-redo"></i></button>
+            </div>
+            <div id="progressBar">
+                <div id="progress"></div>
+            </div>
+            <p>Volume</p>
+            <div id="volumeBar">
+                <div id="volume"></div>
+            </div>
+            <details>
+                <summary href="#Playlist"><h3>Playlist</h3></summary>
+                <div id="playlist" style="block">
+                    <ul>
+                        <!-- La lista de canciones se generará dinámicamente aquí -->
+                    </ul>
+                </div>
+            </details>
+            <audio id="audioPlayer" controls></audio>
         </div>
-        <div id="youtubeVideo" style="display: none;"> <iframe id="youtubePlayer" width="100%" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe>
-        </div>
-        <div id="spotifyVideo" style="display: none;"> <iframe style="border-radius:12px" id="spotifyPlayer" width="100%" height="152" frameBorder="0" allowfullscreen="false" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture" loading="lazy"></iframe>
-        </div>
-        <div id="controls">
-            <button id="prev"><img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-previous.png" alt="" width="15" height="15"></button>
-            <button id="playPause"><img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-pause.png" alt="" width="15" height="15"></button>
-            <button id="next"><img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-next.png" alt="" width="15" height="15"></button>
-             <hr> 
-            <button id="random"><img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-shuffle.png" alt="" width="15" height="15"></button>
-            <button id="repeat"><img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-refresh.png" alt="" width="15" height="15"></button>
-        </div>
-     <p style="font-size:12px">Información de los Botones - <span class="tooltip" style="font-size:14px;color:red">?<span class="tooltiptext"style="font-size:12px;color:white"><img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-previous.png" alt="" width="15" height="15"> Retroceder | <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-pause.png" alt="" width="15" height="15"> Pausado | <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-play.png" alt="" width="15" height="15"> Reproducir | <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-next.png" alt="" width="15" height="15"> Siguiente | <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-shuffle.png" alt="" width="15" height="15"> Aleatorio (Desactivado) | <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-shuffle.png" alt="" width="15" height="15">! Aleatorio (Activado) | <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-refresh.png" alt="" width="15" height="15"> Repetir (Desactivado) | <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-refresh.png" alt="" width="15" height="15">1 Repetir (Activado - Canción) | <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-refresh.png" alt="" width="15" height="15">2 Repetir (Activado - Lista)</span></span></p>
-     <details>
-  <summary href="#Playlist"><h3>Playlist</h3></summary>
-        <div id="playlist" style="block">
-            <ul>
-                <!-- La lista de canciones se generará dinámicamente aquí -->
-            </ul>
-        </div>
-        <audio id="audioPlayer" controls></audio>
-      </details>
+    </main>
+    <!-- Footer -->
+    <div id="footer"></div>
+
+    <!-- JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const audioPlayer = document.getElementById('audioPlayer');
@@ -133,6 +291,11 @@
             const spotifyPlayer = document.getElementById('spotifyPlayer');
             const startDateElement = document.getElementById('startDate'); 
             const endDateElement = document.getElementById('endDate');
+            const progressBar = document.getElementById('progressBar');
+            const progress = document.getElementById('progress');
+            const volumeBar = document.getElementById('volumeBar');
+            const volume = document.getElementById('volume');
+
             let currentTrackIndex = 0;
             let isPlaying = false;
             let isRandom = false;
@@ -561,358 +724,174 @@
             releaseDate: 1703199600
         }
     ];
-                function updateTrackInfo(track) {
-                    trackName.textContent = track.name;
-                    trackArtist.textContent = track.artist;
-                    trackAlbum.textContent = track.album;
-                    trackLabel.textContent = `Label: ${track.label}`;
-                    trackComposer.textContent = `Compositor: ${track.composer}`;
-                    trackProducer.textContent = `Productor: ${track.producer}`;
-                    spotifyLink.href = track.spotify;
-                    player.style.backgroundImage = `url(${track.background})`;
-                    // Actualizar fechas 
-                    startDateElement.textContent = `Inicio: ${track.startDate.month}/${track.startDate.day}`;
-                    endDateElement.textContent = `Fin: ${track.endDate.month}/${track.endDate.day}`;
-                    if (track.youtube) {
-                        youtubePlayer.src = track.youtube;
-                        youtubeVideo.style.display = 'block';
-                    } else {
-                        youtubeVideo.style.display = 'none';
-                    }
-                   if (track.spotifyEmbed) {
-                        spotifyPlayer.src = track.spotifyEmbed;
-                        spotifyVideo.style.display = 'block';
-                    } else {
-                        spotifyVideo.style.display = 'none';
-                    }
-                 document.title = `${track.name} -  ${track.artist} (${track.album}) - Grouvex Studios`;
+
+            function updateTrackInfo(track) {
+                trackName.textContent = track.name;
+                trackArtist.textContent = track.artist;
+                trackAlbum.textContent = track.album;
+                trackLabel.textContent = `Label: ${track.label}`;
+                trackComposer.textContent = `Compositor: ${track.composer}`;
+                trackProducer.textContent = `Productor: ${track.producer}`;
+                spotifyLink.href = track.spotify;
+                player.style.backgroundImage = `url(${track.background})`;
+                startDateElement.textContent = `Inicio: ${track.startDate.month}/${track.startDate.day}`;
+                endDateElement.textContent = `Fin: ${track.endDate.month}/${track.endDate.day}`;
+
+                if (track.youtube) {
+                    youtubePlayer.src = track.youtube;
+                    youtubeVideo.style.display = 'block';
+                } else {
+                    youtubeVideo.style.display = 'none';
                 }
-              // Función para actualizar el título de la página según el estado de reproducción 
-            function updatePageTitle() { 
-                try {
-                    if (audioPlayer.paused || audioPlayer.src === '') { 
-                        document.title = 'Reproductor de música - Grouvex Studios'; 
-                    } else {
-                        document.title = `${currentTrack.name} -  ${currentTrack.artist} (${currentTrack.album}) - Grouvex Studios`;
-                    }
-                } catch (error) {
-                    console.error('Error updating page title:', error);
+
+                if (track.spotifyEmbed) {
+                    spotifyPlayer.src = track.spotifyEmbed;
+                    spotifyVideo.style.display = 'block';
+                } else {
+                    spotifyVideo.style.display = 'none';
                 }
+
+                document.title = `${track.name} - ${track.artist} (${track.album}) - Grouvex Studios`;
             }
-            
-            // Llamar a la función updatePageTitle() cuando se pausa o reproduce una pista 
-            audioPlayer.addEventListener('play', updatePageTitle); 
-            audioPlayer.addEventListener('pause', updatePageTitle); 
-            audioPlayer.addEventListener('ended', updatePageTitle); 
-            
-            // Asegurar que el título sea correcto al cargar la página
-            document.addEventListener('DOMContentLoaded', updatePageTitle);
-            
+
             function playTrack(index) {
-                try {
-                    currentTrackIndex = index;
-                    updateTrackInfo(tracks[currentTrackIndex]);
-                    if (playPauseButton.hasAttribute('disabled')) { return; }
-                    audioPlayer.src = `https://grouvex.com/music/${tracks[currentTrackIndex].file}`;
+                currentTrackIndex = index;
+                updateTrackInfo(tracks[currentTrackIndex]);
+                if (playPauseButton.hasAttribute('disabled')) return;
+                audioPlayer.src = `https://grouvex.com/music/${tracks[currentTrackIndex].file}`;
+                audioPlayer.play().then(() => {
+                    console.log('Audio is playing');
+                }).catch(error => {
+                    console.error('Error trying to play audio:', error);
+                });
+                isPlaying = true;
+                playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+            }
+
+            function playPause() {
+                if (isPlaying) {
+                    audioPlayer.pause();
+                    isPlaying = false;
+                    playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+                } else {
                     audioPlayer.play().then(() => {
                         console.log('Audio is playing');
                     }).catch(error => {
                         console.error('Error trying to play audio:', error);
                     });
                     isPlaying = true;
-                    playPauseButton.innerHTML = '<img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-pause.png" alt="" width="15" height="15">';
-                } catch (error) {
-                    console.error('Error in playTrack:', error);
+                    playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
                 }
             }
-            
-            function playPause() {
-                try {
-                    if (isPlaying) {
-                        audioPlayer.pause();
-                        isPlaying = false;
-                        playPauseButton.innerHTML = '<img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-play.png" alt="" width="15" height="15">';
-                    } else {
-                        audioPlayer.play().then(() => {
-                            console.log('Audio is playing');
-                        }).catch(error => {
-                            console.error('Error trying to play audio:', error);
-                        });
-                        isPlaying = true;
-                        playPauseButton.innerHTML = '<img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-pause.png" alt="" width="15" height="15">';
-                    }
-                } catch (error) {
-                    console.error('Error in playPause:', error);
-                }
-            }
-            
+
             function nextTrack() {
-                try {
-                    do {
-                        currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
-                    } while (!isTrackAvailable(tracks[currentTrackIndex]));
-                    playTrack(currentTrackIndex);
-                } catch (error) {
-                    console.error('Error in nextTrack:', error);
-                }
+                do {
+                    currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+                } while (!isTrackAvailable(tracks[currentTrackIndex]));
+                playTrack(currentTrackIndex);
             }
-            
+
             function prevTrack() {
-                try {
-                    do {
-                        currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
-                    } while (!isTrackAvailable(tracks[currentTrackIndex]));
-                    playTrack(currentTrackIndex);
-                } catch (error) {
-                    console.error('Error in prevTrack:', error);
-                }
+                do {
+                    currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+                } while (!isTrackAvailable(tracks[currentTrackIndex]));
+                playTrack(currentTrackIndex);
             }
-            
+
             function toggleRandom() {
-                try {
-                    isRandom = !isRandom;
-                    randomButton.innerHTML = isRandom ? '<img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-shuffle.png" alt="" width="15" height="15">!' : '<img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-shuffle.png" alt="" width="15" height="15">';
-                } catch (error) {
-                    console.error('Error in toggleRandom:', error);
-                }
+                isRandom = !isRandom;
+                randomButton.innerHTML = isRandom ? '<i class="fas fa-random"></i>!' : '<i class="fas fa-random"></i>';
             }
-            
+
             function toggleRepeat() {
-                try {
-                    repeatMode = (repeatMode + 1) % 3;
-                    switch (repeatMode) {
-                        case 0:
-                            repeatButton.innerHTML = '<img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-refresh.png" alt="" width="15" height="15">';
-                            break;
-                        case 1:
-                            repeatButton.innerHTML = '<img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-refresh.png" alt="" width="15" height="15">1';
-                            break;
-                        case 2:
-                            repeatButton.innerHTML = '<img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/music-refresh.png" alt="" width="15" height="15">2';
-                            break;
-                    }
-                } catch (error) {
-                    console.error('Error in toggleRepeat:', error);
+                repeatMode = (repeatMode + 1) % 3;
+                switch (repeatMode) {
+                    case 0:
+                        repeatButton.innerHTML = '<i class="fas fa-redo"></i>';
+                        break;
+                    case 1:
+                        repeatButton.innerHTML = '<i class="fas fa-redo"></i>1';
+                        break;
+                    case 2:
+                        repeatButton.innerHTML = '<i class="fas fa-redo"></i>2';
+                        break;
                 }
             }
-            
-            function updatePlaylistHighlight() {
-                try {
-                    const playlistItems = document.querySelectorAll('#playlist li');
-                    playlistItems.forEach((item, index) => {
-                        if (index === currentTrackIndex) {
-                            item.classList.add('active');
-                        } else {
-                            item.classList.remove('active');
-                        }
-                    });
-                } catch (error) {
-                    console.error('Error in updatePlaylistHighlight:', error);
-                }
-            }
-            
-            // Función para comprobar si una canción está en su periodo de reproducción
-            function isTrackAvailable(track) { 
-                try {
-                    const now = new Date(); 
-                    const nowUnixTime = Math.floor(now.getTime() / 1000); // Unix Time actual
-                    const startDate = new Date(now.getFullYear(), track.startDate.month - 1, track.startDate.day, 0, 0, 0); 
-                    const endDate = new Date(now.getFullYear(), track.endDate.month - 1, track.endDate.day, 23, 59, 59); 
-                    return now >= startDate && now <= endDate && nowUnixTime >= track.releaseDate;
-                } catch (error) {
-                    console.error('Error in isTrackAvailable:', error);
-                    return false;
-                }
-            }
-            
-            // Generar la lista de reproducción dinámicamente
-            try {
-                tracks.forEach((track, index) => {
-                    if (isTrackAvailable(track)) {
-                        const li = document.createElement('li');
-                        li.textContent = `${track.name} - ${track.artist}`;
-                        li.addEventListener('click', () => playTrack(index));
-                        playlist.appendChild(li);
+
+            function updatePlaylistHighlight(index) {
+                const playlistItems = document.querySelectorAll('#playlist li');
+                playlistItems.forEach((item, i) => {
+                    if (i === index) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
                     }
                 });
-            } catch (error) {
-                console.error('Error generating playlist:', error);
             }
-            
-            // Deshabilitar el clic derecho
-            audioPlayer.addEventListener('contextmenu', function (e) {
-                try {
-                    e.preventDefault();
-                } catch (error) {
-                    console.error('Error disabling right-click:', error);
+
+            function isTrackAvailable(track) {
+                const now = new Date();
+                const nowUnixTime = Math.floor(now.getTime() / 1000);
+                const startDate = new Date(now.getFullYear(), track.startDate.month - 1, track.startDate.day, 0, 0, 0);
+                const endDate = new Date(now.getFullYear(), track.endDate.month - 1, track.endDate.day, 23, 59, 59);
+                return now >= startDate && now <= endDate && nowUnixTime >= track.releaseDate;
+            }
+
+            // Generar la lista de reproducción
+            tracks.forEach((track, index) => {
+                if (isTrackAvailable(track)) {
+                    const li = document.createElement('li');
+                    li.textContent = `${track.name} - ${track.artist}`;
+                    li.addEventListener('click', () => playTrack(index));
+                    playlist.appendChild(li);
                 }
             });
-            
-            // Reproducir la primera canción disponible automáticamente al cargar la página
-            try {
-                if (playlist.childNodes.length > 0) {
-                    const firstTrackIndex = tracks.findIndex(track => isTrackAvailable(track));
-                    if (firstTrackIndex !== -1) {
-                        playTrack(firstTrackIndex);
-                    }
-                } else {
-                    const noTrackElement = document.createElement('li');
-                    noTrackElement.textContent = 'No hay ninguna canción disponible';
-                    playlist.appendChild(noTrackElement);
-                }
-            } catch (error) {
-                console.error('Error playing first available track:', error);
-            }
-            
+
+            // Barra de progreso
+            audioPlayer.addEventListener('timeupdate', () => {
+                const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                progress.style.width = `${progressPercent}%`;
+            });
+
+            progressBar.addEventListener('click', (e) => {
+                const clickX = e.offsetX;
+                const progressBarWidth = progressBar.clientWidth;
+                const seekTime = (clickX / progressBarWidth) * audioPlayer.duration;
+                audioPlayer.currentTime = seekTime;
+            });
+
+            // Barra de volumen
+            audioPlayer.addEventListener('volumechange', () => {
+                const volumePercent = audioPlayer.volume * 100;
+                volume.style.width = `${volumePercent}%`;
+            });
+
+            volumeBar.addEventListener('click', (e) => {
+                const clickX = e.offsetX;
+                const volumeBarWidth = volumeBar.clientWidth;
+                const newVolume = clickX / volumeBarWidth;
+                audioPlayer.volume = newVolume;
+            });
+
+            // Event listeners
             playPauseButton.addEventListener('click', playPause);
             nextButton.addEventListener('click', nextTrack);
             prevButton.addEventListener('click', prevTrack);
             randomButton.addEventListener('click', toggleRandom);
             repeatButton.addEventListener('click', toggleRepeat);
-            
-            audioPlayer.addEventListener('ended', nextTrack);
-            
-            // Asegurarse de que solo las canciones disponibles se reproduzcan
-            function playNextAvailableTrack() {
-                try {
-                    do {
-                        currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
-                    } while (!isTrackAvailable(tracks[currentTrackIndex]));
-                    playTrack(currentTrackIndex);
-                } catch (error) {
-                    console.error('Error in playNextAvailableTrack:', error);
+
+            // Reproducir la primera canción disponible al cargar la página
+            if (playlist.childNodes.length > 0) {
+                const firstTrackIndex = tracks.findIndex(track => isTrackAvailable(track));
+                if (firstTrackIndex !== -1) {
+                    playTrack(firstTrackIndex);
                 }
+            } else {
+                const noTrackElement = document.createElement('li');
+                noTrackElement.textContent = 'No hay ninguna canción disponible';
+                playlist.appendChild(noTrackElement);
             }
-            
-            function playPrevAvailableTrack() {
-                try {
-                    do {
-                        currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
-                    } while (!isTrackAvailable(tracks[currentTrackIndex]));
-                    playTrack(currentTrackIndex);
-                } catch (error) {
-                    console.error('Error in playPrevAvailableTrack:', error);
-                }
-            }
-            
-            function randomTrack() {
-                try {
-                    let randomIndex;
-                    do {
-                        randomIndex = Math.floor(Math.random() * tracks.length);
-                    } while (!isTrackAvailable(tracks[randomIndex]));
-                    playTrack(randomIndex);
-                } catch (error) {
-                    console.error('Error in randomTrack:', error);
-                }
-            }
-            
-            nextButton.addEventListener('click', playNextAvailableTrack);
-            prevButton.addEventListener('click', playPrevAvailableTrack);
-            randomButton.addEventListener('click', randomTrack);
-            
-            audioPlayer.addEventListener('ended', playNextAvailableTrack);
-            
-            // Reproducir la primera canción disponible automáticamente al cargar la página
-            try {
-                if (playlist.childNodes.length > 0) { 
-                    const firstTrackIndex = tracks.findIndex(track => isTrackAvailable(track));
-                    if (firstTrackIndex !== -1) {
-                        playTrack(firstTrackIndex); 
-                    } 
-                } else { 
-                    const noTrackElement = document.createElement('li'); 
-                    noTrackElement.textContent = 'No hay ninguna canción disponible'; 
-                    playlist.appendChild(noTrackElement);
-                }
-            } catch (error) {
-                console.error('Error playing first available track on load:', error);
-            }
-            // Encapsulamos la función para habilitar/deshabilitar los controles
-            function toggleControls(enableAudio, enableLista, enableBotones) {
-                const playPauseButton = document.getElementById('playPause');
-                const prevButton = document.getElementById('prev');
-                const nextButton = document.getElementById('next');
-                const randomButton = document.getElementById('random');
-                const repeatButton = document.getElementById('repeat');
-                const playlistItems = document.querySelectorAll('#playlist li');
-            
-                let audioState = '';
-                try {
-                    if (enableAudio) {
-                        audioPlayer.play();
-                        audioState = 'Audio: Habilitado';
-                    } else {
-                        audioPlayer.pause();
-                        audioState = 'Audio: Deshabilitado';
-                    }
-                } catch (error) {
-                    console.error('Error handling audio controls:', error);
-                }
-            
-                let listaState = '';
-                try {
-                    playlistItems.forEach(item => {
-                        if (enableLista) {
-                            playlist.style.display = 'block';
-                        } else {
-                            playlist.style.display = 'none';
-                        }
-                    });
-                    listaState = `Lista: ${enableLista ? 'Habilitada' : 'Deshabilitada'}`;
-                } catch (error) {
-                    console.error('Error handling playlist visibility:', error);
-                }
-            
-                let botonesState = '';
-                try {
-                    const buttons = [playPauseButton, prevButton, nextButton, randomButton, repeatButton];
-                    buttons.forEach(button => {
-                        if (enableBotones) {
-                            button.removeAttribute('disabled');
-                        } else {
-                            button.setAttribute('disabled', 'true');
-                        }
-                    });
-                    botonesState = `Botones: ${enableBotones ? 'Habilitados' : 'Deshabilitados'}`;
-                } catch (error) {
-                    console.error('Error handling button controls:', error);
-                }
-            
-                try {
-                    alert(`Estado del Reproductor de Música:\n• ${audioState}\n• ${listaState}\n• ${botonesState}`);
-                } catch (error) {
-                    console.error('Error displaying alert:', error);
-                }
-            }
-            
-            // Llamadas para habilitar/deshabilitar los controles
-            try {
-                toggleControls(true, true, true);  
-                // Habilita audio, lista y botones
-            } catch (error) {
-                console.error('Error in toggleControls:', error);
-            }
-        });         
+        });
     </script>
-    <style>
-      #song {display: block;justify-content: center;align-items: center; margin: 0; font-family: Arial, sans-serif;border: 1px;max-width: 100%;max-height: 40px;}
-#player {color:white; text-align: center; padding: 10px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);background-size: cover; background-position: center}
-#currentTrackInfo { margin: 10px 0}
-#infoLine1, #infoLine2 { display: flex; justify-content: center; gap: 5px;}
-#controls { margin: 10px 0;}
-#controls button { margin: 0 10px; padding: 10px 20px; font-size: 16px; cursor: pointer;}
-/* Deshabilitar el menú contextual para evitar la descarga del audio */ 
-audio { -webkit-user-select: none; /* Prevenir selección del texto */ -moz-user-select: none; -ms-user-select: none; user-select: none; }
-audio::-webkit-media-controls-enclosure { display: none !important; }
-audio::controls {display: none !important; }
-#playlist {margin-top: 20px;}
-#playlist ul {list-style-type: none; padding: 0;}
-#playlist li {margin: 5px 0;cursor: pointer;padding: 5px;background-color: #1fd6ae;border-radius: 5px;transition: background-color 0.3s;}
-#playlist li:hover {background-color: #5813da;}
-    </style>
- </main>
-<!-- Footer -->
- <div id="footer"></div>
 </body>
 </html>

@@ -108,10 +108,8 @@ function createModal() {
     <div id="customModal" class="modal">
         <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png" alt="Logo">
         <p>Estás a punto de salir de <n>Grouvex Studios</n>. Grouvex Studios no se responsabiliza por el contenido, la seguridad, las políticas de privacidad o las prácticas de los sitios de terceros, fuera del dominio, puesto que los Términos de Servicio y Políticas de Privacidad, de Grouvex Studios, solo tienen validez dentro del dominio o donde el equipo tenga permiso para actuar.</p>
-        <ul>
-            <li>Si le da a Cancelar, permanecerá dentro de Grouvex Studios.</li>
-            <li>Si le da a Continuar, se le redirigirá a la página seleccionada.</li>
-        </ul>
+            <p>Si le da a Cancelar, permanecerá dentro de Grouvex Studios.</p>
+            <p>Si le da a Continuar, se le redirigirá a la página seleccionada.</p>
         <button class="cancel">Cancelar</button>
         <button class="continue">Continuar</button>
     </div>

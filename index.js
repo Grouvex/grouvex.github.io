@@ -2,7 +2,11 @@
 // Código para manejar enlaces y el modal
 // ============================================
 
-// Crear el estilo CSS dinámicamente (lo más rápido posible)
+// ============================================
+// Código para manejar enlaces y el modal
+// ============================================
+
+// Crear el estilo CSS dinámicamente
 const style = document.createElement('style');
 style.innerHTML = `
     .modal {
@@ -69,7 +73,10 @@ function createModal() {
     <div id="customModal" class="modal">
         <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png" alt="Logo">
         <p>Estás a punto de salir de <n>Grouvex Studios</n>. Grouvex Studios no se responsabiliza por el contenido, la seguridad, las políticas de privacidad o las prácticas de los sitios de terceros, fuera del dominio, puesto que los Términos de Servicio y Políticas de Privacidad, de Grouvex Studios, solo tienen validez dentro del dominio o donde el equipo tenga permiso para actuar.</p>
-        <ul><li>Si le da a Cancelar, permanecerá dentro de Grouvex Studios.</li><li>Si le da a Continuar, se le redirigirá a la página seleccionada.</li></ul>
+        <ul>
+            <li>Si le da a Cancelar, permanecerá dentro de Grouvex Studios.</li>
+            <li>Si le da a Continuar, se le redirigirá a la página seleccionada.</li>
+        </ul>
         <button class="cancel">Cancelar</button>
         <button class="continue">Continuar</button>
     </div>
@@ -91,16 +98,18 @@ function createModal() {
     // Event listener para el botón "Continuar"
     continueButton.addEventListener('click', function () {
         if (targetLink) {
+            modal.style.display = 'none'; // Ocultar el modal primero
+
+            // Redirigir según el atributo target
             if (targetAttribute === '_blank') {
-                // Abrir en una nueva pestaña si tiene target="_blank"
-                window.open(targetLink, '_blank');
+                window.open(targetLink, '_blank'); // Abrir en una nueva pestaña
             } else {
-                // Abrir en la misma pestaña si no tiene target="_blank"
-                window.location.href = targetLink;
+                window.location.href = targetLink; // Abrir en la misma pestaña
             }
-            modal.style.display = 'none'; // Ocultar el modal
-            targetLink = null; // Limpiar el enlace objetivo
-            targetAttribute = null; // Limpiar el atributo target
+
+            // Limpiar las variables
+            targetLink = null;
+            targetAttribute = null;
         }
     });
 }
@@ -131,17 +140,19 @@ document.addEventListener('click', handleLinkClick);
 
 // Interceptar redirecciones mediante JavaScript
 const originalWindowOpen = window.open;
-window.open = function(url, target, features) {
+window.open = function (url, target, features) {
     if (isExternalLink(url)) {
         targetLink = url;
         targetAttribute = target || '_self';
+
+        // Si el modal no existe, crearlo
         if (!modal) {
             createModal();
         }
-        modal.style.display = 'block';
+        modal.style.display = 'block'; // Mostrar el modal
         return null; // Evitar que se abra la ventana inmediatamente
     }
-    return originalWindowOpen(url, target, features);
+    return originalWindowOpen(url, target, features); // Redirigir normalmente si no es un enlace externo
 };
 
 // ============================================

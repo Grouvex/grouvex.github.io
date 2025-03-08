@@ -109,12 +109,23 @@
             font-size: 36px;
         }
 
+        #progressContainer {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        #currentTime, #totalTime {
+            font-size: 12px;
+            color: #b3b3b3;
+            margin: 0 10px;
+        }
+
         #progressBar {
-            width: 100%;
+            flex: 1;
             height: 5px;
             background-color: #333;
             border-radius: 5px;
-            margin-top: 10px;
             position: relative;
             cursor: pointer;
         }
@@ -236,8 +247,12 @@
                 <button id="next"><i class="fas fa-step-forward"></i></button>
                 <button id="repeat"><i class="fas fa-redo"></i></button>
             </div>
-            <div id="progressBar">
-                <div id="progress"></div>
+            <div id="progressContainer">
+                <span id="currentTime">0:00</span>
+                <div id="progressBar">
+                    <div id="progress"></div>
+                </div>
+                <span id="totalTime">0:00</span>
             </div>
             <p>Volume</p>
             <div id="volumeBar">
@@ -285,6 +300,8 @@
             const progress = document.getElementById('progress');
             const volumeBar = document.getElementById('volumeBar');
             const volume = document.getElementById('volume');
+            const currentTimeDisplay = document.getElementById('currentTime');
+            const totalTimeDisplay = document.getElementById('totalTime');
 
             let currentTrackIndex = 0;
             let isPlaying = false;
@@ -716,6 +733,12 @@
         }
     ];
 
+            function formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+            }
+
             function updateTrackInfo(track) {
                 trackName.textContent = track.name;
                 trackArtist.textContent = track.artist;
@@ -881,6 +904,11 @@
             audioPlayer.addEventListener('timeupdate', () => {
                 const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
                 progress.style.width = `${progressPercent}%`;
+                currentTimeDisplay.textContent = formatTime(audioPlayer.currentTime);
+            });
+
+            audioPlayer.addEventListener('loadedmetadata', () => {
+                totalTimeDisplay.textContent = formatTime(audioPlayer.duration);
             });
 
             progressBar.addEventListener('click', (e) => {

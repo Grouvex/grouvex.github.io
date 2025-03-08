@@ -49,6 +49,7 @@ console.log("Estilos CSS del modal añadidos correctamente.");
 let modal, cancelButton, continueButton;
 let targetLink = null;
 let targetAttribute = null;
+let isConfirmed = false; // Bandera para indicar si el usuario ha confirmado
 
 // Dominios permitidos
 const allowedDomains = ['grouvex.com', 'grouvex.github.io'];
@@ -128,12 +129,13 @@ function createModal() {
         modal.style.display = 'none'; // Ocultar el modal
         targetLink = null; // Limpiar el enlace objetivo
         targetAttribute = null; // Limpiar el atributo target
+        isConfirmed = false; // Reiniciar la bandera de confirmación
     });
 
     // Event listener para el botón "Continuar"
     continueButton.addEventListener('click', function () {
-        const href = element.getAttribute('href');
         console.log("Botón Continuar clickeado.");
+        isConfirmed = true; // Establecer la bandera de confirmación
         if (targetLink) {
             console.log(`Redirigiendo a: ${targetLink}`);
             modal.style.display = 'none'; // Ocultar el modal primero
@@ -164,7 +166,7 @@ console.log("Listener de clics añadido.");
 const originalWindowOpen = window.open;
 window.open = function (url, target, features) {
     console.log(`Interceptando window.open: ${url}`);
-    if (isExternalLink(url)) {
+    if (isExternalLink(url) && !isConfirmed) {
         console.log("El enlace es externo. Mostrando modal...");
         targetLink = url;
         targetAttribute = target || '_self';
@@ -178,8 +180,8 @@ window.open = function (url, target, features) {
         modal.style.display = 'block'; // Mostrar el modal
         return null; // Evitar que se abra la ventana inmediatamente
     }
-    console.log("El enlace no es externo. Redirigiendo normalmente.");
-    return originalWindowOpen(url, target, features); // Redirigir normalmente si no es un enlace externo
+    console.log("El enlace no es externo o ya fue confirmado. Redirigiendo normalmente.");
+    return originalWindowOpen(url, target, features); // Redirigir normalmente si no es un enlace externo o ya fue confirmado
 };
 console.log("Interceptación de window.open configurada.");
 

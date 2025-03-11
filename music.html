@@ -1062,13 +1062,18 @@ document.addEventListener('DOMContentLoaded', function () {
         const trackTitle = document.createElement('div');
         trackTitle.className = 'track-title';
         trackTitle.textContent = track.name;
+        trackTitle.addEventListener('mouseenter', () => {
+            trackTitle.title = `${track.name}`;
+        });
         trackInfo.appendChild(trackTitle);
 
         const trackArtistElement = document.createElement('div');
         trackArtistElement.className = 'track-artist';
         trackArtistElement.textContent = track.artist;
         trackInfo.appendChild(trackArtistElement);
-
+        trackArtistElement.addEventListener('mouseenter', () => {
+            trackArtistElement.title = `${track.artist}`;
+        });
         li.appendChild(trackInfo);
 
         // Álbum (30% del espacio)
@@ -1076,7 +1081,9 @@ document.addEventListener('DOMContentLoaded', function () {
         trackAlbumElement.className = 'track-album';
         trackAlbumElement.textContent = track.album;
         li.appendChild(trackAlbumElement);
-
+        trackAlbumElement.addEventListener('mouseenter', () => {
+            trackAlbumElement.title = `${track.album}`;
+        });
         // Duración (20% del espacio)
         const trackDuration = document.createElement('div');
         trackDuration.className = 'track-duration';

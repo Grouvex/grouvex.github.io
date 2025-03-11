@@ -55,120 +55,234 @@
     <script type="module" src="abc.js"></script>
     <!-- Estilos adicionales -->
     <style>
-/* Estilos generales */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #121212;
-    color: white;
-    margin: 0;
-    padding: 0;
-}
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
 
-#player {
-    background-color: #181818;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    margin: 20px auto;
-    max-width: 800px;
-}
+        #player {
+            background-color: #181818;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            margin: 20px auto;
+            max-width: 800px;
+        }
 
-/* Estilos para la lista de reproducción */
-#playlist ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: 5% 50% 30% 10%; /* Ajusta el ancho de las columnas */
-    gap: 10px;
-    align-items: center;
-}
+        #currentTrackInfo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-#playlist li {
-    display: contents; /* Hace que los hijos directos se comporten como celdas de la cuadrícula */
-}
+        #trackName {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0;
+        }
 
-/* Índice de columnas */
-.playlist-header {
-    display: grid;
-    grid-template-columns: 5% 50% 30% 10%; /* Mismo ancho que las filas */
-    gap: 10px;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #333; /* Línea divisoria */
-    font-weight: bold;
-}
+        #trackArtist {
+            font-size: 14px;
+            color: #b3b3b3;
+            margin: 5px 0;
+        }
 
-.playlist-header div {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+        #trackAlbum, #trackLabel, #trackComposer, #trackProducer {
+            font-size: 12px;
+            color: #b3b3b3;
+            margin: 2px 0;
+        }
 
-/* Estilos para las filas de canciones */
-.track-number {
-    text-align: center;
-    font-weight: bold;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+        #controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
 
-.track-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+        #controls button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s;
+            padding: 10px;
+        }
 
-.track-title {
-    font-size: 16px;
-    font-weight: bold;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+        #controls button:hover {
+            color: #1db954;
+        }
 
-.track-artist {
-    font-size: 12px;
-    color: #b3b3b3;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+        #playPause {
+            font-size: 36px;
+        }
 
-.track-album {
-    font-size: 14px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+        #progressContainer {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
 
-.track-duration {
-    text-align: right;
-    font-size: 12px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+        #currentTime, #totalTime {
+            font-size: 12px;
+            color: #b3b3b3;
+            margin: 0 10px;
+        }
 
-/* Deshabilitar el menú contextual para evitar la descarga del audio */
-audio {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
+        #progressBar {
+            flex: 1;
+            height: 5px;
+            background-color: #333;
+            border-radius: 5px;
+            position: relative;
+            cursor: pointer;
+        }
 
-audio::-webkit-media-controls-enclosure {
-    display: none !important;
-}
+        #progress {
+            height: 100%;
+            background-color: #1db954;
+            border-radius: 5px;
+            width: 0%;
+        }
 
-audio::controls {
-    display: none !important;
-}
+        #volumeBar {
+            width: 100%;
+            height: 5px;
+            background-color: #333;
+            border-radius: 5px;
+            margin-top: 10px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        #volume {
+            height: 100%;
+            background-color: blue;
+            border-radius: 5px;
+            width: 50%;
+        }
+
+        #playlist {
+            margin-top: 20px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        #playlist ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: 5% 50% 30% 10%;
+            gap: 10px;
+            align-items: center;
+        }
+
+        #playlist li {
+            display: contents;
+        }
+
+        .playlist-header {
+            display: grid;
+            grid-template-columns: 5% 50% 30% 10%;
+            gap: 10px;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #333;
+            font-weight: bold;
+        }
+
+        .playlist-header div {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .track-number {
+            text-align: center;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .track-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .track-title {
+            font-size: 16px;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .track-artist {
+            font-size: 12px;
+            color: #b3b3b3;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .track-album {
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .track-duration {
+            text-align: right;
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        audio {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        audio::-webkit-media-controls-enclosure {
+            display: none !important;
+        }
+
+        audio::controls {
+            display: none !important;
+        }
+
+        #warning {
+            background-color: #ffcc00;
+            color: #000;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        #warning ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #warning ul li {
+            margin: 5px 0;
+        }
     </style>
 </head>
 <body>
@@ -261,6 +375,12 @@ audio::controls {
             <details>
                 <summary href="#Playlist"><h3>Playlist</h3></summary>
                 <div id="playlist" style="block">
+                    <div class="playlist-header">
+                        <div class="track-number">#</div>
+                        <div class="track-title">Título</div>
+                        <div class="track-album">Álbum</div>
+                        <div class="track-duration">⏱</div>
+                    </div>
                     <ul>
                         <!-- La lista de canciones se generará dinámicamente aquí -->
                     </ul>
@@ -286,103 +406,103 @@ audio::controls {
 
     <!-- JavaScript -->
     <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const audioPlayer = document.getElementById('audioPlayer');
-    const trackName = document.getElementById('trackName');
-    const trackArtist = document.getElementById('trackArtist');
-    const trackAlbum = document.getElementById('trackAlbum');
-    const trackLabel = document.getElementById('trackLabel');
-    const trackComposer = document.getElementById('trackComposer');
-    const trackProducer = document.getElementById('trackProducer');
-    const spotifyLink = document.getElementById('spotifyLink');
-    const playPauseButton = document.getElementById('playPause');
-    const prevButton = document.getElementById('prev');
-    const nextButton = document.getElementById('next');
-    const randomButton = document.getElementById('random');
-    const repeatButton = document.getElementById('repeat');
-    const player = document.getElementById('player');
-    const playlist = document.querySelector('#playlist ul');
-    const youtubeVideo = document.getElementById('youtubeVideo');
-    const youtubePlayer = document.getElementById('youtubePlayer');
-    const spotifyVideo = document.getElementById('spotifyVideo');
-    const spotifyPlayer = document.getElementById('spotifyPlayer');
-    const startDateElement = document.getElementById('startDate');
-    const endDateElement = document.getElementById('endDate');
-    const progressBar = document.getElementById('progressBar');
-    const progress = document.getElementById('progress');
-    const volumeBar = document.getElementById('volumeBar');
-    const volume = document.getElementById('volume');
-    const currentTimeDisplay = document.getElementById('currentTime');
-    const totalTimeDisplay = document.getElementById('totalTime');
+        document.addEventListener('DOMContentLoaded', function () {
+            const audioPlayer = document.getElementById('audioPlayer');
+            const trackName = document.getElementById('trackName');
+            const trackArtist = document.getElementById('trackArtist');
+            const trackAlbum = document.getElementById('trackAlbum');
+            const trackLabel = document.getElementById('trackLabel');
+            const trackComposer = document.getElementById('trackComposer');
+            const trackProducer = document.getElementById('trackProducer');
+            const spotifyLink = document.getElementById('spotifyLink');
+            const playPauseButton = document.getElementById('playPause');
+            const prevButton = document.getElementById('prev');
+            const nextButton = document.getElementById('next');
+            const randomButton = document.getElementById('random');
+            const repeatButton = document.getElementById('repeat');
+            const player = document.getElementById('player');
+            const playlist = document.querySelector('#playlist ul');
+            const youtubeVideo = document.getElementById('youtubeVideo');
+            const youtubePlayer = document.getElementById('youtubePlayer');
+            const spotifyVideo = document.getElementById('spotifyVideo');
+            const spotifyPlayer = document.getElementById('spotifyPlayer');
+            const startDateElement = document.getElementById('startDate');
+            const endDateElement = document.getElementById('endDate');
+            const progressBar = document.getElementById('progressBar');
+            const progress = document.getElementById('progress');
+            const volumeBar = document.getElementById('volumeBar');
+            const volume = document.getElementById('volume');
+            const currentTimeDisplay = document.getElementById('currentTime');
+            const totalTimeDisplay = document.getElementById('totalTime');
 
-    let currentTrackIndex = 0;
-    let isPlaying = false;
-    let isRandom = false;
-    let repeatMode = 0; // 0: No repetir, 1: Repetir lista, 2: Repetir canción
-    let previousRandomIndex = -1; // Para evitar repetir la misma canción en modo aleatorio
+            let currentTrackIndex = 0;
+            let isPlaying = false;
+            let isRandom = false;
+            let repeatMode = 0; // 0: No repetir, 1: Repetir lista, 2: Repetir canción
+            let previousRandomIndex = -1; // Para evitar repetir la misma canción en modo aleatorio
 
-    // Variables de control
-    const controlsEnabled = true;
-    const playlistEnabled = true;
-    const volumeEnabled = true;
-    const progressEnabled = true;
-    const audioEnabled = true;
+            // Variables de control
+            const controlsEnabled = true;
+            const playlistEnabled = true;
+            const volumeEnabled = true;
+            const progressEnabled = true;
+            const audioEnabled = true;
 
-    // Elementos de la advertencia
-    const warning = document.getElementById('warning');
-    const warningControls = document.getElementById('warningControls');
-    const warningPlaylist = document.getElementById('warningPlaylist');
-    const warningVolume = document.getElementById('warningVolume');
-    const warningProgress = document.getElementById('warningProgress');
-    const warningAudio = document.getElementById('warningAudio');
+            // Elementos de la advertencia
+            const warning = document.getElementById('warning');
+            const warningControls = document.getElementById('warningControls');
+            const warningPlaylist = document.getElementById('warningPlaylist');
+            const warningVolume = document.getElementById('warningVolume');
+            const warningProgress = document.getElementById('warningProgress');
+            const warningAudio = document.getElementById('warningAudio');
 
-    // Mostrar advertencia con el estado de las funcionalidades
-    if (controlsEnabled && playlistEnabled && volumeEnabled && progressEnabled && audioEnabled) {
-        warning.style.display = 'none';
-    } else {
-        warning.style.display = 'block';
-    }
-    warningControls.textContent = `Controles: ${controlsEnabled ? 'Habilitados' : 'Deshabilitados'}`;
-    warningPlaylist.textContent = `Lista de reproducción: ${playlistEnabled ? 'Habilitada' : 'Deshabilitada'}`;
-    warningVolume.textContent = `Volumen: ${volumeEnabled ? 'Habilitado' : 'Deshabilitado'}`;
-    warningProgress.textContent = `Barra de progreso: ${progressEnabled ? 'Habilitada' : 'Deshabilitada'}`;
-    warningAudio.textContent = `Reproducción de audio: ${audioEnabled ? 'Habilitada' : 'Deshabilitada'}`;
+            // Mostrar advertencia con el estado de las funcionalidades
+            if (controlsEnabled && playlistEnabled && volumeEnabled && progressEnabled && audioEnabled) {
+                warning.style.display = 'none';
+            } else {
+                warning.style.display = 'block';
+            }
+            warningControls.textContent = `Controles: ${controlsEnabled ? 'Habilitados' : 'Deshabilitados'}`;
+            warningPlaylist.textContent = `Lista de reproducción: ${playlistEnabled ? 'Habilitada' : 'Deshabilitada'}`;
+            warningVolume.textContent = `Volumen: ${volumeEnabled ? 'Habilitado' : 'Deshabilitado'}`;
+            warningProgress.textContent = `Barra de progreso: ${progressEnabled ? 'Habilitada' : 'Deshabilitada'}`;
+            warningAudio.textContent = `Reproducción de audio: ${audioEnabled ? 'Habilitada' : 'Deshabilitada'}`;
 
-    // Deshabilitar controles si no están habilitados
-    if (!controlsEnabled) {
-        document.querySelectorAll('#controls button').forEach(button => {
-            button.disabled = true;
-        });
-    }
+            // Deshabilitar controles si no están habilitados
+            if (!controlsEnabled) {
+                document.querySelectorAll('#controls button').forEach(button => {
+                    button.disabled = true;
+                });
+            }
 
-    // Deshabilitar lista de reproducción si no está habilitada
-    if (!playlistEnabled) {
-        document.getElementById('playlist').style.pointerEvents = 'none';
-        document.getElementById('playlist').style.opacity = '0.5';
-    }
+            // Deshabilitar lista de reproducción si no está habilitada
+            if (!playlistEnabled) {
+                document.getElementById('playlist').style.pointerEvents = 'none';
+                document.getElementById('playlist').style.opacity = '0.5';
+            }
 
-    // Deshabilitar volumen si no está habilitado
-    if (!volumeEnabled) {
-        volumeBar.style.pointerEvents = 'none';
-        volumeBar.style.opacity = '0.5';
-        audioPlayer.volume = 1; // Fijar volumen al máximo
-    }
+            // Deshabilitar volumen si no está habilitado
+            if (!volumeEnabled) {
+                volumeBar.style.pointerEvents = 'none';
+                volumeBar.style.opacity = '0.5';
+                audioPlayer.volume = 1; // Fijar volumen al máximo
+            }
 
-    // Deshabilitar barra de progreso si no está habilitada
-    if (!progressEnabled) {
-        progressBar.style.pointerEvents = 'none';
-        progressBar.style.opacity = '0.5';
-    }
+            // Deshabilitar barra de progreso si no está habilitada
+            if (!progressEnabled) {
+                progressBar.style.pointerEvents = 'none';
+                progressBar.style.opacity = '0.5';
+            }
 
-    // Deshabilitar reproducción de audio si no está habilitada
-    if (!audioEnabled) {
-        audioPlayer.style.pointerEvents = 'none';
-        audioPlayer.style.opacity = '0.5';
-        audioPlayer.pause();
-        playPauseButton.disabled = true;
-    }
+            // Deshabilitar reproducción de audio si no está habilitada
+            if (!audioEnabled) {
+                audioPlayer.style.pointerEvents = 'none';
+                audioPlayer.style.opacity = '0.5';
+                audioPlayer.pause();
+                playPauseButton.disabled = true;
+            }
 
-    const tracks = [
+            const tracks = [
 {
             name: 'A Parallel Universe',
             file: 'A Parallel Universe.mp3',
@@ -879,300 +999,290 @@ document.addEventListener('DOMContentLoaded', function () {
             startDate: { month: 1, day: 14 }, endDate: { month: 7, day: 13 },
             releaseDate: 1723500000
         }
-    ];
+            ];
 
-    function formatTime(seconds) {
-        const minutes = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60);
-        return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
-    }
+            function formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+            }
 
-    function updateTrackInfo(track) {
-        trackName.textContent = track.name;
-        trackArtist.textContent = track.artist;
-        trackAlbum.textContent = track.album;
-        trackLabel.textContent = `Label: ${track.label}`;
-        trackComposer.textContent = `Compositor: ${track.composer}`;
-        trackProducer.textContent = `Productor: ${track.producer}`;
-        spotifyLink.href = track.spotify;
-        player.style.backgroundImage = `url(${track.background})`;
-        startDateElement.textContent = `Inicio: ${track.startDate.month}/${track.startDate.day}`;
-        endDateElement.textContent = `Fin: ${track.endDate.month}/${track.endDate.day}`;
+            function updateTrackInfo(track) {
+                trackName.textContent = track.name;
+                trackArtist.textContent = track.artist;
+                trackAlbum.textContent = track.album;
+                trackLabel.textContent = `Label: ${track.label}`;
+                trackComposer.textContent = `Compositor: ${track.composer}`;
+                trackProducer.textContent = `Productor: ${track.producer}`;
+                spotifyLink.href = track.spotify;
+                player.style.backgroundImage = `url(${track.background})`;
+                startDateElement.textContent = `Inicio: ${track.startDate.month}/${track.startDate.day}`;
+                endDateElement.textContent = `Fin: ${track.endDate.month}/${track.endDate.day}`;
 
-        if (track.youtube) {
-            youtubePlayer.src = track.youtube;
-            youtubeVideo.style.display = 'block';
-        } else {
-            youtubeVideo.style.display = 'none';
-        }
+                if (track.youtube) {
+                    youtubePlayer.src = track.youtube;
+                    youtubeVideo.style.display = 'block';
+                } else {
+                    youtubeVideo.style.display = 'none';
+                }
 
-        if (track.spotifyEmbed) {
-            spotifyPlayer.src = track.spotifyEmbed;
-            spotifyVideo.style.display = 'block';
-        } else {
-            spotifyVideo.style.display = 'none';
-        }
+                if (track.spotifyEmbed) {
+                    spotifyPlayer.src = track.spotifyEmbed;
+                    spotifyVideo.style.display = 'block';
+                } else {
+                    spotifyVideo.style.display = 'none';
+                }
 
-        document.title = `${track.name} - ${track.artist} (${track.album}) - Grouvex Studios`;
-    }
+                document.title = `${track.name} - ${track.artist} (${track.album}) - Grouvex Studios`;
+            }
 
-    function playTrack(index) {
-        currentTrackIndex = index;
-        updateTrackInfo(tracks[currentTrackIndex]);
-        if (playPauseButton.hasAttribute('disabled')) return;
-        audioPlayer.src = `https://grouvex.com/music/${tracks[currentTrackIndex].file}`;
-        audioPlayer.play().then(() => {
-            console.log('Audio is playing');
-        }).catch(error => {
-            console.error('Error trying to play audio:', error);
-        });
-        isPlaying = true;
-        playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
-    }
+            function playTrack(index) {
+                currentTrackIndex = index;
+                updateTrackInfo(tracks[currentTrackIndex]);
+                if (playPauseButton.hasAttribute('disabled')) return;
+                audioPlayer.src = `https://grouvex.com/music/${tracks[currentTrackIndex].file}`;
+                audioPlayer.play().then(() => {
+                    console.log('Audio is playing');
+                }).catch(error => {
+                    console.error('Error trying to play audio:', error);
+                });
+                isPlaying = true;
+                playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+            }
 
-    function playPause() {
-        if (isPlaying) {
-            audioPlayer.pause();
-            isPlaying = false;
-            playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
-        } else {
-            audioPlayer.play().then(() => {
-                console.log('Audio is playing');
-            }).catch(error => {
-                console.error('Error trying to play audio:', error);
+            function playPause() {
+                if (isPlaying) {
+                    audioPlayer.pause();
+                    isPlaying = false;
+                    playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+                } else {
+                    audioPlayer.play().then(() => {
+                        console.log('Audio is playing');
+                    }).catch(error => {
+                        console.error('Error trying to play audio:', error);
+                    });
+                    isPlaying = true;
+                    playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+                }
+            }
+
+            function nextTrack() {
+                if (repeatMode === 2) {
+                    // Repetición de canción: no cambia de canción
+                    playTrack(currentTrackIndex);
+                    return;
+                }
+
+                if (isRandom) {
+                    // Modo random: selecciona una canción aleatoria que no sea la anterior
+                    let randomIndex;
+                    do {
+                        randomIndex = Math.floor(Math.random() * tracks.length);
+                    } while (randomIndex === previousRandomIndex || !isTrackAvailable(tracks[randomIndex]));
+                    previousRandomIndex = randomIndex;
+                    currentTrackIndex = randomIndex;
+                } else {
+                    // Modo normal: siguiente canción en la lista
+                    do {
+                        currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+                    } while (!isTrackAvailable(tracks[currentTrackIndex]));
+                }
+
+                playTrack(currentTrackIndex);
+            }
+
+            function prevTrack() {
+                if (repeatMode === 2) {
+                    // Repetición de canción: no cambia de canción
+                    playTrack(currentTrackIndex);
+                    return;
+                }
+
+                // Modo normal: canción anterior en la lista
+                do {
+                    currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+                } while (!isTrackAvailable(tracks[currentTrackIndex]));
+
+                playTrack(currentTrackIndex);
+            }
+
+            function toggleRandom() {
+                if (tracks.filter(track => isTrackAvailable(track)).length <= 2) {
+                    // Si hay 0, 1 o 2 canciones, deshabilitar el modo aleatorio
+                    isRandom = false;
+                    randomButton.disabled = true;
+                    randomButton.innerHTML = '<i class="fas fa-random"></i>';
+                    return;
+                }
+
+                isRandom = !isRandom;
+                randomButton.innerHTML = isRandom ? '<i class="fas fa-random"></i>!' : '<i class="fas fa-random"></i>';
+            }
+
+            function toggleRepeat() {
+                repeatMode = (repeatMode + 1) % 3;
+                switch (repeatMode) {
+                    case 0:
+                        repeatButton.innerHTML = '<i class="fas fa-redo"></i>';
+                        break;
+                    case 1:
+                        repeatButton.innerHTML = '<i class="fas fa-redo"></i>1';
+                        break;
+                    case 2:
+                        repeatButton.innerHTML = '<i class="fas fa-redo"></i>2';
+                        break;
+                }
+            }
+
+            function updatePlaylistHighlight(index) {
+                const playlistItems = document.querySelectorAll('#playlist li');
+                playlistItems.forEach((item, i) => {
+                    if (i === index) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+            }
+
+            function isTrackAvailable(track) {
+                const now = new Date();
+                const nowUnixTime = Math.floor(now.getTime() / 1000);
+                const startDate = new Date(now.getFullYear(), track.startDate.month - 1, track.startDate.day, 0, 0, 0);
+                const endDate = new Date(now.getFullYear(), track.endDate.month - 1, track.endDate.day, 23, 59, 59);
+                return now >= startDate && now <= endDate && nowUnixTime >= track.releaseDate;
+            }
+
+            // Generar la lista de reproducción
+            const availableTracks = tracks.filter(track => isTrackAvailable(track));
+            availableTracks.forEach((track, index) => {
+                const li = document.createElement('li');
+
+                // Número de la canción (20% del espacio)
+                const trackNumber = document.createElement('div');
+                trackNumber.className = 'track-number';
+                trackNumber.textContent = index + 1;
+                li.appendChild(trackNumber);
+
+                // Información de la canción (título y artista, 30% del espacio)
+                const trackInfo = document.createElement('div');
+                trackInfo.className = 'track-info';
+
+                const trackTitle = document.createElement('div');
+                trackTitle.className = 'track-title';
+                trackTitle.textContent = track.name;
+                trackTitle.addEventListener('mouseenter', () => {
+                    trackTitle.title = `${track.name}`;
+                });
+                trackInfo.appendChild(trackTitle);
+
+                const trackArtistElement = document.createElement('div');
+                trackArtistElement.className = 'track-artist';
+                trackArtistElement.textContent = track.artist;
+                trackInfo.appendChild(trackArtistElement);
+                trackArtistElement.addEventListener('mouseenter', () => {
+                    trackArtistElement.title = `${track.artist}`;
+                });
+                li.appendChild(trackInfo);
+
+                // Álbum (30% del espacio)
+                const trackAlbumElement = document.createElement('div');
+                trackAlbumElement.className = 'track-album';
+                trackAlbumElement.textContent = track.album;
+                li.appendChild(trackAlbumElement);
+                trackAlbumElement.addEventListener('mouseenter', () => {
+                    trackAlbumElement.title = `${track.album}`;
+                });
+
+                // Duración (20% del espacio)
+                const trackDuration = document.createElement('div');
+                trackDuration.className = 'track-duration';
+                trackDuration.textContent = formatTime(track.duration || 0); // Aquí puedes calcular la duración real
+                li.appendChild(trackDuration);
+
+                // Evento para reproducir la canción al hacer clic
+                li.addEventListener('click', () => playTrack(tracks.indexOf(track)));
+
+                // Cambiar el número por un botón de reproducción al pasar el ratón
+                trackNumber.addEventListener('mouseenter', () => {
+                    trackNumber.innerHTML = '<i class="fas fa-play"></i>';
+                    trackNumber.title = `Reproducir ${track.name} de ${track.artist}`;
+                });
+
+                trackNumber.addEventListener('mouseleave', () => {
+                    trackNumber.textContent = index + 1;
+                });
+
+                playlist.appendChild(li);
             });
-            isPlaying = true;
-            playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
-        }
-    }
 
-    function nextTrack() {
-        if (repeatMode === 2) {
-            // Repetición de canción: no cambia de canción
-            playTrack(currentTrackIndex);
-            return;
-        }
+            // Deshabilitar el botón de aleatorio si hay 0, 1 o 2 canciones
+            if (availableTracks.length <= 2) {
+                randomButton.disabled = true;
+            }
 
-        if (isRandom) {
-            // Modo random: selecciona una canción aleatoria que no sea la anterior
-            let randomIndex;
-            do {
-                randomIndex = Math.floor(Math.random() * tracks.length);
-            } while (randomIndex === previousRandomIndex || !isTrackAvailable(tracks[randomIndex]));
-            previousRandomIndex = randomIndex;
-            currentTrackIndex = randomIndex;
-        } else {
-            // Modo normal: siguiente canción en la lista
-            do {
-                currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
-            } while (!isTrackAvailable(tracks[currentTrackIndex]));
-        }
+            // Barra de progreso
+            audioPlayer.addEventListener('timeupdate', () => {
+                const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                progress.style.width = `${progressPercent}%`;
+                currentTimeDisplay.textContent = formatTime(audioPlayer.currentTime);
+            });
 
-        playTrack(currentTrackIndex);
-    }
+            audioPlayer.addEventListener('loadedmetadata', () => {
+                totalTimeDisplay.textContent = formatTime(audioPlayer.duration);
+            });
 
-    function prevTrack() {
-        if (repeatMode === 2) {
-            // Repetición de canción: no cambia de canción
-            playTrack(currentTrackIndex);
-            return;
-        }
+            progressBar.addEventListener('click', (e) => {
+                const clickX = e.offsetX;
+                const progressBarWidth = progressBar.clientWidth;
+                const seekTime = (clickX / progressBarWidth) * audioPlayer.duration;
+                audioPlayer.currentTime = seekTime;
+            });
 
-        // Modo normal: canción anterior en la lista
-        do {
-            currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
-        } while (!isTrackAvailable(tracks[currentTrackIndex]));
+            // Barra de volumen
+            audioPlayer.addEventListener('volumechange', () => {
+                const volumePercent = audioPlayer.volume * 100;
+                volume.style.width = `${volumePercent}%`;
+            });
 
-        playTrack(currentTrackIndex);
-    }
+            volumeBar.addEventListener('click', (e) => {
+                const clickX = e.offsetX;
+                const volumeBarWidth = volumeBar.clientWidth;
+                const newVolume = clickX / volumeBarWidth;
+                audioPlayer.volume = newVolume;
+            });
 
-    function toggleRandom() {
-        if (tracks.filter(track => isTrackAvailable(track)).length <= 2) {
-            // Si hay 0, 1 o 2 canciones, deshabilitar el modo aleatorio
-            isRandom = false;
-            randomButton.disabled = true;
-            randomButton.innerHTML = '<i class="fas fa-random"></i>';
-            return;
-        }
+            // Reproducir automáticamente la siguiente canción al terminar
+            audioPlayer.addEventListener('ended', () => {
+                if (repeatMode === 2) {
+                    // Repetición de canción: repetir la misma canción
+                    playTrack(currentTrackIndex);
+                } else if (repeatMode === 1 || isRandom) {
+                    // Repetición de lista o random: pasar a la siguiente canción
+                    nextTrack();
+                } else {
+                    // Sin repetición: detener la reproducción
+                    isPlaying = false;
+                    playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+                }
+            });
 
-        isRandom = !isRandom;
-        randomButton.innerHTML = isRandom ? '<i class="fas fa-random"></i>!' : '<i class="fas fa-random"></i>';
-    }
+            // Event listeners
+            playPauseButton.addEventListener('click', playPause);
+            nextButton.addEventListener('click', nextTrack);
+            prevButton.addEventListener('click', prevTrack);
+            randomButton.addEventListener('click', toggleRandom);
+            repeatButton.addEventListener('click', toggleRepeat);
 
-    function toggleRepeat() {
-        repeatMode = (repeatMode + 1) % 3;
-        switch (repeatMode) {
-            case 0:
-                repeatButton.innerHTML = '<i class="fas fa-redo"></i>';
-                break;
-            case 1:
-                repeatButton.innerHTML = '<i class="fas fa-redo"></i>1';
-                break;
-            case 2:
-                repeatButton.innerHTML = '<i class="fas fa-redo"></i>2';
-                break;
-        }
-    }
-
-    function updatePlaylistHighlight(index) {
-        const playlistItems = document.querySelectorAll('#playlist li');
-        playlistItems.forEach((item, i) => {
-            if (i === index) {
-                item.classList.add('active');
+            // Reproducir la primera canción disponible al cargar la página
+            if (availableTracks.length > 0) {
+                playTrack(tracks.indexOf(availableTracks[0]));
             } else {
-                item.classList.remove('active');
+                const noTrackElement = document.createElement('li');
+                noTrackElement.textContent = 'No hay ninguna canción disponible';
+                playlist.appendChild(noTrackElement);
             }
         });
-    }
-
-    function isTrackAvailable(track) {
-        const now = new Date();
-        const nowUnixTime = Math.floor(now.getTime() / 1000);
-        const startDate = new Date(now.getFullYear(), track.startDate.month - 1, track.startDate.day, 0, 0, 0);
-        const endDate = new Date(now.getFullYear(), track.endDate.month - 1, track.endDate.day, 23, 59, 59);
-        return now >= startDate && now <= endDate && nowUnixTime >= track.releaseDate;
-    }
-
-    // Crear el índice de columnas
-    const playlistHeader = document.createElement('div');
-    playlistHeader.className = 'playlist-header';
-    playlistHeader.innerHTML = `
-        <div class="track-number">#</div>
-        <div class="track-title">Título</div>
-        <div class="track-album">Álbum</div>
-        <div class="track-duration">⏱</div>
-    `;
-    playlist.parentNode.insertBefore(playlistHeader, playlist);
-
-    // Generar la lista de reproducción
-    const availableTracks = tracks.filter(track => isTrackAvailable(track));
-    availableTracks.forEach((track, index) => {
-        const li = document.createElement('li');
-
-        // Número de la canción (20% del espacio)
-        const trackNumber = document.createElement('div');
-        trackNumber.className = 'track-number';
-        trackNumber.textContent = index + 1;
-        li.appendChild(trackNumber);
-
-        // Información de la canción (título y artista, 30% del espacio)
-        const trackInfo = document.createElement('div');
-        trackInfo.className = 'track-info';
-
-        const trackTitle = document.createElement('div');
-        trackTitle.className = 'track-title';
-        trackTitle.textContent = track.name;
-        trackTitle.addEventListener('mouseenter', () => {
-            trackTitle.title = `${track.name}`;
-        });
-        trackInfo.appendChild(trackTitle);
-
-        const trackArtistElement = document.createElement('div');
-        trackArtistElement.className = 'track-artist';
-        trackArtistElement.textContent = track.artist;
-        trackInfo.appendChild(trackArtistElement);
-        trackArtistElement.addEventListener('mouseenter', () => {
-            trackArtistElement.title = `${track.artist}`;
-        });
-        li.appendChild(trackInfo);
-
-        // Álbum (30% del espacio)
-        const trackAlbumElement = document.createElement('div');
-        trackAlbumElement.className = 'track-album';
-        trackAlbumElement.textContent = track.album;
-        li.appendChild(trackAlbumElement);
-        trackAlbumElement.addEventListener('mouseenter', () => {
-            trackAlbumElement.title = `${track.album}`;
-        });
-        // Duración (20% del espacio)
-        const trackDuration = document.createElement('div');
-        trackDuration.className = 'track-duration';
-        trackDuration.textContent = formatTime(track.duration || 0); // Aquí puedes calcular la duración real
-        li.appendChild(trackDuration);
-
-        // Evento para reproducir la canción al hacer clic
-        li.addEventListener('click', () => playTrack(tracks.indexOf(track)));
-
-        // Cambiar el número por un botón de reproducción al pasar el ratón
-        trackNumber.addEventListener('mouseenter', () => {
-            trackNumber.innerHTML = '<i class="fas fa-play"></i>';
-            trackNumber.title = `Reproducir ${track.name} de ${track.artist}`;
-        });
-
-        trackNumber.addEventListener('mouseleave', () => {
-            trackNumber.textContent = index + 1;
-        });
-
-        playlist.appendChild(li);
-    });
-
-    // Deshabilitar el botón de aleatorio si hay 0, 1 o 2 canciones
-    if (availableTracks.length <= 2) {
-        randomButton.disabled = true;
-    }
-
-    // Barra de progreso
-    audioPlayer.addEventListener('timeupdate', () => {
-        const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-        progress.style.width = `${progressPercent}%`;
-        currentTimeDisplay.textContent = formatTime(audioPlayer.currentTime);
-    });
-
-    audioPlayer.addEventListener('loadedmetadata', () => {
-        totalTimeDisplay.textContent = formatTime(audioPlayer.duration);
-    });
-
-    progressBar.addEventListener('click', (e) => {
-        const clickX = e.offsetX;
-        const progressBarWidth = progressBar.clientWidth;
-        const seekTime = (clickX / progressBarWidth) * audioPlayer.duration;
-        audioPlayer.currentTime = seekTime;
-    });
-
-    // Barra de volumen
-    audioPlayer.addEventListener('volumechange', () => {
-        const volumePercent = audioPlayer.volume * 100;
-        volume.style.width = `${volumePercent}%`;
-    });
-
-    volumeBar.addEventListener('click', (e) => {
-        const clickX = e.offsetX;
-        const volumeBarWidth = volumeBar.clientWidth;
-        const newVolume = clickX / volumeBarWidth;
-        audioPlayer.volume = newVolume;
-    });
-
-    // Reproducir automáticamente la siguiente canción al terminar
-    audioPlayer.addEventListener('ended', () => {
-        if (repeatMode === 2) {
-            // Repetición de canción: repetir la misma canción
-            playTrack(currentTrackIndex);
-        } else if (repeatMode === 1 || isRandom) {
-            // Repetición de lista o random: pasar a la siguiente canción
-            nextTrack();
-        } else {
-            // Sin repetición: detener la reproducción
-            isPlaying = false;
-            playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
-        }
-    });
-
-    // Event listeners
-    playPauseButton.addEventListener('click', playPause);
-    nextButton.addEventListener('click', nextTrack);
-    prevButton.addEventListener('click', prevTrack);
-    randomButton.addEventListener('click', toggleRandom);
-    repeatButton.addEventListener('click', toggleRepeat);
-
-    // Reproducir la primera canción disponible al cargar la página
-    if (availableTracks.length > 0) {
-        playTrack(tracks.indexOf(availableTracks[0]));
-    } else {
-        const noTrackElement = document.createElement('li');
-        noTrackElement.textContent = 'No hay ninguna canción disponible';
-        playlist.appendChild(noTrackElement);
-    }
-});
     </script>
 </body>
 </html>

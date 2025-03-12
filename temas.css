@@ -516,19 +516,15 @@ footer {
 }
 
 .tarjeta {
-  display: flex;
-  align-items: center;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgb(51, 177, 215);
-  margin: 20px;
-  padding: 20px;
-  width: 90%;
-  height: auto;
-  padding-top: 0px;
-  padding-left: 10px;
-  padding-right: 10px;
-  flex-basis: calc(45% - 40px);
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgb(51, 177, 215);
+    margin: 20px;
+    width: 90%;
+    height: auto;
+    flex-basis: calc(45% - 40px);
+    justify-content: center;
 }
 
 .tarjeta img {

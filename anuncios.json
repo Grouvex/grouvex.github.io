@@ -1,5 +1,17 @@
 [
     {
+        "id": "1741806954",
+        "uT": "1741806954",
+        "actualizadoID": "Update v6.0.1-Beta",
+        "user": "Grouvex Studios",
+        "userimagen": "../img/GROUVEX.png",
+        "titulo": "Nueva Actualización v6.0.1-Beta",
+        "contenido": "<p>Se han actualizado las secciones de Equipo, Anuncios, Registrar y Mi Música.</p>",
+        "tipo": "Web",
+        "masInfo": "<p>Ya puedes disfrutar de las nuevas funciones que hay en cada sección!</p>",
+        "infoAdicional": "<article><p>Se han actualizado los estilos de Equipo, se han mejorado los anuncios con el Indice y Categorías, se ha mejorado la sección registrar como su presentación, y se ha mejorado Mi Música usando una estructura similar a Spotify.</p></article>"
+    },
+    {
         "id": "1740169682",
         "uT": "1740169682",
         "actualizadoID": "ModifFormsGSR",

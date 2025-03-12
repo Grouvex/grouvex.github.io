@@ -116,7 +116,8 @@ onAuthStateChanged(auth, async (user) => {
             usuario.textContent = targetUser.displayName || 'Usuario no definido';
             userID.textContent = 'GS-' + targetUser.uid;
             fotoPerfil.src = targetUser.photoURL || 'ruta/a/imagen/por/defecto.png';
-
+            const usuario = document.querySelector('.usuario');
+            usuario.textContent = targetUser.displayName || 'Usuario no definido';
             // Mostrar estadísticas de seguimiento
             const stats = await getFollowStats(targetUser.uid);
             followersCount.textContent = stats.followersCount;

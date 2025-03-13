@@ -560,7 +560,7 @@ if (window.innerWidth < 768) {
             if (!user) {
                 alert(`🔒 Necesitas estar registrado y ser ${nombresEquipos[paginaActual]}`);
                 mostrarNotificacion(`🔒 Necesitas estar registrado y ser ${nombresEquipos[paginaActual]}`);
-                setTimeout(() => window.history.back(), 5000);
+                setTimeout(() => window.location.href = "https://grouvex.github.io/login";, 5000);
                 return;
             }
 

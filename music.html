@@ -1145,106 +1145,77 @@
                 return now >= startDate && now <= endDate && nowUnixTime >= track.releaseDate;
             }
 
+            function getTrackDuration(track, callback) {
+                const audio = new Audio(`https://grouvex.com/music/${track.file}`);
+                audio.addEventListener('loadedmetadata', () => {
+                    callback(audio.duration);
+                });
+                audio.load();
+            }
             // Generar la lista de reproducción
             const availableTracks = tracks.filter(track => isTrackAvailable(track));
-// Función para obtener la duración de un archivo de audio
-function getAudioDuration(audioFile) {
-    return new Promise((resolve, reject) => {
-        const audio = new Audio(audioFile);
-        audio.addEventListener('loadedmetadata', () => {
-            resolve(audio.duration);
-        });
-        audio.addEventListener('error', (e) => {
-            reject(e);
-        });
-    });
-}
+            availableTracks.forEach((track, index) => {
+                const li = document.createElement('li');
 
-// Función para generar la lista de reproducción
-async function generatePlaylist() {
-    const availableTracks = tracks.filter(track => isTrackAvailable(track));
+                // Número de la canción (20% del espacio)
+                const trackNumber = document.createElement('div');
+                trackNumber.className = 'track-number';
+                trackNumber.textContent = index + 1;
+                li.appendChild(trackNumber);
 
-    for (const track of availableTracks) {
-        try {
-            // Obtener la duración de la canción
-            const duration = await getAudioDuration(`https://grouvex.com/music/${track.file}`);
-            track.duration = duration; // Guardar la duración en el objeto de la canción
-        } catch (error) {
-            console.error(`Error al obtener la duración de ${track.name}:`, error);
-            track.duration = 0; // Si no se puede obtener la duración, se asigna 0
-        }
-    }
+                // Información de la canción (título y artista, 30% del espacio)
+                const trackInfo = document.createElement('div');
+                trackInfo.className = 'track-info';
 
-    // Generar la lista de canciones
-    availableTracks.forEach((track, index) => {
-        const li = document.createElement('li');
+                const trackTitle = document.createElement('div');
+                trackTitle.className = 'track-title';
+                trackTitle.textContent = track.name;
+                trackTitle.addEventListener('mouseenter', () => {
+                    trackTitle.title = `${track.name}`;
+                });
+                trackInfo.appendChild(trackTitle);
 
-        // Número de la canción (20% del espacio)
-        const trackNumber = document.createElement('div');
-        trackNumber.className = 'track-number';
-        trackNumber.textContent = index + 1;
-        li.appendChild(trackNumber);
+                const trackArtistElement = document.createElement('div');
+                trackArtistElement.className = 'track-artist';
+                trackArtistElement.textContent = track.artist;
+                trackInfo.appendChild(trackArtistElement);
+                trackArtistElement.addEventListener('mouseenter', () => {
+                    trackArtistElement.title = `${track.artist}`;
+                });
+                li.appendChild(trackInfo);
 
-        // Información de la canción (título y artista, 30% del espacio)
-        const trackInfo = document.createElement('div');
-        trackInfo.className = 'track-info';
+                // Álbum (30% del espacio)
+                const trackAlbumElement = document.createElement('div');
+                trackAlbumElement.className = 'track-album';
+                trackAlbumElement.textContent = track.album;
+                li.appendChild(trackAlbumElement);
+                trackAlbumElement.addEventListener('mouseenter', () => {
+                    trackAlbumElement.title = `${track.album}`;
+                });
 
-        const trackTitle = document.createElement('div');
-        trackTitle.className = 'track-title';
-        trackTitle.textContent = track.name;
-        trackTitle.addEventListener('mouseenter', () => {
-            trackTitle.title = `${track.name}`;
-        });
-        trackInfo.appendChild(trackTitle);
+                // Duración (20% del espacio)
+                const trackDuration = document.createElement('div');
+                trackDuration.className = 'track-duration';
+                li.appendChild(trackDuration);
+                getTrackDuration(track, (duration) => {
+                    trackDuration.textContent = formatTime(duration);
+                });
 
-        const trackArtistElement = document.createElement('div');
-        trackArtistElement.className = 'track-artist';
-        trackArtistElement.textContent = track.artist;
-        trackInfo.appendChild(trackArtistElement);
-        trackArtistElement.addEventListener('mouseenter', () => {
-            trackArtistElement.title = `${track.artist}`;
-        });
-        li.appendChild(trackInfo);
+                // Evento para reproducir la canción al hacer clic
+                li.addEventListener('click', () => playTrack(tracks.indexOf(track)));
 
-        // Álbum (30% del espacio)
-        const trackAlbumElement = document.createElement('div');
-        trackAlbumElement.className = 'track-album';
-        trackAlbumElement.textContent = track.album;
-        li.appendChild(trackAlbumElement);
-        trackAlbumElement.addEventListener('mouseenter', () => {
-            trackAlbumElement.title = `${track.album}`;
-        });
+                // Cambiar el número por un botón de reproducción al pasar el ratón
+                trackNumber.addEventListener('mouseenter', () => {
+                    trackNumber.innerHTML = '<i class="fas fa-play"></i>';
+                    trackNumber.title = `Reproducir ${track.name} de ${track.artist}`;
+                });
 
-        // Duración (20% del espacio)
-        const trackDuration = document.createElement('div');
-        trackDuration.className = 'track-duration';
-        trackDuration.textContent = formatTime(track.duration || 0); // Mostrar la duración de la canción
-        li.appendChild(trackDuration);
+                trackNumber.addEventListener('mouseleave', () => {
+                    trackNumber.textContent = index + 1;
+                });
 
-        // Evento para reproducir la canción al hacer clic
-        li.addEventListener('click', () => playTrack(tracks.indexOf(track)));
-
-        // Cambiar el número por un botón de reproducción al pasar el ratón
-        trackNumber.addEventListener('mouseenter', () => {
-            trackNumber.innerHTML = '<i class="fas fa-play"></i>';
-            trackNumber.title = `Reproducir ${track.name} de ${track.artist}`;
-        });
-
-        trackNumber.addEventListener('mouseleave', () => {
-            trackNumber.textContent = index + 1;
-        });
-
-        playlist.appendChild(li);
-    });
-
-    // Deshabilitar el botón de aleatorio si hay 0, 1 o 2 canciones
-    if (availableTracks.length <= 2) {
-        randomButton.disabled = true;
-    }
-}
-
-// Llamar a la función para generar la lista de reproducción
-generatePlaylist();
+                playlist.appendChild(li);
+            });
 
             // Deshabilitar el botón de aleatorio si hay 0, 1 o 2 canciones
             if (availableTracks.length <= 2) {

@@ -337,7 +337,7 @@
                                                     const cancionidUnico = generarIdUnico(cancion);
                                                     return `
                                                         <li>
-                                                            <a href="${cancion.titulo.toLowerCase().replace(/ /g, '_')}">
+                                                            <a href="discografia/${cancion.titulo.toLowerCase().replace(/ /g, '_')}">
                                                                 <div style="display: flex; padding: 3px; box-shadow: 0 0 3px cyan;">
                                                                     <img src="${cancion.portada}" alt="" class="r-img" style="margin-right: 2px;">
                                                                     <div style="display: flex; justify-content: space-between; width: 100%;">
@@ -390,7 +390,7 @@
                                         ${albumes.map(album => {
                                             const albumidUnico = generarIdUnico(album);
                                             return `
-                                                <a href="lanzamientos/${album.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetinMusica" data-ut="${album.fecha}">
+                                                <a href="discografia/${album.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetinMusica" data-ut="${album.fecha}">
                                                     <img src="${album.portada}" alt="" style="width:300px">
                                                     <p class="cajetin-fechasMusica">Fecha Original: <span id="fechaO-${albumidUnico}"></span></p>
                                                     <p class="cajetin-fechasMusica">Fecha Lanzamiento: <span id="fechaL-${albumidUnico}"></span></p>
@@ -438,7 +438,7 @@
                                         ${ep.map(ep => {
                                             const epidUnico = generarIdUnico(ep);
                                             return `
-                                                <a href="${ep.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetinMusica" data-ut="${ep.fecha}">
+                                                <a href="discografia/${ep.titulo.toLowerCase().replace(/ /g, '_')}" class="cajetinMusica" data-ut="${ep.fecha}">
                                                     <img src="${ep.portada}" alt="" style="width:300px">
                                                     <p class="cajetin-fechasMusica">Fecha Original: <span id="fechaO-${epidUnico}"></span></p>
                                                     <p class="cajetin-fechasMusica">Fecha Lanzamiento: <span id="fechaL-${epidUnico}"></span></p>

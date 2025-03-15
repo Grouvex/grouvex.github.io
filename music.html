@@ -1145,6 +1145,13 @@
                 return now >= startDate && now <= endDate && nowUnixTime >= track.releaseDate;
             }
 
+            function getTrackDuration(track, callback) {
+                const audio = new Audio(`https://grouvex.com/music/${track.file}`);
+                audio.addEventListener('loadedmetadata', () => {
+                    callback(audio.duration);
+                });
+                audio.load();
+            }
             // Generar la lista de reproducción
             const availableTracks = tracks.filter(track => isTrackAvailable(track));
             availableTracks.forEach((track, index) => {
@@ -1189,8 +1196,10 @@
                 // Duración (20% del espacio)
                 const trackDuration = document.createElement('div');
                 trackDuration.className = 'track-duration';
-                trackDuration.textContent = formatTime(track.duration || 0); // Aquí puedes calcular la duración real
                 li.appendChild(trackDuration);
+                getTrackDuration(track, (duration) => {
+                    trackDuration.textContent = formatTime(duration);
+                });
 
                 // Evento para reproducir la canción al hacer clic
                 li.addEventListener('click', () => playTrack(tracks.indexOf(track)));

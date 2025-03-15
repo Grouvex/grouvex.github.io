@@ -470,8 +470,8 @@
             function cambiarOrden() {
                 const selector = document.getElementById('ordenSelector');
                 const orden = selector.value;
-                const cajetinesContainer = document.querySelector('.cajetines');
-                const cajetines = document.querySelectorAll('.cajetin');
+                const cajetinesContainer = document.querySelector('.cajetinesMusica');
+                const cajetines = document.querySelectorAll('.cajetinMusica');
 
                 // Convertir los atributos data-ut a números para una comparación numérica
                 const elementosConUT = Array.from(cajetines).map(cajetin => {
@@ -502,8 +502,8 @@
             function cambiarOrdenEP() {
                 const selector = document.getElementById('ordenSelectorEP');
                 const orden = selector.value;
-                const cajetinesContainer = document.querySelector('.cajetines');
-                const cajetines = document.querySelectorAll('.cajetin');
+                const cajetinesContainer = document.querySelector('.cajetinesMusica');
+                const cajetines = document.querySelectorAll('.cajetinMusica');
 
                 // Convertir los atributos data-ut a números para una comparación numérica
                 const elementosConUT = Array.from(cajetines).map(cajetin => {

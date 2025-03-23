@@ -275,6 +275,13 @@
         #warning ul li {
             margin: 5px 0;
         }
+        #trackImagen {
+    width: 40%;
+    height: 40%;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
     </style>
 </head>
 <body>
@@ -320,7 +327,8 @@
             </details>
             <h1>Reproductor de Música</h1>
             <div id="currentTrackInfo">
-                <h2 id="trackName"></h2>
+                <h2 id="trackName"  src=""></h2>
+                <img id="trackImagen"></h2>
                 <div id="infoLine1">
                     <span id="trackArtist"></span> - <span id="trackAlbum"></span>
                 </div>
@@ -1165,42 +1173,47 @@
             }
 
             function updateTrackInfo(track) {
-                trackName.textContent = track.name;
-                trackArtist.textContent = track.artist;
-                trackAlbum.textContent = track.album;
-                trackLabel.textContent = `Label: ${track.label}`;
-                trackComposer.textContent = `Compositor: ${track.composer}`;
-                trackProducer.textContent = `Productor: ${track.producer}`;
-                spotifyLink.href = track.spotify;
-                player.style.backgroundImage = `url(${track.background})`;
-                startDateElement.textContent = `Inicio: ${track.startDate.month}/${track.startDate.day}`;
-                endDateElement.textContent = `Fin: ${track.endDate.month}/${track.endDate.day}`;
+    trackName.textContent = track.name;
+    trackArtist.textContent = track.artist;
+    trackAlbum.textContent = track.album;
+    trackLabel.textContent = `Label: ${track.label}`;
+    trackComposer.textContent = `Compositor: ${track.composer}`;
+    trackProducer.textContent = `Productor: ${track.producer}`;
+    spotifyLink.href = track.spotify;
+    player.style.backgroundImage = `url(${track.background})`;
+    startDateElement.textContent = `Inicio: ${track.startDate.month}/${track.startDate.day}`;
+    endDateElement.textContent = `Fin: ${track.endDate.month}/${track.endDate.day}`;
 
-                const nowUnixTime = Math.floor(new Date().getTime() / 1000);
-                if (nowUnixTime < track.releaseDate) {
-                    // Si el lanzamiento es futuro, mostrar un mensaje
-                    trackName.textContent += ' (Próximamente | Pre-Audio)';
-                    trackName.style.color = '#ffcc00'; // Cambiar el color para resaltar
-                } else {
-                    trackName.style.color = ''; // Restaurar el color por defecto
-                }
+    // Actualizar la imagen de la canción
+    const trackImagen = document.getElementById('trackImagen');
+    trackImagen.src = track.background; // Usar la propiedad 'background' de la canción
+    trackImagen.alt = `Portada de ${track.name}`; // Añadir un texto alternativo
 
-                if (track.youtube) {
-                    youtubePlayer.src = track.youtube;
-                    youtubeVideo.style.display = 'block';
-                } else {
-                    youtubeVideo.style.display = 'none';
-                }
+    const nowUnixTime = Math.floor(new Date().getTime() / 1000);
+    if (nowUnixTime < track.releaseDate) {
+        // Si el lanzamiento es futuro, mostrar un mensaje
+        trackName.textContent += ' (Próximamente | Pre-Audio)';
+        trackName.style.color = '#ffcc00'; // Cambiar el color para resaltar
+    } else {
+        trackName.style.color = ''; // Restaurar el color por defecto
+    }
 
-                if (track.spotifyEmbed) {
-                    spotifyPlayer.src = track.spotifyEmbed;
-                    spotifyVideo.style.display = 'block';
-                } else {
-                    spotifyVideo.style.display = 'none';
-                }
+    if (track.youtube) {
+        youtubePlayer.src = track.youtube;
+        youtubeVideo.style.display = 'block';
+    } else {
+        youtubeVideo.style.display = 'none';
+    }
 
-                document.title = `${track.name} - ${track.artist} (${track.album}) - Grouvex Studios`;
-            }
+    if (track.spotifyEmbed) {
+        spotifyPlayer.src = track.spotifyEmbed;
+        spotifyVideo.style.display = 'block';
+    } else {
+        spotifyVideo.style.display = 'none';
+    }
+
+    document.title = `${track.name} - ${track.artist} (${track.album}) - Grouvex Studios`;
+}
 
 function playTrack(index) {
     currentTrackIndex = index;

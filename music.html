@@ -1179,7 +1179,7 @@
                 const nowUnixTime = Math.floor(new Date().getTime() / 1000);
                 if (nowUnixTime < track.releaseDate) {
                     // Si el lanzamiento es futuro, mostrar un mensaje
-                    trackName.textContent += ' (Próximamente)';
+                    trackName.textContent += ' (Próximamente | Pre-Audio)';
                     trackName.style.color = '#ffcc00'; // Cambiar el color para resaltar
                 } else {
                     trackName.style.color = ''; // Restaurar el color por defecto
@@ -1202,50 +1202,66 @@
                 document.title = `${track.name} - ${track.artist} (${track.album}) - Grouvex Studios`;
             }
 
-            function playTrack(index) {
-                currentTrackIndex = index;
-                updateTrackInfo(tracks[currentTrackIndex]);
+function playTrack(index) {
+    currentTrackIndex = index;
+    updateTrackInfo(tracks[currentTrackIndex]);
 
-                if (playPauseButton.hasAttribute('disabled')) return;
+    if (playPauseButton.hasAttribute('disabled')) return;
 
-                const track = tracks[currentTrackIndex];
-                const nowUnixTime = Math.floor(new Date().getTime() / 1000);
+    const track = tracks[currentTrackIndex];
+    const nowUnixTime = Math.floor(new Date().getTime() / 1000);
 
-                // Verificar si el lanzamiento es futuro
-                const isReleaseDateFuture = nowUnixTime < track.releaseDate;
+    // Verificar si el lanzamiento es futuro
+    const isReleaseDateFuture = nowUnixTime < track.releaseDate;
 
-                audioPlayer.src = `https://grouvex.com/music/${track.file}`;
+    audioPlayer.src = `https://grouvex.com/music/${track.file}`;
 
-                if (isReleaseDateFuture) {
-                    // Si el lanzamiento es futuro, limitar la reproducción al 10% de la duración
-                    audioPlayer.addEventListener('loadedmetadata', () => {
-                        const maxDuration = audioPlayer.duration * 0.1; // 10% de la duración
-                        audioPlayer.currentTime = 0; // Empezar desde el principio
-                        audioPlayer.play().then(() => {
-                            console.log('Audio is playing (limited to 10%)');
-                        }).catch(error => {
-                            console.error('Error trying to play audio:', error);
-                        });
+    if (isReleaseDateFuture) {
+        // Si el lanzamiento es futuro, limitar la reproducción al 10% de la duración
+        audioPlayer.addEventListener('loadedmetadata', () => {
+            const maxDuration = audioPlayer.duration * 0.1; // 10% de la duración
+            audioPlayer.currentTime = 0; // Empezar desde el principio
+            audioPlayer.play().then(() => {
+                console.log('Audio is playing (limited to 10%)');
+            }).catch(error => {
+                console.error('Error trying to play audio:', error);
+            });
 
-                        // Detener la reproducción después del 10%
-                        setTimeout(() => {
-                            audioPlayer.pause();
-                            isPlaying = false;
-                            playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
-                        }, maxDuration * 1000); // Convertir a milisegundos
-                    });
-                } else {
-                    // Si el lanzamiento ya ocurrió, reproducir normalmente
-                    audioPlayer.play().then(() => {
-                        console.log('Audio is playing');
-                    }).catch(error => {
-                        console.error('Error trying to play audio:', error);
-                    });
-                }
+            // Detener la reproducción después del 10%
+            setTimeout(() => {
+                audioPlayer.pause();
+                isPlaying = false;
+                playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+                const nextTrackIndex = (currentTrackIndex + 1) % tracks.length; // Avanza al siguiente índice
+                playTrack(nextTrackIndex); // Reproduce la siguiente canción
+            }, maxDuration * 1000); // Convertir a milisegundos
+        });
 
-                isPlaying = true;
-                playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
-            }
+        // Deshabilitar la barra de progreso
+        const progressEnabled = false;
+        if (!progressEnabled) {
+            progressBar.style.pointerEvents = 'none';
+            progressBar.style.opacity = '0.5';
+        }
+    } else {
+        // Si el lanzamiento ya ocurrió, reproducir normalmente
+        audioPlayer.play().then(() => {
+            console.log('Audio is playing');
+        }).catch(error => {
+            console.error('Error trying to play audio:', error);
+        });
+
+        // Habilitar la barra de progreso
+        const progressEnabled = true;
+        if (progressEnabled) {
+            progressBar.style.pointerEvents = 'auto';
+            progressBar.style.opacity = '1';
+        }
+    }
+
+    isPlaying = true;
+    playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+}
 
             function playPause() {
                 if (isPlaying) {
@@ -1392,12 +1408,12 @@
 
                 const nowUnixTime = Math.floor(new Date().getTime() / 1000);
                 if (nowUnixTime < track.releaseDate) {
-                    trackTitle.textContent += ' (Próximamente)';
+                    trackTitle.textContent += ' (Próximamente | Pre-Audio)';
                     trackTitle.style.color = '#ffcc00'; // Cambiar el color para resaltar
                 }
 
                 trackTitle.addEventListener('mouseenter', () => {
-                    trackTitle.title = `${track.name}`;
+                    trackTitle.title = `${track.name} - (Próximamente | Pre-Audio)`;
                 });
                 trackInfo.appendChild(trackTitle);
 

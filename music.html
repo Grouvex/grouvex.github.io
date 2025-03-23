@@ -1216,51 +1216,80 @@ function playTrack(index) {
 
     audioPlayer.src = `https://grouvex.com/music/${track.file}`;
 
-    if (isReleaseDateFuture) {
-        // Si el lanzamiento es futuro, limitar la reproducción al 10% de la duración
-        audioPlayer.addEventListener('loadedmetadata', () => {
-            const maxDuration = audioPlayer.duration * 0.1; // 10% de la duración
-            audioPlayer.currentTime = 0; // Empezar desde el principio
-            audioPlayer.play().then(() => {
-                console.log('Audio is playing (limited to 10%)');
-            }).catch(error => {
-                console.error('Error trying to play audio:', error);
-            });
+    // Limpiar eventos anteriores para evitar duplicados
+    audioPlayer.removeEventListener('loadedmetadata', handleLoadedMetadata);
+    audioPlayer.removeEventListener('ended', handleEnded);
 
-            // Detener la reproducción después del 10%
-            setTimeout(() => {
-                audioPlayer.pause();
-                isPlaying = false;
-                playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
-                const nextTrackIndex = (currentTrackIndex + 1) % tracks.length; // Avanza al siguiente índice
-                playTrack(nextTrackIndex); // Reproduce la siguiente canción
-            }, maxDuration * 1000); // Convertir a milisegundos
-        });
+    if (isReleaseDateFuture) {
+        // Si el lanzamiento es futuro, limitar la reproducción al 15% de la duración
+        audioPlayer.addEventListener('loadedmetadata', handleLoadedMetadata);
 
         // Deshabilitar la barra de progreso
-        const progressEnabled = false;
-        if (!progressEnabled) {
-            progressBar.style.pointerEvents = 'none';
-            progressBar.style.opacity = '0.5';
-        }
+        progressBar.style.pointerEvents = 'none';
+        progressBar.style.opacity = '0.5';
     } else {
         // Si el lanzamiento ya ocurrió, reproducir normalmente
+        audioPlayer.addEventListener('loadedmetadata', handleLoadedMetadata);
+        audioPlayer.addEventListener('ended', handleEnded);
+
+        // Habilitar la barra de progreso
+        progressBar.style.pointerEvents = 'auto';
+        progressBar.style.opacity = '1';
+    }
+
+    isPlaying = true;
+    playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+}
+
+function handleLoadedMetadata() {
+    const track = tracks[currentTrackIndex];
+    const nowUnixTime = Math.floor(new Date().getTime() / 1000);
+    const isReleaseDateFuture = nowUnixTime < track.releaseDate;
+
+    if (isReleaseDateFuture) {
+        const maxDuration = audioPlayer.duration * 0.15; // 15% de la duración
+        audioPlayer.currentTime = 0; // Empezar desde el principio
+        audioPlayer.play().then(() => {
+            console.log('Audio is playing (limited to 15%)');
+        }).catch(error => {
+            console.error('Error trying to play audio:', error);
+        });
+
+        // Detener la reproducción después del 15%
+        setTimeout(() => {
+            audioPlayer.pause();
+            isPlaying = false;
+            playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+
+            // Saltar a la siguiente canción disponible
+            do {
+                currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+            } while (!isTrackAvailable(tracks[currentTrackIndex]));
+
+            playTrack(currentTrackIndex); // Reproduce la siguiente canción disponible
+        }, maxDuration * 1000); // Convertir a milisegundos
+    } else {
+        audioPlayer.currentTime = 0; // Empezar desde el principio
         audioPlayer.play().then(() => {
             console.log('Audio is playing');
         }).catch(error => {
             console.error('Error trying to play audio:', error);
         });
-
-        // Habilitar la barra de progreso
-        const progressEnabled = true;
-        if (progressEnabled) {
-            progressBar.style.pointerEvents = 'auto';
-            progressBar.style.opacity = '1';
-        }
     }
+}
 
-    isPlaying = true;
-    playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+function handleEnded() {
+    if (repeatMode === 2) {
+        // Repetición de canción: repetir la misma canción
+        playTrack(currentTrackIndex);
+    } else if (repeatMode === 1 || isRandom) {
+        // Repetición de lista o random: pasar a la siguiente canción
+        nextTrack();
+    } else {
+        // Sin repetición: detener la reproducción
+        isPlaying = false;
+        playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+    }
 }
 
             function playPause() {

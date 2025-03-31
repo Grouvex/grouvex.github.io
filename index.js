@@ -288,6 +288,18 @@ const usuarios = {
     "Tarlight Etherall": {
         principales: ["verified-team", "admin", "vvadmin", "vmod", "owner-designs", "artista", "diseñador"],
         secundarias: ["verified"]
+    },
+    "Maiki Dran": {
+        principales: ["verified", "artista"],
+        secundarias: [""]
+    },
+    "Clara Langa": {
+        principales: ["verified", "artista"],
+        secundarias: [""]
+    },
+    "Joshuatdepedro": {
+        principales: ["verified", "artista"],
+        secundarias: [""]
     }
 };
 

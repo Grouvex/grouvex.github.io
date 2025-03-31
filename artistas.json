@@ -3,7 +3,7 @@
         {
             "nombre": "Grouvex",
             "imagen": "../img/GROUVEX.png",
-            "descripcion": "Grouvex es un grupo compuesto por Tarlight Etherall y Maiki Dran",
+            "descripcion": "Grouvex es un grupo que une toda la música que otros artistas ceden al sello discográfico. EL dinero recopilado por este artista se usará lo mejor posible para el beneficio de la humanidad.",
             "enlace": "grouvex/inicio"
         },
         {
@@ -17,6 +17,12 @@
             "imagen": "../img/Clara_Langa.png",
             "descripcion": "Clara Langa es una artista que quiere aprender música y querer ser escuchada en muchos sitios.",
             "enlace": "clara_langa/inicio"
+        },
+        {
+            "nombre": "Maiki Dran",
+            "imagen": "../img/Maiki Dran.jpg",
+            "descripcion": "Maiki Dran es un artista principiante que forma parte del grupo de Grouvex.",
+            "enlace": "maiki_dran/inicio"
         }
     ]
 }

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Visualizador de PDF</title>
+    <style>
+        .pdf-container {
+            width: 100%;
+            height: 600px;
+            margin: 20px 0;
+        }
+        embed, object {
+            width: 100%;
+            height: 100%;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>Visualizador de PDF</h1>
+    
+    <div class="pdf-container">
+        <!-- Opción con embed -->
+        <embed src="El Principe.pdf" type="application/pdf">
+        <object data="El Principe.pdf" type="application/pdf">
+            <p>Tu navegador no soporta visualización de PDFs. 
+            <a href="El Principe.pdf">Descarga el PDF</a>.</p>
+    </div>
+</body>
+</html>

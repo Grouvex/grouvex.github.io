@@ -1275,15 +1275,15 @@ function handleLoadedMetadata() {
     const isReleaseDateFuture = nowUnixTime < track.releaseDate;
 
     if (isReleaseDateFuture) {
-        const maxDuration = audioPlayer.duration * 0.15; // 15% de la duración
-        audioPlayer.currentTime = 0; // Empezar desde el principio
+        const maxDuration = audioPlayer.duration * 0.20; // 20% de la duración
+        audioPlayer.currentTime = audioPlayer.currentTime * 0.5; // Empezar desde el medio
         audioPlayer.play().then(() => {
-            console.log('Audio is playing (limited to 15%)');
+            console.log('Audio is playing (limited to 20%)');
         }).catch(error => {
             console.error('Error trying to play audio:', error);
         });
 
-        // Detener la reproducción después del 15%
+        // Detener la reproducción después del 20%
         setTimeout(() => {
             audioPlayer.pause();
             isPlaying = false;

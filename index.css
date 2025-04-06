@@ -471,6 +471,10 @@ nav a {
 .artista::after {
     content: "Artista de Contenido";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
 .artista:hover::after {visibility: visible;opacity: 1;}
+.gsmember {position: relative;display: inline-block;}.gsmember img {display: block;}
+.gsmember::after {
+    content: "Member of Grouvex Studios";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.gsmember:hover::after {visibility: visible;opacity: 1;}
 .tooltip {
     position: relative;
     display: inline-block;

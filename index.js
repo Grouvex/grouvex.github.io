@@ -279,23 +279,23 @@ function googleTranslateElementInit() {
 const usuarios = {
     "Grouvex Studios": {
         principales: ["verified-team", "owner", "vdeveloper", "vbughunter"],
-        secundarias: ["verified", "vvadmin", "vadmin", "vmod"]
+        secundarias: ["gsmember", "verified", "vvadmin", "vadmin", "vmod"]
     },
     "Grouvex Phoenix": {
         principales: ["verified-team", "vvadmin", "owner-recording", "vdeveloper", "vbughunter", "artista", "diseñador"],
-        secundarias: ["verified", "vadmin", "vmod"]
+        secundarias: ["gsmember", "verified", "vadmin", "vmod"]
     },
     "Tarlight Etherall": {
         principales: ["verified-team", "admin", "vvadmin", "vmod", "owner-designs", "artista", "diseñador"],
-        secundarias: ["verified"]
+        secundarias: ["gsmember", "verified"]
     },
     "Maiki Dran": {
-        principales: ["verified", "artista"],
-        secundarias: [""]
+        principales: ["gsmember", "artista"],
+        secundarias: ["verified"]
     },
     "Clara Langa": {
-        principales: ["verified", "artista"],
-        secundarias: [""]
+        principales: ["gsmember", "artista"],
+        secundarias: ["verified"]
     },
     "Joshuatdepedro": {
         principales: ["verified", "artista"],

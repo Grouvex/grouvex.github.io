@@ -278,59 +278,92 @@ function googleTranslateElementInit() {
 
 const usuarios = {
     "Grouvex Studios": {
-        principales: ["verified-team", "owner", "vdeveloper", "vbughunter"],
-        secundarias: ["gsmember", "verified", "vvadmin", "vadmin", "vmod"]
+        principales: ["verified-team", "owner", "vvadmin", "vdeveloper", "vbughunter","gsmember"],
+        GSRecording: [],
+        GSAnimation: [],
+        GSDesign: []
     },
     "Grouvex Phoenix": {
-        principales: ["verified-team", "vvadmin", "owner-recording", "vdeveloper", "vbughunter", "artista", "diseñador"],
-        secundarias: ["gsmember", "verified", "vadmin", "vmod"]
+        principales: ["verified-team", "vvadmin", "vdeveloper", "vbughunter", "verified"],
+        GSRecording: ["owner-recording", "artista", "verified"],
+        GSAnimation: ["verified"],
+        GSDesign: ["diseñador", "verified"]
     },
     "Tarlight Etherall": {
-        principales: ["verified-team", "admin", "vvadmin", "vmod", "owner-designs", "artista", "diseñador"],
-        secundarias: ["gsmember", "verified"]
+        principales: ["verified-team", "admin", "artista"],
+        GSRecording: ["vvadmin", "artista", "gsmember", "verified"],
+        GSAnimation: [],
+        GSDesign: ["owner-designs", "diseñador", "verified"]
     },
     "Maiki Dran": {
-        principales: ["gsmember", "artista"],
-        secundarias: ["verified"]
+        principales: ["gsmember", "verified"],
+        GSRecording: ["artista", "verified"],
+        GSAnimation: [],
+        GSDesign: []
     },
     "Clara Langa": {
-        principales: ["gsmember", "artista"],
-        secundarias: ["verified"]
+        principales: ["gsmember", "verified"],
+        GSRecording: ["artista", "verified"],
+        GSAnimation: [],
+        GSDesign: []
     },
     "Joshuatdepedro": {
-        principales: ["verified", "artista"],
-        secundarias: [""]
+        principales: ["verified"],
+        GSRecording: ["artista"],
+        GSAnimation: [],
+        GSDesign: []
     }
 };
 
 function mostrarUsuarioYInsignias(nombreUsuario, elements) {
     elements.forEach(element => {
+        // Mostrar nombre de usuario
         const spanNombre = document.createElement("span");
         spanNombre.textContent = nombreUsuario;
         element.appendChild(spanNombre);
 
-        const spanInsigniasPrincipales = document.createElement("div");
+        // Mostrar insignias principales
+        const divPrincipales = document.createElement("div");
+        divPrincipales.innerHTML = "<strong>Principales:</strong> ";
         usuarios[nombreUsuario].principales.forEach(insignia => {
-            const spanInsignia = document.createElement("span");
-            spanInsignia.classList.add("insignia", insignia);
-            spanInsigniasPrincipales.appendChild(spanInsignia);
+            if (insignia) { // Solo agregar si la insignia no está vacía
+                const spanInsignia = document.createElement("span");
+                spanInsignia.classList.add("insignia", insignia);
+                divPrincipales.appendChild(spanInsignia);
+            }
         });
-        element.appendChild(spanInsigniasPrincipales);
+        element.appendChild(divPrincipales);
 
-        const detailsSecundarias = document.createElement("details");
-        const summarySecundarias = document.createElement("summary");
-        summarySecundarias.textContent = "Insignias Secundarias";
-        summarySecundarias.style.fontSize = "10px";
+        function crearDetallesInsignias(titulo, categoria) {
+            if (usuarios[nombreUsuario][categoria] && usuarios[nombreUsuario][categoria].length > 0 && usuarios[nombreUsuario][categoria][0] !== "") {
+                const details = document.createElement("details");
+                const summary = document.createElement("summary");
+                summary.textContent = titulo;
+                summary.style.fontSize = "10px";
 
-        detailsSecundarias.appendChild(summarySecundarias);
-        const spanInsigniasSecundarias = document.createElement("div");
-        usuarios[nombreUsuario].secundarias.forEach(insignia => {
-            const spanInsignia = document.createElement("span");
-            spanInsignia.classList.add("insignia", insignia);
-            spanInsigniasSecundarias.appendChild(spanInsignia);
-        });
-        detailsSecundarias.appendChild(spanInsigniasSecundarias);
-        element.appendChild(detailsSecundarias);
+                details.appendChild(summary);
+                const divInsignias = document.createElement("div");
+                usuarios[nombreUsuario][categoria].forEach(insignia => {
+                    if (insignia) {
+                        const spanInsignia = document.createElement("span");
+                        spanInsignia.classList.add("insignia", insignia);
+                        divInsignias.appendChild(spanInsignia);
+                    }
+                });
+                details.appendChild(divInsignias);
+                return details;
+            }
+            return null;
+        }
+
+        const gsRecordingDetails = crearDetallesInsignias("GSRecording", "GSRecording");
+        if (gsRecordingDetails) element.appendChild(gsRecordingDetails);
+
+        const gsAnimationDetails = crearDetallesInsignias("GSAnimation", "GSAnimation");
+        if (gsAnimationDetails) element.appendChild(gsAnimationDetails);
+
+        const gsDesignDetails = crearDetallesInsignias("GSDesign", "GSDesign");
+        if (gsDesignDetails) element.appendChild(gsDesignDetails);
     });
 }
 

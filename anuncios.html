@@ -461,34 +461,39 @@
                 `;
                 content.insertAdjacentHTML('beforeend', anuncioHTML);
 
-                // Añadir las insignias del usuario
-                const usuario = usuarios[anuncio.user];
-                if (usuario) {
+               // Añadir las insignias del usuario (usando el objeto global usuarios)
+                if (window.usuarios && window.usuarios[anuncio.user]) {
+                    const usuario = window.usuarios[anuncio.user];
                     const insigniasContainer = document.querySelector(`#anuncio-${sanitizeHTML(anuncio.id)} .insignias-container`);
                     
                     // Insignias principales
                     const insigniasPrincipales = document.querySelector(`#anuncio-${sanitizeHTML(anuncio.id)} .insignias-principales`);
-                    usuario.principales.forEach(insignia => {
-                        if (insignia) {
-                            const spanInsignia = document.createElement('span');
-                            spanInsignia.classList.add('insignia', insignia);
-                            insigniasPrincipales.appendChild(spanInsignia);
-                        }
-                    });
+                    if (usuario.principales) {
+                        usuario.principales.forEach(insignia => {
+                            if (insignia) {
+                                const spanInsignia = document.createElement('span');
+                                spanInsignia.classList.add('insignia', insignia);
+                                insigniasPrincipales.appendChild(spanInsignia);
+                            }
+                        });
+                    }
 
                     // GSRecording
-                    const gsRecordingDetails = crearDetallesInsignias("GSRecording", usuario.GSRecording);
-                    if (gsRecordingDetails) insigniasContainer.appendChild(gsRecordingDetails);
-
+                    if (usuario.GSRecording) {
+                        const gsRecordingDetails = crearDetallesInsignias("GSRecording", usuario.GSRecording);
+                        if (gsRecordingDetails) insigniasContainer.appendChild(gsRecordingDetails);
+                    }
                     // GSAnimation
-                    const gsAnimationDetails = crearDetallesInsignias("GSAnimation", usuario.GSAnimation);
-                    if (gsAnimationDetails) insigniasContainer.appendChild(gsAnimationDetails);
-
+                    if (usuario.GSAnimation) {
+                        const gsAnimationDetails = crearDetallesInsignias("GSAnimation", usuario.GSAnimation);
+                        if (gsAnimationDetails) insigniasContainer.appendChild(gsAnimationDetails);
+                    }
                     // GSDesign
-                    const gsDesignDetails = crearDetallesInsignias("GSDesign", usuario.GSDesign);
-                    if (gsDesignDetails) insigniasContainer.appendChild(gsDesignDetails);
+                    if (usuario.GSDesign) {
+                        const gsDesignDetails = crearDetallesInsignias("GSDesign", usuario.GSDesign);
+                        if (gsDesignDetails) insigniasContainer.appendChild(gsDesignDetails);
+                    }
                 }
-
                 actualizarFechas(anuncio.uT, anuncio.actualizadoID);
             });
 

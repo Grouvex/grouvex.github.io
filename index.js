@@ -323,9 +323,7 @@ function mostrarUsuarioYInsignias(nombreUsuario, elements) {
         element.appendChild(spanNombre);
 
         // Mostrar insignias principales
-        const divPrincipales = document.createElement("div");
-        divPrincipales.innerHTML = "Principales";
-        usuarios[nombreUsuario].principales.forEach(insignia => {
+        const divPrincipales = document.createElement("div");        usuarios[nombreUsuario].principales.forEach(insignia => {
             if (insignia) { // Solo agregar si la insignia no está vacía
                 const spanInsignia = document.createElement("span");
                 spanInsignia.classList.add("insignia", insignia);

@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAuth, EmailAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signOut, deleteUser, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, sendEmailVerification } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getAuth, EmailAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signOut, deleteUser, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, sendEmailVerification , reauthenticateWithCredential} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import { getDatabase, ref, set, remove, onValue, onDisconnect, get } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
 // Configuración de Firebase
@@ -65,6 +65,7 @@ onAuthStateChanged(auth, async (user) => {
         const isViewingOwnProfile = !viewedUserId || viewedUserId === user.uid;
         const targetUserId = isViewingOwnProfile ? user.uid : viewedUserId;
         const targetUser = isViewingOwnProfile ? user : await getUserData(targetUserId);
+        const nombreUsuario = targetUser.displayName || "Usuario";
         const usuarioElement = document.getElementById('usuario');
         // Actualizar UI
         const updateProfileUI = () => {
@@ -352,8 +353,8 @@ function mostrarNotificacion(mensaje, esError = false) {
 // Sistema de acceso
     const uidsOwner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"];
     const uidsTeamAdmins = ["cQRgzlky1eNHjUh61GMPTTRnIZq2", "aO5Y2hQVl9Zn7KlElpgI7jqsFfc2"];
-    const uidsTeamMods = [""];
-    const uidsTeamBugs = [""];
+    const uidsTeamMods = [];
+    const uidsTeamBugs = [];
     const uidsTeam = [...uidsOwner, ...uidsTeamAdmins, ...uidsTeamMods, ...uidsTeamBugs];
     const uidsArtistas = [...uidsOwner, ...uidsTeamAdmins, "bY7fMyURlggvZyXDL9dCjwZEmU62", "LTqeoFuZmqTSa4HiJkfNXbCHifa2"];
     const uidsPremium = [...uidsOwner, ...uidsTeamAdmins];
@@ -397,10 +398,13 @@ function mostrarNotificacion(mensaje, esError = false) {
         });
     }
 
-    function reauthenticateUser(user, password) {
-        const credential = EmailAuthProvider.credential(user.email, password);
-        return reauthenticateWithCredential(user, credential);
-    }
+      function reauthenticateUser(user, password) {
+          if (!password) {
+              throw new Error('Se requiere contraseña para esta acción');
+          }
+          const credential = EmailAuthProvider.credential(user.email, password);
+          return reauthenticateWithCredential(user, credential);
+      }
         function verificarCorreoUsuario(user) {
         return sendEmailVerification(user).then(() => {
             alert('Por favor, verifica tu correo electrónico. Tienes 5 minutos para verificarlo.');
@@ -436,7 +440,9 @@ function mostrarNotificacion(mensaje, esError = false) {
     function eliminarCuentaUsuario(user) {
         const password = prompt("Para eliminar tu cuenta, por favor introduce tu contraseña:");
         return reauthenticateUser(user, password).then(() => {
-            return deleteUser(user);
+            return deleteUser(user).then(() => {
+                return eliminarDatosUsuario(user.uid); // Asegurar secuencia correcta
+            });
         }).then(() => {
             console.log("Cuenta de usuario eliminada de Firebase Authentication.");
         }).catch((error) => {

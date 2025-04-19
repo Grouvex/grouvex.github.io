@@ -1,6 +1,5 @@
-// Importar las funciones necesarias desde Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAuth, reauthenticateWithCredential, EmailAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signOut, deleteUser, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, sendEmailVerification } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getAuth, EmailAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signOut, deleteUser, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, sendEmailVerification } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import { getDatabase, ref, set, remove, onValue, onDisconnect, get } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
 // Configuración de Firebase
@@ -14,18 +13,114 @@ const firebaseConfig = {
   appId: "1:1070842606062:web:5d887863048fd100b49eff",
   measurementId: "G-75BR8D2CR3"
 };
-
-// Inicializar Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const database = getDatabase(app);
 
-// Funcionalidades principales
+// Funciones de seguimiento
+async function followUser(currentUserId, targetUserId) {
+    await set(ref(database, `followers/${targetUserId}/${currentUserId}`), true);
+    await set(ref(database, `following/${currentUserId}/${targetUserId}`), true);
+}
+
+async function unfollowUser(currentUserId, targetUserId) {
+    await remove(ref(database, `followers/${targetUserId}/${currentUserId}`));
+    await remove(ref(database, `following/${currentUserId}/${targetUserId}`));
+}
+
+async function getFollowStats(userId) {
+    const followers = await get(ref(database, `followers/${userId}`));
+    const following = await get(ref(database, `following/${userId}`));
+    return {
+        followersCount: followers.exists() ? Object.keys(followers.val()).length : 0,
+        followingCount: following.exists() ? Object.keys(following.val()).length : 0
+    };
+}
+
+async function checkIfFollowing(currentUserId, targetUserId) {
+    const snapshot = await get(ref(database, `following/${currentUserId}/${targetUserId}`));
+    return snapshot.exists();
+}
+
+async function getUserData(userId) {
+    const snapshot = await get(ref(database, `users/${userId}`));
+    return { uid: userId, ...snapshot.val() };
+}
+
+// Sistema de presencia
 function setupPresence(user) {
     const userStatusRef = ref(database, `status/${user.uid}`);
     set(userStatusRef, { online: true, lastChanged: Date.now() });
     onDisconnect(userStatusRef).update({ online: false });
 }
+
+// Observador de autenticación principal
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        setupPresence(user);
+        console.log("Usuario autenticado:", user.email);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const viewedUserId = urlParams.get('userId');
+        const isViewingOwnProfile = !viewedUserId || viewedUserId === user.uid;
+        const targetUserId = isViewingOwnProfile ? user.uid : viewedUserId;
+        const targetUser = isViewingOwnProfile ? user : await getUserData(targetUserId);
+        const usuarioElement = document.getElementById('usuario');
+        // Actualizar UI
+        const updateProfileUI = () => {
+            document.getElementById('correoElectronico').textContent = targetUser.email || 'Correo no definido';
+            document.getElementById('usuario').textContent = targetUser.displayName || 'Usuario no definido';
+            usuarioElement.id = nombreUsuario.replace(/\s+/g, '_');
+            document.getElementById('userID').textContent = `GS-${targetUser.uid}`;
+            document.getElementById('fotoPerfil').src = targetUser.photoURL || 'https://grouvex.com/img/GROUVEX.png';
+        };
+
+        // Manejar seguimiento
+        const updateFollowUI = async () => {
+            const followButton = document.getElementById('followButton');
+            const followersCount = document.getElementById('followersCount');
+            const followingCount = document.getElementById('followingCount');
+
+            const stats = await getFollowStats(targetUser.uid);
+            followersCount.textContent = stats.followersCount;
+            followingCount.textContent = stats.followingCount;
+
+            if (!isViewingOwnProfile) {
+                const isFollowing = await checkIfFollowing(user.uid, targetUser.uid);
+                followButton.style.display = 'block';
+                followButton.textContent = isFollowing ? 'Dejar de seguir' : 'Seguir';
+                followButton.onclick = async () => {
+                    try {
+                        if (isFollowing) {
+                            await unfollowUser(user.uid, targetUser.uid);
+                        } else {
+                            await followUser(user.uid, targetUser.uid);
+                        }
+                        updateFollowUI(); // Actualizar UI después de acción
+                    } catch (error) {
+                        mostrarNotificacion(`Error: ${error.message}`, true);
+                    }
+                };
+            } else {
+                followButton.style.display = 'none';
+            }
+        };
+
+        // Mostrar contenido
+        document.getElementById('auth-container').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+        updateProfileUI();
+        await updateFollowUI();
+
+    } else {
+        console.log("Usuario no autenticado");
+        document.getElementById('auth-container').style.display = 'block';
+        document.getElementById('content').style.display = 'none';
+        if (window.location.pathname.includes('login')) {
+            inicializarFormularioDeAutenticacion();
+        }
+    }
+});
 
 async function completeUserProfile(user, isGoogleUser = false) {
     if (isGoogleUser && user.displayName) return;

@@ -437,71 +437,103 @@ function mostrarNotificacion(mensaje, esError = false) {
         });
     }
 
-    function eliminarCuentaUsuario(user) {
-        const password = prompt("Para eliminar tu cuenta, por favor introduce tu contraseña:");
-        return reauthenticateUser(user, password).then(() => {
-            return deleteUser(user).then(() => {
-                return eliminarDatosUsuario(user.uid); // Asegurar secuencia correcta
-            });
-        }).then(() => {
-            console.log("Cuenta de usuario eliminada de Firebase Authentication.");
-        }).catch((error) => {
-            console.error("Error al eliminar la cuenta de usuario:", error);
-            switch (error.code) {
-                case 'auth/requires-recent-login':
-                    alert('Por motivos de seguridad, debes volver a iniciar sesión para eliminar tu cuenta.');
-                    window.location.href = "https://grouvex.github.io/login";
-                    break;
-                default:
-                    alert('Error al eliminar la cuenta de usuario: ' + error.message);
-            }
-            throw error;
-        });
-    }
-
-    function eliminarDatosUsuario(userId) {
-        const userRef = doc(db, 'users', userId);
-
-        return deleteDoc(userRef).then(() => {
-            console.log("Datos del usuario eliminados de Firestore.");
-        }).catch((error) => {
-            console.error("Error al eliminar los datos del usuario:", error);
-            alert('Error al eliminar los datos del usuario: ' + error.message);
-            throw error;
-        });
-    }
-
-    function eliminarCuentaYDatosUsuario(userId) {
+    // Función principal para eliminar cuenta con validaciones
+    async function handleAccountDeletion() {
         const user = auth.currentUser;
+        
+        // Validación 1: Usuario autenticado
+        if (!user) {
+            mostrarNotificacion('❌ Debes iniciar sesión para realizar esta acción', true);
+            window.location.href = '/login';
+            return;
+        }
 
-        eliminarCuentaUsuario(user)
-            .then(() => {
-                return eliminarDatosUsuario(userId);
-            })
-            .then(() => {
-                console.log("Eliminación completa de cuenta y datos de usuario.");
-                alert('Tu cuenta y todos tus datos han sido eliminados.');
-            })
-            .catch((error) => {
-                console.error("Error al eliminar la cuenta y los datos del usuario:", error);
-                alert('Error al eliminar la cuenta y los datos del usuario: ' + error.message);
-            });
-    }
-        const deleteBtn = document.getElementById('deleteBtn');
-    if (deleteBtn) {
-        deleteBtn.addEventListener('click', () => {
-            const user = auth.currentUser;
-            if (!user.emailVerified) {
-                verificarCorreoUsuario(user).then(() => {
-                    const userId = user.uid;
-                    eliminarCuentaYDatosUsuario(userId);
-                }).catch((error) => {
-                    console.error('Error durante el proceso de verificación:', error.message);
-                });
-            } else {
-                const userId = user.uid;
-                eliminarCuentaYDatosUsuario(userId);
+        // Validación 2: Confirmación del usuario
+        const confirmation = confirm(`¿Estás SEGURO que quieres eliminar tu cuenta de forma permanente?\n\nEsta acción:\n✅ Eliminará todos tus datos\n✅ Borrará tu historial\n✅ Quitará tus permisos\n🚫 NO podrá deshacerse\n\nEscribe "ELIMINAR" para confirmar.`);
+
+        if (!confirmation) {
+            mostrarNotificacion('✅ Cancelaste la eliminación de la cuenta');
+            return;
+        }
+
+        // Validación 3: Confirmación por texto
+        const userInput = prompt('Escribe "ELIMINAR" para confirmar la eliminación permanente:');
+        if (userInput? !== 'ELIMINAR') {
+            mostrarNotificacion('❌ Confirmación incorrecta. Eliminación cancelada', true);
+            return;
+        }
+
+        // Validación 4: Reautenticación
+        try {
+            const password = prompt('Por seguridad, introduce tu contraseña para confirmar:');
+            if (!password) {
+                mostrarNotificacion('❌ Se requiere contraseña para esta acción', true);
+                return;
             }
+
+            // Reautenticar
+            const credential = EmailAuthProvider.credential(user.email, password);
+            await reauthenticateWithCredential(user, credential);
+
+            // Validación 5: Eliminar datos primero
+            await eliminarDatosUsuario(user.uid);
+            
+            // Eliminar cuenta de autenticación
+            await deleteUser(user);
+            
+            // Redirección y feedback
+            mostrarNotificacion('🔥 Cuenta eliminada permanentemente. ¡Hasta pronto!');
+            setTimeout(() => window.location.href = '/', 3000);
+            
+        } catch (error) {
+            manejarErroresEliminacion(error);
+        }
+    }
+
+    // Función para eliminar datos de usuario
+    async function eliminarDatosUsuario(userId) {
+        try {
+            // Eliminar todos los nodos relacionados
+            await Promise.all([
+                remove(ref(database, `users/${userId}`)),
+                remove(ref(database, `followers/${userId}`)),
+                remove(ref(database, `following/${userId}`)),
+                remove(ref(database, `status/${userId}`))
+            ]);
+            
+            console.log('Datos de usuario eliminados exitosamente');
+        } catch (error) {
+            console.error('Error al eliminar datos:', error);
+            throw new Error('Error al limpiar datos de usuario: ' + error.message);
+        }
+    }
+
+    // Manejador de errores detallado
+    function manejarErroresEliminacion(error) {
+        console.error('Error en eliminación:', error);
+        
+        const mensajesError = {
+            'auth/requires-recent-login': 'Debes volver a iniciar sesión para realizar esta acción. Redirigiendo...',
+            'auth/wrong-password': 'Contraseña incorrecta. Intenta nuevamente.',
+            'auth/network-request-failed': 'Error de red. Verifica tu conexión a internet.',
+            'auth/too-many-requests': 'Demasiados intentos. Intenta más tarde.',
+            'default': 'Error crítico: ' + error.message
+        };
+
+        const mensaje = mensajesError[error.code] || mensajesError['default'];
+        mostrarNotificacion(`❌ ${mensaje}`, true);
+        
+        if (error.code === 'auth/requires-recent-login') {
+            setTimeout(() => window.location.href = '/login', 3000);
+        }
+    }
+
+    // Integración con el botón de eliminación
+    const deleteBtn = document.getElementById('deleteBtn');
+    if (deleteBtn) {
+        deleteBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            handleAccountDeletion();
         });
     }
 

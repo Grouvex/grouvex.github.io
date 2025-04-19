@@ -1,6 +1,6 @@
 (function() {
     const themeSelect = document.getElementById('themeSelect');
-    const defaultTheme = 'gstudios5'; // Define aquí el tema predeterminado
+    const defaultTheme = 'gstudios6'; // Define aquí el tema predeterminado
     const currentUrl = window.location.href;
 
     // Deshabilitar el botón al inicio

@@ -240,34 +240,34 @@ header.httyd { background-image: url(https://th.bing.com/th/id/OIP.GSPiB_i4DFW__
 article.httyd { background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgfWszYKfMi6AZJZWQXvsMU04jmoltIvQJUg&s); }
 section.httyd { background-image: url(https://wallpapercave.com/wp/wp1969390.jpg); }
 
-body.space,body.starwars,body.jurassicworld,body.taylorswift,body.pokemon,body.superheroes,body.thewildrobot,body.naturaleza1,body.naturaleza2,body.gstudios1,body.gstudios2,body.gstudios3,body.gstudios4,body.gstudios5,body.httyd {
+body.space,body.starwars,body.jurassicworld,body.taylorswift,body.pokemon,body.superheroes,body.thewildrobot,body.naturaleza1,body.naturaleza2,body.gstudios1,body.gstudios2,body.gstudios3,body.gstudios4,body.gstudios5,body.gstudios6,body.httyd {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
 }
-header.space,header.starwars,header.jurassicworld,header.taylorswift,header.pokemon,header.superheroes,header.thewildrobot,header.naturaleza1,header.naturaleza2,header.gstudios1,header.gstudios2,header.gstudios3,header.gstudios4,header.gstudios5,header.httyd {
+header.space,header.starwars,header.jurassicworld,header.taylorswift,header.pokemon,header.superheroes,header.thewildrobot,header.naturaleza1,header.naturaleza2,header.gstudios1,header.gstudios2,header.gstudios3,header.gstudios4,header.gstudios5,header.gstudios6,header.httyd {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
 }
-main.space,main.starwars,main.jurassicworld,main.taylorswift,main.pokemon,main.superheroes,main.thewildrobot,main.naturaleza1,main.naturaleza2,main.gstudios1,main.gstudios2,main.gstudios3,main.gstudios4,main.gstudios5,main.httyd {
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-}
-
-article.space,article.starwars,article.jurassicworld,article.taylorswift,article.pokemon,article.superheroes,article.thewildrobot,article.naturaleza1,article.naturaleza2,article.gstudios1,article.gstudios2,article.gstudios3,article.gstudios4,article.gstudios5,article.httyd {
+main.space,main.starwars,main.jurassicworld,main.taylorswift,main.pokemon,main.superheroes,main.thewildrobot,main.naturaleza1,main.naturaleza2,main.gstudios1,main.gstudios2,main.gstudios3,main.gstudios4,main.gstudios5,main.gstudios6,main.httyd {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
 }
 
-section.space,section.starwars,section.jurassicworld,section.taylorswift,section.pokemon,section.superheroes,section.thewildrobot,section.naturaleza1,section.naturaleza2,section.gstudios1,section.gstudios2,section.gstudios3,section.gstudios4,section.gstudios5,section.httyd {
+article.space,article.starwars,article.jurassicworld,article.taylorswift,article.pokemon,article.superheroes,article.thewildrobot,article.naturaleza1,article.naturaleza2,article.gstudios1,article.gstudios2,article.gstudios3,article.gstudios4,article.gstudios5,article.gstudios6,article.httyd {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
 }
-aside.space,aside.starwars,aside.jurassicworld,aside.taylorswift,aside.pokemon,aside.superheroes,aside.thewildrobot,aside.naturaleza1,aside.naturaleza2,aside.gstudios1,aside.gstudios2,aside.gstudios3,aside.gstudios4,aside.gstudios5,aside.httyd {
+
+section.space,section.starwars,section.jurassicworld,section.taylorswift,section.pokemon,section.superheroes,section.thewildrobot,section.naturaleza1,section.naturaleza2,section.gstudios1,section.gstudios2,section.gstudios3,section.gstudios4,section.gstudios5,section.gstudios6,section.httyd {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+aside.space,aside.starwars,aside.jurassicworld,aside.taylorswift,aside.pokemon,aside.superheroes,aside.thewildrobot,aside.naturaleza1,aside.naturaleza2,aside.gstudios1,aside.gstudios2,aside.gstudios3,aside.gstudios4,aside.gstudios5,aside.gstudios6,aside.httyd {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

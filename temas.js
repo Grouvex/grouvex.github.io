@@ -34,7 +34,8 @@
             gstudios2: month !== 0,
             gstudios3: month !== 11,
             gstudios4: month !== 10,
-            gstudios4: month !== 9,
+            gstudios5: month !== 9,
+            gstudios6: month !== 6,
             starwars: !(date >= new Date(date.getFullYear(), 4, 4) && date <= new Date(date.getFullYear(), 4, 14)),
             httyd: !(date >= new Date(date.getFullYear(), 2, 25) && date <= new Date(date.getFullYear(), 3, 1)),
             jurassicworld: !(date >= new Date(date.getFullYear(), 5, 10) && date <= new Date(date.getFullYear(), 5, 20)),
@@ -65,7 +66,7 @@ function changeTheme(theme) {
         'space', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4',
         'taylorswift',
         'pokemon', 'thewildrobot', 'httyd','starwars', 'jurassicworld', 'superheroes',
-        'gstudios1', 'gstudios2', 'gstudios3', 'gstudios4', 'gstudios5'
+        'gstudios1', 'gstudios2', 'gstudios3', 'gstudios4', 'gstudios5', 'gstudios6'
     ];
 
     // Aplicar la clase de animación
@@ -119,7 +120,8 @@ function changeTheme(theme) {
             gstudios2: month !== 0,
             gstudios3: month !== 11,
             gstudios4: month !== 10,
-            gstudios4: month !== 9,
+            gstudios5: month !== 9,
+            gstudios6: month !== 6,
             starwars: !(date >= new Date(date.getFullYear(), 4, 4) && date <= new Date(date.getFullYear(), 4, 14)),
             httyd: !(date >= new Date(date.getFullYear(), 2, 25) && date <= new Date(date.getFullYear(), 3, 1)),
             jurassicworld: !(date >= new Date(date.getFullYear(), 5, 10) && date <= new Date(date.getFullYear(), 5, 20)),

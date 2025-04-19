@@ -1,7 +1,6 @@
 // Importar las funciones necesarias desde Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAuth, reauthenticateWithCredential, EmailAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signOut, deleteUser, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, sendEmailVerification, getRedirectResult } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-import { getFirestore, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { getAuth, reauthenticateWithCredential, EmailAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signOut, deleteUser, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, sendEmailVerification } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import { getDatabase, ref, set, remove, onValue, onDisconnect, get } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
 // Configuración de Firebase
@@ -19,422 +18,97 @@ const firebaseConfig = {
 // Inicializar Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
 const database = getDatabase(app);
 
-console.log("Firebase inicializado correctamente");
-
-// Función para seguir a un usuario
-async function followUser(currentUserId, targetUserId) {
-    try {
-        await set(ref(database, `followers/${targetUserId}/${currentUserId}`), true);
-        await set(ref(database, `following/${currentUserId}/${targetUserId}`), true);
-        console.log(`Usuario ${currentUserId} sigue ahora a ${targetUserId}`);
-    } catch (error) {
-        console.error("Error al seguir usuario:", error);
-        throw error;
-    }
-}
-
-// Función para dejar de seguir a un usuario
-async function unfollowUser(currentUserId, targetUserId) {
-    try {
-        await remove(ref(database, `followers/${targetUserId}/${currentUserId}`));
-        await remove(ref(database, `following/${currentUserId}/${targetUserId}`));
-        console.log(`Usuario ${currentUserId} ha dejado de seguir a ${targetUserId}`);
-    } catch (error) {
-        console.error("Error al dejar de seguir usuario:", error);
-        throw error;
-    }
-}
-
-// Función para obtener estadísticas de seguimiento
-async function getFollowStats(userId) {
-    try {
-        const followersSnapshot = await get(ref(database, `followers/${userId}`));
-        const followingSnapshot = await get(ref(database, `following/${userId}`));
-        
-        return {
-            followersCount: followersSnapshot.exists() ? Object.keys(followersSnapshot.val()).length : 0,
-            followingCount: followingSnapshot.exists() ? Object.keys(followingSnapshot.val()).length : 0
-        };
-    } catch (error) {
-        console.error("Error obteniendo estadísticas:", error);
-        throw error;
-    }
-}
-
-// Función para verificar si el usuario actual sigue a otro usuario
-async function checkIfFollowing(currentUserId, targetUserId) {
-    try {
-        const snapshot = await get(ref(database, `following/${currentUserId}/${targetUserId}`));
-        return snapshot.exists();
-    } catch (error) {
-        console.error("Error verificando seguimiento:", error);
-        throw error;
-    }
-}
-
-// Modifica el onAuthStateChanged para manejar perfiles
-onAuthStateChanged(auth, async (user) => {
-    if (user) {
-        setupPresence(user);
-        console.log("Usuario autenticado:", user.email);
-        checkAccess(user.uid);
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const viewedUserId = urlParams.get('userId');
-        
-        const isViewingOwnProfile = !viewedUserId || viewedUserId === user.uid;
-        const targetUserId = isViewingOwnProfile ? user.uid : viewedUserId;
-
-        const targetUser = isViewingOwnProfile ? user : await getUserData(targetUserId);
-
-        const authContainer = document.getElementById('auth-container');
-        const content = document.getElementById('content');
-        const correoElectronico = document.getElementById('correoElectronico');
-        const usuario = document.getElementById('usuario');
-        const userID = document.getElementById('userID');
-        const fotoPerfil = document.getElementById('fotoPerfil');
-        const followButton = document.getElementById('followButton');
-        const followersCount = document.getElementById('followersCount');
-        const followingCount = document.getElementById('followingCount');
-
-        if (authContainer && content) {
-            authContainer.style.display = 'none';
-            content.style.display = 'block';
-            
-            correoElectronico.textContent = targetUser.email || 'Correo no definido';
-            usuario.textContent = targetUser.displayName || 'Usuario no definido';
-            userID.textContent = 'GS-' + targetUser.uid;
-            fotoPerfil.src = targetUser.photoURL || 'ruta/a/imagen/por/defecto.png';
-            const usuarioElement = document.querySelector('.usuario');
-            usuarioElement.textContent = targetUser.displayName || 'Usuario no definido';
-
-            const stats = await getFollowStats(targetUser.uid);
-            followersCount.textContent = stats.followersCount;
-            followingCount.textContent = stats.followingCount;
-
-            if (!isViewingOwnProfile) {
-                const isFollowing = await checkIfFollowing(user.uid, targetUser.uid);
-                followButton.style.display = 'block';
-                followButton.textContent = isFollowing ? 'Dejar de seguir' : 'Seguir';
-                followButton.onclick = async () => {
-                    try {
-                        if (isFollowing) {
-                            await unfollowUser(user.uid, targetUser.uid);
-                            followButton.textContent = 'Seguir';
-                            followersCount.textContent = parseInt(followersCount.textContent) - 1;
-                        } else {
-                            await followUser(user.uid, targetUser.uid);
-                            followButton.textContent = 'Dejar de seguir';
-                            followersCount.textContent = parseInt(followersCount.textContent) + 1;
-                        }
-                    } catch (error) {
-                        alert('Error al actualizar seguimiento: ' + error.message);
-                    }
-                };
-            } else {
-                followButton.style.display = 'none';
-            }
-        }
-    } else {
-        console.log("Usuario no autenticado");
-        const authContainer = document.getElementById('auth-container');
-        const content = document.getElementById('content');
-        if (window.location.pathname.includes('login')) {
-            inicializarFormularioDeAutenticacion();
-        }
-        if (authContainer && content) {
-            authContainer.style.display = 'block';
-            content.style.display = 'none';
-        }
-    }
-});
-
-// Actualizamos el sistema de presencia
+// Funcionalidades principales
 function setupPresence(user) {
     const userStatusRef = ref(database, `status/${user.uid}`);
-    const userDataRef = ref(database, `users/${user.uid}`);
-
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            set(userDataRef, {
-                email: user.email,
-                displayName: user.displayName,
-                photoURL: user.photoURL,
-                lastActive: Date.now()
-            });
-        }
-    });
-
     set(userStatusRef, { online: true, lastChanged: Date.now() });
-    onDisconnect(userStatusRef).update({
-        online: false,
-        lastChanged: Date.now()
-    });
-
-    onValue(userStatusRef, (snapshot) => {
-        const status = snapshot.val();
-        set(ref(database, `users/${user.uid}/online`), status.online);
-    });
+    onDisconnect(userStatusRef).update({ online: false });
 }
 
-function inicializarFormularioDeAutenticacion() {
-    const authForm = document.getElementById('authForm');
-    const formTitle = document.getElementById('formTitle');
-    const authButton = document.getElementById('authButton');
-    const emailLoginBtn = document.getElementById('email-login-btn');
-    const googleLoginBtn = document.getElementById('google-login-btn');
-    const toggleButton = document.getElementById('toggleButton');
-    let isLogin = true;
+async function completeUserProfile(user, isGoogleUser = false) {
+    if (isGoogleUser && user.displayName) return;
 
-    toggleButton.addEventListener('click', () => {
-        isLogin = !isLogin;
-        if (isLogin) {
-            formTitle.textContent = 'Inicio de Sesión';
-            authButton.innerHTML = '<img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png" alt="" width="15" height="15">';
-        } else {
-            formTitle.textContent = 'Registro';
-            authButton.innerHTML = '<img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png" alt="" width="15" height="15">';
-        }
-        console.log("Modo cambiado a", isLogin ? "Inicio de Sesión" : "Registro");
+    const displayName = user.displayName || prompt("¿Cómo quieres que te llamemos?");
+    
+    await updateProfile(user, {
+        displayName: displayName || "Usuario",
+        photoURL: user.photoURL || "https://grouvex.com/img/GROUVEX.png"
     });
 
-    authForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = document.getElementById('authEmail').value;
-        const password = document.getElementById('authPassword').value;
-
-        if (isLogin) {
-            handleEmailLogin(email, password);
-        } else {
-            handleEmailRegistration(email, password);
-        }
+    await set(ref(database, `users/${user.uid}`), {
+        email: user.email,
+        displayName: displayName || "Usuario",
+        photoURL: user.photoURL || "https://grouvex.com/img/GROUVEX.png",
+        lastLogin: Date.now(),
+        provider: isGoogleUser ? "google" : "email",
+        emailVerified: isGoogleUser ? true : user.emailVerified
     });
 
-    googleLoginBtn.addEventListener('click', handleGoogleLogin);
-
-    emailLoginBtn.addEventListener('click', () => {
-        const email = prompt("Introduce tu email:");
-        const password = prompt("Introduce tu contraseña:");
-        if (isLogin) {
-            handleEmailLogin(email, password);
-        } else {
-            handleEmailRegistration(email, password);
-        }
-    });
+    if (!isGoogleUser && !user.emailVerified) {
+        await sendEmailVerification(user);
+        mostrarNotificacion('📧 Se envió un correo de verificación. Por favor revisa tu bandeja.');
+    }
 }
 
-function handleEmailLogin(email, password) {
-    signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            console.log("Usuario inició sesión:", user.email);
-            checkAccess(user.uid);
-            alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
+// Sistema de autenticación
+function handleEmailAuth(email, password, isLogin) {
+    const authFunction = isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword;
+    
+    authFunction(auth, email, password)
+        .then(async (userCredential) => {
+            if (!isLogin) await completeUserProfile(userCredential.user);
+            mostrarNotificacion(`✅ ${isLogin ? 'Inicio de sesión exitoso' : 'Registro completado'}`);
             redirectUser();
         })
-        .catch((error) => {
-            console.error("Error al iniciar sesión:", error.message);
-            alert('Error al iniciar sesión: ' + error.message);
-        });
-}
-
-function handleEmailRegistration(email, password) {
-    createUserWithEmailAndPassword(auth, email, password)
-        .then(async (userCredential) => {
-            const user = userCredential.user;
-            await set(ref(database, `users/${user.uid}`), {
-                email: user.email,
-                displayName: user.displayName || 'Usuario sin nombre',
-                photoURL: user.photoURL || 'ruta/a/imagen/por/defecto.png',
-                createdAt: Date.now()
-            });
-        })
-        .catch((error) => {
-            console.error("Error al registrar usuario:", error.message);
-            alert('Error al registrar usuario: ' + error.message);
+        .catch(error => {
+            mostrarNotificacion(`❌ Error: ${error.message}`, true);
         });
 }
 
 function handleGoogleLogin() {
     const provider = new GoogleAuthProvider();
-    signInWithRedirect(auth, provider)
-        .then(() => {
-            console.log("Redirigiendo para autenticación con Google...");
+    provider.setCustomParameters({ prompt: 'select_account' });
+
+    signInWithPopup(auth, provider)
+        .then(async (result) => {
+            await completeUserProfile(result.user, true);
+            mostrarNotificacion('✅ ¡Bienvenido con Google!');
+            redirectUser();
         })
-        .catch((error) => {
-            console.error("Error al redirigir para autenticación:", error.message);
-            alert('Error al iniciar sesión con Google: ' + error.message);
+        .catch(error => {
+            mostrarNotificacion(`❌ Error Google: ${error.message}`, true);
         });
 }
 
-getRedirectResult(auth)
-    .then((result) => {
-        if (result) {
-            const user = result.user;
-            console.log("Usuario autenticado con Google:", user.email);
-
-            if (!user.emailVerified) {
-                sendEmailVerification(user)
-                    .then(() => {
-                        console.log('Correo de verificación enviado.');
-                        alert('Por favor, verifica tu correo electrónico antes de continuar.');
-                        verifyEmailAndUpdateProfile(user);
-                    })
-                    .catch((error) => {
-                        console.error("Error al enviar correo de verificación:", error.message);
-                        alert('Error al enviar correo de verificación: ' + error.message);
-                    });
-            } else {
-                checkAccess(user.uid);
-                alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
-                redirectUser();
-            }
-        }
-    })
-    .catch((error) => {
-        console.error("Error al obtener el resultado de la redirección:", error.message);
-        alert('Error al iniciar sesión con Google: ' + error.message);
-    });
-
-function verifyEmailAndUpdateProfile(user) {
-    const checkVerificationInterval = setInterval(() => {
-        user.reload().then(() => {
-            if (user.emailVerified) {
-                clearInterval(checkVerificationInterval);
-                clearTimeout(deleteAccountTimeout);
-                console.log('Correo verificado.');
-                const displayName = prompt('Introduce tu nombre:');
-                const photoURL = prompt('Introduce la URL de tu foto de perfil (debe ser una URL válida):');
-                updateProfile(user, {
-                    displayName: displayName,
-                    photoURL: photoURL || 'ruta/a/imagen/por/defecto.png'
-                }).then(() => {
-                    console.log("Perfil del usuario actualizado.");
-                    alert(`Hola, ${user.displayName} (${user.email}). Disfruta de la Página Web. Si eres un miembro del equipo, puedes comentar en news aquí: https://grouvex.com/comentarios. Como usuario, puedes acceder a https://grouvex.com/grouvex-studios-recording.`);
-                    redirectUser();
-                }).catch((error) => {
-                    console.error("Error al actualizar el perfil del usuario:", error.message);
-                    alert('Error al actualizar el perfil del usuario: ' + error.message);
-                });
-            }
-        }).catch(error => {
-            console.error('Error al recargar el estado del usuario:', error.message);
-        });
-    }, 1000);
-
-    const deleteAccountTimeout = setTimeout(() => {
-        user.delete().then(() => {
-            console.log('Usuario eliminado debido a falta de verificación.');
-            alert('Tu cuenta ha sido eliminada debido a la falta de verificación del correo electrónico.');
-        }).catch(error => {
-            console.error('Error al eliminar el usuario:', error.message);
-        });
-    }, 1 * 60 * 60 * 1000); // 1 hora
+// Sistema de notificaciones
+function mostrarNotificacion(mensaje, esError = false) {
+    const notificacion = document.createElement("div");
+    notificacion.className = `notificacion ${esError ? 'error' : 'exito'}`;
+    notificacion.innerHTML = `
+        <p>${mensaje}</p>
+        <div class="progress-bar"></div>
+    `;
+            notificacion.style = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px;
+            background: #ff4444;
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 90%;
+            width: 300px;
+            text-align: center;
+            font-size: 14px;
+        `;
+        document.body.appendChild(notificacion);
+    setTimeout(() => notificacion.remove(), 8000);
 }
 
-function redirectUser() {
-    const previousPage = document.referrer;
-    try {
-        const domain = new URL(previousPage).hostname;
-        const allowedHosts = ["grouvex.github.io"];
-        if (allowedHosts.includes(domain)) {
-            window.history.back();
-        } else {
-            window.location.href = "https://grouvex.github.io";
-        }
-    } catch (e) {
-        console.error("Error al procesar la URL anterior:", e);
-        window.location.href = "https://grouvex.github.io";
-    }
-}
-
-function checkAccess(uid) {
-    console.log("Verificando acceso para UID:", uid);
-}
-
-async function getUserData(userId) {
-    try {
-        const snapshot = await get(ref(database, `users/${userId}`));
-        return {
-            uid: userId,
-            ...snapshot.val()
-        };
-    } catch (error) {
-        console.error("Error obteniendo datos del usuario:", error);
-        throw error;
-    }
-}
-
-async function mostrarUsuarios() {
-    const usersContainer = document.getElementById('usersContainer');
-    if (!usersContainer) return;
-
-    try {
-        const usersRef = ref(database, 'users');
-        onValue(usersRef, (snapshot) => {
-            usersContainer.innerHTML = '';
-            const currentUser = auth.currentUser;
-            const users = snapshot.val() || {};
-
-            Object.keys(users).forEach(uid => {
-                if (uid === currentUser?.uid) return;
-                
-                const user = users[uid];
-                const userElement = document.createElement('div');
-                userElement.className = 'user-card';
-                userElement.innerHTML = `
-                    <img src="${user.photoURL}" class="user-avatar">
-                    <h3>${user.displayName}</h3>
-                    <p>Seguidores: <span id="followersCount-${uid}">0</span></p>
-                    <button class="follow-btn" data-userid="${uid}">Seguir</button>
-                    <div class="status-indicator ${user.online ? 'online' : 'offline'}"></div>
-                `;
-                
-                getFollowStats(uid).then(stats => {
-                    userElement.querySelector(`#followersCount-${uid}`).textContent = stats.followersCount;
-                });
-
-                usersContainer.appendChild(userElement);
-            });
-        });
-
-        usersContainer.addEventListener('click', async (e) => {
-            if (e.target.classList.contains('follow-btn')) {
-                const targetUserId = e.target.dataset.userid;
-                const currentUser = auth.currentUser;
-                
-                if (!currentUser) {
-                    alert('Debes iniciar sesión para seguir usuarios');
-                    return;
-                }
-
-                try {
-                    const isFollowing = await checkIfFollowing(currentUser.uid, targetUserId);
-                    
-                    if (isFollowing) {
-                        await unfollowUser(currentUser.uid, targetUserId);
-                        e.target.textContent = 'Seguir';
-                    } else {
-                        await followUser(currentUser.uid, targetUserId);
-                        e.target.textContent = 'Dejar de seguir';
-                    }
-                    
-                    const stats = await getFollowStats(targetUserId);
-                    document.querySelector(`#followersCount-${targetUserId}`).textContent = stats.followersCount;
-                } catch (error) {
-                    alert('Error al actualizar seguimiento: ' + error.message);
-                }
-            }
-        });
-    } catch (error) {
-        console.error("Error cargando usuarios:", error);
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
     if (true) {
         function mostrarnewsAdv() {
             const newsAdv = document.createElement("div");
@@ -545,30 +219,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function mostrarNotificacion(mensaje) {
-        const notificacion = document.createElement("div");
-        notificacion.style = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px;
-            background: #ff4444;
-            color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            z-index: 1000;
-            max-width: 90%;
-            width: 300px;
-            text-align: center;
-            font-size: 14px;
-        `;
-        notificacion.textContent = mensaje;
-        document.body.appendChild(notificacion);
-
-        setTimeout(() => {
-            notificacion.remove();
-        }, 8000);
-    }
 
     function mostrarNotificacionRegistro() {
         const notificacion = document.createElement("div");
@@ -603,7 +253,8 @@ document.addEventListener('DOMContentLoaded', function() {
             notificacion.remove();
         }, 8000);
     }
-
+    
+// Sistema de acceso
     const uidsOwner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"];
     const uidsTeamAdmins = ["cQRgzlky1eNHjUh61GMPTTRnIZq2", "aO5Y2hQVl9Zn7KlElpgI7jqsFfc2"];
     const uidsTeamMods = [""];
@@ -630,30 +281,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    const resetPasswordBtn = document.getElementById('resetPasswordBtn');
+        const resetPasswordBtn = document.getElementById('resetPasswordBtn');
     if (resetPasswordBtn) {
         resetPasswordBtn.addEventListener('click', () => {
-            const email = prompt('Introduce tu correo electrónico para restablecer la contraseña:');
-            if (email) {
-                console.log("Enviando correo de restablecimiento a:", email);
-                sendPasswordResetEmail(auth, email)
-                    .then(() => {
-                        console.log("Correo de restablecimiento enviado");
-                        alert('Correo para restablecer la contraseña enviado.');
-                    })
-                    .catch((error) => {
-                        console.error("Error al enviar el correo de restablecimiento:", error.message);
-                        alert('Error al enviar el correo de restablecimiento: ' + error.message);
-                    });
-            } else {
-                console.log("No se proporcionó un correo electrónico para el restablecimiento");
-            }
-        });
-    }
-
-    const resetPasswordBtn1 = document.getElementById('resetPasswordBtn1');
-    if (resetPasswordBtn1) {
-        resetPasswordBtn1.addEventListener('click', () => {
             const email = prompt('Introduce tu correo electrónico para restablecer la contraseña:');
             if (email) {
                 console.log("Enviando correo de restablecimiento a:", email);
@@ -676,8 +306,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const credential = EmailAuthProvider.credential(user.email, password);
         return reauthenticateWithCredential(user, credential);
     }
-
-    function verificarCorreoUsuario(user) {
+        function verificarCorreoUsuario(user) {
         return sendEmailVerification(user).then(() => {
             alert('Por favor, verifica tu correo electrónico. Tienes 5 minutos para verificarlo.');
 
@@ -757,8 +386,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Error al eliminar la cuenta y los datos del usuario: ' + error.message);
             });
     }
-
-    const deleteBtn = document.getElementById('deleteBtn');
+        const deleteBtn = document.getElementById('deleteBtn');
     if (deleteBtn) {
         deleteBtn.addEventListener('click', () => {
             const user = auth.currentUser;
@@ -777,12 +405,36 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     mostrarUsuarios();
+// Inicialización
+document.addEventListener('DOMContentLoaded', () => {
+    const authForm = document.getElementById('authForm');
+    const toggleButton = document.getElementById('toggleButton');
+    let isLogin = true;
 
-    document.querySelectorAll('.view-profile').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const userId = e.target.dataset.userid;
-            window.location.href = `perfil.html?userId=${userId}`;
-        });
+    toggleButton.addEventListener('click', () => {
+        isLogin = !isLogin;
+        document.getElementById('formTitle').textContent = isLogin ? 'Inicio de Sesión' : 'Registro';
+        document.getElementById('authDisplayName').style.display = isLogin ? 'none' : 'block';
     });
+
+    authForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = document.getElementById('authEmail').value;
+        const password = document.getElementById('authPassword').value;
+        handleEmailAuth(email, password, isLogin);
+    });
+
+    document.getElementById('google-login-btn').addEventListener('click', handleGoogleLogin);
+    document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
+
+    // Verificar acceso según la página
+    const paginaActual = window.location.pathname.split("/").pop();
+    if (paginaActual !== 'login') verificarAcceso(paginaActual);
 });
+
+// Funciones complementarias
+function redirectUser() {
+    const allowedPaths = ["grouvex-studios-recording", "team"];
+    const targetPath = allowedPaths.find(path => document.referrer.includes(path)) || "https://grouvex.github.io";
+    window.location.href = targetPath;
+}

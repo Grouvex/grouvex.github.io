@@ -438,57 +438,57 @@ function mostrarNotificacion(mensaje, esError = false) {
     }
 
     // Función principal para eliminar cuenta con validaciones
-    async function handleAccountDeletion() {
-        const user = auth.currentUser;
-        
-        // Validación 1: Usuario autenticado
-        if (!user) {
-            mostrarNotificacion('❌ Debes iniciar sesión para realizar esta acción', true);
-            window.location.href = '/login';
-            return;
-        }
-
-        // Validación 2: Confirmación del usuario
-        const confirmation = confirm(`¿Estás SEGURO que quieres eliminar tu cuenta de forma permanente?\n\nEsta acción:\n✅ Eliminará todos tus datos\n✅ Borrará tu historial\n✅ Quitará tus permisos\n🚫 NO podrá deshacerse\n\nEscribe "ELIMINAR" para confirmar.`);
-
-        if (!confirmation) {
-            mostrarNotificacion('✅ Cancelaste la eliminación de la cuenta');
-            return;
-        }
-
-        // Validación 3: Confirmación por texto
-        const userInput = prompt('Escribe "ELIMINAR" para confirmar la eliminación permanente:');
-        if (userInput? !== 'ELIMINAR') {
-            mostrarNotificacion('❌ Confirmación incorrecta. Eliminación cancelada', true);
-            return;
-        }
-
-        // Validación 4: Reautenticación
-        try {
-            const password = prompt('Por seguridad, introduce tu contraseña para confirmar:');
-            if (!password) {
-                mostrarNotificacion('❌ Se requiere contraseña para esta acción', true);
-                return;
-            }
-
-            // Reautenticar
-            const credential = EmailAuthProvider.credential(user.email, password);
-            await reauthenticateWithCredential(user, credential);
-
-            // Validación 5: Eliminar datos primero
-            await eliminarDatosUsuario(user.uid);
-            
-            // Eliminar cuenta de autenticación
-            await deleteUser(user);
-            
-            // Redirección y feedback
-            mostrarNotificacion('🔥 Cuenta eliminada permanentemente. ¡Hasta pronto!');
-            setTimeout(() => window.location.href = '/', 3000);
-            
-        } catch (error) {
-            manejarErroresEliminacion(error);
-        }
+async function handleAccountDeletion() {
+    const user = auth.currentUser;
+    
+    // Validación 1: Usuario autenticado
+    if (!user) {
+        mostrarNotificacion('❌ Debes iniciar sesión para realizar esta acción', true);
+        window.location.href = '/login';
+        return;
     }
+
+    // Validación 2: Confirmación del usuario
+    const confirmation = confirm(`¿Estás SEGURO que quieres eliminar tu cuenta de forma permanente?\n\nEsta acción:\n✅ Eliminará todos tus datos\n✅ Borrará tu historial\n✅ Quitará tus permisos\n🚫 NO podrá deshacerse\n\nEscribe "ELIMINAR" para confirmar.`);
+
+    if (!confirmation) {
+        mostrarNotificacion('✅ Cancelaste la eliminación de la cuenta');
+        return;
+    }
+
+    // Validación 3: Confirmación por texto
+    const userInput = prompt('Escribe "ELIMINAR" para confirmar la eliminación permanente:');
+    if (userInput !== 'ELIMINAR') {
+        mostrarNotificacion('❌ Confirmación incorrecta. Eliminación cancelada', true);
+        return;
+    }
+
+    // Validación 4: Reautenticación
+    try {
+        const password = prompt('Por seguridad, introduce tu contraseña para confirmar:');
+        if (!password) {
+            mostrarNotificacion('❌ Se requiere contraseña para esta acción', true);
+            return;
+        }
+
+        // Reautenticar
+        const credential = EmailAuthProvider.credential(user.email, password);
+        await reauthenticateWithCredential(user, credential);
+
+        // Validación 5: Eliminar datos primero
+        await eliminarDatosUsuario(user.uid);
+        
+        // Eliminar cuenta de autenticación
+        await deleteUser(user);
+        
+        // Redirección y feedback
+        mostrarNotificacion('🔥 Cuenta eliminada permanentemente. ¡Hasta pronto!');
+        setTimeout(() => window.location.href = '/', 3000);
+        
+    } catch (error) {
+        manejarErroresEliminacion(error);
+    }
+}
 
     // Función para eliminar datos de usuario
     async function eliminarDatosUsuario(userId) {

@@ -71,7 +71,7 @@ onAuthStateChanged(auth, async (user) => {
         const updateProfileUI = () => {
             document.getElementById('correoElectronico').textContent = targetUser.email || 'Correo no definido';
             document.getElementById('usuario').textContent = targetUser.displayName || 'Usuario no definido';
-            usuarioElement.id = nombreUsuario.replace(/\s+/g, '_');
+            usuarioElement.id = nombreUsuario.replace(/\s+/g, '-');
             document.getElementById('userID').textContent = `GS-${targetUser.uid}`;
             document.getElementById('fotoPerfil').src = targetUser.photoURL || 'https://grouvex.com/img/GROUVEX.png';
         };
@@ -122,6 +122,41 @@ onAuthStateChanged(auth, async (user) => {
         }
     }
 });
+
+function inicializarFormularioDeAutenticacion() {
+    const authForm = document.getElementById('authForm');
+    const formTitle = document.getElementById('formTitle');
+    const authButton = document.getElementById('authButton');
+    const emailLoginBtn = document.getElementById('email-login-btn');
+    const googleLoginBtn = document.getElementById('google-login-btn');
+    const toggleButton = document.getElementById('toggleButton');
+    let isLogin = true;
+
+    toggleButton.addEventListener('click', () => {
+        isLogin = !isLogin;
+        if (isLogin) {
+            formTitle.textContent = 'Inicio de Sesión';
+            authButton.innerHTML = '<img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png" alt="" width="15" height="15">';
+        } else {
+            formTitle.textContent = 'Registro';
+            authButton.innerHTML = '<img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png" alt="" width="15" height="15">';
+        }
+        console.log("Modo cambiado a", isLogin ? "Inicio de Sesión" : "Registro");
+    });
+
+    authForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = document.getElementById('authEmail').value;
+        const password = document.getElementById('authPassword').value;
+
+        if (isLogin) {
+            handleEmailLogin(email, password);
+        } else {
+            handleEmailRegistration(email, password);
+        }
+    });
+}
+
 
 async function completeUserProfile(user, isGoogleUser = false) {
     if (isGoogleUser && user.displayName) return;

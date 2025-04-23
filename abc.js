@@ -70,7 +70,6 @@ onAuthStateChanged(auth, async (user) => {
         // Actualizar UI
         const updateProfileUI = () => {
             document.getElementById('correoElectronico').textContent = targetUser.email || 'Correo no definido';
-            document.getElementById('usuario').textContent = targetUser.displayName || 'Usuario no definido';
             usuarioElement.id = nombreUsuario.replace(/\s+/g, '-');
             document.getElementById('userID').textContent = `GS-${targetUser.uid}`;
             document.getElementById('fotoPerfil').src = targetUser.photoURL || 'https://grouvex.com/img/GROUVEX.png';

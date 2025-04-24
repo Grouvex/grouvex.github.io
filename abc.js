@@ -149,9 +149,9 @@ function inicializarFormularioDeAutenticacion() {
         const password = document.getElementById('authPassword').value;
 
         if (isLogin) {
-            handleEmailLogin(email, password);
+            handleEmailAuth(email, password, true);
         } else {
-            handleEmailRegistration(email, password);
+            handleEmailAuth(email, password, false);
         }
     });
 }
@@ -570,8 +570,6 @@ async function handleAccountDeletion() {
             handleAccountDeletion();
         });
     }
-
-    mostrarUsuarios();
 // Inicialización
 document.addEventListener('DOMContentLoaded', () => {
     const authForm = document.getElementById('authForm');
@@ -601,7 +599,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Funciones complementarias
 function redirectUser() {
-    const allowedPaths = ["grouvex-studios-recording", "team"];
-    const targetPath = allowedPaths.find(path => document.referrer.includes(path)) || "https://grouvex.github.io";
-    window.location.href = targetPath;
+    const user = auth.currentUser;
+    if (!user) return;
+    
+    const defaultPath = "https://grouvex.github.io";
+    const lastPath = localStorage.getItem('lastVisitedPath') || defaultPath;
+    
+    // Verificar acceso antes de redirigir
+    verificarAcceso();
+    
+    // Redirigir después de 1 segundo para permitir que se complete la autenticación
+    setTimeout(() => {
+        window.location.href = lastPath;
+    }, 1000);
 }

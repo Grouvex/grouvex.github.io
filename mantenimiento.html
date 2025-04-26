@@ -82,38 +82,47 @@
     <summary><h2>Autentificación</h2></summary>
     <main>
         <h1>Autenticación de Usuarios en Grouvex Studios</h1>
-        <div id="auth-container">
-            <form id="authForm">
-                <h2 id="formTitle">Inicio de Sesión</h2>
-                <input type="email" id="authEmail" placeholder="Email" required>
-                <input type="password" id="authPassword" placeholder="Password" required>
-                <input type="text" id="authDisplayName" placeholder="Nombre de Usuario" style="display:none;">
-                <button type="submit" id="authButton"><img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png" alt="" width="15" height="15">Iniciar Sesión</button>
-                <button type="button" id="toggleButton" disabled>¿No tienes cuenta? Regístrate</button>
-            </form>
-            <button id="google-login-btn"><img src="https://img.icons8.com/?size=512&id=17949&format=png" alt="" width="15" height="15">Iniciar Sesión con Google</button>
-            <button id="email-login-btn"><img src="https://static.vecteezy.com/system/resources/previews/022/484/508/non_2x/google-mail-gmail-icon-logo-symbol-free-png.png" alt="" width="15" height="15">Iniciar Sesión con Email</button>
-            <p>¿Olvidaste tu contraseña?. Pongase en contacto con: <a href="mailto:administracion@grouvex.com?subject=Cambiar%20contraseña&body=Hola,%0A%0ASoy%20[Nombre de Usuario],%20mi%20correo%20asociado%20es%20[Correo del Usuario]%20y%20mi%20GSUserID%20es:%20[UID del Usuario]%0ASe%20me%20ha%20olvidado%20mi%20contraseña%20y%20me%20gustaría%20cambiarla.%0A%0AGracias,%0A[Nombre de Usuario]" style="color:white">administracion@grouvex.com</a></p>
-            <p>Al registrarte o iniciar sesión en Grouvex Studios, acepta los <n>Términos de Servicios</n> y <n>Políticas de Privacidad</n> del mismo.</p>
-            <details><summary>Términos de Servicios</summary>
-            <iframe src="https://grouvex.com/tos" style="width:100%; height:100vh; border:none;"></iframe>
-            </details>
-            <details><summary>Políticas de Privacidad</summary>
-            <iframe src="https://grouvex.com/pp" style="width:100%; height:100vh; border:none;"></iframe>
-            </details>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<div id="auth-container">
+    <form id="authForm">
+        <h2 id="formTitle">Inicio de Sesión</h2>
+        <input type="email" id="authEmail" placeholder="Email" required>
+        <input type="password" id="authPassword" placeholder="Password" required>
+        <input type="text" id="authDisplayName" placeholder="Nombre de Usuario">
+        <div class="button-container">
+            <button type="submit" id="authButton" class="icon-button" title="Verificar Autenticación">
+                <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png" alt="Iniciar Sesión" width="15" height="15">
+            </button>
+            <button type="button" id="toggleButton" class="icon-button secondary" title="Cambia de Iniciar Sesión a Registrarse y viceversa">
+                <i class="fas fa-sync-alt"></i> <!-- Ícono de cambio -->
+            </button>
+            <button id="google-login-btn" class="icon-button google" title="Iniciar Sesión/Registrarse con Google">
+                <img src="https://img.icons8.com/?size=512&id=17949&format=png" alt="Google" width="15" height="15">
+            </button>
+            <button id="email-login-btn" class="icon-button email" title="Iniciar Sesión/Registrarse con Email">
+                <img src="https://static.vecteezy.com/system/resources/previews/022/484/508/non_2x/google-mail-gmail-icon-logo-symbol-free-png.png" alt="Email" width="15" height="15">
+            </button>
         </div>
+    </form>
+    <p>¿Olvidaste tu contraseña? Póngase en contacto con: <a href="mailto:administracion@grouvex.com?subject=Cambiar%20contraseña&body=Hola,%0A%0ASoy%20[Nombre de Usuario],%20mi%20correo%20asociado%20es%20[Correo del Usuario]%20y%20mi%20GSUserID%20es:%20[UID del Usuario]%0ASe%20me%20ha%20olvidado%20mi%20contraseña%20y%20me%20gustaría%20cambiarla.%0A%0AGracias,%0A[Nombre de Usuario]" style="color:white">administracion@grouvex.com</a></p>
+    <p>Al registrarte o iniciar sesión en Grouvex Studios, acepta los <a href="https://grouvex.github.io/tos">Términos de Servicios</a> y <a href="https://grouvex.github.io/pp">Políticas de Privacidad del mismo</a>.</p>
+    <hr>
+    <aside>
+    <p>El registro/inicio de sesión de Google y Email se está reparando. Para registrase e iniciar sesión, deberá usar otros metodos para registrase o iniciar sesión. Si tiene cualquier duda, pongase en <a href="https://grouvex.github.io/contacto">contacto</a></p>
+    </aside>
+</div>
         <div id="content" style="display: none;">
             <h2>Bienvenido</h2>
             <p>Este contenido es visible solo para usuarios autenticados.</p>
             <p>Si desea eliminar la cuenta, envie un correo a <a href="mailto:administracion@grouvex.com?subject=Solicitud%20de%20Eliminación%20de%20la%20Cuenta%20de%20Grouvex%20Studios" style="color:white">administracion@grouvex.com</a>, indicando: Nombre de Usuario, Correo Electronico y el GSUserID.</p>
-            <p>Bienvenid@ <span id="usuario"></span>, si necesita ayuda, puede ponerse en <a href="https://grouvex.github.io/contacto" style="color:white">contacto</a> con el equipo.</p>
+            <p>Bienvenid@, si necesita ayuda, puede ponerse en <a href="https://grouvex.github.io/contacto" style="color:white">contacto</a> con el equipo.</p>
             <hr>
             <p>Información de la cuenta</p>
     <div class="tarjetas">
         <div class="tarjeta">
     <img id="fotoPerfil" src="https://grouvex.com/img/GROUVEX.png" alt="Foto de perfil">
     <div>
-      <h2><span class="insignias"></span></h2>
+      <h2><span class="usuario"></span></h2>
       <hr>
       <p style="font-size:6px;font-family: Arial, Helvetica, sans-serif;"><n><span id="userID"></span></n></p>
       <p><footer><span id="correoElectronico"></span></footer></p>
@@ -123,7 +132,16 @@
             <button id="resetPasswordBtn">Cambiar Contraseña</button><button id="logoutBtn">Cerrar Sesión</button>
             <hr>
             <button id="deleteBtn">Eliminar Cuenta</button>
-        </div>
+        <!-- En tu perfil.html -->
+<div class="profile-stats">
+    <p>Seguidores: <span id="followersCount">0</span></p>
+    <p>Siguiendo: <span id="followingCount">0</span></p>
+    <button id="followButton" style="display: none;">Seguir</button>
+</div>
+
+<!-- En tu lista de usuarios -->
+<div id="usersContainer" class="users-list"></div>
+</div>
     </main>
 </details>
  <!-- Footer -->

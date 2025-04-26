@@ -299,57 +299,6 @@ function mostrarnewsAdv() {
     document.body.appendChild(newsAdv);
 }
 
-function mostrarUsuarioYInsignias(nombreUsuario, elements) {
-    elements.forEach(element => {
-        // Mostrar nombre de usuario
-        const spanNombre = document.createElement("span");
-        spanNombre.textContent = nombreUsuario;
-        element.appendChild(spanNombre);
-
-        // Mostrar insignias principales
-        const divPrincipales = document.createElement("div");
-        usuarios[nombreUsuario].principales.forEach(insignia => {
-            if (insignia) {
-                const spanInsignia = document.createElement("span");
-                spanInsignia.classList.add("insignia", insignia);
-                divPrincipales.appendChild(spanInsignia);
-            }
-        });
-        element.appendChild(divPrincipales);
-
-        function crearDetallesInsignias(titulo, categoria) {
-            if (usuarios[nombreUsuario][categoria]?.length > 0 && usuarios[nombreUsuario][categoria][0] !== "") {
-                const details = document.createElement("details");
-                const summary = document.createElement("summary");
-                summary.textContent = titulo;
-                summary.style.fontSize = "10px";
-
-                details.appendChild(summary);
-                const divInsignias = document.createElement("div");
-                usuarios[nombreUsuario][categoria].forEach(insignia => {
-                    if (insignia) {
-                        const spanInsignia = document.createElement("span");
-                        spanInsignia.classList.add("insignia", insignia);
-                        divInsignias.appendChild(spanInsignia);
-                    }
-                });
-                details.appendChild(divInsignias);
-                return details;
-            }
-            return null;
-        }
-
-        const gsRecordingDetails = crearDetallesInsignias("GSRecording", "GSRecording");
-        if (gsRecordingDetails) element.appendChild(gsRecordingDetails);
-
-        const gsAnimationDetails = crearDetallesInsignias("GSAnimation", "GSAnimation");
-        if (gsAnimationDetails) element.appendChild(gsAnimationDetails);
-
-        const gsDesignDetails = crearDetallesInsignias("GSDesign", "GSDesign");
-        if (gsDesignDetails) element.appendChild(gsDesignDetails);
-    });
-}
-
 // ============================================
 // FUNCIONES DE GESTIÓN DE CUENTA
 // ============================================

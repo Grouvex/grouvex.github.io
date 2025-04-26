@@ -66,7 +66,7 @@ onAuthStateChanged(auth, async (user) => {
         const targetUserId = isViewingOwnProfile ? user.uid : viewedUserId;
         const targetUser = isViewingOwnProfile ? user : await getUserData(targetUserId);
         const nombreUsuario = targetUser.displayName || "Usuario";
-        const usuarioElement = document.getElementById('usuario');
+        const usuarioElement = document.querySelector('.usuario');
         // Actualizar UI
         const updateProfileUI = () => {
             document.getElementById('correoElectronico').textContent = targetUser.email || 'Correo no definido';

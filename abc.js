@@ -450,7 +450,7 @@ function manejarErroresEliminacion(error) {
 
 function verificarAcceso() {
     onAuthStateChanged(auth, (user) => {
-        const mantenimientoActivo = false;
+        const mantenimientoActivo = true;
         const paginaMantenimiento = "mantenimiento";
         const paginaActual = window.location.pathname.split("/").pop();
 
@@ -544,8 +544,6 @@ function inicializarFormularioDeAutenticacion() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Inicialización general
-    inicializarFormularioDeAutenticacion();
     
     // Configurar botones
     document.getElementById('logoutBtn')?.addEventListener('click', () => signOut(auth));

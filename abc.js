@@ -171,20 +171,28 @@ function handleEmailAuth(email, password, isLogin) {
         });
 }
 
-function handleGoogleLogin() {
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: 'select_account' });
-
-    signInWithPopup(auth, provider)
-        .then(async (result) => {
-            await completeUserProfile(result.user, true);
-            mostrarNotificacion('✅ ¡Bienvenido con Google!');
-            redirectUser();
-        })
-        .catch(error => {
-            mostrarNotificacion(`❌ Error Google: ${error.message}`, true);
-        });
-}
+  async function handleGoogleLogin() {
+      try {
+          const provider = new firebase.auth.GoogleAuthProvider();
+          provider.setCustomParameters({ prompt: 'select_account' });
+          
+          const result = await firebase.auth().signInWithPopup(provider);
+          
+          // Guardar información del usuario en la base de datos
+          await database.ref('users/' + result.user.uid).set({
+              email: result.user.email,
+              displayName: result.user.displayName,
+              photoURL: result.user.photoURL || "https://grouvex.com/img/GROUVEX.png",
+              lastLogin: Date.now(),
+              provider: "google"
+          });
+          
+          mostrarNotificacion('✅ Inicio de sesión con Google exitoso');
+          redirectUser();
+      } catch (error) {
+          mostrarNotificacion(`❌ ${traducirError(error)}`, true);
+      }
+  }
 
 function reauthenticateUser(user, password) {
     if (!password) throw new Error('Se requiere contraseña para esta acción');

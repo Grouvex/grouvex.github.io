@@ -412,13 +412,15 @@ function verificarAcceso() {
         const paginaActual = window.location.pathname.split("/").pop();
 
         if (mantenimientoActivo) {
+          mostrarNotificacion(`🚧 La Página está en mantenimiento.`,true);
             if (paginaActual !== paginaMantenimiento && !(user && uidsTeam.includes(user.uid))) {
                 alert(`🚧 La Página está en mantenimiento, se te refirigirá a ${paginaMantenimiento}.`);
                 setTimeout(() => { window.location.href = `https://grouvex.github.io/${paginaMantenimiento}`; }, 3000);
                 return;
             }
         } else if (paginaActual === paginaMantenimiento) {
-            window.location.href = "https://grouvex.github.io";
+            mostrarNotificacion(`Está página no está en mantenimiento, se te redirigirá a la página de inicio`,true);
+            setTimeout(() => { window.location.href = `https://grouvex.github.io`; }, 3000);
             return;
         }
 

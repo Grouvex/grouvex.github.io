@@ -413,7 +413,7 @@ function verificarAcceso() {
 
         if (mantenimientoActivo) {
           mostrarNotificacion(`🚧 La Página está en mantenimiento.`,true);
-            if (paginaActual !== paginaMantenimiento && !(user && uidsTeam.includes(user.uid))) {
+            if (paginaActual !== bogs && paginaActual !== paginaMantenimiento && !(user && uidsTeam.includes(user.uid))) {
                 alert(`🚧 La Página está en mantenimiento, se te refirigirá a ${paginaMantenimiento}.`);
                 setTimeout(() => { window.location.href = `https://grouvex.github.io/${paginaMantenimiento}`; }, 3000);
                 return;

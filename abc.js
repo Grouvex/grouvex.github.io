@@ -298,7 +298,7 @@ function mostrarnewsAdv() {
     newsAdv.innerHTML = `
         <h1 style="color: black"><span class="insignia owner-recording"></span> | Modifiacón de Tiempos</h1>
         <div style="margin-top: 10px; display: flex; justify-content: center; gap: 10px;flex-wrap: wrap;flex-direction: column;align-content: center;">
-        <p>El Equipo de Grouvex Studios Recording está satudado actualmente, por tanto, durante un periodo, la entrega del proyecto para lanzarlo, deberá ser <n>6 semanas antes de la fecha de venta</n> que indique el artista.</p>
+        <p>El Equipo de Grouvex Studios Recording está saturado actualmente, por tanto, durante un periodo, la entrega del proyecto para lanzarlo, deberá ser <n>6 semanas antes de la fecha de venta</n> que indique el artista.</p>
         <p>Entra en vigor el <n>2 de Marzo de 2025</n></p>
         <p>Esto modifica por tanto, la sección de <n>Obligaciones del Artista > Entrega de Material</n> <a href="https://grouvex.com/grouvex-studios-recording#Entrega_de_Material" style="color: white; text-decoration: underline;">GSRecording > Entrega de Material</a></p>
         <button onclick="this.parentElement.parentElement.remove()" style="background: none; color: red; cursor: pointer;">Cerrar</button>

@@ -31,6 +31,19 @@
     </style>
 </head>
 <body>
+<header>
+<a href="https://grouvex.github.io/"> <div class="img-container" loading="lazy"></div></a> 
+<span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
+    <nav>
+        <span id="menuG"></span>
+        <span id="menuT"></span>
+        <span id="menuU"></span>
+    </nav>
+</span>
+</header>
+<!-- Anuncio -->
+<div id="news"></div>
+<main>
     <h1>Visualizador de PDF con PDF.js</h1>
     
     <div>
@@ -58,7 +71,7 @@
             ctx = canvas.getContext('2d');
         
         // Carga el PDF
-        pdfjsLib.getDocument('tu-documento.pdf').promise.then(function(pdfDoc_) {
+        pdfjsLib.getDocument('ddoo/B.O.Grouvex Studios.pdf').promise.then(function(pdfDoc_) {
             pdfDoc = pdfDoc_;
             document.getElementById('page_count').textContent = pdfDoc.numPages;
             
@@ -114,5 +127,6 @@
             queueRenderPage(pageNum);
         });
     </script>
+</main>
 </body>
 </html>

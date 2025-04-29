@@ -409,11 +409,12 @@ function verificarAcceso() {
     onAuthStateChanged(auth, (user) => {
         const mantenimientoActivo = true;
         const paginaMantenimiento = "mantenimiento";
+        const paginaOficial = "ddoo";
         const paginaActual = window.location.pathname.split("/").pop();
 
         if (mantenimientoActivo) {
           mostrarNotificacion(`🚧 La Página está en mantenimiento.`,true);
-            if (paginaActual !== ddoo && paginaActual !== paginaMantenimiento && !(user && uidsTeam.includes(user.uid))) {
+            if (paginaActual !== paginaOficial && paginaActual !== paginaMantenimiento && !(user && uidsTeam.includes(user.uid))) {
                 alert(`🚧 La Página está en mantenimiento, se te refirigirá a ${paginaMantenimiento}.`);
                 setTimeout(() => { window.location.href = `https://grouvex.github.io/${paginaMantenimiento}`; }, 3000);
                 return;

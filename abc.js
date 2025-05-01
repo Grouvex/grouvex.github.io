@@ -530,12 +530,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Verificar acceso
     const paginaActual = window.location.pathname.split("/").pop();
     if (paginaActual !== 'login') verificarAcceso();
-
-    // Cargar insignias
-    Object.keys(usuarios).forEach(usuario => {
-        const elements = document.querySelectorAll(`.${usuario.replace(/\s+/g, '-')}`);
-        if (elements.length > 0) mostrarUsuarioYInsignias(usuario, elements);
-    });
 });
 
 // Observador de autenticación principal

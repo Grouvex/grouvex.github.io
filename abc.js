@@ -413,7 +413,7 @@ function verificarAcceso() {
         const paginaActual = window.location.pathname.split("/").pop();
 
         if (mantenimientoActivo) {
-          if (paginaActual == paginaOficial && paginaActual == paginaMantenimiento && !(user && uidsTeam.includes(user.uid))) {
+          if ( paginaActual === paginaOficial || paginaActual === paginaMantenimiento || (user && uidsTeam.includes(user.uid))) {
             mostrarNotificacion(`🚧 La Página está en mantenimiento. ✅ Tienes acceso a ella.`);
             return;
             }

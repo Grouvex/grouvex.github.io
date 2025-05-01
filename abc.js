@@ -413,9 +413,13 @@ function verificarAcceso() {
         const paginaActual = window.location.pathname.split("/").pop();
 
         if (mantenimientoActivo) {
-          mostrarNotificacion(`🚧 La Página está en mantenimiento.`,true);
+          if (paginaActual == paginaOficial && paginaActual == paginaMantenimiento && !(user && uidsTeam.includes(user.uid))) {
+            mostrarNotificacion(`🚧 La Página está en mantenimiento. ✅ Tienes acceso a ella.`);
+            return;
+            }
             if (paginaActual !== paginaOficial && paginaActual !== paginaMantenimiento && !(user && uidsTeam.includes(user.uid))) {
                 alert(`🚧 La Página está en mantenimiento, se te refirigirá a ${paginaMantenimiento}.`);
+                mostrarNotificacion(`🚧 La Página está en mantenimiento, se te refirigirá a ${paginaMantenimiento}.`);
                 setTimeout(() => { window.location.href = `https://grouvex.github.io/${paginaMantenimiento}`; }, 3000);
                 return;
             }

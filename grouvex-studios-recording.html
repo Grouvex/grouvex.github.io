@@ -27,6 +27,163 @@
     <link rel="shortlink" href="https://grouvex.com/">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="HandheldFriendly" content="true">
+    <style>
+        /* Estilos específicos para los planes que no afectarán a los formularios */
+        .plans-container details {
+            width: 100%;
+            margin: 20px 0;
+            background: #1e1e1e;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .plans-container summary {
+            padding: 15px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #6e45e2 0%, #88d3ce 100%);
+            color: white;
+            cursor: pointer;
+            outline: none;
+            position: relative;
+            list-style: none;
+        }
+        
+        .plans-container summary::after {
+            content: '+';
+            position: absolute;
+            right: 20px;
+            transition: transform 0.3s;
+        }
+        .plans-container summary::-webkit-details-marker {
+            display: none;
+        }
+        .plans-container details[open] summary::after {
+            transform: rotate(45deg);
+        }
+        
+        .plans-container .pricing-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .plans-container .pricing-row {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .plans-container .pricing-plan {
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            border-radius: 8px;
+            padding: 25px;
+            background: linear-gradient(45deg, blue, cyan, magenta, red);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+        
+        .plans-container .pricing-plan:hover {
+            transform: translateY(-5px);
+        }
+        
+        .plans-container .plan-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: white;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid;
+        }
+        
+        .plans-container .plan-price {
+            font-size: 1.8em;
+            text-align: center;
+            margin: 15px 0;
+            color: green;
+            font-weight: bold;
+        }
+        
+        .plans-container .plan-features {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .plans-container .plan-features li {
+            padding: 8px 0;
+            border-bottom: 1px dotted #ddd;
+        }
+        
+        .plans-container .plan-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .plans-container .free {
+            border-top: 4px solid #4CAF50;
+        }
+        
+        .plans-container .basic {
+            border-top: 4px solid #2196F3;
+        }
+        
+        .plans-container .standard {
+            border-top: 4px solid #FF9800;
+        }
+        
+        .plans-container .premium {
+            border-top: 4px solid #9C27B0;
+        }
+        
+        .plans-container .highlight {
+            background-color: #ff0000;
+            padding: 1px 1px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .plans-container .optional {
+            color: #666;
+            font-style: italic;
+        }
+        
+        .plans-container .note {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        @media (max-width: 480px) {
+            .pricing-plan {
+                padding: 15px;
+            }
+            
+            .plan-title {
+                font-size: 1rem;
+            }
+            
+            .plan-price {
+                font-size: 1.2rem;
+            }
+            
+            .plan-features li {
+                font-size: 0.8rem;
+            }
+            
+            iframe {
+                min-height: 300px;
+            }
+        }
+    </style>
     <link rel="preconnect" href="https://example.com">
     <link rel="dns-prefetch" href="https://example.com">
  <!-- Scripts sin nonce -->
@@ -94,7 +251,83 @@ Si quiere el contrato para publicar su música por usted, dirijase a Formulario 
         <p>Se debe tener en cuenta, que puede variar temporalmente alguna normativa, siempre y cuando, el equipo avise al usuario de alguna forma, ya sea Anunciandolo en la Pagina de Anuncios con una antelación de (2 semanas de antelación), en un Anuncio Importante (1 semana de antelación), o por un metodo de contacto directo (3 días de antelación)</p>
     </asider>
   </section>
- 
+         <!-- Sección de planes con contenedor específico -->
+        <div class="plans-container">
+            <details open>
+                <summary>Planes de Distribución Musical</summary>
+                <div class="pricing-rows">
+                    <!-- Primera fila -->
+                    <div class="pricing-row">
+                        <!-- Plan Gratis -->
+                        <div class="pricing-plan free">
+                            <div class="plan-title">Gratis</div>
+                            <div class="plan-price">€0/mes</div>
+                            <ul class="plan-features">
+                                <li>Sube todas las canciones que quieras</li>
+                                <li>Lanzamiento con <span class="highlight">6 semanas de antelación</span></li>
+                                <li>Copyright y Sound Copyright: <span class="highlight">Grouvex Studios Recording</span></li>
+                                <li>Límite de <span class="highlight">7 canciones/2 meses</span></li>
+                                <li>Sin opción a videos musicales</li>
+                                <li>Sin opción a Pre-Saved</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Plan Básico -->
+                        <div class="pricing-plan basic">
+                            <div class="plan-title">Básico</div>
+                            <div class="plan-price">€1/mes</div>
+                            <ul class="plan-features">
+                                <li>Sube todas las canciones que quieras</li>
+                                <li>Lanzamiento con <span class="highlight">5 semanas de antelación</span></li>
+                                <li>Límite de <span class="highlight">15 canciones/2 meses</span></li>
+                                <li>Copyright y Sound Copyright: <span class="highlight">Grouvex Studios Recording</span></li>
+                                <li>Sin opción a videos musicales</li>
+                                <li>Acceso al Pre-Saved</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Segunda fila -->
+                    <div class="pricing-row">
+                        <!-- Plan Estándar -->
+                        <div class="pricing-plan standard">
+                            <div class="plan-title">Estándar</div>
+                            <div class="plan-price">€9/mes</div>
+                            <ul class="plan-features">
+                                <li>Sube todas las canciones que quieras</li>
+                                <li>Lanzamiento con <span class="highlight">4 semanas de antelación</span></li>
+                                <li>Límite de <span class="highlight">30 canciones/2 meses</span></li>
+                                <li><span class="highlight">Copyright personalizado</span> (el que elijas)</li>
+                                <li class="optional">Video musical, -10% de sus regalías por canción solicitada</li>
+                                <li>Acceso al Pre-Saved</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Plan Premium -->
+                        <div class="pricing-plan premium">
+                            <div class="plan-title">Premium</div>
+                            <div class="plan-price">€20/mes</div>
+                            <ul class="plan-features">
+                                <li>Sube todas las canciones que quieras</li>
+                                <li>Lanzamiento con <span class="highlight">2 semanas de antelación</span></li>
+                                <li><span class="highlight">Sin límite</span> de canciones individuales</li>
+                                <li><span class="highlight">Copyright y Sound Copyright personalizados</span></li>
+                                <li class="optional">Video musical, -10% de sus regalías por canción solicitada</li>
+                                <li>Acceso al Pre-Saved</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="note">
+                    *Nota: Los límites de canciones se refieren a canciones individuales (no aplica a álbumes) y se renuevan cada 2 meses. 
+                    Por ejemplo, en el plan Gratis puedes subir hasta 15 canciones cada 2 meses, si sube un álbum de 15 canciones, no podrá volver a subir hasta dentro de 2 meses.
+                </div>
+                <div class="note">
+                    *Nota: En caso de que el sello discográfico por algun motivo, modifique el tiempo mínimo entre la fecha actual y la fecha de lanzamiento, dichos tiempos en cada plan, serán suspendidos hasta que el sello discográfico lo modifique de nuevo.
+                </div>
+            </details>
+        </div>
 <article id="Obligaciones_del_Sello_Discográfico">
  <details>
    <summary href="#Obligaciones_del_Sello_Discográfico"><h2>Obligaciones del Sello Discográfico</h2></summary>
@@ -158,6 +391,7 @@ Direcciones web, Información de contacto de cualquier tipo (incluidas las etiqu
         <ol>
             <li><p>Artista: [Artista]*</p></li>
             <li><p>Nombre del álbum: [Título del Album/EP/Canción]*.</p></li>
+            <li><p>¿Es un cover?: [Sí/No]*</p></li>
             <li><p>Género: [Género 1]*</p></li>
             <li><p>Género 2: [Género 2]*</p></li>
             <li><p>Otros artistas y función: [Otros artistas - función]*</p></li>

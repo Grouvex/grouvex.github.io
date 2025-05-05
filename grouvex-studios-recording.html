@@ -287,6 +287,7 @@ Si quiere el contrato para publicar su música por usted, dirijase a Formulario 
                                 <li>Acceso al Pre-Saved</li>
                             </ul>
                         </div>
+                        <button onclick="redirectToCheckout('prod_SG2qANuN7v1QI9')">Plan Básico (3€/mes)</button>
                     </div>
                     
                     <!-- Segunda fila -->
@@ -301,7 +302,7 @@ Si quiere el contrato para publicar su música por usted, dirijase a Formulario 
                                 <li>Lanzamiento con <span class="highlight">4 semanas de antelación</span></li>
                                 <li>Límite de <span class="highlight">30 canciones/2 meses</span></li>
                                 <li><span class="highlight">Copyright personalizado</span> (el que elijas)</li>
-                                <li class="optional">Video musical, -10% de sus regalías por canción solicitada</li>
+                                <li class="optional">3 videos musicales/año (-10% regalías por video)</li>
                                 <li>Acceso al Pre-Saved</li>
                             </ul>
                         </div>
@@ -322,7 +323,50 @@ Si quiere el contrato para publicar su música por usted, dirijase a Formulario 
                         </div>
                     </div>
                 </div>
-                
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+  const stripe = Stripe('pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv'); // Reemplaza con tu clave pública
+
+  function redirectToCheckout(priceId) {
+    stripe.redirectToCheckout({
+      lineItems: [{ price: priceId, quantity: 1 }],
+      mode: 'subscription', // Para pagos recurrentes
+      successUrl: 'https://grouvex.com',
+      cancelUrl: 'https://grouvex.com'
+    }).then(result => {
+      if (result.error) alert("Error: " + result.error.message);
+    });
+  }
+</script>
+                <script>
+                    // server.js
+const express = require('express');
+const stripe = require('stripe')('sk_test_tu_clave_secreta');
+
+const app = express();
+app.use(express.json());
+
+app.post('/create-subscription', async (req, res) => {
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [{
+        price: req.body.priceId,
+        quantity: 1,
+      }],
+      mode: 'subscription',
+      success_url: 'https://grouvex.com/success?session_id={CHECKOUT_SESSION_ID}',
+      cancel_url: 'https://grouvex.com/cancel',
+    });
+
+    res.json({ sessionId: session.id });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.listen(3000, () => console.log('Servidor en puerto 3000'));
+                </script>
                 <div class="note">
                     *Nota: Los límites de canciones se refieren a canciones individuales (no aplica a álbumes) y se renuevan cada 2 meses. 
                     Por ejemplo, en el plan Gratis puedes subir hasta 15 canciones cada 2 meses, si sube un álbum de 15 canciones, no podrá volver a subir hasta dentro de 2 meses.

@@ -287,7 +287,7 @@ Si quiere el contrato para publicar su música por usted, dirijase a Formulario 
                                 <li>Acceso al Pre-Saved</li>
                             </ul>
                         </div>
-                        <button onclick="redirectToCheckout('prod_SG2qANuN7v1QI9')">Plan Básico (3€/mes)</button>
+                        <button class="stripe-button" id="basic-plan">Plan Básico  (3€/mes - 18€/año)</button>
                     </div>
                     
                     <!-- Segunda fila -->
@@ -327,16 +327,20 @@ Si quiere el contrato para publicar su música por usted, dirijase a Formulario 
 <script>
   const stripe = Stripe('pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv'); // Reemplaza con tu clave pública
 
-  function redirectToCheckout(priceId) {
-    stripe.redirectToCheckout({
-      lineItems: [{ price: priceId, quantity: 1 }],
-      mode: 'subscription', // Para pagos recurrentes
-      successUrl: 'https://grouvex.com',
-      cancelUrl: 'https://grouvex.com'
-    }).then(result => {
-      if (result.error) alert("Error: " + result.error.message);
+    document.getElementById('basic-plan').addEventListener('click', () => {
+      stripe.redirectToCheckout({
+        lineItems: [{
+          price: 'prod_SG2qANuN7v1QI9',
+          quantity: 1,
+        }],
+        mode: 'subscription',
+        successUrl: 'https://grouvex.com/',
+        cancelUrl: 'https://grouvex.com/',
+        customerEmail: 'administracion@grouvex.com', // Opcional: Prellena el email
+      }).then(result => {
+        if (result.error) alert("Error: " + result.error.message);
+      });
     });
-  }
 </script>
                 <script>
                     // server.js

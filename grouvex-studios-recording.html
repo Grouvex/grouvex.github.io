@@ -276,6 +276,7 @@ Si quiere el contrato para publicar su música por usted, dirijase a Formulario 
   <div class="plans-container">
         <details open>
             <summary>Planes de Distribución Musical</summary>
+            <asider>SOLO PUEDES TENER UN PLAN DE SUSCRIPCIÓN ACTIVO POR USUARIO</asider>
             <div class="pricing-rows">
                 <!-- Primera fila -->
                 <div class="pricing-row">
@@ -308,12 +309,28 @@ Si quiere el contrato para publicar su música por usted, dirijase a Formulario 
                             <li>Acceso al Pre-Saved</li>
                         </ul>
                         <div class="plan-options">
-                            <button class="stripe-button monthly" id="basic-plan-monthly">
-                                Suscripción Mensual (3€/mes)
-                            </button>
-                            <button class="stripe-button yearly" id="basic-plan-yearly">
-                                Suscripción Anual (18€/año)
-                            </button>
+                            <details><summary>Suscripción Mensual (3€/mes)</summary>
+                                <script async
+                                  src="https://js.stripe.com/v3/buy-button.js">
+                                </script>
+                                
+                                <stripe-buy-button
+                                  buy-button-id="buy_btn_1RListGA5i5KwsChidHlMAJP"
+                                  publishable-key="pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv"
+                                >
+                                </stripe-buy-button>
+                            </details>
+                            <details><summary>Suscripción Anual (18€/año)</summary>
+                                <script async
+                                  src="https://js.stripe.com/v3/buy-button.js">
+                                </script>
+                                
+                                <stripe-buy-button
+                                  buy-button-id="buy_btn_1RLilTGA5i5KwsChHpmmXfPc"
+                                  publishable-key="pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv"
+                                >
+                                </stripe-buy-button>
+                            </details>
                         </div>
                     </div>
                 </div>
@@ -334,12 +351,19 @@ Si quiere el contrato para publicar su música por usted, dirijase a Formulario 
                             <li>Acceso al Pre-Saved</li>
                         </ul>
                         <div class="plan-options">
-                            <button class="stripe-button monthly" id="standard-plan-monthly">
-                                Suscripción Mensual (9€/mes)
-                            </button>
-                            <button class="stripe-button yearly" id="standard-plan-yearly">
-                                Suscripción Anual (40€/año)
-                            </button>
+                           <details><summary>Suscripción Mensual (9€/mes)</summary>
+                                <script async
+                                  src="https://js.stripe.com/v3/buy-button.js">
+                                </script>
+                                
+                                <stripe-buy-button
+                                  buy-button-id="buy_btn_1RLjDmGA5i5KwsChPYLHqXgb"
+                                  publishable-key="pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv"
+                                >
+                                </stripe-buy-button>
+                            </details>
+                            <details><summary>Suscripción Anual (40€/año)</summary>
+                            </details>
                         </div>
                     </div>
 
@@ -357,88 +381,16 @@ Si quiere el contrato para publicar su música por usted, dirijase a Formulario 
                             <li>Acceso al Pre-Saved</li>
                         </ul>
                         <div class="plan-options">
-                            <button class="stripe-button monthly" id="premium-plan-monthly">
+                            <button class="stripe-button monthly" id="premium-plan-monthly" disabled>
                                 Suscripción Mensual (20€/mes)
                             </button>
-                            <button class="stripe-button yearly" id="premium-plan-yearly">
+                            <button class="stripe-button yearly" id="premium-plan-yearly" disabled>
                                 Suscripción Anual (85€/año)
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <div id="loading">Redirigiendo a Stripe...</div>
-            
-            <script src="https://js.stripe.com/v3/"></script>
-<script>
-    // Configuración de Stripe con tu clave pública
-    const stripe = Stripe('pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv');
-    
-    // Configuración de precios (IDs de productos de Stripe)
-    const PRICES = {
-        BASIC_MONTHLY: 'prod_SG2qANuN7v1QI9',
-        BASIC_YEARLY: 'prod_SG2qANuN7v1QI9',
-        STANDARD_MONTHLY: 'price_1RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv',
-        STANDARD_YEARLY: 'price_1RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv',
-        PREMIUM_MONTHLY: 'price_1RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv',
-        PREMIUM_YEARLY: 'price_1RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv'
-    };
-
-    // Función para manejar la suscripción
-    async function subscribe(priceId, planName) {
-        document.getElementById('loading').style.display = 'block';
-        
-        try {
-            const response = await stripe.redirectToCheckout({
-                lineItems: [{
-                    price: priceId,
-                    quantity: 1,
-                }],
-                mode: 'subscription',
-                successUrl: `https://grouvex.com/success?session_id={CHECKOUT_SESSION_ID}&plan=${encodeURIComponent(planName)}`,
-                cancelUrl: 'https://grouvex.com/planes',
-                customerEmail: 'administracion@grouvex.com',
-            });
-            
-            if (response.error) {
-                alert("Error: " + response.error.message);
-            }
-        } catch (error) {
-            console.error("Error:", error);
-            alert("Ocurrió un error al procesar tu suscripción. Por favor intenta nuevamente.");
-        } finally {
-            document.getElementById('loading').style.display = 'none';
-        }
-    }
-    
-    // Asignar eventos a los botones cuando el DOM esté cargado
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('basic-plan-monthly').addEventListener('click', () => {
-            subscribe(PRICES.BASIC_MONTHLY, 'Básico (3€/mes)');
-        });
-        
-        document.getElementById('basic-plan-yearly').addEventListener('click', () => {
-            subscribe(PRICES.BASIC_YEARLY, 'Básico (18€/año)');
-        });
-        
-        document.getElementById('standard-plan-monthly').addEventListener('click', () => {
-            subscribe(PRICES.STANDARD_MONTHLY, 'Estándar (9€/mes)');
-        });
-        
-        document.getElementById('standard-plan-yearly').addEventListener('click', () => {
-            subscribe(PRICES.STANDARD_YEARLY, 'Estándar (40€/año)');
-        });
-        
-        document.getElementById('premium-plan-monthly').addEventListener('click', () => {
-            subscribe(PRICES.PREMIUM_MONTHLY, 'Premium (20€/mes)');
-        });
-        
-        document.getElementById('premium-plan-yearly').addEventListener('click', () => {
-            subscribe(PRICES.PREMIUM_YEARLY, 'Premium (85€/año)');
-        });
-    });
-</script>
 
             <div class="note">
                 *Nota: Los límites de canciones se refieren a canciones individuales (no aplica a álbumes) y se renuevan cada 2 meses. 
@@ -446,6 +398,9 @@ Si quiere el contrato para publicar su música por usted, dirijase a Formulario 
             </div>
             <div class="note">
                 *Nota: En caso de que el sello discográfico por algun motivo, modifique el tiempo mínimo entre la fecha actual y la fecha de lanzamiento, dichos tiempos en cada plan, serán suspendidos hasta que el sello discográfico lo modifique de nuevo.
+            </div>
+            <div class="note">
+                *Nota: Puede ponerse en contacto con <a href="mailto:administracion@grouvex.com">administracion@grouvex.com</a> para cualquier tema de la suscripción. O dirigirse a <a href="https://grouvex.github.io/contacto">Contacto</a>.
             </div>
         </details>
     </div>

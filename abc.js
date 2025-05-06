@@ -407,7 +407,7 @@ function manejarErroresEliminacion(error) {
 
 function verificarAcceso() {
     onAuthStateChanged(auth, (user) => {
-        const mantenimientoActivo = true;
+        const mantenimientoActivo = false;
         const paginaMantenimiento = "mantenimiento";
         const paginaOficial = "ddoo";
         const paginaActual = window.location.pathname.split("/").pop();

@@ -292,7 +292,6 @@ Si quiere el contrato para publicar su música por usted, dirijase a Formulario 
                             <li>Sin opción a videos musicales</li>
                             <li>Sin opción a Pre-Saved</li>
                         </ul>
-                        <button class="stripe-button" onclick="window.location.href='#Intro'">Seleccionar Plan Gratis</button>
                     </div>
 
                     <!-- Plan Básico -->
@@ -308,7 +307,14 @@ Si quiere el contrato para publicar su música por usted, dirijase a Formulario 
                             <li>1 video musical/año (-10% regalías por video)</li>
                             <li>Acceso al Pre-Saved</li>
                         </ul>
-                        <button class="stripe-button" id="basic-plan">Suscribirse</button>
+                        <div class="plan-options">
+                            <button class="stripe-button monthly" id="basic-plan-monthly">
+                                Suscripción Mensual (3€/mes)
+                            </button>
+                            <button class="stripe-button yearly" id="basic-plan-yearly">
+                                Suscripción Anual (18€/año)
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -327,7 +333,14 @@ Si quiere el contrato para publicar su música por usted, dirijase a Formulario 
                             <li class="optional">3 videos musicales/año (-10% regalías por video)</li>
                             <li>Acceso al Pre-Saved</li>
                         </ul>
-                        <button class="stripe-button" id="standard-plan">Suscribirse</button>
+                        <div class="plan-options">
+                            <button class="stripe-button monthly" id="standard-plan-monthly">
+                                Suscripción Mensual (9€/mes)
+                            </button>
+                            <button class="stripe-button yearly" id="standard-plan-yearly">
+                                Suscripción Anual (40€/año)
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Plan Premium -->
@@ -343,7 +356,14 @@ Si quiere el contrato para publicar su música por usted, dirijase a Formulario 
                             <li class="optional">10 videos musicales/año (-10% regalías por video)</li>
                             <li>Acceso al Pre-Saved</li>
                         </ul>
-                        <button class="stripe-button" id="premium-plan">Suscribirse</button>
+                        <div class="plan-options">
+                            <button class="stripe-button monthly" id="premium-plan-monthly">
+                                Suscripción Mensual (20€/mes)
+                            </button>
+                            <button class="stripe-button yearly" id="premium-plan-yearly">
+                                Suscripción Anual (85€/año)
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -351,87 +371,74 @@ Si quiere el contrato para publicar su música por usted, dirijase a Formulario 
             <div id="loading">Redirigiendo a Stripe...</div>
             
             <script src="https://js.stripe.com/v3/"></script>
-            <script>
-                const stripe = Stripe('pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv');
-                
-                // Configuración de precios (reemplaza con tus price_id reales)
-// Configuración simplificada cuando mensual/anual comparten price_id
-const PRICES = {
-    BASIC: 'prod_SG2qANuN7v1QI9',      // Plan Básico (3€/mes o 18€/año)
-    STANDARD: 'prod_SG9umNgB0kXKeM', // Plan Estándar (9€/mes o 40€/año)
-    PREMIUM: 'prod_SG9ui5Afh9Hefn'    // Plan Premium (20€/mes o 85€/año)
-};
-
-// Modifica los botones para que muestren ambas opciones
-document.querySelectorAll('.pricing-plan').forEach(plan => {
-    const planType = plan.classList.contains('basic') ? 'BASIC' : 
-                    plan.classList.contains('standard') ? 'STANDARD' : 'PREMIUM';
+<script>
+    // Configuración de Stripe con tu clave pública
+    const stripe = Stripe('pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv');
     
-    // Reemplaza el botón único por dos botones
-    plan.querySelector('.stripe-button').outerHTML = `
-        <div class="plan-options">
-            <button class="stripe-button monthly" 
-                    onclick="subscribe('${PRICES[planType]}', '${planType} (Mensual)')">
-                Suscripción Mensual
-            </button>
-            <button class="stripe-button yearly" 
-                    onclick="subscribe('${PRICES[planType]}', '${planType} (Anual)')">
-                Suscripción Anual (Ahorro XX%)
-            </button>
-        </div>
-    `;
-});
+    // Configuración de precios (IDs de productos de Stripe)
+    const PRICES = {
+        BASIC_MONTHLY: 'price_1RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv',
+        BASIC_YEARLY: 'price_1RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv',
+        STANDARD_MONTHLY: 'price_1RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv',
+        STANDARD_YEARLY: 'price_1RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv',
+        PREMIUM_MONTHLY: 'price_1RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv',
+        PREMIUM_YEARLY: 'price_1RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv'
+    };
 
-// Función de suscripción actualizada
-async function subscribe(priceId, planName) {
-    // Stripe automáticamente mostrará ambas opciones (mensual/anual) 
-    // si el price_id está configurado para ambos intervalos
-    const response = await stripe.redirectToCheckout({
-        lineItems: [{ price: priceId, quantity: 1 }],
-        mode: 'subscription',
-        successUrl: `https://grouvex.com/success?plan=${encodeURIComponent(planName)}`,
-        cancelUrl:
-                
-                // Función para manejar la suscripción
-                async function subscribe(priceId, planName) {
-                    document.getElementById('loading').style.display = 'block';
-                    
-                    try {
-                        const response = await stripe.redirectToCheckout({
-                            lineItems: [{
-                                price: priceId,
-                                quantity: 1,
-                            }],
-                            mode: 'subscription',
-                            successUrl: `https://grouvex.com/success?session_id={CHECKOUT_SESSION_ID}&plan=${encodeURIComponent(planName)}`,
-                            cancelUrl: 'https://grouvex.com/planes',
-                            customerEmail: 'administracion@grouvex.com',
-                        });
-                        
-                        if (response.error) {
-                            alert("Error: " + response.error.message);
-                        }
-                    } catch (error) {
-                        console.error("Error:", error);
-                        alert("Ocurrió un error al procesar tu suscripción. Por favor intenta nuevamente.");
-                    } finally {
-                        document.getElementById('loading').style.display = 'none';
-                    }
-                }
-                
-                // Asignar eventos a los botones
-                document.getElementById('basic-plan').addEventListener('click', () => {
-                    subscribe(PRICES.BASIC_MONTHLY, 'Básico (3€/mes)');
-                });
-                
-                document.getElementById('standard-plan').addEventListener('click', () => {
-                    subscribe(PRICES.STANDARD_MONTHLY, 'Estándar (9€/mes)');
-                });
-                
-                document.getElementById('premium-plan').addEventListener('click', () => {
-                    subscribe(PRICES.PREMIUM_MONTHLY, 'Premium (20€/mes)');
-                });
-            </script>
+    // Función para manejar la suscripción
+    async function subscribe(priceId, planName) {
+        document.getElementById('loading').style.display = 'block';
+        
+        try {
+            const response = await stripe.redirectToCheckout({
+                lineItems: [{
+                    price: priceId,
+                    quantity: 1,
+                }],
+                mode: 'subscription',
+                successUrl: `https://grouvex.com/success?session_id={CHECKOUT_SESSION_ID}&plan=${encodeURIComponent(planName)}`,
+                cancelUrl: 'https://grouvex.com/planes',
+                customerEmail: 'administracion@grouvex.com',
+            });
+            
+            if (response.error) {
+                alert("Error: " + response.error.message);
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Ocurrió un error al procesar tu suscripción. Por favor intenta nuevamente.");
+        } finally {
+            document.getElementById('loading').style.display = 'none';
+        }
+    }
+    
+    // Asignar eventos a los botones cuando el DOM esté cargado
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('basic-plan-monthly').addEventListener('click', () => {
+            subscribe(PRICES.BASIC_MONTHLY, 'Básico (3€/mes)');
+        });
+        
+        document.getElementById('basic-plan-yearly').addEventListener('click', () => {
+            subscribe(PRICES.BASIC_YEARLY, 'Básico (18€/año)');
+        });
+        
+        document.getElementById('standard-plan-monthly').addEventListener('click', () => {
+            subscribe(PRICES.STANDARD_MONTHLY, 'Estándar (9€/mes)');
+        });
+        
+        document.getElementById('standard-plan-yearly').addEventListener('click', () => {
+            subscribe(PRICES.STANDARD_YEARLY, 'Estándar (40€/año)');
+        });
+        
+        document.getElementById('premium-plan-monthly').addEventListener('click', () => {
+            subscribe(PRICES.PREMIUM_MONTHLY, 'Premium (20€/mes)');
+        });
+        
+        document.getElementById('premium-plan-yearly').addEventListener('click', () => {
+            subscribe(PRICES.PREMIUM_YEARLY, 'Premium (85€/año)');
+        });
+    });
+</script>
 
             <div class="note">
                 *Nota: Los límites de canciones se refieren a canciones individuales (no aplica a álbumes) y se renuevan cada 2 meses. 

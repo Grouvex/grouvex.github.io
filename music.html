@@ -1338,7 +1338,7 @@ function playTrack(index) {
     // Verificar si el lanzamiento es futuro
     const isReleaseDateFuture = nowUnixTime < track.releaseDate;
 
-    audioPlayer.src = `https://grouvex.com/music/${track.file}`;
+    audioPlayer.src = track.file;
 
     // Limpiar eventos anteriores para evitar duplicados
     audioPlayer.removeEventListener('loadedmetadata', handleLoadedMetadata);

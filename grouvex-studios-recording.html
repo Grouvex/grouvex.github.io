@@ -979,6 +979,382 @@ Direcciones web, Información de contacto de cualquier tipo (incluidas las etiqu
     </details>
  </article>
 </main>
+    
+  <style>
+    /* TODO: Mantén o adapta tus estilos CSS aquí.
+       Asegúrate de que tus selectores (clases, IDs) coincidan con el HTML de abajo. */
+    :root {
+      --primary: #6C5CE7;
+      --secondary: #00CEFF;
+      --dark: #2D3436;
+      --light: #F5F6FA;
+      --accent: #FD79A8;
+      --gray: #636E72;
+    }
+    main {
+      font-family: 'Poppins', sans-serif;
+      background: var(--light);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background-image: radial-gradient(circle at 10% 20%, rgba(108, 92, 231, 0.05) 0%, rgba(108, 92, 231, 0.05) 90%);
+      color: var(--dark); /* Añadir color por defecto */
+      line-height: 1.6; /* Añadir line-height por defecto */
+    }
+    .search-container, .results-container {
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 800px; /* Ajustado para mejor visualización */
+      text-align: center;
+    }
+    .logo { max-width: 220px; margin-bottom: 20px; }
+    .title { color: var(--primary); font-size: 1.8rem; margin-bottom: 5px; }
+    .subtitle { color: var(--dark); opacity: 0.8; margin-bottom: 30px; }
+    .search-box { display: flex; margin-bottom: 20px; border-radius: 50px; overflow: hidden; box-shadow: 0 5px 15px rgba(108, 92, 231, 0.2); }
+    input[type="text"] { flex: 1; padding: 16px 25px; border: none; font-size: 16px; outline: none; background: rgba(108, 92, 231, 0.05); }
+    button { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; border: none; padding: 16px 30px; cursor: pointer; font-size: 16px; font-weight: 600; transition: all 0.3s; }
+    button:hover { background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); }
+    .footer { margin-top: 30px; font-size: 0.8rem; color: var(--dark); opacity: 0.6; }
+
+    /* Estilos para la sección de resultados */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 20px;
+    }
+    .header-results { /* Cambiado de .header para evitar conflictos si hay un header general de la web */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+    .logo-title {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    .logo-header { /* Clase específica para el logo en el header de resultados */
+      max-width: 180px;
+    }
+    .title-container h1 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin: 0;
+    }
+    .title-container p {
+      color: var(--gray);
+      margin: 0;
+      font-size: 0.9rem;
+    }
+    .back-btn {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s;
+      box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+    }
+    .back-btn:hover {
+      transform: translateY(-3px);
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    }
+    .artist-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      padding: 40px;
+      margin-bottom: 40px;
+      text-align: left; /* Asegurar que el texto esté a la izquierda */
+    }
+    .artist-title {
+      color: var(--primary);
+      font-size: 2rem;
+      margin: 0 0 10px 0;
+    }
+    .artist-id {
+      color: var(--gray);
+      margin-bottom: 30px;
+      display: block;
+    }
+    .artist-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
+    }
+    .info-item {
+      background: rgba(108, 92, 231, 0.05);
+      padding: 20px;
+      border-radius: 12px;
+    }
+    .info-label {
+      font-weight: 600;
+      color: var(--primary);
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+    }
+    .info-value {
+      font-size: 1.1rem;
+    }
+    .songs-section {
+      margin-top: 50px;
+    }
+    .section-title {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+      position: relative;
+      padding-left: 60px;
+      text-align: left; /* Asegurar que el título esté a la izquierda */
+    }
+    .section-title:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 50px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+      transform: translateY(-50%);
+    }
+    .songs-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+    .songs-table th {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      padding: 18px 25px;
+      text-align: left;
+    }
+    .songs-table td {
+      padding: 15px 25px;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    .songs-table tr:last-child td {
+      border-bottom: none;
+    }
+    .songs-table tr:hover {
+      background: rgba(108, 92, 231, 0.03);
+    }
+    .not-found {
+      text-align: center;
+      padding: 60px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+    .not-found h1 {
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+    @media (max-width: 768px) {
+      .header-results {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .back-btn {
+        width: 100%;
+        justify-content: center;
+        margin-top: 20px;
+      }
+      .artist-card {
+        padding: 30px 20px;
+      }
+      .artist-info {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<main>
+  <div class="search-container" id="searchContainer">
+    <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/main/img/Grouvex1.png" alt="Grouvex Studios Logo" class="logo">
+    <h1 class="title">Grouvex Studios</h1>
+    <p class="subtitle">Recording Web Oficial DataBase</p>
+    <form id="searchForm">
+      <div class="search-box">
+        <input type="text" name="id" placeholder="Ingresa el ID del artista" required>
+        <button type="submit">Buscar</button>
+      </div>
+    </form>
+    <p class="footer">© 2024 Grouvex Studios. Todos los derechos reservados.</p>
+  </div>
+
+  <div class="results-container hidden" id="resultsContainer">
+    <div class="container">
+      <div class="header-results">
+        <div class="logo-title">
+          <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/main/img/Grouvex1.png" alt="Grouvex Studios Logo" class="logo-header">
+          <div class="title-container">
+            <h1>Grouvex Studios</h1>
+            <p>Recording Web Oficial DataBase</p>
+          </div>
+        </div>
+        <button class="back-btn" id="newSearchBtn">
+          <i class="fas fa-search"></i> Nueva Búsqueda
+        </button>
+      </div>
+      <div id="artistData">
+        </div>
+      <div class="footer">
+        <p>© 2024 Grouvex Studios. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ** MUY IMPORTANTE: Reemplaza esta URL con la URL de TU API de Apps Script **
+    // Esta es la URL que obtuviste después de hacer el NUEVO despliegue de tu Apps Script modificado como API.
+    const APPS_SCRIPT_API_URL = "https://script.google.com/macros/s/AKfycbzaaFnHkUJzaFIN_vEUhMP2S0VPxfLKO.../exec"; // ¡Reemplaza con tu URL real!
+
+    const searchForm = document.getElementById('searchForm');
+    const searchContainer = document.getElementById('searchContainer');
+    const resultsContainer = document.getElementById('resultsContainer');
+    const artistDataDiv = document.getElementById('artistData');
+    const newSearchBtn = document.getElementById('newSearchBtn');
+
+    searchForm.addEventListener('submit', async (e) => {
+      e.preventDefault(); // Previene el envío del formulario tradicional
+      const id = searchForm.elements.id.value.trim(); // Obtiene el ID y limpia espacios
+      if (!id) {
+        alert("Por favor, ingresa un ID de artista.");
+        return;
+      }
+
+      artistDataDiv.innerHTML = '<p style="text-align: center;">Cargando datos...</p>'; // Mensaje de carga
+      searchContainer.classList.add('hidden');
+      resultsContainer.classList.remove('hidden');
+
+      try {
+        const response = await fetch(`${APPS_SCRIPT_API_URL}?id=${encodeURIComponent(id)}`);
+        
+        // Verifica si la respuesta HTTP es exitosa
+        if (!response.ok) {
+          throw new Error(`Error de red o API: ${response.status} ${response.statusText}`);
+        }
+        
+        const data = await response.json(); // Parsea la respuesta JSON
+        displayResults(data, id); // Llama a la función para mostrar los resultados
+      } catch (error) {
+        console.error('Error al buscar datos:', error);
+        artistDataDiv.innerHTML = `
+          <div class="not-found">
+            <h1>Error de conexión</h1>
+            <p>Hubo un problema al buscar los datos. Por favor, intenta de nuevo o contacta al soporte.</p>
+            <p>${error.message}</p>
+          </div>
+        `;
+      }
+    });
+
+    newSearchBtn.addEventListener('click', () => {
+      searchContainer.classList.remove('hidden');
+      resultsContainer.classList.add('hidden');
+      searchForm.elements.id.value = ''; // Limpiar el campo de búsqueda
+      artistDataDiv.innerHTML = ''; // Limpiar resultados anteriores
+    });
+
+    function displayResults(data, requestedId) {
+      let html = '';
+      if (data.encontrado) {
+        // Mostrar datos del artista
+        const artist = data.artista;
+        html += `
+          <div class="artist-card">
+            <h2 class="artist-title">${artist.Nombre || 'Nombre no disponible'}</h2>
+            <span class="artist-id">ID: ${requestedId}</span>
+            <div class="artist-info">
+        `;
+        // Iterar sobre las propiedades del objeto artista (excluyendo ID y Nombre si ya se muestran)
+        for (const key in artist) {
+          if (artist.hasOwnProperty(key) && key !== "ID" && key !== "Nombre" && artist[key]) {
+            html += `
+              <div class="info-item">
+                <span class="info-label">${key}</span>
+                <span class="info-value">${artist[key]}</span>
+              </div>
+            `;
+          }
+        }
+        html += `</div></div>`;
+
+        // Mostrar canciones
+        if (data.canciones && data.canciones.length > 0) {
+          html += `
+            <div class="songs-section">
+              <h2 class="section-title">Canciones Registradas</h2>
+              <table class="songs-table">
+                <thead>
+                  <tr>
+          `;
+          // Obtener encabezados de canciones del primer objeto de canción (excluyendo ID)
+          const songHeaders = Object.keys(data.canciones[0]).filter(header => header !== "ID");
+          songHeaders.forEach(header => {
+            html += `<th>${header}</th>`;
+          });
+          html += `
+                  </tr>
+                </thead>
+                <tbody>
+          `;
+          data.canciones.forEach(song => {
+            html += `<tr>`;
+            songHeaders.forEach(header => {
+              html += `<td>${song[header] || '-'}</td>`;
+            });
+            html += `</tr>`;
+          });
+          html += `
+                </tbody>
+              </table>
+            </div>
+          `;
+        } else {
+          html += `
+            <div class="songs-section">
+              <h2 class="section-title">Canciones Registradas</h2>
+              <p>No hay canciones registradas para este artista.</p>
+            </div>
+          `;
+        }
+
+      } else {
+        html += `
+          <div class="not-found">
+            <h1>Artista no encontrado</h1>
+            <p>No se encontró ningún artista con el ID: ${requestedId}</p>
+          </div>
+        `;
+      }
+      artistDataDiv.innerHTML = html;
+    }
+  </script>
+</main>
  <script type="module" src="abc.js"></script>
 <div id="footer"></div>
 </body>

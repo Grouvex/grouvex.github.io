@@ -261,11 +261,24 @@
  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSe9CFEvsM9iLjF6dA_78v7rOMnL_kqYt9BZ4QFPVI_4tv9h_A/viewform?embedded=true" width="100%" height="500px" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
 </details>
 <a href="#Buscador_de_Artista_Oficial"><h1 id="Buscador_de_Artista_Oficial">Buscador de Artista Oficial</h1></a>
-<div class="input-and-button-group">
-    <input type="text" id="artistIdInput" placeholder="Ingresa el ID del artista" required>
-    <button id="goButton" type="button">Buscar Artista</button>
-</div>
-<p>Este es el buscador oficial de artistas, en el que al insertar el ID, los artistas podran ver su información.</p>
+    <p>Este es el buscador oficial de artistas, en el que al insertar el ID, los artistas podrán ver su información.</p>
+    <div class="input-and-button-group">
+        <input type="text" id="artistIdInput" placeholder="Ingresa el ID del artista" required>
+        <button id="goButton" type="button">Buscar Artista</button>
+    </div>
+    <div id="linkOutputContainer" class="link-output-container">
+        <p>Aquí tienes el enlace generado:</p>
+        <p id="generatedUrl"></p>
+        <button id="copyUrlButton">Copiar Enlace</button>
+        <p class="browser-hint">Si el enlace no funciona directamente, por favor, cópialo y pégalo en otro navegador.</p>
+    </div>
+    <div id="messageModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 id="modalTitle"></h3>
+            <p id="modalMessage"></p>
+            <button id="modalCloseButton">Aceptar</button>
+        </div>
+    </div>
 <!--Text -->
   <section id="Intro">
    <a href="#Intro"><h2>Introducción</h2></a>
@@ -982,6 +995,108 @@ Direcciones web, Información de contacto de cualquier tipo (incluidas las etiqu
  </article>
 </main>
 <style>
+        /* Contenedor para el enlace generado */
+        .link-output-container {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: var(--light);
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            display: none; /* Oculto por defecto */
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        #generatedUrl {
+            word-break: break-all; /* Rompe palabras largas para que no desborden */
+            margin-bottom: 10px;
+            color: var(--dark);
+            font-size: 14px;
+        }
+
+        #copyUrlButton {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        #copyUrlButton:hover {
+            background-color: var(--primary);
+        }
+
+        .browser-hint {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        /* Estilos para el modal de mensaje */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s ease;
+        }
+
+        .modal-overlay.visible {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+        }
+
+        .modal-content h3 {
+            color: var(--primary);
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .modal-content p {
+            color: var(--dark);
+            margin-bottom: 25px;
+        }
+
+        .modal-content button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-content button:hover {
+            background-color: var(--secondary);
+        }
     /* Variables de color para consistencia (puedes ajustar o eliminar si ya las tienes) */
     :root {
         --primary: #6C5CE7;
@@ -1074,34 +1189,96 @@ Direcciones web, Información de contacto de cualquier tipo (incluidas las etiqu
     }
 </style>
 <script>
-    // URL de tu aplicación de Google Apps Script.
-    // ¡Asegúrate de que esta sea la URL EXACTA de tu despliegue de Apps Script!
-    const BASE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec";
+        // URL de tu aplicación de Google Apps Script.
+        // ¡Asegúrate de que esta sea la URL EXACTA de tu despliegue de Apps Script!
+        const BASE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec";
 
-    const artistIdInput = document.getElementById('artistIdInput');
-    const goButton = document.getElementById('goButton');
+        const artistIdInput = document.getElementById('artistIdInput');
+        const goButton = document.getElementById('goButton');
+        const linkOutputContainer = document.getElementById('linkOutputContainer');
+        const generatedUrlDisplay = document.getElementById('generatedUrl');
+        const copyUrlButton = document.getElementById('copyUrlButton');
 
-    goButton.addEventListener('click', () => {
-        const id = artistIdInput.value.trim(); // Obtener el valor y limpiar espacios
-        if (id) {
-            // Construir la URL completa con el ID
-            const fullUrl = `${BASE_APPS_SCRIPT_URL}?id=${encodeURIComponent(id)}`;
-            // Redirigir al usuario a la nueva URL
-            //window.location.href = fullUrl;
-            // Si prefieres que se abra en una nueva pestaña, usa:
-            window.open(fullUrl, '_blank'); 
-        } else {
-            alert("Por favor, ingresa un ID de artista.");
+        // Elementos del modal
+        const messageModal = document.getElementById('messageModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalCloseButton = document.getElementById('modalCloseButton');
+
+        // Función para mostrar el modal
+        function showModal(title, message) {
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            messageModal.classList.add('visible');
         }
-    });
 
-    // Opcional: Permite al usuario presionar Enter en el campo de texto para activar la búsqueda
-    artistIdInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault(); // Evita el envío por defecto si el input estuviera en un formulario
-            goButton.click(); // Simula un clic en el botón
+        // Función para ocultar el modal
+        function hideModal() {
+            messageModal.classList.remove('visible');
         }
-    });
+
+        // Event listener para cerrar el modal
+        modalCloseButton.addEventListener('click', hideModal);
+
+        // Función para actualizar el enlace y su visibilidad
+        function updateGeneratedLink() {
+            const id = artistIdInput.value.trim();
+            if (id) {
+                const fullUrl = `${BASE_APPS_SCRIPT_URL}?id=${encodeURIComponent(id)}`;
+                generatedUrlDisplay.textContent = fullUrl;
+                linkOutputContainer.style.display = 'flex'; // Mostrar el contenedor
+            } else {
+                generatedUrlDisplay.textContent = ''; // Limpiar el texto si el input está vacío
+                linkOutputContainer.style.display = 'none'; // Ocultar el contenedor
+            }
+        }
+
+        // Event listener para el input: se dispara cada vez que el valor del input cambia
+        artistIdInput.addEventListener('input', updateGeneratedLink);
+
+        goButton.addEventListener('click', () => {
+            const id = artistIdInput.value.trim(); // Obtener el valor y limpiar espacios
+            if (id) {
+                // La URL ya está actualizada por el evento 'input', solo necesitamos abrirla
+                const fullUrl = generatedUrlDisplay.textContent; // Obtener la URL ya mostrada
+                window.open(fullUrl, '_blank');
+            } else {
+                // Mostrar el modal personalizado en lugar de alert()
+                showModal("Error de Entrada", "Por favor, ingresa un ID de artista.");
+                // No es necesario ocultar el contenedor aquí, ya lo hace updateGeneratedLink si el input está vacío
+            }
+        });
+
+        // Opcional: Permite al usuario presionar Enter en el campo de texto para activar la búsqueda
+        artistIdInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault(); // Evita el envío por defecto si el input estuviera en un formulario
+                goButton.click(); // Simula un clic en el botón
+            }
+        });
+
+        // Función para copiar el texto al portapapeles
+        copyUrlButton.addEventListener('click', () => {
+            const urlToCopy = generatedUrlDisplay.textContent;
+            if (urlToCopy) {
+                // Usar document.execCommand para compatibilidad en iframes
+                const textArea = document.createElement("textarea");
+                textArea.value = urlToCopy;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showModal("Copiado", "¡El enlace ha sido copiado al portapapeles!");
+                } catch (err) {
+                    showModal("Error al Copiar", "No se pudo copiar el enlace automáticamente. Por favor, cópialo manualmente.");
+                    console.error('Error al copiar: ', err);
+                }
+                document.body.removeChild(textArea);
+            }
+        });
+
+        // Inicializar el estado del enlace al cargar la página (por si hay un valor precargado)
+        updateGeneratedLink();
 </script>
  <script type="module" src="abc.js"></script>
 <div id="footer"></div>

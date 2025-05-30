@@ -52,7 +52,7 @@ let targetAttribute = null;
 let isConfirmed = false; // Bandera para indicar si el usuario ha confirmado
 
 // Dominios permitidos
-const allowedDomains = ['grouvex.com', 'grouvex.github.io'];
+const allowedDomains = ['www.grouvex.com', 'grouvex.com', 'grouvex.github.io'];
 console.log("Dominios permitidos:", allowedDomains);
 
 // Función para verificar si un enlace es externo

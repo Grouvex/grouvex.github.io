@@ -261,218 +261,99 @@
         </section>
 
          <!-- Sección de planes con contenedor específico -->
-     <div class="plans-container">
+         <div class="plans-container">
         <details open>
             <summary>Planes de Distribución Musical</summary>
-            <asider>SOLO PUEDES TENER UN PLAN DE SUSCRIPCIÓN ACTIVO POR USUARIO. Los planes Individuales NO son Suscripción.</asider>
+            <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
+            <stripe-pricing-table pricing-table-id="prctbl_1RVH3yGA5i5KwsChQRVQf1e8"
+            publishable-key="pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv">
+            </stripe-pricing-table>
             <div class="pricing-rows">
-                <!-- Primera fila -->
                 <div class="pricing-row">
-                    <!-- Plan Básico -->
-                    <div class="pricing-plan basic">
-                        <div class="plan-title">Básico</div>
-                        <div class="plan-price">€3/mes o 18€/año</div>
+                    <div class="pricing-plan basic individual-custom">
+                        <div class="plan-title">Básico Personalizado (Por Lanzamiento)</div>
+                        <p><strong>Común a todo este plan:</strong></p>
                         <ul class="plan-features">
-                            <li>2 cuenta artística por usuario/GS-UserID</li>
-                            <li>Sube todas las canciones que quieras</li>
-                            <li>Lanzamiento con <span class="highlight">4 semanas de antelación</span></li>
-                            <li>Límite de <span class="highlight">20 canciones/2 meses</span></li>
-                            <li>Copyright y Sound Copyright: <span class="highlight">Grouvex Studios Recording</span></li>
-                            <li>1 video musical/año (-10% regalías por video)</li>
-                            <li>Acceso al Pre-Saved</li>
+                            <li>3 videos musicales máximo por pago (-10% regalías por video)</li>
+                            <li>Letra del lanzamiento</li>
                         </ul>
                         <div class="plan-options">
-                            <details><summary>Suscripción Mensual (3€/mes)</summary>
-                                <script async
-                                  src="https://js.stripe.com/v3/buy-button.js">
-                                </script>
-                                
-                                <stripe-buy-button
-                                  buy-button-id="buy_btn_1RListGA5i5KwsChidHlMAJP"
-                                  publishable-key="pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv"
-                                >
-                                </stripe-buy-button>
-                            </details>
-                            <details><summary>Suscripción Anual (18€/año)</summary>
-                                <script async
-                                  src="https://js.stripe.com/v3/buy-button.js">
-                                </script>
-                                
-                                <stripe-buy-button
-                                  buy-button-id="buy_btn_1RLilTGA5i5KwsChHpmmXfPc"
-                                  publishable-key="pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv"
-                                >
-                                </stripe-buy-button>
-                            </details>
-                        </div>
-                    <details><summary>Básico Individual</summary>
-                    <div class="pricing-plan basic">
-                        <div class="plan-title">Básico Individual</div>
-                        <div class="plan-price">Dependiendo del tipo de lanzamiento</div>
-                        <ul class="plan-features">
-                        <asider>Comun a todo este plan:</asider>
-                            <li>Sube todas las canciones que quieras</li>
-                            <li>Lanzamiento con <span class="highlight">4 semanas de antelación</span></li>
-                            <li>Límite de <span class="highlight">30 canciones/2 meses</span></li>
-                            <li>Copyright y Sound Copyright: <span class="highlight">Grouvex Studios Recording</span></li>
-                            <li>3 video musical máximo por pago (-10% regalías por video)</li>
-                            <li>Acceso al Pre-Saved</li>
-                        </ul>
-                        <div class="plan-options">
-                            <details><summary>Pago Individual (3,99€/singulares, 7,99€/EP, 17,99€/album, 27,99€/EX-album)</summary>
-                             <p>Para realizar este pago, debe indicarlo en el formulario de contrato de canciones/ep/albums.</p>
+                            <details><summary>Precios de Pago Individual</summary>
+                                <p><strong>Sencillos:</strong> 3,99€</p>
+                                <p><strong>EP:</strong> 7,99€</p>
+                                <p><strong>Álbum:</strong> 17,99€</p>
+                                <p><strong>EX-Álbum:</strong> 27,99€</p>
+                                <p>Para realizar este pago, debe indicarlo en el formulario de contrato de canciones/EP/álbumes.</p>
                             </details>
                         </div>
                     </div>
-                    </details>
-                 </div>
-                    <!-- Plan Estándar -->
-                    <div class="pricing-plan standard">
-                        <div class="plan-title">Estándar</div>
-                        <div class="plan-price">€9/mes - 40€/año</div>
+                    
+                    <div class="pricing-plan standard individual-custom">
+                        <div class="plan-title">Estándar Personalizado (Por Lanzamiento)</div>
+                        <p><strong>Común a todo este plan:</strong></p>
                         <ul class="plan-features">
-                            <li>5 cuenta artística por usuario/GS-UserID</li>
-                            <li>Sube todas las canciones que quieras</li>
                             <li>Lanzamiento con <span class="highlight">3 semanas de antelación</span></li>
-                            <li>Límite de <span class="highlight">30 canciones/2 meses</span></li>
-                            <li><span class="highlight">Copyright personalizado</span> (el que elijas)</li>
-                            <li class="optional">3 videos musicales/año (-10% regalías por video)</li>
-                            <li>Acceso al Pre-Saved</li>
-                        </ul>
-                        <div class="plan-options">
-                           <details><summary>Suscripción Mensual (9€/mes)</summary>
-                                <script async
-                                  src="https://js.stripe.com/v3/buy-button.js">
-                                </script>
-                                
-                                <stripe-buy-button
-                                  buy-button-id="buy_btn_1RLjDmGA5i5KwsChPYLHqXgb"
-                                  publishable-key="pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv"
-                                >
-                                </stripe-buy-button>
-                            </details>
-                            <details><summary>Suscripción Anual (40€/año)</summary>
-                                <script async
-                                  src="https://js.stripe.com/v3/buy-button.js">
-                                </script>
-                                
-                                <stripe-buy-button
-                                  buy-button-id="buy_btn_1RLk2PGA5i5KwsChXjzd0xdx"
-                                  publishable-key="pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv"
-                                >
-                                </stripe-buy-button>
-                            </details>
-                        </div>
-                    <details><summary>Estandar Individual</summary>
-                    <div class="pricing-plan basic">
-                        <div class="plan-title">Estandar Individual</div>
-                        <div class="plan-price">Dependiendo del tipo de lanzamiento</div>
-                        <ul class="plan-features">
-                        <asider>Comun a todo este plan:</asider>
-                            <li>Sube todas las canciones que quieras</li>
-                            <li>Lanzamiento con <span class="highlight">3 semanas de antelación</span></li>
-                            <li>Límite de <span class="highlight">40 canciones/2 meses</span></li>
+                            <li>Límite de <span class="highlight">40 lanzamientos/2 meses</span></li>
                             <li>Copyright y Sound Copyright: <span class="highlight">Grouvex Studios Recording</span></li>
-                            <li>6 video musical máximo por pago (-10% regalías por video)</li>
+                            <li>6 videos musicales máximo por pago (-10% regalías por video)</li>
                             <li>Acceso al Pre-Saved</li>
                         </ul>
                         <div class="plan-options">
-                            <details><summary>Pago Individual (8,99€/singulares, 12,99€/EP, 22,99€/album, 32,99€/EX-album)</summary>
-                             <p>Para realizar este pago, debe indicarlo en el formulario de contrato de canciones/ep/albums.</p>
+                            <details><summary>Precios de Pago Individual</summary>
+                                <p><strong>Sencillos:</strong> 8,99€</p>
+                                <p><strong>EP:</strong> 12,99€</p>
+                                <p><strong>Álbum:</strong> 22,99€</p>
+                                <p><strong>EX-Álbum:</strong> 32,99€</p>
+                                <p>Para realizar este pago, debe indicarlo en el formulario de contrato de canciones/EP/álbumes.</p>
                             </details>
                         </div>
                     </div>
-                    </details>
-                    </div>
-
-                    <!-- Plan Premium -->
-                    <div class="pricing-plan premium">
-                        <div class="plan-title">Premium</div>
-                        <div class="plan-price">€20/mes - 85€/año</div>
-                        <ul class="plan-features">
-                            <li>10 cuenta artística por usuario/GS-UserID</li>
-                            <li>Sube todas las canciones que quieras</li>
-                            <li>Lanzamiento con <span class="highlight">2 semanas de antelación</span></li>
-                            <li><span class="highlight">Sin límite</span> de canciones individuales</li>
-                            <li><span class="highlight">Copyright y Sound Copyright personalizados</span></li>
-                            <li class="optional">10 videos musicales/año (-10% regalías por video)</li>
-                            <li>Acceso al Pre-Saved</li>
-                        </ul>
-                        <div class="plan-options">
-                           <details><summary>Suscripción Mensual (20€/mes)</summary>
-                                <script async
-                                  src="https://js.stripe.com/v3/buy-button.js">
-                                </script>
-                                
-                                <stripe-buy-button
-                                  buy-button-id="buy_btn_1RLl0sGA5i5KwsChMMLXOlS3"
-                                  publishable-key="pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv"
-                                >
-                                </stripe-buy-button>
-                            </details>
-                           <details><summary>Suscripción Anual (85€/año)</summary>
-                               <asider>Código: BMBOUA8D |-30% de 85€ |  Hasta 31 de Julio - 00:00GTM +01h</asider>
-                                <script async
-                                  src="https://js.stripe.com/v3/buy-button.js">
-                                </script>
-                                
-                                <stripe-buy-button
-                                  buy-button-id="buy_btn_1RLl6kGA5i5KwsChT3QeOcZq"
-                                  publishable-key="pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv"
-                                >
-                                </stripe-buy-button>
-                            </details>
-                        </div>
-                    </div>
-                </div>
-                <!-- Segunda fila -->
-                <div class="pricing-row">
-                <!-- Plan Gratis -->
-                    <div class="pricing-plan free">
-                        <div class="plan-title">Gratis</div>
-                        <div class="plan-price">€0/mes</div>
-                        <ul class="plan-features">
-                            <li>Sube todas las canciones que quieras</li>
-                            <li>1 cuenta artística por usuario/GS-UserID</li>
-                            <li>Lanzamiento con <span class="highlight">5 semanas de antelación</span></li>
-                            <li>Copyright y Sound Copyright: <span class="highlight">Grouvex Studios Recording</span></li>
-                            <li>Límite de <span class="highlight">5 canciones/2 meses</span></li>
-                            <li>Sin opción a videos musicales</li>
-                            <li>Sin opción a Pre-Saved</li>
-                        </ul>
-                    </div>
-                   <!-- Plan Separado -->
-                    <div class="pricing-plan free">
-                        <div class="plan-title">Por cada lanzamiento</div>
+                    <div class="pricing-plan individual-custom">
+                        <div class="plan-title">Personalizado Individual</div>
                         <div class="plan-price">Depende del servicio</div>
                         <ul class="plan-features">
-                            <li><span class="highlight">2 semanas de antelación</span> - 6€</li>
-                            <li>Copyright: <span class="highlight">Personalizado</span> - 10€</li>
+                        <span class="highlight">Personalizado</span> - 10€</li>
                             <li>Sound Copyright: <span class="highlight">Personalizado</span> - 10€</li>
-                            <li>A partir de <span class="highlight">3 canciones</span>, cada canción añadida 1€</li>
-                            <li>+1 Video musical - 10€</li>
+                            <li><span class="highlight">3 sencillos</span> gratis, después, por cada sencillo añadido +1€/sencillo</li>
+                            <li>+1 Video musical - 10€/video musical</li>
                             <li>Pre-Saved - 3€</li>
                         </ul>
-                 <div class="note">
-                *Nota: Este Plan separado no se puede usar en caso de tener una suscripción activa. Puede ponerse en contacto con <a href="mailto:moderacion@grouvex.com">moderacion@grouvex.com</a> para solicitar uno de estos servicios.
-                 </div>
-                 <div class="note">
-                *Nota: En caso de los videos, si quiere que salga con la canción, le sugerimos que la fecha de lanzamiento sea 4 semanas despues, para que el equipo de animación pueda realizar un video a tiempo.
-                 </div>
+                        <div class="note">
+                            *Nota: Este Plan separado no se puede usar en caso de tener una suscripción activa. Puedes ponerte en contacto con <a href="mailto:moderacion@grouvex.com?subject=Plan Personalizado Individual"><i class="fa-solid fa-envelope"></i> moderacion@grouvex.com</a> para solicitar uno de estos servicios.
+                        </div>
+                        <div class="note">
+                            *Nota: En el caso de los videos, si quieres que salga con la canción, te sugerimos que la fecha de lanzamiento sea 4 semanas después, para que el equipo de animación pueda realizar un video a tiempo.
+                        </div>
                     </div>
-            </div>
-            <div class="note">
-                *Nota: Los límites de canciones se refieren a canciones individuales (no aplica a álbumes) y se renuevan cada 2 meses. 
-                Por ejemplo, en el plan Gratis puedes subir hasta 15 canciones cada 2 meses, si sube un álbum de 15 canciones, no podrá volver a subir hasta dentro de 2 meses.
-            </div>
-            <div class="note">
-                *Nota: En caso de que el sello discográfico por algun motivo, modifique el tiempo mínimo entre la fecha actual y la fecha de lanzamiento, dichos tiempos en cada plan, serán suspendidos hasta que el sello discográfico lo modifique de nuevo.
-            </div>
-            <div class="note">
-                *Nota: Puede ponerse en contacto con <a href="mailto:administracion@grouvex.com">administracion@grouvex.com</a> para cualquier tema de la suscripción. O dirigirse a <a href="https://grouvex.github.io/contacto">Contacto</a>.
+                     <div class="pricing-plan standard">
+                        <div class="plan-title">Custom %</div>
+                        <div class="plan-price">%/mes</div>
+                        <p>Ponte en contacto con <a href="mailto:moderacion@grouvex.com?subject=Plan Custom"><i class="fa-solid fa-envelope"></i> moderacion@grouvex.com</a> para acordar un porcentaje de regalias</p>
+                        <ul class="plan-features">
+                            <li>Ilimitado - cuentas artísticas por usuario/GS-UserID</li>
+                            <li>Sube todas las canciones que quieras</li>
+                            <li>Lanzamiento con <span class="highlight">2 semanas de antelación</span></li>
+                            <li><span class="highlight">Sin Límite de Canciones</span></li>
+                            <li><span class="highlight">Copyright personalizado</span> (el que elijas)</li>
+                            <li class="optional">Ilimitados videos musicales/año (- % regalías por video)</li>
+                            <li>Acceso al Pre-Saved</li>
+                            <li>Asistente personal</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="note">
+                    *Nota: Los límites de canciones se refieren a canciones individuales (no aplica a álbumes) y se renuevan cada 2 meses. 
+                    Por ejemplo, en el plan Gratis puedes subir hasta 15 canciones cada 2 meses; si subes un álbum de 15 canciones, no podrás volver a subir hasta dentro de 2 meses.
+                </div>
+                <div class="note">
+                    *Nota: En caso de que el sello discográfico por algún motivo modifique el tiempo mínimo entre la fecha actual y la fecha de lanzamiento, dichos tiempos en cada plan serán suspendidos hasta que el sello discográfico lo modifique de nuevo.
+                </div>
+                <div class="note">
+                    *Nota: Puedes ponerte en contacto con <a href="mailto:administracion@grouvex.com" target="_blank"><i class="fa-solid fa-envelope"></i> administracion@grouvex.com</a> para cualquier tema de la suscripción, o dirigirte a <a href="https://grouvex.github.io/contacto" target="_blank">Contacto</a>.
+                </div>
             </div>
         </details>
-    </div>
     </main>
     <script src="abc.js"></script>
     <div id="footer"></div>

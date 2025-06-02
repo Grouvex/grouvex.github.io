@@ -268,10 +268,6 @@
             <stripe-pricing-table pricing-table-id="prctbl_1RVH3yGA5i5KwsChQRVQf1e8"
             publishable-key="pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv">
             </stripe-pricing-table>
-<script async src="https://js.stripe.com/v3/pricing-table.js"></script>
-<stripe-pricing-table pricing-table-id="prctbl_1RVRVlGA5i5KwsCh5gQRjIeE"
-publishable-key="pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv">
-</stripe-pricing-table>
             <div class="pricing-rows">
                 <div class="pricing-row">
                     <div class="pricing-plan basic individual-custom">
@@ -281,16 +277,6 @@ publishable-key="pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCo
                             <li>3 videos musicales máximo por pago (-10% regalías por video)</li>
                             <li>Letra del lanzamiento</li>
                         </ul>
-                        <div class="plan-options">
-                            <details><summary>Precios de Pago Individual</summary>
-                                <p><strong>Sencillos:</strong> 3,99€</p>
-                                <p><strong>EP:</strong> 7,99€</p>
-                                <p><strong>Álbum:</strong> 17,99€</p>
-                                <p><strong>EX-Álbum:</strong> 27,99€</p>
-                                <p>Para realizar este pago, debe indicarlo en el formulario de contrato de canciones/EP/álbumes.</p>
-                            </details>
-                        </div>
-                    </div>
                     
                     <div class="pricing-plan standard individual-custom">
                         <div class="plan-title">Estándar Personalizado (Por Lanzamiento)</div>
@@ -312,6 +298,19 @@ publishable-key="pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCo
                             </details>
                         </div>
                     </div>
+
+                     <div class="plan-options">
+                            <details><summary>Precios de Pago Individual</summary>
+                                <p><strong>Sencillos:</strong> 3,99€</p>
+                                <p><strong>EP:</strong> 7,99€</p>
+                                <p><strong>Álbum:</strong> 17,99€</p>
+                                <p><strong>EX-Álbum:</strong> 27,99€</p>
+                                <p>Para realizar este pago, debe indicarlo en el formulario de contrato de canciones/EP/álbumes.</p>
+                            </details>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="pricing-row">
                     <div class="pricing-plan individual-custom">
                         <div class="plan-title">Personalizado Individual</div>
                         <div class="plan-price">Depende del servicio</div>
@@ -345,7 +344,15 @@ publishable-key="pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCo
                         </ul>
                     </div>
                 </div>
+<script async
+  src="https://js.stripe.com/v3/buy-button.js">
+</script>
 
+<stripe-buy-button
+  buy-button-id="buy_btn_1RVSeoGA5i5KwsCh8jxYu5vk"
+  publishable-key="pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv"
+>
+</stripe-buy-button>
                 <div class="note">
                     *Nota: Los límites de canciones se refieren a canciones individuales (no aplica a álbumes) y se renuevan cada 2 meses. 
                     Por ejemplo, en el plan Gratis puedes subir hasta 15 canciones cada 2 meses; si subes un álbum de 15 canciones, no podrás volver a subir hasta dentro de 2 meses.

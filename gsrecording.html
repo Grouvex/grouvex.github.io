@@ -268,19 +268,29 @@
             <stripe-pricing-table pricing-table-id="prctbl_1RVH3yGA5i5KwsChQRVQf1e8"
             publishable-key="pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv">
             </stripe-pricing-table>
-            <div class="pricing-rows">
+  <div class="pricing-rows">
                 <div class="pricing-row">
                     <div class="pricing-plan basic individual-custom">
                         <div class="plan-title">Básico Personalizado (Por Lanzamiento)</div>
-                        <p><strong>Común a todo este plan:</strong></p>
+                        <p class="gstudios6"><strong>Común a todo este plan:</strong></p>
                         <ul class="plan-features">
                             <li>3 videos musicales máximo por pago (-10% regalías por video)</li>
                             <li>Letra del lanzamiento</li>
                         </ul>
-                    
-                    <div class="pricing-plan standard individual-custom">
+
+                     <div class="plan-options">
+                            <details open=""><summary>Precios de Pago Individual</summary>
+                                <p class="gstudios6"><strong>Sencillos:</strong> 3,99€</p>
+                                <p class="gstudios6"><strong>EP:</strong> 7,99€</p>
+                                <p class="gstudios6"><strong>Álbum:</strong> 17,99€</p>
+                                <p class="gstudios6"><strong>EX-Álbum:</strong> 27,99€</p>
+                                <p class="gstudios6">Para realizar este pago, debe indicarlo en el formulario de contrato de canciones/EP/álbumes.</p>
+                            </details>
+                        </div>
+                    </div>
+                        <div class="pricing-plan standard individual-custom">
                         <div class="plan-title">Estándar Personalizado (Por Lanzamiento)</div>
-                        <p><strong>Común a todo este plan:</strong></p>
+                        <p class="gstudios6"><strong>Común a todo este plan:</strong></p>
                         <ul class="plan-features">
                             <li>Lanzamiento con <span class="highlight">3 semanas de antelación</span></li>
                             <li>Límite de <span class="highlight">40 lanzamientos/2 meses</span></li>
@@ -289,27 +299,16 @@
                             <li>Acceso al Pre-Saved</li>
                         </ul>
                         <div class="plan-options">
-                            <details><summary>Precios de Pago Individual</summary>
-                                <p><strong>Sencillos:</strong> 8,99€</p>
-                                <p><strong>EP:</strong> 12,99€</p>
-                                <p><strong>Álbum:</strong> 22,99€</p>
-                                <p><strong>EX-Álbum:</strong> 32,99€</p>
-                                <p>Para realizar este pago, debe indicarlo en el formulario de contrato de canciones/EP/álbumes.</p>
+                            <details open=""><summary>Precios de Pago Individual</summary>
+                                <p class="gstudios6"><strong>Sencillos:</strong> 8,99€</p>
+                                <p class="gstudios6"><strong>EP:</strong> 12,99€</p>
+                                <p class="gstudios6"><strong>Álbum:</strong> 22,99€</p>
+                                <p class="gstudios6"><strong>EX-Álbum:</strong> 32,99€</p>
+                                <p class="gstudios6">Para realizar este pago, debe indicarlo en el formulario de contrato de canciones/EP/álbumes.</p>
                             </details>
                         </div>
                     </div>
-
-                     <div class="plan-options">
-                            <details><summary>Precios de Pago Individual</summary>
-                                <p><strong>Sencillos:</strong> 3,99€</p>
-                                <p><strong>EP:</strong> 7,99€</p>
-                                <p><strong>Álbum:</strong> 17,99€</p>
-                                <p><strong>EX-Álbum:</strong> 27,99€</p>
-                                <p>Para realizar este pago, debe indicarlo en el formulario de contrato de canciones/EP/álbumes.</p>
-                            </details>
-                        </div>
-                    </div>
-                    </div>
+                    </div><stripe-buy-button buy-button-id="buy_btn_1RVSeoGA5i5KwsCh8jxYu5vk" publishable-key="pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv"></stripe-buy-button>
                     <div class="pricing-row">
                     <div class="pricing-plan individual-custom">
                         <div class="plan-title">Personalizado Individual</div>
@@ -329,8 +328,8 @@
                         </div>
                     </div>
                      <div class="pricing-plan standard">
-                        <div class="plan-title">Custom %</div>
-                        <div class="plan-price">%/mes</div>
+                        <div class="plan-title">Custom €</div>
+                        <div class="plan-price">€/año</div>
                         <p>Ponte en contacto con <a href="mailto:moderacion@grouvex.com?subject=Plan Custom"><i class="fa-solid fa-envelope"></i> moderacion@grouvex.com</a> para acordar un porcentaje de regalias</p>
                         <ul class="plan-features">
                             <li>Ilimitado - cuentas artísticas por usuario/GS-UserID</li>
@@ -342,17 +341,17 @@
                             <li>Acceso al Pre-Saved</li>
                             <li>Asistente personal</li>
                         </ul>
+                         <script async
+                          src="https://js.stripe.com/v3/buy-button.js">
+                        </script>
+                        
+                        <stripe-buy-button
+                          buy-button-id="buy_btn_1RVT6oGA5i5KwsChHEMCHn7k"
+                          publishable-key="pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv"
+                        >
+                        </stripe-buy-button>
                     </div>
                 </div>
-<script async
-  src="https://js.stripe.com/v3/buy-button.js">
-</script>
-
-<stripe-buy-button
-  buy-button-id="buy_btn_1RVSeoGA5i5KwsCh8jxYu5vk"
-  publishable-key="pk_live_51RLWK0GA5i5KwsChgJEkonoT7W9RkkbkTs1HcY1zehMK4I8xf5qyCoePQRTCsBSSjESFMEyWWokRDM9mgU5umAYI008RN4FqAv"
->
-</stripe-buy-button>
                 <div class="note">
                     *Nota: Los límites de canciones se refieren a canciones individuales (no aplica a álbumes) y se renuevan cada 2 meses. 
                     Por ejemplo, en el plan Gratis puedes subir hasta 15 canciones cada 2 meses; si subes un álbum de 15 canciones, no podrás volver a subir hasta dentro de 2 meses.

@@ -163,3 +163,13 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 <button id="goTopBtn" onclick="scrollToTop()">↑ Top</button>
+<script src="https://www.google.com/recaptcha/api.js"></script>
+ <script>
+   function onSubmit(token) {
+     document.getElementById("demo-form").submit();
+   }
+ </script>
+ <button class="g-recaptcha" 
+        data-sitekey="6Lfm7VUrAAAAAIPlml7LrWo5XJiyp86T0OlJqsix" 
+        data-callback='onSubmit' 
+        data-action='submit'>Submit</button>

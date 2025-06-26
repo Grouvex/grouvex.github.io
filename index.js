@@ -299,18 +299,6 @@ function googleTranslateElementInit() {
           GSRecording: ["artista", "verified"],
           GSAnimation: [],
           GSDesign: []
-      },
-      "Clara Langa": {
-          principales: ["gsmember", "verified"],
-          GSRecording: ["artista", "verified"],
-          GSAnimation: [],
-          GSDesign: []
-      },
-      "Joshuatdepedro": {
-          principales: ["verified"],
-          GSRecording: ["artista"],
-          GSAnimation: [],
-          GSDesign: []
       }
   };
   

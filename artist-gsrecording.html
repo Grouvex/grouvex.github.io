@@ -6,7 +6,7 @@
   <title>Grouvex Studios - Buscador de Artistas</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link href="css/styles.css" rel="stylesheet">
+  <link href="styles-gsrecording.css" rel="stylesheet">
 </head>
 <body>
   <div class="container" id="artistContainer">
@@ -17,9 +17,9 @@
     </div>
   </div>
 
-  <script src="../js/data.js"></script>
-  <script src="../js/main.js"></script>
-  <script src="../js/pdf-generator.js"></script>
+  <script src="data-gsrecording.js"></script>
+  <script src="main.js"></script>
+  <script src="pdf-generator-gsrecording.js"></script>
   <script type="module">
   import { getArtistById, getSongsByArtistId } from './js/data.js';
   
@@ -51,7 +51,7 @@
           <div class="error">
             <h1>Error al cargar los datos</h1>
             <p>${error.message}</p>
-            <a href="../index.html">Volver a la página de búsqueda</a>
+            <a href="index-gsrecording.html">Volver a la página de búsqueda</a>
           </div>
         `;
       });

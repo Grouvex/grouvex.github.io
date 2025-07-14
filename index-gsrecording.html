@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grouvex Studios - Buscador de Artistas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+  <div class="search-container">
+    <a href="https://www.grouvex.com/gsrecording" target="_blank">
+      <img src="assets/grouvex-logo.png" alt="Grouvex Studios Logo" class="logo">
+    </a>
+    <h1 class="title">Grouvex Studios Recording</h1>
+    <p class="subtitle">Web Oficial <a href="#" id="databaseLink">DataBase</a></p>
+    
+    <div class="search-box">
+      <input type="text" id="artistIdInput" placeholder="Introduce tu GS-UserID">
+      <button id="searchArtistBtn">
+        <i class="fas fa-search"></i> Buscar Artista
+      </button>
+    </div>
+    
+    <div class="info-section">
+      <p>Al usar esta app, acepta los <a href="#" target="_blank">Documentos Oficiales de Grouvex Studios</a></p>
+      <p>Si tiene su Grouvex Studios UserID (GSUserID), inserte su ID y presione buscar artista.</p>
+      <p>En caso de no saber su GSUserID, solicite a <a href="mailto:moderacion@grouvex.com">moderacion@grouvex.com</a> el enlace a su página de artista.</p>
+    </div>
+    
+    <p class="footer">© <span id="currentYear"></span> Grouvex Studios. Todos los derechos reservados.</p>
+  </div>
+
+  <!-- Tawk.to Script -->
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

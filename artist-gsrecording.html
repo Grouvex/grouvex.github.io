@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grouvex Studios - Buscador de Artistas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container" id="artistContainer">
+    <!-- El contenido se cargará dinámicamente con JavaScript -->
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Cargando información del artista...</p>
+    </div>
+  </div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/pdf-generator.js"></script>
+  <script type="module">
+  import { getArtistById, getSongsByArtistId } from './js/data.js';
+  
+  // Obtener ID de la URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const artistId = urlParams.get('id');
+  
+  if (artistId) {
+    // Mostrar loading
+    document.getElementById('artistContainer').innerHTML = `
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Cargando información del artista...</p>
+      </div>
+    `;
+    
+    // Cargar datos
+    Promise.all([getArtistById(artistId), getSongsByArtistId(artistId)])
+      .then(([artist, songs]) => {
+        if (artist) {
+          renderArtistPage(artist, songs);
+        } else {
+          showNotFound(artistId);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('artistContainer').innerHTML = `
+          <div class="error">
+            <h1>Error al cargar los datos</h1>
+            <p>${error.message}</p>
+            <a href="../index.html">Volver a la página de búsqueda</a>
+          </div>
+        `;
+      });
+  }
+</script>
+</body>
+</html>

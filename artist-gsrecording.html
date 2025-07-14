@@ -20,21 +20,42 @@
   <script src="../js/data.js"></script>
   <script src="../js/main.js"></script>
   <script src="../js/pdf-generator.js"></script>
-  <script>
-    // Obtener ID de la URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const artistId = urlParams.get('id');
+  <script type="module">
+  import { getArtistById, getSongsByArtistId } from './js/data.js';
+  
+  // Obtener ID de la URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const artistId = urlParams.get('id');
+  
+  if (artistId) {
+    // Mostrar loading
+    document.getElementById('artistContainer').innerHTML = `
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Cargando información del artista...</p>
+      </div>
+    `;
     
-    if (artistId) {
-      loadArtistPage(artistId);
-    } else {
-      document.getElementById('artistContainer').innerHTML = `
-        <div class="not-found">
-          <h1>ID de artista no proporcionado</h1>
-          <a href="index-gsrecording.html">Volver a la página de búsqueda</a>
-        </div>
-      `;
-    }
-  </script>
+    // Cargar datos
+    Promise.all([getArtistById(artistId), getSongsByArtistId(artistId)])
+      .then(([artist, songs]) => {
+        if (artist) {
+          renderArtistPage(artist, songs);
+        } else {
+          showNotFound(artistId);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('artistContainer').innerHTML = `
+          <div class="error">
+            <h1>Error al cargar los datos</h1>
+            <p>${error.message}</p>
+            <a href="../index.html">Volver a la página de búsqueda</a>
+          </div>
+        `;
+      });
+  }
+</script>
 </body>
 </html>

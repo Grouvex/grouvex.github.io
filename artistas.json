@@ -17,6 +17,12 @@
             "imagen": "../img/Maiki Dran.jpg",
             "descripcion": "Maiki Dran es un artista principiante que forma parte del grupo de Grouvex.",
             "enlace": "maiki_dran/inicio"
+        },
+        {
+            "nombre": "Ángela",
+            "imagen": "",
+            "descripcion": "",
+            "enlace": "angela/inicio"
         }
     ]
 }

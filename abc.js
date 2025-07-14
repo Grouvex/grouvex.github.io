@@ -59,6 +59,12 @@ const usuarios = {
         GSRecording: ["artista", "verified"],
         GSAnimation: [],
         GSDesign: []
+    },
+    "Ángela": {
+        principales: ["gsmember", "verified"],
+        GSRecording: ["artista", "verified"],
+        GSAnimation: [],
+        GSDesign: []
     }
 };
 

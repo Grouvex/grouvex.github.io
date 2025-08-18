@@ -312,15 +312,15 @@ nav a {
     content: "Creador/Propietario Grouvex Studios (GS)";;font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
 .owner:hover::after {visibility: visible;opacity: 1;}
 
-.owner-recording {
+.owner-records {
     background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/ownerRecording.png);
     background-size: contain; /* Ensures the image fits within the div */
     background-repeat: no-repeat; /* Prevents the image from repeating */
 }
-.owner-recording {position: relative;display: inline-block;}.owner-recording img {display: block;}
-.owner-recording::after {
-    content: "Creador/Propietario GSRecording";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
-.owner-recording:hover::after {visibility: visible;opacity: 1;}
+.owner-records {position: relative;display: inline-block;}.owner-records img {display: block;}
+.owner-records::after {
+    content: "Creador/Propietario GSRecords";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.owner-records:hover::after {visibility: visible;opacity: 1;}
 
 .owner-animations {
     background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/ownerAnimations.png);

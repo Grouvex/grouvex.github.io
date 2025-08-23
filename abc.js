@@ -542,7 +542,7 @@ onAuthStateChanged(auth, async (user) => {
         const gsUserIdInput = document.getElementById('gs-user-id');
         if (gsUserIdInput) {
             if (user) {
-                gsUserIdInput.value = user.uid;
+                gsUserIdInput.value = "GS-" + user.uid;
                 console.log("GSUserID actualizado (onAuthStateChanged):", user.uid);
             } else {
                 gsUserIdInput.value = "Not Defined";
@@ -609,7 +609,7 @@ function checkAndSetGSUserId() {
         const user = auth.currentUser;
         
         if (gsUserIdInput && user) {
-            gsUserIdInput.value = user.uid;
+            gsUserIdInput.value = "GS-" + user.uid;
             console.log("GSUserID actualizado:", user.uid);
             clearInterval(checkInterval); // Detener la verificación una vez que se establece
         } else if (gsUserIdInput && !user) {

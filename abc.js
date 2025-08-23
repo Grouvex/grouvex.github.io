@@ -541,9 +541,13 @@ onAuthStateChanged(auth, async (user) => {
         const usuarioElement = document.querySelector('.usuario');
         const gsUserIdInput = document.getElementById('gs-user-id');
         if (gsUserIdInput) {
-            gsUserIdInput.value = user.uid || "Not Defined";
-        } else {
-          console.log("gs-user-id no encontrado")
+            if (user) {
+                gsUserIdInput.value = user.uid;
+                console.log("GSUserID actualizado (onAuthStateChanged):", user.uid);
+            } else {
+                gsUserIdInput.value = "Not Defined";
+                console.log("Usuario cerró sesión, GSUserID establecido como 'Not Defined'");
+            }
         }
         // Actualizar UI
         const updateProfileUI = () => {
@@ -597,3 +601,27 @@ onAuthStateChanged(auth, async (user) => {
         }
     }
 });
+
+// Comprobar periódicamente si el campo gs-user-id existe
+function checkAndSetGSUserId() {
+    const checkInterval = setInterval(() => {
+        const gsUserIdInput = document.getElementById('gs-user-id');
+        const user = auth.currentUser;
+        
+        if (gsUserIdInput && user) {
+            gsUserIdInput.value = user.uid;
+            console.log("GSUserID actualizado:", user.uid);
+            clearInterval(checkInterval); // Detener la verificación una vez que se establece
+        } else if (gsUserIdInput && !user) {
+            gsUserIdInput.value = "Not Defined";
+            console.log("Usuario no autenticado, GSUserID establecido como 'Not Defined'");
+            clearInterval(checkInterval); // Detener la verificación
+        }
+    }, 1000); // Verificar cada segundo
+}
+
+// Iniciar la verificación cuando la página cargue
+document.addEventListener('DOMContentLoaded', function() {
+    checkAndSetGSUserId();
+});
+

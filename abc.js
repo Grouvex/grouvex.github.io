@@ -531,7 +531,7 @@ onAuthStateChanged(auth, async (user) => {
     if (user) {
         setupPresence(user);
         console.log("Usuario autenticado:", user.email);
-
+        console.log("ID autenticado:", user.uid);
         const urlParams = new URLSearchParams(window.location.search);
         const viewedUserId = urlParams.get('userId');
         const isViewingOwnProfile = !viewedUserId || viewedUserId === user.uid;
@@ -542,6 +542,8 @@ onAuthStateChanged(auth, async (user) => {
         const gsUserIdInput = document.getElementById('gs-user-id');
         if (gsUserIdInput) {
             gsUserIdInput.value = user.uid || "Not Defined";
+        } else {
+          console.log("gs-user-id no encontrado")
         }
         // Actualizar UI
         const updateProfileUI = () => {

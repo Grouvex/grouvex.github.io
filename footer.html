@@ -169,695 +169,972 @@ document.addEventListener("DOMContentLoaded", function () {
      document.getElementById("demo-form").submit();
    }
  </script>
-
-<script src="https://cdn.tailwindcss.com"></script>
 <!-- Botón flotante para el Centro de Ayuda -->
-<div class="fixed bottom-8 right-8 z-50">
-    <details id="helpCenter" class="relative group">
-        <!-- El summary actúa como el botón circular -->
-        <summary class="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full cursor-pointer shadow-lg hover:shadow-xl transition-all duration-300">
-            <!-- SVG de un icono de chat/ayuda -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
-        </summary>
-        
-        <!-- El contenido del formulario aparece como un popup al abrir el details -->
-        <div id="questionFlow" class="absolute bottom-20 right-0 w-[400px] max-h-[80vh] bg-white rounded-3xl shadow-2xl p-6 transition-all duration-300 transform scale-0 opacity-0 group-open:scale-100 group-open:opacity-100 origin-bottom-right flex flex-col">
-            <!-- Título y botón de cerrar -->
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-extrabold text-gray-800">Centro de Ayuda</h2>
-                <button onclick="document.getElementById('helpCenter').removeAttribute('open')" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-           <p style="font-size: 10px;margin-bottom: 3px;">No puede iniciar o cerrar sesión si tiene el Centro de Ayuda abierto</p> 
-            <div class="overflow-y-auto pr-2">
-                <!-- Campo para el GSUserID -->
-                <div class="mb-6">
-                    <label class="block">
-                        <span class="text-gray-700 font-medium">Tu GSUserID:</span>
-                        <input type="text" id="gs-user-id" placeholder="Not Defined" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 p-3" disabled>
-                    </label>
-                </div>
+<style>
+/* Estilos para el botón flotante de ayuda - No afectan al resto de la web */
+#helpCenter {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 50;
+}
 
-                <!-- Pregunta 1: Selección de organismo -->
-                <div class="question" id="q1">
-                    <p class="text-xl font-bold mb-5 text-gray-800">¿Sobre qué organismo o suborganismo pregunta?</p>
-                    <div class="options space-y-4">
-                        <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                            <input type="radio" name="organism" value="grouvex-studios" onclick="showNextQuestion('grouvex-studios')" class="mr-3">
-                            <span class="font-medium text-gray-700">Grouvex Studios</span>
-                        </label>
-                        <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                            <input type="radio" name="organism" value="grouvex-records" onclick="showNextQuestion('grouvex-records')" class="mr-3">
-                            <span class="font-medium text-gray-700">Grouvex Studios Records</span>
-                        </label>
-                        <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                            <input type="radio" name="organism" value="grouvex-design" onclick="showNextQuestion('grouvex-design')" class="mr-3">
-                            <span class="font-medium text-gray-700">Grouvex Studios Design</span>
-                        </label>
-                        <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                            <input type="radio" name="organism" value="other" onclick="showNextQuestion('other')" class="mr-3">
-                            <span class="font-medium text-gray-700">Otro</span>
-                        </label>
-                    </div>
-                </div>
+#helpCenter summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(to right, #3b82f6, #8b5cf6);
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
 
-                <!-- Contenedores dinámicos para las siguientes preguntas -->
-                <div id="q2-container" class="mt-8"></div>
-                <div id="q3-container" class="mt-8"></div>
+#helpCenter summary:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
 
-                <!-- Sección final para enviar (oculta inicialmente) -->
-                <div id="submit-section" class="hidden mt-8">
-                    <div id="email-result" class="p-6 border border-gray-200 rounded-xl bg-gray-50 shadow-inner"></div>
-                </div>
-            </div>
+#questionFlow {
+  position: absolute;
+  bottom: 80px;
+  right: 0;
+  width: 400px;
+  max-height: 80vh;
+  background-color: white;
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  padding: 24px;
+  transition: all 0.3s ease;
+  transform: scale(0);
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#helpCenter[open] #questionFlow {
+  transform: scale(1);
+  opacity: 1;
+}
+
+#questionFlow > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+#questionFlow h2 {
+  font-size: 24px;
+  font-weight: 800;
+  color: #374151;
+}
+
+#questionFlow button {
+  color: #9ca3af;
+  transition: color 0.2s ease;
+}
+
+#questionFlow button:hover {
+  color: #4b5563;
+}
+
+#questionFlow > div:first-child + p {
+  font-size: 10px;
+  margin-bottom: 3px;
+}
+
+.question-flow-content {
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.question-container {
+  margin-bottom: 24px;
+}
+
+.question-container p {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #374151;
+}
+
+.options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.option-label {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.option-label:hover {
+  background-color: #faf5ff;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.option-input {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  margin: 0;
+  font: inherit;
+  color: currentColor;
+  width: 18.4px;
+  height: 18.4px;
+  border: 2px solid #cbd5e1;
+  border-radius: 50%;
+  display: grid;
+  place-content: center;
+  transition: all 0.2s ease;
+  margin-right: 12px;
+}
+
+.option-input::before {
+  content: "";
+  width: 10.4px;
+  height: 10.4px;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 0.2s ease;
+  box-shadow: inset 1em 1em #8b5cf6;
+}
+
+.option-input:checked::before {
+  transform: scale(1);
+}
+
+.option-input:hover {
+  border-color: #8b5cf6;
+}
+
+.option-text {
+  font-weight: 500;
+  color: #374151;
+}
+
+.submit-section {
+  margin-top: 32px;
+  display: none;
+}
+
+.email-result {
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background-color: #f9fafb;
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+}
+
+.gradient-button {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 12px 24px;
+  background: linear-gradient(to right, #6c5ce7, #00cec9);
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.gradient-button:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.checkbox-container {
+  margin-bottom: 20px;
+  border: 1px solid #e0e0e0;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin: 10px 0;
+}
+
+.checkbox-input {
+  margin-right: 8px;
+}
+
+.checkbox-text {
+  color: #ef4444;
+  font-size: 12px;
+}
+
+.checkbox-text a {
+  color: #ef4444;
+  text-decoration: underline;
+}
+
+/* Estilos para campos de entrada */
+.input-field {
+  margin-top: 4px;
+  display: block;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.input-label {
+  display: block;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+/* Estilos para el botón de cerrar */
+.close-button {
+  color: #9ca3af;
+  transition: color 0.2s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: #4b5563;
+}
+
+/* Estilos para el botón deshabilitado */
+.gradient-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.gradient-button:disabled:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+</style>
+
+<!-- Botón flotante para el Centro de Ayuda -->
+<div id="helpCenter" class="help-center-container">
+  <details>
+    <!-- El summary actúa como el botón circular -->
+    <summary>
+      <!-- SVG de un icono de chat/ayuda -->
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+      </svg>
+    </summary>
+    
+    <!-- El contenido del formulario aparece como un popup al abrir el details -->
+    <div id="questionFlow">
+      <!-- Título y botón de cerrar -->
+      <div>
+        <h2>Centro de Ayuda</h2>
+        <button class="close-button" onclick="document.getElementById('helpCenter').removeAttribute('open')">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <p>No puede iniciar o cerrar sesión si tiene el Centro de Ayuda abierto</p> 
+      <div class="question-flow-content">
+        <!-- Campo para el GSUserID -->
+        <div class="question-container">
+          <label class="input-label">
+            <span>Tu GSUserID:</span>
+            <input type="text" id="gs-user-id" placeholder="Not Defined" class="input-field" disabled>
+          </label>
         </div>
-    </details>
+
+        <!-- Pregunta 1: Selección de organismo -->
+        <div class="question-container" id="q1">
+          <p>¿Sobre qué organismo o suborganismo pregunta?</p>
+          <div class="options-container">
+            <label class="option-label">
+              <input type="radio" name="organism" value="grouvex-studios" onclick="showNextQuestion('grouvex-studios')" class="option-input">
+              <span class="option-text">Grouvex Studios</span>
+            </label>
+            <label class="option-label">
+              <input type="radio" name="organism" value="grouvex-records" onclick="showNextQuestion('grouvex-records')" class="option-input">
+              <span class="option-text">Grouvex Studios Records</span>
+            </label>
+            <label class="option-label">
+              <input type="radio" name="organism" value="grouvex-design" onclick="showNextQuestion('grouvex-design')" class="option-input">
+              <span class="option-text">Grouvex Studios Design</span>
+            </label>
+            <label class="option-label">
+              <input type="radio" name="organism" value="other" onclick="showNextQuestion('other')" class="option-input">
+              <span class="option-text">Otro</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Contenedores dinámicos para las siguientes preguntas -->
+        <div id="q2-container" class="question-container"></div>
+        <div id="q3-container" class="question-container"></div>
+
+        <!-- Sección final para enviar (oculta inicialmente) -->
+        <div id="submit-section" class="submit-section">
+          <div id="email-result" class="email-result"></div>
+        </div>
+      </div>
+    </div>
+  </details>
 </div>
 
 <script>
-    // Mapeo de opciones a sus direcciones de correo y asuntos
-    const emailMap = {
-        // Grouvex Studios - General
-        'gs-website-error': { to: 'developers@grouvex.com', cc: '', bcc: '', subject: 'Error en Website', requiresLogin: false },
-        'gs-forgot-userid': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'No recuerdo mi GSUserID', requiresLogin: false },
-        'gs-billing': { to: 'administracion@grouvex.com', cc: '', bcc: '', subject: 'Consulta sobre Facturación y Pagos', requiresLogin: false },
-        'gs-rule-breach': { to: 'administracion@grouvex.com', cc: 'legal@grouvex.com', bcc: '', subject: 'Incumplimiento de Normas', requiresLogin: false },
-        'gs-rule-doubt': { to: 'legal@grouvex.com', cc: '', bcc: '', subject: 'Duda sobre las Normas', requiresLogin: false },
-        'gs-other': { to: 'oficina@grouvex.com', cc: '', bcc: '', subject: 'Consulta general', requiresLogin: false },
-        
-        // Grouvex Studios - Gestión de Cuenta
-        'gs-account-create': { to: 'administracion@grouvex.com', cc: 'legal@grouvex.com', bcc: '', subject: 'Solicitud de creación de cuenta', requiresLogin: false },
-        'gs-account-modify': { to: 'administracion@grouvex.com', cc: '', bcc: '', subject: 'Modificación de datos de cuenta', requiresLogin: true },
-        'gs-account-delete': { to: 'administracion@grouvex.com', cc: 'legal@grouvex.com', bcc: '', subject: 'Solicitud de eliminación de cuenta', requiresLogin: true },
-        'gs-account-suspend': { to: 'administracion@grouvex.com', cc: 'legal@grouvex.com', bcc: '', subject: 'Solicitud de suspensión temporal de cuenta', requiresLogin: true },
-        'gs-account-reactivate': { to: 'administracion@grouvex.com', cc: '', bcc: '', subject: 'Solicitud de reactivación de cuenta', requiresLogin: true },
-        'gs-account-arco': { to: 'legal@grouvex.com', cc: 'gestion@grouvex.com', bcc: '', subject: 'Ejercicio de derechos ARCO', requiresLogin: false },
-        
-        // Grouvex Studios - Proyectos
-        'gs-project-consult': { to: 'proyectos@grouvex.com', cc: '', bcc: '', subject: 'Consulta sobre proyecto', requiresLogin: false },
-        'gs-project-submit': { to: 'proyectos@grouvex.com', cc: 'legal@grouvex.com', bcc: '', subject: 'Presentación de proyecto', requiresLogin: true },
-        'gs-project-status': { to: 'proyectos@grouvex.com', cc: '', bcc: '', subject: 'Estado de mi proyecto', requiresLogin: false },
-        'gs-project-cancel': { to: 'proyectos@grouvex.com', cc: 'legal@grouvex.com', bcc: '', subject: 'Cancelación de proyecto', requiresLogin: true },
-        
-        // Grouvex Studios Records
-        'gr-contentid-claim': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Reclamo de ContentID', requiresLogin: true },
-        'gr-collab': { to: 'moderacion@grouvex.com', cc: 'grouvex@grouvex.com,grouvex@gmail.com', bcc: '', subject: 'Colaboración artística', requiresLogin: true },
-        'gr-release-consult': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Consulta sobre lanzamiento' },
-        'gr-release-submit': { to: 'moderacion@grouvex.com', cc: 'legal@grouvex.com', bcc: '', subject: 'Solicitud de lanzamiento', requiresLogin: true },
-        'gr-release-problem': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Problema con lanzamiento', requiresLogin: true },
-        'gr-royalties': { to: 'moderacion@grouvex.com', cc: 'administracion@grouvex.com', bcc: '', subject: 'Consulta sobre regalías', requiresLogin: false },
-        'gr-other': { to: 'oficina@grouvex.com', cc: 'moderacion@grouvex.com', bcc: '', subject: 'Consulta general', requiresLogin: false },
-        
-        // Grouvex Studios Records - Gestión de Cuenta
-        'gr-account-create': { to: 'moderacion@grouvex.com', cc: 'legal@grouvex.com', bcc: '', subject: 'Solicitud de creación de cuenta artista', requiresLogin: false },
-        'gr-account-create2': { to: 'moderacion@grouvex.com', cc: 'legal@grouvex.com', bcc: '', subject: 'Solicitud de creación de cuenta artista', requiresLogin: true },
-        'gr-account-modify': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Modificación de datos de artista', requiresLogin: true },
-        'gr-account-delete': { to: 'moderacion@grouvex.com', cc: 'legal@grouvex.com', bcc: '', subject: 'Solicitud de eliminación de cuenta artista', requiresLogin: true },
-        'gr-account-arco': { to: 'legal@grouvex.com', cc: 'gestion@grouvex.com', bcc: '', subject: 'Ejercicio de derechos ARCO (Artista)', requiresLogin: false },
-        // Grouvex Studios Records - Suscripción
-        'gr-subscription-payment-error': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Error en el pago de Stripe', requiresLogin: true },
-        'gr-subscription-portal-error': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Error en el Portal de Stripe', requiresLogin: true },
-        'gr-subscription-payment-doubt': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Duda de Pagos y Planes', requiresLogin: true },
-        'gr-subscription-basic-custom': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Solicitar un Plan Básico Personalizado', requiresLogin: true },
-        'gr-subscription-standard-custom': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Solicitar un Plan Estandar Personalizado', requiresLogin: true },
-        'gr-subscription-individual-custom': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Solicitar un Plan Personalizado Individual', requiresLogin: true },
-        'gr-subscription-custom-percent': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Solicitar un Plan Custom %', requiresLogin: true },
-        'gr-subscription-custom-euro': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Solicitar un Plan Custom €', requiresLogin: true },
-        'gr-subscription-other': { to: 'moderacion@grouvex.com', cc: 'administracion@grouvex.com', bcc: '', subject: 'Otras dudas de Planes de Suscripción musical', requiresLogin: true },
-        
-        // Grouvex Design
-        'gd-logo': { to: 'oficina@grouvex.com', cc: '', bcc: '', subject: 'Consulta sobre Diseño de Logo', requiresLogin: false },
-        'gd-cover': { to: 'oficina@grouvex.com', cc: '', bcc: '', subject: 'Consulta sobre Diseño de Portada', requiresLogin: false },
-        'gd-branding': { to: 'oficina@grouvex.com', cc: '', bcc: '', subject: 'Branding completo', requiresLogin: false },
-        'gd-other': { to: 'oficina@grouvex.com', cc: '', bcc: '', subject: 'Consulta general', requiresLogin: false },
-        
-        'other': { to: 'oficina@grouvex.com', cc: '', bcc: '', subject: 'Consulta general', requiresLogin: false}
-    };
+// Mapeo de opciones a sus direcciones de correo y asuntos
+const emailMap = {
+    // Grouvex Studios - General
+    'gs-website-error': { to: 'developers@grouvex.com', cc: '', bcc: '', subject: 'Error en Website', requiresLogin: false },
+    'gs-forgot-userid': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'No recuerdo mi GSUserID', requiresLogin: false },
+    'gs-billing': { to: 'administracion@grouvex.com', cc: '', bcc: '', subject: 'Consulta sobre Facturación y Pagos', requiresLogin: false },
+    'gs-rule-breach': { to: 'administracion@grouvex.com', cc: 'legal@grouvex.com', bcc: '', subject: 'Incumplimiento de Normas', requiresLogin: false },
+    'gs-rule-doubt': { to: 'legal@grouvex.com', cc: '', bcc: '', subject: 'Duda sobre las Normas', requiresLogin: false },
+    'gs-other': { to: 'oficina@grouvex.com', cc: '', bcc: '', subject: 'Consulta general', requiresLogin: false },
+    
+    // Grouvex Studios - Gestión de Cuenta
+    'gs-account-create': { to: 'administracion@grouvex.com', cc: 'legal@grouvex.com', bcc: '', subject: 'Solicitud de creación de cuenta', requiresLogin: false },
+    'gs-account-modify': { to: 'administracion@grouvex.com', cc: '', bcc: '', subject: 'Modificación de datos de cuenta', requiresLogin: true },
+    'gs-account-delete': { to: 'administracion@grouvex.com', cc: 'legal@grouvex.com', bcc: '', subject: 'Solicitud de eliminación de cuenta', requiresLogin: true },
+    'gs-account-suspend': { to: 'administracion@grouvex.com', cc: 'legal@grouvex.com', bcc: '', subject: 'Solicitud de suspensión temporal de cuenta', requiresLogin: true },
+    'gs-account-reactivate': { to: 'administracion@grouvex.com', cc: '', bcc: '', subject: 'Solicitud de reactivación de cuenta', requiresLogin: true },
+    'gs-account-arco': { to: 'legal@grouvex.com', cc: 'gestion@grouvex.com', bcc: '', subject: 'Ejercicio de derechos ARCO', requiresLogin: false },
+    
+    // Grouvex Studios - Proyectos
+    'gs-project-consult': { to: 'proyectos@grouvex.com', cc: '', bcc: '', subject: 'Consulta sobre proyecto', requiresLogin: false },
+    'gs-project-submit': { to: 'proyectos@grouvex.com', cc: 'legal@grouvex.com', bcc: '', subject: 'Presentación de proyecto', requiresLogin: true },
+    'gs-project-status': { to: 'proyectos@grouvex.com', cc: '', bcc: '', subject: 'Estado de mi proyecto', requiresLogin: false },
+    'gs-project-cancel': { to: 'proyectos@grouvex.com', cc: 'legal@grouvex.com', bcc: '', subject: 'Cancelación de proyecto', requiresLogin: true },
+    
+    // Grouvex Studios Records
+    'gr-contentid-claim': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Reclamo de ContentID', requiresLogin: true },
+    'gr-collab': { to: 'moderacion@grouvex.com', cc: 'grouvex@grouvex.com,grouvex@gmail.com', bcc: '', subject: 'Colaboración artística', requiresLogin: true },
+    'gr-release-consult': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Consulta sobre lanzamiento' },
+    'gr-release-submit': { to: 'moderacion@grouvex.com', cc: 'legal@grouvex.com', bcc: '', subject: 'Solicitud de lanzamiento', requiresLogin: true },
+    'gr-release-problem': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Problema con lanzamiento', requiresLogin: true },
+    'gr-royalties': { to: 'moderacion@grouvex.com', cc: 'administracion@grouvex.com', bcc: '', subject: 'Consulta sobre regalías', requiresLogin: false },
+    'gr-other': { to: 'oficina@grouvex.com', cc: 'moderacion@grouvex.com', bcc: '', subject: 'Consulta general', requiresLogin: false },
+    
+    // Grouvex Studios Records - Gestión de Cuenta
+    'gr-account-create': { to: 'moderacion@grouvex.com', cc: 'legal@grouvex.com', bcc: '', subject: 'Solicitud de creación de cuenta artista', requiresLogin: false },
+    'gr-account-create2': { to: 'moderacion@grouvex.com', cc: 'legal@grouvex.com', bcc: '', subject: 'Solicitud de creación de cuenta artista', requiresLogin: true },
+    'gr-account-modify': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Modificación de datos de artista', requiresLogin: true },
+    'gr-account-delete': { to: 'moderacion@grouvex.com', cc: 'legal@grouvex.com', bcc: '', subject: 'Solicitud de eliminación de cuenta artista', requiresLogin: true },
+    'gr-account-arco': { to: 'legal@grouvex.com', cc: 'gestion@grouvex.com', bcc: '', subject: 'Ejercicio de derechos ARCO (Artista)', requiresLogin: false },
+    // Grouvex Studios Records - Suscripción
+    'gr-subscription-payment-error': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Error en el pago de Stripe', requiresLogin: true },
+    'gr-subscription-portal-error': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Error en el Portal de Stripe', requiresLogin: true },
+    'gr-subscription-payment-doubt': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Duda de Pagos y Planes', requiresLogin: true },
+    'gr-subscription-basic-custom': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Solicitar un Plan Básico Personalizado', requiresLogin: true },
+    'gr-subscription-standard-custom': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Solicitar un Plan Estandar Personalizado', requiresLogin: true },
+    'gr-subscription-individual-custom': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Solicitar un Plan Personalizado Individual', requiresLogin: true },
+    'gr-subscription-custom-percent': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Solicitar un Plan Custom %', requiresLogin: true },
+    'gr-subscription-custom-euro': { to: 'moderacion@grouvex.com', cc: '', bcc: '', subject: 'Solicitar un Plan Custom €', requiresLogin: true },
+    'gr-subscription-other': { to: 'moderacion@grouvex.com', cc: 'administracion@grouvex.com', bcc: '', subject: 'Otras dudas de Planes de Suscripción musical', requiresLogin: true },
+    
+    // Grouvex Design
+    'gd-logo': { to: 'oficina@grouvex.com', cc: '', bcc: '', subject: 'Consulta sobre Diseño de Logo', requiresLogin: false },
+    'gd-cover': { to: 'oficina@grouvex.com', cc: '', bcc: '', subject: 'Consulta sobre Diseño de Portada', requiresLogin: false },
+    'gd-branding': { to: 'oficina@grouvex.com', cc: '', bcc: '', subject: 'Branding completo', requiresLogin: false },
+    'gd-other': { to: 'oficina@grouvex.com', cc: '', bcc: '', subject: 'Consulta general', requiresLogin: false },
+    
+    'other': { to: 'oficina@grouvex.com', cc: '', bcc: '', subject: 'Consulta general', requiresLogin: false}
+};
 
-    // Variables para cada pregunta y opciones
-    const q1Html = `
-        <p class="text-xl font-bold mb-5 text-gray-800">¿A qué área pertenece su consulta?</p>
-        <div class="options space-y-4">
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="organism" value="grouvex-studios" onclick="showNextQuestion('grouvex-studios')" class="mr-3">
-                <span class="font-medium text-gray-700">Grouvex Studios</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="organism" value="grouvex-records" onclick="showNextQuestion('grouvex-records')" class="mr-3">
-                <span class="font-medium text-gray-700">Grouvex Studios Records</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="organism" value="grouvex-design" onclick="showNextQuestion('grouvex-design')" class="mr-3">
-                <span class="font-medium text-gray-700">Grouvex Design</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="organism" value="other" onclick="showNextQuestion('other')" class="mr-3">
-                <span class="font-medium text-gray-700">Otros</span>
-            </label>
-        </div>
-    `;
+// Variables para cada pregunta y opciones
+const q1Html = `
+    <p>¿A qué área pertenece su consulta?</p>
+    <div class="options-container">
+        <label class="option-label">
+            <input type="radio" name="organism" value="grouvex-studios" onclick="showNextQuestion('grouvex-studios')" class="option-input">
+            <span class="option-text">Grouvex Studios</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="organism" value="grouvex-records" onclick="showNextQuestion('grouvex-records')" class="option-input">
+            <span class="option-text">Grouvex Studios Records</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="organism" value="grouvex-design" onclick="showNextQuestion('grouvex-design')" class="option-input">
+            <span class="option-text">Grouvex Design</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="organism" value="other" onclick="showNextQuestion('other')" class="option-input">
+            <span class="option-text">Otros</span>
+        </label>
+    </div>
+`;
 
-    // Preguntas secundarias para Grouvex Studios
-    const q2GsHtml = `
-        <p class="text-xl font-bold mb-5 text-gray-800">¿En qué le podemos ayudar?</p>
-        <div class="options space-y-4">
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="help-type-grouvex" value="technical" onclick="showThirdQuestion('gs-tech')" class="mr-3">
-                <span class="font-medium text-gray-700">Soporte técnico</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="help-type-grouvex" value="account" onclick="showThirdQuestion('gs-account')" class="mr-3">
-                <span class="font-medium text-gray-700">Gestión de cuenta</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="help-type-grouvex" value="billing" onclick="generateEmail('gs-billing')" class="mr-3">
-                <span class="font-medium text-gray-700">Facturación y pagos</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="help-type-grouvex" value="projects" onclick="showThirdQuestion('gs-projects')" class="mr-3">
-                <span class="font-medium text-gray-700">Proyectos</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="help-type-grouvex" value="legal" onclick="showThirdQuestion('gs-legal')" class="mr-3">
-                <span class="font-medium text-gray-700">Asuntos legales</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="help-type-grouvex" value="other" onclick="generateEmail('gs-other')" class="mr-3">
-                <span class="font-medium text-gray-700">Otros</span>
-            </label>
-        </div>
-    `;
+// Preguntas secundarias para Grouvex Studios
+const q2GsHtml = `
+    <p>¿En qué le podemos ayudar?</p>
+    <div class="options-container">
+        <label class="option-label">
+            <input type="radio" name="help-type-grouvex" value="technical" onclick="showThirdQuestion('gs-tech')" class="option-input">
+            <span class="option-text">Soporte técnico</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="help-type-grouvex" value="account" onclick="showThirdQuestion('gs-account')" class="option-input">
+            <span class="option-text">Gestión de cuenta</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="help-type-grouvex" value="billing" onclick="generateEmail('gs-billing')" class="option-input">
+            <span class="option-text">Facturación y pagos</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="help-type-grouvex" value="projects" onclick="showThirdQuestion('gs-projects')" class="option-input">
+            <span class="option-text">Proyectos</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="help-type-grouvex" value="legal" onclick="showThirdQuestion('gs-legal')" class="option-input">
+            <span class="option-text">Asuntos legales</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="help-type-grouvex" value="other" onclick="generateEmail('gs-other')" class="option-input">
+            <span class="option-text">Otros</span>
+        </label>
+    </div>
+`;
 
-    // Preguntas secundarias para Grouvex Studios Records
-    const q2GrHtml = `
-        <p class="text-xl font-bold mb-5 text-gray-800">¿Qué tipo de consulta tiene sobre Records?</p>
-        <div class="options space-y-4">
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="help-type-records" value="account" onclick="showThirdQuestion('gr-account')" class="mr-3">
-                <span class="font-medium text-gray-700">Gestión de cuenta artista</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="help-type-records" value="contentid-claim" onclick="generateEmail('gr-contentid-claim')" class="mr-3">
-                <span class="font-medium text-gray-700">Reclamar el ContentID de la musica</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="help-type-records" value="release" onclick="showThirdQuestion('gr-release')" class="mr-3">
-                <span class="font-medium text-gray-700">Lanzamientos musicales</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="help-type-records" value="subscription" onclick="showThirdQuestion('gr-subscription')" class="mr-3">
-                <span class="font-medium text-gray-700">Planes de Suscripción musical</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="help-type-records" value="royalties" onclick="generateEmail('gr-royalties')" class="mr-3">
-                <span class="font-medium text-gray-700">Regalías y pagos</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="help-type-records" value="collab" onclick="generateEmail('gr-collab')" class="mr-3">
-                <span class="font-medium text-gray-700">Colaboración con Grouvex</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="help-type-records" value="other" onclick="generateEmail('gr-other')" class="mr-3">
-                <span class="font-medium text-gray-700">Otro</span>
-            </label>
-        </div>
-    `;
+// Preguntas secundarias para Grouvex Studios Records
+const q2GrHtml = `
+    <p>¿Qué tipo de consulta tiene sobre Records?</p>
+    <div class="options-container">
+        <label class="option-label">
+            <input type="radio" name="help-type-records" value="account" onclick="showThirdQuestion('gr-account')" class="option-input">
+            <span class="option-text">Gestión de cuenta artista</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="help-type-records" value="contentid-claim" onclick="generateEmail('gr-contentid-claim')" class="option-input">
+            <span class="option-text">Reclamar el ContentID de la musica</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="help-type-records" value="release" onclick="showThirdQuestion('gr-release')" class="option-input">
+            <span class="option-text">Lanzamientos musicales</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="help-type-records" value="subscription" onclick="showThirdQuestion('gr-subscription')" class="option-input">
+            <span class="option-text">Planes de Suscripción musical</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="help-type-records" value="royalties" onclick="generateEmail('gr-royalties')" class="option-input">
+            <span class="option-text">Regalías y pagos</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="help-type-records" value="collab" onclick="generateEmail('gr-collab')" class="option-input">
+            <span class="option-text">Colaboración con Grouvex</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="help-type-records" value="other" onclick="generateEmail('gr-other')" class="option-input">
+            <span class="option-text">Otro</span>
+        </label>
+    </div>
+`;
 
-    // Preguntas secundarias para Grouvex Design
-    const q2GdHtml = `
-        <p class="text-xl font-bold mb-5 text-gray-800">¿Qué tipo de consulta tiene sobre Design?</p>
-        <div class="options space-y-4">
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="help-type-design" value="logo" onclick="generateEmail('gd-logo')" class="mr-3">
-                <span class="font-medium text-gray-700">Diseño de logo</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="help-type-design" value="cover" onclick="generateEmail('gd-cover')" class="mr-3">
-                <span class="font-medium text-gray-700">Diseño de portada</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="help-type-design" value="branding" onclick="generateEmail('gd-branding')" class="mr-3">
-                <span class="font-medium text-gray-700">Branding completo</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="help-type-design" value="other" onclick="generateEmail('gd-other')" class="mr-3">
-                <span class="font-medium text-gray-700">Otro</span>
-            </label>
-        </div>
-    `;
+// Preguntas secundarias para Grouvex Design
+const q2GdHtml = `
+    <p>¿Qué tipo de consulta tiene sobre Design?</p>
+    <div class="options-container">
+        <label class="option-label">
+            <input type="radio" name="help-type-design" value="logo" onclick="generateEmail('gd-logo')" class="option-input">
+            <span class="option-text">Diseño de logo</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="help-type-design" value="cover" onclick="generateEmail('gd-cover')" class="option-input">
+            <span class="option-text">Diseño de portada</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="help-type-design" value="branding" onclick="generateEmail('gd-branding')" class="option-input">
+            <span class="option-text">Branding completo</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="help-type-design" value="other" onclick="generateEmail('gd-other')" class="option-input">
+            <span class="option-text">Otro</span>
+        </label>
+    </div>
+`;
 
-    // Preguntas secundarias para Otros
-    const q2OtherHtml = `
-        <p class="text-xl font-bold mb-5 text-gray-800">Otros asuntos:</p>
-        <button onclick="generateEmail('other')" class="w-full px-6 py-3 btn-gradient text-white font-semibold rounded-lg shadow-md hover:shadow-xl transition-all duration-200">
-            Generar Email para Otros
-        </button>
-    `;
+// Preguntas secundarias para Otros
+const q2OtherHtml = `
+    <p>Otros asuntos:</p>
+    <button onclick="generateEmail('other')" class="gradient-button">
+        Generar Email para Otros
+    </button>
+`;
 
-    // Preguntas terciarias para Grouvex Studios - Soporte Técnico
-    const q3GsTechHtml = `
-        <p class="text-xl font-bold mb-5 text-gray-800">¿Cuál es el problema técnico?</p>
-        <div class="options space-y-4">
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="tech-issue" value="website-error" onclick="generateEmail('gs-website-error')" class="mr-3">
-                <span class="font-medium text-gray-700">Error en la Website</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="tech-issue" value="forgot-userid" onclick="generateEmail('gs-forgot-userid')" class="mr-3">
-                <span class="font-medium text-gray-700">No recuerdo mi GSUserID</span>
-            </label>
-        </div>
-    `;
+// Preguntas terciarias para Grouvex Studios - Soporte Técnico
+const q3GsTechHtml = `
+    <p>¿Cuál es el problema técnico?</p>
+    <div class="options-container">
+        <label class="option-label">
+            <input type="radio" name="tech-issue" value="website-error" onclick="generateEmail('gs-website-error')" class="option-input">
+            <span class="option-text">Error en la Website</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="tech-issue" value="forgot-userid" onclick="generateEmail('gs-forgot-userid')" class="option-input">
+            <span class="option-text">No recuerdo mi GSUserID</span>
+        </label>
+    </div>
+`;
 
-    // Preguntas terciarias para Grouvex Studios - Gestión de Cuenta
-    const q3GsAccountHtml = `
-        <p class="text-xl font-bold mb-5 text-gray-800">Gestión de cuenta:</p>
-        <div class="options space-y-4">
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="account-action" value="create" onclick="generateEmail('gs-account-create')" class="mr-3">
-                <span class="font-medium text-gray-700">Crear nueva cuenta</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="account-action" value="modify" onclick="generateEmail('gs-account-modify')" class="mr-3">
-                <span class="font-medium text-gray-700">Modificar datos de cuenta</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="account-action" value="delete" onclick="generateEmail('gs-account-delete')" class="mr-3">
-                <span class="font-medium text-gray-700">Eliminar mi cuenta</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="account-action" value="suspend" onclick="generateEmail('gs-account-suspend')" class="mr-3">
-                <span class="font-medium text-gray-700">Suspender temporalmente mi cuenta</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="account-action" value="reactivate" onclick="generateEmail('gs-account-reactivate')" class="mr-3">
-                <span class="font-medium text-gray-700">Reactivar mi cuenta</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="account-action" value="arco" onclick="generateEmail('gs-account-arco')" class="mr-3">
-                <span class="font-medium text-gray-700">Ejercer derechos ARCO (Acceso, Rectificación, Cancelación, Oposición)</span>
-            </label>
-        </div>
-    `;
+// Preguntas terciarias para Grouvex Studios - Gestión de Cuenta
+const q3GsAccountHtml = `
+    <p>Gestión de cuenta:</p>
+    <div class="options-container">
+        <label class="option-label">
+            <input type="radio" name="account-action" value="create" onclick="generateEmail('gs-account-create')" class="option-input">
+            <span class="option-text">Crear nueva cuenta</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="account-action" value="modify" onclick="generateEmail('gs-account-modify')" class="option-input">
+            <span class="option-text">Modificar datos de cuenta</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="account-action" value="delete" onclick="generateEmail('gs-account-delete')" class="option-input">
+            <span class="option-text">Eliminar mi cuenta</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="account-action" value="suspend" onclick="generateEmail('gs-account-suspend')" class="option-input">
+            <span class="option-text">Suspender temporalmente mi cuenta</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="account-action" value="reactivate" onclick="generateEmail('gs-account-reactivate')" class="option-input">
+            <span class="option-text">Reactivar mi cuenta</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="account-action" value="arco" onclick="generateEmail('gs-account-arco')" class="option-input">
+            <span class="option-text">Ejercer derechos ARCO (Acceso, Rectificación, Cancelación, Oposición)</span>
+        </label>
+    </div>
+`;
 
-    // Preguntas terciarias para Grouvex Studios - Proyectos
-    const q3GsProjectsHtml = `
-        <p class="text-xl font-bold mb-5 text-gray-800">Gestión de proyectos:</p>
-        <div class="options space-y-4">
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="project-action" value="consult" onclick="generateEmail('gs-project-consult')" class="mr-3">
-                <span class="font-medium text-gray-700">Consultar sobre proyecto</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="project-action" value="submit" onclick="generateEmail('gs-project-submit')" class="mr-3">
-                <span class="font-medium text-gray-700">Presentar nuevo proyecto</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="project-action" value="status" onclick="generateEmail('gs-project-status')" class="mr-3">
-                <span class="font-medium text-gray-700">Consultar estado de proyecto</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="project-action" value="cancel" onclick="generateEmail('gs-project-cancel')" class="mr-3">
-                <span class="font-medium text-gray-700">Cancelar proyecto</span>
-            </label>
-        </div>
-    `;
+// Preguntas terciarias para Grouvex Studios - Proyectos
+const q3GsProjectsHtml = `
+    <p>Gestión de proyectos:</p>
+    <div class="options-container">
+        <label class="option-label">
+            <input type="radio" name="project-action" value="consult" onclick="generateEmail('gs-project-consult')" class="option-input">
+            <span class="option-text">Consultar sobre proyecto</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="project-action" value="submit" onclick="generateEmail('gs-project-submit')" class="option-input">
+            <span class="option-text">Presentar nuevo proyecto</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="project-action" value="status" onclick="generateEmail('gs-project-status')" class="option-input">
+            <span class="option-text">Consultar estado de proyecto</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="project-action" value="cancel" onclick="generateEmail('gs-project-cancel')" class="option-input">
+            <span class="option-text">Cancelar proyecto</span>
+        </label>
+    </div>
+`;
 
-    // Preguntas terciarias para Grouvex Studios - Asuntos Legales
-    const q3GsLegalHtml = `
-        <p class="text-xl font-bold mb-5 text-gray-800">Asuntos legales:</p>
-        <div class="options space-y-4">
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="legal-issue" value="rule-breach" onclick="generateEmail('gs-rule-breach')" class="mr-3">
-                <span class="font-medium text-gray-700">Incumplimiento de Normas</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="legal-issue" value="rule-doubt" onclick="generateEmail('gs-rule-doubt')" class="mr-3">
-                <span class="font-medium text-gray-700">Duda de las Normas</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="legal-issue" value="contract" onclick="generateEmail('gs-contract-consult')" class="mr-3">
-                <span class="font-medium text-gray-700">Consulta sobre contrato</span>
-            </label>
-        </div>
-    `;
+// Preguntas terciarias para Grouvex Studios - Asuntos Legales
+const q3GsLegalHtml = `
+    <p>Asuntos legales:</p>
+    <div class="options-container">
+        <label class="option-label">
+            <input type="radio" name="legal-issue" value="rule-breach" onclick="generateEmail('gs-rule-breach')" class="option-input">
+            <span class="option-text">Incumplimiento de Normas</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="legal-issue" value="rule-doubt" onclick="generateEmail('gs-rule-doubt')" class="option-input">
+            <span class="option-text">Duda de las Normas</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="legal-issue" value="contract" onclick="generateEmail('gs-contract-consult')" class="option-input">
+            <span class="option-text">Consulta sobre contrato</span>
+        </label>
+    </div>
+`;
 
-    // Preguntas terciarias para Grouvex Studios Records - Gestión de Cuenta
-    const q3GrAccountHtml = `
-        <p class="text-xl font-bold mb-5 text-gray-800">Gestión de cuenta artista:</p>
-        <div class="options space-y-4">
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="gr-account-action" value="create" onclick="generateEmail('gr-account-create')" class="mr-3">
-                <span class="font-medium text-gray-700">Registrarme como artista nuevo</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="gr-account-action" value="create" onclick="generateEmail('gr-account-create2')" class="mr-3">
-                <span class="font-medium text-gray-700">Registrar un nuevo artista a mi cuenta</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="gr-account-action" value="modify" onclick="generateEmail('gr-account-modify')" class="mr-3">
-                <span class="font-medium text-gray-700">Modificar mis datos de artista</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="gr-account-action" value="delete" onclick="generateEmail('gr-account-delete')" class="mr-3">
-                <span class="font-medium text-gray-700">Eliminar mi cuenta de artista</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="gr-account-action" value="arco" onclick="generateEmail('gr-account-arco')" class="mr-3">
-                <span class="font-medium text-gray-700">Ejercer derechos ARCO (Acceso, Rectificación, Cancelación, Oposición)</span>
-            </label>
-        </div>
-    `;
+// Preguntas terciarias para Grouvex Studios Records - Gestión de Cuenta
+const q3GrAccountHtml = `
+    <p>Gestión de cuenta artista:</p>
+    <div class="options-container">
+        <label class="option-label">
+            <input type="radio" name="gr-account-action" value="create" onclick="generateEmail('gr-account-create')" class="option-input">
+            <span class="option-text">Registrarme como artista nuevo</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="gr-account-action" value="create" onclick="generateEmail('gr-account-create2')" class="option-input">
+            <span class="option-text">Registrar un nuevo artista a mi cuenta</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="gr-account-action" value="modify" onclick="generateEmail('gr-account-modify')" class="option-input">
+            <span class="option-text">Modificar mis datos de artista</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="gr-account-action" value="delete" onclick="generateEmail('gr-account-delete')" class="option-input">
+            <span class="option-text">Eliminar mi cuenta de artista</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="gr-account-action" value="arco" onclick="generateEmail('gr-account-arco')" class="option-input">
+            <span class="option-text">Ejercer derechos ARCO (Acceso, Rectificación, Cancelación, Oposición)</span>
+        </label>
+    </div>
+`;
 
-    // Preguntas terciarias para Grouvex Studios Records - Lanzamientos
-    const q3GrReleaseHtml = `
-        <p class="text-xl font-bold mb-5 text-gray-800">Lanzamientos musicales:</p>
-        <div class="options space-y-4">
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="release-action" value="consult" onclick="generateEmail('gr-release-consult')" class="mr-3">
-                <span class="font-medium text-gray-700">Consultar sobre lanzamiento</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="release-action" value="submit" onclick="generateEmail('gr-release-submit')" class="mr-3">
-                <span class="font-medium text-gray-700">Solicitar nuevo lanzamiento</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="release-action" value="problem" onclick="generateEmail('gr-release-problem')" class="mr-3">
-                <span class="font-medium text-gray-700">Reportar problema con lanzamiento</span>
-            </label>
-        </div>
-    `;
-    // Preguntas terciarias para Grouvex Studios Records - Planes de Suscripción musical
-    const q3GrSubscriptionHtml = `
-        <p class="text-xl font-bold mb-5 text-gray-800">Planes de Suscripción musical:</p>
-        <div class="options space-y-4">
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="subscription-issue" value="payment-error" onclick="generateEmail('gr-subscription-payment-error')" class="mr-3">
-                <span class="font-medium text-gray-700">Error en el pago de Stripe</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="subscription-issue" value="portal-error" onclick="generateEmail('gr-subscription-portal-error')" class="mr-3">
-                <span class="font-medium text-gray-700">Error en el Portal de Stripe</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="subscription-issue" value="payment-doubt" onclick="generateEmail('gr-subscription-payment-doubt')" class="mr-3">
-                <span class="font-medium text-gray-700">Duda de Pagos y Planes</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="subscription-issue" value="basic-custom" onclick="generateEmail('gr-subscription-basic-custom')" class="mr-3">
-                <span class="font-medium text-gray-700">Solicitar un Plan Básico Personalizado</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="subscription-issue" value="standard-custom" onclick="generateEmail('gr-subscription-standard-custom')" class="mr-3">
-                <span class="font-medium text-gray-700">Solicitar un Plan Estandar Personalizado</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="subscription-issue" value="individual-custom" onclick="generateEmail('gr-subscription-individual-custom')" class="mr-3">
-                <span class="font-medium text-gray-700">Solicitar un Plan Personalizado Individual</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="subscription-issue" value="custom-percent" onclick="generateEmail('gr-subscription-custom-percent')" class="mr-3">
-                <span class="font-medium text-gray-700">Solicitar un Plan Custom %</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="subscription-issue" value="custom-euro" onclick="generateEmail('gr-subscription-custom-euro')" class="mr-3">
-                <span class="font-medium text-gray-700">Solicitar un Plan Custom €</span>
-            </label>
-            <label class="flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:shadow-md">
-                <input type="radio" name="subscription-issue" value="other" onclick="generateEmail('gr-subscription-other')" class="mr-3">
-                <span class="font-medium text-gray-700">Otras dudas de Planes de Suscripción musical</span>
-            </label>
-        </div>
-    `;
-    // Rellena los contenedores de preguntas dinámicamente
-    function showNextQuestion(organism) {
-        const q2Container = document.getElementById('q2-container');
-        const q3Container = document.getElementById('q3-container');
-        const submitSection = document.getElementById('submit-section');
+// Preguntas terciarias para Grouvex Studios Records - Lanzamientos
+const q3GrReleaseHtml = `
+    <p>Lanzamientos musicales:</p>
+    <div class="options-container">
+        <label class="option-label">
+            <input type="radio" name="release-action" value="consult" onclick="generateEmail('gr-release-consult')" class="option-input">
+            <span class="option-text">Consultar sobre lanzamiento</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="release-action" value="submit" onclick="generateEmail('gr-release-submit')" class="option-input">
+            <span class="option-text">Solicitar nuevo lanzamiento</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="release-action" value="problem" onclick="generateEmail('gr-release-problem')" class="option-input">
+            <span class="option-text">Reportar problema con lanzamiento</span>
+        </label>
+    </div>
+`;
 
-        // Limpiar contenedores para nuevas opciones
-        q2Container.innerHTML = '';
-        q3Container.innerHTML = '';
-        submitSection.classList.add('hidden');
-        
-        switch (organism) {
-            case 'grouvex-studios':
-                q2Container.innerHTML = q2GsHtml;
-                break;
-            case 'grouvex-records':
-                q2Container.innerHTML = q2GrHtml;
-                break;
-            case 'grouvex-design':
-                q2Container.innerHTML = q2GdHtml;
-                break;
-            case 'other':
-                q2Container.innerHTML = q2OtherHtml;
-                break;
-        }
+// Preguntas terciarias para Grouvex Studios Records - Planes de Suscripción musical
+const q3GrSubscriptionHtml = `
+    <p>Planes de Suscripción musical:</p>
+    <div class="options-container">
+        <label class="option-label">
+            <input type="radio" name="subscription-issue" value="payment-error" onclick="generateEmail('gr-subscription-payment-error')" class="option-input">
+            <span class="option-text">Error en el pago de Stripe</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="subscription-issue" value="portal-error" onclick="generateEmail('gr-subscription-portal-error')" class="option-input">
+            <span class="option-text">Error en el Portal de Stripe</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="subscription-issue" value="payment-doubt" onclick="generateEmail('gr-subscription-payment-doubt')" class="option-input">
+            <span class="option-text">Duda de Pagos y Planes</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="subscription-issue" value="basic-custom" onclick="generateEmail('gr-subscription-basic-custom')" class="option-input">
+            <span class="option-text">Solicitar un Plan Básico Personalizado</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="subscription-issue" value="standard-custom" onclick="generateEmail('gr-subscription-standard-custom')" class="option-input">
+            <span class="option-text">Solicitar un Plan Estandar Personalizado</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="subscription-issue" value="individual-custom" onclick="generateEmail('gr-subscription-individual-custom')" class="option-input">
+            <span class="option-text">Solicitar un Plan Personalizado Individual</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="subscription-issue" value="custom-percent" onclick="generateEmail('gr-subscription-custom-percent')" class="option-input">
+            <span class="option-text">Solicitar un Plan Custom %</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="subscription-issue" value="custom-euro" onclick="generateEmail('gr-subscription-custom-euro')" class="option-input">
+            <span class="option-text">Solicitar un Plan Custom €</span>
+        </label>
+        <label class="option-label">
+            <input type="radio" name="subscription-issue" value="other" onclick="generateEmail('gr-subscription-other')" class="option-input">
+            <span class="option-text">Otras dudas de Planes de Suscripción musical</span>
+        </label>
+    </div>
+`;
+
+// Rellena los contenedores de preguntas dinámicamente
+function showNextQuestion(organism) {
+    const q2Container = document.getElementById('q2-container');
+    const q3Container = document.getElementById('q3-container');
+    const submitSection = document.getElementById('submit-section');
+
+    // Limpiar contenedores para nuevas opciones
+    q2Container.innerHTML = '';
+    q3Container.innerHTML = '';
+    submitSection.style.display = 'none';
+    
+    switch (organism) {
+        case 'grouvex-studios':
+            q2Container.innerHTML = q2GsHtml;
+            break;
+        case 'grouvex-records':
+            q2Container.innerHTML = q2GrHtml;
+            break;
+        case 'grouvex-design':
+            q2Container.innerHTML = q2GdHtml;
+            break;
+        case 'other':
+            q2Container.innerHTML = q2OtherHtml;
+            break;
     }
+}
 
-    // Rellena el tercer nivel de preguntas dinámicamente
-    function showThirdQuestion(questionType) {
-        const q3Container = document.getElementById('q3-container');
-        const submitSection = document.getElementById('submit-section');
+// Rellena el tercer nivel de preguntas dinámicamente
+function showThirdQuestion(questionType) {
+    const q3Container = document.getElementById('q3-container');
+    const submitSection = document.getElementById('submit-section');
 
-        q3Container.innerHTML = '';
-        submitSection.classList.add('hidden');
+    q3Container.innerHTML = '';
+    submitSection.style.display = 'none';
 
-        switch (questionType) {
-            case 'gs-tech':
-                q3Container.innerHTML = q3GsTechHtml;
-                break;
-            case 'gs-account':
-                q3Container.innerHTML = q3GsAccountHtml;
-                break;
-            case 'gs-projects':
-                q3Container.innerHTML = q3GsProjectsHtml;
-                break;
-            case 'gs-legal':
-                q3Container.innerHTML = q3GsLegalHtml;
-                break;
-            case 'gr-account':
-                q3Container.innerHTML = q3GrAccountHtml;
-                break;
-            case 'gr-release':
-                q3Container.innerHTML = q3GrReleaseHtml;
-                break;
-            case 'gr-subscription': 
-                q3Container.innerHTML = q3GrSubscriptionHtml;
-                break;
-        }
+    switch (questionType) {
+        case 'gs-tech':
+            q3Container.innerHTML = q3GsTechHtml;
+            break;
+        case 'gs-account':
+            q3Container.innerHTML = q3GsAccountHtml;
+            break;
+        case 'gs-projects':
+            q3Container.innerHTML = q3GsProjectsHtml;
+            break;
+        case 'gs-legal':
+            q3Container.innerHTML = q3GsLegalHtml;
+            break;
+        case 'gr-account':
+            q3Container.innerHTML = q3GrAccountHtml;
+            break;
+        case 'gr-release':
+            q3Container.innerHTML = q3GrReleaseHtml;
+            break;
+        case 'gr-subscription': 
+            q3Container.innerHTML = q3GrSubscriptionHtml;
+            break;
     }
- 
-    function showLoginRequired() {
-      const emailResult = document.getElementById('email-result');
-      emailResult.innerHTML = `
-          <div class="p-6 bg-red-50 border border-red-200 rounded-lg">
-              <h3 class="text-xl font-bold text-red-800 mb-2">Acción requerida</h3>
-              <p class="mb-4">Debes iniciar sesión para enviar este tipo de consulta.</p>
-          </div>
-      `;
-      document.getElementById('submit-section').classList.remove('hidden');
-    }
-    // Función para configurar la validación de checkboxes
+}
+
+function showLoginRequired() {
+  const emailResult = document.getElementById('email-result');
+  emailResult.innerHTML = `
+      <div style="padding: 24px; background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 8px;">
+          <h3 style="font-size: 20px; font-weight: 700; color: #991b1b; margin-bottom: 8px;">Acción requerida</h3>
+          <p style="margin-bottom: 16px;">Debes iniciar sesión para enviar este tipo de consulta.</p>
+      </div>
+  `;
+  document.getElementById('submit-section').style.display = 'block';
+}
+
+// Función para configurar la validación de checkboxes
 function setupCheckboxValidation() {
   // Seleccionar los checkboxes (usando clases en lugar de IDs porque se crean dinámicamente)
-  const checkboxes = document.querySelectorAll('.accept-checkbox');const mailtoLink = document.getElementById('mailto-link-btn');
+  const checkboxes = document.querySelectorAll('.checkbox-input');
+  const mailtoLink = document.getElementById('mailto-link-btn');
   
   // Validar checkboxes al cambiar
-  checkboxes.forEach(checkbox => {checkbox.addEventListener('change', validateCheckboxes);});
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', validateCheckboxes);
+  });
 
   // Validar al hacer clic en el botón
   mailtoLink.addEventListener('click', function(e) {
-    if (!areAllCheckboxesChecked()) {e.preventDefault();alert("Debes aceptar todas las condiciones antes de continuar.");}
+    if (!areAllCheckboxesChecked()) {
+      e.preventDefault();
+      alert("Debes aceptar todas las condiciones antes de continuar.");
+    }
   });
 
   // Función para verificar todos los checkboxes
-  function areAllCheckboxesChecked() {return Array.from(checkboxes).every(checkbox => checkbox.checked);}
+  function areAllCheckboxesChecked() {
+    return Array.from(checkboxes).every(checkbox => checkbox.checked);
+  }
+  
   // Función para validar y actualizar el estado del botón
   function validateCheckboxes() {
     const allChecked = areAllCheckboxesChecked();
     if (allChecked) {
-      mailtoLink.classList.remove('opacity-50', 'cursor-not-allowed');mailtoLink.classList.add('hover:shadow-xl');document.getElementById('mailto-link-btn').disabled = false;
+      mailtoLink.classList.remove('gradient-button:disabled');
+      mailtoLink.disabled = false;
     } else {
-      mailtoLink.classList.add('opacity-50', 'cursor-not-allowed');mailtoLink.classList.remove('hover:shadow-xl');document.getElementById('mailto-link-btn').disabled = true;
+      mailtoLink.classList.add('gradient-button:disabled');
+      mailtoLink.disabled = true;
     }
   }
+  
   // Inicializar validación
   validateCheckboxes();
 }
-    // Genera el enlace mailto según las selecciones (función se mantiene igual)
-    function generateEmail(optionKey) {
-      let gsUserIdInput = document.getElementById('gs-user-id');
-        let gsUserId = gsUserIdInput.value || "Not Defined";
-        gsUserIdInput.addEventListener('input', function() {
-         console.log('El campo GSUserID ha cambiado:', this.value);
-        });
-        const emailInfo = emailMap[optionKey];
-        if (emailInfo.requiresLogin) {  // Solo si requiere login
-          if (gsUserId === "Not Defined") {  // Y no está verificado
-            console.log("Login requerido: Usuario no verificado");
-            showLoginRequired();
-            return;
-          } else {
-            console.log("No se requiere login: Usuario ya tiene GSUserID");
-          }
-        } else {
-         console.log("No se requiere login: Opción no necesita autenticación");
-        }
 
-        const to = emailInfo.to;
-        const cc = emailInfo.cc;
-        const bcc = emailInfo.bcc;
-        const subject = emailInfo.subject;
-        
-        const now = new Date();
-        const hour = now.getHours();
-        let greeting;
-        if (hour < 12) {
-            greeting = "Buenos días";
-        } else if (hour < 19) {
-            greeting = "Buenas tardes";
-        } else {
-            greeting = "Buenas noches";
-        }
-
-        let content;
-        switch (optionKey) {
-            case 'gs-website-error':
-                content = 'Tengo un problema en la Website (grouvex.github.io):\n[Por favor, describe tu problema o consulta con el mayor detalle posible.]';
-                break;
-            case 'gr-contentid-claim':
-                content = 'Quiero reclamar el ContenID de [UPC/EAN del lanzamiento]';
-                break;
-            case 'gr-collab':
-                content = 'Me gustaría colaborar con Grouvex en el proyecto [Nombre del Proyecto]. Sé que el 5% de las regalías se lo queda el artista para asuntos de solidaridad.';
-                break;
-            case 'gs-rule-breach':
-                content = 'He visto que en [Nombre de la Red Social] el miembro [Nombre del miembro/GSUserID/Telefono/correo/informacion personal] ha incumplido una de las normas de DDOO - Grouvex Studios en el que indica lo siguiente\n[Norma que ha incumplido]';
-                break;
-            case 'gs-rule-doubt':
-                content = 'Tengo una duda respecto a la norma [Indicar el numero del titulo, numero de articulo, seccion, capitulo, anexo...] en el que dice [Contenido de la norma]';
-                break;
-            case 'gs-account-create':
-                content = 'Solicito la creación de una cuenta en Grouvex Studios con los siguientes datos:\nNombre completo: [nombre]\nCorreo electrónico: \nTeléfono de contacto: [Prefijo y Teléfono]\nTipo de cuenta solicitada: [tipo] \nConfirmo que comprendo que he tenido que iniciar sesión en https://grouvex.github.io/login .';
-                break;
-            case 'gr-account-create':
-                content = 'Solicito la creación de una cuenta en Grouvex Studios con los siguientes datos:\nNombre completo: [nombre]\nNombre artístico: [nombre artístico]\nCorreo electrónico: \nTeléfono de contacto: [Prefijo y Teléfono]\nTipo de cuenta solicitada: \nConfirmo que comprendo que he tenido que iniciar sesión en https://grouvex.github.io/login .';
-                break;
-            case 'gs-account-modify':
-                content = 'Solicito modificar los siguientes datos de mi cuenta:\nDatos a modificar (indicar qué campos y nuevos valores): \nRazón del cambio: \nConfirmo que comprendo que esta acción es reversible después de 2 semanas.';
-                break;
-            case 'gs-account-delete':
-                content = 'Solicito la eliminación permanente de mi cuenta GSUserID: \nRazón de la eliminación: \nConfirmo que comprendo que esta acción es irreversible y que perderé acceso a todos los servicios vinculados a esta cuenta.\nConfirmo que deberé de haber hecho una copia, rellenado, firmado y adjuntado la Solicitud de Terminación de Contrato --> https://docs.google.com/document/d/1weYhQ8oog8sySUS3pR05yBg_o4ffMpQz/edit?usp=sharing&ouid=116251818923032066333&rtpof=true&sd=true';
-                break;
-            case 'gs-account-arco':
-                content = 'Ejercicio de derechos ARCO (Acceso, Rectificación, Cancelación, Oposición)\nTipo de derecho que deseo ejercer: [tipo: Acceso, Rectificación, Cancelación o Oposición]\nDatos afectados: [datos afectados]\nInformación adicional requerida: [información adicional requerida]\nRazón de la solicitud: [razón]';
-                break;
-            case 'gr-account-arco':
-                content = 'Ejercicio de derechos ARCO como artista (Acceso, Rectificación, Cancelación, Oposición)\nTipo de derecho que deseo ejercer: [tipo: Acceso, Rectificación, Cancelación o Oposición]\nDatos artísticos afectados: [datos afectados]\nLanzamientos específicos involucrados: [lanzamientos con sus UPC involucrados]\nRazón de la solicitud: [razón]';
-                break;
-            case 'gs-project-submit':
-                content = 'Presentación de nuevo proyecto\nNombre del proyecto: \nDescripción: \nParticipantes: [Participantes]\nFecha estimada de inicio: [fecha estimada]\nPresupuesto estimado: [presupuesto]\nObservaciones: [observaciones (no requerido)]';
-                break;
-            case 'gr-release-submit':
-                content = 'Solicitud de nuevo lanzamiento\nEstoy informado que debo solicituar un lanzamiento a través de: https://forms.gle/awff6TqqTj1aXENc7';
-                break;
-            case 'gr-subscription-payment-error':
-                content = 'He experimentado un error en el pago de Stripe con los siguientes detalles:\n- ID de transacción: [ID de transacción]\n- Fecha del error: [fecha]\n- Monto: [monto]\n- Método de pago: [tarjeta/PayPal/etc.]\n- Descripción del error: [describa el error con detalle]';
-                break;
-            case 'gr-subscription-portal-error':
-                content = 'He encontrado un error en el Portal de Stripe con los siguientes detalles:\n- Sección del portal: [sección donde ocurrió el error]\n- Fecha del error: [fecha]\n- Descripción del error: [describa qué estaba intentando hacer y qué error apareció]\n- Captura de pantalla: [¿tiene captura de pantalla?]';
-                break;
-            case 'gr-subscription-payment-doubt':
-                content = 'Tengo una duda sobre Pagos y Planes:\n- Tipo de duda: [facturación, cargos, renovación, etc.]\n- Plan actual: [nombre del plan]\n- Fecha del último pago: [fecha]\n- Detalles de la duda: [explique su duda con el máximo detalle posible]';
-                break;
-            case 'gr-subscription-basic-custom':
-                content = 'Solicito un Plan Básico Personalizado con las siguientes características:\n- Duración deseada: [mensual/anual]\n- Requisitos específicos: [detalle cualquier requisito especial]';
-                break;
-            case 'gr-subscription-standard-custom':
-                content = 'Solicito un Plan Estandar Personalizado con las siguientes características:\n- Duración deseada: [mensual/anual]\n- Requisitos específicos: [detalle cualquier requisito especial]';
-                break;
-            case 'gr-subscription-individual-custom':
-                content = 'Solicito un Plan Personalizado Individual con las siguientes características:\n- Características deseadas: [liste las características que desea]\n- Requisitos específicos: [detalle cualquier requisito especial]';
-                break;
-            case 'gr-subscription-custom-percent':
-                content = 'Solicito un Plan Custom % con las siguientes especificaciones:\n- Porcentaje deseado: [%]\n- Duración deseada: [mensual/anual]\n- Observaciones: [cualquier observación adicional]';
-                break;
-            case 'gr-subscription-custom-euro':
-                content = 'Solicito un Plan Custom € con las siguientes especificaciones:\n- Precio deseado: [€]\n- Duración deseada: [mensual/anual]\n- Observaciones: [cualquier observación adicional]';
-                break;
-            case 'gr-subscription-other':
-                content = 'Tengo otras dudas sobre Planes de Suscripción musical:\n- Tipo de consulta: [describa el tipo de consulta]\n- Detalles: [explique su consulta con el máximo detalle posible]\n- Plan actual (si aplica): [nombre del plan]\n- Fechas relevantes: [fechas importantes relacionadas con su consulta]';
-                break;
-            default:
-                content = '[Contenido de la consulta. Por favor, especifica tu problema o consulta.]';
-                break;
-        }
-
-        const body = `Enviado desde el Centro de Ayuda ☯\n------------------------------------\n${greeting}\n${content}\n\nUn saludo,\n[Name] - ${gsUserId}`;
-
-        // Construir el asunto final
-        const finalSubject = `[${gsUserId}] ${subject}`;
-
-        // Codifica los componentes para URL
-        const encodedTo = encodeURIComponent(to);
-        const encodedSubject = encodeURIComponent(finalSubject);
-        const encodedBody = encodeURIComponent(body);
-        const encodedCc = encodeURIComponent(cc);
-        const encodedBcc = encodeURIComponent(bcc);
-        
-        // Construye el enlace mailto con todos los campos, incluso si están vacíos
-        const mailtoLink = `mailto:${encodedTo}?subject=${encodedSubject}&body=${encodedBody}&cc=${encodedCc}&bcc=${encodedBcc}`;
-        
-        // Muestra el resultado al usuario
-        const emailResult = document.getElementById('email-result');
-        emailResult.innerHTML = `
-            <div class="space-y-2">
-                <p class="font-bold text-lg">¡Listo para enviar!</p>
-                <p><strong>Para:</strong> <span class="text-gray-600">${to}</span></p>
-                <p><strong>Con copia (CC):</strong> <span class="text-gray-600">${cc || 'Ninguno'}</span></p>
-                <p><strong>Con copia oculta (BCC):</strong> <span class="text-gray-600">${bcc || 'Ninguno'}</span></p>
-                <p><strong>Asunto:</strong> <span class="text-gray-600">${finalSubject}</span></p>
-                <p><strong>Contenido:</strong></p>
-                <pre class="whitespace-pre-wrap bg-gray-200 p-4 rounded-md text-sm">${body}</pre>
-                <button onclick="window.location.href='${mailtoLink}'" id="mailto-link-btn" style="display: inline-block !important; margin-top: 1rem !important; padding: 0.75rem 1.5rem !important; background: linear-gradient(to right, #6c5ce7, #00cec9) !important; color: white !important; font-weight: 600 !important; border-radius: 0.5rem !important; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important; border: none !important;" title="Abrir cliente de correo para enviar tu consulta" disabled>
-                  Abrir cliente de correo</button>
-              <div style="margin-bottom: 20px; border: 1px solid #e0e0e0; padding: 15px; border-radius: 5px;">
-                  <p style="color:red; font-size:12px; margin-top: 0;">
-                      Recuerde que debe <strong>remplazar los campos rellenables entre corchetes "[]"</strong>. 
-                      <small>Ejemplo: [Name] hola; en el correo: Grouvex hola. Todos los campos son obligatorios salvo que especifique lo contrario. Los campos que no rellenes, elimina el campo como --> Fecha: [fecha], en el correo --> Fecha:</small>
-                  </p>
-                  
-                  <label style="display: flex; align-items: center; cursor: pointer; margin: 10px 0;">
-                      <input type="checkbox" class="accept-checkbox" required style="margin-right: 8px;">
-                      <span style="color:red; font-size:12px;">
-                          Acepto que la plantilla y los correos a los que se envía no se pueden modificar, salvo en campos rellenables. Cualquier otra modificación invalidará el correo.
-                      </span>
-                  </label>
-                  
-                  <label style="display: flex; align-items: center; cursor: pointer;">
-                      <input type="checkbox" class="accept-checkbox" required style="margin-right: 8px;">
-                      <span style="color:red; font-size:12px;">
-                          Confirmo que he entendido el formato de campos rellenables y eliminaré los que no use.
-                      </span>
-                  </label>
-                  <label style="display: flex; align-items: center; cursor: pointer;">
-                      <input type="checkbox" class="accept-checkbox" required style="margin-right: 8px;">
-                      <span style="color:red; font-size:12px;">
-                          Acepto los <a href="https://drive.google.com/file/d/1Ub3YiIsQbwyev19p1wxutAXcpHShL7_K/view" target="_blank">DDOO - Grouvex Studios</a>
-                      </span>
-                  </label>
-              </div>
-            </div>
-        `;
-        document.getElementById('submit-section').classList.remove('hidden');
-        setupCheckboxValidation();
+// Genera el enlace mailto según las selecciones
+function generateEmail(optionKey) {
+  let gsUserIdInput = document.getElementById('gs-user-id');
+  let gsUserId = gsUserIdInput.value || "Not Defined";
+  gsUserIdInput.addEventListener('input', function() {
+    console.log('El campo GSUserID ha cambiado:', this.value);
+  });
+  
+  const emailInfo = emailMap[optionKey];
+  if (emailInfo.requiresLogin) {  // Solo si requiere login
+    if (gsUserId === "Not Defined") {  // Y no está verificado
+      console.log("Login requerido: Usuario no verificado");
+      showLoginRequired();
+      return;
+    } else {
+      console.log("No se requiere login: Usuario ya tiene GSUserID");
     }
+  } else {
+    console.log("No se requiere login: Opción no necesita autenticación");
+  }
+
+  const to = emailInfo.to;
+  const cc = emailInfo.cc;
+  const bcc = emailInfo.bcc;
+  const subject = emailInfo.subject;
+  
+  const now = new Date();
+  const hour = now.getHours();
+  let greeting;
+  if (hour < 12) {
+      greeting = "Buenos días";
+  } else if (hour < 19) {
+      greeting = "Buenas tardes";
+  } else {
+      greeting = "Buenas noches";
+  }
+
+  let content;
+  switch (optionKey) {
+      case 'gs-website-error':
+          content = 'Tengo un problema en la Website (grouvex.github.io):\n[Por favor, describe tu problema o consulta con el mayor detalle posible.]';
+          break;
+      case 'gr-contentid-claim':
+          content = 'Quiero reclamar el ContenID de [UPC/EAN del lanzamiento]';
+          break;
+      case 'gr-collab':
+          content = 'Me gustaría colaborar con Grouvex en el proyecto [Nombre del Proyecto]. Sé que el 5% de las regalías se lo queda el artista para asuntos de solidaridad.';
+          break;
+      case 'gs-rule-breach':
+          content = 'He visto que en [Nombre de la Red Social] el miembro [Nombre del miembro/GSUserID/Telefono/correo/informacion personal] ha incumplido una de las normas de DDOO - Grouvex Studios en el que indica lo siguiente\n[Norma que ha incumplido]';
+          break;
+      case 'gs-rule-doubt':
+          content = 'Tengo una duda respecto a la norma [Indicar el numero del titulo, numero de articulo, seccion, capitulo, anexo...] en el que dice [Contenido de la norma]';
+          break;
+      case 'gs-account-create':
+          content = 'Solicito la creación de una cuenta en Grouvex Studios con los siguientes datos:\nNombre completo: [nombre]\nCorreo electrónico: \nTeléfono de contacto: [Prefijo y Teléfono]\nTipo de cuenta solicitada: [tipo] \nConfirmo que comprendo que he tenido que iniciar sesión en https://grouvex.github.io/login .';
+          break;
+      case 'gr-account-create':
+          content = 'Solicito la creación de una cuenta en Grouvex Studios con los siguientes datos:\nNombre completo: [nombre]\nNombre artístico: [nombre artístico]\nCorreo electrónico: \nTeléfono de contacto: [Prefijo y Teléfono]\nTipo de cuenta solicitada: \nConfirmo que comprendo que he tenido que iniciar sesión en https://grouvex.github.io/login .';
+          break;
+      case 'gs-account-modify':
+          content = 'Solicito modificar los siguientes datos de mi cuenta:\nDatos a modificar (indicar qué campos y nuevos valores): \nRazón del cambio: \nConfirmo que comprendo que esta acción es reversible después de 2 semanas.';
+          break;
+      case 'gs-account-delete':
+          content = 'Solicito la eliminación permanente de mi cuenta GSUserID: \nRazón de la eliminación: \nConfirmo que comprendo que esta acción es irreversible y que perderé acceso a todos los servicios vinculados a esta cuenta.\nConfirmo que deberé de haber hecho una copia, rellenado, firmado y adjuntado la Solicitud de Terminación de Contrato --> https://docs.google.com/document/d/1weYhQ8oog8sySUS3pR05yBg_o4ffMpQz/edit?usp=sharing&ouid=116251818923032066333&rtpof=true&sd=true';
+          break;
+      case 'gs-account-arco':
+          content = 'Ejercicio de derechos ARCO (Acceso, Rectificación, Cancelación, Oposición)\nTipo de derecho que deseo ejercer: [tipo: Acceso, Rectificación, Cancelación o Oposición]\nDatos afectados: [datos afectados]\nInformación adicional requerida: [información adicional requerida]\nRazón de la solicitud: [razón]';
+          break;
+      case 'gr-account-arco':
+          content = 'Ejercicio de derechos ARCO como artista (Acceso, Rectificación, Cancelación, Oposición)\nTipo de derecho que deseo ejercer: [tipo: Acceso, Rectificación, Cancelación o Oposición]\nDatos artísticos afectados: [datos afectados]\nLanzamientos específicos involucrados: [lanzamientos con sus UPC involucrados]\nRazón de la solicitud: [razón]';
+          break;
+      case 'gs-project-submit':
+          content = 'Presentación de nuevo proyecto\nNombre del proyecto: \nDescripción: \nParticipantes: [Participantes]\nFecha estimada de inicio: [fecha estimada]\nPresupuesto estimado: [presupuesto]\nObservaciones: [observaciones (no requerido)]';
+          break;
+      case 'gr-release-submit':
+          content = 'Solicitud de nuevo lanzamiento\nEstoy informado que debo solicituar un lanzamiento a través de: https://forms.gle/awff6TqqTj1aXENc7';
+          break;
+      case 'gr-subscription-payment-error':
+          content = 'He experimentado un error en el pago de Stripe con los siguientes detalles:\n- ID de transacción: [ID de transacción]\n- Fecha del error: [fecha]\n- Monto: [monto]\n- Método de pago: [tarjeta/PayPal/etc.]\n- Descripción del error: [describa el error con detalle]';
+          break;
+      case 'gr-subscription-portal-error':
+          content = 'He encontrado un error en el Portal de Stripe con los siguientes detalles:\n- Sección del portal: [sección donde ocurrió el error]\n- Fecha del error: [fecha]\n- Descripción del error: [describa qué estaba intentando hacer y qué error apareció]\n- Captura de pantalla: [¿tiene captura de pantalla?]';
+          break;
+      case 'gr-subscription-payment-doubt':
+          content = 'Tengo una duda sobre Pagos y Planes:\n- Tipo de duda: [facturación, cargos, renovación, etc.]\n- Plan actual: [nombre del plan]\n- Fecha del último pago: [fecha]\n- Detalles de la duda: [explique su duda con el máximo detalle posible]';
+          break;
+      case 'gr-subscription-basic-custom':
+          content = 'Solicito un Plan Básico Personalizado con las siguientes características:\n- Duración deseada: [mensual/anual]\n- Requisitos específicos: [detalle cualquier requisito especial]';
+          break;
+      case 'gr-subscription-standard-custom':
+          content = 'Solicito un Plan Estandar Personalizado con las siguientes características:\n- Duración deseada: [mensual/anual]\n- Requisitos específicos: [detalle cualquier requisito especial]';
+          break;
+      case 'gr-subscription-individual-custom':
+          content = 'Solicito un Plan Personalizado Individual con las siguientes características:\n- Características deseadas: [liste las características que desea]\n- Requisitos específicos: [detalle cualquier requisito especial]';
+          break;
+      case 'gr-subscription-custom-percent':
+          content = 'Solicito un Plan Custom % con las siguientes especificaciones:\n- Porcentaje deseado: [%]\n- Duración deseada: [mensual/anual]\n- Observaciones: [cualquier observación adicional]';
+          break;
+      case 'gr-subscription-custom-euro':
+          content = 'Solicito un Plan Custom € con las siguientes especificaciones:\n- Precio deseado: [€]\n- Duración deseada: [mensual/anual]\n- Observaciones: [cualquier observación adicional]';
+          break;
+      case 'gr-subscription-other':
+          content = 'Tengo otras dudas sobre Planes de Suscripción musical:\n- Tipo de consulta: [describa el tipo de consulta]\n- Detalles: [explique su consulta con el máximo detalle posible]\n- Plan actual (si aplica): [nombre del plan]\n- Fechas relevantes: [fechas importantes relacionadas con su consulta]';
+          break;
+      default:
+          content = '[Contenido de la consulta. Por favor, especifica tu problema o consulta.]';
+          break;
+  }
+
+  const body = `Enviado desde el Centro de Ayuda ☯\n------------------------------------\n${greeting}\n${content}\n\nUn saludo,\n[Name] - ${gsUserId}`;
+
+  // Construir el asunto final
+  const finalSubject = `[${gsUserId}] ${subject}`;
+
+  // Codifica los componentes para URL
+  const encodedTo = encodeURIComponent(to);
+  const encodedSubject = encodeURIComponent(finalSubject);
+  const encodedBody = encodeURIComponent(body);
+  const encodedCc = encodeURIComponent(cc);
+  const encodedBcc = encodeURIComponent(bcc);
+  
+  // Construye el enlace mailto con todos los campos, incluso si están vacíos
+  const mailtoLink = `mailto:${encodedTo}?subject=${encodedSubject}&body=${encodedBody}&cc=${encodedCc}&bcc=${encodedBcc}`;
+  
+  // Muestra el resultado al usuario
+  const emailResult = document.getElementById('email-result');
+  emailResult.innerHTML = `
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+          <p style="font-weight: 700; font-size: 18px;">¡Listo para enviar!</p>
+          <p><strong>Para:</strong> <span style="color: #4b5563;">${to}</span></p>
+          <p><strong>Con copia (CC):</strong> <span style="color: #4b5563;">${cc || 'Ninguno'}</span></p>
+          <p><strong>Con copia oculta (BCC):</strong> <span style="color: #4b5563;">${bcc || 'Ninguno'}</span></p>
+          <p><strong>Asunto:</strong> <span style="color: #4b5563;">${finalSubject}</span></p>
+          <p><strong>Contenido:</strong></p>
+          <pre style="white-space: pre-wrap; background-color: #e5e7eb; padding: 16px; border-radius: 6px; font-size: 14px;">${body}</pre>
+          <button onclick="window.location.href='${mailtoLink}'" id="mailto-link-btn" class="gradient-button" title="Abrir cliente de correo para enviar tu consulta" disabled>
+            Abrir cliente de correo
+          </button>
+        <div class="checkbox-container">
+            <p style="color: #ef4444; font-size: 12px; margin-top: 0;">
+                Recuerde que debe <strong>remplazar los campos rellenables entre corchetes "[]"</strong>. 
+                <small>Ejemplo: [Name] hola; en el correo: Grouvex hola. Todos los campos son obligatorios salvo que especifique lo contrario. Los campos que no rellenes, elimina el campo como --> Fecha: [fecha], en el correo --> Fecha:</small>
+            </p>
+            
+            <label class="checkbox-label">
+                <input type="checkbox" class="checkbox-input" required>
+                <span class="checkbox-text">
+                    Acepto que la plantilla y los correos a los que se envía no se pueden modificar, salvo en campos rellenables. Cualquier otra modificación invalidará el correo.
+                </span>
+            </label>
+            
+            <label class="checkbox-label">
+                <input type="checkbox" class="checkbox-input" required>
+                <span class="checkbox-text">
+                    Confirmo que he entendido el formato de campos rellenables y eliminaré los que no use.
+                </span>
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" class="checkbox-input" required>
+                <span class="checkbox-text">
+                    Acepto los <a href="https://drive.google.com/file/d/1Ub3YiIsQbwyev19p1wxutAXcpHShL7_K/view" target="_blank">DDOO - Grouvex Studios</a>
+                </span>
+            </label>
+        </div>
+      </div>
+  `;
+  document.getElementById('submit-section').style.display = 'block';
+  setupCheckboxValidation();
+}
 </script>
 <!-- Cierre de Botón flotante para el Centro de Ayuda-->

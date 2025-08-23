@@ -167,10 +167,10 @@ function handleEmailAuth(email, password, isLogin) {
 
   async function handleGoogleLogin() {
       try {
-          const provider = new firebase.auth.GoogleAuthProvider();
+          const provider = new GoogleAuthProvider();
           provider.setCustomParameters({ prompt: 'select_account' });
           
-          const result = await firebase.auth().signInWithPopup(provider);
+          const result = await firebase.auth().signInWithPopup(auth, provider);
           
           // Guardar información del usuario en la base de datos
           await database.ref('users/' + result.user.uid).set({
@@ -539,7 +539,10 @@ onAuthStateChanged(auth, async (user) => {
         const targetUser = isViewingOwnProfile ? user : await getUserData(targetUserId);
         const nombreUsuario = targetUser.displayName || "Usuario";
         const usuarioElement = document.querySelector('.usuario');
-
+        const gsUserIdInput = document.getElementById('gs-user-id');
+        if (gsUserIdInput) {
+            gsUserIdInput.value = user.uid || "Not Defined";
+        }
         // Actualizar UI
         const updateProfileUI = () => {
             document.getElementById('correoElectronico').textContent = targetUser.email || 'Correo no definido';

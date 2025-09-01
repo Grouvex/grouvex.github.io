@@ -484,7 +484,7 @@ function inicializarFormularioDeAutenticacion() {
     const authForm = document.getElementById('authForm');
     const formTitle = document.getElementById('formTitle');
     const toggleButton = document.getElementById('toggleButton');
-    let isLogin = true;
+    let isLogin = false;
 
     toggleButton.addEventListener('click', () => {
         isLogin = !isLogin;

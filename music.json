@@ -298,7 +298,7 @@
         "name": "Yo Quiero - A New World (Piano Version)",
         "file": "Yo Quiero - A New World (Piano Version).mp3",
         "artist": "Grouvex",
-        "album": "Yo Quiero - A New World",
+        "album": "",
         "label": "Grouvex Studios Recording",
         "composer": "Grouvex Studios",
         "producer": "Grouvex Studios",
@@ -308,13 +308,13 @@
         "background": "https://grouvex.com/port/Yo Quiero v2.jpg",
         "startDate": { "month": 1, "day": 1 },
         "endDate": { "month": 12, "day": 31 },
-        "releaseDate": 1735686000
+        "releaseDate": 1786312800
     },
     {
         "name": "Yo Quiero - A New World - Version Karaoke",
         "file": "Yo Quiero - A New World - Version Karaoke.mp3",
         "artist": "Grouvex",
-        "album": "Yo Quiero - A New World",
+        "album": "",
         "label": "Grouvex Studios Recording",
         "composer": "Grouvex Studios",
         "producer": "Grouvex Studios",
@@ -324,7 +324,7 @@
         "background": "https://grouvex.com/port/Yo Quiero v2.jpg",
         "startDate": { "month": 1, "day": 1 },
         "endDate": { "month": 12, "day": 31 },
-        "releaseDate": 1735686000
+        "releaseDate": 1786312800
     },
     {
         "name": "Yo Quiero - A New World - Version Instrumental",
@@ -340,7 +340,7 @@
         "background": "https://grouvex.com/port/Yo Quiero v2.jpg",
         "startDate": { "month": 1, "day": 1 },
         "endDate": { "month": 12, "day": 31 },
-        "releaseDate": 1735686000
+        "releaseDate": 1751234400
     },
     {
         "name": "Yo Quiero v2 - Version Karaoke",

@@ -1,6 +1,6 @@
 (function() {
     const themeSelect = document.getElementById('themeSelect');
-    const defaultTheme = 'gstudios6'; // Define aquí el tema predeterminado
+    const defaultTheme = 'gstudios7'; // Define aquí el tema predeterminado
     const currentUrl = window.location.href;
 
     // Deshabilitar el botón al inicio
@@ -36,6 +36,7 @@
             gstudios4: month !== 10,
             gstudios5: month !== 9,
             gstudios6: month !== 6,
+            gstudios7: !(date >= new Date(date.getFullYear(), 5, 1) && date <= new Date(date.getFullYear(), 9, 31)),
             starwars: !(date >= new Date(date.getFullYear(), 4, 4) && date <= new Date(date.getFullYear(), 4, 14)),
             httyd: !(date >= new Date(date.getFullYear(), 2, 25) && date <= new Date(date.getFullYear(), 3, 1)),
             jurassicworld: !(date >= new Date(date.getFullYear(), 5, 10) && date <= new Date(date.getFullYear(), 5, 20)),
@@ -66,7 +67,7 @@ function changeTheme(theme) {
         'space', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4',
         'taylorswift',
         'pokemon', 'thewildrobot', 'httyd','starwars', 'jurassicworld', 'superheroes',
-        'gstudios1', 'gstudios2', 'gstudios3', 'gstudios4', 'gstudios5', 'gstudios6'
+        'gstudios1', 'gstudios2', 'gstudios3', 'gstudios4', 'gstudios5', 'gstudios6', 'gstudios7'
     ];
 
     // Aplicar la clase de animación
@@ -109,7 +110,6 @@ function changeTheme(theme) {
     function checkThemesAvailability() {
         const date = new Date();
         const month = date.getMonth();
-
         return {
             superheroes: month !== 0,
             naturaleza1: month !== 1,
@@ -122,6 +122,7 @@ function changeTheme(theme) {
             gstudios4: month !== 10,
             gstudios5: month !== 9,
             gstudios6: month !== 6,
+            gstudios7: !(date >= new Date(date.getFullYear(), 5, 1) && date <= new Date(date.getFullYear(), 9, 31)),
             starwars: !(date >= new Date(date.getFullYear(), 4, 4) && date <= new Date(date.getFullYear(), 4, 14)),
             httyd: !(date >= new Date(date.getFullYear(), 2, 25) && date <= new Date(date.getFullYear(), 3, 1)),
             jurassicworld: !(date >= new Date(date.getFullYear(), 5, 10) && date <= new Date(date.getFullYear(), 5, 20)),

@@ -484,13 +484,9 @@ function inicializarFormularioDeAutenticacion() {
     const authForm = document.getElementById('authForm');
     const formTitle = document.getElementById('formTitle');
     const toggleButton = document.getElementById('toggleButton');
-    let isLogin = false;
-
-    toggleButton.addEventListener('click', () => {
-        isLogin = !isLogin;
-        formTitle.textContent = isLogin ? 'Inicio de Sesión' : 'Registro';
-    });
-
+    let isLogin = true;
+        formTitle.textContent = 'Inicio de Sesión';
+  
     authForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const email = document.getElementById('authEmail').value;

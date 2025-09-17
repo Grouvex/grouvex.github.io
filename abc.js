@@ -69,60 +69,6 @@ const usuarios = {
 };
 
 // ============================================
-// FUNCIONES DE BASE DE DATOS
-// ============================================
-
-async function followUser(currentUserId, targetUserId) {
-    await set(ref(database, `followers/${targetUserId}/${currentUserId}`), true);
-    await set(ref(database, `following/${currentUserId}/${targetUserId}`), true);
-}
-
-async function unfollowUser(currentUserId, targetUserId) {
-    await remove(ref(database, `followers/${targetUserId}/${currentUserId}`));
-    await remove(ref(database, `following/${currentUserId}/${targetUserId}`));
-}
-
-async function getFollowStats(userId) {
-    const followers = await get(ref(database, `followers/${userId}`));
-    const following = await get(ref(database, `following/${userId}`));
-    return {
-        followersCount: followers.exists() ? Object.keys(followers.val()).length : 0,
-        followingCount: following.exists() ? Object.keys(following.val()).length : 0
-    };
-}
-
-async function checkIfFollowing(currentUserId, targetUserId) {
-    const snapshot = await get(ref(database, `following/${currentUserId}/${targetUserId}`));
-    return snapshot.exists();
-}
-
-async function getUserData(userId) {
-    const snapshot = await get(ref(database, `users/${userId}`));
-    return { uid: userId, ...snapshot.val() };
-}
-
-function setupPresence(user) {
-    const userStatusRef = ref(database, `status/${user.uid}`);
-    set(userStatusRef, { online: true, lastChanged: Date.now() });
-    onDisconnect(userStatusRef).update({ online: false });
-}
-
-async function eliminarDatosUsuario(userId) {
-    try {
-        await Promise.all([
-            remove(ref(database, `users/${userId}`)),
-            remove(ref(database, `followers/${userId}`)),
-            remove(ref(database, `following/${userId}`)),
-            remove(ref(database, `status/${userId}`))
-        ]);
-        console.log('Datos de usuario eliminados exitosamente');
-    } catch (error) {
-        console.error('Error al eliminar datos:', error);
-        throw new Error('Error al limpiar datos de usuario: ' + error.message);
-    }
-}
-
-// ============================================
 // FUNCIONES DE AUTENTICACIÓN
 // ============================================
 
@@ -241,7 +187,7 @@ function mostrarNotificacionRegistro() {
     notificacion.innerHTML = `
         <p>🎁 ¡Regístrate Gratis para acceder a contenido exclusivo!</p>
         <div style="margin-top: 10px; display: flex; justify-content: center; gap: 10px;">
-            <a href="https://grouvex.github.io/login" style="color: white; text-decoration: underline;">Registrarme</a>
+            <a href="script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec" style="color: white; text-decoration: underline;">Registrarme</a>
             <button onclick="this.parentElement.parentElement.remove()" 
                     style="background: none; border: none; color: white; cursor: pointer;">
                 Cerrar
@@ -252,6 +198,7 @@ function mostrarNotificacionRegistro() {
     setTimeout(() => notificacion.remove(), 8000);
 }
 
+if("a" === "b"){
 function mostrarnewsAdv() {
     const newsAdv = document.createElement("div");
     if (window.innerWidth < 768) {
@@ -300,7 +247,7 @@ function mostrarnewsAdv() {
     `;
     document.body.appendChild(newsAdv);
 }
-
+}
 // ============================================
 // FUNCIONES DE GESTIÓN DE CUENTA
 // ============================================
@@ -551,7 +498,7 @@ onAuthStateChanged(auth, async (user) => {
             usuarioElement.className = nombreUsuario.replace(/\s+/g, '-');
             document.getElementById('userID').textContent = `GS-${targetUser.uid}`;
             document.getElementById('fotoPerfil').src = targetUser.photoURL || 'https://grouvex.com/img/GROUVEX.png';
-            mostrarUsuarioYInsignias(nombreUsuario, [usuarioElement]);
+          //  mostrarUsuarioYInsignias(nombreUsuario, [usuarioElement]);
         };
 
         // Manejar seguimiento

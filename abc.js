@@ -472,7 +472,6 @@ document.addEventListener('DOMContentLoaded', () => {
 // Observador de autenticación principal
 onAuthStateChanged(auth, async (user) => {
     if (user) {
-        setupPresence(user);
         console.log("Usuario autenticado:", user.email);
         console.log("ID autenticado:", user.uid);
         const urlParams = new URLSearchParams(window.location.search);

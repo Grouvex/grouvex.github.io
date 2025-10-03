@@ -198,7 +198,6 @@ function mostrarNotificacionRegistro() {
     setTimeout(() => notificacion.remove(), 8000);
 }
 
-if("a" === "b"){
 function mostrarnewsAdv() {
     const newsAdv = document.createElement("div");
     if (window.innerWidth < 768) {
@@ -246,7 +245,6 @@ function mostrarnewsAdv() {
         </div>
     `;
     document.body.appendChild(newsAdv);
-}
 }
 // ============================================
 // FUNCIONES DE GESTIÓN DE CUENTA
@@ -462,7 +460,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Mostrar noticias
-    if (true) mostrarnewsAdv();
+    if (false) mostrarnewsAdv();
 
     // Verificar acceso
     const paginaActual = window.location.pathname.split("/").pop();

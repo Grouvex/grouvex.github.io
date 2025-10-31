@@ -312,142 +312,6 @@
             }
         ];
 
-        // Constelaciones zodiacales y otras importantes
-        const zodiacConstellations = [
-        { // Aries
-            pattern: [
-                {x:0,y:0,z:0}, {x:35,y:10,z:5}, {x:70,y:-5,z:-3}, {x:105,y:15,z:7},
-                {x:50,y:40,z:-5}, {x:90,y:30,z:2}
-            ],
-            color: 0xFF4500,
-            stars: 6
-        },
-        { // Tauro
-            pattern: [
-                {x:0,y:0,z:0}, {x:30,y:45,z:8}, {x:60,y:25,z:-5}, {x:45,y:-20,z:10},
-                {x:75,y:-10,z:-3}, {x:105,y:15,z:5}, {x:90,y:40,z:-7}
-            ],
-            color: 0xCD5C5C,
-            stars: 7
-        },
-        { // Géminis
-            pattern: [
-                {x:0,y:0,z:0}, {x:40,y:0,z:0}, {x:80,y:0,z:0}, {x:0,y:50,z:10},
-                {x:40,y:50,z:-5}, {x:80,y:50,z:5}
-            ],
-            color: 0x00BFFF,
-            stars: 6
-        },
-        { // Cáncer
-            pattern: [
-                {x:0,y:0,z:0}, {x:25,y:35,z:8}, {x:50,y:0,z:-5}, {x:75,y:35,z:5},
-                {x:100,y:0,z:-3}, {x:50,y:-30,z:10}
-            ],
-            color: 0x9370DB,
-            stars: 6
-        },
-        { // Leo
-            pattern: [
-                {x:0,y:0,z:0}, {x:40,y:30,z:5}, {x:80,y:50,z:-3}, {x:120,y:30,z:7},
-                {x:160,y:0,z:-5}, {x:120,y:-30,z:3}, {x:80,y:-50,z:-7}
-            ],
-            color: 0xFFD700,
-            stars: 7
-        },
-        { // Virgo
-            pattern: [
-                {x:0,y:0,z:0}, {x:50,y:40,z:8}, {x:100,y:20,z:-5}, {x:150,y:0,z:5},
-                {x:100,y:-20,z:-3}, {x:50,y:-40,z:10}, {x:0,y:-60,z:0}
-            ],
-            color: 0x32CD32,
-            stars: 7
-        },
-        { // Libra
-            pattern: [
-                {x:0,y:0,z:0}, {x:40,y:0,z:5}, {x:80,y:0,z:-3}, {x:40,y:40,z:7},
-                {x:80,y:40,z:-5}, {x:40,y:-40,z:3}
-            ],
-            color: 0xFF69B4,
-            stars: 6
-        },
-        { // Escorpio
-            pattern: [
-                {x:0,y:0,z:0}, {x:30,y:25,z:8}, {x:60,y:50,z:-5}, {x:90,y:25,z:5},
-                {x:120,y:0,z:-3}, {x:150,y:-25,z:10}, {x:180,y:-50,z:0}
-            ],
-            color: 0xDC143C,
-            stars: 7
-        },
-        { // Sagitario
-            pattern: [
-                {x:0,y:0,z:0}, {x:40,y:30,z:5}, {x:80,y:60,z:-3}, {x:120,y:30,z:7},
-                {x:80,y:0,z:-5}, {x:120,y:-30,z:3}, {x:160,y:-60,z:-7}
-            ],
-            color: 0x20B2AA,
-            stars: 7
-        },
-        { // Capricornio
-            pattern: [
-                {x:0,y:0,z:0}, {x:35,y:40,z:8}, {x:70,y:20,z:-5}, {x:105,y:0,z:5},
-                {x:140,y:-20,z:-3}, {x:175,y:-40,z:10}
-            ],
-            color: 0x808080,
-            stars: 6
-        },
-        { // Acuario
-            pattern: [
-                {x:0,y:0,z:0}, {x:30,y:50,z:5}, {x:60,y:0,z:-3}, {x:90,y:50,z:7},
-                {x:120,y:0,z:-5}, {x:150,y:50,z:3}, {x:180,y:0,z:-7}
-            ],
-            color: 0x4169E1,
-            stars: 7
-        },
-        { // Piscis
-            pattern: [
-                {x:0,y:0,z:0}, {x:40,y:30,z:8}, {x:80,y:0,z:-5}, {x:120,y:30,z:5},
-                {x:160,y:0,z:-3}, {x:200,y:30,z:10}, {x:240,y:0,z:0}
-            ],
-            color: 0x87CEEB,
-            stars: 7
-        },
-            { 
-                name: "Osa Mayor",
-                pattern: [
-                    {x:0,y:0,z:0}, {x:40,y:25,z:5}, {x:80,y:10,z:-2}, {x:120,y:30,z:4},
-                    {x:100,y:60,z:-3}, {x:60,y:70,z:2}, {x:20,y:50,z:-1}
-                ],
-                color: 0x4FC3F7,
-                lineIndices: [0,1,2,3,4,5,6,0]
-            },
-            { 
-                name: "Osa Menor",
-                pattern: [
-                    {x:0,y:0,z:0}, {x:15,y:20,z:3}, {x:30,y:35,z:-1}, {x:45,y:25,z:4},
-                    {x:60,y:40,z:-2}, {x:75,y:30,z:3}, {x:90,y:45,z:0}
-                ],
-                color: 0x80DEEA,
-                lineIndices: [0,1,2,3,4,5,6]
-            },
-            { 
-                name: "Orión",
-                pattern: [
-                    {x:0,y:0,z:0}, {x:30,y:50,z:5}, {x:60,y:0,z:-3}, {x:45,y:25,z:4},
-                    {x:15,y:25,z:-2}, {x:75,y:40,z:3}, {x:90,y:10,z:-1}
-                ],
-                color: 0xFF5252,
-                lineIndices: [0,1,2,0,3,4,1,5,6]
-            },
-            { 
-                name: "Casiopea",
-                pattern: [
-                    {x:0,y:0,z:0}, {x:25,y:35,z:4}, {x:50,y:10,z:-2}, {x:75,y:40,z:3},
-                    {x:100,y:15,z:-1}
-                ],
-                color: 0xCE93D8,
-                lineIndices: [0,1,2,3,4]
-            }
-        ];
-
         // Inicialización
         function init() {
             // Escena
@@ -1453,36 +1317,141 @@
         // Constelaciones mejoradas con estrellas y trazado separados
         function createConstellations() {
             const allConstellations = [
-                { // Osa Mayor
-                    name: "Ursa Major",
-                    pattern: [
-                        {x:0,y:0,z:0}, {x:40,y:10,z:5}, {x:80,y:0,z:0}, {x:120,y:20,z:-5},
-                        {x:100,y:60,z:5}, {x:60,y:70,z:0}, {x:20,y:50,z:-3}
-                    ],
-                    color: 0x4FC3F7,
-                    stars: 7,
-                    lineIndices: [0,1,2,3,4,5,6,0] // Para conectar en forma de carro
-                },
-                { // Osa Menor
-                    name: "Ursa Minor",
-                    pattern: [
-                        {x:0,y:0,z:0}, {x:15,y:25,z:3}, {x:30,y:40,z:-2}, {x:45,y:30,z:4},
-                        {x:60,y:45,z:-1}, {x:75,y:35,z:2}, {x:90,y:50,z:0}
-                    ],
-                    color: 0x80DEEA,
-                    stars: 7,
-                    lineIndices: [0,1,2,3,4,5,6] // Para formar la cola
-                },
-                { // Orión
-                    name: "Orion",
-                    pattern: [
-                        {x:0,y:0,z:0}, {x:30,y:50,z:5}, {x:60,y:0,z:-3}, {x:45,y:25,z:4},
-                        {x:15,y:25,z:-2}, {x:75,y:40,z:3}, {x:90,y:10,z:-1}
-                    ],
-                    color: 0xFF5252,
-                    stars: 7,
-                    lineIndices: [0,1,2,0,3,4,1,5,6]
-                },
+        { // Aries
+            pattern: [
+                {x:0,y:0,z:0}, {x:35,y:10,z:5}, {x:70,y:-5,z:-3}, {x:105,y:15,z:7},
+                {x:50,y:40,z:-5}, {x:90,y:30,z:2}
+            ],
+            color: 0xFF4500,
+            stars: 6,
+            lineIndices: [0,1,2,3,4,5]
+        },
+        { // Tauro
+            pattern: [
+                {x:0,y:0,z:0}, {x:30,y:45,z:8}, {x:60,y:25,z:-5}, {x:45,y:-20,z:10},
+                {x:75,y:-10,z:-3}, {x:105,y:15,z:5}, {x:90,y:40,z:-7}
+            ],
+            color: 0xCD5C5C,
+            stars: 7,
+            lineIndices: [0,1,2,3,4,5,6]
+        },
+        { // Géminis
+            pattern: [
+                {x:0,y:0,z:0}, {x:40,y:0,z:0}, {x:80,y:0,z:0}, {x:0,y:50,z:10},
+                {x:40,y:50,z:-5}, {x:80,y:50,z:5}
+            ],
+            color: 0x00BFFF,
+            stars: 6,
+            lineIndices: [0,1,2,3,4,5]
+        },
+        { // Cáncer
+            pattern: [
+                {x:0,y:0,z:0}, {x:25,y:35,z:8}, {x:50,y:0,z:-5}, {x:75,y:35,z:5},
+                {x:100,y:0,z:-3}, {x:50,y:-30,z:10}
+            ],
+            color: 0x9370DB,
+            stars: 6,
+            lineIndices: [0,1,2,3,4,5]
+        },
+        { // Leo
+            pattern: [
+                {x:0,y:0,z:0}, {x:40,y:30,z:5}, {x:80,y:50,z:-3}, {x:120,y:30,z:7},
+                {x:160,y:0,z:-5}, {x:120,y:-30,z:3}, {x:80,y:-50,z:-7}
+            ],
+            color: 0xFFD700,
+            stars: 7,
+            lineIndices: [0,1,2,3,4,5,6]
+        },
+        { // Virgo
+            pattern: [
+                {x:0,y:0,z:0}, {x:50,y:40,z:8}, {x:100,y:20,z:-5}, {x:150,y:0,z:5},
+                {x:100,y:-20,z:-3}, {x:50,y:-40,z:10}, {x:0,y:-60,z:0}
+            ],
+            color: 0x32CD32,
+            stars: 7,
+            lineIndices: [0,1,2,3,4,5,6]
+        },
+        { // Libra
+            pattern: [
+                {x:0,y:0,z:0}, {x:40,y:0,z:5}, {x:80,y:0,z:-3}, {x:40,y:40,z:7},
+                {x:80,y:40,z:-5}, {x:40,y:-40,z:3}
+            ],
+            color: 0xFF69B4,
+            stars: 6,
+            lineIndices: [0,1,2,3,4,5]
+        },
+        { // Escorpio
+            pattern: [
+                {x:0,y:0,z:0}, {x:30,y:25,z:8}, {x:60,y:50,z:-5}, {x:90,y:25,z:5},
+                {x:120,y:0,z:-3}, {x:150,y:-25,z:10}, {x:180,y:-50,z:0}
+            ],
+            color: 0xDC143C,
+            stars: 7,
+            lineIndices: [0,1,2,3,4,5,6]
+        },
+        { // Sagitario
+            pattern: [
+                {x:0,y:0,z:0}, {x:40,y:30,z:5}, {x:80,y:60,z:-3}, {x:120,y:30,z:7},
+                {x:80,y:0,z:-5}, {x:120,y:-30,z:3}, {x:160,y:-60,z:-7}
+            ],
+            color: 0x20B2AA,
+            stars: 7,
+            lineIndices: [0,1,2,3,4,5,6]
+        },
+        { // Capricornio
+            pattern: [
+                {x:0,y:0,z:0}, {x:35,y:40,z:8}, {x:70,y:20,z:-5}, {x:105,y:0,z:5},
+                {x:140,y:-20,z:-3}, {x:175,y:-40,z:10}
+            ],
+            color: 0x808080,
+            stars: 6,
+            lineIndices: [0,1,2,3,4,5,6]
+        },
+        { // Acuario
+            pattern: [
+                {x:0,y:0,z:0}, {x:30,y:50,z:5}, {x:60,y:0,z:-3}, {x:90,y:50,z:7},
+                {x:120,y:0,z:-5}, {x:150,y:50,z:3}, {x:180,y:0,z:-7}
+            ],
+            color: 0x4169E1,
+            stars: 7,
+            lineIndices: [0,1,2,3,4,5,6]
+        },
+        { // Piscis
+            pattern: [
+                {x:0,y:0,z:0}, {x:40,y:30,z:8}, {x:80,y:0,z:-5}, {x:120,y:30,z:5},
+                {x:160,y:0,z:-3}, {x:200,y:30,z:10}, {x:240,y:0,z:0}
+            ],
+            color: 0x87CEEB,
+            stars: 7,
+            lineIndices: [0,1,2,3,4,5,6]
+        },
+            { 
+                name: "Osa Mayor",
+                pattern: [
+                    {x:0,y:0,z:0}, {x:40,y:25,z:5}, {x:80,y:10,z:-2}, {x:120,y:30,z:4},
+                    {x:100,y:60,z:-3}, {x:60,y:70,z:2}, {x:20,y:50,z:-1}
+                ],
+                color: 0x4FC3F7,
+                lineIndices: [0,1,2,3,4,5,6,0]
+            },
+            { 
+                name: "Osa Menor",
+                pattern: [
+                    {x:0,y:0,z:0}, {x:15,y:20,z:3}, {x:30,y:35,z:-1}, {x:45,y:25,z:4},
+                    {x:60,y:40,z:-2}, {x:75,y:30,z:3}, {x:90,y:45,z:0}
+                ],
+                color: 0x80DEEA,
+                lineIndices: [0,1,2,3,4,5,6]
+            },
+            { 
+                name: "Orión",
+                pattern: [
+                    {x:0,y:0,z:0}, {x:30,y:50,z:5}, {x:60,y:0,z:-3}, {x:45,y:25,z:4},
+                    {x:15,y:25,z:-2}, {x:75,y:40,z:3}, {x:90,y:10,z:-1}
+                ],
+                color: 0xFF5252,
+                lineIndices: [0,1,2,0,3,4,1,5,6]
+            },
                 { // Casiopea
                     name: "Cassiopeia",
                     pattern: [

@@ -1,0 +1,3717 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Sitio web oficial de Grouvex Studios, una organización que cuenta con Sello Discográfico, Diseño, entre otros.">
+    <meta property="og:title" content="Una Navidad Resplandeciente - Grouvex Studioss">
+    <meta property="og:description" content="Sitio web oficial de Grouvex Studios, una organización que cuenta con Sello Discográfico, Diseño, entre otros.">
+    <meta property="og:image" content="img/GROUVEX.png">
+    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects"><meta name="author" content="Grouvex Studios"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="theme-color" content="#hexcode"><meta property="og:url" content="https://grouvex.com/"><meta property="og:type" content="website"><meta property="og:locale" content="es_ES"><link rel="canonical" href="https://grouvex.com/"><link rel="icon" href="img/GROUVEX.png" type="image/x-icon"><meta property="og:site_name" content="Grouvex Studios">
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script><script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script><script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script><script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <link rel="stylesheet" href="index.css"><link rel="stylesheet" href="temas.css">
+    <script src="time.js"></script></script><script type="module" src="abc.js"></script><script src="index.js"></script>
+    <script src="jquery-3.5.1.min.js"></script>
+        <script> 
+            document.addEventListener("DOMContentLoaded", function() { 
+                $("#menuG").load("menuG.html");$("#menuE").load("menuE.html");$("#menuT").load("menuT.html");$("#menuU").load("menuU.html");
+                $("#footer").load("footer.html"); 
+                $("#news").load("news.html"); $("#tosypp").load("tosypp.html");
+            });
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Una Navidad Resplandeciente - Grouvex Studios</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a3a, #0d1b2a);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .snowflakes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .snowflake {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        header {
+            text-align: center;
+            padding: 2rem 1rem;
+            background: rgba(200, 16, 46, 0.8);
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: #FFD700;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #f0f0f0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .games-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 0 1.5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .game-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: #FFD700;
+        }
+
+        .game-description {
+            font-size: 0.9rem;
+            color: #e0e0e0;
+            line-height: 1.4;
+        }
+
+        .game-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            width: 90%;
+            max-width: 800px;
+            border-radius: 15px;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.3);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .game-area {
+            margin-top: 1.5rem;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .game-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            background: #c8102e;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background: #a00d26;
+            transform: translateY(-3px);
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Puzzle Game Styles */
+        .puzzle-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+        }
+
+        .puzzle-piece {
+            width: 100px;
+            height: 100px;
+            background-size: 300px 300px;
+            cursor: pointer;
+            border: 1px solid #fff;
+        }
+
+        /* Quiz Game Styles */
+        .quiz-container {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .quiz-question {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-option {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Maze Game Styles */
+        .maze-container {
+            display: grid;
+            grid-template-columns: repeat(10, 30px);
+            grid-template-rows: repeat(10, 30px);
+            gap: 2px;
+            margin: 0 auto;
+        }
+
+        .maze-cell {
+            width: 30px;
+            height: 30px;
+            background: #2a5298;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+        }
+
+        .maze-wall {
+            background: #1a2a3a;
+        }
+
+        .maze-player {
+            background: #FFD700;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+        }
+
+        .maze-goal {
+            background: #c8102e;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Gift Toss Game Styles */
+        .toss-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(to bottom, #1e3c72, #2a5298);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .chimney {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 120px;
+            background: #333;
+        }
+
+        .gift {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #c8102e;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .games-container {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="https://grouvex.github.io/"> <div class="img-container" loading="lazy"></div></a> 
+        <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
+            <nav>
+                <span id="menuG"></span>
+                <span id="menuT"></span>
+                <span id="menuU"></span>
+            </nav>
+        </span>
+    </header>
+    <!-- Anuncio -->
+    <div id="news"></div>
+    <div class="snowflakes" id="snowflakes"></div>
+
+    <header>
+        <h1>Una Navidad Resplandeciente</h1>
+        <p class="subtitle">Disfruta de estos divertidos juegos navideños. ¡Haz clic en cualquier juego para comenzar la diversión!</p>
+    </header>
+
+    <div class="games-container">
+        <!-- Juego 2: Rompecabezas Deslizante -->
+        <div class="game-card" data-game="puzzle">
+            <div class="game-icon">🧩</div>
+            <h3 class="game-title">Rompecabezas Navideño</h3>
+            <p class="game-description">Arma la imagen navideña deslizando las piezas. ¡Completa el puzzle antes de que se acabe el tiempo!</p>
+        </div>
+
+        <!-- Juego 3: Adivina el Regalo -->
+        <div class="game-card" data-game="gift">
+            <div class="game-icon">🎁</div>
+            <h3 class="game-title">Adivina el Regalo</h3>
+            <p class="game-description">¿Podrás adivinar qué hay dentro de los regalos? ¡Escucha los sonidos y usa las pistas!</p>
+        </div>
+
+        <!-- Juego 4: Decoración del Árbol -->
+        <div class="game-card" data-game="tree">
+            <div class="game-icon">🎄</div>
+            <h3 class="game-title">Decora el Árbol</h3>
+            <p class="game-description">Decora el árbol de Navidad con los adornos más bonitos. ¡Sé creativo y diviértete!</p>
+        </div>
+
+        <!-- Juego 5: Carrera de Trineos -->
+        <div class="game-card" data-game="sleigh">
+            <div class="game-icon">🛷</div>
+            <h3 class="game-title">Carrera de Trineos</h3>
+            <p class="game-description">Ayuda a Santa a entregar regalos esquivando obstáculos. ¡Recolecta estrellas para ganar puntos!</p>
+        </div>
+
+        <!-- Juego 6: Simón Dice Navideño -->
+        <div class="game-card" data-game="simon">
+            <div class="game-icon">🔴</div>
+            <h3 class="game-title">Simón Dice Navideño</h3>
+            <p class="game-description">Memoriza y repite la secuencia de luces navideñas. ¡Cada nivel es más difícil!</p>
+        </div>
+
+        <!-- Juego 7: Búsqueda de Objetos -->
+        <div class="game-card" data-game="search">
+            <div class="game-icon">🔍</div>
+            <h3 class="game-title">Búsqueda Navideña</h3>
+            <p class="game-description">Encuentra todos los objetos navideños escondidos en la escena antes de que se acabe el tiempo.</p>
+        </div>
+
+        <!-- Juego 8: Lanzamiento de Regalos -->
+        <div class="game-card" data-game="toss">
+            <div class="game-icon">🎯</div>
+            <h3 class="game-title">Lanza los Regalos</h3>
+            <p class="game-description">Lanza los regalos por la chimenea con la potencia y ángulo correctos. ¡Puntúa en el blanco!</p>
+        </div>
+
+        <!-- Juego 9: Quiz Navideño -->
+        <div class="game-card" data-game="quiz">
+            <div class="game-icon">❓</div>
+            <h3 class="game-title">Quiz Navideño</h3>
+            <p class="game-description">Pon a prueba tus conocimientos sobre la Navidad. ¡Responde correctamente para ganar puntos!</p>
+        </div>
+
+        <!-- Juego 11: Conecta los Puntos -->
+        <div class="game-card" data-game="connect">
+            <div class="game-icon">✏️</div>
+            <h3 class="game-title">Conecta los Puntos</h3>
+            <p class="game-description">Conecta los puntos en orden para descubrir la imagen navideña oculta. ¡Sorpréndete con el resultado!</p>
+        </div>
+
+        <!-- Juego 12: Rompe los Adornos -->
+        <div class="game-card" data-game="break">
+            <div class="game-icon">💥</div>
+            <h3 class="game-title">Rompe los Adornos</h3>
+            <p class="game-description">Rompe todos los adornos navideños con la bola. ¡Cuidado con no perderla!</p>
+        </div>
+
+        <!-- Juego 13: Laberinto Navideño -->
+        <div class="game-card" data-game="maze">
+            <div class="game-icon">🧭</div>
+            <h3 class="game-title">Laberinto Navideño</h3>
+            <p class="game-description">Guía a Santa a través del laberinto para que pueda entregar todos los regalos. ¡Encuentra la salida!</p>
+        </div>
+
+        <!-- Juego 14: Emparejamiento de Calcetines -->
+        <div class="game-card" data-game="socks">
+            <div class="game-icon">🧦</div>
+            <h3 class="game-title">Empareja los Calcetines</h3>
+            <p class="game-description">Encuentra los pares de calcetines navideños iguales. ¡Hazlo rápido antes de que se acabe el tiempo!</p>
+        </div>
+
+        <!-- Juego 15: Canto de Villancicos -->
+        <div class="game-card" data-game="carols">
+            <div class="game-icon">🎵</div>
+            <h3 class="game-title">Canto de Villancicos</h3>
+            <p class="game-description">Sigue el ritmo de los villancicos navideños. ¡Presiona las teclas en el momento correcto!</p>
+        </div>
+    </div>
+
+    <!-- Modal para los juegos -->
+    <div class="game-modal" id="gameModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <h2 id="modalTitle">Juego Navideño</h2>
+            <div class="game-stats">
+                <div id="score">Puntos: 0</div>
+                <div id="timer">Tiempo: 60s</div>
+                <div id="lives">Vidas: 3</div>
+            </div>
+            <div class="game-area" id="gameArea">
+                <!-- Aquí se cargará el juego seleccionado -->
+                <p>Selecciona un juego para comenzar</p>
+            </div>
+            <div class="game-controls">
+                <button id="startBtn">Comenzar</button>
+                <button id="resetBtn">Reiniciar</button>
+                <button id="hintBtn">Pista</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>¡Felices Fiestas! Que esta Navidad esté llena de alegría y diversión.</p>
+        <p>Una Navidad Resplandeciente - 2023</p>
+    </footer>
+
+    <script>
+        // Crear efecto de nieve
+        function createSnowflakes() {
+            const snowflakesContainer = document.getElementById('snowflakes');
+            const snowflakeCount = 50;
+            
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                
+                // Tamaño aleatorio
+                const size = Math.random() * 10 + 5;
+                snowflake.style.width = `${size}px`;
+                snowflake.style.height = `${size}px`;
+                
+                // Posición inicial aleatoria
+                snowflake.style.left = `${Math.random() * 100}vw`;
+                
+                // Duración de animación aleatoria
+                const duration = Math.random() * 10 + 5;
+                snowflake.style.animationDuration = `${duration}s`;
+                
+                // Retraso aleatorio
+                snowflake.style.animationDelay = `${Math.random() * 5}s`;
+                
+                snowflakesContainer.appendChild(snowflake);
+            }
+        }
+
+        // Modal y juego
+        document.addEventListener('DOMContentLoaded', function() {
+            createSnowflakes();
+            
+            const gameCards = document.querySelectorAll('.game-card');
+            const gameModal = document.getElementById('gameModal');
+            const closeModal = document.getElementById('closeModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const gameArea = document.getElementById('gameArea');
+            const startBtn = document.getElementById('startBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const hintBtn = document.getElementById('hintBtn');
+            const scoreDisplay = document.getElementById('score');
+            const timerDisplay = document.getElementById('timer');
+            const livesDisplay = document.getElementById('lives');
+            
+            let currentGame = '';
+            let gameActive = false;
+            let score = 0;
+            let timeLeft = 60;
+            let lives = 3;
+            let timerInterval;
+            
+            // Abrir modal al hacer clic en un juego
+            gameCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    currentGame = this.getAttribute('data-game');
+                    modalTitle.textContent = this.querySelector('.game-title').textContent;
+                    gameModal.style.display = 'flex';
+                    resetGame();
+                    loadGame(currentGame);
+                });
+            });
+            
+            // Cerrar modal
+            closeModal.addEventListener('click', function() {
+                gameModal.style.display = 'none';
+                stopGame();
+            });
+            
+            // Cerrar modal al hacer clic fuera
+            window.addEventListener('click', function(event) {
+                if (event.target === gameModal) {
+                    gameModal.style.display = 'none';
+                    stopGame();
+                }
+            });
+            
+            // Botones de control
+            startBtn.addEventListener('click', startGame);
+            resetBtn.addEventListener('click', resetGame);
+            hintBtn.addEventListener('click', giveHint);
+            
+            // Funciones del juego
+            function loadGame(gameType) {
+                gameArea.innerHTML = '';
+                
+                switch(gameType) {
+                    case 'puzzle':
+                        loadPuzzleGame();
+                        break;
+                    case 'gift':
+                        loadGiftGame();
+                        break;
+                    case 'tree':
+                        loadTreeGame();
+                        break;
+                    case 'sleigh':
+                        loadSleighGame();
+                        break;
+                    case 'simon':
+                        loadSimonGame();
+                        break;
+                    case 'search':
+                        loadSearchGame();
+                        break;
+                    case 'toss':
+                        loadTossGame();
+                        break;
+                    case 'quiz':
+                        loadQuizGame();
+                        break;
+                    case 'connect':
+                        loadConnectGame();
+                        break;
+                    case 'break':
+                        loadBreakGame();
+                        break;
+                    case 'maze':
+                        loadMazeGame();
+                        break;
+                    case 'socks':
+                        loadSocksGame();
+                        break;
+                    case 'carols':
+                        loadCarolsGame();
+                        break;
+                }
+            }
+            
+            function startGame() {
+                if (gameActive) return;
+                
+                gameActive = true;
+                startBtn.disabled = true;
+                startTimer();
+                
+                // Aquí iría la lógica específica para iniciar cada juego
+                switch(currentGame) {
+                    case 'puzzle':
+                        isPuzzleActive = true;
+                        break;
+                    case 'gift':
+                        startGiftGame();
+                        break;
+                    case 'tree':
+                        startTreeGame();
+                    case 'simon':
+                        startSimonGame();
+                        break;
+                    // ... otros casos para cada juego
+                }
+            }
+            
+            function resetGame() {
+                stopGame();
+                score = 0;
+                timeLeft = 60;
+                lives = 3;
+                updateDisplay();
+                startBtn.disabled = false;
+                
+                // Reset específico para cada juego
+                if (currentGame === 'puzzle') {
+                    // El puzzle se reinicia automáticamente al cargar
+                } else if (currentGame === 'gift') {
+                    // El juego de regalos se reinicia automáticamente al cargar
+                } else if (currentGame === 'tree') {
+                    // El juego del árbol se reinicia automáticamente al cargar
+                } else if (currentGame === 'simon') {
+                    // El juego Simón se reinicia automáticamente al cargar
+                }
+            }
+            
+function stopGame() {
+    gameActive = false;
+    clearInterval(timerInterval);
+    
+    // Detener juegos específicos
+    if (currentGame === 'puzzle') {
+        stopPuzzleGame();
+    } else if (currentGame === 'gift') {
+        stopGiftGame();
+    } else if (currentGame === 'tree') {
+        stopTreeGame();
+    } else if (currentGame === 'simon') {
+        stopSimonGame(); 
+    }
+}
+            
+            function startTimer() {
+                clearInterval(timerInterval);
+                timerInterval = setInterval(function() {
+                    timeLeft--;
+                    updateDisplay();
+                    
+                    if (timeLeft <= 0) {
+                        endGame();
+                    }
+                }, 1000);
+            }
+            
+            function updateDisplay() {
+                scoreDisplay.textContent = `Puntos: ${score}`;
+                timerDisplay.textContent = `Tiempo: ${timeLeft}s`;
+                livesDisplay.textContent = `Vidas: ${lives}`;
+            }
+            
+            function endGame() {
+                stopGame();
+                alert(`¡Juego terminado! Tu puntuación final es: ${score}`);
+            }
+            
+            function giveHint() {
+                if (!gameActive) return;
+                
+                // Lógica para dar pistas según el juego
+                switch(currentGame) {
+                    case 'puzzle':
+                        givePuzzleHint();
+                        break;
+                    case 'gift':
+                        playGiftHint();
+                        break;
+                    case 'tree':
+                        giveTreeHint();
+                        break;
+                    case 'simon':
+                        showSimonHint();  // ← Nuevo juego Simón Dice
+                        break;
+                    default:
+                        alert("¡Esta es una pista! Intenta de nuevo.");
+                }
+            }
+            
+            // Funciones de carga de juegos
+// =============================================
+// CÓDIGO DEL PUZZLE NAVIDEÑO CON EMOJIS
+// =============================================
+
+// Variables globales para el juego de puzzle
+let puzzlePieces = [];
+let emptyPieceIndex = 8;
+let puzzleMoveCount = 0;
+let puzzleSolved = false;
+let puzzleTimer;
+let puzzleTime = 0;
+let isPuzzleActive = false;
+
+// Emojis navideños para el puzzle
+const christmasEmojis = ['🎄', '🎅', '🦌', '🎁', '⭐', '🔔', '❄️', '🕯️', ''];
+
+// Función para cargar el juego de puzzle
+function loadPuzzleGame() {
+    gameArea.innerHTML = `
+        <div class="puzzle-game-container">
+            <h3>🧩 Puzzle Navideño</h3>
+            <p>Haz clic en los emojis adyacentes al espacio vacío para moverlos. ¡Ordena los emojis!</p>
+            
+            <div class="puzzle-target">
+                <strong>Objetivo:</strong>
+                <div class="target-emojis">
+                    ${christmasEmojis.slice(0, -1).map(emoji => `<span>${emoji}</span>`).join('')}
+                </div>
+            </div>
+            
+            <div class="puzzle-container" id="puzzleContainer"></div>
+            
+            <div class="puzzle-stats">
+                <div class="stat">
+                    <span class="stat-label">Movimientos:</span>
+                    <span id="puzzleMoveCount" class="stat-value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Tiempo:</span>
+                    <span id="puzzleTimeDisplay" class="stat-value">0s</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Estado:</span>
+                    <span id="puzzleStatus" class="stat-value">Jugando</span>
+                </div>
+            </div>
+            
+            <div class="puzzle-controls">
+                <button id="puzzleShuffleBtn" class="puzzle-btn">🔀 Mezclar</button>
+                <button id="puzzleHintBtn" class="puzzle-btn">❓ Pista</button>
+            </div>
+        </div>
+    `;
+    
+    initializePuzzle();
+    setupPuzzleEvents();
+    addPuzzleStyles();
+}
+
+// Inicializar el puzzle
+function initializePuzzle() {
+    const puzzleContainer = document.getElementById('puzzleContainer');
+    puzzleContainer.innerHTML = '';
+    puzzlePieces = [];
+    
+    // Crear piezas del puzzle con emojis
+    for (let i = 0; i < 9; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'puzzle-piece';
+        piece.dataset.index = i;
+        piece.dataset.correctIndex = i;
+        
+        if (i !== 8) {
+            piece.textContent = christmasEmojis[i];
+            piece.classList.add('emoji-piece');
+        } else {
+            piece.classList.add('empty');
+            piece.innerHTML = '⬤'; // Punto para indicar espacio vacío
+        }
+        
+        puzzleContainer.appendChild(piece);
+        puzzlePieces.push(piece);
+    }
+    
+    // Mezclar las piezas
+    shufflePuzzle();
+    
+    // Reiniciar contadores
+    puzzleMoveCount = 0;
+    puzzleSolved = false;
+    puzzleTime = 0;
+    isPuzzleActive = true;
+    updatePuzzleStats();
+    updatePuzzleStatus();
+    
+    // Iniciar temporizador del puzzle
+    startPuzzleTimer();
+}
+
+// Mezclar el puzzle
+function shufflePuzzle() {
+    // Realizar movimientos aleatorios válidos
+    const shuffleMoves = 50;
+    
+    for (let i = 0; i < shuffleMoves; i++) {
+        const adjacentPieces = getAdjacentPieces(emptyPieceIndex);
+        const randomIndex = adjacentPieces[Math.floor(Math.random() * adjacentPieces.length)];
+        swapPieces(randomIndex, emptyPieceIndex);
+    }
+    
+    puzzleMoveCount = 0;
+    updatePuzzleStats();
+}
+
+// Obtener piezas adyacentes
+function getAdjacentPieces(index) {
+    const adjacent = [];
+    const row = Math.floor(index / 3);
+    const col = index % 3;
+    
+    if (row > 0) adjacent.push(index - 3);
+    if (row < 2) adjacent.push(index + 3);
+    if (col > 0) adjacent.push(index - 1);
+    if (col < 2) adjacent.push(index + 1);
+    
+    return adjacent;
+}
+
+// Intercambiar piezas
+function swapPieces(index1, index2) {
+    const piece1 = puzzlePieces[index1];
+    const piece2 = puzzlePieces[index2];
+    
+    // Intercambiar posiciones en el array
+    [puzzlePieces[index1], puzzlePieces[index2]] = [puzzlePieces[index2], puzzlePieces[index1]];
+    
+    // Intercambiar contenido visual
+    const tempContent = piece1.innerHTML;
+    const tempClass = piece1.className;
+    
+    piece1.innerHTML = piece2.innerHTML;
+    piece1.className = piece2.className;
+    
+    piece2.innerHTML = tempContent;
+    piece2.className = tempClass;
+    
+    // Actualizar índices
+    piece1.dataset.index = index2;
+    piece2.dataset.index = index1;
+    
+    // Actualizar posición vacía
+    if (piece1.classList.contains('empty')) {
+        emptyPieceIndex = index2;
+    } else if (piece2.classList.contains('empty')) {
+        emptyPieceIndex = index1;
+    }
+}
+
+// Mover pieza
+function movePuzzlePiece(clickedIndex) {
+    if (puzzleSolved || !isPuzzleActive) return;
+    
+    const adjacentPieces = getAdjacentPieces(emptyPieceIndex);
+    
+    if (adjacentPieces.includes(clickedIndex)) {
+        swapPieces(clickedIndex, emptyPieceIndex);
+        puzzleMoveCount++;
+        updatePuzzleStats();
+        
+        // Efecto visual
+        animatePieceMove(clickedIndex);
+        
+        // Verificar si está resuelto
+        checkPuzzleSolved();
+    }
+}
+
+// Animación al mover pieza
+function animatePieceMove(pieceIndex) {
+    const piece = puzzlePieces[pieceIndex];
+    piece.style.transform = 'scale(0.9)';
+    
+    setTimeout(() => {
+        piece.style.transform = 'scale(1)';
+    }, 150);
+}
+
+// Configurar eventos del puzzle
+function setupPuzzleEvents() {
+    const puzzleContainer = document.getElementById('puzzleContainer');
+    const shuffleBtn = document.getElementById('puzzleShuffleBtn');
+    const hintBtn = document.getElementById('puzzleHintBtn');
+    
+    // Evento para clic en piezas
+    puzzleContainer.addEventListener('click', (e) => {
+        const clickedPiece = e.target.closest('.puzzle-piece');
+        if (!clickedPiece || clickedPiece.classList.contains('empty')) return;
+        
+        const clickedIndex = parseInt(clickedPiece.dataset.index);
+        movePuzzlePiece(clickedIndex);
+    });
+    
+    // Botón mezclar
+    shuffleBtn.addEventListener('click', () => {
+        shufflePuzzle();
+        puzzleSolved = false;
+        isPuzzleActive = true;
+        updatePuzzleStatus();
+    });
+    
+    // Botón pista
+    hintBtn.addEventListener('click', givePuzzleHint);
+    
+    // Controles de teclado
+    document.addEventListener('keydown', handlePuzzleKeys);
+}
+
+// Controles de teclado para el puzzle
+function handlePuzzleKeys(e) {
+    if (!isPuzzleActive || puzzleSolved) return;
+    
+    let pieceToMove = -1;
+    const row = Math.floor(emptyPieceIndex / 3);
+    const col = emptyPieceIndex % 3;
+    
+    switch(e.key) {
+        case 'ArrowUp': if (row < 2) pieceToMove = emptyPieceIndex + 3; break;
+        case 'ArrowDown': if (row > 0) pieceToMove = emptyPieceIndex - 3; break;
+        case 'ArrowLeft': if (col < 2) pieceToMove = emptyPieceIndex + 1; break;
+        case 'ArrowRight': if (col > 0) pieceToMove = emptyPieceIndex - 1; break;
+    }
+    
+    if (pieceToMove !== -1) {
+        movePuzzlePiece(pieceToMove);
+        e.preventDefault();
+    }
+}
+
+// Dar pista en el puzzle
+function givePuzzleHint() {
+    if (puzzleSolved || !isPuzzleActive) return;
+    
+    // Encontrar una pieza que no esté en su posición
+    const misplacedPiece = puzzlePieces.find((piece, index) => {
+        return !piece.classList.contains('empty') && 
+               parseInt(piece.dataset.index) !== parseInt(piece.dataset.correctIndex);
+    });
+    
+    if (misplacedPiece) {
+        const pieceIndex = parseInt(misplacedPiece.dataset.index);
+        misplacedPiece.style.boxShadow = '0 0 15px yellow';
+        misplacedPiece.style.transition = 'box-shadow 0.3s ease';
+        
+        setTimeout(() => {
+            misplacedPiece.style.boxShadow = '';
+        }, 1000);
+    }
+}
+
+// Verificar si el puzzle está resuelto
+function checkPuzzleSolved() {
+    const isSolved = puzzlePieces.every((piece, index) => {
+        return parseInt(piece.dataset.index) === parseInt(piece.dataset.correctIndex);
+    });
+    
+    if (isSolved && !puzzleSolved) {
+        puzzleSolved = true;
+        isPuzzleActive = false;
+        clearInterval(puzzleTimer);
+        
+        // Actualizar puntuación global
+        score += 100; // 100 puntos por completar el puzzle
+        updateDisplay();
+        
+        setTimeout(() => {
+            celebratePuzzleWin();
+            updatePuzzleStatus();
+            alert(`🎉 ¡Felicidades! 🎉\n\nCompletaste el puzzle en:\n${puzzleMoveCount} movimientos\n${puzzleTime} segundos\n\n+100 puntos!`);
+        }, 500);
+    }
+    
+    return isSolved;
+}
+
+// Celebrar victoria en el puzzle
+function celebratePuzzleWin() {
+    puzzlePieces.forEach((piece, index) => {
+        if (!piece.classList.contains('empty')) {
+            setTimeout(() => {
+                piece.style.animation = 'celebrate 0.5s ease-in-out';
+                piece.style.boxShadow = '0 0 20px gold';
+            }, index * 100);
+        }
+    });
+}
+
+// Actualizar estadísticas del puzzle
+function updatePuzzleStats() {
+    const moveCountElement = document.getElementById('puzzleMoveCount');
+    const puzzleTimeElement = document.getElementById('puzzleTimeDisplay');
+    
+    if (moveCountElement) moveCountElement.textContent = puzzleMoveCount;
+    if (puzzleTimeElement) puzzleTimeElement.textContent = puzzleTime;
+}
+
+// Actualizar estado del puzzle
+function updatePuzzleStatus() {
+    const statusElement = document.getElementById('puzzleStatus');
+    if (statusElement) {
+        statusElement.textContent = puzzleSolved ? '🎉 ¡Completado!' : '🎮 Jugando';
+        statusElement.style.color = puzzleSolved ? '#4CAF50' : '#FFD700';
+    }
+}
+
+// Iniciar temporizador del puzzle
+function startPuzzleTimer() {
+    clearInterval(puzzleTimer);
+    puzzleTimer = setInterval(() => {
+        if (isPuzzleActive && !puzzleSolved) {
+            puzzleTime++;
+            updatePuzzleStats();
+        }
+    }, 1000);
+}
+
+// Detener juego de puzzle
+function stopPuzzleGame() {
+    clearInterval(puzzleTimer);
+    isPuzzleActive = false;
+    document.removeEventListener('keydown', handlePuzzleKeys);
+}
+
+// Agregar estilos CSS para el puzzle
+function addPuzzleStyles() {
+    if (document.getElementById('puzzle-emoji-styles')) return;
+    
+    const style = document.createElement('style');
+    style.id = 'puzzle-emoji-styles';
+    style.textContent = `
+        .puzzle-game-container {
+            text-align: center;
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .puzzle-target {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 2px solid #FFD700;
+        }
+        
+        .target-emojis {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .target-emojis span {
+            font-size: 2rem;
+            padding: 5px;
+        }
+        
+        .puzzle-container {
+            display: grid;
+            grid-template-columns: repeat(3, 80px);
+            grid-template-rows: repeat(3, 80px);
+            gap: 5px;
+            margin: 20px auto;
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 15px;
+            border: 3px solid #c8102e;
+        }
+        
+        .puzzle-piece {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #ddd;
+            user-select: none;
+        }
+        
+        .puzzle-piece.emoji-piece:hover {
+            transform: scale(1.05);
+            border-color: #FFD700;
+            box-shadow: 0 5px 15px rgba(255,215,0,0.3);
+        }
+        
+        .puzzle-piece.empty {
+            background: rgba(26, 42, 58, 0.7);
+            color: #666;
+            cursor: default;
+            font-size: 1.5rem;
+        }
+        
+        .puzzle-piece.empty:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .puzzle-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            background: rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border-radius: 25px;
+            min-width: 120px;
+        }
+        
+        .stat-label {
+            display: block;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        
+        .stat-value {
+            display: block;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #FFD700;
+        }
+        
+        .puzzle-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .puzzle-btn {
+            background: linear-gradient(135deg, #c8102e, #a00d26);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+        
+        .puzzle-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(200, 16, 46, 0.4);
+        }
+        
+        @keyframes celebrate {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+    `;
+    document.head.appendChild(style);
+}
+            
+            function loadQuizGame() {
+                gameArea.innerHTML = `
+                    <div class="quiz-container">
+                        <h3>Quiz Navideño</h3>
+                        <div class="quiz-question" id="quizQuestion">¿En qué país se originó la tradición del árbol de Navidad?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option">Alemania</div>
+                            <div class="quiz-option">Estados Unidos</div>
+                            <div class="quiz-option">Italia</div>
+                            <div class="quiz-option">México</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            function loadMazeGame() {
+                gameArea.innerHTML = `
+                    <h3>Laberinto Navideño</h3>
+                    <p>Usa las flechas del teclado para guiar a Santa</p>
+                    <div class="maze-container">
+                        <!-- Aquí iría el laberinto generado dinámicamente -->
+                        <div class="maze-cell maze-wall"></div>
+                        <div class="maze-cell maze-wall"></div>
+                        <div class="maze-cell maze-wall"></div>
+                        <div class="maze-cell maze-wall"></div>
+                        <div class="maze-cell maze-wall"></div>
+                        <div class="maze-cell maze-wall"></div>
+                        <div class="maze-cell maze-wall"></div>
+                        <div class="maze-cell maze-wall"></div>
+                        <div class="maze-cell maze-wall"></div>
+                        <div class="maze-cell maze-wall"></div>
+                        <!-- ... más celdas del laberinto -->
+                        <div class="maze-cell"><div class="maze-player"></div></div>
+                        <div class="maze-cell maze-wall"></div>
+                        <!-- ... más celdas -->
+                        <div class="maze-cell"><div class="maze-goal"></div></div>
+                    </div>
+                `;
+            }
+            
+            // Las demás funciones de carga de juegos seguirían un patrón similar
+            
+// =============================================
+// JUEGO "ADIVINA EL REGALO"
+// =============================================
+
+// Variables globales para el juego de adivinar regalos
+let giftGameScore = 0;
+let giftGameLives = 3;
+let giftGameTimer;
+let giftGameTimeLeft = 60;
+let giftGameActive = false;
+let currentGift = null;
+let gifts = [];
+let revealedGifts = [];
+
+// Tipos de regalos con sus propiedades
+const giftTypes = [
+    { emoji: '🎮', name: 'Videojuego', sound: 'beep', points: 20 },
+    { emoji: '📚', name: 'Libro', sound: 'page', points: 15 },
+    { emoji: '🧸', name: 'Peluche', sound: 'squeak', points: 10 },
+    { emoji: '👕', name: 'Ropa', sound: 'rustle', points: 12 },
+    { emoji: '🍫', name: 'Chocolate', sound: 'unwrap', points: 8 },
+    { emoji: '🎨', name: 'Pinturas', sound: 'shake', points: 18 },
+    { emoji: '⚽', name: 'Pelota', sound: 'bounce', points: 14 },
+    { emoji: '🧩', name: 'Rompecabezas', sound: 'clack', points: 16 }
+];
+
+// Función para cargar el juego "Adivina el Regalo"
+function loadGiftGame() {
+    gameArea.innerHTML = `
+        <div class="gift-game-container">
+            <h3>🎁 Adivina el Regalo</h3>
+            <p>Haz clic en los regalos para escuchar pistas y adivinar qué hay dentro. ¡Cuidado con los regalos trampa!</p>
+            
+            <div class="gift-game-info">
+                <div class="gift-stats">
+                    <div class="gift-stat">
+                        <span class="stat-label">Puntos:</span>
+                        <span id="giftScore" class="stat-value">0</span>
+                    </div>
+                    <div class="gift-stat">
+                        <span class="stat-label">Vidas:</span>
+                        <span id="giftLives" class="stat-value">3</span>
+                    </div>
+                    <div class="gift-stat">
+                        <span class="stat-label">Tiempo:</span>
+                        <span id="giftTime" class="stat-value">60s</span>
+                    </div>
+                </div>
+                
+                <div class="current-gift" id="currentGiftDisplay">
+                    <p>¡Haz clic en un regalo para comenzar!</p>
+                </div>
+            </div>
+            
+            <div class="gifts-container" id="giftsContainer"></div>
+            
+            <div class="gift-options" id="giftOptions"></div>
+            
+            <div class="gift-controls">
+                <button id="giftStartBtn" class="gift-btn">🎯 Comenzar</button>
+                <button id="giftHintBtn" class="gift-btn">🔊 Repetir Pista</button>
+                <button id="giftSkipBtn" class="gift-btn">⏭️ Saltar</button>
+            </div>
+            
+            <div class="gift-message" id="giftMessage"></div>
+        </div>
+    `;
+    
+    initializeGiftGame();
+    setupGiftGameEvents();
+    addGiftGameStyles();
+}
+
+// Inicializar el juego de regalos
+function initializeGiftGame() {
+    const giftsContainer = document.getElementById('giftsContainer');
+    giftsContainer.innerHTML = '';
+    gifts = [];
+    revealedGifts = [];
+    
+    // Crear 8 regalos en el contenedor
+    for (let i = 0; i < 8; i++) {
+        const gift = document.createElement('div');
+        gift.className = 'gift-box';
+        gift.dataset.index = i;
+        gift.innerHTML = '🎁';
+        
+        gift.addEventListener('click', () => selectGift(i));
+        giftsContainer.appendChild(gift);
+        gifts.push(gift);
+    }
+    
+    // Reiniciar variables del juego
+    giftGameScore = 0;
+    giftGameLives = 3;
+    giftGameTimeLeft = 60;
+    giftGameActive = false;
+    currentGift = null;
+    
+    updateGiftGameDisplay();
+    showGiftMessage('¡Haz clic en "Comenzar" para iniciar el juego!', 'info');
+}
+
+// Configurar eventos del juego de regalos
+function setupGiftGameEvents() {
+    const startBtn = document.getElementById('giftStartBtn');
+    const hintBtn = document.getElementById('giftHintBtn');
+    const skipBtn = document.getElementById('giftSkipBtn');
+    
+    startBtn.addEventListener('click', startGiftGame);
+    hintBtn.addEventListener('click', playGiftHint);
+    skipBtn.addEventListener('click', skipCurrentGift);
+    
+    // Deshabilitar botones hasta que empiece el juego
+    hintBtn.disabled = true;
+    skipBtn.disabled = true;
+}
+
+// Iniciar el juego de regalos
+function startGiftGame() {
+    if (giftGameActive) return;
+    
+    giftGameActive = true;
+    document.getElementById('giftStartBtn').disabled = true;
+    document.getElementById('giftHintBtn').disabled = false;
+    document.getElementById('giftSkipBtn').disabled = false;
+    
+    startGiftTimer();
+    selectRandomGift();
+    showGiftMessage('¡Adivina qué hay dentro del regalo! Escucha la pista.', 'info');
+}
+
+// Seleccionar un regalo aleatorio
+function selectRandomGift() {
+    const availableGifts = giftTypes.filter((_, index) => !revealedGifts.includes(index));
+    
+    if (availableGifts.length === 0) {
+        endGiftGame(true); // Victoria
+        return;
+    }
+    
+    const randomIndex = Math.floor(Math.random() * availableGifts.length);
+    currentGift = availableGifts[randomIndex];
+    
+    updateCurrentGiftDisplay();
+    playGiftSound();
+}
+
+// Seleccionar un regalo para adivinar
+function selectGift(giftIndex) {
+    if (!giftGameActive || revealedGifts.includes(giftIndex)) return;
+    
+    const gift = gifts[giftIndex];
+    const giftType = giftTypes[giftIndex];
+    
+    // Revelar el regalo
+    gift.innerHTML = giftType.emoji;
+    gift.classList.add('revealed');
+    revealedGifts.push(giftIndex);
+    
+    // Verificar si es el regalo correcto
+    if (giftType === currentGift) {
+        // ¡Correcto!
+        giftGameScore += giftType.points;
+        gift.classList.add('correct');
+        showGiftMessage(`¡Correcto! Era un ${giftType.name}. +${giftType.points} puntos!`, 'success');
+        playSuccessSound();
+    } else {
+        // Incorrecto
+        giftGameLives--;
+        gift.classList.add('incorrect');
+        showGiftMessage(`¡Oh no! Era un ${giftType.name}. -1 vida.`, 'error');
+        playErrorSound();
+        
+        if (giftGameLives <= 0) {
+            endGiftGame(false);
+            return;
+        }
+    }
+    
+    updateGiftGameDisplay();
+    
+    // Seleccionar nuevo regalo después de un breve delay
+    setTimeout(() => {
+        if (giftGameActive) {
+            selectRandomGift();
+        }
+    }, 1500);
+}
+
+// Reproducir pista de sonido
+function playGiftHint() {
+    if (!giftGameActive || !currentGift) return;
+    
+    playGiftSound();
+    showGiftMessage(`Escuchaste: ${getSoundDescription(currentGift.sound)}`, 'hint');
+}
+
+// Reproducir sonido del regalo actual
+function playGiftSound() {
+    // En un juego real, aquí iría la reproducción de audio
+    // Por ahora simulamos con mensajes
+    console.log(`Reproduciendo sonido: ${currentGift.sound}`);
+}
+
+// Obtener descripción del sonido
+function getSoundDescription(sound) {
+    const soundDescriptions = {
+        'beep': 'pitidos electrónicos',
+        'page': 'páginas pasando',
+        'squeak': 'chirrido suave',
+        'rustle': 'ruido de tela',
+        'unwrap': 'papel desenvuelto',
+        'shake': 'sonido de agitación',
+        'bounce': 'rebote elástico',
+        'clack': 'clic metálico'
+    };
+    return soundDescriptions[sound] || 'sonido misterioso';
+}
+
+// Saltar regalo actual
+function skipCurrentGift() {
+    if (!giftGameActive) return;
+    
+    giftGameScore = Math.max(0, giftGameScore - 5); // Penalización por saltar
+    showGiftMessage('Saltaste el regalo. -5 puntos.', 'warning');
+    updateGiftGameDisplay();
+    selectRandomGift();
+}
+
+// Actualizar display del juego
+function updateGiftGameDisplay() {
+    document.getElementById('giftScore').textContent = giftGameScore;
+    document.getElementById('giftLives').textContent = giftGameLives;
+    document.getElementById('giftTime').textContent = `${giftGameTimeLeft}s`;
+    
+    // Actualizar vidas visualmente
+    const livesElement = document.getElementById('giftLives');
+    livesElement.style.color = giftGameLives === 1 ? '#ff4444' : 
+                              giftGameLives === 2 ? '#ffaa00' : '#4CAF50';
+}
+
+// Actualizar display del regalo actual
+function updateCurrentGiftDisplay() {
+    const display = document.getElementById('currentGiftDisplay');
+    if (currentGift) {
+        display.innerHTML = `
+            <div class="gift-clue">
+                <p><strong>Pista de sonido:</strong></p>
+                <p class="sound-description">"${getSoundDescription(currentGift.sound)}"</p>
+                <p class="gift-instruction">¿Qué regalo hace este sonido?</p>
+            </div>
+        `;
+    }
+}
+
+// Mostrar mensaje en el juego
+function showGiftMessage(message, type) {
+    const messageElement = document.getElementById('giftMessage');
+    messageElement.textContent = message;
+    messageElement.className = `gift-message ${type}`;
+    
+    // Auto-ocultar mensajes informativos después de 3 segundos
+    if (type === 'info' || type === 'hint') {
+        setTimeout(() => {
+            messageElement.className = 'gift-message';
+        }, 3000);
+    }
+}
+
+// Iniciar temporizador del juego
+function startGiftTimer() {
+    clearInterval(giftGameTimer);
+    giftGameTimer = setInterval(() => {
+        if (giftGameActive) {
+            giftGameTimeLeft--;
+            updateGiftGameDisplay();
+            
+            if (giftGameTimeLeft <= 0) {
+                endGiftGame(false);
+            }
+        }
+    }, 1000);
+}
+
+// Finalizar el juego
+function endGiftGame(isVictory) {
+    giftGameActive = false;
+    clearInterval(giftGameTimer);
+    
+    // Actualizar puntuación global
+    score += giftGameScore;
+    updateDisplay();
+    
+    // Mostrar mensaje final
+    if (isVictory) {
+        showGiftMessage(`¡Victoria! Descubriste todos los regalos. Puntuación: ${giftGameScore}`, 'success');
+        playVictorySound();
+    } else {
+        showGiftMessage(`¡Juego terminado! Puntuación final: ${giftGameScore}`, 
+                       giftGameLives <= 0 ? 'error' : 'info');
+    }
+    
+    // Revelar todos los regalos
+    gifts.forEach((gift, index) => {
+        if (!revealedGifts.includes(index)) {
+            gift.innerHTML = giftTypes[index].emoji;
+            gift.classList.add('revealed');
+        }
+    });
+    
+    // Habilitar botón de comenzar
+    document.getElementById('giftStartBtn').disabled = false;
+    document.getElementById('giftHintBtn').disabled = true;
+    document.getElementById('giftSkipBtn').disabled = true;
+}
+
+// Sonidos (simulados)
+function playSuccessSound() {
+    console.log('¡Sonido de éxito!');
+}
+
+function playErrorSound() {
+    console.log('¡Sonido de error!');
+}
+
+function playVictorySound() {
+    console.log('¡Sonido de victoria!');
+}
+
+// Detener juego de regalos
+function stopGiftGame() {
+    giftGameActive = false;
+    clearInterval(giftGameTimer);
+}
+
+// Agregar estilos CSS para el juego de regalos
+function addGiftGameStyles() {
+    if (document.getElementById('gift-game-styles')) return;
+    
+    const style = document.createElement('style');
+    style.id = 'gift-game-styles';
+    style.textContent = `
+        .gift-game-container {
+            text-align: center;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .gift-game-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 2px solid #FFD700;
+        }
+        
+        .gift-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .gift-stat {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px 25px;
+            border-radius: 25px;
+            min-width: 100px;
+        }
+        
+        .current-gift {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        
+        .gift-clue {
+            font-size: 1.1rem;
+        }
+        
+        .sound-description {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #FFD700;
+            margin: 10px 0;
+        }
+        
+        .gift-instruction {
+            font-style: italic;
+            color: #ccc;
+        }
+        
+        .gifts-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+        }
+        
+        .gift-box {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            background: linear-gradient(135deg, #c8102e, #a00d26);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid #FFD700;
+            user-select: none;
+            margin: 0 auto;
+        }
+        
+        .gift-box:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+        }
+        
+        .gift-box.revealed {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            cursor: default;
+        }
+        
+        .gift-box.revealed:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .gift-box.correct {
+            animation: correctGuess 0.6s ease;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+        }
+        
+        .gift-box.incorrect {
+            animation: incorrectGuess 0.6s ease;
+            background: linear-gradient(135deg, #ff4444, #cc0000);
+        }
+        
+        .gift-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        
+        .gift-btn {
+            background: linear-gradient(135deg, #c8102e, #a00d26);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            min-width: 140px;
+            font-size: 1rem;
+        }
+        
+        .gift-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(200, 16, 46, 0.4);
+        }
+        
+        .gift-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .gift-message {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-weight: bold;
+            min-height: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .gift-message.success {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+        }
+        
+        .gift-message.error {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+            border: 2px solid #f44336;
+        }
+        
+        .gift-message.warning {
+            background: rgba(255, 152, 0, 0.2);
+            color: #FF9800;
+            border: 2px solid #FF9800;
+        }
+        
+        .gift-message.info {
+            background: rgba(33, 150, 243, 0.2);
+            color: #2196F3;
+            border: 2px solid #2196F3;
+        }
+        
+        .gift-message.hint {
+            background: rgba(255, 215, 0, 0.2);
+            color: #FFD700;
+            border: 2px solid #FFD700;
+        }
+        
+        @keyframes correctGuess {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2) rotate(10deg); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes incorrectGuess {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+        
+        @media (max-width: 600px) {
+            .gifts-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            
+            .gift-box {
+                width: 70px;
+                height: 70px;
+                font-size: 2.5rem;
+            }
+            
+            .gift-stats {
+                gap: 15px;
+            }
+            
+            .gift-stat {
+                min-width: 80px;
+                padding: 10px 15px;
+            }
+            
+            .gift-btn {
+                min-width: 120px;
+                padding: 10px 20px;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+            
+// =============================================
+// JUEGO "DECORAR EL ÁRBOL" - ÁRBOL GIGANTE
+// =============================================
+
+// Variables globales para el juego de decorar árbol
+let treeGameScore = 0;
+let treeGameTimer;
+let treeGameTimeLeft = 120;
+let treeGameActive = false;
+let placedDecorations = [];
+let selectedDecoration = null;
+
+// Decoraciones navideñas ampliadas
+const decorationTypes = [
+    // Bolas clásicas
+    { id: 'ball1', emoji: '🔴', name: 'Bola Roja', points: 5 },
+    { id: 'ball2', emoji: '🔵', name: 'Bola Azul', points: 5 },
+    { id: 'ball3', emoji: '🟢', name: 'Bola Verde', points: 5 },
+    { id: 'ball4', emoji: '🟡', name: 'Bola Amarilla', points: 5 },
+    { id: 'ball5', emoji: '🟣', name: 'Bola Morada', points: 5 },
+    { id: 'ball6', emoji: '🟠', name: 'Bola Naranja', points: 5 },
+    
+    // Coronación
+    { id: 'star', emoji: '⭐', name: 'Estrella', points: 10 },
+    { id: 'star2', emoji: '🌟', name: 'Estrella Brillante', points: 12 },
+    { id: 'angel', emoji: '👼', name: 'Ángel', points: 15 },
+    
+    // Luces y brillos
+    { id: 'bell', emoji: '🔔', name: 'Campana', points: 8 },
+    { id: 'light', emoji: '💡', name: 'Bombilla', points: 6 },
+    { id: 'sparkle', emoji: '✨', name: 'Chispas', points: 7 },
+    { id: 'diamond', emoji: '💎', name: 'Diamante', points: 12 },
+    
+    // Dulces y comida
+    { id: 'candy', emoji: '🍬', name: 'Caramelo', points: 4 },
+    { id: 'cookie', emoji: '🍪', name: 'Galleta', points: 6 },
+    { id: 'cake', emoji: '🍰', name: 'Pastel', points: 10 },
+    { id: 'hotchocolate', emoji: '☕', name: 'Chocolate Caliente', points: 8 },
+    
+    // Regalos y envoltorios
+    { id: 'gift', emoji: '🎁', name: 'Regalo', points: 8 },
+    { id: 'gift2', emoji: '🎀', name: 'Moño', points: 6 },
+    
+    // Calcetines y tejidos
+    { id: 'sock', emoji: '🧦', name: 'Calcetín', points: 6 },
+    
+    // Invierno y nieve
+    { id: 'snowflake', emoji: '❄️', name: 'Copo de Nieve', points: 5 },
+    { id: 'snowman', emoji: '⛄', name: 'Muñeco de Nieve', points: 12 },
+    
+    // Personajes navideños
+    { id: 'santa', emoji: '🎅', name: 'Santa Claus', points: 20 },
+    { id: 'mrsanta', emoji: '🤶', name: 'Mrs. Claus', points: 18 },
+    { id: 'elf', emoji: '🧝', name: 'Elfo', points: 15 },
+    
+    // Animales navideños
+    { id: 'reindeer', emoji: '🦌', name: 'Reno', points: 12 },
+    { id: 'penguin', emoji: '🐧', name: 'Pingüino', points: 10 },
+    
+    // Instrumentos musicales
+    { id: 'music', emoji: '🎵', name: 'Nota Musical', points: 6 },
+    { id: 'music2', emoji: '🎶', name: 'Notas Musicales', points: 8 },
+    
+    // Emojis divertidos
+    { id: 'heart', emoji: '❤️', name: 'Corazón Rojo', points: 8 },
+    { id: 'heart2', emoji: '💚', name: 'Corazón Verde', points: 8 },
+    { id: 'rainbow', emoji: '🌈', name: 'Arcoíris', points: 20 },
+    { id: 'rocket', emoji: '🚀', name: 'Cohete', points: 18 },
+    { id: 'unicorn', emoji: '🦄', name: 'Unicornio', points: 25 },
+    { id: 'alien', emoji: '👽', name: 'Alien', points: 30 },
+    { id: 'robot', emoji: '🤖', name: 'Robot', points: 22 }
+];
+
+// Función para cargar el juego "Decorar el Árbol" - ÁRBOL GIGANTE
+function loadTreeGame() {
+    gameArea.innerHTML = `
+        <div class="tree-game-container">
+            <h3>🎄 ¡Decora el Árbol Gigante!</h3>
+            <p>¡Se creativo! Arrastra cualquier decoración al árbol gigante. ¡Diversión sin límites!</p>
+            
+            <div class="tree-game-info">
+                <div class="tree-stats">
+                    <div class="tree-stat">
+                        <span class="stat-label">Puntos Creativos:</span>
+                        <span id="treeScore" class="stat-value">0</span>
+                    </div>
+                    <div class="tree-stat">
+                        <span class="stat-label">Tiempo:</span>
+                        <span id="treeTime" class="stat-value">120s</span>
+                    </div>
+                    <div class="tree-stat">
+                        <span class="stat-label">Decoraciones:</span>
+                        <span id="treeDecorations" class="stat-value">0</span>
+                    </div>
+                </div>
+                
+                <div class="tree-rules">
+                    <h4>🎨 ¡Reglas Creativas!</h4>
+                    <ul>
+                        <li>✨ ¡Coloca CUALQUIER decoración DONDE QUIERAS!</li>
+                        <li>🎯 Más puntos por decoraciones especiales</li>
+                        <li>🌈 ¡Combina colores y crea diseños únicos!</li>
+                        <li>⏰ 120 segundos de creatividad pura</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="tree-game-area">
+                <div class="decorations-panel" id="decorationsPanel">
+                    <h4>🎁 ¡Todas las Decoraciones!</h4>
+                    <div class="search-decorations">
+                        <input type="text" id="decorationSearch" placeholder="🔍 Buscar decoraciones..." class="search-input">
+                    </div>
+                    <div class="decorations-list" id="decorationsList"></div>
+                </div>
+                
+                <div class="tree-area">
+                    <div class="tree-container" id="treeContainer">
+                        <div class="christmas-tree" id="christmasTree">
+                            <!-- El árbol GIGANTE se dibujará aquí -->
+                        </div>
+                        <div class="tree-canvas" id="treeCanvas"></div>
+                    </div>
+                    
+                    <div class="tree-tools">
+                        <button id="clearTree" class="tool-btn">🗑️ Limpiar Todo</button>
+                        <button id="randomDecorate" class="tool-btn">🎲 Decoración Aleatoria</button>
+                        <button id="changeBg" class="tool-btn">🌌 Cambiar Fondo</button>
+                    </div>
+                    
+                    <div class="selected-decoration" id="selectedDecoration">
+                        <p>¡Selecciona una decoración y haz clic en el árbol gigante!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tree-controls">
+                <button id="treeStartBtn" class="tree-btn">🎨 Comenzar a Decorar</button>
+                <button id="treeResetBtn" class="tree-btn">🔄 Reiniciar Juego</button>
+            </div>
+            
+            <div class="tree-message" id="treeMessage"></div>
+            
+            <div class="tree-bonus" id="treeBonus">
+                <h4>🎊 Logros Creativos:</h4>
+                <div class="bonus-list">
+                    <div class="bonus-item" data-bonus="colorful">🌈 Arcoíris Mágico</div>
+                    <div class="bonus-item" data-bonus="special">🚀 Decoración Especial</div>
+                    <div class="bonus-item" data-bonus="crowded">🎪 Árbol Llenísimo</div>
+                    <div class="bonus-item" data-bonus="master">🎨 Maestro Decorador</div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    initializeTreeGame();
+    setupTreeGameEvents();
+    addTreeGameStyles();
+}
+
+// Inicializar el juego del árbol - ÁRBOL GIGANTE
+function initializeTreeGame() {
+    const decorationsList = document.getElementById('decorationsList');
+    const treeCanvas = document.getElementById('treeCanvas');
+    
+    // Limpiar contenedores
+    decorationsList.innerHTML = '';
+    treeCanvas.innerHTML = '';
+    placedDecorations = [];
+    
+    // Crear todas las decoraciones disponibles
+    renderDecorationsList();
+    
+    // Dibujar el árbol GIGANTE
+    drawChristmasTree();
+    
+    // Reiniciar variables del juego
+    treeGameScore = 0;
+    treeGameTimeLeft = 120;
+    treeGameActive = false;
+    selectedDecoration = null;
+    
+    updateTreeGameDisplay();
+    showTreeMessage('🎨 ¡Selecciona cualquier decoración y haz clic en el árbol gigante donde quieras ponerla!', 'info');
+}
+
+// Renderizar lista de decoraciones con búsqueda
+function renderDecorationsList(filter = '') {
+    const decorationsList = document.getElementById('decorationsList');
+    decorationsList.innerHTML = '';
+    
+    const filteredDecorations = decorationTypes.filter(decoration => 
+        decoration.name.toLowerCase().includes(filter.toLowerCase()) ||
+        decoration.emoji.includes(filter)
+    );
+    
+    filteredDecorations.forEach((decoration, index) => {
+        const decoElement = document.createElement('div');
+        decoElement.className = 'decoration-item';
+        decoElement.dataset.id = decoration.id;
+        decoElement.innerHTML = `
+            <span class="decoration-emoji">${decoration.emoji}</span>
+            <span class="decoration-name">${decoration.name}</span>
+            <span class="decoration-points">+${decoration.points}</span>
+        `;
+        
+        decoElement.addEventListener('click', () => selectDecoration(decoration));
+        decorationsList.appendChild(decoElement);
+    });
+}
+
+// Dibujar el árbol de Navidad GIGANTE
+function drawChristmasTree() {
+    const treeContainer = document.getElementById('christmasTree');
+    
+    treeContainer.innerHTML = `
+        <div class="tree-layer layer-1"></div>
+        <div class="tree-layer layer-2"></div>
+        <div class="tree-layer layer-3"></div>
+        <div class="tree-layer layer-4"></div>
+        <div class="tree-layer layer-5"></div>
+        <div class="tree-trunk"></div>
+        <div class="tree-glow"></div>
+        <div class="tree-lights"></div>
+    `;
+}
+
+// Seleccionar una decoración
+function selectDecoration(decoration) {
+    selectedDecoration = decoration;
+    
+    // Resaltar la decoración seleccionada
+    document.querySelectorAll('.decoration-item').forEach(item => {
+        item.classList.remove('selected');
+    });
+    document.querySelector(`[data-id="${decoration.id}"]`).classList.add('selected');
+    
+    updateSelectedDecorationDisplay();
+    showTreeMessage(`Seleccionado: ${decoration.emoji} ${decoration.name}. ¡Haz clic en el árbol!`, 'info');
+}
+
+// Actualizar display de decoración seleccionada
+function updateSelectedDecorationDisplay() {
+    const display = document.getElementById('selectedDecoration');
+    if (selectedDecoration) {
+        display.innerHTML = `
+            <div class="selected-deco-info">
+                <span class="selected-emoji">${selectedDecoration.emoji}</span>
+                <div class="selected-details">
+                    <strong>${selectedDecoration.name}</strong>
+                    <span>+${selectedDecoration.points} puntos creativos</span>
+                </div>
+            </div>
+            <p>¡Haz clic en cualquier parte del árbol gigante para colocar esta decoración!</p>
+        `;
+    }
+}
+
+// Colocar decoración en el árbol - ¡EN CUALQUIER PARTE!
+function placeDecorationOnTree(event) {
+    if (!selectedDecoration || !treeGameActive) return;
+    
+    const treeCanvas = document.getElementById('treeCanvas');
+    const rect = treeCanvas.getBoundingClientRect();
+    
+    // Calcular posición relativa al árbol
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+    
+    // Verificar que el clic fue dentro del árbol
+    if (x < 0 || x > 100 || y < 0 || y > 100) return;
+    
+    // Crear elemento de decoración
+    const decorationElement = document.createElement('div');
+    decorationElement.className = 'tree-decoration';
+    decorationElement.innerHTML = selectedDecoration.emoji;
+    decorationElement.style.left = `${x}%`;
+    decorationElement.style.top = `${y}%`;
+    
+    // Efectos especiales para decoraciones con muchos puntos
+    if (selectedDecoration.points >= 20) {
+        decorationElement.classList.add('special-decoration');
+        decorationElement.style.animation = 'specialGlow 2s infinite';
+    }
+    
+    // Tamaño aleatorio para hacerlo más natural
+    const randomSize = 0.8 + Math.random() * 0.4;
+    decorationElement.style.fontSize = `${randomSize * 2.5}rem`;
+    
+    // Agregar al árbol
+    treeCanvas.appendChild(decorationElement);
+    
+    // Guardar información de la decoración colocada
+    const placedDeco = {
+        id: selectedDecoration.id,
+        emoji: selectedDecoration.emoji,
+        name: selectedDecoration.name,
+        points: selectedDecoration.points,
+        element: decorationElement,
+        x: x,
+        y: y
+    };
+    
+    placedDecorations.push(placedDeco);
+    
+    // Sumar puntos
+    treeGameScore += selectedDecoration.points;
+    
+    // Efecto visual de colocación
+    decorationElement.style.animation = 'placeDecoration 0.6s ease';
+    
+    // Verificar logros creativos
+    checkCreativeAchievements();
+    
+    updateTreeGameDisplay();
+    
+    // Mensaje especial para decoraciones únicas
+    if (selectedDecoration.points >= 25) {
+        showTreeMessage(`🎉 ¡WOW! ${selectedDecoration.emoji} ${selectedDecoration.name} - ¡Decoración Épica! +${selectedDecoration.points}pts`, 'bonus');
+    } else {
+        showTreeMessage(`✅ ${selectedDecoration.emoji} colocado! +${selectedDecoration.points} puntos creativos`, 'success');
+    }
+    
+    // Reproducir sonido
+    playDecorationSound();
+}
+
+// Verificar logros creativos
+function checkCreativeAchievements() {
+    const decorationCount = placedDecorations.length;
+    const specialDecorations = placedDecorations.filter(deco => deco.points >= 20).length;
+    const emojisUsed = [...new Set(placedDecorations.map(deco => deco.emoji))];
+    
+    let bonusMessage = '';
+    
+    // Logro: Arcoíris Mágico (muchos colores diferentes)
+    if (emojisUsed.length >= 8 && !document.querySelector('[data-bonus="colorful"]').classList.contains('achieved')) {
+        treeGameScore += 50;
+        bonusMessage += '🌈 Arcoíris Mágico +50pts\n';
+        document.querySelector('[data-bonus="colorful"]').classList.add('achieved');
+    }
+    
+    // Logro: Decoración Especial (muchas decoraciones especiales)
+    if (specialDecorations >= 3 && !document.querySelector('[data-bonus="special"]').classList.contains('achieved')) {
+        treeGameScore += 60;
+        bonusMessage += '🚀 Decoración Especial +60pts\n';
+        document.querySelector('[data-bonus="special"]').classList.add('achieved');
+    }
+    
+    // Logro: Árbol Llenísimo (muchas decoraciones)
+    if (decorationCount >= 20 && !document.querySelector('[data-bonus="crowded"]').classList.contains('achieved')) {
+        treeGameScore += 40;
+        bonusMessage += '🎪 Árbol Llenísimo +40pts\n';
+        document.querySelector('[data-bonus="crowded"]').classList.add('achieved');
+    }
+    
+    // Logro: Maestro Decorador (puntuación muy alta)
+    if (treeGameScore >= 300 && !document.querySelector('[data-bonus="master"]').classList.contains('achieved')) {
+        treeGameScore += 100;
+        bonusMessage += '🎨 Maestro Decorador +100pts\n';
+        document.querySelector('[data-bonus="master"]').classList.add('achieved');
+    }
+    
+    // Aplicar bonos
+    if (bonusMessage) {
+        showTreeMessage(`🎊 ¡Logro Creativo!\n${bonusMessage}`, 'bonus');
+        playBonusSound();
+    }
+    
+    updateTreeGameDisplay();
+}
+
+// Configurar eventos del juego del árbol
+function setupTreeGameEvents() {
+    const startBtn = document.getElementById('treeStartBtn');
+    const resetBtn = document.getElementById('treeResetBtn');
+    const clearBtn = document.getElementById('clearTree');
+    const randomBtn = document.getElementById('randomDecorate');
+    const changeBgBtn = document.getElementById('changeBg');
+    const searchInput = document.getElementById('decorationSearch');
+    const treeCanvas = document.getElementById('treeCanvas');
+    
+    startBtn.addEventListener('click', startTreeGame);
+    resetBtn.addEventListener('click', initializeTreeGame);
+    clearBtn.addEventListener('click', clearTree);
+    randomBtn.addEventListener('click', randomDecoration);
+    changeBgBtn.addEventListener('click', changeBackground);
+    searchInput.addEventListener('input', (e) => renderDecorationsList(e.target.value));
+    
+    // Evento para colocar decoraciones en CUALQUIER parte del árbol
+    treeCanvas.addEventListener('click', placeDecorationOnTree);
+}
+
+// Iniciar el juego del árbol
+function startTreeGame() {
+    if (treeGameActive) return;
+    
+    treeGameActive = true;
+    document.getElementById('treeStartBtn').disabled = true;
+    
+    startTreeTimer();
+    showTreeMessage('🎨 ¡Tiempo de creatividad! Decora el árbol gigante como quieras - 120 segundos', 'success');
+}
+
+// Limpiar todo el árbol
+function clearTree() {
+    const treeCanvas = document.getElementById('treeCanvas');
+    treeCanvas.innerHTML = '';
+    placedDecorations = [];
+    treeGameScore = 0;
+    
+    // Resetear logros
+    document.querySelectorAll('.bonus-item').forEach(item => {
+        item.classList.remove('achieved');
+    });
+    
+    updateTreeGameDisplay();
+    showTreeMessage('🗑️ ¡Árbol limpiado! Comienza de nuevo', 'info');
+}
+
+// Decoración aleatoria
+function randomDecoration() {
+    if (!treeGameActive) return;
+    
+    const randomDeco = decorationTypes[Math.floor(Math.random() * decorationTypes.length)];
+    selectedDecoration = randomDeco;
+    
+    // Colocar en posición aleatoria
+    const treeCanvas = document.getElementById('treeCanvas');
+    const fakeEvent = {
+        clientX: treeCanvas.getBoundingClientRect().left + Math.random() * treeCanvas.offsetWidth,
+        clientY: treeCanvas.getBoundingClientRect().top + Math.random() * treeCanvas.offsetHeight
+    };
+    
+    placeDecorationOnTree(fakeEvent);
+    showTreeMessage(`🎲 Decoración aleatoria: ${randomDeco.emoji}`, 'info');
+}
+
+// Cambiar fondo
+function changeBackground() {
+    const backgrounds = [
+        'linear-gradient(135deg, #1e3c72, #2a5298)',
+        'linear-gradient(135deg, #667eea, #764ba2)',
+        'linear-gradient(135deg, #f093fb, #f5576c)',
+        'linear-gradient(135deg, #4facfe, #00f2fe)',
+        'linear-gradient(135deg, #43e97b, #38f9d7)',
+        'linear-gradient(135deg, #fa709a, #fee140)',
+        'linear-gradient(135deg, #a8edea, #fed6e3)',
+        'linear-gradient(135deg, #d4fc79, #96e6a1)'
+    ];
+    
+    const treeContainer = document.getElementById('treeContainer');
+    const randomBg = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    treeContainer.style.background = randomBg;
+    
+    showTreeMessage('🌌 ¡Fondo cambiado!', 'info');
+}
+
+// Actualizar display del juego
+function updateTreeGameDisplay() {
+    document.getElementById('treeScore').textContent = treeGameScore;
+    document.getElementById('treeTime').textContent = `${treeGameTimeLeft}s`;
+    document.getElementById('treeDecorations').textContent = placedDecorations.length;
+    
+    // Efecto visual cuando hay muchas decoraciones
+    const decorationsElement = document.getElementById('treeDecorations');
+    if (placedDecorations.length >= 15) {
+        decorationsElement.style.color = '#FFD700';
+        decorationsElement.style.fontWeight = 'bold';
+    }
+}
+
+// Mostrar mensaje en el juego
+function showTreeMessage(message, type) {
+    const messageElement = document.getElementById('treeMessage');
+    messageElement.textContent = message;
+    messageElement.className = `tree-message ${type}`;
+    
+    setTimeout(() => {
+        if (messageElement.textContent === message) {
+            messageElement.className = 'tree-message';
+        }
+    }, 4000);
+}
+
+// Iniciar temporizador del árbol
+function startTreeTimer() {
+    clearInterval(treeGameTimer);
+    treeGameTimer = setInterval(() => {
+        if (treeGameActive) {
+            treeGameTimeLeft--;
+            updateTreeGameDisplay();
+            
+            if (treeGameTimeLeft <= 0) {
+                endTreeGame();
+            }
+        }
+    }, 1000);
+}
+
+// Finalizar el juego del árbol
+function endTreeGame() {
+    treeGameActive = false;
+    clearInterval(treeGameTimer);
+    
+    // Actualizar puntuación global
+    score += treeGameScore;
+    updateDisplay();
+    
+    const finalScore = treeGameScore;
+    const decoCount = placedDecorations.length;
+    
+    let message = `⏰ ¡Tiempo agotado!\nPuntuación Creativa: ${finalScore} puntos\nDecoraciones: ${decoCount}`;
+    
+    if (finalScore >= 300) {
+        message += '\n🎉 ¡Eres un Maestro Decorador!';
+    } else if (finalScore >= 150) {
+        message += '\n🌟 ¡Excelente trabajo creativo!';
+    }
+    
+    showTreeMessage(message, 'success');
+    document.getElementById('treeStartBtn').disabled = false;
+}
+
+// Sonidos del juego
+function playDecorationSound() {
+    // Simular sonido de decoración colocada
+    console.log('¡Sonido creativo!');
+}
+
+function playBonusSound() {
+    // Simular sonido de logro
+    console.log('¡Sonido de logro!');
+}
+
+// Detener juego del árbol
+function stopTreeGame() {
+    treeGameActive = false;
+    clearInterval(treeGameTimer);
+}
+
+// Agregar estilos CSS para el árbol GIGANTE
+function addTreeGameStyles() {
+    if (document.getElementById('tree-game-styles')) return;
+    
+    const style = document.createElement('style');
+    style.id = 'tree-game-styles';
+    style.textContent = `
+        .tree-game-container {
+            text-align: center;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .tree-game-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .tree-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .tree-stat {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 20px;
+            border-radius: 15px;
+            min-width: 120px;
+        }
+        
+        .tree-rules {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #FFD700;
+            text-align: left;
+        }
+        
+        .tree-rules ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .tree-rules li {
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
+        
+        .tree-game-area {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .decorations-panel {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 15px;
+            border: 2px solid #c8102e;
+            max-height: 700px;
+            overflow-y: auto;
+        }
+        
+        .search-decorations {
+            margin-bottom: 15px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #FFD700;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .search-input::placeholder {
+            color: #ccc;
+        }
+        
+        .decorations-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .decoration-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .decoration-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .decoration-item.selected {
+            background: rgba(255, 215, 0, 0.3);
+            border-color: #FFD700;
+            transform: scale(1.05);
+        }
+        
+        .decoration-emoji {
+            font-size: 1.4rem;
+            min-width: 30px;
+        }
+        
+        .decoration-name {
+            flex: 1;
+            text-align: left;
+            font-size: 0.85rem;
+        }
+        
+        .decoration-points {
+            background: #9C27B0;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        
+        .tree-area {
+            position: relative;
+        }
+        
+        /* ÁRBOL GIGANTE - Contenedor principal */
+        .tree-container {
+            position: relative;
+            width: 100%;
+            height: 700px; /* ¡MUCHO MÁS GRANDE! */
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            border-radius: 25px;
+            overflow: hidden;
+            border: 4px solid #FFD700;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+        
+        .christmas-tree {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .tree-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+        }
+        
+        /* Capas del árbol GIGANTE */
+        .tree-layer {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+        }
+        
+        .tree-layer.layer-1 {
+            top: 8%;
+            border-bottom: 180px solid #1B5E20;
+        }
+        
+        .tree-layer.layer-2 {
+            top: 22%;
+            border-bottom: 160px solid #2E7D32;
+        }
+        
+        .tree-layer.layer-3 {
+            top: 36%;
+            border-bottom: 140px solid #388E3C;
+        }
+        
+        .tree-layer.layer-4 {
+            top: 50%;
+            border-bottom: 120px solid #43A047;
+        }
+
+        .tree-layer.layer-5 {
+            top: 65%;
+            border-bottom: 120px solid #48b44eff;
+        }
+        
+        .tree-trunk {
+            position: absolute;
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 100px;
+            background: #5D4037;
+            border-radius: 10px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+        }
+        
+        .tree-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 20%, rgba(255,215,0,0.15) 80%);
+            pointer-events: none;
+        }
+        
+        .tree-lights {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 15%, rgba(255,0,0,0.3) 2%, transparent 3%),
+                radial-gradient(circle at 80% 25%, rgba(0,255,0,0.3) 2%, transparent 3%),
+                radial-gradient(circle at 40% 40%, rgba(0,0,255,0.3) 2%, transparent 3%),
+                radial-gradient(circle at 60% 60%, rgba(255,255,0,0.3) 2%, transparent 3%),
+                radial-gradient(circle at 30% 75%, rgba(255,0,255,0.3) 2%, transparent 3%);
+            pointer-events: none;
+            animation: twinkle 3s infinite alternate;
+        }
+        
+        .tree-decoration {
+            position: absolute;
+            font-size: 2.5rem;
+            user-select: none;
+            transform: translate(-50%, -50%);
+            filter: drop-shadow(3px 3px 8px rgba(0,0,0,0.8));
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            z-index: 10;
+        }
+        
+        .tree-decoration:hover {
+            transform: translate(-50%, -50%) scale(1.3);
+            z-index: 100;
+        }
+        
+        .special-decoration {
+            font-size: 3rem;
+            filter: drop-shadow(0 0 15px rgba(255,215,0,0.9));
+        }
+        
+        .tree-tools {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .tool-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid #FFD700;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .tool-btn:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .selected-decoration {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border: 2px solid #FFD700;
+        }
+        
+        .selected-deco-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .selected-emoji {
+            font-size: 3rem;
+        }
+        
+        .tree-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .tree-btn {
+            background: linear-gradient(135deg, #c8102e, #a00d26);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            min-width: 200px;
+            font-size: 1.1rem;
+        }
+        
+        .tree-btn:hover:not(:disabled) {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(200, 16, 46, 0.5);
+        }
+        
+        .tree-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .tree-message {
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-weight: bold;
+            white-space: pre-line;
+            min-height: 25px;
+            font-size: 1.2rem;
+        }
+        
+        .tree-message.success {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+        }
+        
+        .tree-message.info {
+            background: rgba(33, 150, 243, 0.2);
+            color: #2196F3;
+            border: 2px solid #2196F3;
+        }
+        
+        .tree-message.bonus {
+            background: rgba(156, 39, 176, 0.3);
+            color: #E1BEE7;
+            border: 2px solid #9C27B0;
+            animation: pulse 1s infinite;
+        }
+        
+        .tree-bonus {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 20px;
+            margin-top: 25px;
+        }
+        
+        .bonus-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .bonus-item {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+        
+        .bonus-item.achieved {
+            background: rgba(76, 175, 80, 0.3);
+            border-color: #4CAF50;
+            color: #C8E6C9;
+            animation: glow 2s infinite;
+        }
+        
+        @keyframes placeDecoration {
+            0% { 
+                transform: translate(-50%, -50%) scale(0) rotate(-180deg); 
+                opacity: 0;
+            }
+            70% { 
+                transform: translate(-50%, -50%) scale(1.4) rotate(15deg); 
+            }
+            100% { 
+                transform: translate(-50%, -50%) scale(1) rotate(0deg); 
+                opacity: 1;
+            }
+        }
+        
+        @keyframes specialGlow {
+            0%, 100% { 
+                filter: drop-shadow(0 0 15px rgba(255,215,0,0.9)) 
+                        drop-shadow(0 0 25px rgba(255,0,0,0.7));
+            }
+            50% { 
+                filter: drop-shadow(0 0 20px rgba(0,255,255,0.9)) 
+                        drop-shadow(0 0 35px rgba(0,0,255,0.7));
+            }
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 10px #4CAF50; }
+            50% { box-shadow: 0 0 25px #4CAF50; }
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
+        }
+        
+        @media (max-width: 1024px) {
+            .tree-container {
+                height: 600px;
+            }
+            
+            .tree-layer {
+                border-left: 120px solid transparent;
+                border-right: 120px solid transparent;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .tree-game-area {
+                grid-template-columns: 1fr;
+            }
+            
+            .tree-game-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .tree-stats {
+                flex-wrap: wrap;
+            }
+            
+            .tree-container {
+                height: 500px;
+            }
+            
+            .tree-layer {
+                border-left: 80px solid transparent;
+                border-right: 80px solid transparent;
+            }
+            
+            .decorations-panel {
+                max-height: 400px;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+            
+            function loadSleighGame() {
+                gameArea.innerHTML = `<h3>Carrera de Trineos</h3><p>Usa las flechas para esquivar obstáculos y recolectar regalos</p>`;
+            }
+            
+// =============================================
+// JUEGO "SIMÓN DICE NAVIDEÑO"
+// =============================================
+
+// Variables globales para el juego Simón Dice
+let simonSequence = [];
+let playerSequence = [];
+let simonLevel = 1;
+let simonScore = 0;
+let simonLives = 3;
+let simonGameActive = false;
+let simonCanPlay = false;
+let simonTimer;
+let simonSpeed = 1000;
+
+// Colores/emojis navideños para Simón
+const simonColors = [
+    { 
+        id: 'red', 
+        emoji: '🔴', 
+        name: 'Bola Roja', 
+        color: '#ff4444', 
+        lightColor: '#ff6666',
+        sound: 'C'
+    },
+    { 
+        id: 'green', 
+        emoji: '🟢', 
+        name: 'Bola Verde', 
+        color: '#4CAF50', 
+        lightColor: '#66bb6a',
+        sound: 'E'
+    },
+    { 
+        id: 'yellow', 
+        emoji: '🟡', 
+        name: 'Bola Amarilla', 
+        color: '#FFD700', 
+        lightColor: '#ffeb3b',
+        sound: 'G'
+    },
+    { 
+        id: 'blue', 
+        emoji: '🔵', 
+        name: 'Bola Azul', 
+        color: '#2196F3', 
+        lightColor: '#42a5f5',
+        sound: 'A'
+    }
+];
+
+// Función para cargar el juego Simón Dice
+function loadSimonGame() {
+    gameArea.innerHTML = `
+        <div class="simon-game-container">
+            <h3>🎮 Simón Dice Navideño</h3>
+            <p>¡Memoriza la secuencia de colores navideños y repítela! Cada nivel es más difícil.</p>
+            
+            <div class="simon-game-info">
+                <div class="simon-stats">
+                    <div class="simon-stat">
+                        <span class="stat-label">Nivel:</span>
+                        <span id="simonLevel" class="stat-value">1</span>
+                    </div>
+                    <div class="simon-stat">
+                        <span class="stat-label">Puntos:</span>
+                        <span id="simonScore" class="stat-value">0</span>
+                    </div>
+                    <div class="simon-stat">
+                        <span class="stat-label">Vidas:</span>
+                        <span id="simonLives" class="stat-value">3</span>
+                    </div>
+                    <div class="simon-stat">
+                        <span class="stat-label">Secuencia:</span>
+                        <span id="simonSequenceLength" class="stat-value">0</span>
+                    </div>
+                </div>
+                
+                <div class="simon-instructions">
+                    <h4>🎯 Cómo Jugar:</h4>
+                    <ul>
+                        <li>👁️ Observa la secuencia que muestra Simón</li>
+                        <li>🎹 Repite la secuencia en el mismo orden</li>
+                        <li>⚡ ¡Cada nivel es más rápido!</li>
+                        <li>💫 ¡Gana puntos por velocidad y precisión!</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="simon-game-area">
+                <div class="simon-board" id="simonBoard">
+                    <!-- Los botones de Simón se generarán aquí -->
+                </div>
+                
+                <div class="simon-display">
+                    <div class="simon-message" id="simonMessage">
+                        ¡Presiona "Comenzar" para jugar!
+                    </div>
+                    <div class="simon-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="simonProgress"></div>
+                        </div>
+                        <div class="progress-text" id="simonProgressText">Esperando...</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="simon-controls">
+                <button id="simonStartBtn" class="simon-btn">🎯 Comenzar Juego</button>
+                <button id="simonRestartBtn" class="simon-btn">🔄 Reiniciar</button>
+                <button id="simonHintBtn" class="simon-btn">💡 Mostrar Secuencia</button>
+                <button id="simonSpeedBtn" class="simon-btn">⚡ Cambiar Velocidad</button>
+            </div>
+            
+            <div class="simon-achievements">
+                <h4>🏆 Logros:</h4>
+                <div class="achievement-list">
+                    <div class="achievement-item" data-achievement="beginner">🎄 Nivel 5</div>
+                    <div class="achievement-item" data-achievement="advanced">🌟 Nivel 10</div>
+                    <div class="achievement-item" data-achievement="expert">🎅 Nivel 15</div>
+                    <div class="achievement-item" data-achievement="master">🔥 Nivel 20</div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    initializeSimonGame();
+    setupSimonEvents();
+    addSimonStyles();
+}
+
+// Inicializar el juego Simón
+function initializeSimonGame() {
+    const simonBoard = document.getElementById('simonBoard');
+    simonBoard.innerHTML = '';
+    
+    // Crear los 4 botones de Simón
+    simonColors.forEach((color, index) => {
+        const button = document.createElement('div');
+        button.className = `simon-button ${color.id}`;
+        button.dataset.color = color.id;
+        button.innerHTML = `
+            <span class="simon-emoji">${color.emoji}</span>
+            <div class="simon-glow"></div>
+        `;
+        
+        // Estilos para el botón
+        button.style.backgroundColor = color.color;
+        button.style.borderColor = color.lightColor;
+        
+        button.addEventListener('click', () => handleSimonClick(color.id));
+        simonBoard.appendChild(button);
+    });
+    
+    // Reiniciar variables del juego
+    simonSequence = [];
+    playerSequence = [];
+    simonLevel = 1;
+    simonScore = 0;
+    simonLives = 3;
+    simonGameActive = false;
+    simonCanPlay = false;
+    simonSpeed = 1000;
+    
+    updateSimonDisplay();
+    showSimonMessage('🎮 ¡Presiona "Comenzar" para iniciar el juego!', 'info');
+}
+
+// Configurar eventos del juego Simón
+function setupSimonEvents() {
+    const startBtn = document.getElementById('simonStartBtn');
+    const restartBtn = document.getElementById('simonRestartBtn');
+    const hintBtn = document.getElementById('simonHintBtn');
+    const speedBtn = document.getElementById('simonSpeedBtn');
+    
+    startBtn.addEventListener('click', startSimonGame);
+    restartBtn.addEventListener('click', initializeSimonGame);
+    hintBtn.addEventListener('click', showSimonHint);
+    speedBtn.addEventListener('click', changeSimonSpeed);
+    
+    // Deshabilitar botones hasta que empiece el juego
+    hintBtn.disabled = true;
+    speedBtn.disabled = true;
+}
+
+// Iniciar el juego Simón
+function startSimonGame() {
+    if (simonGameActive) return;
+    
+    simonGameActive = true;
+    document.getElementById('simonStartBtn').disabled = true;
+    document.getElementById('simonHintBtn').disabled = false;
+    document.getElementById('simonSpeedBtn').disabled = false;
+    
+    // Comenzar nuevo nivel
+    startSimonLevel();
+}
+
+// Comenzar nuevo nivel
+function startSimonLevel() {
+    playerSequence = [];
+    simonCanPlay = false;
+    
+    // Agregar nuevo color a la secuencia
+    const randomColor = simonColors[Math.floor(Math.random() * simonColors.length)].id;
+    simonSequence.push(randomColor);
+    
+    updateSimonDisplay();
+    showSimonMessage(`Nivel ${simonLevel} - Observa la secuencia...`, 'info');
+    
+    // Mostrar la secuencia completa
+    showSimonSequence();
+}
+
+// Mostrar la secuencia de Simón
+function showSimonSequence() {
+    let delay = 500;
+    
+    // Deshabilitar clicks durante la secuencia
+    simonCanPlay = false;
+    
+    // Mostrar cada color de la secuencia
+    simonSequence.forEach((color, index) => {
+        setTimeout(() => {
+            highlightSimonButton(color);
+            playSimonSound(color);
+            
+            // Barra de progreso
+            updateProgressBar((index + 1) / simonSequence.length * 100, `Mostrando: ${index + 1}/${simonSequence.length}`);
+            
+        }, delay);
+        delay += simonSpeed;
+    });
+    
+    // Permitir al jugador repetir la secuencia
+    setTimeout(() => {
+        simonCanPlay = true;
+        playerSequence = [];
+        showSimonMessage('¡Tu turno! Repite la secuencia...', 'success');
+        updateProgressBar(0, '¡Tu turno! Haz clic en los botones...');
+        
+        // Iniciar temporizador para el jugador
+        startPlayerTimer();
+        
+    }, delay + 500);
+}
+
+// Resaltar botón de Simón
+function highlightSimonButton(colorId) {
+    const button = document.querySelector(`.simon-button.${colorId}`);
+    const colorData = simonColors.find(c => c.id === colorId);
+    
+    if (button && colorData) {
+        // Efecto visual de resaltado
+        button.style.backgroundColor = colorData.lightColor;
+        button.style.transform = 'scale(1.1)';
+        button.style.boxShadow = `0 0 30px ${colorData.lightColor}`;
+        
+        // Restaurar después de un tiempo
+        setTimeout(() => {
+            button.style.backgroundColor = colorData.color;
+            button.style.transform = 'scale(1)';
+            button.style.boxShadow = '0 0 10px rgba(0,0,0,0.3)';
+        }, simonSpeed / 2);
+    }
+}
+
+// Manejar clic del jugador
+function handleSimonClick(colorId) {
+    if (!simonCanPlay || !simonGameActive) return;
+    
+    // Agregar a la secuencia del jugador
+    playerSequence.push(colorId);
+    
+    // Resaltar el botón clickeado
+    highlightSimonButton(colorId);
+    playSimonSound(colorId);
+    
+    // Verificar si es correcto
+    checkSimonSequence();
+    
+    // Actualizar barra de progreso
+    const progress = (playerSequence.length / simonSequence.length) * 100;
+    updateProgressBar(progress, `Progreso: ${playerSequence.length}/${simonSequence.length}`);
+}
+
+// Verificar la secuencia del jugador
+function checkSimonSequence() {
+    const currentIndex = playerSequence.length - 1;
+    
+    // Verificar si el último movimiento es correcto
+    if (playerSequence[currentIndex] !== simonSequence[currentIndex]) {
+        // Error en la secuencia
+        handleSimonError();
+        return;
+    }
+    
+    // Verificar si completó la secuencia correctamente
+    if (playerSequence.length === simonSequence.length) {
+        handleSimonSuccess();
+    }
+}
+
+// Manejar éxito en la secuencia
+function handleSimonSuccess() {
+    // Calcular puntos (más puntos por niveles altos y velocidad)
+    const levelBonus = simonLevel * 10;
+    const speedBonus = Math.max(0, 50 - (simonSpeed / 20));
+    const points = levelBonus + speedBonus;
+    
+    simonScore += Math.round(points);
+    simonLevel++;
+    
+    // Aumentar dificultad cada 3 niveles
+    if (simonLevel % 3 === 0 && simonSpeed > 300) {
+        simonSpeed -= 100;
+    }
+    
+    showSimonMessage(`🎉 ¡Correcto! +${Math.round(points)} puntos. Nivel ${simonLevel}...`, 'success');
+    playSuccessSound();
+    
+    // Verificar logros
+    checkSimonAchievements();
+    
+    // Siguiente nivel después de un breve descanso
+    setTimeout(() => {
+        if (simonGameActive) {
+            startSimonLevel();
+        }
+    }, 1500);
+}
+
+// Manejar error en la secuencia
+function handleSimonError() {
+    simonLives--;
+    
+    // Efecto visual de error
+    document.querySelectorAll('.simon-button').forEach(button => {
+        button.style.animation = 'shake 0.5s ease';
+    });
+    
+    showSimonMessage('❌ ¡Secuencia incorrecta! -1 vida', 'error');
+    playErrorSound();
+    
+    // Actualizar display
+    updateSimonDisplay();
+    
+    if (simonLives <= 0) {
+        endSimonGame(false);
+    } else {
+        // Reintentar el mismo nivel
+        setTimeout(() => {
+            playerSequence = [];
+            showSimonMessage('Reintentando nivel...', 'info');
+            showSimonSequence();
+        }, 2000);
+    }
+}
+
+// Mostrar pista de la secuencia
+function showSimonHint() {
+    if (!simonGameActive || simonCanPlay) return;
+    
+    showSimonMessage(`💡 Pista: La secuencia tiene ${simonSequence.length} movimientos`, 'hint');
+    
+    // Pequeña penalización por usar pista
+    simonScore = Math.max(0, simonScore - 5);
+    updateSimonDisplay();
+}
+
+// Cambiar velocidad del juego
+function changeSimonSpeed() {
+    if (!simonGameActive) return;
+    
+    const speeds = [1500, 1000, 800, 600, 400];
+    const currentIndex = speeds.indexOf(simonSpeed);
+    const nextIndex = (currentIndex + 1) % speeds.length;
+    
+    simonSpeed = speeds[nextIndex];
+    
+    const speedNames = ['Muy Lento', 'Lento', 'Normal', 'Rápido', 'Muy Rápido'];
+    showSimonMessage(`⚡ Velocidad: ${speedNames[nextIndex]}`, 'info');
+}
+
+// Iniciar temporizador del jugador
+function startPlayerTimer() {
+    clearTimeout(simonTimer);
+    
+    // El jugador tiene 10 segundos para completar la secuencia
+    simonTimer = setTimeout(() => {
+        if (simonCanPlay && playerSequence.length < simonSequence.length) {
+            handleSimonError();
+        }
+    }, 10000);
+}
+
+// Verificar logros de Simón
+function checkSimonAchievements() {
+    const achievements = {
+        'beginner': 5,
+        'advanced': 10,
+        'expert': 15,
+        'master': 20
+    };
+    
+    Object.entries(achievements).forEach(([achievement, level]) => {
+        if (simonLevel >= level && !document.querySelector(`[data-achievement="${achievement}"]`).classList.contains('achieved')) {
+            document.querySelector(`[data-achievement="${achievement}"]`).classList.add('achieved');
+            
+            // Bonus por logro
+            const bonus = level * 20;
+            simonScore += bonus;
+            
+            showSimonMessage(`🏆 ¡Logro desbloqueado! Nivel ${level} +${bonus} puntos`, 'bonus');
+            playBonusSound();
+        }
+    });
+}
+
+// Reproducir sonido de Simón
+function playSimonSound(colorId) {
+    const colorData = simonColors.find(c => c.id === colorId);
+    if (!colorData) return;
+    
+    // En un juego real, aquí reproducirías el sonido correspondiente
+    console.log(`Reproduciendo sonido: ${colorData.sound} para ${colorData.name}`);
+}
+
+// Reproducir sonido de éxito
+function playSuccessSound() {
+    console.log('¡Sonido de éxito!');
+}
+
+// Reproducir sonido de error
+function playErrorSound() {
+    console.log('¡Sonido de error!');
+}
+
+// Reproducir sonido de bonus
+function playBonusSound() {
+    console.log('¡Sonido de bonus!');
+}
+
+// Actualizar display de Simón
+function updateSimonDisplay() {
+    document.getElementById('simonLevel').textContent = simonLevel;
+    document.getElementById('simonScore').textContent = Math.round(simonScore);
+    document.getElementById('simonLives').textContent = simonLives;
+    document.getElementById('simonSequenceLength').textContent = simonSequence.length;
+    
+    // Actualizar color de vidas
+    const livesElement = document.getElementById('simonLives');
+    if (simonLives === 1) {
+        livesElement.style.color = '#ff4444';
+    } else if (simonLives === 2) {
+        livesElement.style.color = '#ffaa00';
+    } else {
+        livesElement.style.color = '#4CAF50';
+    }
+}
+
+// Mostrar mensaje en Simón
+function showSimonMessage(message, type) {
+    const messageElement = document.getElementById('simonMessage');
+    messageElement.textContent = message;
+    messageElement.className = `simon-message ${type}`;
+}
+
+// Actualizar barra de progreso
+function updateProgressBar(percent, text) {
+    const progressBar = document.getElementById('simonProgress');
+    const progressText = document.getElementById('simonProgressText');
+    
+    if (progressBar) {
+        progressBar.style.width = `${percent}%`;
+        
+        // Cambiar color según el progreso
+        if (percent < 30) {
+            progressBar.style.backgroundColor = '#ff4444';
+        } else if (percent < 70) {
+            progressBar.style.backgroundColor = '#ffaa00';
+        } else {
+            progressBar.style.backgroundColor = '#4CAF50';
+        }
+    }
+    
+    if (progressText) {
+        progressText.textContent = text;
+    }
+}
+
+// Finalizar el juego Simón
+function endSimonGame(isVictory) {
+    simonGameActive = false;
+    simonCanPlay = false;
+    clearTimeout(simonTimer);
+    
+    // Actualizar puntuación global
+    score += Math.round(simonScore);
+    updateDisplay();
+    
+    if (isVictory) {
+        showSimonMessage(`🎉 ¡VICTORIA INCREÍBLE! Puntuación final: ${Math.round(simonScore)}`, 'success');
+        playVictorySound();
+    } else {
+        showSimonMessage(`💀 ¡Game Over! Llegaste al nivel ${simonLevel}. Puntuación: ${Math.round(simonScore)}`, 'error');
+    }
+    
+    // Habilitar botón de comenzar
+    document.getElementById('simonStartBtn').disabled = false;
+    document.getElementById('simonHintBtn').disabled = true;
+    document.getElementById('simonSpeedBtn').disabled = true;
+    
+    updateProgressBar(0, 'Juego terminado');
+}
+
+// Reproducir sonido de victoria
+function playVictorySound() {
+    console.log('¡Sonido de victoria épica!');
+}
+
+// Detener juego Simón
+function stopSimonGame() {
+    simonGameActive = false;
+    simonCanPlay = false;
+    clearTimeout(simonTimer);
+}
+
+// Agregar estilos CSS para Simón Dice
+function addSimonStyles() {
+    if (document.getElementById('simon-styles')) return;
+    
+    const style = document.createElement('style');
+    style.id = 'simon-styles';
+    style.textContent = `
+        .simon-game-container {
+            text-align: center;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .simon-game-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .simon-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .simon-stat {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .simon-instructions {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #FFD700;
+            text-align: left;
+        }
+        
+        .simon-instructions ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .simon-instructions li {
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
+        
+        .simon-game-area {
+            margin: 30px 0;
+        }
+        
+        .simon-board {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 25px;
+            border: 3px solid #FFD700;
+        }
+        
+        .simon-button {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            user-select: none;
+        }
+        
+        .simon-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+        
+        .simon-button:active {
+            transform: scale(0.95);
+        }
+        
+        .simon-emoji {
+            font-size: 3rem;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5));
+        }
+        
+        .simon-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, transparent 30%, rgba(255,255,255,0.3) 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .simon-button:hover .simon-glow {
+            opacity: 1;
+        }
+        
+        .simon-display {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+        }
+        
+        .simon-message {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            min-height: 30px;
+            padding: 15px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .simon-message.info {
+            background: rgba(33, 150, 243, 0.2);
+            color: #2196F3;
+            border: 2px solid #2196F3;
+        }
+        
+        .simon-message.success {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+        }
+        
+        .simon-message.error {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+            border: 2px solid #f44336;
+        }
+        
+        .simon-message.hint {
+            background: rgba(255, 215, 0, 0.2);
+            color: #FFD700;
+            border: 2px solid #FFD700;
+        }
+        
+        .simon-message.bonus {
+            background: rgba(156, 39, 176, 0.2);
+            color: #E1BEE7;
+            border: 2px solid #9C27B0;
+            animation: pulse 1s infinite;
+        }
+        
+        .simon-progress {
+            margin-top: 20px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #4CAF50;
+            border-radius: 10px;
+            transition: width 0.3s ease, background-color 0.3s ease;
+            width: 0%;
+        }
+        
+        .progress-text {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        
+        .simon-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        
+        .simon-btn {
+            background: linear-gradient(135deg, #c8102e, #a00d26);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            min-width: 160px;
+        }
+        
+        .simon-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(200, 16, 46, 0.4);
+        }
+        
+        .simon-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .simon-achievements {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        
+        .achievement-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .achievement-item {
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .achievement-item.achieved {
+            background: rgba(76, 175, 80, 0.3);
+            border-color: #4CAF50;
+            color: #C8E6C9;
+            animation: glow 2s infinite;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px #4CAF50; }
+            50% { box-shadow: 0 0 20px #4CAF50; }
+        }
+        
+        @media (max-width: 768px) {
+            .simon-game-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .simon-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .simon-board {
+                max-width: 300px;
+                gap: 15px;
+            }
+            
+            .simon-button {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .simon-emoji {
+                font-size: 2.5rem;
+            }
+            
+            .simon-controls {
+                gap: 10px;
+            }
+            
+            .simon-btn {
+                min-width: 140px;
+                padding: 10px 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .simon-board {
+                max-width: 250px;
+            }
+            
+            .simon-button {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .simon-emoji {
+                font-size: 2rem;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+            
+            function loadSearchGame() {
+                gameArea.innerHTML = `<h3>Búsqueda Navideña</h3><p>Encuentra los objetos escondidos en la escena</p>`;
+            }
+            
+            function loadTossGame() {
+                gameArea.innerHTML = `
+                    <h3>Lanza los Regalos</h3>
+                    <p>Haz clic y arrastra para ajustar la potencia y dirección</p>
+                    <div class="toss-container">
+                        <div class="chimney"></div>
+                        <div class="gift" style="top: 50px; left: 100px;"></div>
+                    </div>
+                `;
+            }
+            
+            function loadConnectGame() {
+                gameArea.innerHTML = `<h3>Conecta los Puntos</h3><p>Conecta los números en orden para revelar la imagen</p>`;
+            }
+            
+            function loadBreakGame() {
+                gameArea.innerHTML = `<h3>Rompe los Adornos</h3><p>Usa las teclas para mover la plataforma y romper los adornos</p>`;
+            }
+            
+            function loadSocksGame() {
+                gameArea.innerHTML = `<h3>Empareja los Calcetines</h3><p>Encuentra los pares de calcetines iguales</p>`;
+            }
+            
+            function loadCarolsGame() {
+                gameArea.innerHTML = `<h3>Canto de Villancicos</h3><p>Presiona las teclas en el momento correcto para seguir la melodía</p>`;
+            }
+            
+            // Inicializar display
+            updateDisplay();
+        });
+    </script>
+    <!-- Footer -->
+    <div id="footer"></div>
+<script src="preloader.js"></script>
+</body>
+</html>

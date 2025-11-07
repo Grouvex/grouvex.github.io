@@ -5,8 +5,8 @@
     <meta name="description" content="Sitio web oficial de Grouvex Studios, una organización que cuenta con Sello Discográfico, Diseño, entre otros.">
     <meta property="og:title" content="Una Navidad Resplandeciente - Grouvex Studioss">
     <meta property="og:description" content="Sitio web oficial de Grouvex Studios, una organización que cuenta con Sello Discográfico, Diseño, entre otros.">
-    <meta property="og:image" content="../img/GROUVEX.png">
-    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects"><meta name="author" content="Grouvex Studios"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="theme-color" content="#hexcode"><meta property="og:url" content="https://grouvex.com/"><meta property="og:type" content="website"><meta property="og:locale" content="es_ES"><link rel="canonical" href="https://grouvex.com/"><link rel="icon" href="../img/GROUVEX.png" type="image/x-icon"><meta property="og:site_name" content="Grouvex Studios">
+    <meta property="og:image" content="img/GROUVEX.png">
+    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects"><meta name="author" content="Grouvex Studios"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="theme-color" content="#hexcode"><meta property="og:url" content="https://grouvex.com/"><meta property="og:type" content="website"><meta property="og:locale" content="es_ES"><link rel="canonical" href="https://grouvex.com/"><link rel="icon" href="img/GROUVEX.png" type="image/x-icon"><meta property="og:site_name" content="Grouvex Studios">
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script><script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script><script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script><script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <link rel="stylesheet" href="../index.css"><link rel="stylesheet" href="../temas.css">
     <script src="../time.js"></script></script><script type="module" src="../abc.js"></script><script src="../index.js"></script>
@@ -646,6 +646,15 @@
                     case 'simon':
                         startSimonGame();
                         break;
+                    case 'search':
+                        startSearchGame();
+                        break;
+                    case 'toss':
+                        startTossGame();
+                        break;
+                    case 'connect':
+                        startConnectGame();
+                        break;
                     // ... otros casos para cada juego
                 }
             }
@@ -667,6 +676,12 @@
                     // El juego del árbol se reinicia automáticamente al cargar
                 } else if (currentGame === 'simon') {
                     // El juego Simón se reinicia automáticamente al cargar
+                } else if (currentGame === 'search') {
+                    // El juego Simón se reinicia automáticamente al cargar
+                } else if (currentGame === 'toss') {
+                    // El juego Simón se reinicia automáticamente al cargar
+                } else if (currentGame === 'connect') {
+                    // El juego Simón se reinicia automáticamente al cargar
                 }
             }
             
@@ -683,6 +698,12 @@ function stopGame() {
         stopTreeGame();
     } else if (currentGame === 'simon') {
         stopSimonGame(); 
+    } else if (currentGame === 'search') {
+        stopSearchGame(); 
+    } else if (currentGame === 'toss') {
+        stopTossGame(); 
+    } else if (currentGame === 'connect') {
+        stopConnectGame(); 
     }
 }
             
@@ -724,7 +745,16 @@ function stopGame() {
                         giveTreeHint();
                         break;
                     case 'simon':
-                        showSimonHint();  // ← Nuevo juego Simón Dice
+                        showSimonHint();
+                        break;
+                    case 'search':
+                        showSearchHint();
+                        break;
+                    case 'toss':
+                        showTossHint();
+                        break;
+                    case 'connect':
+                        showConnectHint();
                         break;
                     default:
                         alert("¡Esta es una pista! Intenta de nuevo.");
@@ -2258,7 +2288,11 @@ function changeBackground() {
         'linear-gradient(135deg, #43e97b, #38f9d7)',
         'linear-gradient(135deg, #fa709a, #fee140)',
         'linear-gradient(135deg, #a8edea, #fed6e3)',
-        'linear-gradient(135deg, #d4fc79, #96e6a1)'
+        'linear-gradient(135deg, #d4fc79, #96e6a1)',
+        'linear-gradient(135deg, #4e9955ff, #1587c9ff)',
+        'linear-gradient(135deg, #54b364ff, #761294ff)',
+        'linear-gradient(135deg, #c4cf21ff, #772bceff)'
+        
     ];
     
     const treeContainer = document.getElementById('treeContainer');
@@ -2597,7 +2631,7 @@ function addTreeGameStyles() {
         
         .tree-decoration {
             position: absolute;
-            font-size: 2.5rem;
+            font-size: 0.5rem;
             user-select: none;
             transform: translate(-50%, -50%);
             filter: drop-shadow(3px 3px 8px rgba(0,0,0,0.8));
@@ -2612,7 +2646,7 @@ function addTreeGameStyles() {
         }
         
         .special-decoration {
-            font-size: 3rem;
+            font-size: 2rem;
             filter: drop-shadow(0 0 15px rgba(255,215,0,0.9));
         }
         
@@ -2852,32 +2886,32 @@ let simonSpeed = 1000;
 const simonColors = [
     { 
         id: 'red', 
-        emoji: '🔴', 
-        name: 'Bola Roja', 
+        emoji: '🎅', 
+        name: 'Noel', 
         color: '#ff4444', 
         lightColor: '#ff6666',
         sound: 'C'
     },
     { 
         id: 'green', 
-        emoji: '🟢', 
-        name: 'Bola Verde', 
+        emoji: '🎄', 
+        name: 'Arbol', 
         color: '#4CAF50', 
         lightColor: '#66bb6a',
         sound: 'E'
     },
     { 
         id: 'yellow', 
-        emoji: '🟡', 
-        name: 'Bola Amarilla', 
+        emoji: '🌟', 
+        name: 'Estrella', 
         color: '#FFD700', 
         lightColor: '#ffeb3b',
         sound: 'G'
     },
     { 
         id: 'blue', 
-        emoji: '🔵', 
-        name: 'Bola Azul', 
+        emoji: '❄', 
+        name: 'Copo', 
         color: '#2196F3', 
         lightColor: '#42a5f5',
         sound: 'A'
@@ -3675,9 +3709,850 @@ function addSimonStyles() {
     document.head.appendChild(style);
 }
             
-            function loadSearchGame() {
-                gameArea.innerHTML = `<h3>Búsqueda Navideña</h3><p>Encuentra los objetos escondidos en la escena</p>`;
+// =============================================
+// JUEGO "BÚSQUEDA NAVIDEÑA" - SEARCH GAME
+// =============================================
+
+// Variables globales para el juego de búsqueda
+let searchGameScore = 0;
+let searchGameTimeLeft = 90;
+let searchGameActive = false;
+let searchGameTimer;
+let foundItems = [];
+let totalItems = 8;
+let currentScene = 'livingRoom';
+
+// Escenas y objetos para buscar
+const searchScenes = {
+    livingRoom: {
+        name: 'Sala de Estar Navideña',
+        background: 'https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=600&h=400&fit=crop',
+        items: [
+            { id: 'ornament', name: 'Adorno de Árbol', emoji: '🔴', x: 75, y: 30 },
+            { id: 'sock', name: 'Calcetín Navideño', emoji: '🧦', x: 15, y: 70 },
+            { id: 'gift', name: 'Regalo', emoji: '🎁', x: 60, y: 75 },
+            { id: 'candy', name: 'Bastón de Caramelo', emoji: '🍬', x: 85, y: 60 },
+            { id: 'bell', name: 'Campana', emoji: '🔔', x: 25, y: 40 },
+            { id: 'star', name: 'Estrella', emoji: '⭐', x: 45, y: 20 },
+            { id: 'snowflake', name: 'Copo de Nieve', emoji: '❄️', x: 70, y: 45 },
+            { id: 'candle', name: 'Vela', emoji: '🕯️', x: 35, y: 55 }
+        ]
+    },
+    kitchen: {
+        name: 'Cocina Navideña',
+        background: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=600&h=400&fit=crop',
+        items: [
+            { id: 'cookie', name: 'Galleta Navideña', emoji: '🍪', x: 20, y: 35 },
+            { id: 'cake', name: 'Pastel de Navidad', emoji: '🍰', x: 65, y: 40 },
+            { id: 'hotchocolate', name: 'Chocolate Caliente', emoji: '☕', x: 80, y: 65 },
+            { id: 'gingerbread', name: 'Hombre de Jengibre', emoji: '🧑‍🎄', x: 40, y: 70 },
+            { id: 'candycane', name: 'Bastón Dulce', emoji: '🎀', x: 55, y: 25 },
+            { id: 'nutcracker', name: 'Cascanueces', emoji: '🥜', x: 75, y: 30 },
+            { id: 'plate', name: 'Plato de Galletas', emoji: '🍽️', x: 30, y: 50 },
+            { id: 'spoon', name: 'Cuchara de Madera', emoji: '🥄', x: 85, y: 45 }
+        ]
+    },
+    outside: {
+        name: 'Exterior Nevado',
+        background: 'https://images.unsplash.com/photo-1512389142860-9c449e58a543?w=600&h=400&fit=crop',
+        items: [
+            { id: 'snowman', name: 'Muñeco de Nieve', emoji: '⛄', x: 25, y: 60 },
+            { id: 'reindeer', name: 'Reno', emoji: '🦌', x: 70, y: 35 },
+            { id: 'sled', name: 'Trineo', emoji: '🛷', x: 55, y: 70 },
+            { id: 'snowball', name: 'Bola de Nieve', emoji: '⚪', x: 40, y: 45 },
+            { id: 'icicle', name: 'Carámbano', emoji: '🧊', x: 80, y: 25 },
+            { id: 'mittens', name: 'Guantes', emoji: '🧤', x: 15, y: 40 },
+            { id: 'scarf', name: 'Bufanda', emoji: '🧣', x: 65, y: 55 },
+            { id: 'hat', name: 'Gorro Navideño', emoji: '🎩', x: 35, y: 30 }
+        ]
+    }
+};
+
+// Función para cargar el juego de búsqueda
+function loadSearchGame() {
+    gameArea.innerHTML = `
+        <div class="search-game-container">
+            <h3>🔍 Búsqueda Navideña</h3>
+            <p>Encuentra todos los objetos escondidos en la escena antes de que se acabe el tiempo.</p>
+            
+            <div class="search-game-info">
+                <div class="search-stats">
+                    <div class="search-stat">
+                        <span class="stat-label">Puntos:</span>
+                        <span id="searchScore" class="stat-value">0</span>
+                    </div>
+                    <div class="search-stat">
+                        <span class="stat-label">Tiempo:</span>
+                        <span id="searchTime" class="stat-value">90s</span>
+                    </div>
+                    <div class="search-stat">
+                        <span class="stat-label">Encontrados:</span>
+                        <span id="searchFound" class="stat-value">0/8</span>
+                    </div>
+                </div>
+                
+                <div class="scene-selector">
+                    <h4>🏠 Selecciona una escena:</h4>
+                    <div class="scene-options" id="sceneOptions"></div>
+                </div>
+                
+                <div class="items-to-find">
+                    <h4>🎯 Objetos a encontrar:</h4>
+                    <div class="items-list" id="itemsList"></div>
+                </div>
+            </div>
+            
+            <div class="search-game-area">
+                <div class="search-scene" id="searchScene">
+                    <div class="scene-image" id="sceneImage"></div>
+                    <div class="search-items" id="searchItems"></div>
+                </div>
+                
+                <div class="search-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="searchProgress"></div>
+                    </div>
+                    <div class="progress-text" id="searchProgressText">¡Encuentra todos los objetos!</div>
+                </div>
+            </div>
+            
+            <div class="search-controls">
+                <button id="searchStartBtn" class="search-btn">🎯 Comenzar Búsqueda</button>
+                <button id="searchHintBtn" class="search-btn">💡 Pista</button>
+                <button id="searchResetBtn" class="search-btn">🔄 Reiniciar</button>
+            </div>
+            
+            <div class="search-message" id="searchMessage"></div>
+            
+            <div class="search-tips">
+                <h4>💡 Consejos:</h4>
+                <ul>
+                    <li>🔍 Haz clic en cualquier área de la imagen para buscar objetos</li>
+                    <li>🎯 Los objetos están bien escondidos - ¡observa con atención!</li>
+                    <li>⏰ Gana puntos extra por encontrar objetos rápidamente</li>
+                    <li>🌟 ¡Encuentra todos los objetos para ganar bonus!</li>
+                </ul>
+            </div>
+        </div>
+    `;
+    
+    initializeSearchGame();
+    setupSearchGameEvents();
+    renderSceneOptions();
+    addSearchGameStyles();
+}
+
+// Inicializar el juego de búsqueda
+function initializeSearchGame() {
+    const sceneImage = document.getElementById('sceneImage');
+    const searchItems = document.getElementById('searchItems');
+    
+    // Limpiar contenedores
+    sceneImage.innerHTML = '';
+    searchItems.innerHTML = '';
+    foundItems = [];
+    
+    // Cargar escena actual
+    loadCurrentScene();
+    
+    // Reiniciar variables del juego
+    searchGameScore = 0;
+    searchGameTimeLeft = 90;
+    searchGameActive = false;
+    
+    updateSearchGameDisplay();
+    showSearchMessage('¡Selecciona una escena y presiona "Comenzar Búsqueda"!', 'info');
+}
+
+// Cargar escena actual
+function loadCurrentScene() {
+    const scene = searchScenes[currentScene];
+    const sceneImage = document.getElementById('sceneImage');
+    const searchItems = document.getElementById('searchItems');
+    
+    // Establecer imagen de fondo
+    sceneImage.style.backgroundImage = `url(${scene.background})`;
+    
+    // Crear elementos de búsqueda
+    searchItems.innerHTML = '';
+    scene.items.forEach(item => {
+        const searchItem = document.createElement('div');
+        searchItem.className = 'search-item';
+        searchItem.dataset.id = item.id;
+        searchItem.style.left = `${item.x}%`;
+        searchItem.style.top = `${item.y}%`;
+        searchItem.innerHTML = item.emoji;
+        
+        // Ocultar inicialmente
+        searchItem.style.opacity = '0';
+        
+        searchItems.appendChild(searchItem);
+    });
+    
+    // Actualizar lista de objetos a encontrar
+    updateItemsList();
+}
+
+// Renderizar opciones de escena
+function renderSceneOptions() {
+    const sceneOptions = document.getElementById('sceneOptions');
+    sceneOptions.innerHTML = '';
+    
+    Object.entries(searchScenes).forEach(([key, scene]) => {
+        const option = document.createElement('div');
+        option.className = `scene-option ${key === currentScene ? 'selected' : ''}`;
+        option.dataset.scene = key;
+        option.innerHTML = `
+            <div class="scene-preview" style="background-image: url(${scene.background})"></div>
+            <span class="scene-name">${scene.name}</span>
+        `;
+        
+        option.addEventListener('click', () => selectSearchScene(key));
+        sceneOptions.appendChild(option);
+    });
+}
+
+// Seleccionar escena de búsqueda
+function selectSearchScene(sceneKey) {
+    if (searchGameActive) {
+        showSearchMessage('Termina la búsqueda actual antes de cambiar de escena.', 'error');
+        return;
+    }
+    
+    currentScene = sceneKey;
+    renderSceneOptions();
+    loadCurrentScene();
+    showSearchMessage(`Escena cambiada: ${searchScenes[sceneKey].name}`, 'info');
+}
+
+// Actualizar lista de objetos a encontrar
+function updateItemsList() {
+    const itemsList = document.getElementById('itemsList');
+    const scene = searchScenes[currentScene];
+    
+    itemsList.innerHTML = '';
+    scene.items.forEach(item => {
+        const itemElement = document.createElement('div');
+        itemElement.className = `item-to-find ${foundItems.includes(item.id) ? 'found' : ''}`;
+        itemElement.innerHTML = `
+            <span class="item-emoji">${item.emoji}</span>
+            <span class="item-name">${item.name}</span>
+            ${foundItems.includes(item.id) ? '<span class="found-check">✅</span>' : ''}
+        `;
+        itemsList.appendChild(itemElement);
+    });
+}
+
+// Configurar eventos del juego de búsqueda
+function setupSearchGameEvents() {
+    const startBtn = document.getElementById('searchStartBtn');
+    const hintBtn = document.getElementById('searchHintBtn');
+    const resetBtn = document.getElementById('searchResetBtn');
+    const searchScene = document.getElementById('searchScene');
+    
+    startBtn.addEventListener('click', startSearchGame);
+    hintBtn.addEventListener('click', giveSearchHint);
+    resetBtn.addEventListener('click', initializeSearchGame);
+    
+    // Evento para buscar objetos
+    searchScene.addEventListener('click', handleSceneClick);
+    
+    // Deshabilitar botones hasta que empiece el juego
+    hintBtn.disabled = true;
+}
+
+// Manejar clic en la escena
+function handleSceneClick(event) {
+    if (!searchGameActive) return;
+    
+    const scene = searchScenes[currentScene];
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+    
+    // Verificar si se hizo clic cerca de algún objeto
+    let foundObject = null;
+    let minDistance = Infinity;
+    
+    scene.items.forEach(item => {
+        if (!foundItems.includes(item.id)) {
+            const distance = Math.sqrt(Math.pow(x - item.x, 2) + Math.pow(y - item.y, 2));
+            
+            // Radio de detección (ajustable)
+            if (distance < 8 && distance < minDistance) {
+                minDistance = distance;
+                foundObject = item;
             }
+        }
+    });
+    
+    if (foundObject) {
+        // ¡Objeto encontrado!
+        foundItems.push(foundObject.id);
+        
+        // Mostrar objeto encontrado
+        const foundElement = document.querySelector(`.search-item[data-id="${foundObject.id}"]`);
+        if (foundElement) {
+            foundElement.style.opacity = '1';
+            foundElement.style.animation = 'foundItem 0.6s ease';
+        }
+        
+        // Calcular puntos (más puntos por encontrar rápido)
+        const timeBonus = Math.max(10, Math.floor((searchGameTimeLeft / 90) * 50));
+        const points = 20 + timeBonus;
+        searchGameScore += points;
+        
+        showSearchMessage(`¡Encontraste ${foundObject.emoji} ${foundObject.name}! +${points} puntos`, 'success');
+        playSuccessSound();
+        
+        // Verificar si se encontraron todos los objetos
+        if (foundItems.length === totalItems) {
+            endSearchGame(true);
+        }
+        
+        updateSearchGameDisplay();
+        updateItemsList();
+        updateProgressBar();
+    } else {
+        // No se encontró ningún objeto
+        showSearchMessage('Sigue buscando... ¡estás cerca!', 'info');
+    }
+}
+
+// Iniciar el juego de búsqueda
+function startSearchGame() {
+    if (searchGameActive) return;
+    
+    searchGameActive = true;
+    document.getElementById('searchStartBtn').disabled = true;
+    document.getElementById('searchHintBtn').disabled = false;
+    
+    startSearchTimer();
+    showSearchMessage('¡Tiempo de búsqueda! Encuentra todos los objetos ocultos.', 'success');
+}
+
+// Dar pista en la búsqueda
+function giveSearchHint() {
+    if (!searchGameActive) return;
+    
+    // Encontrar un objeto no encontrado
+    const scene = searchScenes[currentScene];
+    const remainingItems = scene.items.filter(item => !foundItems.includes(item.id));
+    
+    if (remainingItems.length > 0) {
+        const randomItem = remainingItems[Math.floor(Math.random() * remainingItems.length)];
+        
+        // Mostrar área aproximada con efecto visual
+        const hintArea = document.createElement('div');
+        hintArea.className = 'hint-area';
+        hintArea.style.left = `${randomItem.x - 5}%`;
+        hintArea.style.top = `${randomItem.y - 5}%`;
+        
+        document.getElementById('searchItems').appendChild(hintArea);
+        
+        // Pequeña penalización por usar pista
+        searchGameScore = Math.max(0, searchGameScore - 10);
+        
+        showSearchMessage(`💡 Pista: Busca cerca de esta área. -10 puntos`, 'hint');
+        updateSearchGameDisplay();
+        
+        // Remover hint después de 2 segundos
+        setTimeout(() => {
+            if (hintArea.parentNode) {
+                hintArea.parentNode.removeChild(hintArea);
+            }
+        }, 2000);
+    }
+}
+
+// Actualizar display del juego
+function updateSearchGameDisplay() {
+    document.getElementById('searchScore').textContent = searchGameScore;
+    document.getElementById('searchTime').textContent = `${searchGameTimeLeft}s`;
+    document.getElementById('searchFound').textContent = `${foundItems.length}/${totalItems}`;
+    
+    // Actualizar color del contador de encontrados
+    const foundElement = document.getElementById('searchFound');
+    if (foundItems.length === totalItems) {
+        foundElement.style.color = '#4CAF50';
+    } else if (foundItems.length >= totalItems / 2) {
+        foundElement.style.color = '#FFD700';
+    }
+}
+
+// Actualizar barra de progreso
+function updateProgressBar() {
+    const progress = (foundItems.length / totalItems) * 100;
+    const progressBar = document.getElementById('searchProgress');
+    const progressText = document.getElementById('searchProgressText');
+    
+    if (progressBar) {
+        progressBar.style.width = `${progress}%`;
+        
+        // Cambiar color según el progreso
+        if (progress < 30) {
+            progressBar.style.backgroundColor = '#ff4444';
+        } else if (progress < 70) {
+            progressBar.style.backgroundColor = '#ffaa00';
+        } else {
+            progressBar.style.backgroundColor = '#4CAF50';
+        }
+    }
+    
+    if (progressText) {
+        progressText.textContent = `Progreso: ${foundItems.length}/${totalItems} objetos encontrados`;
+    }
+}
+
+// Mostrar mensaje en el juego
+function showSearchMessage(message, type) {
+    const messageElement = document.getElementById('searchMessage');
+    messageElement.textContent = message;
+    messageElement.className = `search-message ${type}`;
+    
+    // Auto-ocultar mensajes informativos después de 3 segundos
+    if (type === 'info' || type === 'hint') {
+        setTimeout(() => {
+            messageElement.className = 'search-message';
+        }, 3000);
+    }
+}
+
+// Iniciar temporizador del juego
+function startSearchTimer() {
+    clearInterval(searchGameTimer);
+    searchGameTimer = setInterval(() => {
+        if (searchGameActive) {
+            searchGameTimeLeft--;
+            updateSearchGameDisplay();
+            
+            if (searchGameTimeLeft <= 0) {
+                endSearchGame(false);
+            } else if (searchGameTimeLeft <= 10) {
+                // Efecto de cuenta regresiva
+                document.getElementById('searchTime').style.color = '#ff4444';
+                document.getElementById('searchTime').style.animation = 'pulse 1s infinite';
+            }
+        }
+    }, 1000);
+}
+
+// Finalizar el juego
+function endSearchGame(isVictory) {
+    searchGameActive = false;
+    clearInterval(searchGameTimer);
+    
+    // Bonus por victoria
+    if (isVictory) {
+        const timeBonus = Math.floor((searchGameTimeLeft / 90) * 100);
+        const perfectBonus = 50; // Bonus por encontrar todos los objetos
+        searchGameScore += timeBonus + perfectBonus;
+        
+        showSearchMessage(
+            `🎉 ¡VICTORIA! Encontraste todos los objetos.\n` +
+            `Bonus por tiempo: +${timeBonus} puntos\n` +
+            `Bonus perfecto: +${perfectBonus} puntos\n` +
+            `Puntuación final: ${searchGameScore}`, 
+            'success'
+        );
+        playVictorySound();
+    } else {
+        showSearchMessage(
+            `⏰ ¡Tiempo agotado!\n` +
+            `Encontraste ${foundItems.length}/${totalItems} objetos\n` +
+            `Puntuación: ${searchGameScore}`, 
+            'error'
+        );
+    }
+    
+    // Actualizar puntuación global
+    score += searchGameScore;
+    updateDisplay();
+    
+    // Habilitar botón de comenzar
+    document.getElementById('searchStartBtn').disabled = false;
+    document.getElementById('searchHintBtn').disabled = true;
+    
+    updateSearchGameDisplay();
+}
+
+// Sonidos (simulados)
+function playSuccessSound() {
+    console.log('¡Sonido de objeto encontrado!');
+}
+
+function playVictorySound() {
+    console.log('¡Sonido de victoria!');
+}
+
+// Detener juego de búsqueda
+function stopSearchGame() {
+    searchGameActive = false;
+    clearInterval(searchGameTimer);
+}
+
+// Agregar estilos CSS para el juego de búsqueda
+function addSearchGameStyles() {
+    if (document.getElementById('search-game-styles')) return;
+    
+    const style = document.createElement('style');
+    style.id = 'search-game-styles';
+    style.textContent = `
+        .search-game-container {
+            text-align: center;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .search-game-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .search-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .search-stat {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 20px;
+            border-radius: 15px;
+            min-width: 100px;
+        }
+        
+        .scene-selector, .items-to-find {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .scene-options {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .scene-option {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 120px;
+        }
+        
+        .scene-option:hover {
+            transform: scale(1.05);
+        }
+        
+        .scene-option.selected {
+            border-color: #FFD700;
+            box-shadow: 0 0 15px rgba(255,215,0,0.7);
+        }
+        
+        .scene-preview {
+            width: 100%;
+            height: 80px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .scene-name {
+            display: block;
+            padding: 8px;
+            font-size: 0.8rem;
+            background: rgba(0,0,0,0.7);
+        }
+        
+        .items-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .item-to-find {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .item-to-find.found {
+            background: rgba(76, 175, 80, 0.3);
+            color: #C8E6C9;
+        }
+        
+        .item-emoji {
+            font-size: 1.2rem;
+        }
+        
+        .item-name {
+            flex: 1;
+            text-align: left;
+            font-size: 0.85rem;
+        }
+        
+        .found-check {
+            color: #4CAF50;
+        }
+        
+        .search-game-area {
+            margin: 25px 0;
+        }
+        
+        .search-scene {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            margin: 0 auto;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 3px solid #FFD700;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            cursor: crosshair;
+        }
+        
+        .scene-image {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        .search-items {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .search-item {
+            position: absolute;
+            font-size: 2rem;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.8));
+            user-select: none;
+            pointer-events: none;
+        }
+        
+        .hint-area {
+            position: absolute;
+            width: 10%;
+            height: 10%;
+            border: 3px dashed #FFD700;
+            border-radius: 50%;
+            animation: pulseHint 2s infinite;
+            pointer-events: none;
+        }
+        
+        .search-progress {
+            margin-top: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #4CAF50;
+            border-radius: 10px;
+            transition: width 0.3s ease, background-color 0.3s ease;
+            width: 0%;
+        }
+        
+        .progress-text {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        
+        .search-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        
+        .search-btn {
+            background: linear-gradient(135deg, #c8102e, #a00d26);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            min-width: 160px;
+        }
+        
+        .search-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(200, 16, 46, 0.4);
+        }
+        
+        .search-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .search-message {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-weight: bold;
+            white-space: pre-line;
+            min-height: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .search-message.success {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+        }
+        
+        .search-message.error {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+            border: 2px solid #f44336;
+        }
+        
+        .search-message.info {
+            background: rgba(33, 150, 243, 0.2);
+            color: #2196F3;
+            border: 2px solid #2196F3;
+        }
+        
+        .search-message.hint {
+            background: rgba(255, 215, 0, 0.2);
+            color: #FFD700;
+            border: 2px solid #FFD700;
+        }
+        
+        .search-tips {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        .search-tips ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 15px;
+        }
+        
+        .search-tips li {
+            margin-bottom: 8px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .search-tips li:before {
+            content: "🎄";
+            position: absolute;
+            left: 0;
+        }
+        
+        @keyframes foundItem {
+            0% { 
+                transform: translate(-50%, -50%) scale(0) rotate(-180deg); 
+                opacity: 0;
+            }
+            70% { 
+                transform: translate(-50%, -50%) scale(1.4) rotate(15deg); 
+            }
+            100% { 
+                transform: translate(-50%, -50%) scale(1) rotate(0deg); 
+                opacity: 1;
+            }
+        }
+        
+        @keyframes pulseHint {
+            0%, 100% { 
+                opacity: 0.7;
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 0.3;
+                transform: scale(1.1);
+            }
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .search-game-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-stats {
+                flex-wrap: wrap;
+            }
+            
+            .search-scene {
+                height: 300px;
+            }
+            
+            .scene-options {
+                gap: 10px;
+            }
+            
+            .scene-option {
+                width: 100px;
+            }
+            
+            .scene-preview {
+                height: 60px;
+            }
+            
+            .items-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-controls {
+                gap: 10px;
+            }
+            
+            .search-btn {
+                min-width: 140px;
+                padding: 10px 15px;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
             
             function loadTossGame() {
                 gameArea.innerHTML = `
@@ -3690,9 +4565,1034 @@ function addSimonStyles() {
                 `;
             }
             
-            function loadConnectGame() {
-                gameArea.innerHTML = `<h3>Conecta los Puntos</h3><p>Conecta los números en orden para revelar la imagen</p>`;
+// =============================================
+// JUEGO "CONECTA LOS PUNTOS" - CONNECT GAME
+// =============================================
+
+// Variables globales para el juego de conectar puntos
+let connectGameScore = 0;
+let connectGameTimeLeft = 120;
+let connectGameActive = false;
+let connectGameTimer;
+let currentLevel = 1;
+let currentPoints = [];
+let connectedPoints = [];
+let currentLine = null;
+let isDrawing = false;
+let lastConnectedPoint = null;
+
+// Niveles del juego
+const connectLevels = {
+    1: {
+        name: "Árbol Navideño",
+        points: 12,
+        image: "🎄",
+        pointsToWin: 10,
+        time: 120,
+        points: [
+            { x: 50, y: 20, number: 1 },
+            { x: 30, y: 35, number: 2 },
+            { x: 70, y: 35, number: 3 },
+            { x: 20, y: 50, number: 4 },
+            { x: 50, y: 45, number: 5 },
+            { x: 80, y: 50, number: 6 },
+            { x: 15, y: 65, number: 7 },
+            { x: 35, y: 60, number: 8 },
+            { x: 65, y: 60, number: 9 },
+            { x: 85, y: 65, number: 10 },
+            { x: 50, y: 75, number: 11 },
+            { x: 50, y: 90, number: 12 }
+        ],
+        connections: [
+            [1, 2], [1, 3], [2, 4], [2, 5], [3, 5], [3, 6],
+            [4, 7], [4, 8], [5, 8], [5, 9], [6, 9], [6, 10],
+            [7, 8], [8, 9], [9, 10], [8, 11], [9, 11], [11, 12]
+        ]
+    },
+    2: {
+        name: "Estrella Navideña",
+        points: 10,
+        image: "⭐",
+        pointsToWin: 8,
+        time: 100,
+        points: [
+            { x: 50, y: 20, number: 1 },
+            { x: 30, y: 40, number: 2 },
+            { x: 70, y: 40, number: 3 },
+            { x: 20, y: 60, number: 4 },
+            { x: 50, y: 50, number: 5 },
+            { x: 80, y: 60, number: 6 },
+            { x: 35, y: 75, number: 7 },
+            { x: 65, y: 75, number: 8 },
+            { x: 50, y: 85, number: 9 },
+            { x: 50, y: 65, number: 10 }
+        ],
+        connections: [
+            [1, 2], [1, 3], [1, 5], [2, 4], [2, 5], [3, 5], [3, 6],
+            [4, 7], [5, 7], [5, 8], [6, 8], [7, 9], [8, 9], [5, 10]
+        ]
+    },
+    3: {
+        name: "Reno Navideño",
+        points: 15,
+        image: "🦌",
+        pointsToWin: 12,
+        time: 150,
+        points: [
+            { x: 50, y: 15, number: 1 },
+            { x: 40, y: 25, number: 2 },
+            { x: 60, y: 25, number: 3 },
+            { x: 30, y: 40, number: 4 },
+            { x: 50, y: 35, number: 5 },
+            { x: 70, y: 40, number: 6 },
+            { x: 20, y: 55, number: 7 },
+            { x: 40, y: 50, number: 8 },
+            { x: 60, y: 50, number: 9 },
+            { x: 80, y: 55, number: 10 },
+            { x: 35, y: 65, number: 11 },
+            { x: 50, y: 60, number: 12 },
+            { x: 65, y: 65, number: 13 },
+            { x: 45, y: 75, number: 14 },
+            { x: 55, y: 75, number: 15 }
+        ],
+        connections: [
+            [1, 2], [1, 3], [2, 4], [2, 5], [3, 5], [3, 6],
+            [4, 7], [4, 8], [5, 8], [5, 9], [6, 9], [6, 10],
+            [7, 8], [8, 9], [9, 10], [8, 11], [9, 13], [11, 12],
+            [12, 13], [11, 14], [13, 15], [14, 15], [12, 14], [12, 15]
+        ]
+    }
+};
+
+// Función para cargar el juego de conectar puntos
+function loadConnectGame() {
+    gameArea.innerHTML = `
+        <div class="connect-game-container">
+            <h3>✏️ Conecta los Puntos Navideños</h3>
+            <p>¡Conecta los puntos en orden numérico para revelar la imagen navideña oculta!</p>
+            
+            <div class="connect-game-info">
+                <div class="connect-stats">
+                    <div class="connect-stat">
+                        <span class="stat-label">Puntos:</span>
+                        <span id="connectScore" class="stat-value">0</span>
+                    </div>
+                    <div class="connect-stat">
+                        <span class="stat-label">Tiempo:</span>
+                        <span id="connectTime" class="stat-value">120s</span>
+                    </div>
+                    <div class="connect-stat">
+                        <span class="stat-label">Nivel:</span>
+                        <span id="connectLevel" class="stat-value">1</span>
+                    </div>
+                    <div class="connect-stat">
+                        <span class="stat-label">Conectados:</span>
+                        <span id="connectProgress" class="stat-value">0/0</span>
+                    </div>
+                    <div class="connect-stat">
+                        <span class="stat-label">Imagen:</span>
+                        <span id="connectImage" class="stat-value">🎄</span>
+                    </div>
+                </div>
+                
+                <div class="level-info">
+                    <h4>🎯 Nivel Actual: <span id="levelName">Árbol Navideño</span></h4>
+                    <div class="level-instructions">
+                        <p>Conecta los puntos del <strong>1</strong> al <strong id="maxPoint">12</strong> en orden para revelar la imagen</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="connect-game-area">
+                <div class="canvas-container">
+                    <div class="connect-canvas" id="connectCanvas">
+                        <!-- Líneas y puntos se dibujarán aquí -->
+                    </div>
+                    <div class="preview-image" id="previewImage">
+                        <span>?</span>
+                    </div>
+                </div>
+                
+                <div class="connect-controls-panel">
+                    <div class="current-number">
+                        <h4>🔢 Próximo Número:</h4>
+                        <div class="number-display" id="nextNumber">1</div>
+                    </div>
+                    
+                    <div class="connection-progress">
+                        <h4>📈 Progreso:</h4>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="connectionProgress"></div>
+                        </div>
+                        <div class="progress-text" id="connectionText">0% completado</div>
+                    </div>
+                    
+                    <div class="hint-section">
+                        <h4>💡 Ayudas:</h4>
+                        <div class="hint-buttons">
+                            <button id="showNumbers" class="hint-btn">🔢 Mostrar Números</button>
+                            <button id="showNext" class="hint-btn">👉 Mostrar Siguiente</button>
+                            <button id="autoConnect" class="hint-btn">🤖 Conexión Automática</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="connect-controls">
+                <button id="connectStartBtn" class="connect-btn">🎯 Comenzar Juego</button>
+                <button id="connectResetBtn" class="connect-btn">🔄 Reiniciar Nivel</button>
+                <button id="connectUndoBtn" class="connect-btn">↩️ Deshacer</button>
+                <button id="connectNextBtn" class="connect-btn">➡️ Siguiente Nivel</button>
+            </div>
+            
+            <div class="connect-message" id="connectMessage"></div>
+            
+            <div class="connect-tips">
+                <h4>🎯 Cómo Jugar:</h4>
+                <ul>
+                    <li>✏️ Haz clic en los puntos en orden numérico (1, 2, 3...)</li>
+                    <li>🔗 Las líneas se dibujarán automáticamente entre puntos consecutivos</li>
+                    <li>🎨 ¡Completa el dibujo para revelar la imagen navideña!</li>
+                    <li>⏰ Completa antes de que se acabe el tiempo para bonus</li>
+                    <li>🌟 ¡Usa las ayudas si te quedas atascado!</li>
+                </ul>
+            </div>
+        </div>
+    `;
+    
+    initializeConnectGame();
+    setupConnectGameEvents();
+    addConnectGameStyles();
+}
+
+// Inicializar el juego de conectar puntos
+function initializeConnectGame() {
+    const connectCanvas = document.getElementById('connectCanvas');
+    
+    // Limpiar canvas
+    connectCanvas.innerHTML = '';
+    
+    // Reiniciar variables del juego
+    connectGameScore = 0;
+    connectGameTimeLeft = connectLevels[currentLevel].time;
+    connectGameActive = false;
+    connectedPoints = [];
+    currentPoints = [];
+    lastConnectedPoint = null;
+    
+    // Cargar nivel actual
+    loadCurrentLevel();
+    
+    updateConnectGameDisplay();
+    showConnectMessage('¡Haz clic en "Comenzar Juego" para iniciar! Conecta los puntos en orden.', 'info');
+}
+
+// Cargar nivel actual
+function loadCurrentLevel() {
+    const level = connectLevels[currentLevel];
+    const connectCanvas = document.getElementById('connectCanvas');
+    const previewImage = document.getElementById('previewImage');
+    
+    // Limpiar canvas
+    connectCanvas.innerHTML = '';
+    
+    // Actualizar información del nivel
+    document.getElementById('levelName').textContent = level.name;
+    document.getElementById('connectImage').textContent = level.image;
+    document.getElementById('maxPoint').textContent = level.points;
+    document.getElementById('nextNumber').textContent = '1';
+    
+    // Configurar imagen de preview
+    previewImage.innerHTML = '<span>?</span>';
+    previewImage.style.background = 'rgba(255,255,255,0.1)';
+    
+    // Crear puntos
+    currentPoints = level.points;
+    createPoints();
+    
+    // Actualizar progreso
+    updateConnectionProgress();
+}
+
+// Crear puntos en el canvas
+function createPoints() {
+    const connectCanvas = document.getElementById('connectCanvas');
+    
+    currentPoints.forEach(point => {
+        const pointElement = document.createElement('div');
+        pointElement.className = 'connect-point';
+        pointElement.dataset.number = point.number;
+        pointElement.style.left = `${point.x}%`;
+        pointElement.style.top = `${point.y}%`;
+        pointElement.innerHTML = `
+            <span class="point-number">${point.number}</span>
+            <div class="point-circle"></div>
+        `;
+        
+        pointElement.addEventListener('click', () => handlePointClick(point.number));
+        connectCanvas.appendChild(pointElement);
+    });
+}
+
+// Manejar clic en un punto
+function handlePointClick(pointNumber) {
+    if (!connectGameActive) return;
+    
+    const expectedNumber = connectedPoints.length + 1;
+    
+    if (pointNumber === expectedNumber) {
+        // ¡Número correcto!
+        connectPoint(pointNumber);
+    } else if (pointNumber === expectedNumber - 1 && lastConnectedPoint === pointNumber) {
+        // Permitir hacer clic en el último punto conectado (para deshacer)
+        showConnectMessage('Ya conectaste este punto. Haz clic en el siguiente número.', 'info');
+    } else {
+        // Número incorrecto
+        showConnectMessage(`¡Ups! Debes conectar el número ${expectedNumber} siguiente.`, 'error');
+        playErrorSound();
+    }
+}
+
+// Conectar un punto
+function connectPoint(pointNumber) {
+    const pointElement = document.querySelector(`.connect-point[data-number="${pointNumber}"]`);
+    
+    if (!pointElement) return;
+    
+    // Marcar punto como conectado
+    pointElement.classList.add('connected');
+    connectedPoints.push(pointNumber);
+    lastConnectedPoint = pointNumber;
+    
+    // Dibujar línea si hay un punto anterior
+    if (connectedPoints.length > 1) {
+        const prevPointNumber = connectedPoints[connectedPoints.length - 2];
+        drawLine(prevPointNumber, pointNumber);
+    }
+    
+    // Calcular puntos ganados
+    const pointsEarned = 10 + (currentLevel * 5);
+    connectGameScore += pointsEarned;
+    
+    // Actualizar siguiente número
+    document.getElementById('nextNumber').textContent = connectedPoints.length + 1;
+    
+    // Verificar si se completó el nivel
+    checkLevelCompletion();
+    
+    // Actualizar progreso
+    updateConnectionProgress();
+    
+    showConnectMessage(`¡Correcto! Número ${pointNumber} conectado. +${pointsEarned} puntos`, 'success');
+    playSuccessSound();
+}
+
+// Dibujar línea entre dos puntos
+function drawLine(fromPoint, toPoint) {
+    const connectCanvas = document.getElementById('connectCanvas');
+    const fromElement = document.querySelector(`.connect-point[data-number="${fromPoint}"]`);
+    const toElement = document.querySelector(`.connect-point[data-number="${toPoint}"]`);
+    
+    if (!fromElement || !toElement) return;
+    
+    const fromRect = fromElement.getBoundingClientRect();
+    const toRect = toElement.getBoundingClientRect();
+    const canvasRect = connectCanvas.getBoundingClientRect();
+    
+    // Calcular posiciones relativas
+    const fromX = fromRect.left + fromRect.width / 2 - canvasRect.left;
+    const fromY = fromRect.top + fromRect.height / 2 - canvasRect.top;
+    const toX = toRect.left + toRect.width / 2 - canvasRect.left;
+    const toY = toRect.top + toRect.height / 2 - canvasRect.top;
+    
+    // Calcular longitud y ángulo
+    const length = Math.sqrt(Math.pow(toX - fromX, 2) + Math.pow(toY - fromY, 2));
+    const angle = Math.atan2(toY - fromY, toX - fromX) * 180 / Math.PI;
+    
+    // Crear elemento de línea
+    const lineElement = document.createElement('div');
+    lineElement.className = 'connection-line';
+    lineElement.style.width = `${length}px`;
+    lineElement.style.left = `${fromX}px`;
+    lineElement.style.top = `${fromY}px`;
+    lineElement.style.transform = `rotate(${angle}deg)`;
+    lineElement.dataset.connection = `${fromPoint}-${toPoint}`;
+    
+    connectCanvas.appendChild(lineElement);
+}
+
+// Verificar completación del nivel
+function checkLevelCompletion() {
+    const level = connectLevels[currentLevel];
+    
+    if (connectedPoints.length >= level.pointsToWin) {
+        // ¡Nivel completado!
+        const timeBonus = Math.floor((connectGameTimeLeft / level.time) * 100);
+        const perfectBonus = connectedPoints.length === level.points ? 50 : 0;
+        const levelBonus = currentLevel * 30;
+        
+        connectGameScore += timeBonus + perfectBonus + levelBonus;
+        
+        // Revelar imagen completa
+        revealImage();
+        
+        showConnectMessage(
+            `🎉 ¡Nivel ${currentLevel} Completado!\n` +
+            `Bonus por tiempo: +${timeBonus} puntos\n` +
+            `Bonus perfecto: +${perfectBonus} puntos\n` +
+            `Bonus de nivel: +${levelBonus} puntos\n` +
+            `Puntuación total: ${connectGameScore}`,
+            'success'
+        );
+        
+        playVictorySound();
+        
+        // Deshabilitar juego hasta que avance al siguiente nivel
+        connectGameActive = false;
+        document.getElementById('connectNextBtn').disabled = false;
+    }
+}
+
+// Revelar imagen completa
+function revealImage() {
+    const previewImage = document.getElementById('previewImage');
+    const level = connectLevels[currentLevel];
+    
+    previewImage.innerHTML = `<span style="font-size: 4rem;">${level.image}</span>`;
+    previewImage.style.background = 'rgba(255,215,0,0.2)';
+    previewImage.style.borderColor = '#FFD700';
+    
+    // Dibujar todas las conexiones restantes
+    const levelConnections = level.connections;
+    levelConnections.forEach(connection => {
+        const [from, to] = connection;
+        if (!document.querySelector(`.connection-line[data-connection="${from}-${to}"]`) &&
+            !document.querySelector(`.connection-line[data-connection="${to}-${from}"]`)) {
+            drawLine(from, to);
+        }
+    });
+}
+
+// Actualizar progreso de conexión
+function updateConnectionProgress() {
+    const level = connectLevels[currentLevel];
+    const progress = (connectedPoints.length / level.pointsToWin) * 100;
+    const progressBar = document.getElementById('connectionProgress');
+    const progressText = document.getElementById('connectionText');
+    const connectProgress = document.getElementById('connectProgress');
+    
+    if (progressBar) {
+        progressBar.style.width = `${progress}%`;
+        
+        // Cambiar color según progreso
+        if (progress < 30) {
+            progressBar.style.background = '#ff4444';
+        } else if (progress < 70) {
+            progressBar.style.background = '#ffaa00';
+        } else {
+            progressBar.style.background = '#4CAF50';
+        }
+    }
+    
+    if (progressText) {
+        progressText.textContent = `${Math.round(progress)}% completado`;
+    }
+    
+    if (connectProgress) {
+        connectProgress.textContent = `${connectedPoints.length}/${level.pointsToWin}`;
+    }
+}
+
+// Configurar eventos del juego
+function setupConnectGameEvents() {
+    const startBtn = document.getElementById('connectStartBtn');
+    const resetBtn = document.getElementById('connectResetBtn');
+    const undoBtn = document.getElementById('connectUndoBtn');
+    const nextBtn = document.getElementById('connectNextBtn');
+    const showNumbersBtn = document.getElementById('showNumbers');
+    const showNextBtn = document.getElementById('showNext');
+    const autoConnectBtn = document.getElementById('autoConnect');
+    
+    startBtn.addEventListener('click', startConnectGame);
+    resetBtn.addEventListener('click', initializeConnectGame);
+    undoBtn.addEventListener('click', undoLastConnection);
+    nextBtn.addEventListener('click', nextLevel);
+    showNumbersBtn.addEventListener('click', toggleNumbers);
+    showNextBtn.addEventListener('click', showNextPoint);
+    autoConnectBtn.addEventListener('click', autoConnect);
+    
+    // Deshabilitar botones inicialmente
+    undoBtn.disabled = true;
+    nextBtn.disabled = true;
+}
+
+// Iniciar el juego
+function startConnectGame() {
+    if (connectGameActive) return;
+    
+    connectGameActive = true;
+    document.getElementById('connectStartBtn').disabled = true;
+    document.getElementById('connectUndoBtn').disabled = false;
+    
+    startConnectTimer();
+    showConnectMessage('¡Juego iniciado! Conecta los puntos en orden numérico.', 'success');
+}
+
+// Deshacer última conexión
+function undoLastConnection() {
+    if (!connectGameActive || connectedPoints.length === 0) return;
+    
+    const lastPoint = connectedPoints.pop();
+    const pointElement = document.querySelector(`.connect-point[data-number="${lastPoint}"]`);
+    
+    if (pointElement) {
+        pointElement.classList.remove('connected');
+    }
+    
+    // Remover última línea
+    const lines = document.querySelectorAll('.connection-line');
+    if (lines.length > 0) {
+        const lastLine = lines[lines.length - 1];
+        lastLine.parentNode.removeChild(lastLine);
+    }
+    
+    // Actualizar siguiente número
+    document.getElementById('nextNumber').textContent = connectedPoints.length + 1;
+    lastConnectedPoint = connectedPoints.length > 0 ? connectedPoints[connectedPoints.length - 1] : null;
+    
+    // Penalización por deshacer
+    connectGameScore = Math.max(0, connectGameScore - 5);
+    
+    updateConnectionProgress();
+    updateConnectGameDisplay();
+    showConnectMessage('Última conexión deshecha. -5 puntos', 'info');
+}
+
+// Siguiente nivel
+function nextLevel() {
+    if (currentLevel < Object.keys(connectLevels).length) {
+        currentLevel++;
+        initializeConnectGame();
+        document.getElementById('connectNextBtn').disabled = true;
+        document.getElementById('connectStartBtn').disabled = false;
+    } else {
+        endConnectGame(true);
+    }
+}
+
+// Mostrar/ocultar números
+function toggleNumbers() {
+    const points = document.querySelectorAll('.connect-point');
+    const isVisible = points[0].classList.contains('numbers-visible');
+    
+    points.forEach(point => {
+        if (isVisible) {
+            point.classList.remove('numbers-visible');
+        } else {
+            point.classList.add('numbers-visible');
+            // Penalización por usar ayuda
+            connectGameScore = Math.max(0, connectGameScore - 10);
+            updateConnectGameDisplay();
+        }
+    });
+    
+    showConnectMessage(isVisible ? 'Números ocultos' : 'Números mostrados. -10 puntos', 'info');
+}
+
+// Mostrar siguiente punto
+function showNextPoint() {
+    if (!connectGameActive) return;
+    
+    const nextNumber = connectedPoints.length + 1;
+    const nextPoint = document.querySelector(`.connect-point[data-number="${nextNumber}"]`);
+    
+    if (nextPoint) {
+        nextPoint.style.animation = 'pulse 1s ease-in-out 3';
+        // Penalización por usar ayuda
+        connectGameScore = Math.max(0, connectGameScore - 8);
+        updateConnectGameDisplay();
+        showConnectMessage(`¡El siguiente punto es el número ${nextNumber}! -8 puntos`, 'info');
+    }
+}
+
+// Conexión automática
+function autoConnect() {
+    if (!connectGameActive) return;
+    
+    const nextNumber = connectedPoints.length + 1;
+    const maxNumber = connectLevels[currentLevel].pointsToWin;
+    
+    let connected = 0;
+    const autoConnectInterval = setInterval(() => {
+        if (nextNumber + connected <= maxNumber && connectGameActive) {
+            connectPoint(nextNumber + connected);
+            connected++;
+        } else {
+            clearInterval(autoConnectInterval);
+            // Penalización por usar ayuda
+            const penalty = connected * 5;
+            connectGameScore = Math.max(0, connectGameScore - penalty);
+            updateConnectGameDisplay();
+            showConnectMessage(`Conexión automática completada. -${penalty} puntos`, 'info');
+        }
+    }, 500);
+}
+
+// Iniciar temporizador
+function startConnectTimer() {
+    clearInterval(connectGameTimer);
+    connectGameTimer = setInterval(() => {
+        if (connectGameActive) {
+            connectGameTimeLeft--;
+            updateConnectGameDisplay();
+            
+            if (connectGameTimeLeft <= 0) {
+                endConnectGame(false);
+            } else if (connectGameTimeLeft <= 10) {
+                document.getElementById('connectTime').style.color = '#ff4444';
+                document.getElementById('connectTime').style.animation = 'pulse 1s infinite';
             }
+        }
+    }, 1000);
+}
+
+// Finalizar juego
+function endConnectGame(isVictory) {
+    connectGameActive = false;
+    clearInterval(connectGameTimer);
+    
+    if (isVictory) {
+        const victoryBonus = 100;
+        connectGameScore += victoryBonus;
+        
+        showConnectMessage(
+            `🎊 ¡VICTORIA TOTAL!\n` +
+            `Completaste todos los niveles\n` +
+            `Bonus de victoria: +${victoryBonus} puntos\n` +
+            `Puntuación final: ${connectGameScore}`,
+            'success'
+        );
+        playVictorySound();
+    } else {
+        showConnectMessage(
+            `⏰ ¡Tiempo agotado!\n` +
+            `Completaste ${connectedPoints.length} puntos\n` +
+            `Puntuación: ${connectGameScore}`,
+            'error'
+        );
+    }
+    
+    // Actualizar puntuación global
+    score += connectGameScore;
+    updateDisplay();
+    
+    // Habilitar botones
+    document.getElementById('connectStartBtn').disabled = false;
+}
+
+// Actualizar display
+function updateConnectGameDisplay() {
+    document.getElementById('connectScore').textContent = connectGameScore;
+    document.getElementById('connectTime').textContent = `${connectGameTimeLeft}s`;
+    document.getElementById('connectLevel').textContent = currentLevel;
+}
+
+// Mostrar mensaje
+function showConnectMessage(message, type) {
+    const messageElement = document.getElementById('connectMessage');
+    messageElement.textContent = message;
+    messageElement.className = `connect-message ${type}`;
+    
+    if (type === 'info') {
+        setTimeout(() => {
+            messageElement.className = 'connect-message';
+        }, 3000);
+    }
+}
+
+// Sonidos (simulados)
+function playSuccessSound() {
+    console.log('¡Sonido de conexión exitosa!');
+}
+
+function playErrorSound() {
+    console.log('¡Sonido de error!');
+}
+
+function playVictorySound() {
+    console.log('¡Sonido de victoria!');
+}
+
+// Detener juego
+function stopConnectGame() {
+    connectGameActive = false;
+    clearInterval(connectGameTimer);
+}
+
+// Agregar estilos CSS
+function addConnectGameStyles() {
+    if (document.getElementById('connect-game-styles')) return;
+    
+    const style = document.createElement('style');
+    style.id = 'connect-game-styles';
+    style.textContent = `
+        .connect-game-container {
+            text-align: center;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .connect-game-info {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .connect-stats {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .connect-stat {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-label {
+            display: block;
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-bottom: 5px;
+        }
+        
+        .stat-value {
+            display: block;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #FFD700;
+        }
+        
+        .level-info {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #FFD700;
+        }
+        
+        .level-instructions {
+            margin-top: 10px;
+            font-size: 1rem;
+        }
+        
+        .connect-game-area {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .canvas-container {
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            min-height: 500px;
+        }
+        
+        .connect-canvas {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 450px;
+        }
+        
+        .connect-point {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .point-circle {
+            width: 20px;
+            height: 20px;
+            background: #c8102e;
+            border-radius: 50%;
+            border: 3px solid #FFD700;
+            transition: all 0.3s ease;
+        }
+        
+        .point-number {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .connect-point.numbers-visible .point-number {
+            opacity: 1;
+        }
+        
+        .connect-point.connected .point-circle {
+            background: #4CAF50;
+            transform: scale(1.2);
+        }
+        
+        .connect-point:hover .point-circle {
+            transform: scale(1.3);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+        }
+        
+        .connection-line {
+            position: absolute;
+            height: 3px;
+            background: #FFD700;
+            transform-origin: 0 0;
+            z-index: 5;
+            pointer-events: none;
+        }
+        
+        .preview-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            border: 3px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.5s ease;
+        }
+        
+        .connect-controls-panel {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .current-number {
+            margin-bottom: 25px;
+        }
+        
+        .number-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #FFD700;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 10px;
+        }
+        
+        .connection-progress {
+            margin-bottom: 25px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #4CAF50;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        
+        .progress-text {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        
+        .hint-section {
+            margin-top: 25px;
+        }
+        
+        .hint-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .hint-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid #FFD700;
+            padding: 10px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .hint-btn:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .connect-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        
+        .connect-btn {
+            background: linear-gradient(135deg, #c8102e, #a00d26);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            min-width: 160px;
+        }
+        
+        .connect-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(200, 16, 46, 0.4);
+        }
+        
+        .connect-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .connect-message {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-weight: bold;
+            white-space: pre-line;
+            min-height: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .connect-message.success {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+        }
+        
+        .connect-message.error {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+            border: 2px solid #f44336;
+        }
+        
+        .connect-message.info {
+            background: rgba(33, 150, 243, 0.2);
+            color: #2196F3;
+            border: 2px solid #2196F3;
+        }
+        
+        .connect-tips {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .connect-tips ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 15px;
+        }
+        
+        .connect-tips li {
+            margin-bottom: 8px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .connect-tips li:before {
+            content: "🎄";
+            position: absolute;
+            left: 0;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        @media (max-width: 900px) {
+            .connect-game-area {
+                grid-template-columns: 1fr;
+            }
+            
+            .connect-stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .canvas-container {
+                min-height: 400px;
+            }
+            
+            .connect-canvas {
+                min-height: 350px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .connect-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .connect-controls {
+                gap: 10px;
+            }
+            
+            .connect-btn {
+                min-width: 140px;
+                padding: 10px 15px;
+            }
+            
+            .canvas-container {
+                min-height: 300px;
+            }
+            
+            .connect-canvas {
+                min-height: 250px;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
             
             function loadBreakGame() {
                 gameArea.innerHTML = `<h3>Rompe los Adornos</h3><p>Usa las teclas para mover la plataforma y romper los adornos</p>`;

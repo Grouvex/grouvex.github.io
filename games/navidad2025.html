@@ -1847,7 +1847,7 @@ function addGiftGameStyles() {
 // Variables globales para el juego de decorar árbol
 let treeGameScore = 0;
 let treeGameTimer;
-let treeGameTimeLeft = 120;
+let treeGameTimeLeft = 300;
 let treeGameActive = false;
 let placedDecorations = [];
 let selectedDecoration = null;
@@ -1855,62 +1855,62 @@ let selectedDecoration = null;
 // Decoraciones navideñas ampliadas
 const decorationTypes = [
     // Bolas clásicas
-    { id: 'ball1', emoji: '🔴', name: 'Bola Roja', points: 5 },
-    { id: 'ball2', emoji: '🔵', name: 'Bola Azul', points: 5 },
-    { id: 'ball3', emoji: '🟢', name: 'Bola Verde', points: 5 },
-    { id: 'ball4', emoji: '🟡', name: 'Bola Amarilla', points: 5 },
-    { id: 'ball5', emoji: '🟣', name: 'Bola Morada', points: 5 },
-    { id: 'ball6', emoji: '🟠', name: 'Bola Naranja', points: 5 },
+    { id: 'ball1', emoji: '🔴', name: 'Bola Roja', points: 0.5 },
+    { id: 'ball2', emoji: '🔵', name: 'Bola Azul', points: 0.5 },
+    { id: 'ball3', emoji: '🟢', name: 'Bola Verde', points: 0.5 },
+    { id: 'ball4', emoji: '🟡', name: 'Bola Amarilla', points: 0.5 },
+    { id: 'ball5', emoji: '🟣', name: 'Bola Morada', points: 0.5 },
+    { id: 'ball6', emoji: '🟠', name: 'Bola Naranja', points: 0.5 },
     
     // Coronación
-    { id: 'star', emoji: '⭐', name: 'Estrella', points: 10 },
-    { id: 'star2', emoji: '🌟', name: 'Estrella Brillante', points: 12 },
-    { id: 'angel', emoji: '👼', name: 'Ángel', points: 15 },
+    { id: 'star', emoji: '⭐', name: 'Estrella', points: 1 },
+    { id: 'star2', emoji: '🌟', name: 'Estrella Brillante', points: 1.2 },
+    { id: 'angel', emoji: '👼', name: 'Ángel', points: 1.5 },
     
     // Luces y brillos
-    { id: 'bell', emoji: '🔔', name: 'Campana', points: 8 },
-    { id: 'light', emoji: '💡', name: 'Bombilla', points: 6 },
-    { id: 'sparkle', emoji: '✨', name: 'Chispas', points: 7 },
-    { id: 'diamond', emoji: '💎', name: 'Diamante', points: 12 },
+    { id: 'bell', emoji: '🔔', name: 'Campana', points: 0.8 },
+    { id: 'light', emoji: '💡', name: 'Bombilla', points: 0.6 },
+    { id: 'sparkle', emoji: '✨', name: 'Chispas', points: 0.7 },
+    { id: 'diamond', emoji: '💎', name: 'Diamante', points: 1.2 },
     
     // Dulces y comida
-    { id: 'candy', emoji: '🍬', name: 'Caramelo', points: 4 },
-    { id: 'cookie', emoji: '🍪', name: 'Galleta', points: 6 },
-    { id: 'cake', emoji: '🍰', name: 'Pastel', points: 10 },
-    { id: 'hotchocolate', emoji: '☕', name: 'Chocolate Caliente', points: 8 },
+    { id: 'candy', emoji: '🍬', name: 'Caramelo', points: 0.4 },
+    { id: 'cookie', emoji: '🍪', name: 'Galleta', points: 0.6 },
+    { id: 'cake', emoji: '🍰', name: 'Pastel', points: 1 },
+    { id: 'hotchocolate', emoji: '☕', name: 'Chocolate Caliente', points: 0.8 },
     
     // Regalos y envoltorios
-    { id: 'gift', emoji: '🎁', name: 'Regalo', points: 8 },
-    { id: 'gift2', emoji: '🎀', name: 'Moño', points: 6 },
+    { id: 'gift', emoji: '🎁', name: 'Regalo', points: 0.8 },
+    { id: 'gift2', emoji: '🎀', name: 'Moño', points: 0.6 },
     
     // Calcetines y tejidos
-    { id: 'sock', emoji: '🧦', name: 'Calcetín', points: 6 },
+    { id: 'sock', emoji: '🧦', name: 'Calcetín', points: 0.6 },
     
     // Invierno y nieve
-    { id: 'snowflake', emoji: '❄️', name: 'Copo de Nieve', points: 5 },
-    { id: 'snowman', emoji: '⛄', name: 'Muñeco de Nieve', points: 12 },
+    { id: 'snowflake', emoji: '❄️', name: 'Copo de Nieve', points: 0.5 },
+    { id: 'snowman', emoji: '⛄', name: 'Muñeco de Nieve', points: 1.2 },
     
     // Personajes navideños
-    { id: 'santa', emoji: '🎅', name: 'Santa Claus', points: 20 },
-    { id: 'mrsanta', emoji: '🤶', name: 'Mrs. Claus', points: 18 },
-    { id: 'elf', emoji: '🧝', name: 'Elfo', points: 15 },
+    { id: 'santa', emoji: '🎅', name: 'Santa Claus', points: 2 },
+    { id: 'mrsanta', emoji: '🤶', name: 'Mrs. Claus', points: 1.8 },
+    { id: 'elf', emoji: '🧝', name: 'Elfo', points: 1.5 },
     
     // Animales navideños
-    { id: 'reindeer', emoji: '🦌', name: 'Reno', points: 12 },
-    { id: 'penguin', emoji: '🐧', name: 'Pingüino', points: 10 },
+    { id: 'reindeer', emoji: '🦌', name: 'Reno', points: 1.2 },
+    { id: 'penguin', emoji: '🐧', name: 'Pingüino', points: 1 },
     
     // Instrumentos musicales
-    { id: 'music', emoji: '🎵', name: 'Nota Musical', points: 6 },
-    { id: 'music2', emoji: '🎶', name: 'Notas Musicales', points: 8 },
+    { id: 'music', emoji: '🎵', name: 'Nota Musical', points: 0.6 },
+    { id: 'music2', emoji: '🎶', name: 'Notas Musicales', points: 0.8 },
     
     // Emojis divertidos
-    { id: 'heart', emoji: '❤️', name: 'Corazón Rojo', points: 8 },
-    { id: 'heart2', emoji: '💚', name: 'Corazón Verde', points: 8 },
-    { id: 'rainbow', emoji: '🌈', name: 'Arcoíris', points: 20 },
-    { id: 'rocket', emoji: '🚀', name: 'Cohete', points: 18 },
-    { id: 'unicorn', emoji: '🦄', name: 'Unicornio', points: 25 },
-    { id: 'alien', emoji: '👽', name: 'Alien', points: 30 },
-    { id: 'robot', emoji: '🤖', name: 'Robot', points: 22 }
+    { id: 'heart', emoji: '❤️', name: 'Corazón Rojo', points: 2.8 },
+    { id: 'heart2', emoji: '💚', name: 'Corazón Verde', points: 0.8 },
+    { id: 'rainbow', emoji: '🌈', name: 'Arcoíris', points: 2 },
+    { id: 'rocket', emoji: '🚀', name: 'Cohete', points: 1.8 },
+    { id: 'unicorn', emoji: '🦄', name: 'Unicornio', points: 2.5 },
+    { id: 'alien', emoji: '👽', name: 'Alien', points: 3 },
+    { id: 'robot', emoji: '🤖', name: 'Robot', points: 2 }
 ];
 
 // Función para cargar el juego "Decorar el Árbol" - ÁRBOL GIGANTE
@@ -1928,7 +1928,7 @@ function loadTreeGame() {
                     </div>
                     <div class="tree-stat">
                         <span class="stat-label">Tiempo:</span>
-                        <span id="treeTime" class="stat-value">120s</span>
+                        <span id="treeTime" class="stat-value">300s</span>
                     </div>
                     <div class="tree-stat">
                         <span class="stat-label">Decoraciones:</span>
@@ -1966,7 +1966,7 @@ function loadTreeGame() {
                     
                     <div class="tree-tools">
                         <button id="clearTree" class="tool-btn">🗑️ Limpiar Todo</button>
-                        <button id="randomDecorate" class="tool-btn">🎲 Decoración Aleatoria</button>
+                        <button id="randomDecorate" class="tool-btn" disabled>🎲 Decoración Aleatoria</button>
                         <button id="changeBg" class="tool-btn">🌌 Cambiar Fondo</button>
                     </div>
                     
@@ -2018,7 +2018,7 @@ function initializeTreeGame() {
     
     // Reiniciar variables del juego
     treeGameScore = 0;
-    treeGameTimeLeft = 120;
+    treeGameTimeLeft = 300;
     treeGameActive = false;
     selectedDecoration = null;
     
@@ -2120,7 +2120,7 @@ function placeDecorationOnTree(event) {
     decorationElement.style.top = `${y}%`;
     
     // Efectos especiales para decoraciones con muchos puntos
-    if (selectedDecoration.points >= 20) {
+    if (selectedDecoration.points >= 2) {
         decorationElement.classList.add('special-decoration');
         decorationElement.style.animation = 'specialGlow 2s infinite';
     }
@@ -2157,7 +2157,7 @@ function placeDecorationOnTree(event) {
     updateTreeGameDisplay();
     
     // Mensaje especial para decoraciones únicas
-    if (selectedDecoration.points >= 25) {
+    if (selectedDecoration.points >= 2) {
         showTreeMessage(`🎉 ¡WOW! ${selectedDecoration.emoji} ${selectedDecoration.name} - ¡Decoración Épica! +${selectedDecoration.points}pts`, 'bonus');
     } else {
         showTreeMessage(`✅ ${selectedDecoration.emoji} colocado! +${selectedDecoration.points} puntos creativos`, 'success');
@@ -2170,37 +2170,39 @@ function placeDecorationOnTree(event) {
 // Verificar logros creativos
 function checkCreativeAchievements() {
     const decorationCount = placedDecorations.length;
-    const specialDecorations = placedDecorations.filter(deco => deco.points >= 20).length;
+    const specialDecorations = placedDecorations.filter(deco => deco.points >= 2).length;
     const emojisUsed = [...new Set(placedDecorations.map(deco => deco.emoji))];
+    const randomBtn = document.getElementById('randomDecorate');
     
     let bonusMessage = '';
     
     // Logro: Arcoíris Mágico (muchos colores diferentes)
-    if (emojisUsed.length >= 8 && !document.querySelector('[data-bonus="colorful"]').classList.contains('achieved')) {
-        treeGameScore += 50;
-        bonusMessage += '🌈 Arcoíris Mágico +50pts\n';
+    if (emojisUsed.length >= 10 && !document.querySelector('[data-bonus="colorful"]').classList.contains('achieved')) {
+        treeGameScore += 10;
+        bonusMessage += '🌈 Arcoíris Mágico +10pts\n';
         document.querySelector('[data-bonus="colorful"]').classList.add('achieved');
     }
     
     // Logro: Decoración Especial (muchas decoraciones especiales)
-    if (specialDecorations >= 3 && !document.querySelector('[data-bonus="special"]').classList.contains('achieved')) {
-        treeGameScore += 60;
-        bonusMessage += '🚀 Decoración Especial +60pts\n';
+    if (specialDecorations >= 5 && !document.querySelector('[data-bonus="special"]').classList.contains('achieved')) {
+        treeGameScore += 30;
+        bonusMessage += '🚀 Decoración Especial +30pts\n';
         document.querySelector('[data-bonus="special"]').classList.add('achieved');
     }
     
     // Logro: Árbol Llenísimo (muchas decoraciones)
     if (decorationCount >= 20 && !document.querySelector('[data-bonus="crowded"]').classList.contains('achieved')) {
-        treeGameScore += 40;
-        bonusMessage += '🎪 Árbol Llenísimo +40pts\n';
+        treeGameScore += 20;
+        bonusMessage += '🎪 Árbol Llenísimo +20pts\n';
         document.querySelector('[data-bonus="crowded"]').classList.add('achieved');
     }
     
     // Logro: Maestro Decorador (puntuación muy alta)
-    if (treeGameScore >= 300 && !document.querySelector('[data-bonus="master"]').classList.contains('achieved')) {
-        treeGameScore += 100;
-        bonusMessage += '🎨 Maestro Decorador +100pts\n';
+    if (treeGameScore >= 200 && !document.querySelector('[data-bonus="master"]').classList.contains('achieved')) {
+        treeGameScore += 150;
+        bonusMessage += '🎨 Maestro Decorador +150pts\n';
         document.querySelector('[data-bonus="master"]').classList.add('achieved');
+        randomBtn.disabled = false;
     }
     
     // Aplicar bonos
@@ -4613,30 +4615,29 @@ const connectLevels = {
         name: "Estrella Navideña",
         points: 10,
         image: "⭐",
-        pointsToWin: 8,
+        pointsToWin: 10,
         time: 100,
         points: [
             { x: 50, y: 20, number: 1 },
-            { x: 30, y: 40, number: 2 },
-            { x: 70, y: 40, number: 3 },
-            { x: 20, y: 60, number: 4 },
-            { x: 50, y: 50, number: 5 },
-            { x: 80, y: 60, number: 6 },
-            { x: 35, y: 75, number: 7 },
-            { x: 65, y: 75, number: 8 },
-            { x: 50, y: 85, number: 9 },
-            { x: 50, y: 65, number: 10 }
+            { x: 35, y: 35, number: 2 },
+            { x: 10, y: 45, number: 3 },   
+            { x: 35, y: 55, number: 4 },
+            { x: 25, y: 70, number: 5 },
+            { x: 50, y: 65, number: 6 },
+            { x: 75, y: 70, number: 7 },
+            { x: 65, y: 55, number: 8 },
+            { x: 90, y: 45, number: 9 },
+            { x: 65, y: 35, number: 10 }
         ],
         connections: [
-            [1, 2], [1, 3], [1, 5], [2, 4], [2, 5], [3, 5], [3, 6],
-            [4, 7], [5, 7], [5, 8], [6, 8], [7, 9], [8, 9], [5, 10]
+            [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10], [10, 1]
         ]
     },
     3: {
         name: "Reno Navideño",
         points: 15,
         image: "🦌",
-        pointsToWin: 12,
+        pointsToWin: 15,
         time: 150,
         points: [
             { x: 50, y: 15, number: 1 },
@@ -4871,7 +4872,7 @@ function connectPoint(pointNumber) {
     }
     
     // Calcular puntos ganados
-    const pointsEarned = 10 + (currentLevel * 5);
+    const pointsEarned = 2 + (currentLevel * 5);
     connectGameScore += pointsEarned;
     
     // Actualizar siguiente número

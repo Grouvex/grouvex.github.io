@@ -1967,7 +1967,7 @@ function loadTreeGame() {
                     <div class="tree-tools">
                         <button id="clearTree" class="tool-btn">🗑️ Limpiar Todo</button>
                         <button id="randomDecorate" class="tool-btn" disabled>🎲 Decoración Aleatoria</button>
-                        <button id="changeBg" class="tool-btn">🌌 Cambiar Fondo</button>
+                        <button id="changeBg" class="tool-btn" disabled>🌌 Cambiar Fondo</button>
                     </div>
                     
                     <div class="selected-decoration" id="selectedDecoration">
@@ -2173,6 +2173,7 @@ function checkCreativeAchievements() {
     const specialDecorations = placedDecorations.filter(deco => deco.points >= 2).length;
     const emojisUsed = [...new Set(placedDecorations.map(deco => deco.emoji))];
     const randomBtn = document.getElementById('randomDecorate');
+    const changeBgBtn = document.getElementById('changeBg');
     
     let bonusMessage = '';
     
@@ -2181,6 +2182,7 @@ function checkCreativeAchievements() {
         treeGameScore += 10;
         bonusMessage += '🌈 Arcoíris Mágico +10pts\n';
         document.querySelector('[data-bonus="colorful"]').classList.add('achieved');
+        changeBgBtn.disabled = false;
     }
     
     // Logro: Decoración Especial (muchas decoraciones especiales)

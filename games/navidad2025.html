@@ -655,6 +655,10 @@
                     case 'connect':
                         startConnectGame();
                         break;
+                    case 'maze':
+                        startMazeGame();
+                        break;
+                        
                     // ... otros casos para cada juego
                 }
             }
@@ -682,6 +686,8 @@
                     // El juego Simón se reinicia automáticamente al cargar
                 } else if (currentGame === 'connect') {
                     // El juego Simón se reinicia automáticamente al cargar
+                } else if (currentGame === 'maze') {
+                    // El juego Simón se reinicia automáticamente al cargar
                 }
             }
             
@@ -704,6 +710,8 @@ function stopGame() {
         stopTossGame(); 
     } else if (currentGame === 'connect') {
         stopConnectGame(); 
+    } else if (currentGame === 'maze') {
+        stopMazeGame(); 
     }
 }
             
@@ -755,6 +763,9 @@ function stopGame() {
                         break;
                     case 'connect':
                         showConnectHint();
+                        break;
+                    case 'maze':
+                        showMazeHint();
                         break;
                     default:
                         alert("¡Esta es una pista! Intenta de nuevo.");
@@ -1251,32 +1262,1270 @@ function addPuzzleStyles() {
                 `;
             }
             
-            function loadMazeGame() {
-                gameArea.innerHTML = `
-                    <h3>Laberinto Navideño</h3>
-                    <p>Usa las flechas del teclado para guiar a Santa</p>
-                    <div class="maze-container">
-                        <!-- Aquí iría el laberinto generado dinámicamente -->
-                        <div class="maze-cell maze-wall"></div>
-                        <div class="maze-cell maze-wall"></div>
-                        <div class="maze-cell maze-wall"></div>
-                        <div class="maze-cell maze-wall"></div>
-                        <div class="maze-cell maze-wall"></div>
-                        <div class="maze-cell maze-wall"></div>
-                        <div class="maze-cell maze-wall"></div>
-                        <div class="maze-cell maze-wall"></div>
-                        <div class="maze-cell maze-wall"></div>
-                        <div class="maze-cell maze-wall"></div>
-                        <!-- ... más celdas del laberinto -->
-                        <div class="maze-cell"><div class="maze-player"></div></div>
-                        <div class="maze-cell maze-wall"></div>
-                        <!-- ... más celdas -->
-                        <div class="maze-cell"><div class="maze-goal"></div></div>
+// =============================================
+// JUEGO "LABERINTO NAVIDEÑO" - VERSIÓN PROGRESIVA
+// =============================================
+
+// Variables globales para el juego del laberinto
+let mazeGameScore = 0;
+let mazeGameTimeLeft = 180;
+let mazeGameActive = false;
+let mazeGameTimer;
+let mazePlayer = { x: 1, y: 1 };
+let mazeGoal = { x: 18, y: 18 };
+let mazeGrid = [];
+let mazeRows = 20;
+let mazeCols = 20;
+let mazeCellSize = 25;
+let collectedGifts = 0;
+let totalGifts = 5;
+let mazeLevel = 1;
+let mazePath = [];
+
+// Sistema de niveles PROGRESIVO
+function getLevelConfig(level) {
+    // TIEMPO: Reducción más rápida (15 segundos por nivel)
+    const baseTime = Math.max(45, 180 - (level * 15));
+    
+    // REGALOS: Multiplicación lenta pero constante
+    const baseGifts = Math.min(25, 5 + Math.floor(level * 1.8));
+    
+    // TAMAÑO: Crecimiento moderado
+    const baseRows = Math.min(40, 20 + Math.floor(level * 1.5));
+    const baseCols = Math.min(40, 20 + Math.floor(level * 1.5));
+    
+    return {
+        name: `Laberinto Nivel ${level}`,
+        time: baseTime,
+        gifts: baseGifts,
+        difficulty: getDifficulty(level),
+        rows: baseRows,
+        cols: baseCols
+    };
+}
+
+function getDifficulty(level) {
+    if (level <= 3) return "Fácil";
+    if (level <= 6) return "Medio";
+    if (level <= 10) return "Difícil";
+    if (level <= 15) return "Experto";
+    return "Maestro";
+}
+
+// Función para cargar el juego del laberinto
+function loadMazeGame() {
+    gameArea.innerHTML = `
+        <div class="maze-game-container">
+            <h3>🎄 Laberinto Navideño Progresivo</h3>
+            <p>¡Cada nivel es más difícil pero da más puntos! Guía a Santa 🎅</p>
+            
+            <div class="maze-game-info">
+                <div class="maze-stats">
+                    <div class="maze-stat">
+                        <span class="stat-label">Puntos:</span>
+                        <span id="mazeScore" class="stat-value">0</span>
                     </div>
-                `;
+                    <div class="maze-stat">
+                        <span class="stat-label">Tiempo:</span>
+                        <span id="mazeTime" class="stat-value">180s</span>
+                    </div>
+                    <div class="maze-stat">
+                        <span class="stat-label">Nivel:</span>
+                        <span id="mazeLevel" class="stat-value">1</span>
+                    </div>
+                    <div class="maze-stat">
+                        <span class="stat-label">Regalos:</span>
+                        <span id="mazeGifts" class="stat-value">0/5</span>
+                    </div>
+                    <div class="maze-stat">
+                        <span class="stat-label">Dificultad:</span>
+                        <span id="mazeDifficulty" class="stat-value">Fácil</span>
+                    </div>
+                </div>
+                
+                <div class="maze-instructions">
+                    <h4>🎮 Controles:</h4>
+                    <div class="controls-grid">
+                        <div class="control-item">⬆️<br>Arriba</div>
+                        <div class="control-item">⬅️ Izquierda</div>
+                        <div class="control-item">➡️ Derecha</div>
+                        <div class="control-item">⬇️<br>Abajo</div>
+                    </div>
+                    <p class="mobile-controls">📱 En móvil: Usa los botones de control</p>
+                </div>
+            </div>
+            
+            <div class="maze-game-area">
+                <div class="maze-container" id="mazeContainer">
+                    <!-- El laberinto se generará aquí -->
+                </div>
+                
+                <div class="mobile-controls-panel" id="mobileControls">
+                    <div class="control-row">
+                        <button class="control-btn" data-direction="up">⬆️</button>
+                    </div>
+                    <div class="control-row">
+                        <button class="control-btn" data-direction="left">⬅️</button>
+                        <button class="control-btn" data-direction="right">➡️</button>
+                    </div>
+                    <div class="control-row">
+                        <button class="control-btn" data-direction="down">⬇️</button>
+                    </div>
+                </div>
+                
+                <div class="maze-objectives">
+                    <h4>🎯 Progresión Nivel <span id="currentLevelDisplay">1</span>:</h4>
+                    <div class="objective-list">
+                        <div class="objective">
+                            <span class="objective-icon">🎅</span>
+                            <span>Lleva a Santa al árbol navideño</span>
+                        </div>
+                        <div class="objective">
+                            <span class="objective-icon">🎁</span>
+                            <span>Recoge <span id="giftsRequired">5</span> regalos</span>
+                        </div>
+                        <div class="objective">
+                            <span class="objective-icon">⏰</span>
+                            <span>Tiempo: <span id="timeLimit">180</span>s</span>
+                        </div>
+                        <div class="objective">
+                            <span class="objective-icon">📏</span>
+                            <span>Tamaño: <span id="mazeSize">20x20</span></span>
+                        </div>
+                    </div>
+                    
+                    <div class="level-bonus-info">
+                        <h5>📈 Progresión por Nivel:</h5>
+                        <div class="bonus-item">🎁 <strong>+80% regalos</strong> cada nivel</div>
+                        <div class="bonus-item">⏰ <strong>-15s tiempo</strong> cada nivel</div>
+                        <div class="bonus-item">📏 <strong>+1.5 tamaño</strong> cada nivel</div>
+                        <div class="bonus-item">🏆 <strong>+50% puntos</strong> por nivel</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="maze-controls">
+                <button id="mazeStartBtn" class="maze-btn">🎯 Comenzar Juego</button>
+                <button id="mazeResetBtn" class="maze-btn">🔄 Reiniciar Nivel</button>
+                <button id="mazeHintBtn" class="maze-btn">💡 Mostrar Camino (-20)</button>
+                <button id="mazeNextBtn" class="maze-btn">➡️ Siguiente Nivel</button>
+            </div>
+            
+            <div class="maze-message" id="mazeMessage"></div>
+            
+            <div class="maze-tips">
+                <h4>💡 Sistema Progresivo:</h4>
+                <ul>
+                    <li>🎄 <strong>Siempre hay solución</strong> (Algoritmo de Prim)</li>
+                    <li>🎁 <strong>Regalos ×1.8</strong> cada nivel</li>
+                    <li>⏰ <strong>Tiempo -15s</strong> cada nivel</li>
+                    <li>📏 <strong>Laberinto +1.5</strong> cada nivel</li>
+                    <li>🏆 <strong>Puntos +50%</strong> por nivel alto</li>
+                    <li>💡 <strong>Pistas -20 puntos</strong> (penalización fija)</li>
+                </ul>
+            </div>
+        </div>
+    `;
+    
+    initializeMazeGame();
+    setupMazeGameEvents();
+    addMazeGameStyles();
+}
+
+// Inicializar el juego del laberinto
+function initializeMazeGame() {
+    const mazeContainer = document.getElementById('mazeContainer');
+    mazeContainer.innerHTML = '';
+    
+    // Obtener configuración del nivel actual
+    const levelConfig = getLevelConfig(mazeLevel);
+    
+    // Actualizar variables con configuración del nivel
+    mazeRows = levelConfig.rows;
+    mazeCols = levelConfig.cols;
+    mazeGameTimeLeft = levelConfig.time;
+    totalGifts = levelConfig.gifts;
+    
+    // Reiniciar variables del juego
+    mazeGameActive = false;
+    collectedGifts = 0;
+    mazePlayer = { x: 1, y: 1 };
+    mazeGoal = { x: mazeCols - 2, y: mazeRows - 2 };
+    mazePath = [];
+    
+    // Ajustar tamaño de celda según el nivel (más pequeño en niveles altos)
+    mazeCellSize = Math.max(12, 25 - Math.floor(mazeLevel / 3));
+    
+    // Generar nuevo laberinto CON GARANTÍA DE SOLUCIÓN
+    generateMazeWithGuaranteedSolution();
+    
+    // Dibujar el laberinto
+    drawMaze();
+    
+    updateMazeGameDisplay();
+    showMazeMessage(`Nivel ${mazeLevel} - ${levelConfig.difficulty}. ¡${totalGifts} regalos en ${mazeGameTimeLeft}s!`, 'info');
+    
+    // Actualizar información del nivel en la UI
+    updateLevelInfo(levelConfig);
+    
+    // Configurar controles de teclado
+    setupKeyboardControls();
+}
+
+// Actualizar información del nivel en la interfaz
+function updateLevelInfo(levelConfig) {
+    document.getElementById('currentLevelDisplay').textContent = mazeLevel;
+    document.getElementById('giftsRequired').textContent = totalGifts;
+    document.getElementById('timeLimit').textContent = levelConfig.time;
+    document.getElementById('mazeSize').textContent = `${mazeRows}x${mazeCols}`;
+}
+
+// =============================================
+// GENERACIÓN DE LABERINTO CON SOLUCIÓN GARANTIZADA
+// =============================================
+
+function generateMazeWithGuaranteedSolution() {
+    // Inicializar grid con paredes sólidas
+    mazeGrid = [];
+    for (let y = 0; y < mazeRows; y++) {
+        mazeGrid[y] = [];
+        for (let x = 0; x < mazeCols; x++) {
+            mazeGrid[y][x] = {
+                isWall: true,
+                hasGift: false,
+                hasCandle: false,
+                isPath: false,
+                visited: false
+            };
+        }
+    }
+
+    // Usar algoritmo de Prim para GARANTIZAR solución
+    generatePrimWithSolution();
+
+    // Asegurar entrada y salida
+    mazeGrid[1][0].isWall = false;
+    mazeGrid[mazeRows-2][mazeCols-1].isWall = false;
+
+    // Colocar regalos progresivos
+    placeProgressiveGifts();
+
+    // Colocar velas estratégicas
+    placeStrategicCandles();
+
+    // Generar camino solución (SIEMPRE existe)
+    generateGuaranteedSolutionPath();
+}
+
+// Algoritmo de Prim mejorado para garantizar solución
+function generatePrimWithSolution() {
+    const startX = 1;
+    const startY = 1;
+    mazeGrid[startY][startX].isWall = false;
+
+    const walls = [];
+    addWallsToQueue(startX, startY, walls);
+
+    while (walls.length > 0) {
+        const randomIndex = Math.floor(Math.random() * walls.length);
+        const wall = walls[randomIndex];
+        walls.splice(randomIndex, 1);
+
+        const { x, y, fromX, fromY } = wall;
+        const oppositeX = x + (x - fromX);
+        const oppositeY = y + (y - fromY);
+
+        if (oppositeX > 0 && oppositeX < mazeCols - 1 && 
+            oppositeY > 0 && oppositeY < mazeRows - 1) {
+            
+            if (mazeGrid[oppositeY][oppositeX].isWall) {
+                mazeGrid[y][x].isWall = false;
+                mazeGrid[oppositeY][oppositeX].isWall = false;
+                addWallsToQueue(oppositeX, oppositeY, walls);
+            }
+        }
+    }
+
+    // GARANTIZAR conexión directa entre inicio y meta
+    ensureStartToGoalConnection();
+}
+
+// Garantizar que haya conexión entre inicio y meta
+function ensureStartToGoalConnection() {
+    const path = findPath(mazePlayer.x, mazePlayer.y, mazeGoal.x, mazeGoal.y);
+    
+    // Si no hay camino, crear uno forzado
+    if (path.length === 0) {
+        createForcedPath();
+    }
+}
+
+// Crear camino forzado si no existe
+function createForcedPath() {
+    let currentX = mazePlayer.x;
+    let currentY = mazePlayer.y;
+    
+    // Moverse hacia la meta creando camino
+    while (currentX !== mazeGoal.x || currentY !== mazeGoal.y) {
+        if (currentX < mazeGoal.x) {
+            currentX++;
+        } else if (currentX > mazeGoal.x) {
+            currentX--;
+        } else if (currentY < mazeGoal.y) {
+            currentY++;
+        } else if (currentY > mazeGoal.y) {
+            currentY--;
+        }
+        
+        // Crear camino
+        if (currentX >= 0 && currentX < mazeCols && currentY >= 0 && currentY < mazeRows) {
+            mazeGrid[currentY][currentX].isWall = false;
+        }
+    }
+}
+
+// Buscar camino entre dos puntos (BFS)
+function findPath(startX, startY, goalX, goalY) {
+    const visited = new Set();
+    const queue = [{x: startX, y: startY, path: []}];
+    
+    while (queue.length > 0) {
+        const {x, y, path} = queue.shift();
+        const key = `${x},${y}`;
+        
+        if (visited.has(key)) continue;
+        visited.add(key);
+        
+        const newPath = [...path, {x, y}];
+        
+        if (x === goalX && y === goalY) {
+            return newPath;
+        }
+        
+        const directions = [
+            {dx: 1, dy: 0}, {dx: 0, dy: 1},
+            {dx: -1, dy: 0}, {dx: 0, dy: -1}
+        ];
+        
+        for (const {dx, dy} of directions) {
+            const nx = x + dx;
+            const ny = y + dy;
+            const newKey = `${nx},${ny}`;
+            
+            if (nx >= 0 && nx < mazeCols && ny >= 0 && ny < mazeRows && 
+                !mazeGrid[ny][nx].isWall && !visited.has(newKey)) {
+                queue.push({x: nx, y: ny, path: newPath});
+            }
+        }
+    }
+    
+    return [];
+}
+
+// Agregar paredes a la cola para el algoritmo de Prim
+function addWallsToQueue(x, y, walls) {
+    const directions = [
+        { dx: 0, dy: -1 },
+        { dx: 1, dy: 0 },
+        { dx: 0, dy: 1 },
+        { dx: -1, dy: 0 }
+    ];
+
+    directions.forEach(({ dx, dy }) => {
+        const newX = x + dx;
+        const newY = y + dy;
+
+        if (newX > 0 && newX < mazeCols - 1 && newY > 0 && newY < mazeRows - 1) {
+            walls.push({
+                x: newX,
+                y: newY,
+                fromX: x,
+                fromY: y
+            });
+        }
+    });
+}
+
+// Colocar regalos progresivos (más regalos cada nivel)
+function placeProgressiveGifts() {
+    let giftsPlaced = 0;
+    const maxAttempts = totalGifts * 20;
+
+    // Colocar regalos distribuidos
+    while (giftsPlaced < totalGifts && maxAttempts > 0) {
+        const x = Math.floor(Math.random() * (mazeCols - 2)) + 1;
+        const y = Math.floor(Math.random() * (mazeRows - 2)) + 1;
+
+        if (!mazeGrid[y][x].isWall && 
+            !(x === 1 && y === 1) && 
+            !(x === mazeGoal.x && y === mazeGoal.y) &&
+            !mazeGrid[y][x].hasGift) {
+            
+            mazeGrid[y][x].hasGift = true;
+            giftsPlaced++;
+        }
+    }
+
+    // Ajustar si no se pudieron colocar todos
+    if (giftsPlaced < totalGifts) {
+        totalGifts = giftsPlaced;
+    }
+}
+
+// Colocar velas estratégicas
+function placeStrategicCandles() {
+    const candlesToPlace = Math.max(2, Math.floor(totalGifts / 4) + Math.floor(mazeLevel / 2));
+    let candlesPlaced = 0;
+
+    // Colocar velas en ubicaciones importantes
+    while (candlesPlaced < candlesToPlace) {
+        const x = Math.floor(Math.random() * (mazeCols - 2)) + 1;
+        const y = Math.floor(Math.random() * (mazeRows - 2)) + 1;
+
+        if (!mazeGrid[y][x].isWall && 
+            !mazeGrid[y][x].hasGift &&
+            !(x === 1 && y === 1) && 
+            !(x === mazeGoal.x && y === mazeGoal.y) &&
+            hasMultiplePaths(x, y)) {
+            
+            mazeGrid[y][x].hasCandle = true;
+            candlesPlaced++;
+        }
+    }
+}
+
+// Verificar si una celda tiene múltiples caminos
+function hasMultiplePaths(x, y) {
+    let pathCount = 0;
+    const directions = [
+        {dx: 1, dy: 0}, {dx: 0, dy: 1},
+        {dx: -1, dy: 0}, {dx: 0, dy: -1}
+    ];
+    
+    directions.forEach(({dx, dy}) => {
+        const nx = x + dx;
+        const ny = y + dy;
+        if (nx >= 0 && nx < mazeCols && ny >= 0 && ny < mazeRows && !mazeGrid[ny][nx].isWall) {
+            pathCount++;
+        }
+    });
+    
+    return pathCount >= 3;
+}
+
+// Generar camino solución GARANTIZADO
+function generateGuaranteedSolutionPath() {
+    mazePath = findPath(mazePlayer.x, mazePlayer.y, mazeGoal.x, mazeGoal.y);
+    
+    // Si no se encuentra camino, usar el camino forzado
+    if (mazePath.length === 0) {
+        mazePath = [];
+        let currentX = mazePlayer.x;
+        let currentY = mazePlayer.y;
+        
+        while (currentX !== mazeGoal.x || currentY !== mazeGoal.y) {
+            mazePath.push({x: currentX, y: currentY});
+            if (currentX < mazeGoal.x) currentX++;
+            else if (currentX > mazeGoal.x) currentX--;
+            else if (currentY < mazeGoal.y) currentY++;
+            else if (currentY > mazeGoal.y) currentY--;
+        }
+        mazePath.push({x: mazeGoal.x, y: mazeGoal.y});
+    }
+}
+
+// Dibujar el laberinto
+function drawMaze() {
+    const mazeContainer = document.getElementById('mazeContainer');
+    mazeContainer.innerHTML = '';
+    
+    mazeContainer.style.width = `${mazeCols * mazeCellSize}px`;
+    mazeContainer.style.height = `${mazeRows * mazeCellSize}px`;
+    
+    // Aplicar clase de dificultad
+    if (mazeLevel >= 10) mazeContainer.classList.add('master-level');
+    else if (mazeLevel >= 6) mazeContainer.classList.add('expert-level');
+    else if (mazeLevel >= 3) mazeContainer.classList.add('hard-level');
+    
+    for (let y = 0; y < mazeRows; y++) {
+        for (let x = 0; x < mazeCols; x++) {
+            const cell = document.createElement('div');
+            cell.className = 'maze-cell';
+            cell.style.width = `${mazeCellSize}px`;
+            cell.style.height = `${mazeCellSize}px`;
+            cell.style.left = `${x * mazeCellSize}px`;
+            cell.style.top = `${y * mazeCellSize}px`;
+            
+            const cellData = mazeGrid[y][x];
+            
+            if (cellData.isWall) {
+                cell.classList.add('maze-wall');
+                cell.innerHTML = '❄️';
+            } else {
+                cell.classList.add('maze-path');
+                
+                if (x === 0 && y === 1) {
+                    cell.classList.add('maze-entrance');
+                    cell.innerHTML = '🚪';
+                }
+                else if (x === mazeCols - 1 && y === mazeRows - 2) {
+                    cell.classList.add('maze-goal');
+                    cell.innerHTML = '🎄';
+                }
+                else if (x === mazePlayer.x && y === mazePlayer.y) {
+                    cell.classList.add('maze-player');
+                    cell.innerHTML = '🎅';
+                }
+                else if (cellData.hasGift) {
+                    cell.classList.add('maze-gift');
+                    cell.innerHTML = '🎁';
+                }
+                else if (cellData.hasCandle) {
+                    cell.classList.add('maze-candle');
+                    cell.innerHTML = '🕯️';
+                }
+                else if (cellData.isPath) {
+                    cell.classList.add('maze-solution');
+                }
             }
             
-            // Las demás funciones de carga de juegos seguirían un patrón similar
+            mazeContainer.appendChild(cell);
+        }
+    }
+}
+
+// Mover jugador - PUNTOS PROGRESIVOS
+function movePlayer(dx, dy) {
+    if (!mazeGameActive) return;
+    
+    const newX = mazePlayer.x + dx;
+    const newY = mazePlayer.y + dy;
+    
+    if (newX >= 0 && newX < mazeCols && newY >= 0 && newY < mazeRows && 
+        !mazeGrid[newY][newX].isWall) {
+        
+        mazePlayer.x = newX;
+        mazePlayer.y = newY;
+        
+        // REGALOS - PUNTOS PROGRESIVOS POR NIVEL
+        if (mazeGrid[newY][newX].hasGift) {
+            mazeGrid[newY][newX].hasGift = false;
+            collectedGifts++;
+            
+            // MÁS PUNTOS EN NIVELES ALTOS: 5 + (nivel × 2)
+            const giftPoints = 5 + (mazeLevel * 2);
+            mazeGameScore += giftPoints;
+            
+            showGiftCollectionEffect(newX, newY);
+            showMazeMessage(`¡Regalo encontrado! +${giftPoints} puntos (Nivel ${mazeLevel})`, 'success');
+            playSuccessSound();
+            
+            if (collectedGifts === totalGifts) {
+                allGiftsCollected();
+            }
+        }
+        
+        if (newX === mazeGoal.x && newY === mazeGoal.y) {
+            completeMazeLevel();
+        }
+        
+        drawMaze();
+        updateMazeGameDisplay();
+    }
+}
+
+// Completar nivel - PUNTOS PROGRESIVOS
+function completeMazeLevel() {
+    mazeGameActive = false;
+    clearInterval(mazeGameTimer);
+    
+    // PUNTOS PROGRESIVOS POR NIVEL
+    const timeBonus = Math.floor(mazeGameTimeLeft * 0.3); // +50% por tiempo
+    const giftBonus = collectedGifts * (3 + mazeLevel); // +1 por nivel en regalos
+    const levelBonus = 15 * mazeLevel; // +15 por cada nivel
+    const sizeBonus = Math.floor((mazeRows * mazeCols) / 15); // Bonus por tamaño
+    
+    mazeGameScore += timeBonus + giftBonus + levelBonus + sizeBonus;
+    
+    showMazeMessage(
+        `🎉 ¡Nivel ${mazeLevel} Completado!\n` +
+        `Bonus por tiempo: +${timeBonus} puntos\n` +
+        `Bonus por regalos: +${giftBonus} puntos\n` +
+        `Bonus de nivel: +${levelBonus} puntos\n` +
+        `Bonus de tamaño: +${sizeBonus} puntos\n` +
+        `Puntuación total: ${mazeGameScore}`,
+        'success'
+    );
+    
+    playVictorySound();
+    document.getElementById('mazeNextBtn').disabled = false;
+}
+
+// Cuando se recogen TODOS los regalos - BONUS PROGRESIVO
+function allGiftsCollected() {
+    // BONUS PROGRESIVO por todos los regalos
+    const perfectBonus = 3 * mazeLevel; // +25 por nivel
+    mazeGameScore += perfectBonus;
+    
+    showMazeMessage(
+        `🎊 ¡PERFECTO! 🎊\n` +
+        `Recogiste TODOS los ${totalGifts} regalos\n` +
+        `Bonus perfecto: +${perfectBonus} puntos\n` +
+        `¡Ahora al árbol!`,
+        'bonus'
+    );
+    
+    playAllGiftsSound();
+}
+
+// Efecto al recoger un regalo individual
+function showGiftCollectionEffect(x, y) {
+    const cell = document.querySelector(`.maze-cell[style*="left: ${x * mazeCellSize}px"][style*="top: ${y * mazeCellSize}px"]`);
+    if (cell) {
+        cell.style.animation = 'giftPop 0.6s ease';
+        setTimeout(() => {
+            cell.style.animation = '';
+        }, 600);
+    }
+}
+
+// Configurar eventos del juego
+function setupMazeGameEvents() {
+    const startBtn = document.getElementById('mazeStartBtn');
+    const resetBtn = document.getElementById('mazeResetBtn');
+    const hintBtn = document.getElementById('mazeHintBtn');
+    const nextBtn = document.getElementById('mazeNextBtn');
+    
+    startBtn.addEventListener('click', startMazeGame);
+    resetBtn.addEventListener('click', initializeMazeGame);
+    hintBtn.addEventListener('click', showMazeHint);
+    nextBtn.addEventListener('click', nextMazeLevel);
+    
+    const controlBtns = document.querySelectorAll('.control-btn');
+    controlBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const direction = e.target.dataset.direction;
+            handleMobileControl(direction);
+        });
+    });
+    
+    hintBtn.disabled = true;
+    nextBtn.disabled = true;
+}
+
+// Configurar controles de teclado
+function setupKeyboardControls() {
+    document.addEventListener('keydown', handleKeyPress);
+}
+
+// Manejar teclas presionadas
+function handleKeyPress(e) {
+    if (!mazeGameActive) return;
+    
+    switch(e.key) {
+        case 'ArrowUp':
+        case 'w':
+        case 'W':
+            movePlayer(0, -1);
+            e.preventDefault();
+            break;
+        case 'ArrowRight':
+        case 'd':
+        case 'D':
+            movePlayer(1, 0);
+            e.preventDefault();
+            break;
+        case 'ArrowDown':
+        case 's':
+        case 'S':
+            movePlayer(0, 1);
+            e.preventDefault();
+            break;
+        case 'ArrowLeft':
+        case 'a':
+        case 'A':
+            movePlayer(-1, 0);
+            e.preventDefault();
+            break;
+    }
+}
+
+// Manejar controles móviles
+function handleMobileControl(direction) {
+    if (!mazeGameActive) return;
+    
+    switch(direction) {
+        case 'up':
+            movePlayer(0, -1);
+            break;
+        case 'right':
+            movePlayer(1, 0);
+            break;
+        case 'down':
+            movePlayer(0, 1);
+            break;
+        case 'left':
+            movePlayer(-1, 0);
+            break;
+    }
+}
+
+// Mostrar pista del laberinto - PENALIZACIÓN PROGRESIVA
+function showMazeHint() {
+    if (!mazeGameActive) return;
+    
+    // PENALIZACIÓN: -20 puntos (fija pero significante)
+    const hintPenalty = 20;
+    mazeGameScore = Math.max(0, mazeGameScore - hintPenalty);
+    
+    mazePath.forEach(({x, y}, index) => {
+        setTimeout(() => {
+            if (mazeGrid[y] && mazeGrid[y][x]) {
+                mazeGrid[y][x].isPath = true;
+            }
+        }, index * 50);
+    });
+    
+    drawMaze();
+    
+    setTimeout(() => {
+        mazePath.forEach(({x, y}) => {
+            if (mazeGrid[y] && mazeGrid[y][x]) {
+                mazeGrid[y][x].isPath = false;
+            }
+        });
+        drawMaze();
+    }, 3000);
+    
+    showMazeMessage(`💡 Camino mostrado por 3 segundos. -${hintPenalty} puntos`, 'hint');
+    updateMazeGameDisplay();
+}
+
+// Siguiente nivel (INFINITO)
+function nextMazeLevel() {
+    mazeLevel++;
+    initializeMazeGame();
+    document.getElementById('mazeNextBtn').disabled = true;
+    document.getElementById('mazeStartBtn').disabled = false;
+}
+
+// Iniciar juego
+function startMazeGame() {
+    if (mazeGameActive) return;
+    
+    mazeGameActive = true;
+    document.getElementById('mazeStartBtn').disabled = true;
+    document.getElementById('mazeHintBtn').disabled = false;
+    
+    startMazeTimer();
+    showMazeMessage(`¡Nivel ${mazeLevel} iniciado! ${totalGifts} regalos en ${mazeGameTimeLeft}s`, 'success');
+}
+
+// Iniciar temporizador
+function startMazeTimer() {
+    clearInterval(mazeGameTimer);
+    mazeGameTimer = setInterval(() => {
+        if (mazeGameActive) {
+            mazeGameTimeLeft--;
+            updateMazeGameDisplay();
+            
+            if (mazeGameTimeLeft <= 0) {
+                endMazeGame(false);
+            } else if (mazeGameTimeLeft <= 10) {
+                document.getElementById('mazeTime').style.color = '#ff4444';
+                document.getElementById('mazeTime').style.animation = 'pulse 1s infinite';
+            }
+        }
+    }, 1000);
+}
+
+// Finalizar juego
+function endMazeGame(isVictory) {
+    mazeGameActive = false;
+    clearInterval(mazeGameTimer);
+    
+    if (isVictory) {
+        const victoryBonus = 100 * mazeLevel; // Bonus progresivo por victoria
+        mazeGameScore += victoryBonus;
+        
+        showMazeMessage(
+            `🎊 ¡VICTORIA EPICA!\n` +
+            `Nivel ${mazeLevel} completado\n` +
+            `Bonus de victoria: +${victoryBonus} puntos\n` +
+            `Puntuación final: ${mazeGameScore}`,
+            'success'
+        );
+        playVictorySound();
+    } else {
+        showMazeMessage(
+            `⏰ ¡Tiempo agotado!\n` +
+            `Nivel ${mazeLevel} - Recogiste ${collectedGifts}/${totalGifts} regalos\n` +
+            `Puntuación: ${mazeGameScore}`,
+            'error'
+        );
+    }
+    
+    score += mazeGameScore;
+    updateDisplay();
+    
+    document.getElementById('mazeStartBtn').disabled = false;
+}
+
+// Actualizar display
+function updateMazeGameDisplay() {
+    document.getElementById('mazeScore').textContent = mazeGameScore;
+    document.getElementById('mazeTime').textContent = `${mazeGameTimeLeft}s`;
+    document.getElementById('mazeLevel').textContent = mazeLevel;
+    document.getElementById('mazeGifts').textContent = `${collectedGifts}/${totalGifts}`;
+    document.getElementById('mazeDifficulty').textContent = getDifficulty(mazeLevel);
+    
+    const giftsElement = document.getElementById('mazeGifts');
+    if (collectedGifts === totalGifts) {
+        giftsElement.style.color = '#4CAF50';
+    } else if (collectedGifts >= totalGifts / 2) {
+        giftsElement.style.color = '#FFD700';
+    }
+}
+
+// Mostrar mensaje
+function showMazeMessage(message, type) {
+    const messageElement = document.getElementById('mazeMessage');
+    messageElement.textContent = message;
+    messageElement.className = `maze-message ${type}`;
+    
+    if (type === 'info' || type === 'hint') {
+        setTimeout(() => {
+            messageElement.className = 'maze-message';
+        }, 4000);
+    }
+}
+
+// Sonidos (simulados)
+function playSuccessSound() {
+    console.log('¡Sonido de regalo encontrado!');
+}
+
+function playVictorySound() {
+    console.log('¡Sonido de victoria épica!');
+}
+
+function playAllGiftsSound() {
+    console.log('¡Sonido especial de todos los regalos!');
+}
+
+// Detener juego
+function stopMazeGame() {
+    mazeGameActive = false;
+    clearInterval(mazeGameTimer);
+    document.removeEventListener('keydown', handleKeyPress);
+}
+
+// Agregar estilos CSS para el laberinto
+function addMazeGameStyles() {
+    if (document.getElementById('maze-game-styles')) return;
+    
+    const style = document.createElement('style');
+    style.id = 'maze-game-styles';
+    style.textContent = `
+        .maze-game-container {
+            text-align: center;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .maze-game-info {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .maze-stats {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+        
+        .maze-stat {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 8px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-label {
+            display: block;
+            font-size: 0.8rem;
+            color: #ccc;
+            margin-bottom: 5px;
+        }
+        
+        .stat-value {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #FFD700;
+        }
+        
+        .maze-instructions {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #FFD700;
+        }
+        
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 10px 0;
+        }
+        
+        .control-item {
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .mobile-controls {
+            font-size: 0.8rem;
+            color: #ccc;
+            margin-top: 10px;
+        }
+        
+        .maze-game-area {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+            margin: 25px 0;
+            align-items: start;
+        }
+        
+        .maze-container {
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 3px solid #FFD700;
+            margin: 0 auto;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        
+        .maze-cell {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        
+        .maze-wall {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .maze-path {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .maze-entrance {
+            background: rgba(76, 175, 80, 0.3);
+            animation: pulseEntrance 2s infinite;
+        }
+        
+        .maze-goal {
+            background: rgba(76, 175, 80, 0.5);
+            animation: pulseGoal 1.5s infinite;
+            font-size: 1.2rem !important;
+        }
+        
+        .maze-player {
+            background: rgba(200, 16, 46, 0.3);
+            animation: pulsePlayer 1s infinite;
+            font-size: 1.1rem !important;
+            z-index: 10;
+        }
+        
+        .maze-gift {
+            background: rgba(255, 215, 0, 0.3);
+            animation: bounce 1s infinite;
+            font-size: 1rem !important;
+        }
+        
+        .maze-candle {
+            background: rgba(255, 152, 0, 0.3);
+            animation: flicker 2s infinite;
+            font-size: 0.9rem !important;
+        }
+        
+        .maze-solution {
+            background: rgba(255, 215, 0, 0.15);
+            border: 1px dashed rgba(255, 215, 0, 0.4);
+            animation: solutionGlow 2s infinite alternate;
+        }
+        
+        .mobile-controls-panel {
+            display: none;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .control-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 10px 0;
+        }
+        
+        .control-btn {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #FFD700;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .maze-objectives {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .objective-list {
+            margin-top: 15px;
+        }
+        
+        .objective {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+        
+        .objective-icon {
+            font-size: 1.2rem;
+        }
+        
+        .level-bonus-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .bonus-item {
+            margin: 5px 0;
+            font-size: 0.9rem;
+            color: #FFD700;
+        }
+        
+        .maze-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        
+        .maze-btn {
+            background: linear-gradient(135deg, #c8102e, #a00d26);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            min-width: 160px;
+        }
+        
+        .maze-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(200, 16, 46, 0.4);
+        }
+        
+        .maze-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .maze-message {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-weight: bold;
+            white-space: pre-line;
+            min-height: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .maze-message.success {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+        }
+        
+        .maze-message.error {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+            border: 2px solid #f44336;
+        }
+        
+        .maze-message.info {
+            background: rgba(33, 150, 243, 0.2);
+            color: #2196F3;
+            border: 2px solid #2196F3;
+        }
+        
+        .maze-message.hint {
+            background: rgba(255, 215, 0, 0.2);
+            color: #FFD700;
+            border: 2px solid #FFD700;
+        }
+        
+        .maze-tips {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        .maze-tips ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 15px;
+        }
+        
+        .maze-tips li {
+            margin-bottom: 8px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .maze-tips li:before {
+            content: "🎄";
+            position: absolute;
+            left: 0;
+        }
+        
+        @keyframes pulseEntrance {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        @keyframes pulseGoal {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        @keyframes pulsePlayer {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            25% { opacity: 0.8; }
+            50% { opacity: 0.6; }
+            75% { opacity: 0.9; }
+        }
+        
+        @keyframes giftPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes solutionGlow {
+            0% { background: rgba(255, 215, 0, 0.15); }
+            100% { background: rgba(255, 215, 0, 0.25); }
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .maze-game-area {
+                grid-template-columns: 1fr;
+            }
+            
+            .maze-stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .maze-game-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .mobile-controls-panel {
+                display: block;
+            }
+            
+            .maze-container {
+                max-width: 100%;
+            }
+            
+            .maze-cell {
+                font-size: 0.7rem;
+            }
+            
+            .maze-controls {
+                gap: 10px;
+            }
+            
+            .maze-btn {
+                min-width: 140px;
+                padding: 10px 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .maze-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .maze-cell {
+                font-size: 0.6rem;
+            }
+            
+            .control-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
             
 // =============================================
 // JUEGO "ADIVINA EL REGALO"

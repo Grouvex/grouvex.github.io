@@ -1268,7 +1268,7 @@ function addPuzzleStyles() {
 
 // Variables globales para el juego del laberinto
 let mazeGameScore = 0;
-let mazeGameTimeLeft = 180;
+let mazeGameTimeLeft = 300;
 let mazeGameActive = false;
 let mazeGameTimer;
 let mazePlayer = { x: 1, y: 1 };
@@ -1285,7 +1285,7 @@ let mazePath = [];
 // Sistema de niveles PROGRESIVO
 function getLevelConfig(level) {
     // TIEMPO: Reducción más rápida (15 segundos por nivel)
-    const baseTime = Math.max(45, 180 - (level * 15));
+    const baseTime = Math.max(300, 300 - (level * 15));
     
     // REGALOS: Multiplicación lenta pero constante
     const baseGifts = Math.min(25, 5 + Math.floor(level * 1.8));
@@ -1327,7 +1327,7 @@ function loadMazeGame() {
                     </div>
                     <div class="maze-stat">
                         <span class="stat-label">Tiempo:</span>
-                        <span id="mazeTime" class="stat-value">180s</span>
+                        <span id="mazeTime" class="stat-value">300s</span>
                     </div>
                     <div class="maze-stat">
                         <span class="stat-label">Nivel:</span>
@@ -1386,7 +1386,7 @@ function loadMazeGame() {
                         </div>
                         <div class="objective">
                             <span class="objective-icon">⏰</span>
-                            <span>Tiempo: <span id="timeLimit">180</span>s</span>
+                            <span>Tiempo: <span id="timeLimit">300</span>s</span>
                         </div>
                         <div class="objective">
                             <span class="objective-icon">📏</span>

@@ -1285,14 +1285,14 @@ let mazePath = [];
 // Sistema de niveles PROGRESIVO
 function getLevelConfig(level) {
     // TIEMPO: Reducción más rápida (15 segundos por nivel)
-    const baseTime = Math.max(300, 300 - (level * 15));
+    const baseTime = Math.max(30, 300 - (level * 15));
     
     // REGALOS: Multiplicación lenta pero constante
-    const baseGifts = Math.min(25, 5 + Math.floor(level * 1.8));
+    const baseGifts = Math.min(30, 5 + Math.floor(level * 1.8));
     
     // TAMAÑO: Crecimiento moderado
-    const baseRows = Math.min(40, 20 + Math.floor(level * 1.5));
-    const baseCols = Math.min(40, 20 + Math.floor(level * 1.5));
+    const baseRows = Math.min(50, 20 + Math.floor(level * 1.5));
+    const baseCols = Math.min(50, 20 + Math.floor(level * 1.5));
     
     return {
         name: `Laberinto Nivel ${level}`,

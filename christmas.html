@@ -19,652 +19,601 @@
                 $("#news").load("news.html"); $("#tosypp").load("tosypp.html");
             });
     </script>
+<title>Calendario de Adviento Mágico (UTC)</title>
 </head>
-    <title>Calendario de Adviento Mágico (UTC)</title>
-<style>
-/* ESTILOS PRIORITARIOS - CALENDARIO DE ADVIENTO */
-:root {
-    --primary-color: #1a472a;
-    --secondary-color: #2e8b57;
-    --accent-color: #ff6b6b;
-    --gold-color: #ffd700;
-    --light-color: #f8f9fa;
-    --dark-color: #1a1a2e;
-    --blue-color: #4a90e2;
-    --purple-color: #9b59b6;
-    --red-color: #e74c3c;
-}
-
-* {
-    margin: 0 !important;
-    padding: 0 !important;
-    box-sizing: border-box !important;
-    font-family: 'Comic Sans MS', cursive, sans-serif !important;
-}
-
-body {
-    background: linear-gradient(135deg, #1a472a, #2e8b57) !important;
-    color: var(--light-color) !important;
-    min-height: 100vh !important;
-    padding: 20px !important;
-    overflow-x: hidden !important;
-    position: relative !important;
-    transition: all 1s ease !important;
-}
-
-/* Fondos especiales */
-body.christmas-theme {
-    background: linear-gradient(135deg, #b30000, #1a472a) !important;
-    background-image: 
-        radial-gradient(circle at 10% 20%, rgba(255, 215, 0, 0.3) 0%, transparent 20%),
-        radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.3) 0%, transparent 20%),
-        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%) !important;
-}
-
-body.christmas-theme header {
-    background: rgba(179, 0, 0, 0.6) !important;
-    border: 3px solid var(--gold-color) !important;
-}
-
-body.christmas-theme .countdown-container {
-    background: rgba(179, 0, 0, 0.6) !important;
-    border: 2px solid var(--gold-color) !important;
-}
-
-body.christmas-theme .countdown-item {
-    background: linear-gradient(145deg, #b30000, #8B0000) !important;
-    border: 2px solid var(--gold-color) !important;
-}
-
-body.newyear-theme {
-    background: linear-gradient(135deg, #000428, #004e92) !important;
-    background-image: 
-        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.4) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.3) 0%, transparent 50%) !important;
-    animation: sparkle 3s infinite alternate !important;
-}
-
-body.newyear-theme header {
-    background: rgba(0, 78, 146, 0.6) !important;
-    border: 3px solid #00ffff !important;
-}
-
-body.newyear-theme .countdown-container {
-    background: rgba(0, 78, 146, 0.6) !important;
-    border: 2px solid #00ffff !important;
-}
-
-body.newyear-theme .countdown-item {
-    background: linear-gradient(145deg, #004e92, #000428) !important;
-    border: 2px solid #00ffff !important;
-}
-
-body.reyes-theme {
-    background: linear-gradient(135deg, #8B4513, #D2691E, #FFD700) !important;
-    background-image: 
-        radial-gradient(circle at 30% 30%, rgba(255, 215, 0, 0.4) 0%, transparent 40%),
-        radial-gradient(circle at 70% 70%, rgba(139, 69, 19, 0.3) 0%, transparent 40%) !important;
-}
-
-body.reyes-theme header {
-    background: rgba(139, 69, 19, 0.6) !important;
-    border: 3px solid var(--gold-color) !important;
-}
-
-body.reyes-theme .countdown-container {
-    background: rgba(210, 105, 30, 0.6) !important;
-    border: 2px solid var(--gold-color) !important;
-}
-
-body.reyes-theme .countdown-item {
-    background: linear-gradient(145deg, #D2691E, #8B4513) !important;
-    border: 2px solid var(--gold-color) !important;
-}
-
-@keyframes sparkle {
-    0% { background: linear-gradient(135deg, #000428, #004e92) !important; }
-    100% { background: linear-gradient(135deg, #004e92, #000428) !important; }
-}
-
-.container {
-    max-width: 1200px !important;
-    margin: 0 auto !important;
-    text-align: center !important;
-}
-
-header {
-    margin-bottom: 30px !important;
-    padding: 20px !important;
-    background: rgba(0, 0, 0, 0.3) !important;
-    border-radius: 15px !important;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
-    backdrop-filter: blur(10px) !important;
-    transition: all 0.5s ease !important;
-}
-
-h1 {
-    font-size: 3rem !important;
-    margin-bottom: 10px !important;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5) !important;
-    color: var(--gold-color) !important;
-    transition: all 0.5s ease !important;
-}
-
-.subtitle {
-    font-size: 1.2rem !important;
-    margin-bottom: 10px !important;
-    opacity: 0.9 !important;
-}
-
-.utc-notice {
-    background: rgba(255, 215, 0, 0.2) !important;
-    border: 2px solid var(--gold-color) !important;
-    border-radius: 10px !important;
-    padding: 10px !important;
-    margin-top: 10px !important;
-    font-size: 1rem !important;
-}
-
-.utc-time {
-    font-weight: bold !important;
-    color: var(--gold-color) !important;
-}
-
-/* Contadores */
-.countdown-container {
-    display: none !important;
-    margin: 30px auto !important;
-    max-width: 800px !important;
-    background: rgba(0, 0, 0, 0.4) !important;
-    border-radius: 15px !important;
-    padding: 20px !important;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3) !important;
-    backdrop-filter: blur(10px) !important;
-    transition: all 0.5s ease !important;
-}
-
-.countdown-title {
-    font-size: 2rem !important;
-    margin-bottom: 20px !important;
-    color: var(--gold-color) !important;
-}
-
-.countdown {
-    display: flex !important;
-    justify-content: center !important;
-    gap: 15px !important;
-    margin-bottom: 20px !important;
-}
-
-.countdown-item {
-    background: linear-gradient(145deg, var(--secondary-color), var(--primary-color)) !important;
-    border-radius: 10px !important;
-    padding: 15px !important;
-    min-width: 100px !important;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
-    transition: all 0.5s ease !important;
-    border: 2px solid transparent !important;
-    position: relative !important;
-    overflow: hidden !important;
-}
-
-.countdown-number {
-    font-size: 2.5rem !important;
-    font-weight: bold !important;
-    margin-bottom: 5px !important;
-    color: var(--gold-color) !important;
-    font-family: 'Courier New', monospace !important;
-}
-
-.countdown-label {
-    font-size: 0.9rem !important;
-    opacity: 0.9 !important;
-}
-
-.countdown-message {
-    font-size: 1.2rem !important;
-    margin-top: 15px !important;
-    color: var(--gold-color) !important;
-}
-
-/* Efectos de cuenta regresiva */
-.countdown-flash {
-    animation: countdownFlash 0.5s ease-in-out !important;
-}
-
-@keyframes countdownFlash {
-    0% { transform: scale(1) !important; }
-    50% { transform: scale(1.1) !important; background: var(--accent-color) !important; }
-    100% { transform: scale(1) !important; }
-}
-
-/* Calendario */
-.calendar-container {
-    display: none !important;
-}
-
-.calendar {
-    display: grid !important;
-    grid-template-columns: repeat(7, 1fr) !important;
-    gap: 10px !important;
-    margin-bottom: 30px !important;
-}
-
-.calendar-title {
-    grid-column: 1 / -1 !important;
-    font-size: 1.8rem !important;
-    margin-bottom: 10px !important;
-    color: var(--gold-color) !important;
-}
-
-.day-label {
-    font-weight: bold !important;
-    padding: 10px !important;
-    background: rgba(255, 255, 255, 0.1) !important;
-    border-radius: 5px !important;
-}
-
-.day {
-    aspect-ratio: 1 !important;
-    background: linear-gradient(145deg, var(--secondary-color), var(--primary-color)) !important;
-    border-radius: 10px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    font-size: 1.5rem !important;
-    font-weight: bold !important;
-    cursor: pointer !important;
-    transition: all 0.3s ease !important;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
-    position: relative !important;
-    overflow: hidden !important;
-    padding: 5px !important;
-}
-
-.day:hover {
-    transform: translateY(-5px) !important;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3) !important;
-}
-
-.day-number {
-    font-size: 1.8rem !important;
-}
-
-.day-content {
-    font-size: 0.9rem !important;
-    margin-top: 5px !important;
-    text-align: center !important;
-}
-
-.day.opened {
-    background: linear-gradient(145deg, var(--gold-color), #ffa500) !important;
-    color: var(--dark-color) !important;
-    transform: scale(0.95) !important;
-}
-
-.day.opened::after {
-    content: "✓" !important;
-    position: absolute !important;
-    bottom: 5px !important;
-    right: 5px !important;
-    font-size: 1rem !important;
-    color: var(--dark-color) !important;
-}
-
-.day.disabled {
-    background: linear-gradient(145deg, #555, #333) !important;
-    color: #777 !important;
-    cursor: not-allowed !important;
-}
-
-.day.disabled:hover {
-    transform: none !important;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
-}
-
-.day.today {
-    border: 3px solid var(--accent-color) !important;
-    animation: pulse 2s infinite !important;
-}
-
-.day.special {
-    background: linear-gradient(145deg, var(--accent-color), #ff5252) !important;
-    color: white !important;
-}
-
-.day.christmas {
-    background: linear-gradient(145deg, var(--gold-color), #ff6b6b) !important;
-    color: var(--dark-color) !important;
-    animation: christmasGlow 2s infinite alternate !important;
-}
-
-.day.new-year {
-    background: linear-gradient(145deg, var(--blue-color), var(--purple-color)) !important;
-    color: white !important;
-    animation: newYearGlow 1.5s infinite alternate !important;
-}
-
-.day.reyes {
-    background: linear-gradient(145deg, #8B4513, #D2691E, #FFD700) !important;
-    color: white !important;
-    animation: reyesGlow 2s infinite alternate !important;
-}
-
-@keyframes pulse {
-    0% { 
-        box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7) !important;
-        transform: scale(1) !important;
-    }
-    50% { 
-        transform: scale(1.05) !important;
-    }
-    70% { 
-        box-shadow: 0 0 0 15px rgba(255, 107, 107, 0) !important;
-    }
-    100% { 
-        box-shadow: 0 0 0 0 rgba(255, 107, 107, 0) !important;
-        transform: scale(1) !important;
-    }
-}
-
-@keyframes christmasGlow {
-    0% { 
-        box-shadow: 0 0 20px rgba(255, 215, 0, 0.5) !important;
-        transform: scale(1) !important;
-    }
-    100% { 
-        box-shadow: 0 0 40px rgba(255, 0, 0, 0.8) !important;
-        transform: scale(1.05) !important;
-    }
-}
-
-@keyframes newYearGlow {
-    0% { 
-        box-shadow: 0 0 20px rgba(74, 144, 226, 0.5) !important;
-        transform: scale(1) !important;
-    }
-    100% { 
-        box-shadow: 0 0 40px rgba(155, 89, 182, 0.8) !important;
-        transform: scale(1.05) !important;
-    }
-}
-
-@keyframes reyesGlow {
-    0% { 
-        box-shadow: 0 0 20px rgba(139, 69, 19, 0.5) !important;
-        transform: scale(1) !important;
-    }
-    100% { 
-        box-shadow: 0 0 40px rgba(255, 215, 0, 0.8) !important;
-        transform: scale(1.05) !important;
-    }
-}
-
-/* Modal */
-.modal {
-    display: none !important;
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    background: rgba(0, 0, 0, 0.8) !important;
-    z-index: 1000 !important;
-    align-items: center !important;
-    justify-content: center !important;
-}
-
-.modal-content {
-    background: linear-gradient(135deg, var(--light-color), #e9ecef) !important;
-    color: var(--dark-color) !important;
-    width: 90% !important;
-    max-width: 500px !important;
-    padding: 30px !important;
-    border-radius: 15px !important;
-    text-align: center !important;
-    position: relative !important;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
-    animation: modalAppear 0.5s ease !important;
-}
-
-@keyframes modalAppear {
-    from { transform: scale(0.8) !important; opacity: 0 !important; }
-    to { transform: scale(1) !important; opacity: 1 !important; }
-}
-
-.close-modal {
-    position: absolute !important;
-    top: 15px !important;
-    right: 15px !important;
-    font-size: 1.5rem !important;
-    cursor: pointer !important;
-    color: var(--dark-color) !important;
-}
-
-.modal-title {
-    color: var(--primary-color) !important;
-    margin-bottom: 15px !important;
-    font-size: 1.8rem !important;
-}
-
-.modal-image {
-    max-width: 100% !important;
-    max-height: 200px !important;
-    border-radius: 10px !important;
-    margin: 15px 0 !important;
-}
-
-.modal-audio {
-    width: 100% !important;
-    margin: 15px 0 !important;
-}
-
-.modal-text {
-    margin: 15px 0 !important;
-    line-height: 1.6 !important;
-}
-
-/* Copos de nieve */
-.snowflake {
-    position: absolute !important;
-    top: -10px !important;
-    color: white !important;
-    font-size: 1rem !important;
-    user-select: none !important;
-    pointer-events: none !important;
-    z-index: -1 !important;
-    animation-name: fall !important;
-    animation-timing-function: linear !important;
-    animation-iteration-count: infinite !important;
-}
-
-@keyframes fall {
-    to {
-        transform: translateY(100vh) rotate(360deg) !important;
-    }
-}
-
-/* Controles de música */
-.music-controls {
-    margin-top: 20px !important;
-    display: flex !important;
-    justify-content: center !important;
-    gap: 15px !important;
-}
-
-.music-btn {
-    background: var(--accent-color) !important;
-    color: white !important;
-    border: none !important;
-    padding: 10px 20px !important;
-    border-radius: 50px !important;
-    cursor: pointer !important;
-    font-weight: bold !important;
-    transition: all 0.3s ease !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-}
-
-.music-btn:hover {
-    background: #ff5252 !important;
-    transform: scale(1.05) !important;
-}
-
-footer {
-    margin-top: 30px !important;
-    padding: 15px !important;
-    background: rgba(0, 0, 0, 0.3) !important;
-    border-radius: 10px !important;
-    font-size: 0.9rem !important;
-    transition: all 0.5s ease !important;
-}
-
-.audio-options {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 10px !important;
-    margin: 15px 0 !important;
-}
-
-.audio-option {
-    background: var(--secondary-color) !important;
-    color: white !important;
-    border: none !important;
-    padding: 10px !important;
-    border-radius: 5px !important;
-    cursor: pointer !important;
-    transition: all 0.3s ease !important;
-}
-
-.audio-option:hover {
-    background: var(--primary-color) !important;
-}
-
-.firework {
-    position: absolute !important;
-    width: 5px !important;
-    height: 5px !important;
-    border-radius: 50% !important;
-    pointer-events: none !important;
-    z-index: 100 !important;
-}
-
-.time-info {
-    margin-top: 10px !important;
-    font-size: 0.9rem !important;
-    opacity: 0.8 !important;
-}
-
-.special-message {
-    font-size: 2.5rem !important;
-    font-weight: bold !important;
-    margin: 20px 0 !important;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5) !important;
-    animation: textGlow 2s infinite alternate !important;
-    padding: 20px !important;
-    border-radius: 15px !important;
-    backdrop-filter: blur(10px) !important;
-}
-
-@keyframes textGlow {
-    0% { 
-        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5) !important;
-        transform: scale(1) !important;
-    }
-    100% { 
-        text-shadow: 0 0 20px rgba(255, 215, 0, 0.8) !important;
-        transform: scale(1.05) !important;
-    }
-}
-
-.christmas-message {
-    color: #ff6b6b !important;
-    background: rgba(179, 0, 0, 0.3) !important;
-    border: 3px solid var(--gold-color) !important;
-}
-
-.newyear-message {
-    color: #4a90e2 !important;
-    background: rgba(0, 78, 146, 0.3) !important;
-    border: 3px solid #00ffff !important;
-}
-
-.reyes-message {
-    color: #FFD700 !important;
-    background: rgba(139, 69, 19, 0.3) !important;
-    border: 3px solid var(--gold-color) !important;
-}
-
-.countdown-progress {
-    position: absolute !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    height: 3px !important;
-    background: var(--gold-color) !important;
-    width: 100% !important;
-    transform-origin: left !important;
-    animation: progressBar 1s linear forwards !important;
-}
-
-@keyframes progressBar {
-    from { transform: scaleX(1) !important; }
-    to { transform: scaleX(0) !important; }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .calendar {
-        grid-template-columns: repeat(4, 1fr) !important;
-    }
-    
-    .countdown {
-        flex-wrap: wrap !important;
-    }
-    
-    .countdown-item {
-        min-width: 80px !important;
-    }
-    
-    h1 {
-        font-size: 2rem !important;
-    }
-}
-
-@media (max-width: 480px) {
-    .calendar {
-        grid-template-columns: repeat(3, 1fr) !important;
-    }
-    
-    .countdown-item {
-        min-width: 70px !important;
-        padding: 10px !important;
-    }
-    
-    .countdown-number {
-        font-size: 2rem !important;
-    }
-    
-    h1 {
-        font-size: 1.8rem !important;
-    }
-}
-</style>
+    <style>
+        :root {
+            --primary-color: #1a472a;
+            --secondary-color: #2e8b57;
+            --accent-color: #ff6b6b;
+            --gold-color: #ffd700;
+            --light-color: #f8f9fa;
+            --dark-color: #1a1a2e;
+            --blue-color: #4a90e2;
+            --purple-color: #9b59b6;
+            --red-color: #e74c3c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a472a, #2e8b57);
+            color: var(--light-color);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+            transition: all 1s ease;
+        }
+
+        /* Fondos especiales */
+        body.christmas-theme {
+            background: linear-gradient(135deg, #b30000, #1a472a);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 215, 0, 0.3) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.3) 0%, transparent 20%),
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+        }
+
+        body.christmas-theme header {
+            background: rgba(179, 0, 0, 0.6);
+            border: 3px solid var(--gold-color);
+        }
+
+        body.christmas-theme .countdown-container {
+            background: rgba(179, 0, 0, 0.6);
+            border: 2px solid var(--gold-color);
+        }
+
+        body.christmas-theme .countdown-item {
+            background: linear-gradient(145deg, #b30000, #8B0000);
+            border: 2px solid var(--gold-color);
+        }
+
+        body.newyear-theme {
+            background: linear-gradient(135deg, #000428, #004e92);
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.3) 0%, transparent 50%);
+            animation: sparkle 3s infinite alternate;
+        }
+
+        body.newyear-theme header {
+            background: rgba(0, 78, 146, 0.6);
+            border: 3px solid #00ffff;
+        }
+
+        body.newyear-theme .countdown-container {
+            background: rgba(0, 78, 146, 0.6);
+            border: 2px solid #00ffff;
+        }
+
+        body.newyear-theme .countdown-item {
+            background: linear-gradient(145deg, #004e92, #000428);
+            border: 2px solid #00ffff;
+        }
+
+        body.reyes-theme {
+            background: linear-gradient(135deg, #8B4513, #D2691E, #FFD700);
+            background-image: 
+                radial-gradient(circle at 30% 30%, rgba(255, 215, 0, 0.4) 0%, transparent 40%),
+                radial-gradient(circle at 70% 70%, rgba(139, 69, 19, 0.3) 0%, transparent 40%);
+        }
+
+        body.reyes-theme header {
+            background: rgba(139, 69, 19, 0.6);
+            border: 3px solid var(--gold-color);
+        }
+
+        body.reyes-theme .countdown-container {
+            background: rgba(210, 105, 30, 0.6);
+            border: 2px solid var(--gold-color);
+        }
+
+        body.reyes-theme .countdown-item {
+            background: linear-gradient(145deg, #D2691E, #8B4513);
+            border: 2px solid var(--gold-color);
+        }
+
+        @keyframes sparkle {
+            0% { background: linear-gradient(135deg, #000428, #004e92); }
+            100% { background: linear-gradient(135deg, #004e92, #000428); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        header {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.5s ease;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: var(--gold-color);
+            transition: all 0.5s ease;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .utc-notice {
+            background: rgba(255, 215, 0, 0.2);
+            border: 2px solid var(--gold-color);
+            border-radius: 10px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 1rem;
+        }
+
+        .utc-time {
+            font-weight: bold;
+            color: var(--gold-color);
+        }
+
+        /* Contadores */
+        .countdown-container {
+            display: none;
+            margin: 30px auto;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.5s ease;
+        }
+
+        .countdown-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--gold-color);
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .countdown-item {
+            background: linear-gradient(145deg, var(--secondary-color), var(--primary-color));
+            border-radius: 10px;
+            padding: 15px;
+            min-width: 100px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.5s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .countdown-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--gold-color);
+            font-family: 'Courier New', monospace;
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .countdown-message {
+            font-size: 1.2rem;
+            margin-top: 15px;
+            color: var(--gold-color);
+        }
+
+        /* Efectos de cuenta regresiva */
+        .countdown-flash {
+            animation: countdownFlash 0.5s ease-in-out;
+        }
+
+        @keyframes countdownFlash {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); background: var(--accent-color); }
+            100% { transform: scale(1); }
+        }
+
+        /* Calendario */
+        .calendar-container {
+            display: none;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .calendar-title {
+            grid-column: 1 / -1;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: var(--gold-color);
+        }
+
+        .day-label {
+            font-weight: bold;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+
+        .day {
+            aspect-ratio: 1;
+            background: linear-gradient(145deg, var(--secondary-color), var(--primary-color));
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            padding: 5px;
+        }
+
+        .day:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .day-number {
+            font-size: 1.8rem;
+        }
+
+        .day-content {
+            font-size: 0.9rem;
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        .day.opened {
+            background: linear-gradient(145deg, var(--gold-color), #ffa500);
+            color: var(--dark-color);
+            transform: scale(0.95);
+        }
+
+        .day.opened::after {
+            content: "✓";
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            font-size: 1rem;
+            color: var(--dark-color);
+        }
+
+        .day.disabled {
+            background: linear-gradient(145deg, #555, #333);
+            color: #777;
+            cursor: not-allowed;
+        }
+
+        .day.disabled:hover {
+            transform: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .day.today {
+            border: 3px solid var(--accent-color);
+            animation: pulse 2s infinite;
+        }
+
+        .day.special {
+            background: linear-gradient(145deg, var(--accent-color), #ff5252);
+            color: white;
+        }
+
+        .day.christmas {
+            background: linear-gradient(145deg, var(--gold-color), #ff6b6b);
+            color: var(--dark-color);
+            animation: christmasGlow 2s infinite alternate;
+        }
+
+        .day.new-year {
+            background: linear-gradient(145deg, var(--blue-color), var(--purple-color));
+            color: white;
+            animation: newYearGlow 1.5s infinite alternate;
+        }
+
+        .day.reyes {
+            background: linear-gradient(145deg, #8B4513, #D2691E, #FFD700);
+            color: white;
+            animation: reyesGlow 2s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { 
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7);
+                transform: scale(1);
+            }
+            50% { 
+                transform: scale(1.05);
+            }
+            70% { 
+                box-shadow: 0 0 0 15px rgba(255, 107, 107, 0);
+            }
+            100% { 
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
+                transform: scale(1);
+            }
+        }
+
+        @keyframes christmasGlow {
+            0% { 
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+                transform: scale(1);
+            }
+            100% { 
+                box-shadow: 0 0 40px rgba(255, 0, 0, 0.8);
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes newYearGlow {
+            0% { 
+                box-shadow: 0 0 20px rgba(74, 144, 226, 0.5);
+                transform: scale(1);
+            }
+            100% { 
+                box-shadow: 0 0 40px rgba(155, 89, 182, 0.8);
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes reyesGlow {
+            0% { 
+                box-shadow: 0 0 20px rgba(139, 69, 19, 0.5);
+                transform: scale(1);
+            }
+            100% { 
+                box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+                transform: scale(1.05);
+            }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, var(--light-color), #e9ecef);
+            color: var(--dark-color);
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            animation: modalAppear 0.5s ease;
+        }
+
+        @keyframes modalAppear {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-color);
+        }
+
+        .modal-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .modal-audio {
+            width: 100%;
+            margin: 15px 0;
+        }
+
+        .modal-text {
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+
+        /* Copos de nieve */
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: white;
+            font-size: 1rem;
+            user-select: none;
+            pointer-events: none;
+            z-index: -1;
+            animation-name: fall;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* Controles de música */
+        .music-controls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .music-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .music-btn:hover {
+            background: #ff5252;
+            transform: scale(1.05);
+        }
+
+        footer {
+            margin-top: 30px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            transition: all 0.5s ease;
+        }
+
+        .audio-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .audio-option {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .audio-option:hover {
+            background: var(--primary-color);
+        }
+
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .time-info {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .special-message {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: textGlow 2s infinite alternate;
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes textGlow {
+            0% { 
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+                transform: scale(1);
+            }
+            100% { 
+                text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+                transform: scale(1.05);
+            }
+        }
+
+        .christmas-message {
+            color: #ff6b6b;
+            background: rgba(179, 0, 0, 0.3);
+            border: 3px solid var(--gold-color);
+        }
+
+        .newyear-message {
+            color: #4a90e2;
+            background: rgba(0, 78, 146, 0.3);
+            border: 3px solid #00ffff;
+        }
+
+        .reyes-message {
+            color: #FFD700;
+            background: rgba(139, 69, 19, 0.3);
+            border: 3px solid var(--gold-color);
+        }
+
+        .countdown-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: var(--gold-color);
+            width: 100%;
+            transform-origin: left;
+            animation: progressBar 1s linear forwards;
+        }
+
+        @keyframes progressBar {
+            from { transform: scaleX(1); }
+            to { transform: scaleX(0); }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <a href="https://grouvex.github.io/"> <div class="img-container" loading="lazy"></div></a> 
-        <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
-            <nav>
-                <span id="menuG"></span>
-                <span id="menuT"></span>
-                <span id="menuU"></span>
-            </nav>
-        </span>
-    </header>
-    <!-- Anuncio -->
-    <div id="news"></div>
     <div class="container">
         <header>
             <h1 id="mainTitle">🎄 Calendario de Adviento Mágico 🎅</h1>
@@ -766,229 +715,229 @@ footer {
         // Contenido para cada día del calendario
         const dailyContent = {
             1: {
-                title: "¡Feliz 1 de Diciembre!",
+                title: "¡Feliz 1 de Diciembre! (UTC)",
                 type: "image",
                 content: "https://source.unsplash.com/random/400x300/?christmas,1",
                 text: "¡Comienza la cuenta atrás para Navidad! Hoy te regalamos esta imagen navideña para alegrar tu día."
             },
             2: {
-                title: "Día 2 - Villancico",
+                title: "Día 2 - Villancico (UTC)",
                 type: "audio",
                 content: musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World%20(Piano%20Version).mp3",
                 text: "Disfruta de esta hermosa versión en piano de 'Yo Quiero - A New World'."
             },
             3: {
-                title: "Día 3 - Chiste Navideño",
+                title: "Día 3 - Chiste Navideño (UTC)",
                 type: "text",
                 content: "¿Qué le dice un árbol a otro árbol? ¡Qué hojas de verte!",
                 text: "Esperamos que este chiste te haya sacado una sonrisa. ¡Feliz día!"
             },
             4: {
-                title: "Día 4 - Imagen Festiva",
+                title: "Día 4 - Imagen Festiva (UTC)",
                 type: "image",
                 content: "https://source.unsplash.com/random/400x300/?christmas,4",
                 text: "Un momento mágico navideño para alegrar tu día."
             },
             5: {
-                title: "Día 5 - Canción Alegre",
+                title: "Día 5 - Canción Alegre (UTC)",
                 type: "audio",
                 content: musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World.mp3",
                 text: "Escucha la versión completa de 'Yo Quiero - A New World'."
             },
             6: {
-                title: "Día 6 - Acertijo",
+                title: "Día 6 - Acertijo (UTC)",
                 type: "text",
                 content: "¿Qué es lo que siempre viene en diciembre pero nunca en enero? La letra D.",
                 text: "¿Adivinaste el acertijo? ¡Esperamos que sí!"
             },
             7: {
-                title: "Día 7 - Decoración Navideña",
+                title: "Día 7 - Decoración Navideña (UTC)",
                 type: "image",
                 content: "https://source.unsplash.com/random/400x300/?christmas,7",
                 text: "Inspírate con esta decoración navideña para tu hogar."
             },
             8: {
-                title: "Día 8 - Música Relajante",
+                title: "Día 8 - Música Relajante (UTC)",
                 type: "audio",
                 content: musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World%20-Versión%20Instrumental.mp3",
                 text: "Disfruta de la versión instrumental de 'Yo Quiero - A New World'."
             },
             9: {
-                title: "Día 9 - Curiosidad Navideña",
+                title: "Día 9 - Curiosidad Navideña (UTC)",
                 type: "text",
                 content: "¿Sabías que la tradición del árbol de Navidad se originó en Alemania en el siglo XVI?",
                 text: "Una curiosidad navideña para compartir con tus seres queridos."
             },
             10: {
-                title: "Día 10 - Paisaje Invernal",
+                title: "Día 10 - Paisaje Invernal (UTC)",
                 type: "image",
                 content: "https://source.unsplash.com/random/400x300/?winter,10",
                 text: "Disfruta de este hermoso paisaje invernal."
             },
             11: {
-                title: "Día 11 - Villancico Animado",
+                title: "Día 11 - Villancico Animado (UTC)",
                 type: "audio",
                 content: musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World%20-%20Versión%20Karaoke.mp3",
                 text: "¡Es hora de cantar! Disfruta de la versión karaoke de 'Yo Quiero - A New World'."
             },
             12: {
-                title: "Día 12 - Refrán Navideño",
+                title: "Día 12 - Refrán Navideño (UTC)",
                 type: "text",
                 content: "Hasta los gatos se visten de gala en Nochebuena.",
                 text: "Un refrán tradicional para reflexionar en estas fechas."
             },
             13: {
-                title: "Día 13 - Luces Navideñas",
+                title: "Día 13 - Luces Navideñas (UTC)",
                 type: "image",
                 content: "https://source.unsplash.com/random/400x300/?christmas-lights,13",
                 text: "Las luces navideñas siempre alegran cualquier lugar."
             },
             14: {
-                title: "Día 14 - Música Clásica",
+                title: "Día 14 - Música Clásica (UTC)",
                 type: "audio",
                 content: musicBaseURL + "Gemini.mp3",
                 text: "Disfruta de esta pieza musical especial."
             },
             15: {
-                title: "Día 15 - Dato Curioso",
+                title: "Día 15 - Dato Curioso (UTC)",
                 type: "text",
                 content: "En Finlandia, la Nochebuena es el día más importante de la Navidad.",
                 text: "Cada país tiene sus propias tradiciones navideñas."
             },
             16: {
-                title: "Día 16 - Regalos Navideños",
+                title: "Día 16 - Regalos Navideños (UTC)",
                 type: "image",
                 content: "https://source.unsplash.com/random/400x300/?gifts,16",
                 text: "Los regalos son una parte importante de la magia navideña."
             },
             17: {
-                title: "Día 17 - Canción Festiva",
+                title: "Día 17 - Canción Festiva (UTC)",
                 type: "audio",
                 content: musicBaseURL + "Tauro.mp3",
                 text: "Una canción festiva para animar tu día."
             },
             18: {
-                title: "Día 18 - Pensamiento Navideño",
+                title: "Día 18 - Pensamiento Navideño (UTC)",
                 type: "text",
                 content: "La Navidad no es un momento ni una temporada, sino un estado de la mente.",
                 text: "Un pensamiento profundo sobre el verdadero significado de la Navidad."
             },
             19: {
-                title: "Día 19 - Comida Navideña",
+                title: "Día 19 - Comida Navideña (UTC)",
                 type: "image",
                 content: "https://source.unsplash.com/random/400x300/?christmas-food,19",
                 text: "La comida navideña es una de las mejores partes de estas fiestas."
             },
             20: {
-                title: "Día 20 - Villancico Tradicional",
+                title: "Día 20 - Villancico Tradicional (UTC)",
                 type: "audio",
                 content: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
                 text: "Un villancico tradicional para recordar las navidades de antaño."
             },
             21: {
-                title: "Día 21 - Cita Navideña",
+                title: "Día 21 - Cita Navideña (UTC)",
                 type: "text",
                 content: "La mejor manera de spreadir el espíritu navideño es cantando fuerte para que todos lo oigan.",
                 text: "- El Grinch (cómo el Grinch robó la Navidad)"
             },
             22: {
-                title: "Día 22 - Decoración Creativa",
+                title: "Día 22 - Decoración Creativa (UTC)",
                 type: "image",
                 content: "https://source.unsplash.com/random/400x300/?christmas-decoration,22",
                 text: "Ideas creativas para decorar tu hogar estas navidades."
             },
             23: {
-                title: "Día 23 - Música para Celebrar",
+                title: "Día 23 - Música para Celebrar (UTC)",
                 type: "audio",
                 content: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
                 text: "Música perfecta para celebrar con familia y amigos."
             },
             24: {
-                title: "¡Nochebuena!",
+                title: "¡Nochebuena! (UTC)",
                 type: "special-audio",
                 content: musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World.mp3",
                 text: "¡Feliz Nochebuena! Disfruta de todas las versiones de 'Yo Quiero - A New World' en este día especial."
             },
             25: {
-                title: "¡Feliz Navidad!",
+                title: "¡Feliz Navidad! (UTC)",
                 type: "text",
                 content: "🎄 ¡Feliz Navidad! 🎅",
                 text: "Que este día esté lleno de amor, alegría y momentos especiales con tus seres queridos."
             },
             26: {
-                title: "Día 26 - Día de San Esteban",
+                title: "Día 26 - Día de San Esteban (UTC)",
                 type: "text",
                 content: "En muchos países, hoy se celebra el Día de San Esteban.",
                 text: "Es un día para descansar y disfrutar de los regalos recibidos."
             },
             27: {
-                title: "Día 27 - Preparando el Año Nuevo",
+                title: "Día 27 - Preparando el Año Nuevo (UTC)",
                 type: "image",
                 content: "https://source.unsplash.com/random/400x300/?new-year,27",
                 text: "Ya se acerca el Año Nuevo, ¡prepárate para celebrar!"
             },
             28: {
-                title: "Día 28 - Propósitos",
+                title: "Día 28 - Propósitos (UTC)",
                 type: "text",
                 content: "¿Ya tienes tus propósitos para el próximo año?",
                 text: "Es un buen momento para reflexionar sobre lo que quieres lograr."
             },
             29: {
-                title: "Día 29 - Despedida",
+                title: "Día 29 - Despedida (UTC)",
                 type: "audio",
                 content: musicBaseURL + "Gemini.mp3",
                 text: "Disfruta de esta melodía mientras nos despedimos del año."
             },
             30: {
-                title: "Día 30 - Último día del año",
+                title: "Día 30 - Último día del año (UTC)",
                 type: "text",
                 content: "¡Mañana es Nochevieja!",
                 text: "Prepárate para despedir el año por todo lo alto."
             },
             31: {
-                title: "¡Feliz Año Nuevo!",
+                title: "¡Feliz Año Nuevo! (UTC)",
                 type: "text",
                 content: "🎆 ¡Feliz Año Nuevo! 🎇",
                 text: "Que el próximo año esté lleno de bendiciones, salud y prosperidad."
             },
             "1.1": {
-                title: "¡Feliz Año Nuevo 2025!",
+                title: "¡Feliz Año Nuevo 2025! (UTC)",
                 type: "text",
                 content: "🎉 ¡Feliz Año Nuevo! 🎊",
                 text: "¡Que todos tus deseos se cumplan en este nuevo año!"
             },
             "2.1": {
-                title: "2 de Enero",
+                title: "2 de Enero (UTC)",
                 type: "text",
                 content: "Seguimos disfrutando de las fiestas",
                 text: "Aprovecha estos días de descanso y alegría."
             },
             "3.1": {
-                title: "3 de Enero",
+                title: "3 de Enero (UTC)",
                 type: "text",
                 content: "Preparando la llegada de los Reyes Magos",
                 text: "¿Ya has escrito tu carta a los Reyes Magos?"
             },
             "4.1": {
-                title: "4 de Enero",
+                title: "4 de Enero (UTC)",
                 type: "text",
                 content: "Faltan pocos días para Reyes",
                 text: "La emoción va en aumento..."
             },
             "5.1": {
-                title: "5 de Enero",
+                title: "5 de Enero (UTC)",
                 type: "text",
                 content: "¡Noche de Reyes!",
                 text: "Esta noche los Reyes Magos visitan todas las casas."
             },
             "6.1": {
-                title: "¡Feliz Día de Reyes!",
+                title: "¡Feliz Día de Reyes! (UTC)",
                 type: "text",
                 content: "🎁 ¡Feliz Día de Reyes! 👑",
                 text: "Que los Reyes Magos te traigan muchos regalos y alegría."
             },
             "7.1": {
-                title: "Último día del calendario",
+                title: "Último día del calendario (UTC)",
                 type: "text",
                 content: "Fin de las fiestas navideñas",
                 text: "Esperamos que hayas disfrutado de este calendario. ¡Hasta el próximo año!"

@@ -1,6 +1,6 @@
 (function() {
     const themeSelect = document.getElementById('themeSelect');
-    const defaultTheme = 'gstudios7'; // Define aquí el tema predeterminado
+    const defaultTheme = 'gstudios3'; // Define aquí el tema predeterminado
     const currentUrl = window.location.href;
 
     // Deshabilitar el botón al inicio
@@ -118,7 +118,7 @@ function changeTheme(theme) {
             naturaleza4: month !== 4,
             gstudios1: month !== 8,
             gstudios2: month !== 0,
-            gstudios3: month !== 11,
+            gstudios3: !(date >= new Date(date.getFullYear(), 11, 1) && date <= new Date(date.getFullYear(), 0, <7)),
             gstudios4: month !== 10,
             gstudios5: month !== 9,
             gstudios6: month !== 6,
@@ -126,8 +126,8 @@ function changeTheme(theme) {
             starwars: !(date >= new Date(date.getFullYear(), 4, 4) && date <= new Date(date.getFullYear(), 4, 14)),
             httyd: !(date >= new Date(date.getFullYear(), 2, 25) && date <= new Date(date.getFullYear(), 3, 1)),
             jurassicworld: !(date >= new Date(date.getFullYear(), 5, 10) && date <= new Date(date.getFullYear(), 5, 20)),
-            taylorswift: !(date >= new Date(date.getFullYear(), 11, 13) && date <= new Date(date.getFullYear(), 11, 23)),
-            pokemon: !(date >= new Date(date.getFullYear(), 1, 21) && date <= new Date(date.getFullYear(), 1, 27)),
+            taylorswift: !(date >= new Date(date.getFullYear(), 11, 12) && date <= new Date(date.getFullYear(), 11, 23)),
+            pokemon: !(date >= new Date(date.getFullYear(), 1, 11) && date <= new Date(date.getFullYear(), 1, 27)),
             thewildrobot: !(date >= new Date(date.getFullYear(), 8, 27) && date <= new Date(date.getFullYear(), 9, 18))
         };
     }

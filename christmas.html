@@ -2,25 +2,9 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Christmas - Grouvex Studios</title>
-    <meta name="description" content="Celebra Navidad, Año Nuevo y Reyes magos en nuestro Sitio web oficial de Grouvex Studios. Felices Fiestas">
-    <meta property="og:title" content="Christmas - Grouvex Studios">
-    <meta property="og:description" content="Celebra Navidad, Año Nuevo y Reyes magos en nuestro Sitio web oficial de Grouvex Studios. Felices Fiestas">
-    <meta property="og:image" content="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png">
-    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects"><meta name="author" content="Grouvex Studios"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="theme-color" content="#hexcode"><meta property="og:url" content="https://www.grouvex.com/christmas"><meta property="og:type" content="website"><meta property="og:locale" content="es_ES"><link rel="canonical" href="https://www.grouvex.com/christmas"><link rel="icon" href="img/GROUVEX.png" type="image/x-icon"><meta property="og:site_name" content="Grouvex Studios">
-    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script><script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script><script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script><script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    <link rel="stylesheet" href="index.css"><link rel="stylesheet" href="temas.css">
-    <script src="time.js"></script></script><script type="module" src="abc.js"></script><script src="index.js"></script>
-    <script src="jquery-3.5.1.min.js"></script>
-        <script> 
-            document.addEventListener("DOMContentLoaded", function() { 
-                $("#menuG").load("menuG.html");$("#menuE").load("menuE.html");$("#menuT").load("menuT.html");$("#menuU").load("menuU.html");
-                $("#footer").load("footer.html"); 
-                $("#news").load("news.html"); $("#tosypp").load("tosypp.html");
-            });
-    </script>
-<title>Calendario de Adviento Mágico (UTC)</title>
-</head>
+    <title>Calendario de Adviento Mágico - Grouvex Studios</title>
+    <meta name="description" content="Celebra Navidad, Año Nuevo y Reyes magos con nuestro calendario de adviento interactivo">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         :root {
             --primary-color: #1a472a;
@@ -60,21 +44,6 @@
                 radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
         }
 
-        body.christmas-theme header {
-            background: rgba(179, 0, 0, 0.6);
-            border: 3px solid var(--gold-color);
-        }
-
-        body.christmas-theme .countdown-container {
-            background: rgba(179, 0, 0, 0.6);
-            border: 2px solid var(--gold-color);
-        }
-
-        body.christmas-theme .countdown-item {
-            background: linear-gradient(145deg, #b30000, #8B0000);
-            border: 2px solid var(--gold-color);
-        }
-
         body.newyear-theme {
             background: linear-gradient(135deg, #000428, #004e92);
             background-image: 
@@ -83,41 +52,11 @@
             animation: sparkle 3s infinite alternate;
         }
 
-        body.newyear-theme header {
-            background: rgba(0, 78, 146, 0.6);
-            border: 3px solid #00ffff;
-        }
-
-        body.newyear-theme .countdown-container {
-            background: rgba(0, 78, 146, 0.6);
-            border: 2px solid #00ffff;
-        }
-
-        body.newyear-theme .countdown-item {
-            background: linear-gradient(145deg, #004e92, #000428);
-            border: 2px solid #00ffff;
-        }
-
         body.reyes-theme {
             background: linear-gradient(135deg, #8B4513, #D2691E, #FFD700);
             background-image: 
                 radial-gradient(circle at 30% 30%, rgba(255, 215, 0, 0.4) 0%, transparent 40%),
                 radial-gradient(circle at 70% 70%, rgba(139, 69, 19, 0.3) 0%, transparent 40%);
-        }
-
-        body.reyes-theme header {
-            background: rgba(139, 69, 19, 0.6);
-            border: 3px solid var(--gold-color);
-        }
-
-        body.reyes-theme .countdown-container {
-            background: rgba(210, 105, 30, 0.6);
-            border: 2px solid var(--gold-color);
-        }
-
-        body.reyes-theme .countdown-item {
-            background: linear-gradient(145deg, #D2691E, #8B4513);
-            border: 2px solid var(--gold-color);
         }
 
         @keyframes sparkle {
@@ -193,6 +132,7 @@
             justify-content: center;
             gap: 15px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .countdown-item {
@@ -460,7 +400,6 @@
         }
 
         .modal-text {
-            color: black;
             margin: 15px 0;
             line-height: 1.6;
         }
@@ -612,6 +551,108 @@
             from { transform: scaleX(1); }
             to { transform: scaleX(0); }
         }
+
+        /* Estilos para contadores especiales */
+        .special-countdown {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .special-countdown-item {
+            background: linear-gradient(145deg, var(--gold-color), #ffa500);
+            border-radius: 10px;
+            padding: 15px;
+            min-width: 80px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--gold-color);
+            position: relative;
+            overflow: hidden;
+            animation: specialPulse 2s infinite;
+        }
+
+        .special-countdown-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--dark-color);
+            font-family: 'Courier New', monospace;
+        }
+
+        .special-countdown-label {
+            font-size: 0.8rem;
+            color: var(--dark-color);
+            font-weight: bold;
+        }
+
+        @keyframes specialPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .countdown-urgent {
+            animation: urgentPulse 0.5s infinite alternate;
+        }
+
+        @keyframes urgentPulse {
+            0% { background: linear-gradient(145deg, var(--gold-color), #ffa500); }
+            100% { background: linear-gradient(145deg, #ff6b6b, #ff5252); }
+        }
+
+        /* Contador detallado para Navidad y Año Nuevo */
+        .detailed-countdown {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .detailed-countdown-item {
+            background: linear-gradient(145deg, var(--secondary-color), var(--primary-color));
+            border-radius: 10px;
+            padding: 15px;
+            min-width: 80px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 2px solid var(--gold-color);
+        }
+
+        .detailed-countdown-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--gold-color);
+            font-family: 'Courier New', monospace;
+        }
+
+        .detailed-countdown-label {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        /* Estilos para cuando quedan 5 días o menos */
+        .urgent-countdown {
+            animation: urgentFlash 1s infinite;
+            background: linear-gradient(145deg, #ff6b6b, #ff5252) !important;
+            border: 2px solid #ffd700 !important;
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.7) !important;
+        }
+
+        .urgent-countdown .detailed-countdown-number {
+            color: white !important;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        .urgent-countdown .detailed-countdown-label {
+            color: white !important;
+            font-weight: bold;
+        }
+
+        @keyframes urgentFlash {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body>
@@ -667,25 +708,14 @@
             <div class="time-info" id="localTimeInfo"></div>
         </div>
 
-        <!-- Contador hasta Navidad y Año Nuevo -->
-        <div class="countdown-container" id="countdownToHolidays">
-            <h2 class="countdown-title" id="holidaysTitle">¡Cuenta atrás para las fiestas! (UTC)</h2>
-            <div class="countdown">
-                <div class="countdown-item" id="christmasCountdown">
-                    <div class="countdown-number" id="daysToChristmas">00</div>
-                    <div class="countdown-label">Días para Navidad</div>
-                </div>
-                <div class="countdown-item" id="newyearCountdown">
-                    <div class="countdown-number" id="daysToNewYear">00</div>
-                    <div class="countdown-label">Días para Año Nuevo</div>
-                </div>
-                <div class="countdown-item" id="reyesCountdown">
-                    <div class="countdown-number" id="daysToReyes">00</div>
-                    <div class="countdown-label">Días para Reyes</div>
-                </div>
+        <!-- Contador especial para Navidad y Año Nuevo -->
+        <div class="countdown-container" id="specialCountdownContainer">
+            <h2 class="countdown-title" id="specialCountdownTitle">¡Cuenta atrás para las fiestas especiales!</h2>
+            <div class="detailed-countdown" id="specialCountdown">
+                <!-- Se generará dinámicamente -->
             </div>
-            <p class="countdown-message" id="holidaysMessage">¡Disfruta cada día del calendario!</p>
-            <div class="time-info" id="holidaysTimeInfo"></div>
+            <p class="countdown-message" id="specialCountdownMessage">¡Disfruta de cada día del calendario!</p>
+            <div class="time-info" id="specialTimeInfo"></div>
         </div>
 
         <!-- Calendario completo de diciembre -->
@@ -728,234 +758,44 @@
         
         // Contenido para cada día del calendario
         const dailyContent = {
-            1: {
-                title: "¡Feliz 1 de Diciembre! (UTC)",
-                type: "image",
-                content: "https://source.unsplash.com/random/400x300/?christmas,1",
-                text: "¡Comienza la cuenta atrás para Navidad! Hoy te regalamos esta imagen navideña para alegrar tu día."
-            },
-            2: {
-                title: "Día 2 - Villancico (UTC)",
-                type: "audio",
-                content: musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World%20(Piano%20Version).mp3",
-                text: "Disfruta de esta hermosa versión en piano de 'Yo Quiero - A New World'."
-            },
-            3: {
-                title: "Día 3 - Chiste Navideño (UTC)",
-                type: "text",
-                content: "¿Qué le dice un árbol a otro árbol? ¡Qué hojas de verte!",
-                text: "Esperamos que este chiste te haya sacado una sonrisa. ¡Feliz día!"
-            },
-            4: {
-                title: "Día 4 - Imagen Festiva (UTC)",
-                type: "image",
-                content: "https://source.unsplash.com/random/400x300/?christmas,4",
-                text: "Un momento mágico navideño para alegrar tu día."
-            },
-            5: {
-                title: "Día 5 - Canción Alegre (UTC)",
-                type: "audio",
-                content: musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World.mp3",
-                text: "Escucha la versión completa de 'Yo Quiero - A New World'."
-            },
-            6: {
-                title: "Día 6 - Acertijo (UTC)",
-                type: "text",
-                content: "¿Qué es lo que siempre viene en diciembre pero nunca en enero? La letra D.",
-                text: "¿Adivinaste el acertijo? ¡Esperamos que sí!"
-            },
-            7: {
-                title: "Día 7 - Decoración Navideña (UTC)",
-                type: "image",
-                content: "https://source.unsplash.com/random/400x300/?christmas,7",
-                text: "Inspírate con esta decoración navideña para tu hogar."
-            },
-            8: {
-                title: "Día 8 - Música Relajante (UTC)",
-                type: "audio",
-                content: musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World%20-Versión%20Instrumental.mp3",
-                text: "Disfruta de la versión instrumental de 'Yo Quiero - A New World'."
-            },
-            9: {
-                title: "Día 9 - Curiosidad Navideña (UTC)",
-                type: "text",
-                content: "¿Sabías que la tradición del árbol de Navidad se originó en Alemania en el siglo XVI?",
-                text: "Una curiosidad navideña para compartir con tus seres queridos."
-            },
-            10: {
-                title: "Día 10 - Paisaje Invernal (UTC)",
-                type: "image",
-                content: "https://source.unsplash.com/random/400x300/?winter,10",
-                text: "Disfruta de este hermoso paisaje invernal."
-            },
-            11: {
-                title: "Día 11 - Villancico Animado (UTC)",
-                type: "audio",
-                content: musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World%20-%20Versión%20Karaoke.mp3",
-                text: "¡Es hora de cantar! Disfruta de la versión karaoke de 'Yo Quiero - A New World'."
-            },
-            12: {
-                title: "Día 12 - Refrán Navideño (UTC)",
-                type: "text",
-                content: "Hasta los gatos se visten de gala en Nochebuena.",
-                text: "Un refrán tradicional para reflexionar en estas fechas."
-            },
-            13: {
-                title: "Día 13 - Luces Navideñas (UTC)",
-                type: "image",
-                content: "https://source.unsplash.com/random/400x300/?christmas-lights,13",
-                text: "Las luces navideñas siempre alegran cualquier lugar."
-            },
-            14: {
-                title: "Día 14 - Música Clásica (UTC)",
-                type: "audio",
-                content: musicBaseURL + "Gemini.mp3",
-                text: "Disfruta de esta pieza musical especial."
-            },
-            15: {
-                title: "Día 15 - Dato Curioso (UTC)",
-                type: "text",
-                content: "En Finlandia, la Nochebuena es el día más importante de la Navidad.",
-                text: "Cada país tiene sus propias tradiciones navideñas."
-            },
-            16: {
-                title: "Día 16 - Regalos Navideños (UTC)",
-                type: "image",
-                content: "https://source.unsplash.com/random/400x300/?gifts,16",
-                text: "Los regalos son una parte importante de la magia navideña."
-            },
-            17: {
-                title: "Día 17 - Canción Festiva (UTC)",
-                type: "audio",
-                content: musicBaseURL + "Tauro.mp3",
-                text: "Una canción festiva para animar tu día."
-            },
-            18: {
-                title: "Día 18 - Pensamiento Navideño (UTC)",
-                type: "text",
-                content: "La Navidad no es un momento ni una temporada, sino un estado de la mente.",
-                text: "Un pensamiento profundo sobre el verdadero significado de la Navidad."
-            },
-            19: {
-                title: "Día 19 - Comida Navideña (UTC)",
-                type: "image",
-                content: "https://source.unsplash.com/random/400x300/?christmas-food,19",
-                text: "La comida navideña es una de las mejores partes de estas fiestas."
-            },
-            20: {
-                title: "Día 20 - Villancico Tradicional (UTC)",
-                type: "audio",
-                content: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
-                text: "Un villancico tradicional para recordar las navidades de antaño."
-            },
-            21: {
-                title: "Día 21 - Cita Navideña (UTC)",
-                type: "text",
-                content: "La mejor manera de spreadir el espíritu navideño es cantando fuerte para que todos lo oigan.",
-                text: "- El Grinch (cómo el Grinch robó la Navidad)"
-            },
-            22: {
-                title: "Día 22 - Decoración Creativa (UTC)",
-                type: "image",
-                content: "https://source.unsplash.com/random/400x300/?christmas-decoration,22",
-                text: "Ideas creativas para decorar tu hogar estas navidades."
-            },
-            23: {
-                title: "Día 23 - Música para Celebrar (UTC)",
-                type: "audio",
-                content: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
-                text: "Música perfecta para celebrar con familia y amigos."
-            },
-            24: {
-                title: "¡Nochebuena! (UTC)",
-                type: "special-audio",
-                content: musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World.mp3",
-                text: "¡Feliz Nochebuena! Disfruta de todas las versiones de 'Yo Quiero - A New World' en este día especial."
-            },
-            25: {
-                title: "¡Feliz Navidad! (UTC)",
-                type: "text",
-                content: "🎄 ¡Feliz Navidad! 🎅",
-                text: "Que este día esté lleno de amor, alegría y momentos especiales con tus seres queridos."
-            },
-            26: {
-                title: "Día 26 - Día de San Esteban (UTC)",
-                type: "text",
-                content: "En muchos países, hoy se celebra el Día de San Esteban.",
-                text: "Es un día para descansar y disfrutar de los regalos recibidos."
-            },
-            27: {
-                title: "Día 27 - Preparando el Año Nuevo (UTC)",
-                type: "image",
-                content: "https://source.unsplash.com/random/400x300/?new-year,27",
-                text: "Ya se acerca el Año Nuevo, ¡prepárate para celebrar!"
-            },
-            28: {
-                title: "Día 28 - Propósitos (UTC)",
-                type: "text",
-                content: "¿Ya tienes tus propósitos para el próximo año?",
-                text: "Es un buen momento para reflexionar sobre lo que quieres lograr."
-            },
-            29: {
-                title: "Día 29 - Despedida (UTC)",
-                type: "audio",
-                content: musicBaseURL + "Gemini.mp3",
-                text: "Disfruta de esta melodía mientras nos despedimos del año."
-            },
-            30: {
-                title: "Día 30 - Último día del año (UTC)",
-                type: "text",
-                content: "¡Mañana es Nochevieja!",
-                text: "Prepárate para despedir el año por todo lo alto."
-            },
-            31: {
-                title: "¡Feliz Año Nuevo! (UTC)",
-                type: "text",
-                content: "🎆 ¡Feliz Año Nuevo! 🎇",
-                text: "Que el próximo año esté lleno de bendiciones, salud y prosperidad."
-            },
-            "1.1": {
-                title: "¡Feliz Año Nuevo 2025! (UTC)",
-                type: "text",
-                content: "🎉 ¡Feliz Año Nuevo! 🎊",
-                text: "¡Que todos tus deseos se cumplan en este nuevo año!"
-            },
-            "2.1": {
-                title: "2 de Enero (UTC)",
-                type: "text",
-                content: "Seguimos disfrutando de las fiestas",
-                text: "Aprovecha estos días de descanso y alegría."
-            },
-            "3.1": {
-                title: "3 de Enero (UTC)",
-                type: "text",
-                content: "Preparando la llegada de los Reyes Magos",
-                text: "¿Ya has escrito tu carta a los Reyes Magos?"
-            },
-            "4.1": {
-                title: "4 de Enero (UTC)",
-                type: "text",
-                content: "Faltan pocos días para Reyes",
-                text: "La emoción va en aumento..."
-            },
-            "5.1": {
-                title: "5 de Enero (UTC)",
-                type: "text",
-                content: "¡Noche de Reyes!",
-                text: "Esta noche los Reyes Magos visitan todas las casas."
-            },
-            "6.1": {
-                title: "¡Feliz Día de Reyes! (UTC)",
-                type: "text",
-                content: "🎁 ¡Feliz Día de Reyes! 👑",
-                text: "Que los Reyes Magos te traigan muchos regalos y alegría."
-            },
-            "7.1": {
-                title: "Último día del calendario (UTC)",
-                type: "text",
-                content: "Fin de las fiestas navideñas",
-                text: "Esperamos que hayas disfrutado de este calendario. ¡Hasta el próximo año!"
-            }
+            1: { title: "¡Feliz 1 de Diciembre! (UTC)", type: "text", content: "¡Comienza la cuenta atrás para Navidad!", text: "Hoy te damos la bienvenida al calendario de adviento." },
+            2: { title: "Día 2 - Villancico (UTC)", type: "text", content: "Disfruta de este día especial", text: "La magia navideña está en el aire." },
+            3: { title: "Día 3 - Chiste Navideño (UTC)", type: "text", content: "¿Qué le dice un árbol a otro árbol? ¡Qué hojas de verte!", text: "Esperamos que este chiste te haya sacado una sonrisa." },
+            4: { title: "Día 4 - Imagen Festiva (UTC)", type: "text", content: "Un momento mágico navideño", text: "Disfruta de la belleza de esta época." },
+            5: { title: "Día 5 - Canción Alegre (UTC)", type: "text", content: "La música alegra el corazón", text: "Deja que la música navideña llene tu día de alegría." },
+            6: { title: "Día 6 - Acertijo (UTC)", type: "text", content: "¿Qué es lo que siempre viene en diciembre pero nunca en enero? La letra D.", text: "¿Adivinaste el acertijo?" },
+            7: { title: "Día 7 - Decoración Navideña (UTC)", type: "text", content: "Inspírate con la decoración", text: "Las decoraciones navideñas crean un ambiente mágico." },
+            8: { title: "Día 8 - Música Relajante (UTC)", type: "text", content: "Un momento de tranquilidad", text: "Disfruta de la calma que trae esta época." },
+            9: { title: "Día 9 - Curiosidad Navideña (UTC)", type: "text", content: "¿Sabías que la tradición del árbol de Navidad se originó en Alemania?", text: "Cada tradición tiene su historia." },
+            10: { title: "Día 10 - Paisaje Invernal (UTC)", type: "text", content: "La belleza del invierno", text: "El invierno tiene su propia magia." },
+            11: { title: "Día 11 - Villancico Animado (UTC)", type: "text", content: "¡Es hora de cantar!", text: "Los villancicos son parte esencial de la Navidad." },
+            12: { title: "Día 12 - Refrán Navideño (UTC)", type: "text", content: "Hasta los gatos se visten de gala en Nochebuena.", text: "Los refranes reflejan la sabiduría popular." },
+            13: { title: "Día 13 - Luces Navideñas (UTC)", type: "text", content: "Las luces iluminan la oscuridad", text: "Las luces navideñas simbolizan esperanza." },
+            14: { title: "Día 14 - Música Clásica (UTC)", type: "text", content: "Disfruta de esta pieza musical", text: "La música clásica tiene un lugar especial en Navidad." },
+            15: { title: "Día 15 - Dato Curioso (UTC)", type: "text", content: "En Finlandia, la Nochebuena es el día más importante.", text: "Cada país tiene sus propias tradiciones." },
+            16: { title: "Día 16 - Regalos Navideños (UTC)", type: "text", content: "El arte de dar", text: "Los regalos son símbolos de amor y aprecio." },
+            17: { title: "Día 17 - Canción Festiva (UTC)", type: "text", content: "Celebra con alegría", text: "La música festiva anima cualquier celebración." },
+            18: { title: "Día 18 - Pensamiento Navideño (UTC)", type: "text", content: "La Navidad es un estado de la mente.", text: "El verdadero espíritu navideño está en nuestro interior." },
+            19: { title: "Día 19 - Comida Navideña (UTC)", type: "text", content: "Sabores de Navidad", text: "La comida une a las familias en estas fechas." },
+            20: { title: "Día 20 - Villancico Tradicional (UTC)", type: "text", content: "Tradiciones que perduran", text: "Los villancicos tradicionales conectan generaciones." },
+            21: { title: "Día 21 - Cita Navideña (UTC)", type: "text", content: "La mejor manera de spreadir el espíritu navideño es cantando.", text: "- El Grinch" },
+            22: { title: "Día 22 - Decoración Creativa (UTC)", type: "text", content: "Creatividad navideña", text: "La decoración expresa nuestro espíritu festivo." },
+            23: { title: "Día 23 - Música para Celebrar (UTC)", type: "text", content: "Últimos preparativos", text: "La cuenta atrás está casi terminada." },
+            24: { title: "¡Nochebuena! (UTC)", type: "text", content: "¡Feliz Nochebuena!", text: "Que esta noche esté llena de magia y alegría." },
+            25: { title: "¡Feliz Navidad! (UTC)", type: "text", content: "🎄 ¡Feliz Navidad! 🎅", text: "Que este día esté lleno de amor y momentos especiales." },
+            26: { title: "Día 26 - Día de San Esteban (UTC)", type: "text", content: "Día para descansar", text: "Disfruta de la tranquilidad después de la celebración." },
+            27: { title: "Día 27 - Preparando el Año Nuevo (UTC)", type: "text", content: "Preparativos para el nuevo ciclo", text: "El año nuevo se acerca." },
+            28: { title: "Día 28 - Propósitos (UTC)", type: "text", content: "Reflexiona sobre tus metas", text: "Es un buen momento para pensar en el futuro." },
+            29: { title: "Día 29 - Despedida (UTC)", type: "text", content: "Despidiendo el año", text: "Preparémonos para dar la bienvenida a lo nuevo." },
+            30: { title: "Día 30 - Último día del año (UTC)", type: "text", content: "¡Mañana es Nochevieja!", text: "Prepárate para despedir el año." },
+            31: { title: "¡Feliz Año Nuevo! (UTC)", type: "text", content: "🎆 ¡Feliz Año Nuevo! 🎇", text: "Que el próximo año esté lleno de bendiciones." },
+            "1.1": { title: "¡Feliz Año Nuevo 2025! (UTC)", type: "text", content: "🎉 ¡Feliz Año Nuevo! 🎊", text: "¡Que todos tus deseos se cumplan!" },
+            "2.1": { title: "2 de Enero (UTC)", type: "text", content: "Seguimos disfrutando", text: "Aprovecha estos días de descanso." },
+            "3.1": { title: "3 de Enero (UTC)", type: "text", content: "Preparando la llegada de los Reyes", text: "La emoción continúa." },
+            "4.1": { title: "4 de Enero (UTC)", type: "text", content: "Faltan pocos días para Reyes", text: "La expectativa crece." },
+            "5.1": { title: "5 de Enero (UTC)", type: "text", content: "¡Noche de Reyes!", text: "Esta noche es mágica para los más pequeños." },
+            "6.1": { title: "¡Feliz Día de Reyes! (UTC)", type: "text", content: "🎁 ¡Feliz Día de Reyes! 👑", text: "Que los Reyes Magos te traigan alegría." },
+            "7.1": { title: "Último día del calendario (UTC)", type: "text", content: "Fin de las fiestas", text: "Esperamos que hayas disfrutado del calendario." }
         };
 
         // Elementos DOM
@@ -967,33 +807,31 @@
         const playMusicBtn = document.getElementById('playMusic');
         const stopMusicBtn = document.getElementById('stopMusic');
         const countdownToCalendarEl = document.getElementById('countdownToCalendar');
-        const countdownToHolidaysEl = document.getElementById('countdownToHolidays');
+        const specialCountdownContainerEl = document.getElementById('specialCountdownContainer');
+        const specialCountdownEl = document.getElementById('specialCountdown');
+        const specialCountdownTitleEl = document.getElementById('specialCountdownTitle');
+        const specialCountdownMessageEl = document.getElementById('specialCountdownMessage');
         const calendarContainerEl = document.getElementById('calendarContainer');
         const daysToCalendarEl = document.getElementById('daysToCalendar');
         const hoursToCalendarEl = document.getElementById('hoursToCalendar');
         const minutesToCalendarEl = document.getElementById('minutesToCalendar');
         const secondsToCalendarEl = document.getElementById('secondsToCalendar');
         const messageToCalendarEl = document.getElementById('messageToCalendar');
-        const daysToChristmasEl = document.getElementById('daysToChristmas');
-        const daysToNewYearEl = document.getElementById('daysToNewYear');
-        const daysToReyesEl = document.getElementById('daysToReyes');
         const utcTimeDisplayEl = document.getElementById('utcTimeDisplay');
         const localTimeInfoEl = document.getElementById('localTimeInfo');
-        const holidaysTimeInfoEl = document.getElementById('holidaysTimeInfo');
+        const specialTimeInfoEl = document.getElementById('specialTimeInfo');
         const currentUTCDayEl = document.getElementById('currentUTCDay');
         const specialMessagesEl = document.getElementById('specialMessages');
         const mainTitleEl = document.getElementById('mainTitle');
         const mainSubtitleEl = document.getElementById('mainSubtitle');
         const mainFooterEl = document.getElementById('mainFooter');
-        const holidaysTitleEl = document.getElementById('holidaysTitle');
-        const holidaysMessageEl = document.getElementById('holidaysMessage');
 
         // Variables para el control de la cuenta regresiva
         let lastSeconds = {};
         let countdownInterval;
 
         // Audio para la música de fondo
-        const backgroundMusic = new Audio(musicBaseURL + "La%20Magia%20de%20la%20Estrella%20Polar.mp3");
+        const backgroundMusic = new Audio();
         backgroundMusic.loop = true;
 
         // Obtener fecha UTC actual
@@ -1059,8 +897,6 @@
             mainTitleEl.innerHTML = '🎄 Calendario de Adviento Mágico 🎅';
             mainSubtitleEl.textContent = '¡Abre una sorpresa cada día hasta Navidad y más allá!';
             mainFooterEl.innerHTML = '<p>Disfruta de cada día con una sorpresa única. ¡Felices fiestas! 🎁</p>';
-            holidaysTitleEl.textContent = '¡Cuenta atrás para las fiestas! (UTC)';
-            holidaysMessageEl.textContent = '¡Disfruta cada día del calendario!';
 
             // Mostrar mensajes especiales
             specialMessagesEl.innerHTML = '';
@@ -1071,8 +907,6 @@
                 mainTitleEl.innerHTML = '🎅 ¡FELIZ NAVIDAD! 🎄';
                 mainSubtitleEl.textContent = 'Que este día esté lleno de amor, alegría y momentos especiales';
                 mainFooterEl.innerHTML = '<p>¡Feliz Navidad! Que la magia de esta fecha llene tu hogar de alegría 🎁</p>';
-                holidaysTitleEl.textContent = '¡HOY ES NAVIDAD! 🎄';
-                holidaysMessageEl.textContent = '¡Disfruta de este día mágico con tus seres queridos!';
                 specialMessagesEl.innerHTML = '<div class="special-message christmas-message">🎄 ¡FELIZ NAVIDAD! 🎅</div>';
                 createFireworks();
             }
@@ -1082,8 +916,6 @@
                 mainTitleEl.innerHTML = '🎆 ¡FELIZ AÑO NUEVO! 🎇';
                 mainSubtitleEl.textContent = 'Que el nuevo año traiga bendiciones, salud y prosperidad';
                 mainFooterEl.innerHTML = '<p>¡Feliz Año Nuevo! Que todos tus sueños se hagan realidad en el ' + (currentUTCYear + 1) + ' ✨</p>';
-                holidaysTitleEl.textContent = '¡FELIZ AÑO NUEVO! 🎉';
-                holidaysMessageEl.textContent = '¡Que este nuevo año esté lleno de alegrías y éxitos!';
                 specialMessagesEl.innerHTML = '<div class="special-message newyear-message">🎆 ¡FELIZ AÑO NUEVO! 🎇</div>';
                 createFireworks();
             }
@@ -1093,8 +925,6 @@
                 mainTitleEl.innerHTML = '👑 ¡FELIZ DÍA DE REYES! 🎁';
                 mainSubtitleEl.textContent = 'Que los Reyes Magos te traigan muchos regalos y alegría';
                 mainFooterEl.innerHTML = '<p>¡Feliz Día de Reyes! Que la magia de la ilusión nunca desaparezca ✨</p>';
-                holidaysTitleEl.textContent = '¡FELIZ DÍA DE REYES! 👑';
-                holidaysMessageEl.textContent = '¡Disfruta de los regalos y la compañía de tus seres queridos!';
                 specialMessagesEl.innerHTML = '<div class="special-message reyes-message">👑 ¡FELIZ DÍA DE REYES! 🎁</div>';
                 createFireworks();
             }
@@ -1117,22 +947,22 @@
                 // Mostrar calendario y contador de fiestas
                 countdownToCalendarEl.style.display = 'none';
                 calendarContainerEl.style.display = 'block';
-                countdownToHolidaysEl.style.display = 'block';
+                specialCountdownContainerEl.style.display = 'block';
                 initCalendar();
-                updateHolidaysCountdown();
-                setInterval(updateHolidaysCountdown, 1000);
-            } else if (currentUTCMonth === 11 && currentUTCDay < 1) {
+                updateSpecialCountdown();
+                setInterval(updateSpecialCountdown, 1000);
+            } else if (currentUTCMonth === 10 && currentUTCDay < 31) {
                 // Mostrar contador hasta diciembre UTC
                 countdownToCalendarEl.style.display = 'block';
                 calendarContainerEl.style.display = 'none';
-                countdownToHolidaysEl.style.display = 'none';
+                specialCountdownContainerEl.style.display = 'none';
                 updateCalendarCountdown();
                 setInterval(updateCalendarCountdown, 1000);
             } else {
                 // Fuera del período activo
                 countdownToCalendarEl.style.display = 'none';
                 calendarContainerEl.style.display = 'none';
-                countdownToHolidaysEl.style.display = 'none';
+                specialCountdownContainerEl.style.display = 'none';
                 specialMessagesEl.innerHTML = '<div class="special-message">El calendario estará disponible del 1 de diciembre al 7 de enero</div>';
             }
         }
@@ -1188,41 +1018,139 @@
             }
         }
 
-        // Actualizar contador hasta Navidad, Año Nuevo y Reyes (UTC)
-        function updateHolidaysCountdown() {
+        // Actualizar contador especial para Navidad y Año Nuevo
+        function updateSpecialCountdown() {
             const nowUTC = getUTCDate();
             
             // Días hasta Navidad
             const timeToChristmas = christmasDateUTC - nowUTC;
-            const daysToChristmas = Math.ceil(timeToChristmas / (1000 * 60 * 60 * 24));
+            const daysToChristmas = Math.floor(timeToChristmas / (1000 * 60 * 60 * 24));
+            const hoursToChristmas = Math.floor((timeToChristmas % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutesToChristmas = Math.floor((timeToChristmas % (1000 * 60 * 60)) / (1000 * 60));
+            const secondsToChristmas = Math.floor((timeToChristmas % (1000 * 60)) / 1000);
             
             // Días hasta Año Nuevo
             const timeToNewYear = newYearDateUTC - nowUTC;
-            const daysToNewYear = Math.ceil(timeToNewYear / (1000 * 60 * 60 * 24));
+            const daysToNewYear = Math.floor(timeToNewYear / (1000 * 60 * 60 * 24));
+            const hoursToNewYear = Math.floor((timeToNewYear % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutesToNewYear = Math.floor((timeToNewYear % (1000 * 60 * 60)) / (1000 * 60));
+            const secondsToNewYear = Math.floor((timeToNewYear % (1000 * 60)) / 1000);
             
             // Días hasta Reyes
             const timeToReyes = reyesDateUTC - nowUTC;
-            const daysToReyes = Math.ceil(timeToReyes / (1000 * 60 * 60 * 24));
+            const daysToReyes = Math.floor(timeToReyes / (1000 * 60 * 60 * 24));
+            const hoursToReyes = Math.floor((timeToReyes % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutesToReyes = Math.floor((timeToReyes % (1000 * 60 * 60)) / (1000 * 60));
+            const secondsToReyes = Math.floor((timeToReyes % (1000 * 60)) / 1000);
             
-            // Aplicar efectos de cuenta regresiva
-            if (lastSeconds.daysToChristmas !== daysToChristmas) {
-                daysToChristmasEl.textContent = formatTime(Math.max(0, daysToChristmas));
-                if (daysToChristmas >= 0) flashElement(daysToChristmasEl);
-                lastSeconds.daysToChristmas = daysToChristmas;
-            }
+            // Actualizar contador especial
+            specialCountdownEl.innerHTML = '';
             
-            if (lastSeconds.daysToNewYear !== daysToNewYear) {
-                daysToNewYearEl.textContent = formatTime(Math.max(0, daysToNewYear));
-                if (daysToNewYear >= 0) flashElement(daysToNewYearEl);
-                lastSeconds.daysToNewYear = daysToNewYear;
-            }
+            // Solo mostrar contador especial si estamos cerca de alguna fecha importante (15 días o menos)
+            const showChristmasCountdown = daysToChristmas <= 10 && daysToChristmas >= 0;
+            const showNewYearCountdown = daysToNewYear <= 7 && daysToNewYear >= 0;
+            const showReyesCountdown = daysToReyes <= 7 && daysToReyes >= 0;
             
-            if (lastSeconds.daysToReyes !== daysToReyes) {
-                daysToReyesEl.textContent = formatTime(Math.max(0, daysToReyes));
-                if (daysToReyes >= 0) flashElement(daysToReyesEl);
-                lastSeconds.daysToReyes = daysToReyes;
+            if (showChristmasCountdown || showNewYearCountdown || showReyesCountdown) {
+                specialCountdownContainerEl.style.display = 'block';
+                
+                if (showChristmasCountdown) {
+                    const isUrgent = daysToChristmas <= 5;
+                    const christmasCountdown = document.createElement('div');
+                    christmasCountdown.className = 'special-countdown-section';
+                    christmasCountdown.innerHTML = `
+                        <h3 class="special-countdown-title">🎄 Hasta Navidad</h3>
+                        <div class="detailed-countdown">
+                            <div class="detailed-countdown-item ${isUrgent ? 'urgent-countdown' : ''}">
+                                <div class="detailed-countdown-number">${formatTime(Math.max(0, daysToChristmas))}</div>
+                                <div class="detailed-countdown-label">Días</div>
+                            </div>
+                            <div class="detailed-countdown-item ${isUrgent ? 'urgent-countdown' : ''}">
+                                <div class="detailed-countdown-number">${formatTime(Math.max(0, hoursToChristmas))}</div>
+                                <div class="detailed-countdown-label">Horas</div>
+                            </div>
+                            <div class="detailed-countdown-item ${isUrgent ? 'urgent-countdown' : ''}">
+                                <div class="detailed-countdown-number">${formatTime(Math.max(0, minutesToChristmas))}</div>
+                                <div class="detailed-countdown-label">Minutos</div>
+                            </div>
+                            <div class="detailed-countdown-item ${isUrgent ? 'urgent-countdown' : ''}">
+                                <div class="detailed-countdown-number">${formatTime(Math.max(0, secondsToChristmas))}</div>
+                                <div class="detailed-countdown-label">Segundos</div>
+                            </div>
+                        </div>
+                    `;
+                    specialCountdownEl.appendChild(christmasCountdown);
+                }
+                
+                if (showNewYearCountdown) {
+                    const isUrgent = daysToNewYear <= 5;
+                    const newYearCountdown = document.createElement('div');
+                    newYearCountdown.className = 'special-countdown-section';
+                    newYearCountdown.innerHTML = `
+                        <h3 class="special-countdown-title">🎆 Hasta Año Nuevo</h3>
+                        <div class="detailed-countdown">
+                            <div class="detailed-countdown-item ${isUrgent ? 'urgent-countdown' : ''}">
+                                <div class="detailed-countdown-number">${formatTime(Math.max(0, daysToNewYear))}</div>
+                                <div class="detailed-countdown-label">Días</div>
+                            </div>
+                            <div class="detailed-countdown-item ${isUrgent ? 'urgent-countdown' : ''}">
+                                <div class="detailed-countdown-number">${formatTime(Math.max(0, hoursToNewYear))}</div>
+                                <div class="detailed-countdown-label">Horas</div>
+                            </div>
+                            <div class="detailed-countdown-item ${isUrgent ? 'urgent-countdown' : ''}">
+                                <div class="detailed-countdown-number">${formatTime(Math.max(0, minutesToNewYear))}</div>
+                                <div class="detailed-countdown-label">Minutos</div>
+                            </div>
+                            <div class="detailed-countdown-item ${isUrgent ? 'urgent-countdown' : ''}">
+                                <div class="detailed-countdown-number">${formatTime(Math.max(0, secondsToNewYear))}</div>
+                                <div class="detailed-countdown-label">Segundos</div>
+                            </div>
+                        </div>
+                    `;
+                    specialCountdownEl.appendChild(newYearCountdown);
+                }
+                
+                if (showReyesCountdown) {
+                    const isUrgent = daysToReyes <= 5;
+                    const reyesCountdown = document.createElement('div');
+                    reyesCountdown.className = 'special-countdown-section';
+                    reyesCountdown.innerHTML = `
+                        <h3 class="special-countdown-title">👑 Hasta Reyes</h3>
+                        <div class="detailed-countdown">
+                            <div class="detailed-countdown-item ${isUrgent ? 'urgent-countdown' : ''}">
+                                <div class="detailed-countdown-number">${formatTime(Math.max(0, daysToReyes))}</div>
+                                <div class="detailed-countdown-label">Días</div>
+                            </div>
+                            <div class="detailed-countdown-item ${isUrgent ? 'urgent-countdown' : ''}">
+                                <div class="detailed-countdown-number">${formatTime(Math.max(0, hoursToReyes))}</div>
+                                <div class="detailed-countdown-label">Horas</div>
+                            </div>
+                            <div class="detailed-countdown-item ${isUrgent ? 'urgent-countdown' : ''}">
+                                <div class="detailed-countdown-number">${formatTime(Math.max(0, minutesToReyes))}</div>
+                                <div class="detailed-countdown-label">Minutos</div>
+                            </div>
+                            <div class="detailed-countdown-item ${isUrgent ? 'urgent-countdown' : ''}">
+                                <div class="detailed-countdown-number">${formatTime(Math.max(0, secondsToReyes))}</div>
+                                <div class="detailed-countdown-label">Segundos</div>
+                            </div>
+                        </div>
+                    `;
+                    specialCountdownEl.appendChild(reyesCountdown);
+                }
+                
+                // Actualizar título y mensaje
+                if (daysToChristmas <= 5 || daysToNewYear <= 5 || daysToReyes <= 5) {
+                    specialCountdownTitleEl.textContent = '¡Faltan muy pocos días! ⏰';
+                    specialCountdownMessageEl.textContent = '¡Prepárate para celebrar!';
+                } else {
+                    specialCountdownTitleEl.textContent = '¡Se acercan las fiestas! 🎉';
+                    specialCountdownMessageEl.textContent = '¡La cuenta atrás continúa!';
+                }
+            } else {
+                specialCountdownContainerEl.style.display = 'none';
             }
         }
+
 
         // Inicializar el calendario
         function initCalendar() {

@@ -42,7 +42,8 @@
             jurassicworld: !(date >= new Date(date.getFullYear(), 5, 10) && date <= new Date(date.getFullYear(), 5, 20)),
             taylorswift: !(date >= new Date(date.getFullYear(), 11, 13) && date <= new Date(date.getFullYear(), 11, 23)),
             pokemon: !(date >= new Date(date.getFullYear(), 1, 21) && date <= new Date(date.getFullYear(), 1, 27)),
-            thewildrobot: !(date >= new Date(date.getFullYear(), 8, 27) && date <= new Date(date.getFullYear(), 9, 18))
+            thewildrobot: !(date >= new Date(date.getFullYear(), 8, 27) && date <= new Date(date.getFullYear(), 9, 18)),
+            wicked: !(date >= new Date(date.getFullYear(), 10, 20) && date <= new Date(date.getFullYear(), 10, 31))
         };
 
         Object.keys(themes).forEach(theme => toggleThemeOption(theme, themes[theme]));
@@ -66,7 +67,7 @@ function changeTheme(theme) {
         'theme1', 'theme2',
         'space', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4',
         'taylorswift',
-        'pokemon', 'thewildrobot', 'httyd','starwars', 'jurassicworld', 'superheroes',
+        'pokemon', 'thewildrobot', 'httyd','starwars', 'jurassicworld', 'superheroes', 'wicked',
         'gstudios1', 'gstudios2', 'gstudios3', 'gstudios4', 'gstudios5', 'gstudios6', 'gstudios7'
     ];
 
@@ -128,7 +129,8 @@ function changeTheme(theme) {
             jurassicworld: !(date >= new Date(date.getFullYear(), 5, 10) && date <= new Date(date.getFullYear(), 5, 20)),
             taylorswift: !(date >= new Date(date.getFullYear(), 11, 12) && date <= new Date(date.getFullYear(), 11, 23)),
             pokemon: !(date >= new Date(date.getFullYear(), 1, 11) && date <= new Date(date.getFullYear(), 1, 27)),
-            thewildrobot: !(date >= new Date(date.getFullYear(), 8, 27) && date <= new Date(date.getFullYear(), 9, 18))
+            thewildrobot: !(date >= new Date(date.getFullYear(), 8, 27) && date <= new Date(date.getFullYear(), 9, 18)),
+            wicked: !(date >= new Date(date.getFullYear(), 10, 20) && date <= new Date(date.getFullYear(), 10, 31))
         };
     }
 })();

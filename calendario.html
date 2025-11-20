@@ -25,6 +25,7 @@
             --cal-purple: #9b59b6;
             --cal-red: #e74c3c;
         }
+        
         .calendar-container {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, var(--cal-primary), var(--cal-secondary));
@@ -34,6 +35,8 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             max-width: 1200px;
             margin: 0 auto;
+            width: 100%;
+            min-height: 100vh;
         }
 
         .calendar-container * {
@@ -49,20 +52,45 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
 
+        .header-logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header-logo a {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .header-logo a:hover {
+            transform: scale(1.05);
+        }
+
+        .header-logo img {
+            height: clamp(60px, 10vw, 100px);
+            width: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
         .calendar-header h1 {
-            font-size: 2.5rem;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
             margin-bottom: 10px;
             color: var(--cal-gold);
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            line-height: 1.2;
         }
 
         .calendar-header .subtitle {
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 2vw, 1.2rem);
             opacity: 0.9;
+            line-height: 1.4;
         }
 
         .current-time {
-            font-size: 1.1rem;
+            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
             margin-bottom: 10px;
             color: var(--cal-gold);
             font-weight: bold;
@@ -86,12 +114,12 @@
             color: var(--cal-gold);
             margin-bottom: 15px;
             text-align: center;
-            font-size: 1.3rem;
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
         }
 
         .important-events-list {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 15px;
         }
 
@@ -101,13 +129,18 @@
             padding: 15px;
             border-left: 5px solid var(--cal-gold);
             box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .important-event-title {
             font-weight: bold;
             margin-bottom: 10px;
             color: var(--cal-gold);
-            font-size: 1.1rem;
+            font-size: clamp(1rem, 1.5vw, 1.1rem);
+            line-height: 1.3;
         }
 
         .important-event-date {
@@ -118,8 +151,9 @@
 
         .important-countdown {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin-top: 10px;
+            flex-wrap: wrap;
         }
 
         .important-countdown-item {
@@ -127,13 +161,13 @@
             background: rgba(255, 215, 0, 0.3);
             border-radius: 5px;
             padding: 5px;
-            min-width: 50px;
-            border: 1px solid rgba(255, 215, 0, 0.7);
+            min-width: 45px;
+            flex: 1;
         }
 
         .important-countdown-number {
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 1.5vw, 1.2rem);
             color: var(--cal-gold);
         }
 
@@ -152,24 +186,30 @@
 
         .navigation {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .view-selector {
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .cal-btn {
             background: var(--cal-secondary);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 15px;
             border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: bold;
+            font-size: clamp(0.8rem, 1.2vw, 1rem);
+            white-space: nowrap;
         }
 
         .cal-btn:hover {
@@ -183,11 +223,12 @@
         }
 
         .current-date {
-            font-size: 1.5rem;
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
             font-weight: bold;
             color: var(--cal-gold);
-            min-width: 200px;
+            min-width: min-content;
             text-align: center;
+            padding: 0 10px;
         }
 
         /* Estilos para vista mensual */
@@ -202,18 +243,19 @@
         .month-header {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
+            gap: 4px;
             margin-bottom: 10px;
         }
 
         .day-header {
             text-align: center;
-            padding: 10px;
+            padding: 10px 5px;
             font-weight: bold;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-size: clamp(0.8rem, 1.2vw, 1rem);
         }
 
         .day-header:hover {
@@ -223,11 +265,11 @@
         .month-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
+            gap: 4px;
         }
 
         .day {
-            min-height: 100px;
+            min-height: clamp(80px, 15vw, 120px);
             background: rgba(255, 255, 255, 0.1);
             border-radius: 5px;
             padding: 5px;
@@ -247,23 +289,24 @@
             font-weight: bold;
             margin-bottom: 5px;
             text-align: right;
+            font-size: clamp(0.8rem, 1.2vw, 1rem);
         }
 
         .day-events {
             flex-grow: 1;
             overflow-y: auto;
-            font-size: 0.8rem;
+            font-size: clamp(0.7rem, 1vw, 0.8rem);
         }
 
         .event-preview {
             border-radius: 3px;
-            padding: 2px 5px;
+            padding: 2px 4px;
             margin-bottom: 2px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             cursor: pointer;
-            font-size: 0.75rem;
+            font-size: clamp(0.65rem, 0.9vw, 0.75rem);
             transition: all 0.3s ease;
         }
 
@@ -287,19 +330,22 @@
 
         .week-view.active {
             display: block;
+            overflow-x: auto;
         }
 
         .week-header {
             display: grid;
-            grid-template-columns: 60px repeat(7, 1fr);
+            grid-template-columns: minmax(50px, 60px) repeat(7, 1fr);
             gap: 2px;
             margin-bottom: 5px;
+            min-width: 800px;
         }
 
         .week-grid {
             display: grid;
-            grid-template-columns: 60px repeat(7, 1fr);
+            grid-template-columns: minmax(50px, 60px) repeat(7, 1fr);
             gap: 2px;
+            min-width: 800px;
         }
 
         .time-slot {
@@ -307,7 +353,7 @@
             text-align: center;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 3px;
-            font-size: 0.8rem;
+            font-size: clamp(0.7rem, 1vw, 0.8rem);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -334,7 +380,7 @@
             right: 1px;
             border-radius: 2px;
             padding: 1px 3px;
-            font-size: 0.7rem;
+            font-size: clamp(0.6rem, 0.8vw, 0.7rem);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -351,8 +397,8 @@
 
         .year-view.active {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
         }
 
         .year-month {
@@ -373,6 +419,7 @@
             margin-bottom: 10px;
             font-weight: bold;
             color: var(--cal-gold);
+            font-size: clamp(1rem, 1.5vw, 1.2rem);
         }
 
         .year-month-grid {
@@ -386,7 +433,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
+            font-size: clamp(0.7rem, 1vw, 0.8rem);
             border-radius: 3px;
             background: rgba(255, 255, 255, 0.05);
             position: relative;
@@ -414,11 +461,12 @@
         .events-section h2 {
             margin-bottom: 15px;
             color: var(--cal-gold);
+            font-size: clamp(1.3rem, 2.5vw, 1.5rem);
         }
 
         .event-list {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 15px;
         }
 
@@ -429,6 +477,10 @@
             transition: all 0.3s ease;
             cursor: pointer;
             border-left: 5px solid var(--cal-secondary);
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .event-card:hover {
@@ -440,6 +492,8 @@
             font-weight: bold;
             margin-bottom: 5px;
             color: var(--cal-gold);
+            font-size: clamp(1rem, 1.5vw, 1.1rem);
+            line-height: 1.3;
         }
 
         .event-card-date {
@@ -450,8 +504,9 @@
 
         .event-card-countdown {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin-top: 10px;
+            flex-wrap: wrap;
         }
 
         .countdown-item {
@@ -460,11 +515,12 @@
             border-radius: 5px;
             padding: 5px;
             min-width: 40px;
+            flex: 1;
         }
 
         .countdown-number {
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 1.5vw, 1.2rem);
         }
 
         .countdown-label {
@@ -489,7 +545,7 @@
         .cal-modal-content {
             background: linear-gradient(135deg, var(--cal-light), #e9ecef);
             color: var(--cal-dark);
-            width: 90%;
+            width: 95%;
             max-width: 800px;
             max-height: 90vh;
             border-radius: 15px;
@@ -550,7 +606,7 @@
 
         .cal-event-details {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 20px;
         }
 
@@ -562,18 +618,22 @@
 
         .cal-info-item {
             display: flex;
-            gap: 10px;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 10px;
         }
 
         .cal-info-label {
             font-weight: bold;
             min-width: 100px;
+            color: var(--cal-gold);
         }
 
         .cal-event-actions {
             display: flex;
             gap: 10px;
             margin-top: 20px;
+            flex-wrap: wrap;
         }
 
         .cal-action-btn {
@@ -583,6 +643,8 @@
             cursor: pointer;
             font-weight: bold;
             transition: all 0.3s ease;
+            flex: 1;
+            min-width: 120px;
         }
 
         .cal-action-btn.primary {
@@ -602,7 +664,7 @@
 
         .cal-event-iframe {
             width: 100%;
-            height: 400px;
+            height: 300px;
             border: none;
             border-radius: 10px;
         }
@@ -639,18 +701,30 @@
             margin-right: 5px;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
+        /* Responsive mejorado */
+        @media (max-width: 1200px) {
+            .calendar-container {
+                padding: 15px;
+                border-radius: 12px;
+            }
+            
+            .year-view.active {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
             .calendar-controls {
                 flex-direction: column;
                 align-items: stretch;
+                gap: 10px;
             }
             
             .navigation, .view-selector {
                 justify-content: center;
             }
             
-            .year-view {
+            .year-view.active {
                 grid-template-columns: repeat(2, 1fr);
             }
             
@@ -663,7 +737,7 @@
             }
             
             .month-grid .day {
-                min-height: 80px;
+                min-height: clamp(70px, 12vw, 90px);
             }
             
             .week-header, .week-grid {
@@ -682,6 +756,237 @@
             .important-events-list {
                 grid-template-columns: 1fr;
             }
+            
+            .cal-modal-content {
+                width: 98%;
+                margin: 10px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .calendar-container {
+                padding: 10px;
+                border-radius: 10px;
+            }
+            
+            .calendar-header {
+                margin-bottom: 20px;
+                padding-bottom: 15px;
+            }
+            
+            .events-section {
+                margin-top: 20px;
+                padding: 15px;
+            }
+            
+            .year-view.active {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .year-month {
+                padding: 10px;
+            }
+            
+            .important-countdown, 
+            .event-card-countdown {
+                gap: 5px;
+            }
+            
+            .important-countdown-item,
+            .countdown-item {
+                min-width: 35px;
+                padding: 4px;
+            }
+            
+            .cal-event-iframe {
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .calendar-container {
+                padding: 8px;
+                border-radius: 8px;
+            }
+            
+            .calendar-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .calendar-header .subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .current-date {
+                font-size: 1.1rem;
+            }
+            
+            .cal-btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+            
+            .month-header {
+                gap: 2px;
+            }
+            
+            .day-header {
+                padding: 8px 3px;
+                font-size: 0.75rem;
+            }
+            
+            .month-grid {
+                gap: 2px;
+            }
+            
+            .day {
+                min-height: clamp(60px, 10vw, 80px);
+                padding: 3px;
+            }
+            
+            .day-number {
+                font-size: 0.75rem;
+            }
+            
+            .event-preview {
+                font-size: 0.6rem;
+                padding: 1px 2px;
+            }
+            
+            .events-section h2 {
+                font-size: 1.2rem;
+            }
+            
+            .event-card {
+                padding: 12px;
+                min-height: 120px;
+            }
+            
+            .event-card-title {
+                font-size: 1rem;
+            }
+            
+            .cal-modal {
+                padding: 10px;
+            }
+            
+            .cal-modal-content {
+                width: 100%;
+                margin: 5px;
+                border-radius: 10px;
+            }
+            
+            .cal-modal-header {
+                padding: 15px;
+            }
+            
+            .cal-modal-body {
+                padding: 15px;
+            }
+            
+            .cal-event-iframe {
+                height: 200px;
+            }
+            
+            .cal-action-btn {
+                padding: 8px 15px;
+                min-width: 100px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .calendar-container {
+                padding: 5px;
+            }
+            
+            .navigation {
+                gap: 5px;
+            }
+            
+            .view-selector {
+                gap: 5px;
+            }
+            
+            .cal-btn {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+            }
+            
+            .current-date {
+                font-size: 1rem;
+                padding: 0 5px;
+            }
+            
+            .day {
+                min-height: 50px;
+            }
+            
+            .event-card {
+                padding: 10px;
+            }
+            
+            .important-countdown, 
+            .event-card-countdown {
+                gap: 3px;
+            }
+            
+            .important-countdown-item,
+            .countdown-item {
+                min-width: 30px;
+                padding: 3px;
+            }
+            
+            .important-countdown-number,
+            .countdown-number {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Soporte para orientación landscape en móviles */
+        @media (max-height: 600px) and (orientation: landscape) {
+            .calendar-container {
+                min-height: auto;
+            }
+            
+            .cal-modal-content {
+                max-height: 85vh;
+            }
+            
+            .cal-modal-body {
+                max-height: calc(85vh - 120px);
+            }
+            
+            .cal-event-iframe {
+                height: 200px;
+            }
+        }
+
+        /* Mejoras de accesibilidad */
+        @media (prefers-reduced-motion: reduce) {
+            .cal-btn,
+            .day,
+            .event-card,
+            .year-month,
+            .week-event,
+            .cal-action-btn {
+                transition: none;
+                transform: none;
+            }
+            
+            @keyframes modalAppear {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+        }
+
+        /* Soporte para modo oscuro del sistema */
+        @media (prefers-color-scheme: dark) {
+            .cal-modal-content {
+                background: linear-gradient(135deg, #2d3748, #4a5568);
+                color: white;
+            }
         }
     </style>
 </head>
@@ -689,6 +994,11 @@
     <!-- Este es el código que puedes copiar y pegar en cualquier página -->
     <div class="calendar-container">
         <div class="calendar-header">
+            <div class="header-logo">
+                <a href="https://grouvex.github.io/">
+                    <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png" alt="Grouvex Studios Logo">
+                </a>
+            </div>
             <h1>Calendario Oficial de Grouvex Studios</h1>
             <p class="subtitle">Ponte al día con los enventos, proyectos, anuncios, etc, de Grouvex Studios</p>
             <div class="current-time" id="currentTime">Cargando hora UTC...</div>

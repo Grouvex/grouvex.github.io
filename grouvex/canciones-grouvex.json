@@ -52,6 +52,6 @@
     {"titulo": "Welfare", "album": "Sentimental", "portada": "../port/Sentimental.jpg", "fechaO": 1700784000, "fechaL": 1700784000, "fechaPS": 1700784000, "presaveUrl": null, "label": "©Grouvex Studios Records"},
     {"titulo": "Yo Quiero", "album": "Yo Quiero", "portada": "../port/Yo Quiero.jpg", "fechaO": 1703203200, "fechaL": 1700784000, "fechaPS": 1700784000, "presaveUrl": null, "label": "©Grouvex Studios Records"},
     {"titulo": "Yo Quiero (Versión Instrumental)", "album": "Yo Quiero", "portada": "../port/Yo Quiero.jpg", "fechaO": 1703203200, "fechaL": 1700784000, "fechaPS": 1700784000, "presaveUrl": null, "label": "©Grouvex Studios Records"},
-    {"titulo": "Yo Quiero - A New World (Versión Maiki Dran)", "album": "Yo Quiero - A New World", "portada": "../port/Yo Quiero - A New World - Version Maiki Dran.jpg", "fechaO": 1764111600, "fechaL": 1764111600, "fechaPS": 1764111600, "presaveUrl": null, "label": "©Grouvex Studios Records"}
+    {"titulo": "Yo Quiero - A New World (Versión Maiki Dran)", "album": "Yo Quiero - A New World", "portada": "../port/Yo Quiero - A New World - Version Maiki Dran.jpg", "fechaO": 1764111600, "fechaL": 1764111600, "fechaPS": 1764111600, "presaveUrl": "https://push.fm/ps/71z5vokq", "label": "©Grouvex Studios Records"}
   ]
 }

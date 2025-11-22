@@ -238,11 +238,10 @@ function mostrarnewsAdv() {
         `;
     }
     newsAdv.innerHTML = `
-        <h1 style="color: black"><span class="insignia owner"></span> | Vacaciones</h1>
+        <h1 style="color: black"><span class="insignia sistema"></span> | Activacion de Sis-GC=</h1>
         <div style="margin-top: 10px; display: flex; justify-content: center; gap: 10px;flex-wrap: wrap;flex-direction: column;align-content: center;">
-        <p>El Equipo de Grouvex Studios se a tomado un descanso. GSRecoring podrá lanzar 2  por artista durante  <n>el mes de Agosto y Septiembre</p>
-        <p>Entra en vigor el <n>8 de Agosto de 2025</n></p>
-        <p>Esto modifica por tanto, la sección de <n>Obligaciones del Artista > Entrega de Material</n> <a href="https://grouvex.com/grouvex-studios-recording#Entrega_de_Material" style="color: white; text-decoration: underline;">GSRecording > Entrega de Material</a></p>
+        <p>El Equipo de Gestión de Grouvex Studios ha activado de manera <n>INMEDIATA</n> el <n>Sistema de Gestión de Continuidad Operacional (GCO)</n> (NOGS/2025/GCO-002), con efecto desde el <n>22 de noviembre de 2025 a las 20:40 UTC</n>.</p>
+        <p>Podrá ver dicha notificación con más detalle en el <a href="https://drive.google.com/file/d/1sjrcIYAqTSdJJP4rtIoW5iTFTDtzccSs/view" style="color: white; text-decoration: underline;">N.O.Grouvex Studios</a></p>
         <button onclick="this.parentElement.parentElement.remove()" style="background: none; color: red; cursor: pointer;">Cerrar</button>
         </div>
     `;

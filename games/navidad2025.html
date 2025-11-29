@@ -6850,13 +6850,2918 @@ function addConnectGameStyles() {
                 gameArea.innerHTML = `<h3>Rompe los Adornos</h3><p>Usa las teclas para mover la plataforma y romper los adornos</p>`;
             }
             
-            function loadSocksGame() {
-                gameArea.innerHTML = `<h3>Empareja los Calcetines</h3><p>Encuentra los pares de calcetines iguales</p>`;
+// =============================================
+// JUEGO "EMPAREJA LOS CALCETINES"
+// =============================================
+
+// Variables globales para el juego de calcetines
+let socksGameScore = 0;
+let socksGameTimeLeft = 90;
+let socksGameActive = false;
+let socksGameTimer;
+let socksGameLives = 3;
+let flippedCards = [];
+let matchedPairs = 0;
+let totalPairs = 8;
+let canFlip = true;
+let firstCard = null;
+let secondCard = null;
+
+// Tipos de calcetines navideños
+const sockDesigns = [
+    { id: 1, emoji: '🎄', name: 'Árbol Navideño', color: '#4CAF50' },
+    { id: 2, emoji: '⭐', name: 'Estrella Brillante', color: '#FFD700' },
+    { id: 3, emoji: '🎅', name: 'Santa Claus', color: '#c8102e' },
+    { id: 4, emoji: '🦌', name: 'Reno', color: '#8B4513' },
+    { id: 5, emoji: '❄️', name: 'Copo de Nieve', color: '#87CEEB' },
+    { id: 6, emoji: '🔔', name: 'Campana', color: '#FFA500' },
+    { id: 7, emoji: '🎁', name: 'Regalo', color: '#FF69B4' },
+    { id: 8, emoji: '🕯️', name: 'Vela', color: '#FFFF00' },
+    { id: 9, emoji: '🧦', name: 'Calcetín Simple', color: '#FF6B6B' },
+    { id: 10, emoji: '🌟', name: 'Estrella Fugaz', color: '#FFEAA7' },
+    { id: 11, emoji: '☃️', name: 'Muñeco de Nieve', color: '#FFFFFF' },
+    { id: 12, emoji: '🍪', name: 'Galleta', color: '#D2691E' }
+];
+
+// Función para cargar el juego de emparejar calcetines
+function loadSocksGame() {
+    gameArea.innerHTML = `
+        <div class="socks-game-container">
+            <h3>🧦 Empareja los Calcetines Navideños</h3>
+            <p>¡Encuentra todos los pares de calcetines iguales antes de que se acabe el tiempo!</p>
+            
+            <div class="socks-game-info">
+                <div class="socks-stats">
+                    <div class="socks-stat">
+                        <span class="stat-label">Puntos:</span>
+                        <span id="socksScore" class="stat-value">0</span>
+                    </div>
+                    <div class="socks-stat">
+                        <span class="stat-label">Tiempo:</span>
+                        <span id="socksTime" class="stat-value">90s</span>
+                    </div>
+                    <div class="socks-stat">
+                        <span class="stat-label">Vidas:</span>
+                        <span id="socksLives" class="stat-value">3</span>
+                    </div>
+                    <div class="socks-stat">
+                        <span class="stat-label">Pares:</span>
+                        <span id="socksPairs" class="stat-value">0/8</span>
+                    </div>
+                    <div class="socks-stat">
+                        <span class="stat-label">Movimientos:</span>
+                        <span id="socksMoves" class="stat-value">0</span>
+                    </div>
+                </div>
+                
+                <div class="difficulty-selector">
+                    <h4>🎯 Dificultad:</h4>
+                    <div class="difficulty-options">
+                        <button class="difficulty-btn active" data-difficulty="easy">Fácil (8 pares)</button>
+                        <button class="difficulty-btn" data-difficulty="medium">Medio (12 pares)</button>
+                        <button class="difficulty-btn" data-difficulty="hard">Difícil (16 pares)</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="socks-game-area">
+                <div class="socks-board" id="socksBoard">
+                    <!-- Los calcetines se generarán aquí -->
+                </div>
+                
+                <div class="game-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="socksProgress"></div>
+                    </div>
+                    <div class="progress-text" id="socksProgressText">¡Encuentra todos los pares!</div>
+                </div>
+            </div>
+            
+            <div class="socks-controls">
+                <button id="socksStartBtn" class="socks-btn">🎮 Comenzar Juego</button>
+                <button id="socksResetBtn" class="socks-btn">🔄 Reiniciar</button>
+                <button id="socksHintBtn" class="socks-btn">💡 Pista</button>
+                <button id="socksShuffleBtn" class="socks-btn">🔀 Mezclar</button>
+            </div>
+            
+            <div class="socks-message" id="socksMessage"></div>
+            
+            <div class="socks-tips">
+                <h4>🎄 Consejos para Ganar:</h4>
+                <ul>
+                    <li>🧠 Memoriza la posición de los calcetines</li>
+                    <li>⏰ Planifica tus movimientos para ahorrar tiempo</li>
+                    <li>🎯 Enfócate en un área del tablero a la vez</li>
+                    <li>🌟 ¡Usa las pistas estratégicamente!</li>
+                </ul>
+            </div>
+        </div>
+    `;
+    
+    initializeSocksGame();
+    setupSocksGameEvents();
+    addSocksGameStyles();
+}
+
+// Inicializar el juego de calcetines
+function initializeSocksGame() {
+    const socksBoard = document.getElementById('socksBoard');
+    
+    // Limpiar tablero
+    socksBoard.innerHTML = '';
+    
+    // Reiniciar variables del juego
+    socksGameScore = 0;
+    socksGameTimeLeft = 90;
+    socksGameActive = false;
+    socksGameLives = 3;
+    flippedCards = [];
+    matchedPairs = 0;
+    totalPairs = 8;
+    canFlip = true;
+    firstCard = null;
+    secondCard = null;
+    
+    // Crear tablero
+    createSocksBoard();
+    
+    updateSocksGameDisplay();
+    showSocksMessage('🎅 ¡Presiona "Comenzar Juego" para empezar a emparejar calcetines!', 'info');
+}
+
+// Crear tablero de calcetines
+function createSocksBoard() {
+    const socksBoard = document.getElementById('socksBoard');
+    socksBoard.innerHTML = '';
+    
+    // Seleccionar diseños aleatorios según la dificultad
+    const selectedDesigns = [...sockDesigns].slice(0, totalPairs);
+    
+    // Duplicar para hacer pares y mezclar
+    let socks = [];
+    selectedDesigns.forEach(design => {
+        socks.push({ ...design, pairId: design.id });
+        socks.push({ ...design, pairId: design.id });
+    });
+    
+    // Mezclar calcetines
+    socks = shuffleArray(socks);
+    
+    // Calcular tamaño del tablero
+    const boardSize = Math.ceil(Math.sqrt(totalPairs * 2));
+    socksBoard.style.gridTemplateColumns = `repeat(${boardSize}, 1fr)`;
+    
+    // Crear cartas de calcetines
+    socks.forEach((sock, index) => {
+        const sockCard = document.createElement('div');
+        sockCard.className = 'sock-card';
+        sockCard.dataset.index = index;
+        sockCard.dataset.pairId = sock.pairId;
+        
+        sockCard.innerHTML = `
+            <div class="sock-card-inner">
+                <div class="sock-card-front">
+                    <div class="sock-emoji">🧦</div>
+                    <div class="sock-question">?</div>
+                </div>
+                <div class="sock-card-back">
+                    <div class="sock-emoji-large">${sock.emoji}</div>
+                    <div class="sock-name">${sock.name}</div>
+                    <div class="sock-pattern"></div>
+                </div>
+            </div>
+        `;
+        
+        // Aplicar color del diseño
+        const sockPattern = sockCard.querySelector('.sock-pattern');
+        sockPattern.style.backgroundColor = sock.color;
+        
+        sockCard.addEventListener('click', () => flipSockCard(sockCard));
+        socksBoard.appendChild(sockCard);
+    });
+    
+    updateProgressBar();
+}
+
+// Mezclar array
+function shuffleArray(array) {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+}
+
+// Voltear carta de calcetín
+function flipSockCard(card) {
+    if (!socksGameActive || !canFlip || card.classList.contains('flipped') || card.classList.contains('matched')) {
+        return;
+    }
+    
+    // Voltear carta
+    card.classList.add('flipped');
+    flippedCards.push(card);
+    
+    // Reproducir sonido de volteo
+    playFlipSound();
+    
+    // Si es la primera carta
+    if (flippedCards.length === 1) {
+        firstCard = card;
+        return;
+    }
+    
+    // Si es la segunda carta
+    if (flippedCards.length === 2) {
+        secondCard = card;
+        canFlip = false;
+        
+        // Incrementar contador de movimientos
+        const movesElement = document.getElementById('socksMoves');
+        let currentMoves = parseInt(movesElement.textContent);
+        movesElement.textContent = currentMoves + 1;
+        
+        // Verificar si hacen par
+        checkForMatch();
+    }
+}
+
+// Verificar si las cartas hacen par
+function checkForMatch() {
+    const isMatch = firstCard.dataset.pairId === secondCard.dataset.pairId;
+    
+    if (isMatch) {
+        // ¡Par encontrado!
+        handleMatch();
+    } else {
+        // No son par
+        handleMismatch();
+    }
+}
+
+// Manejar par encontrado
+function handleMatch() {
+    // Marcar como emparejadas
+    firstCard.classList.add('matched');
+    secondCard.classList.add('matched');
+    
+    // Efectos visuales
+    firstCard.style.animation = 'sockMatch 0.6s ease';
+    secondCard.style.animation = 'sockMatch 0.6s ease';
+    
+    // Calcular puntos (más puntos por rapidez)
+    const timeBonus = Math.max(10, Math.floor((socksGameTimeLeft / 90) * 20));
+    const moveBonus = Math.max(5, 15 - Math.floor(flippedCards.length / 4));
+    const points = 25 + timeBonus + moveBonus;
+    
+    socksGameScore += points;
+    matchedPairs++;
+    
+    // Reproducir sonido de éxito
+    playSuccessSound();
+    
+    showSocksMessage(`🎉 ¡Par encontrado! ${firstCard.querySelector('.sock-name').textContent} +${points} puntos`, 'success');
+    
+    // Verificar si se completó el juego
+    if (matchedPairs === totalPairs) {
+        endSocksGame(true);
+        return;
+    }
+    
+    // Resetear para siguiente turno
+    resetTurn();
+    
+    updateSocksGameDisplay();
+    updateProgressBar();
+}
+
+// Manejar par incorrecto
+function handleMismatch() {
+    // Penalización por error
+    const errorPenalty = 5;
+    socksGameScore = Math.max(0, socksGameScore - errorPenalty);
+    
+    // Efecto visual de error
+    firstCard.style.animation = 'sockError 0.5s ease';
+    secondCard.style.animation = 'sockError 0.5s ease';
+    
+    // Reproducir sonido de error
+    playErrorSound();
+    
+    showSocksMessage(`❌ ¡Ups! No son iguales. -${errorPenalty} puntos`, 'error');
+    
+    // Voltear de nuevo después de un delay
+    setTimeout(() => {
+        firstCard.classList.remove('flipped');
+        secondCard.classList.remove('flipped');
+        resetTurn();
+    }, 1000);
+    
+    updateSocksGameDisplay();
+}
+
+// Resetear turno
+function resetTurn() {
+    flippedCards = [];
+    firstCard = null;
+    secondCard = null;
+    canFlip = true;
+}
+
+// Configurar eventos del juego
+function setupSocksGameEvents() {
+    const startBtn = document.getElementById('socksStartBtn');
+    const resetBtn = document.getElementById('socksResetBtn');
+    const hintBtn = document.getElementById('socksHintBtn');
+    const shuffleBtn = document.getElementById('socksShuffleBtn');
+    const difficultyBtns = document.querySelectorAll('.difficulty-btn');
+    
+    startBtn.addEventListener('click', startSocksGame);
+    resetBtn.addEventListener('click', initializeSocksGame);
+    hintBtn.addEventListener('click', giveSocksHint);
+    shuffleBtn.addEventListener('click', shuffleSocksBoard);
+    
+    // Eventos de dificultad
+    difficultyBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            // Remover clase active de todos los botones
+            difficultyBtns.forEach(b => b.classList.remove('active'));
+            // Agregar clase active al botón clickeado
+            e.target.classList.add('active');
+            
+            if (!socksGameActive) {
+                changeDifficulty(e.target.dataset.difficulty);
+            }
+        });
+    });
+    
+    // Deshabilitar botones hasta que empiece el juego
+    hintBtn.disabled = true;
+    shuffleBtn.disabled = true;
+}
+
+// Cambiar dificultad
+function changeDifficulty(difficulty) {
+    switch(difficulty) {
+        case 'easy':
+            totalPairs = 8;
+            socksGameTimeLeft = 90;
+            break;
+        case 'medium':
+            totalPairs = 12;
+            socksGameTimeLeft = 120;
+            break;
+        case 'hard':
+            totalPairs = 16;
+            socksGameTimeLeft = 150;
+            break;
+    }
+    
+    // Recrear tablero con nueva dificultad
+    createSocksBoard();
+    updateSocksGameDisplay();
+    showSocksMessage(`🎯 Dificultad cambiada a: ${getDifficultyName(difficulty)}`, 'info');
+}
+
+// Obtener nombre de dificultad
+function getDifficultyName(difficulty) {
+    const names = {
+        'easy': 'Fácil',
+        'medium': 'Medio', 
+        'hard': 'Difícil'
+    };
+    return names[difficulty] || 'Fácil';
+}
+
+// Iniciar el juego
+function startSocksGame() {
+    if (socksGameActive) return;
+    
+    socksGameActive = true;
+    document.getElementById('socksStartBtn').disabled = true;
+    document.getElementById('socksHintBtn').disabled = false;
+    document.getElementById('socksShuffleBtn').disabled = false;
+    
+    // Deshabilitar botones de dificultad
+    document.querySelectorAll('.difficulty-btn').forEach(btn => {
+        btn.disabled = true;
+    });
+    
+    startSocksTimer();
+    showSocksMessage('🎮 ¡Juego iniciado! Encuentra todos los pares de calcetines.', 'success');
+}
+
+// Dar pista
+function giveSocksHint() {
+    if (!socksGameActive || flippedCards.length > 0) return;
+    
+    // Encontrar cartas no emparejadas
+    const unmatchedCards = Array.from(document.querySelectorAll('.sock-card:not(.matched)'));
+    const unflippedCards = unmatchedCards.filter(card => !card.classList.contains('flipped'));
+    
+    if (unflippedCards.length < 2) return;
+    
+    // Encontrar un par para mostrar como pista
+    let hintPair = [];
+    
+    for (let i = 0; i < unflippedCards.length; i++) {
+        const card1 = unflippedCards[i];
+        const pairId = card1.dataset.pairId;
+        
+        // Buscar su par
+        const card2 = unflippedCards.find(card => 
+            card !== card1 && card.dataset.pairId === pairId
+        );
+        
+        if (card2) {
+            hintPair = [card1, card2];
+            break;
+        }
+    }
+    
+    if (hintPair.length === 2) {
+        // Mostrar pista
+        hintPair.forEach(card => {
+            card.classList.add('hint');
+            setTimeout(() => {
+                card.classList.remove('hint');
+            }, 1000);
+        });
+        
+        // Penalización por usar pista
+        socksGameScore = Math.max(0, socksGameScore - 10);
+        
+        showSocksMessage('💡 ¡Mira estas dos cartas! -10 puntos por la pista', 'hint');
+        updateSocksGameDisplay();
+    }
+}
+
+// Mezclar tablero
+function shuffleSocksBoard() {
+    if (!socksGameActive || flippedCards.length > 0) return;
+    
+    const socksBoard = document.getElementById('socksBoard');
+    const cards = Array.from(socksBoard.querySelectorAll('.sock-card:not(.matched)'));
+    
+    // Remover clases flipped
+    cards.forEach(card => card.classList.remove('flipped'));
+    
+    // Mezclar posiciones
+    const shuffledCards = shuffleArray(cards);
+    
+    // Reorganizar en el DOM
+    shuffledCards.forEach(card => {
+        socksBoard.appendChild(card);
+    });
+    
+    // Penalización por mezclar
+    socksGameScore = Math.max(0, socksGameScore - 15);
+    
+    showSocksMessage('🔀 Tablero mezclado! -15 puntos', 'info');
+    updateSocksGameDisplay();
+    playShuffleSound();
+}
+
+// Iniciar temporizador
+function startSocksTimer() {
+    clearInterval(socksGameTimer);
+    socksGameTimer = setInterval(() => {
+        if (socksGameActive) {
+            socksGameTimeLeft--;
+            updateSocksGameDisplay();
+            
+            if (socksGameTimeLeft <= 0) {
+                endSocksGame(false);
+            } else if (socksGameTimeLeft <= 10) {
+                document.getElementById('socksTime').style.color = '#ff4444';
+                document.getElementById('socksTime').style.animation = 'pulse 1s infinite';
+            }
+        }
+    }, 1000);
+}
+
+// Finalizar juego
+function endSocksGame(isVictory) {
+    socksGameActive = false;
+    clearInterval(socksGameTimer);
+    
+    if (isVictory) {
+        // Bonus por victoria
+        const timeBonus = Math.floor((socksGameTimeLeft / 90) * 100);
+        const perfectBonus = matchedPairs === totalPairs ? 50 : 0;
+        socksGameScore += timeBonus + perfectBonus;
+        
+        showSocksMessage(
+            `🎊 ¡VICTORIA! 🎊\n` +
+            `Encontraste todos los ${totalPairs} pares\n` +
+            `Bonus por tiempo: +${timeBonus} puntos\n` +
+            `Bonus perfecto: +${perfectBonus} puntos\n` +
+            `Puntuación final: ${socksGameScore}`,
+            'success'
+        );
+        
+        playVictorySound();
+        
+        // Efecto de celebración
+        celebrateVictory();
+    } else {
+        showSocksMessage(
+            `⏰ ¡Tiempo agotado!\n` +
+            `Encontraste ${matchedPairs}/${totalPairs} pares\n` +
+            `Puntuación: ${socksGameScore}`,
+            'error'
+        );
+    }
+    
+    // Actualizar puntuación global
+    score += socksGameScore;
+    updateDisplay();
+    
+    // Habilitar botones
+    document.getElementById('socksStartBtn').disabled = false;
+    document.getElementById('socksHintBtn').disabled = true;
+    document.getElementById('socksShuffleBtn').disabled = true;
+    
+    // Habilitar botones de dificultad
+    document.querySelectorAll('.difficulty-btn').forEach(btn => {
+        btn.disabled = false;
+    });
+}
+
+// Celebrar victoria
+function celebrateVictory() {
+    const cards = document.querySelectorAll('.sock-card');
+    cards.forEach((card, index) => {
+        setTimeout(() => {
+            card.style.animation = 'celebrate 0.6s ease';
+        }, index * 100);
+    });
+}
+
+// Actualizar display del juego
+function updateSocksGameDisplay() {
+    document.getElementById('socksScore').textContent = socksGameScore;
+    document.getElementById('socksTime').textContent = `${socksGameTimeLeft}s`;
+    document.getElementById('socksLives').textContent = socksGameLives;
+    document.getElementById('socksPairs').textContent = `${matchedPairs}/${totalPairs}`;
+    
+    // Actualizar color del contador de pares
+    const pairsElement = document.getElementById('socksPairs');
+    if (matchedPairs === totalPairs) {
+        pairsElement.style.color = '#4CAF50';
+    } else if (matchedPairs >= totalPairs / 2) {
+        pairsElement.style.color = '#FFD700';
+    }
+}
+
+// Actualizar barra de progreso
+function updateProgressBar() {
+    const progress = (matchedPairs / totalPairs) * 100;
+    const progressBar = document.getElementById('socksProgress');
+    const progressText = document.getElementById('socksProgressText');
+    
+    if (progressBar) {
+        progressBar.style.width = `${progress}%`;
+        
+        // Cambiar color según progreso
+        if (progress < 30) {
+            progressBar.style.backgroundColor = '#ff4444';
+        } else if (progress < 70) {
+            progressBar.style.backgroundColor = '#ffaa00';
+        } else {
+            progressBar.style.backgroundColor = '#4CAF50';
+        }
+    }
+    
+    if (progressText) {
+        progressText.textContent = `Progreso: ${matchedPairs}/${totalPairs} pares encontrados`;
+    }
+}
+
+// Mostrar mensaje
+function showSocksMessage(message, type) {
+    const messageElement = document.getElementById('socksMessage');
+    messageElement.textContent = message;
+    messageElement.className = `socks-message ${type}`;
+    
+    if (type === 'info' || type === 'hint') {
+        setTimeout(() => {
+            messageElement.className = 'socks-message';
+        }, 3000);
+    }
+}
+
+// Sonidos del juego
+function playFlipSound() {
+    // Simular sonido de volteo
+    console.log('🔊 Sonido de carta volteada');
+}
+
+function playSuccessSound() {
+    // Simular sonido de éxito
+    console.log('🎵 Sonido de par encontrado');
+}
+
+function playErrorSound() {
+    // Simular sonido de error
+    console.log('❌ Sonido de error');
+}
+
+function playVictorySound() {
+    // Simular sonido de victoria
+    console.log('🎊 Sonido de victoria');
+}
+
+function playShuffleSound() {
+    // Simular sonido de mezclar
+    console.log('🔀 Sonido de mezclar');
+}
+
+// Detener juego
+function stopSocksGame() {
+    socksGameActive = false;
+    clearInterval(socksGameTimer);
+}
+
+// Agregar estilos CSS
+function addSocksGameStyles() {
+    if (document.getElementById('socks-game-styles')) return;
+    
+    const style = document.createElement('style');
+    style.id = 'socks-game-styles';
+    style.textContent = `
+        .socks-game-container {
+            text-align: center;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .socks-game-info {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .socks-stats {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .socks-stat {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-label {
+            display: block;
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-bottom: 5px;
+        }
+        
+        .stat-value {
+            display: block;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #FFD700;
+        }
+        
+        .difficulty-selector {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #FFD700;
+        }
+        
+        .difficulty-options {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .difficulty-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid transparent;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .difficulty-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .difficulty-btn.active {
+            background: rgba(255, 215, 0, 0.3);
+            border-color: #FFD700;
+            color: #FFD700;
+        }
+        
+        .difficulty-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .socks-game-area {
+            margin: 25px 0;
+        }
+        
+        .socks-board {
+            display: grid;
+            gap: 10px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        
+        .sock-card {
+            width: 100px;
+            height: 120px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        
+        .sock-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        
+        .sock-card.flipped .sock-card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .sock-card-front, .sock-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+        }
+        
+        .sock-card-front {
+            background: linear-gradient(135deg, #c8102e, #a00d26);
+            border: 3px solid #FFD700;
+        }
+        
+        .sock-card-back {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            border: 3px solid #4CAF50;
+            transform: rotateY(180deg);
+        }
+        
+        .sock-card.matched .sock-card-back {
+            border-color: #4CAF50;
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+        }
+        
+        .sock-card.hint {
+            animation: hintGlow 1s ease;
+        }
+        
+        .sock-emoji {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        .sock-question {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #FFD700;
+        }
+        
+        .sock-emoji-large {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+        }
+        
+        .sock-name {
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: white;
+        }
+        
+        .sock-pattern {
+            width: 80%;
+            height: 20px;
+            border-radius: 10px;
+            background: #FFD700;
+            border: 2px solid white;
+        }
+        
+        .game-progress {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #4CAF50;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        
+        .progress-text {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        
+        .socks-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        
+        .socks-btn {
+            background: linear-gradient(135deg, #c8102e, #a00d26);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            min-width: 140px;
+        }
+        
+        .socks-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(200, 16, 46, 0.4);
+        }
+        
+        .socks-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .socks-message {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-weight: bold;
+            white-space: pre-line;
+            min-height: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .socks-message.success {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+        }
+        
+        .socks-message.error {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+            border: 2px solid #f44336;
+        }
+        
+        .socks-message.info {
+            background: rgba(33, 150, 243, 0.2);
+            color: #2196F3;
+            border: 2px solid #2196F3;
+        }
+        
+        .socks-message.hint {
+            background: rgba(255, 215, 0, 0.2);
+            color: #FFD700;
+            border: 2px solid #FFD700;
+        }
+        
+        .socks-tips {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        .socks-tips ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 15px;
+        }
+        
+        .socks-tips li {
+            margin-bottom: 8px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .socks-tips li:before {
+            content: "🎄";
+            position: absolute;
+            left: 0;
+        }
+        
+        @keyframes sockMatch {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); box-shadow: 0 0 30px gold; }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes sockError {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        @keyframes hintGlow {
+            0%, 100% { box-shadow: 0 0 5px gold; }
+            50% { box-shadow: 0 0 20px gold; }
+        }
+        
+        @keyframes celebrate {
+            0% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(5deg); }
+            50% { transform: scale(1.2) rotate(-5deg); }
+            75% { transform: scale(1.1) rotate(5deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .socks-stats {
+                grid-template-columns: repeat(3, 1fr);
             }
             
-            function loadCarolsGame() {
-                gameArea.innerHTML = `<h3>Canto de Villancicos</h3><p>Presiona las teclas en el momento correcto para seguir la melodía</p>`;
+            .socks-board {
+                grid-template-columns: repeat(4, 1fr);
             }
+            
+            .sock-card {
+                width: 80px;
+                height: 100px;
+            }
+            
+            .sock-emoji-large {
+                font-size: 2rem;
+            }
+            
+            .sock-name {
+                font-size: 0.7rem;
+            }
+            
+            .difficulty-options {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .difficulty-btn {
+                width: 200px;
+            }
+            
+            .socks-controls {
+                gap: 10px;
+            }
+            
+            .socks-btn {
+                min-width: 120px;
+                padding: 10px 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .socks-board {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .sock-card {
+                width: 70px;
+                height: 90px;
+            }
+            
+            .socks-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+            
+// =============================================
+// JUEGO "CANTO DE VILLANCICOS" - CON FIGURAS MUSICALES
+// =============================================
+
+// Variables globales para el juego de villancicos
+let carolsGameScore = 0;
+let carolsGameTimeLeft = 120;
+let carolsGameActive = false;
+let carolsGameTimer;
+let currentSong = null;
+let currentNoteIndex = 0;
+let songNotes = [];
+let playerNotes = [];
+let isRecording = false;
+let noteTimeout;
+let currentTempo = 1000;
+let audioContext;
+let oscillators = {};
+
+// Tipos de figuras musicales
+const NOTE_TYPES = {
+    WHOLE: { name: 'redonda', duration: 4, emoji: '𝅝', color: '#ff4444' },
+    HALF: { name: 'blanca', duration: 2, emoji: '𝅗𝅥', color: '#ff8800' },
+    QUARTER: { name: 'negra', duration: 1, emoji: '𝅘𝅥', color: '#ffaa00' },
+    EIGHTH: { name: 'corchea', duration: 0.5, emoji: '𝅘𝅥𝅮', color: '#ffff00' }
+};
+
+// Villancicos disponibles con figuras musicales reales
+const christmasSongs = [
+    {
+        id: 'jingle-bells',
+        name: 'Jingle Bells',
+        emoji: '🔔',
+        notes: [
+    // --- Frase 1: Dashing through the snow... (Mi Mi Mi) ---
+    { note: 'E4', type: 'QUARTER' },
+    { note: 'E4', type: 'QUARTER' },
+    { note: 'E4', type: 'HALF' },
+
+    // --- Frase 2: ...in a one-horse open sleigh (Mi Mi Mi) ---
+    { note: 'E4', type: 'QUARTER' },
+    { note: 'E4', type: 'QUARTER' },
+    { note: 'E4', type: 'HALF' },
+
+    // --- Frase 3: O'er the fields we go... (Mi Sol Do Re) ---
+    { note: 'E4', type: 'QUARTER' },
+    { note: 'G4', type: 'QUARTER' },
+    { note: 'C4', type: 'QUARTER' },
+    { note: 'D4', type: 'QUARTER' },
+
+    // --- Frase 4: ...laughing all the way. (Mi) ---
+    { note: 'E4', type: 'WHOLE' }, // Se extiende por dos compases
+
+    // --- Frase 5: Bells on bob-tail ring... (Fa Fa Fa) ---
+    { note: 'F4', type: 'QUARTER' },
+    { note: 'F4', type: 'QUARTER' },
+    { note: 'F4', type: 'EIGHTH' }, // Rítmica ajustada para el texto
+    { note: 'F4', type: 'EIGHTH' },
+    { note: 'F4', type: 'QUARTER' },
+
+    // --- Frase 6: ...making spirits bright. (Fa Mi Mi) ---
+    { note: 'F4', type: 'QUARTER' },
+    { note: 'E4', type: 'QUARTER' },
+    { note: 'E4', type: 'QUARTER' },
+    { note: 'E4', type: 'EIGHTH' },
+    { note: 'E4', type: 'EIGHTH' },
+
+    // --- Frase 7: What fun it is to ride... (Mi Re Re) ---
+    { note: 'E4', type: 'QUARTER' },
+    { note: 'D4', type: 'QUARTER' },
+    { note: 'D4', type: 'QUARTER' },
+    { note: 'E4', type: 'QUARTER' },
+
+    // --- Frase 8: ...in a one-horse open sleigh. (D G) ---
+    { note: 'D4', type: 'QUARTER' },
+    { note: 'G4', type: 'HALF' }, // La nota se alarga
+    // Silencio o nota ligada (para completar el fraseo)
+
+    // --- Estribillo (Jingle Bells, Jingle Bells...) ---
+
+    // --- Compás 9: Jin-gle Bells, Jin-gle Bells, ---
+    { note: 'G4', type: 'EIGHTH' }, { note: 'E4', type: 'EIGHTH' },
+    { note: 'D4', type: 'QUARTER' },
+    { note: 'C4', type: 'QUARTER' },
+    { note: 'G4', type: 'HALF' }, // Nota larga
+
+    // --- Compás 10: Jin-gle all the way! ---
+    { note: 'A4', type: 'QUARTER' },
+    { note: 'A4', type: 'QUARTER' },
+    { note: 'A4', type: 'QUARTER' },
+    { note: 'G4', type: 'QUARTER' },
+
+    // --- Compás 11: Oh, what fun it is to ride... ---
+    { note: 'F4', type: 'HALF' },
+    { note: 'D4', type: 'QUARTER' },
+    { note: 'E4', type: 'QUARTER' },
+
+    // --- Compás 12: ...in a one-horse open sleigh. (G) ---
+    { note: 'C4', type: 'WHOLE' }, // La nota final se alarga
+
+    // --- Repetición del estribillo (variación común) ---
+
+    // --- Compás 13: Jin-gle Bells, Jin-gle Bells, ---
+    { note: 'G4', type: 'EIGHTH' }, { note: 'E4', type: 'EIGHTH' },
+    { note: 'D4', type: 'QUARTER' },
+    { note: 'C4', type: 'QUARTER' },
+    { note: 'G4', type: 'HALF' },
+
+    // --- Compás 14: Jin-gle all the way! ---
+    { note: 'A4', type: 'QUARTER' },
+    { note: 'A4', type: 'QUARTER' },
+    { note: 'A4', type: 'QUARTER' },
+    { note: 'G4', type: 'QUARTER' },
+
+    // --- Compás 15: Oh, what fun it is to ride... ---
+    { note: 'F4', type: 'HALF' },
+    { note: 'D4', type: 'QUARTER' },
+    { note: 'E4', type: 'QUARTER' },
+
+    // --- Compás 16: ...in a one-horse open sleigh. (C) ---
+    { note: 'D4', type: 'QUARTER' }, // D4 final
+    { note: 'C4', type: 'HALF' } // C4 final (para terminar la frase)
+],
+        difficulty: 'Fácil',
+        points: 100,
+        bpm: 120
+    },
+    {
+        id: 'rodolfo-el-reno',
+        name: 'Rodolfo el Reno',
+        emoji: '🦌',
+        notes: [
+    // --- Estrofa 1: You know Dasher and Dancer... (C C C C B A G) ---
+    { note: 'C4', type: 'QUARTER' }, { note: 'C4', type: 'QUARTER' },
+    { note: 'C4', type: 'QUARTER' }, { note: 'C4', type: 'QUARTER' }, // ...and Prancer and Vixen
+    { note: 'B4', type: 'QUARTER' }, { note: 'A4', type: 'QUARTER' },
+    { note: 'G4', type: 'HALF' },
+
+    // --- Estrofa 2: But do you recall... (C C C C B A G) ---
+    { note: 'C4', type: 'QUARTER' }, { note: 'C4', type: 'QUARTER' },
+    { note: 'C4', type: 'QUARTER' }, { note: 'C4', type: 'QUARTER' },
+    { note: 'B4', type: 'QUARTER' }, { note: 'A4', type: 'QUARTER' },
+    { note: 'G4', type: 'HALF' },
+
+    // --- Estrofa 3: Rudolph the red-nosed... (E E E E F E D) ---
+    { note: 'E4', type: 'QUARTER' }, { note: 'E4', type: 'QUARTER' },
+    { note: 'E4', type: 'QUARTER' }, { note: 'E4', type: 'QUARTER' },
+    { note: 'F4', type: 'QUARTER' }, { note: 'E4', type: 'QUARTER' },
+    { note: 'D4', type: 'HALF' },
+
+    // --- Estrofa 4: ...and if you ever saw it... (D D D G F E) ---
+    { note: 'D4', type: 'QUARTER' }, { note: 'D4', type: 'QUARTER' },
+    { note: 'D4', type: 'QUARTER' }, { note: 'G4', type: 'QUARTER' },
+    { note: 'F4', type: 'QUARTER' }, { note: 'E4', type: 'QUARTER' },
+    { note: 'E4', type: 'HALF' },
+
+    // --- Estribillo 1: Then all the other reindeer... (G B G E F D C) ---
+    { note: 'G4', type: 'EIGHTH' }, { note: 'B4', type: 'EIGHTH' }, // Rítmica más rápida
+    { note: 'G4', type: 'QUARTER' },
+    { note: 'E4', type: 'HALF' },
+    { note: 'F4', type: 'QUARTER' }, { note: 'D4', type: 'QUARTER' },
+    { note: 'C4', type: 'HALF' },
+
+    // --- Estribillo 2: ...they wouldn't let poor Rudolph... (G B G E F D C) ---
+    { note: 'G4', type: 'EIGHTH' }, { note: 'B4', type: 'EIGHTH' },
+    { note: 'G4', type: 'QUARTER' },
+    { note: 'E4', type: 'HALF' },
+    { note: 'F4', type: 'QUARTER' }, { note: 'D4', type: 'QUARTER' },
+    { note: 'C4', type: 'HALF' }
+],
+        difficulty: 'Fácil',
+        points: 100,
+        bpm: 120
+    },
+    {
+        id: 'campana',
+        name: 'Campana sobre Campana',
+        emoji: '🔔',
+        notes: [
+    // --- Frase 1: Campana sobre campana, y sobre campana una ---
+    // (G G G F# G A G F#)
+    { note: 'G4', type: 'QUARTER' }, { note: 'G4', type: 'QUARTER' },
+    { note: 'G4', type: 'QUARTER' }, { note: 'F#4', type: 'QUARTER' }, // F#4 es la nota que hace el acorde de G Mayor
+    { note: 'G4', type: 'QUARTER' }, { note: 'A4', type: 'QUARTER' },
+    { note: 'G4', type: 'QUARTER' }, { note: 'F#4', type: 'QUARTER' },
+
+    // --- Frase 2: Asómate a la ventana, verás al Niño en la cuna ---
+    // (E E E D D C B)
+    { note: 'E4', type: 'QUARTER' }, { note: 'E4', type: 'QUARTER' },
+    { note: 'E4', type: 'QUARTER' }, { note: 'D4', type: 'QUARTER' },
+    { note: 'D4', type: 'QUARTER' }, { note: 'C4', type: 'QUARTER' },
+    { note: 'B3', type: 'HALF' }, // Se extiende a la octava inferior para el final de la frase (B3)
+
+    // --- Estribillo: Belén, Campanas de Belén... ---
+    // (G G G G A G)
+    { note: 'G4', type: 'QUARTER' }, { note: 'G4', type: 'QUARTER' },
+    { note: 'G4', type: 'QUARTER' }, { note: 'G4', type: 'QUARTER' },
+    { note: 'A4', type: 'QUARTER' }, { note: 'G4', type: 'HALF' },
+
+    // --- Estribillo: ...que los ángeles tocan. ¿Qué nuevas me traéis? ---
+    // (F# E D C B G)
+    { note: 'F#4', type: 'QUARTER' }, { note: 'E4', type: 'QUARTER' },
+    { note: 'D4', type: 'QUARTER' }, { note: 'C4', type: 'QUARTER' },
+    { note: 'B3', type: 'QUARTER' }, { note: 'G3', type: 'WHOLE' } // La nota final del estribillo
+],
+        difficulty: 'Medio',
+        points: 120,
+        bpm: 120
+    },
+    {
+        id: 'silent-night',
+        name: 'Noche de Paz',
+        emoji: '🌙',
+        notes: [
+    // --- Estrofa 1: Noche de Paz, Noche de Amor ---
+    // (G A G E)
+    { note: 'G4', type: 'QUARTER' }, { note: 'A4', type: 'QUARTER' }, { note: 'G4', type: 'QUARTER' }, { note: 'E4', type: 'QUARTER' },
+    // (G A G E)
+    { note: 'G4', type: 'QUARTER' }, { note: 'A4', type: 'QUARTER' }, { note: 'G4', type: 'QUARTER' }, { note: 'E4', type: 'QUARTER' },
+
+    // --- Estrofa 2: Ha nacido el Niño Dios... ---
+    // (D D) / (B B B)
+    { note: 'D5', type: 'HALF' }, { note: 'D5', type: 'HALF' }, // Nota: La melodía sube a D5, no D4
+    { note: 'B4', type: 'QUARTER' }, { note: 'B4', type: 'QUARTER' }, { note: 'B4', type: 'HALF' },
+    
+    // --- Estrofa 3: Luz en su rostro... ---
+    // (G G G) / (C5 C5 B A)
+    { note: 'G4', type: 'QUARTER' }, { note: 'G4', type: 'QUARTER' }, { note: 'G4', type: 'HALF' },
+    { note: 'C5', type: 'QUARTER' }, { note: 'C5', type: 'QUARTER' }, { note: 'B4', type: 'QUARTER' }, { note: 'A4', type: 'QUARTER' },
+
+    // --- Estrofa 4: Duerme en paz... ---
+    // (A G A G) / (E WHOLE)
+    { note: 'A4', type: 'QUARTER' }, { note: 'G4', type: 'QUARTER' }, { note: 'A4', type: 'QUARTER' }, { note: 'G4', type: 'QUARTER' },
+    { note: 'E4', type: 'WHOLE' },
+    
+    // --- Repetición de las últimas líneas para un final completo ---
+    // (C5 C5 B A)
+    { note: 'C5', type: 'QUARTER' }, { note: 'C5', type: 'QUARTER' }, { note: 'B4', type: 'QUARTER' }, { note: 'A4', type: 'QUARTER' },
+
+    // (A G A G) / (E WHOLE) - La última línea de la canción
+    { note: 'A4', type: 'QUARTER' }, { note: 'G4', type: 'QUARTER' }, { note: 'A4', type: 'QUARTER' }, { note: 'G4', type: 'QUARTER' },
+    { note: 'E4', type: 'WHOLE' }
+],
+        difficulty: 'Medio',
+        points: 150,
+        bpm: 80
+    },
+    {
+        id: 'blanca-navidad',
+        name: 'Blanca Navidad',
+        emoji: '❄️',
+        notes: [
+    // --- Frase 1: I'm dreaming of a white Christmas... (G A B C5) ---
+    { note: 'G4', type: 'HALF' }, // I'm
+    { note: 'G4', type: 'EIGHTH' }, { note: 'A4', type: 'EIGHTH' }, // dream-ing
+    { note: 'B4', type: 'QUARTER' }, { note: 'C5', type: 'QUARTER' }, // of a white
+
+    // --- Frase 2: ...just like the ones I used to know (D5 B G E) ---
+    { note: 'D5', type: 'HALF' }, // Christ-mas
+    { note: 'B4', type: 'QUARTER' }, // just like
+    { note: 'G4', type: 'EIGHTH' }, { note: 'E4', type: 'EIGHTH' }, // the ones
+
+    // --- Frase 3: Where the tree-tops glisten... (G F E D) ---
+    { note: 'G4', type: 'HALF' }, // I used to know
+    { note: 'F4', type: 'QUARTER' }, // Where the tree-
+    { note: 'E4', type: 'QUARTER' }, // tops glis-
+
+    // --- Frase 4: ...and children listen (D C WHOLE) ---
+    { note: 'D4', type: 'QUARTER' }, // ten and
+    { note: 'C4', type: 'WHOLE' }, // chil-dren lis-ten
+
+    // --- Frase 5: To hear sleigh bells in the snow. (G A B C5) ---
+    { note: 'G4', type: 'HALF' },
+    { note: 'G4', type: 'EIGHTH' }, { note: 'A4', type: 'EIGHTH' },
+    { note: 'B4', type: 'QUARTER' }, { note: 'C5', type: 'QUARTER' },
+
+    // --- Frase 6: I'm dreaming of a white Christmas... (D5 B G E) ---
+    { note: 'D5', type: 'HALF' },
+    { note: 'B4', type: 'QUARTER' },
+    { note: 'G4', type: 'EIGHTH' }, { note: 'E4', type: 'EIGHTH' },
+
+    // --- Frase 7: ...with every Christmas card I write (G F E D) ---
+    { note: 'G4', type: 'HALF' },
+    { note: 'F4', type: 'QUARTER' },
+    { note: 'E4', type: 'QUARTER' },
+
+    // --- Frase 8: May your days be merry and bright (D C D WHOLE) ---
+    { note: 'D4', type: 'QUARTER' },
+    { note: 'C4', type: 'QUARTER' },
+    { note: 'D4', type: 'QUARTER' },
+    { note: 'C4', type: 'WHOLE' } // Nota final y larga
+],
+        difficulty: 'Medio',
+        points: 150,
+        bpm: 80
+    },
+    {
+        id: 'we-wish',
+        name: 'Feliz Navidad',
+        emoji: '🎄',
+        notes: [
+    // --- Compás 1: "Fe-liz Na-vi-" (C-F F G F) ---
+    { note: 'C4', type: 'QUARTER' },
+    { note: 'F4', type: 'QUARTER' },
+    { note: 'F4', type: 'EIGHTH' },
+    { note: 'G4', type: 'EIGHTH' },
+    { note: 'F4', type: 'QUARTER' },
+
+    // --- Compás 2: "dad" (E D) ---
+    { note: 'E4', type: 'QUARTER' },
+    { note: 'D4', type: 'HALF' },
+
+    // --- Compás 3: "Fe-liz Na-vi-" (D-G G A G) ---
+    { note: 'D4', type: 'QUARTER' },
+    { note: 'G4', type: 'QUARTER' },
+    { note: 'G4', type: 'EIGHTH' },
+    { note: 'A4', type: 'EIGHTH' },
+    { note: 'G4', type: 'QUARTER' },
+
+    // --- Compás 4: "dad" (F E) ---
+    { note: 'F4', type: 'QUARTER' },
+    { note: 'E4', type: 'HALF' },
+
+    // --- Compás 5: "Fe-liz Na-vi-" (E-A A B A) ---
+    { note: 'E4', type: 'QUARTER' },
+    { note: 'A4', type: 'QUARTER' },
+    { note: 'A4', type: 'EIGHTH' },
+    { note: 'B4', type: 'EIGHTH' },
+    { note: 'A4', type: 'QUARTER' },
+
+    // --- Compás 6: "dad" (G F) ---
+    { note: 'G4', type: 'QUARTER' },
+    { note: 'F4', type: 'HALF' },
+
+    // --- Compás 7: "Fe-liz Na-vi-" (D-B B C5 B) ---
+    { note: 'D4', type: 'QUARTER' },
+    { note: 'B4', type: 'QUARTER' },
+    { note: 'B4', type: 'EIGHTH' },
+    { note: 'C5', type: 'EIGHTH' },
+    { note: 'B4', type: 'QUARTER' },
+
+    // --- Compás 8: "dad" (A G) ---
+    { note: 'A4', type: 'QUARTER' },
+    { note: 'G4', type: 'HALF' },
+    
+    // --- Comienzo del Estribillo ---
+
+    // --- Compás 9: "Pros-pe-ro a-ño y" (C F F F) / "I wan-na wish you a" ---
+    { note: 'C4', type: 'QUARTER' },
+    { note: 'F4', type: 'QUARTER' },
+    { note: 'F4', type: 'QUARTER' },
+    { note: 'F4', type: 'QUARTER' },
+
+    // --- Compás 10: "fe-li-ci-dad" (G G G) / "Mer-ry Christ-mas" ---
+    { note: 'G4', type: 'QUARTER' },
+    { note: 'G4', type: 'QUARTER' },
+    { note: 'G4', type: 'HALF' },
+
+    // --- Compás 11: Repetición "Pros-pe-ro a-ño y" (C F F F) ---
+    { note: 'C4', type: 'QUARTER' },
+    { note: 'F4', type: 'QUARTER' },
+    { note: 'F4', type: 'QUARTER' },
+    { note: 'F4', type: 'QUARTER' },
+
+    // --- Compás 12: Repetición "fe-li-ci-dad" (G G G) ---
+    { note: 'G4', type: 'QUARTER' },
+    { note: 'G4', type: 'QUARTER' },
+    { note: 'G4', type: 'HALF' },
+
+    // --- Compás 13: Cierre melódico (G F E D) ---
+    { note: 'G4', type: 'QUARTER' },
+    { note: 'F4', type: 'QUARTER' },
+    { note: 'E4', type: 'QUARTER' },
+    { note: 'D4', type: 'QUARTER' },
+
+    // --- Compás 14: Final (C) ---
+    { note: 'C4', type: 'WHOLE' }
+],
+        difficulty: 'Difícil',
+        points: 200,
+        bpm: 140
+    },{
+        id: 'peces',
+        name: 'Los Peces en el Río',
+        emoji: '🐟',
+        notes: [
+    // --- Estrofa 1: La Virgen se está peinando... (G G G G B B B A) ---
+    // (G G G G)
+    { note: 'G4', type: 'QUARTER' },
+    { note: 'G4', type: 'QUARTER' },
+    { note: 'G4', type: 'QUARTER' },
+    { note: 'G4', type: 'QUARTER' },
+
+    // (B B B A)
+    { note: 'B4', type: 'QUARTER' },
+    { note: 'B4', type: 'QUARTER' },
+    { note: 'B4', type: 'QUARTER' },
+    { note: 'A4', type: 'QUARTER' },
+
+    // --- Estrofa 2: ...entre cortina y cortina. (G G G G B B B G) ---
+    // (G G G G)
+    { note: 'G4', type: 'QUARTER' },
+    { note: 'G4', type: 'QUARTER' },
+    { note: 'G4', type: 'QUARTER' },
+    { note: 'G4', type: 'QUARTER' },
+
+    // (B B B G)
+    { note: 'B4', type: 'QUARTER' },
+    { note: 'B4', type: 'QUARTER' },
+    { note: 'B4', type: 'QUARTER' },
+    { note: 'G4', type: 'QUARTER' },
+
+    // --- Estrofa 3: Sus cabellos son de oro... (G F# G A B G E) ---
+    // (G F# G A)
+    { note: 'G4', type: 'QUARTER' },
+    { note: 'F#4', type: 'QUARTER' }, // F#4 es necesario para el acorde de G Mayor
+    { note: 'G4', type: 'QUARTER' },
+    { note: 'A4', type: 'QUARTER' },
+
+    // (B G E D)
+    { note: 'B4', type: 'QUARTER' },
+    { note: 'G4', type: 'QUARTER' },
+    { note: 'E4', type: 'QUARTER' },
+    { note: 'D4', type: 'QUARTER' },
+
+    // --- Estrofa 4: ...y el peine de plata fina. (C C C B A G) ---
+    // (C C C B)
+    { note: 'C5', type: 'QUARTER' }, // Subida de octava (C5)
+    { note: 'C5', type: 'QUARTER' },
+    { note: 'C5', type: 'QUARTER' },
+    { note: 'B4', type: 'QUARTER' },
+
+    // (A G G WHOLE)
+    { note: 'A4', type: 'QUARTER' },
+    { note: 'G4', type: 'WHOLE' }, // Nota larga al final de la estrofa
+
+    // --- Estribillo: Pero mira cómo beben los peces en el río... (C5 B A G F#) ---
+    // (C5 B A G)
+    { note: 'C5', type: 'QUARTER' },
+    { note: 'B4', type: 'QUARTER' },
+    { note: 'A4', type: 'QUARTER' },
+    { note: 'G4', type: 'QUARTER' },
+
+    // (F# E D C)
+    { note: 'F#4', type: 'QUARTER' },
+    { note: 'E4', type: 'QUARTER' },
+    { note: 'D4', type: 'QUARTER' },
+    { note: 'C4', type: 'QUARTER' },
+
+    // --- Estribillo: ...beben y beben y vuelven a beber... (C5 B A G F#) ---
+    // (C5 B A G)
+    { note: 'C5', type: 'QUARTER' },
+    { note: 'B4', type: 'QUARTER' },
+    { note: 'A4', type: 'QUARTER' },
+    { note: 'G4', type: 'QUARTER' },
+
+    // (F# E D C)
+    { note: 'F#4', type: 'QUARTER' },
+    { note: 'E4', type: 'QUARTER' },
+    { note: 'D4', type: 'QUARTER' },
+    { note: 'C4', type: 'QUARTER' },
+
+    // --- Estribillo: ...por ver al Dios nacido (E D C B) ---
+    { note: 'E4', type: 'QUARTER' },
+    { note: 'D4', type: 'QUARTER' },
+    { note: 'C4', type: 'QUARTER' },
+    { note: 'B3', type: 'HALF' }, // Final de la frase
+
+    // --- Estribillo: ...limpio, claro y entero. (A WHOLE) ---
+    { note: 'A3', type: 'QUARTER' }, // A3 para finalizar
+    { note: 'G3', type: 'WHOLE' } // Final de la canción (G3 o G4 si no tienes G3)
+],
+        difficulty: 'Difícil',
+        points: 250,
+        bpm: 140
+    }
+];
+
+// Frecuencias de las notas musicales
+const noteFrequencies = {
+    // --- Octava 3 (Frecuencias Añadidas) ---
+    // G3 = G4 / 2
+    'G3': 196.00,
+    // A3 = A4 / 2
+    'A3': 220.00,
+    // B3 = B4 / 2
+    'B3': 246.94,
+
+    // --- Octava 4 (Valores Originales) ---
+    'C4': 261.63, 'C#4': 277.18, 'D4': 293.66, 'D#4': 311.13,
+    'E4': 329.63, 'F4': 349.23, 'F#4': 369.99, 'G4': 392.00,
+    'G#4': 415.30, 'A4': 440.00, 'A#4': 466.16, 'B4': 493.88,
+
+    // --- Octava 5 (Valores Originales) ---
+    'C5': 523.25, 'C#5': 554.37, 'D5': 587.33, 'D#5': 622.25,
+    'E5': 659.25, 'F5': 698.46, 'F#5': 739.99, 'G5': 783.99,
+    'G#5': 830.61, 'A5': 880.00, 'A#5': 932.33, 'B5': 987.77
+};
+
+// Notas musicales con sus propiedades
+const musicalNotes = {
+    // --- Octava 4: Teclas blancas y negras ---
+    'C4': { emoji: '🎵', color: '#ff4444', key: 'A', name: 'Do' },
+    'C#4': { emoji: '🎶', color: '#aa1111', key: 'W', name: 'Do#' },
+    'D4': { emoji: '🎵', color: '#ff8800', key: 'S', name: 'Re' },
+    'D#4': { emoji: '🎶', color: '#aa5500', key: 'E', name: 'Re#' },
+    'E4': { emoji: '🎵', color: '#ffaa00', key: 'D', name: 'Mi' },
+    'F4': { emoji: '🎵', color: '#ffff00', key: 'F', name: 'Fa' },
+    'F#4': { emoji: '🎶', color: '#aaaa00', key: 'T', name: 'Fa#' },
+    'G4': { emoji: '🎵', color: '#00ff00', key: 'G', name: 'Sol' },
+    'G#4': { emoji: '🎶', color: '#00aa00', key: 'Y', name: 'Sol#' },
+    'A4': { emoji: '🎵', color: '#00aaff', key: 'H', name: 'La' },
+    'A#4': { emoji: '🎶', color: '#0077aa', key: 'U', name: 'La#' },
+    'B4': { emoji: '🎵', color: '#aa00ff', key: 'J', name: 'Si' },
+
+    // --- Octava 5: Teclas blancas y negras (Continuación) ---
+    'C5': { emoji: '🎵', color: '#ff4444', key: 'K', name: 'Do' },
+    'C#5': { emoji: '🎶', color: '#aa1111', key: 'O', name: 'Do#' },
+    'D5': { emoji: '🎵', color: '#ff8800', key: 'L', name: 'Re' },
+    'D#5': { emoji: '🎶', color: '#aa5500', key: 'P', name: 'Re#' },
+    'E5': { emoji: '🎵', color: '#ffaa00', key: ';', name: 'Mi' },
+    'F5': { emoji: '🎵', color: '#ffff00', key: "'", name: 'Fa' },
+    'F#5': { emoji: '🎶', color: '#aaaa00', key: '[', name: 'Fa#' },
+    'G5': { emoji: '🎵', color: '#00ff00', key: ']', name: 'Sol' },
+    'G#5': { emoji: '🎶', color: '#00aa00', key: '\\', name: 'Sol#' },
+    'A5': { emoji: '🎵', color: '#00aaff', key: 'Enter', name: 'La' },
+    'A#5': { emoji: '🎶', color: '#0077aa', key: 'Shift', name: 'La#' },
+    'B5': { emoji: '🎵', color: '#aa00ff', key: 'Space', name: 'Si' }
+};
+
+// Inicializar Audio Context
+function initAudio() {
+    try {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        console.log('Audio Context inicializado correctamente');
+    } catch (error) {
+        console.error('Error al inicializar Audio Context:', error);
+        showCarolsMessage('⚠️ El audio no está disponible en este navegador', 'error');
+    }
+}
+
+// Calcular duración real de la nota en milisegundos
+function calculateNoteDuration(noteType, bpm = 120) {
+    // Duración de una negra en milisegundos = 60000 / BPM
+    const quarterNoteDuration = 60000 / bpm;
+    return quarterNoteDuration * NOTE_TYPES[noteType].duration;
+}
+
+// Reproducir una nota musical con duración específica
+function playNoteSound(note, noteType, bpm = 120) {
+    if (!audioContext) {
+        initAudio();
+        if (!audioContext) return;
+    }
+
+    try {
+        // Detener cualquier oscilador previo para esta nota
+        if (oscillators[note]) {
+            oscillators[note].stop();
+        }
+
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        // Configurar el tipo de onda (más suave para sonido de piano)
+        oscillator.type = 'triangle';
+        
+        // Configurar frecuencia según la nota
+        const frequency = noteFrequencies[note] || 440;
+        oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+
+        // Calcular duración basada en el tipo de nota y BPM
+        const duration = calculateNoteDuration(noteType, bpm);
+        
+        // Configurar envolvente ADSR más realista
+        const now = audioContext.currentTime;
+        gainNode.gain.setValueAtTime(0, now);
+        gainNode.gain.linearRampToValueAtTime(0.4, now + 0.02); // Ataque rápido
+        gainNode.gain.exponentialRampToValueAtTime(0.3, now + 0.05); // Decaimiento
+        gainNode.gain.linearRampToValueAtTime(0.2, now + (duration * 0.7) / 1000); // Sostenido
+        gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration / 1000); // Liberación
+
+        oscillator.start(now);
+        oscillator.stop(now + duration / 1000);
+
+        // Guardar referencia al oscilador
+        oscillators[note] = oscillator;
+
+        // Limpiar referencia cuando termine
+        oscillator.onended = () => {
+            delete oscillators[note];
+        };
+
+        return duration;
+
+    } catch (error) {
+        console.error('Error al reproducir nota:', error);
+        return 500; // Duración por defecto
+    }
+}
+
+// Reproducir sonido de éxito
+function playSuccessSound() {
+    if (!audioContext) initAudio();
+    
+    try {
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        oscillator.type = 'sine';
+        
+        // Sonido ascendente de éxito
+        oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+        oscillator.frequency.exponentialRampToValueAtTime(1046.50, audioContext.currentTime + 0.3); // C6
+
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.5);
+
+    } catch (error) {
+        console.error('Error al reproducir sonido de éxito:', error);
+    }
+}
+
+// Reproducir sonido de error
+function playErrorSound() {
+    if (!audioContext) initAudio();
+    
+    try {
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        oscillator.type = 'sawtooth';
+        
+        // Sonido descendente de error
+        oscillator.frequency.setValueAtTime(392.00, audioContext.currentTime); // G4
+        oscillator.frequency.exponentialRampToValueAtTime(196.00, audioContext.currentTime + 0.4); // G3
+
+        gainNode.gain.setValueAtTime(0.4, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.5);
+
+    } catch (error) {
+        console.error('Error al reproducir sonido de error:', error);
+    }
+}
+
+// Reproducir sonido de victoria (acorde mayor)
+function playVictorySound() {
+    if (!audioContext) initAudio();
+    
+    try {
+        const notes = ['C4', 'E4', 'G4']; // Acorde de Do mayor
+        const now = audioContext.currentTime;
+
+        notes.forEach(note => {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            oscillator.type = 'triangle';
+            oscillator.frequency.setValueAtTime(noteFrequencies[note], now);
+
+            gainNode.gain.setValueAtTime(0, now);
+            gainNode.gain.linearRampToValueAtTime(0.3, now + 0.1);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, now + 1.5);
+
+            oscillator.start(now);
+            oscillator.stop(now + 1.5);
+        });
+
+    } catch (error) {
+        console.error('Error al reproducir sonido de victoria:', error);
+    }
+}
+
+// Función para cargar el juego de villancicos
+function loadCarolsGame() {
+    // Inicializar audio al cargar el juego
+    initAudio();
+    
+    gameArea.innerHTML = `
+        <div class="carols-game-container">
+            <h3>🎵 Canto de Villancicos</h3>
+            <p>¡Sigue el ritmo de los villancicos navideños! Escucha la melodía y repítela usando las teclas musicales.</p>
+            
+            <div class="carols-game-info">
+                <div class="carols-stats">
+                    <div class="carols-stat">
+                        <span class="stat-label">Puntos:</span>
+                        <span id="carolsScore" class="stat-value">0</span>
+                    </div>
+                    <div class="carols-stat">
+                        <span class="stat-label">Tiempo:</span>
+                        <span id="carolsTime" class="stat-value">120s</span>
+                    </div>
+                    <div class="carols-stat">
+                        <span class="stat-label">Vidas:</span>
+                        <span id="carolsLives" class="stat-value">3</span>
+                    </div>
+                    <div class="carols-stat">
+                        <span class="stat-label">Canción:</span>
+                        <span id="currentSongName" class="stat-value">-</span>
+                    </div>
+                </div>
+                
+                <div class="song-selector">
+                    <h4>🎼 Selecciona un Villancico:</h4>
+                    <div class="song-options" id="songOptions"></div>
+                </div>
+                
+                <div class="current-song-info" id="currentSongInfo">
+                    <p>Selecciona una canción para comenzar</p>
+                </div>
+            </div>
+            
+            <div class="carols-game-area">
+                <div class="music-display">
+                    <div class="song-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="songProgress"></div>
+                        </div>
+                        <div class="progress-text" id="songProgressText">Esperando...</div>
+                    </div>
+                    
+                    <div class="notes-display">
+                        <div class="song-notes" id="songNotes">
+                            <!-- Las notas de la canción se mostrarán aquí -->
+                        </div>
+                        <div class="player-notes" id="playerNotes">
+                            <!-- Las notas del jugador se mostrarán aquí -->
+                        </div>
+                    </div>
+                    
+                    <div class="current-action" id="currentAction">
+                        <p>🎧 Escucha atentamente la melodía...</p>
+                    </div>
+                </div>
+                
+                <div class="piano-keyboard" id="pianoKeyboard">
+                    <!-- El teclado musical se generará aquí -->
+                </div>
+                
+                <div class="rhythm-guide">
+                    <h4>🎶 Figuras Musicales:</h4>
+                    <div class="rhythm-types">
+                        <div class="rhythm-type" data-type="WHOLE">
+                            <span class="rhythm-emoji">𝅝</span>
+                            <span class="rhythm-name">Redonda</span>
+                            <span class="rhythm-duration">4 tiempos</span>
+                        </div>
+                        <div class="rhythm-type" data-type="HALF">
+                            <span class="rhythm-emoji">𝅗𝅥</span>
+                            <span class="rhythm-name">Blanca</span>
+                            <span class="rhythm-duration">2 tiempos</span>
+                        </div>
+                        <div class="rhythm-type" data-type="QUARTER">
+                            <span class="rhythm-emoji">𝅘𝅥</span>
+                            <span class="rhythm-name">Negra</span>
+                            <span class="rhythm-duration">1 tiempo</span>
+                        </div>
+                        <div class="rhythm-type" data-type="EIGHTH">
+                            <span class="rhythm-emoji">𝅘𝅥𝅮</span>
+                            <span class="rhythm-name">Corchea</span>
+                            <span class="rhythm-duration">½ tiempo</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="controls-guide">
+                    <h4>🎹 Controles del Teclado:</h4>
+                    <div class="keyboard-layout">
+                        <div class="key-row">
+                            <div class="key-guide" data-key="A">A <span>(Do)</span></div>
+                            <div class="key-guide" data-key="S">S <span>(Re)</span></div>
+                            <div class="key-guide" data-key="D">D <span>(Mi)</span></div>
+                            <div class="key-guide" data-key="F">F <span>(Fa)</span></div>
+                            <div class="key-guide" data-key="G">G <span>(Sol)</span></div>
+                            <div class="key-guide" data-key="H">H <span>(La)</span></div>
+                            <div class="key-guide" data-key="J">J <span>(Si)</span></div>
+                            <div class="key-guide" data-key="K">K <span>(Do)</span></div>
+                            <div class="key-guide" data-key="L">L <span>(Re)</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="carols-controls">
+                <button id="carolsStartBtn" class="carols-btn">🎤 Comenzar Canción</button>
+                <button id="carolsListenBtn" class="carols-btn">🔊 Escuchar Melodía</button>
+                <button id="carolsResetBtn" class="carols-btn">🔄 Reiniciar</button>
+                <button id="carolsTempoBtn" class="carols-btn">⚡ Cambiar Velocidad</button>
+            </div>
+            
+            <div class="carols-message" id="carolsMessage"></div>
+            
+            <div class="carols-tips">
+                <h4>💡 Consejos Musicales:</h4>
+                <ul>
+                    <li>🎧 Escucha atentamente la melodía antes de tocar</li>
+                    <li>🎹 Usa las teclas A,S,D,F,G,H,J,K,L para tocar las notas</li>
+                    <li>🎼 Sigue el ritmo y el orden exacto de las notas</li>
+                    <li>🎶 Presta atención a las duraciones de las notas</li>
+                    <li>🌟 ¡La práctica hace al maestro musical!</li>
+                </ul>
+            </div>
+        </div>
+    `;
+    
+    initializeCarolsGame();
+    setupCarolsGameEvents();
+    renderSongOptions();
+    createPianoKeyboard();
+    addCarolsGameStyles();
+}
+
+// Inicializar el juego de villancicos
+function initializeCarolsGame() {
+    const songNotesContainer = document.getElementById('songNotes');
+    const playerNotesContainer = document.getElementById('playerNotes');
+    
+    // Limpiar contenedores
+    songNotesContainer.innerHTML = '';
+    playerNotesContainer.innerHTML = '';
+    
+    // Reiniciar variables del juego
+    carolsGameScore = 0;
+    carolsGameTimeLeft = 120;
+    carolsGameActive = false;
+    currentSong = null;
+    currentNoteIndex = 0;
+    songNotes = [];
+    playerNotes = [];
+    isRecording = false;
+    clearTimeout(noteTimeout);
+    currentTempo = 1000;
+    
+    // Detener todos los sonidos
+    stopAllSounds();
+    
+    updateCarolsGameDisplay();
+    showCarolsMessage('🎵 Selecciona un villancico y presiona "Comenzar Canción"', 'info');
+    
+    // Actualizar información de la canción
+    updateSongInfo();
+}
+
+// Detener todos los sonidos
+function stopAllSounds() {
+    Object.values(oscillators).forEach(oscillator => {
+        try {
+            oscillator.stop();
+        } catch (error) {
+            // Ignorar errores de osciladores ya detenidos
+        }
+    });
+    oscillators = {};
+}
+
+// Renderizar opciones de canciones
+function renderSongOptions() {
+    const songOptions = document.getElementById('songOptions');
+    songOptions.innerHTML = '';
+    
+    christmasSongs.forEach(song => {
+        const option = document.createElement('div');
+        option.className = `song-option ${currentSong && currentSong.id === song.id ? 'selected' : ''}`;
+        option.dataset.song = song.id;
+        option.innerHTML = `
+            <div class="song-emoji">${song.emoji}</div>
+            <div class="song-details">
+                <div class="song-name">${song.name}</div>
+                <div class="song-difficulty">${song.difficulty}</div>
+                <div class="song-bpm">${song.bpm} BPM</div>
+                <div class="song-points">+${song.points} pts</div>
+            </div>
+        `;
+        
+        option.addEventListener('click', () => selectSong(song));
+        songOptions.appendChild(option);
+    });
+}
+
+// Seleccionar canción
+function selectSong(song) {
+    if (carolsGameActive) {
+        showCarolsMessage('Termina la canción actual antes de cambiar.', 'error');
+        return;
+    }
+    
+    currentSong = song;
+    renderSongOptions();
+    updateSongInfo();
+    showCarolsMessage(`🎼 Canción seleccionada: ${song.name} (${song.difficulty}, ${song.bpm} BPM)`, 'info');
+    
+    // Preparar las notas de la canción
+    prepareSongNotes();
+}
+
+// Actualizar información de la canción
+function updateSongInfo() {
+    const songInfo = document.getElementById('currentSongInfo');
+    const songName = document.getElementById('currentSongName');
+    
+    if (currentSong) {
+        songInfo.innerHTML = `
+            <div class="song-header">
+                <span class="song-emoji-big">${currentSong.emoji}</span>
+                <div class="song-details-big">
+                    <h4>${currentSong.name}</h4>
+                    <div class="song-meta">
+                        <span class="difficulty-badge">${currentSong.difficulty}</span>
+                        <span class="bpm-info">${currentSong.bpm} BPM</span>
+                        <span class="notes-count">${currentSong.notes.length} notas</span>
+                        <span class="points-value">+${currentSong.points} puntos</span>
+                    </div>
+                </div>
+            </div>
+            <div class="song-preview">
+                <p>🎧 Escucha la melodía y repítela usando el teclado musical</p>
+                <p class="rhythm-info">🎶 Esta canción usa diferentes duraciones de notas</p>
+            </div>
+        `;
+        songName.textContent = currentSong.name;
+    } else {
+        songInfo.innerHTML = '<p>Selecciona una canción para comenzar</p>';
+        songName.textContent = '-';
+    }
+}
+
+// Preparar notas de la canción para mostrar
+function prepareSongNotes() {
+    const songNotesContainer = document.getElementById('songNotes');
+    songNotesContainer.innerHTML = '';
+    
+    if (!currentSong) return;
+    
+    currentSong.notes.forEach((noteData, index) => {
+        const noteElement = document.createElement('div');
+        noteElement.className = 'song-note';
+        noteElement.dataset.index = index;
+        noteElement.dataset.note = noteData.note;
+        noteElement.dataset.type = noteData.type;
+        
+        const noteInfo = musicalNotes[noteData.note];
+        const rhythmInfo = NOTE_TYPES[noteData.type];
+        
+        noteElement.innerHTML = `
+            <div class="note-symbol">${rhythmInfo.emoji}</div>
+            <div class="note-name">${noteInfo?.name || noteData.note}</div>
+            <div class="note-duration">${rhythmInfo.name}</div>
+        `;
+        
+        // Aplicar color según el tipo de nota
+        noteElement.style.borderLeft = `4px solid ${rhythmInfo.color}`;
+        
+        songNotesContainer.appendChild(noteElement);
+    });
+    
+    // Limpiar notas del jugador
+    const playerNotesContainer = document.getElementById('playerNotes');
+    playerNotesContainer.innerHTML = '';
+    playerNotes = [];
+}
+
+// Crear teclado musical
+function createPianoKeyboard() {
+    const pianoKeyboard = document.getElementById('pianoKeyboard');
+    pianoKeyboard.innerHTML = '';
+    
+    Object.entries(musicalNotes).forEach(([note, data]) => {
+        const key = document.createElement('div');
+        key.className = 'piano-key';
+        key.dataset.note = note;
+        key.dataset.key = data.key;
+        key.style.backgroundColor = data.color;
+        key.innerHTML = `
+            <div class="key-label">${data.key}</div>
+            <div class="key-note">${data.name}</div>
+            <div class="key-emoji">${data.emoji}</div>
+        `;
+        
+        key.addEventListener('mousedown', () => {
+            if (carolsGameActive && isRecording) {
+                playNote(note);
+            } else {
+                // Permitir probar el sonido incluso cuando no se está jugando
+                playNoteSound(note, 'QUARTER', 120);
+                key.classList.add('active');
+                setTimeout(() => key.classList.remove('active'), 300);
+            }
+        });
+        
+        pianoKeyboard.appendChild(key);
+    });
+}
+
+// Tocar una nota (sin duración específica para el jugador)
+function playNote(note) {
+    if (!carolsGameActive || !isRecording) return;
+    
+    const noteData = musicalNotes[note];
+    if (!noteData) return;
+    
+    // Agregar nota a la secuencia del jugador (solo el pitch)
+    playerNotes.push(note);
+    
+    // Efecto visual en la tecla
+    const keyElement = document.querySelector(`.piano-key[data-note="${note}"]`);
+    if (keyElement) {
+        keyElement.classList.add('active');
+        setTimeout(() => {
+            keyElement.classList.remove('active');
+        }, 300);
+    }
+    
+    // Mostrar nota del jugador
+    displayPlayerNote(note);
+    
+    // Verificar si es correcta
+    checkNoteAccuracy();
+    
+    // Reproducir sonido (duración fija para el jugador)
+    playNoteSound(note, 'QUARTER', 120);
+}
+
+// Mostrar nota del jugador
+function displayPlayerNote(note) {
+    const playerNotesContainer = document.getElementById('playerNotes');
+    const noteElement = document.createElement('div');
+    noteElement.className = 'player-note';
+    
+    const noteInfo = musicalNotes[note];
+    noteElement.innerHTML = `
+        <div class="note-symbol">${noteInfo?.emoji || '🎵'}</div>
+        <div class="note-name">${noteInfo?.name || note}</div>
+    `;
+    
+    playerNotesContainer.appendChild(noteElement);
+    
+    // Scroll automático
+    playerNotesContainer.scrollLeft = playerNotesContainer.scrollWidth;
+}
+
+// Verificar precisión de la nota
+function checkNoteAccuracy() {
+    const expectedNote = currentSong.notes[playerNotes.length - 1].note;
+    const playedNote = playerNotes[playerNotes.length - 1];
+    
+    if (expectedNote === playedNote) {
+        // Nota correcta
+        const currentNoteData = currentSong.notes[playerNotes.length - 1];
+        const rhythmBonus = NOTE_TYPES[currentNoteData.type].duration * 2; // Bonus por notas largas
+        const notePoints = 5 + rhythmBonus;
+        carolsGameScore += notePoints;
+        
+        // Resaltar nota correcta
+        const playerNoteElements = document.querySelectorAll('.player-note');
+        if (playerNoteElements.length > 0) {
+            const lastNote = playerNoteElements[playerNoteElements.length - 1];
+            lastNote.classList.add('correct');
+        }
+        
+        // Verificar si completó la canción
+        if (playerNotes.length === currentSong.notes.length) {
+            completeSong();
+        }
+    } else {
+        // Nota incorrecta
+        const livesElement = document.getElementById('carolsLives');
+        let currentLives = parseInt(livesElement.textContent);
+        currentLives--;
+        livesElement.textContent = currentLives;
+        
+        // Efecto visual de error
+        const playerNoteElements = document.querySelectorAll('.player-note');
+        if (playerNoteElements.length > 0) {
+            const lastNote = playerNoteElements[playerNoteElements.length - 1];
+            lastNote.classList.add('incorrect');
+        }
+        
+        showCarolsMessage(`❌ Nota incorrecta. Esperaba: ${musicalNotes[expectedNote]?.name || expectedNote}, Tocaste: ${musicalNotes[playedNote]?.name || playedNote}`, 'error');
+        playErrorSound();
+        
+        if (currentLives <= 0) {
+            endCarolsGame(false);
+        }
+    }
+    
+    updateCarolsGameDisplay();
+    updateProgressBar();
+}
+
+// Completar canción
+function completeSong() {
+    carolsGameActive = false;
+    isRecording = false;
+    clearTimeout(noteTimeout);
+    
+    // Bonus por completar la canción
+    const timeBonus = Math.floor((carolsGameTimeLeft / 120) * 50);
+    const perfectBonus = 30;
+    const songBonus = currentSong.points;
+    
+    carolsGameScore += timeBonus + perfectBonus + songBonus;
+    
+    showCarolsMessage(
+        `🎉 ¡Canción Completada!\n` +
+        `Bonus por tiempo: +${timeBonus} puntos\n` +
+        `Bonus perfecto: +${perfectBonus} puntos\n` +
+        `Bonus de canción: +${songBonus} puntos\n` +
+        `Puntuación total: ${carolsGameScore}`,
+        'success'
+    );
+    
+    playVictorySound();
+    
+    // Actualizar puntuación global
+    score += carolsGameScore;
+    updateDisplay();
+    
+    // Habilitar botones
+    document.getElementById('carolsStartBtn').disabled = false;
+    document.getElementById('carolsListenBtn').disabled = false;
+}
+
+// Configurar eventos del juego
+function setupCarolsGameEvents() {
+    const startBtn = document.getElementById('carolsStartBtn');
+    const listenBtn = document.getElementById('carolsListenBtn');
+    const resetBtn = document.getElementById('carolsResetBtn');
+    const tempoBtn = document.getElementById('carolsTempoBtn');
+    
+    startBtn.addEventListener('click', startCarolsGame);
+    listenBtn.addEventListener('click', playSongDemo);
+    resetBtn.addEventListener('click', initializeCarolsGame);
+    tempoBtn.addEventListener('click', changeTempo);
+    
+    // Controles de teclado
+    document.addEventListener('keydown', handleKeyboardInput);
+    
+    // Deshabilitar botones inicialmente
+    listenBtn.disabled = true;
+    
+    // Inicializar audio si es necesario
+    if (!audioContext) {
+        initAudio();
+    }
+}
+
+// Manejar entrada del teclado
+function handleKeyboardInput(event) {
+    if (!carolsGameActive || !isRecording) return;
+    
+    const key = event.key.toUpperCase();
+    const noteEntry = Object.entries(musicalNotes).find(([_, data]) => data.key === key);
+    
+    if (noteEntry) {
+        const [note] = noteEntry;
+        playNote(note);
+        event.preventDefault();
+    }
+}
+
+// Iniciar el juego
+function startCarolsGame() {
+    if (!currentSong) {
+        showCarolsMessage('¡Selecciona una canción primero!', 'error');
+        return;
+    }
+    
+    if (carolsGameActive) return;
+    
+    carolsGameActive = true;
+    document.getElementById('carolsStartBtn').disabled = true;
+    document.getElementById('carolsListenBtn').disabled = false;
+    
+    // Reiniciar notas del jugador
+    const playerNotesContainer = document.getElementById('playerNotes');
+    playerNotesContainer.innerHTML = '';
+    playerNotes = [];
+    
+    startCarolsTimer();
+    showCarolsMessage('🎤 ¡Tu turno! Repite la melodía usando el teclado...', 'success');
+    
+    // Iniciar modo de grabación después de un breve delay
+    setTimeout(() => {
+        isRecording = true;
+        updateCurrentAction('🎹 ¡Toca las notas!');
+    }, 1000);
+}
+
+// Reproducir demostración de la canción con duraciones reales
+function playSongDemo() {
+    if (!currentSong) return;
+    
+    showCarolsMessage('🎧 Reproduciendo melodía... Escucha atentamente', 'info');
+    updateCurrentAction('🎧 Escuchando melodía...');
+    
+    let noteIndex = 0;
+    let cumulativeTime = 0;
+    
+    function playNextNote() {
+        if (noteIndex >= currentSong.notes.length) {
+            updateCurrentAction('🎤 ¡Ahora repite la melodía!');
+            return;
+        }
+        
+        const noteData = currentSong.notes[noteIndex];
+        highlightSongNote(noteIndex);
+        
+        // Reproducir nota con duración real
+        const duration = playNoteSound(noteData.note, noteData.type, currentSong.bpm);
+        
+        noteIndex++;
+        
+        // Programar siguiente nota basado en la duración real
+        cumulativeTime += duration;
+        noteTimeout = setTimeout(playNextNote, duration);
+    }
+    
+    playNextNote();
+}
+
+// Resaltar nota de la canción
+function highlightSongNote(index) {
+    const noteElements = document.querySelectorAll('.song-note');
+    noteElements.forEach((note, i) => {
+        if (i === index) {
+            note.classList.add('active');
+        } else {
+            note.classList.remove('active');
+        }
+    });
+}
+
+// Cambiar tempo/velocidad
+function changeTempo() {
+    const tempos = [0.5, 0.75, 1.0, 1.25, 1.5]; // Multiplicadores de velocidad
+    const tempoNames = ['Muy Lento', 'Lento', 'Normal', 'Rápido', 'Muy Rápido'];
+    
+    const currentIndex = tempos.indexOf(currentTempo);
+    const nextIndex = (currentIndex + 1) % tempos.length;
+    
+    currentTempo = tempos[nextIndex];
+    
+    showCarolsMessage(`⚡ Velocidad: ${tempoNames[nextIndex]}`, 'info');
+}
+
+// Actualizar acción actual
+function updateCurrentAction(message) {
+    const actionElement = document.getElementById('currentAction');
+    actionElement.innerHTML = `<p>${message}</p>`;
+}
+
+// Actualizar barra de progreso
+function updateProgressBar() {
+    const progress = currentSong ? (playerNotes.length / currentSong.notes.length) * 100 : 0;
+    const progressBar = document.getElementById('songProgress');
+    const progressText = document.getElementById('songProgressText');
+    
+    if (progressBar) {
+        progressBar.style.width = `${progress}%`;
+        
+        // Cambiar color según progreso
+        if (progress < 30) {
+            progressBar.style.backgroundColor = '#ff4444';
+        } else if (progress < 70) {
+            progressBar.style.backgroundColor = '#ffaa00';
+        } else {
+            progressBar.style.backgroundColor = '#4CAF50';
+        }
+    }
+    
+    if (progressText) {
+        progressText.textContent = `Progreso: ${playerNotes.length}/${currentSong ? currentSong.notes.length : 0} notas`;
+    }
+}
+
+// Iniciar temporizador
+function startCarolsTimer() {
+    clearInterval(carolsGameTimer);
+    carolsGameTimer = setInterval(() => {
+        if (carolsGameActive) {
+            carolsGameTimeLeft--;
+            updateCarolsGameDisplay();
+            
+            if (carolsGameTimeLeft <= 0) {
+                endCarolsGame(false);
+            } else if (carolsGameTimeLeft <= 10) {
+                document.getElementById('carolsTime').style.color = '#ff4444';
+                document.getElementById('carolsTime').style.animation = 'pulse 1s infinite';
+            }
+        }
+    }, 1000);
+}
+
+// Finalizar juego
+function endCarolsGame(isVictory) {
+    carolsGameActive = false;
+    isRecording = false;
+    clearInterval(carolsGameTimer);
+    clearTimeout(noteTimeout);
+    stopAllSounds();
+    
+    if (!isVictory) {
+        showCarolsMessage(
+            `⏰ ¡Tiempo agotado!\n` +
+            `Completaste ${playerNotes.length}/${currentSong.notes.length} notas\n` +
+            `Puntuación: ${carolsGameScore}`,
+            'error'
+        );
+    }
+    
+    // Actualizar puntuación global
+    score += carolsGameScore;
+    updateDisplay();
+    
+    // Habilitar botones
+    document.getElementById('carolsStartBtn').disabled = false;
+    document.getElementById('carolsListenBtn').disabled = false;
+}
+
+// Actualizar display
+function updateCarolsGameDisplay() {
+    document.getElementById('carolsScore').textContent = carolsGameScore;
+    document.getElementById('carolsTime').textContent = `${carolsGameTimeLeft}s`;
+}
+
+// Mostrar mensaje
+function showCarolsMessage(message, type) {
+    const messageElement = document.getElementById('carolsMessage');
+    messageElement.textContent = message;
+    messageElement.className = `carols-message ${type}`;
+    
+    if (type === 'info') {
+        setTimeout(() => {
+            messageElement.className = 'carols-message';
+        }, 4000);
+    }
+}
+
+// Detener juego
+function stopCarolsGame() {
+    carolsGameActive = false;
+    isRecording = false;
+    clearInterval(carolsGameTimer);
+    clearTimeout(noteTimeout);
+    stopAllSounds();
+    document.removeEventListener('keydown', handleKeyboardInput);
+}
+
+// Agregar estilos CSS
+function addCarolsGameStyles() {
+    if (document.getElementById('carols-game-styles')) return;
+    
+    const style = document.createElement('style');
+    style.id = 'carols-game-styles';
+    style.textContent = `
+        .carols-game-container {
+            text-align: center;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .carols-game-info {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .carols-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .carols-stat {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .song-selector {
+            margin-bottom: 20px;
+        }
+        
+        .song-options {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .song-option {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            min-width: 150px;
+        }
+        
+        .song-option:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .song-option.selected {
+            border-color: #FFD700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+        
+        .song-emoji {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        
+        .song-details {
+            text-align: center;
+        }
+        
+        .song-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .song-difficulty, .song-bpm {
+            font-size: 0.8rem;
+            color: #FFD700;
+            margin-bottom: 3px;
+        }
+        
+        .song-points {
+            font-size: 0.8rem;
+            color: #4CAF50;
+        }
+        
+        .current-song-info {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #FFD700;
+        }
+        
+        .song-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .song-emoji-big {
+            font-size: 3rem;
+        }
+        
+        .song-details-big h4 {
+            margin-bottom: 5px;
+        }
+        
+        .song-meta {
+            display: flex;
+            gap: 10px;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+        
+        .difficulty-badge, .bpm-info {
+            background: #FFD700;
+            color: #000;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        
+        .notes-count, .points-value {
+            color: #ccc;
+        }
+        
+        .rhythm-info {
+            font-size: 0.9rem;
+            color: #FFD700;
+            margin-top: 5px;
+        }
+        
+        .carols-game-area {
+            margin: 25px 0;
+        }
+        
+        .music-display {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .song-progress {
+            margin-bottom: 20px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #4CAF50;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        
+        .progress-text {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        
+        .notes-display {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .song-notes, .player-notes {
+            flex: 1;
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            min-height: 100px;
+        }
+        
+        .song-note, .player-note {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 70px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .song-note.active {
+            background: rgba(255, 215, 0, 0.3);
+            transform: scale(1.1);
+        }
+        
+        .player-note.correct {
+            background: rgba(76, 175, 80, 0.3);
+            border: 2px solid #4CAF50;
+        }
+        
+        .player-note.incorrect {
+            background: rgba(244, 67, 54, 0.3);
+            border: 2px solid #f44336;
+            animation: shake 0.5s ease;
+        }
+        
+        .note-symbol {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            font-family: 'Arial Unicode MS', 'Segoe UI Symbol';
+        }
+        
+        .note-name {
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        
+        .note-duration {
+            font-size: 0.7rem;
+            color: #FFD700;
+        }
+        
+        .current-action {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #FFD700;
+        }
+        
+        .piano-keyboard {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .piano-key {
+            width: 70px;
+            height: 120px;
+            background: #333;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .piano-key:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .piano-key.active {
+            transform: scale(0.95);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+        
+        .key-label {
+            position: absolute;
+            top: 8px;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .key-note {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .key-emoji {
+            font-size: 1.5rem;
+        }
+        
+        .rhythm-guide {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .rhythm-types {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .rhythm-type {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid;
+        }
+        
+        .rhythm-type[data-type="WHOLE"] { border-left-color: #ff4444; }
+        .rhythm-type[data-type="HALF"] { border-left-color: #ff8800; }
+        .rhythm-type[data-type="QUARTER"] { border-left-color: #ffaa00; }
+        .rhythm-type[data-type="EIGHTH"] { border-left-color: #ffff00; }
+        
+        .rhythm-emoji {
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 5px;
+            font-family: 'Arial Unicode MS', 'Segoe UI Symbol';
+        }
+        
+        .rhythm-name {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        
+        .rhythm-duration {
+            display: block;
+            font-size: 0.8rem;
+            color: #ccc;
+        }
+        
+        .controls-guide {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .keyboard-layout {
+            margin-top: 10px;
+        }
+        
+        .key-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .key-guide {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 60px;
+        }
+        
+        .key-guide span {
+            display: block;
+            font-size: 0.8rem;
+            color: #FFD700;
+            margin-top: 3px;
+        }
+        
+        .carols-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        
+        .carols-btn {
+            background: linear-gradient(135deg, #c8102e, #a00d26);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            min-width: 160px;
+        }
+        
+        .carols-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(200, 16, 46, 0.4);
+        }
+        
+        .carols-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .carols-message {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-weight: bold;
+            white-space: pre-line;
+            min-height: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .carols-message.success {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+        }
+        
+        .carols-message.error {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+            border: 2px solid #f44336;
+        }
+        
+        .carols-message.info {
+            background: rgba(33, 150, 243, 0.2);
+            color: #2196F3;
+            border: 2px solid #2196F3;
+        }
+        
+        .carols-tips {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        .carols-tips ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 15px;
+        }
+        
+        .carols-tips li {
+            margin-bottom: 8px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .carols-tips li:before {
+            content: "🎄";
+            position: absolute;
+            left: 0;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .carols-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .song-options {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .song-option {
+                width: 100%;
+                max-width: 250px;
+            }
+            
+            .notes-display {
+                flex-direction: column;
+            }
+            
+            .rhythm-types {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .piano-keyboard {
+                gap: 5px;
+            }
+            
+            .piano-key {
+                width: 50px;
+                height: 100px;
+            }
+            
+            .carols-controls {
+                gap: 10px;
+            }
+            
+            .carols-btn {
+                min-width: 140px;
+                padding: 10px 15px;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
             
             // Inicializar display
             updateDisplay();

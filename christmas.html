@@ -1903,26 +1903,6 @@
             backgroundMusic.currentTime = 0;
         }
 
-        // Crear efecto de nieve
-        function createSnowflakes() {
-            const snowContainer = document.body;
-            const snowflakeCount = Math.min(50, window.innerWidth / 20); // Menos copos en móviles
-
-            for (let i = 0; i < snowflakeCount; i++) {
-                const snowflake = document.createElement('div');
-                snowflake.className = 'snowflake';
-                snowflake.innerHTML = '❄';
-                snowflake.style.left = `${Math.random() * 100}vw`;
-                snowflake.style.animationDuration = `${Math.random() * 5 + 5}s`;
-                snowflake.style.opacity = Math.random() * 0.7 + 0.3;
-                snowflake.style.fontSize = `${Math.random() * 10 + 8}px`;
-                snowflake.style.animationDelay = `${Math.random() * 5}s`;
-                snowflake.style.pointerEvents = 'none';
-                
-                snowContainer.appendChild(snowflake);
-            }
-        }
-
         // Crear efecto de fuegos artificiales
         function createFireworks() {
             if (window.innerWidth < 768) return; // No mostrar en móviles para mejor rendimiento
@@ -1977,7 +1957,6 @@
 
         // Inicializar la aplicación
         initApp();
-        createSnowflakes();
 
         // Optimización para móviles: ajustar dinámicamente
         function optimizeForMobile() {

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -6,1051 +7,912 @@
     <meta property="og:title" content="Christmas - Grouvex Studios">
     <meta property="og:description" content="Celebra Navidad, Año Nuevo y Reyes magos en nuestro Sitio web oficial de Grouvex Studios. Felices Fiestas">
     <meta property="og:image" content="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png">
-    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects"><meta name="author" content="Grouvex Studios"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="theme-color" content="#hexcode"><meta property="og:url" content="https://www.grouvex.com/christmas"><meta property="og:type" content="website"><meta property="og:locale" content="es_ES"><link rel="canonical" href="https://www.grouvex.com/christmas"><link rel="icon" href="img/GROUVEX.png" type="image/x-icon"><meta property="og:site_name" content="Grouvex Studios">
-    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script><script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script><script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script><script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    <link rel="stylesheet" href="index.css"><link rel="stylesheet" href="temas.css">
-    <script src="time.js"></script></script><script type="module" src="abc.js"></script><script src="index.js"></script>
-    <script src="jquery-3.5.1.min.js"></script>
-        <script> 
-            document.addEventListener("DOMContentLoaded", function() { 
-                $("#menuG").load("menuG.html");$("#menuE").load("menuE.html");$("#menuT").load("menuT.html");$("#menuU").load("menuU.html");
-                $("#footer").load("footer.html"); 
-                $("#news").load("news.html"); $("#tosypp").load("tosypp.html");
-            });
-    </script>
-<title>Calendario de Adviento Mágico (UTC)</title>
-<style>
-    :root {
-        --primary-color: #1a472a;
-        --secondary-color: #2e8b57;
-        --accent-color: #ff6b6b;
-        --gold-color: #ffd700;
-        --light-color: #f8f9fa;
-        --dark-color: #1a1a2e;
-        --blue-color: #4a90e2;
-        --purple-color: #9b59b6;
-        --red-color: #e74c3c;
-    }
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Comic Sans MS', cursive, sans-serif;
-    }
-
-    body {
-        background: linear-gradient(135deg, #1a472a, #2e8b57);
-        color: var(--light-color);
-        min-height: 100vh;
-        padding: 15px;
-        overflow-x: hidden;
-        position: relative;
-        transition: all 1s ease;
-    }
-
-    /* Media queries para diferentes tamaños de pantalla */
-    @media (min-width: 1200px) {
-        body { padding: 30px; }
-    }
-
-    @media (max-width: 768px) {
-        body { padding: 10px; }
-    }
-
-    /* Fondos especiales - Responsivos */
-    body.christmas-theme {
-        background: linear-gradient(135deg, #b30000, #1a472a);
-        background-image: 
-            radial-gradient(circle at 10% 20%, rgba(255, 215, 0, 0.3) 0%, transparent 20%),
-            radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.3) 0%, transparent 20%),
-            radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
-    }
-
-    body.newyear-theme {
-        background: linear-gradient(135deg, #000428, #004e92);
-        background-image: 
-            radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.4) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.3) 0%, transparent 50%);
-        animation: sparkle 3s infinite alternate;
-    }
-
-    body.reyes-theme {
-        background: linear-gradient(135deg, #8B4513, #D2691E, #FFD700);
-        background-image: 
-            radial-gradient(circle at 30% 30%, rgba(255, 215, 0, 0.4) 0%, transparent 40%),
-            radial-gradient(circle at 70% 70%, rgba(139, 69, 19, 0.3) 0%, transparent 40%);
-    }
-
-    @keyframes sparkle {
-        0% { background: linear-gradient(135deg, #000428, #004e92); }
-        100% { background: linear-gradient(135deg, #004e92, #000428); }
-    }
-
-    .container {
-        max-width: 1400px;
-        margin: 0 auto;
-        width: 100%;
-        text-align: center;
-        padding: 0 10px;
-    }
-
-    /* Header responsive */
-    header {
-        margin-bottom: 20px;
-        padding: 15px;
-        background: rgba(0, 0, 0, 0.3);
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        backdrop-filter: blur(10px);
-        transition: all 0.5s ease;
-        width: 100%;
-    }
-
-    @media (min-width: 768px) {
-        header {
-            padding: 20px;
-            margin-bottom: 30px;
+    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects">
+    <meta name="author" content="Grouvex Studios">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#1a472a">
+    <link rel="icon" href="img/GROUVEX.png" type="image/x-icon">
+    
+    <!-- Preload CSS para mejor performance -->
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="temas.css">
+    
+    <!-- Preconnect para recursos externos -->
+    <link rel="preconnect" href="https://www.gstatic.com">
+    <link rel="preconnect" href="https://translate.google.com">
+    <link rel="preconnect" href="https://raw.githubusercontent.com">
+    
+    <!-- CSS inline para critical render path -->
+    <style>
+        /* ESTILOS RESPONSIVE MEJORADOS */
+        :root {
+            --primary-color: #1a472a;
+            --secondary-color: #2e8b57;
+            --accent-color: #ff6b6b;
+            --gold-color: #ffd700;
+            --light-color: #f8f9fa;
+            --dark-color: #1a1a2e;
+            --blue-color: #4a90e2;
+            --purple-color: #9b59b6;
+            --red-color: #e74c3c;
+            --safe-area-top: env(safe-area-inset-top, 0px);
+            --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-area-left: env(safe-area-inset-left, 0px);
+            --safe-area-right: env(safe-area-inset-right, 0px);
         }
-    }
 
-    h1 {
-        font-size: clamp(1.8rem, 5vw, 3.5rem);
-        margin-bottom: 10px;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        color: var(--gold-color);
-        line-height: 1.2;
-        word-wrap: break-word;
-        padding: 0 5px;
-    }
-
-    .subtitle {
-        font-size: clamp(0.9rem, 2.5vw, 1.2rem);
-        margin-bottom: 10px;
-        opacity: 0.9;
-        line-height: 1.4;
-        padding: 0 5px;
-    }
-
-    .utc-notice {
-        background: rgba(255, 215, 0, 0.2);
-        border: 2px solid var(--gold-color);
-        border-radius: 8px;
-        padding: 8px;
-        margin-top: 10px;
-        font-size: clamp(0.8rem, 2vw, 1rem);
-        line-height: 1.4;
-        text-align: center;
-    }
-
-    @media (min-width: 768px) {
-        .utc-notice {
-            padding: 12px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
-    }
 
-    .utc-time {
-        font-weight: bold;
-        color: var(--gold-color);
-        display: inline-block;
-        margin-top: 5px;
-        font-size: clamp(0.85rem, 2vw, 1rem);
-    }
-
-    /* Contadores responsivos */
-    .countdown-container {
-        display: none;
-        margin: 20px auto;
-        width: 100%;
-        max-width: 900px;
-        background: rgba(0, 0, 0, 0.4);
-        border-radius: 12px;
-        padding: 15px;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-        backdrop-filter: blur(10px);
-        transition: all 0.5s ease;
-    }
-
-    @media (min-width: 768px) {
-        .countdown-container {
-            padding: 25px;
-            margin: 30px auto;
-        }
-    }
-
-    .countdown-title {
-        font-size: clamp(1.2rem, 3.5vw, 2.2rem);
-        margin-bottom: 15px;
-        color: var(--gold-color);
-        line-height: 1.3;
-        padding: 0 5px;
-    }
-
-    .countdown {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        margin-bottom: 15px;
-        flex-wrap: wrap;
-    }
-
-    @media (max-width: 480px) {
-        .countdown {
-            gap: 8px;
-        }
-    }
-
-    .countdown-item {
-        background: linear-gradient(145deg, var(--secondary-color), var(--primary-color));
-        border-radius: 8px;
-        padding: 12px;
-        min-width: 80px;
-        width: 22%;
-        max-width: 120px;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-        transition: all 0.5s ease;
-        border: 2px solid transparent;
-        position: relative;
-        overflow: hidden;
-    }
-
-    @media (max-width: 600px) {
-        .countdown-item {
-            min-width: 70px;
-            padding: 10px;
-            width: 22%;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .countdown-item {
-            min-width: 65px;
-            padding: 8px;
-            width: 22%;
-        }
-    }
-
-    .countdown-number {
-        font-size: clamp(1.5rem, 4vw, 2.5rem);
-        font-weight: bold;
-        margin-bottom: 5px;
-        color: var(--gold-color);
-        font-family: 'Courier New', monospace;
-        line-height: 1;
-    }
-
-    .countdown-label {
-        font-size: clamp(0.7rem, 1.8vw, 0.9rem);
-        opacity: 0.9;
-    }
-
-    .countdown-message {
-        font-size: clamp(0.9rem, 2.2vw, 1.2rem);
-        margin-top: 12px;
-        color: var(--gold-color);
-        padding: 0 5px;
-        line-height: 1.4;
-    }
-
-    /* Calendario responsivo */
-    .calendar-container {
-        display: none;
-        width: 100%;
-        overflow: hidden;
-    }
-
-    .calendar {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 6px;
-        margin-bottom: 20px;
-        width: 100%;
-    }
-
-    @media (min-width: 768px) {
-        .calendar {
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .calendar {
-            gap: 4px;
-        }
-    }
-
-    .calendar-title {
-        grid-column: 1 / -1;
-        font-size: clamp(1.2rem, 3vw, 1.8rem);
-        margin-bottom: 10px;
-        color: var(--gold-color);
-        padding: 0 5px;
-    }
-
-    .day-label {
-        font-weight: bold;
-        padding: 8px 4px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 4px;
-        font-size: clamp(0.7rem, 1.8vw, 0.9rem);
-    }
-
-    @media (max-width: 480px) {
-        .day-label {
-            padding: 6px 2px;
-            font-size: 0.75rem;
-        }
-    }
-
-    .day {
-        aspect-ratio: 1;
-        background: linear-gradient(145deg, var(--secondary-color), var(--primary-color));
-        border-radius: 6px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        font-size: clamp(1rem, 2.5vw, 1.5rem);
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        position: relative;
-        overflow: hidden;
-        padding: 4px;
-        min-height: 40px;
-    }
-
-    @media (min-width: 768px) {
-        .day {
-            border-radius: 8px;
-            padding: 5px;
-            min-height: 60px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .day {
-            min-height: 35px;
-            font-size: 0.9rem;
-        }
-    }
-
-    .day:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-    }
-
-    .day.opened {
-        background: linear-gradient(145deg, var(--gold-color), #ffa500);
-        color: var(--dark-color);
-        transform: scale(0.95);
-    }
-
-    .day.opened::after {
-        content: "✓";
-        position: absolute;
-        bottom: 5px;
-        right: 5px;
-        font-size: clamp(0.8rem, 2vw, 1rem);
-        color: var(--dark-color);
-    }
-
-    .day.disabled {
-        background: linear-gradient(145deg, #555, #333);
-        color: #777;
-        cursor: not-allowed;
-    }
-
-    .day.disabled:hover {
-        transform: none;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .day.today {
-        border: 3px solid var(--accent-color);
-        animation: pulse 2s infinite;
-    }
-
-    .day.special {
-        background: linear-gradient(145deg, var(--accent-color), #ff5252);
-        color: white;
-    }
-
-    .day.christmas {
-        background: linear-gradient(145deg, var(--gold-color), #ff6b6b);
-        color: var(--dark-color);
-        animation: christmasGlow 2s infinite alternate;
-    }
-
-    .day.new-year {
-        background: linear-gradient(145deg, var(--blue-color), var(--purple-color));
-        color: white;
-        animation: newYearGlow 1.5s infinite alternate;
-    }
-
-    .day.reyes {
-        background: linear-gradient(145deg, #8B4513, #D2691E, #FFD700);
-        color: white;
-        animation: reyesGlow 2s infinite alternate;
-    }
-
-    .day-number {
-        font-size: clamp(1rem, 2.5vw, 1.8rem);
-        line-height: 1;
-        margin-bottom: 2px;
-    }
-
-    @media (max-width: 480px) {
-        .day-number {
-            font-size: 1rem;
-        }
-    }
-
-    .day-content {
-        font-size: clamp(0.6rem, 1.5vw, 0.9rem);
-        margin-top: 2px;
-        text-align: center;
-        line-height: 1.1;
-    }
-
-    @media (max-width: 480px) {
-        .day-content {
-            font-size: 0.6rem;
-        }
-    }
-
-    /* Modal responsivo */
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.8);
-        z-index: 1000;
-        align-items: center;
-        justify-content: center;
-        padding: 15px;
-    }
-
-    .modal-content {
-        background: linear-gradient(135deg, var(--light-color), #e9ecef);
-        color: var(--dark-color);
-        width: 95%;
-        max-width: 500px;
-        max-height: 85vh;
-        padding: 20px;
-        border-radius: 12px;
-        text-align: center;
-        position: relative;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-        animation: modalAppear 0.5s ease;
-        overflow-y: auto;
-    }
-
-    @media (min-width: 768px) {
-        .modal-content {
-            padding: 30px;
-            max-width: 550px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .modal-content {
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a472a, #2e8b57);
+            color: var(--light-color);
+            min-height: 100vh;
+            min-height: calc(100vh - var(--safe-area-top) - var(--safe-area-bottom));
             padding: 15px;
-            max-height: 90vh;
+            padding-top: calc(15px + var(--safe-area-top));
+            padding-bottom: calc(15px + var(--safe-area-bottom));
+            overflow-x: hidden;
+            position: relative;
+            transition: all 0.5s ease;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-    }
 
-    .close-modal {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        font-size: 1.5rem;
-        cursor: pointer;
-        color: var(--dark-color);
-        width: 30px;
-        height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 2;
-    }
-
-    @media (min-width: 768px) {
-        .close-modal {
-            top: 15px;
-            right: 15px;
-            font-size: 1.8rem;
+        /* Media queries para diferentes tamaños de pantalla */
+        @media (min-width: 1200px) {
+            body { 
+                padding-left: 30px;
+                padding-right: 30px;
+            }
         }
-    }
 
-    .modal-title {
-        color: var(--primary-color);
-        margin-bottom: 12px;
-        font-size: clamp(1.2rem, 3vw, 1.8rem);
-        line-height: 1.3;
-        padding-right: 25px;
-    }
-
-    .modal-image {
-        max-width: 100%;
-        max-height: 180px;
-        border-radius: 8px;
-        margin: 12px 0;
-        object-fit: contain;
-    }
-
-    @media (min-width: 768px) {
-        .modal-image {
-            max-height: 220px;
+        @media (max-width: 768px) {
+            body { 
+                padding: 10px;
+                padding-top: calc(10px + var(--safe-area-top));
+                padding-bottom: calc(10px + var(--safe-area-bottom));
+            }
         }
-    }
 
-    .modal-audio {
-        width: 100%;
-        margin: 12px 0;
-    }
+        /* Fondos especiales - Responsivos */
+        body.christmas-theme {
+            background: linear-gradient(135deg, #b30000, #1a472a);
+            background-attachment: fixed;
+        }
 
-    .modal-text {
-        color: black;
-        margin: 12px 0;
-        line-height: 1.6;
-        font-size: clamp(0.9rem, 2vw, 1.1rem);
-        text-align: left;
-    }
+        body.newyear-theme {
+            background: linear-gradient(135deg, #000428, #004e92);
+            background-attachment: fixed;
+        }
 
-    /* Controles de música responsivos */
-    .music-controls {
-        margin-top: 15px;
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        flex-wrap: wrap;
-        padding: 0 5px;
-    }
+        body.reyes-theme {
+            background: linear-gradient(135deg, #8B4513, #D2691E, #FFD700);
+            background-attachment: fixed;
+        }
 
-    @media (max-width: 480px) {
-        .music-controls {
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            min-width: 280px;
+        }
+
+        /* Header responsive mejorado */
+        header {
+            margin-bottom: clamp(15px, 3vw, 25px);
+            padding: clamp(12px, 2.5vw, 20px);
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: clamp(8px, 1.5vw, 12px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            font-size: clamp(1.5rem, 6vw, 3rem);
+            margin-bottom: clamp(8px, 1.5vw, 15px);
+            text-align: center;
+            color: var(--gold-color);
+            line-height: 1.2;
+            word-break: break-word;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-weight: 800;
+        }
+
+        .subtitle {
+            font-size: clamp(0.85rem, 3vw, 1.1rem);
+            margin-bottom: clamp(10px, 2vw, 15px);
+            text-align: center;
+            opacity: 0.9;
+            line-height: 1.4;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* UTC Notice responsive */
+        .utc-notice {
+            background: rgba(255, 215, 0, 0.15);
+            border: 2px solid var(--gold-color);
+            border-radius: clamp(6px, 1vw, 8px);
+            padding: clamp(8px, 1.5vw, 12px);
+            margin: clamp(10px, 2vw, 15px) auto;
+            font-size: clamp(0.75rem, 2vw, 0.95rem);
+            text-align: center;
+            max-width: 800px;
+            backdrop-filter: blur(5px);
+        }
+
+        .utc-time {
+            font-weight: bold;
+            color: var(--gold-color);
+            display: inline-block;
+            margin-top: 5px;
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            word-break: break-word;
+        }
+
+        /* Contadores responsivos mejorados */
+        .countdown-container {
+            display: none;
+            margin: clamp(15px, 3vw, 25px) auto;
+            width: 100%;
+            max-width: 900px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: clamp(10px, 2vw, 12px);
+            padding: clamp(15px, 3vw, 25px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .countdown-title {
+            font-size: clamp(1.1rem, 4vw, 2rem);
+            margin-bottom: clamp(12px, 2.5vw, 20px);
+            color: var(--gold-color);
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .countdown {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: clamp(8px, 1.5vw, 15px);
+            margin-bottom: clamp(12px, 2vw, 18px);
+        }
+
+        @media (max-width: 480px) {
+            .countdown {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .countdown {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+        }
+
+        .countdown-item {
+            background: linear-gradient(145deg, var(--secondary-color), var(--primary-color));
+            border-radius: clamp(6px, 1vw, 8px);
+            padding: clamp(10px, 2vw, 15px);
+            text-align: center;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            min-height: 90px;
+            display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
         }
-    }
 
-    .music-btn {
-        background: var(--accent-color);
-        color: white;
-        border: none;
-        padding: 10px 16px;
-        border-radius: 50px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: clamp(0.8rem, 2vw, 1rem);
-        min-width: 180px;
-        justify-content: center;
-    }
-
-    @media (max-width: 480px) {
-        .music-btn {
-            width: 90%;
-            padding: 12px 16px;
+        .countdown-number {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            font-weight: bold;
+            color: var(--gold-color);
+            font-family: 'Courier New', monospace;
+            line-height: 1;
+            margin-bottom: 5px;
         }
-    }
 
-    .music-btn:hover {
-        background: #ff5252;
-        transform: scale(1.05);
-    }
-
-    footer {
-        margin-top: 20px;
-        padding: 12px;
-        background: rgba(0, 0, 0, 0.3);
-        border-radius: 8px;
-        font-size: clamp(0.8rem, 1.8vw, 0.9rem);
-        line-height: 1.4;
-        transition: all 0.5s ease;
-    }
-
-    /* Audio options responsivos */
-    .audio-options {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        margin: 12px 0;
-    }
-
-    .audio-option {
-        background: var(--secondary-color);
-        color: white;
-        border: none;
-        padding: 10px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-size: clamp(0.85rem, 2vw, 1rem);
-        text-align: center;
-    }
-
-    .audio-option:hover {
-        background: var(--primary-color);
-    }
-
-    .firework {
-        position: absolute;
-        width: 5px;
-        height: 5px;
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 100;
-    }
-
-    .time-info {
-        margin-top: 10px;
-        font-size: clamp(0.8rem, 1.8vw, 0.9rem);
-        opacity: 0.8;
-        padding: 0 5px;
-        line-height: 1.4;
-    }
-
-    /* Mensajes especiales responsivos */
-    .special-message {
-        font-size: clamp(1.5rem, 4vw, 2.5rem);
-        font-weight: bold;
-        margin: 15px 0;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        animation: textGlow 2s infinite alternate;
-        padding: 15px;
-        border-radius: 12px;
-        backdrop-filter: blur(10px);
-        line-height: 1.3;
-        word-wrap: break-word;
-    }
-
-    @media (max-width: 480px) {
-        .special-message {
-            padding: 12px;
-            margin: 10px 0;
+        .countdown-label {
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-    }
 
-    .christmas-message {
-        color: #ff6b6b;
-        background: rgba(179, 0, 0, 0.3);
-        border: 3px solid var(--gold-color);
-    }
-
-    .newyear-message {
-        color: #4a90e2;
-        background: rgba(0, 78, 146, 0.3);
-        border: 3px solid #00ffff;
-    }
-
-    .reyes-message {
-        color: #FFD700;
-        background: rgba(139, 69, 19, 0.3);
-        border: 3px solid var(--gold-color);
-    }
-
-    /* Contadores especiales responsivos */
-    .special-countdown {
-        display: flex;
-        justify-content: center;
-        gap: 8px;
-        margin: 15px 0;
-        flex-wrap: wrap;
-    }
-
-    @media (max-width: 480px) {
-        .special-countdown {
-            gap: 6px;
+        .countdown-message {
+            font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+            margin-top: clamp(10px, 2vw, 15px);
+            color: var(--gold-color);
+            text-align: center;
+            line-height: 1.4;
         }
-    }
 
-    .special-countdown-item {
-        background: linear-gradient(145deg, var(--gold-color), #ffa500);
-        border-radius: 8px;
-        padding: 12px;
-        min-width: 70px;
-        width: 22%;
-        max-width: 90px;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
-        border: 2px solid var(--gold-color);
-        position: relative;
-        overflow: hidden;
-        animation: specialPulse 2s infinite;
-    }
+        /* Calendario responsive mejorado */
+        .calendar-container {
+            display: none;
+            width: 100%;
+            overflow: hidden;
+        }
 
-    @media (max-width: 600px) {
-        .special-countdown-item {
-            min-width: 60px;
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: clamp(4px, 1vw, 10px);
+            margin-bottom: clamp(15px, 3vw, 25px);
+            width: 100%;
+        }
+
+        @media (max-width: 480px) {
+            .calendar {
+                gap: 3px;
+            }
+        }
+
+        .calendar-title {
+            grid-column: 1 / -1;
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            margin-bottom: clamp(10px, 2vw, 15px);
+            color: var(--gold-color);
+            text-align: center;
             padding: 10px;
-            width: 22%;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
         }
-    }
 
-    @media (max-width: 480px) {
-        .special-countdown-item {
-            min-width: 55px;
-            padding: 8px;
-            width: 22%;
+        .day-label {
+            font-weight: bold;
+            padding: clamp(6px, 1vw, 10px);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            font-size: clamp(0.65rem, 1.8vw, 0.85rem);
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-    }
 
-    .special-countdown-number {
-        font-size: clamp(1.2rem, 3vw, 2rem);
-        font-weight: bold;
-        color: var(--dark-color);
-        font-family: 'Courier New', monospace;
-        line-height: 1;
-    }
-
-    .special-countdown-label {
-        font-size: clamp(0.65rem, 1.6vw, 0.8rem);
-        color: var(--dark-color);
-        font-weight: bold;
-    }
-
-    /* Contador detallado responsivo */
-    .detailed-countdown {
-        display: flex;
-        justify-content: center;
-        gap: 8px;
-        margin: 15px 0;
-        flex-wrap: wrap;
-    }
-
-    @media (max-width: 480px) {
-        .detailed-countdown {
-            gap: 6px;
+        .day {
+            aspect-ratio: 1;
+            background: linear-gradient(145deg, var(--secondary-color), var(--primary-color));
+            border-radius: clamp(4px, 0.8vw, 6px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            padding: clamp(2px, 0.5vw, 5px);
+            border: 2px solid transparent;
+            user-select: none;
         }
-    }
 
-    .detailed-countdown-item {
-        background: linear-gradient(145deg, var(--secondary-color), var(--primary-color));
-        border-radius: 8px;
-        padding: 12px;
-        min-width: 70px;
-        width: 22%;
-        max-width: 90px;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-        border: 2px solid var(--gold-color);
-    }
-
-    @media (max-width: 600px) {
-        .detailed-countdown-item {
-            min-width: 60px;
-            padding: 10px;
-            width: 22%;
+        .day:hover:not(.disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.3);
         }
-    }
 
-    @media (max-width: 480px) {
-        .detailed-countdown-item {
-            min-width: 55px;
-            padding: 8px;
-            width: 22%;
+        .day:active:not(.disabled) {
+            transform: translateY(-1px);
+            transition-duration: 0.1s;
         }
-    }
 
-    .detailed-countdown-number {
-        font-size: clamp(1.2rem, 3vw, 2rem);
-        font-weight: bold;
-        color: var(--gold-color);
-        font-family: 'Courier New', monospace;
-        line-height: 1;
-    }
-
-    .detailed-countdown-label {
-        font-size: clamp(0.65rem, 1.6vw, 0.8rem);
-        opacity: 0.9;
-    }
-
-    /* Estilos para cuando quedan 5 días o menos - Responsivos */
-    .urgent-countdown {
-        animation: urgentFlash 1s infinite;
-        background: linear-gradient(145deg, #ff6b6b, #ff5252) !important;
-        border: 2px solid #ffd700 !important;
-        box-shadow: 0 0 20px rgba(255, 107, 107, 0.7) !important;
-    }
-
-    .urgent-countdown .detailed-countdown-number {
-        color: white !important;
-        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-    }
-
-    .urgent-countdown .detailed-countdown-label {
-        color: white !important;
-        font-weight: bold;
-    }
-
-    /* Copos de nieve responsivos */
-    .snowflake {
-        position: absolute;
-        top: -10px;
-        color: white;
-        font-size: clamp(0.8rem, 2vw, 1rem);
-        user-select: none;
-        pointer-events: none;
-        z-index: -1;
-        animation-name: fall;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-    }
-
-    .countdown-progress {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        height: 3px;
-        background: var(--gold-color);
-        width: 100%;
-        transform-origin: left;
-        animation: progressBar 1s linear forwards;
-    }
-
-    /* Animaciones responsivas */
-    @keyframes fall {
-        to {
-            transform: translateY(100vh) rotate(360deg);
+        .day.opened {
+            background: linear-gradient(145deg, var(--gold-color), #ffa500);
+            color: var(--dark-color);
         }
-    }
 
-    @keyframes modalAppear {
-        from { transform: scale(0.9); opacity: 0; }
-        to { transform: scale(1); opacity: 1; }
-    }
-
-    @keyframes textGlow {
-        0% { 
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-            transform: scale(1);
+        .day.opened::after {
+            content: "✓";
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            font-size: clamp(0.7rem, 1.5vw, 1rem);
+            color: var(--dark-color);
+            font-weight: bold;
         }
-        100% { 
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+
+        .day.disabled {
+            background: linear-gradient(145deg, #555, #333);
+            color: #777;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .day.today {
+            border: 3px solid var(--accent-color);
+            animation: pulse 2s infinite;
+        }
+
+        .day.special {
+            border: 2px solid var(--gold-color);
+        }
+
+        .day.christmas {
+            background: linear-gradient(145deg, var(--gold-color), #ff6b6b);
+            color: var(--dark-color);
+            animation: christmasGlow 2s infinite alternate;
+        }
+
+        .day.new-year {
+            background: linear-gradient(145deg, var(--blue-color), var(--purple-color));
+            color: white;
+            animation: newYearGlow 1.5s infinite alternate;
+        }
+
+        .day.reyes {
+            background: linear-gradient(145deg, #8B4513, #D2691E, #FFD700);
+            color: white;
+            animation: reyesGlow 2s infinite alternate;
+        }
+
+        .day-number {
+            font-size: clamp(0.9rem, 3vw, 1.5rem);
+            line-height: 1;
+            margin-bottom: 2px;
+            font-weight: 800;
+        }
+
+        .day-content {
+            font-size: clamp(0.55rem, 1.5vw, 0.75rem);
+            text-align: center;
+            line-height: 1.1;
+            max-width: 90%;
+            word-break: break-word;
+        }
+
+        /* MODAL RESPONSIVE MEJORADO */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(10px, 3vw, 20px);
+            padding-top: calc(clamp(10px, 3vw, 20px) + var(--safe-area-top));
+            padding-bottom: calc(clamp(10px, 3vw, 20px) + var(--safe-area-bottom));
+            animation: modalFadeIn 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            color: var(--dark-color);
+            width: 100%;
+            max-width: min(95vw, 600px);
+            max-height: calc(100vh - 40px - var(--safe-area-top) - var(--safe-area-bottom));
+            padding: clamp(15px, 3vw, 25px);
+            border-radius: clamp(10px, 2vw, 15px);
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: modalSlideIn 0.4s ease;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: clamp(10px, 2vw, 15px);
+            right: clamp(10px, 2vw, 15px);
+            width: clamp(32px, 6vw, 40px);
+            height: clamp(32px, 6vw, 40px);
+            border-radius: 50%;
+            background: var(--accent-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: bold;
+            z-index: 10;
+            border: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .close-modal:hover {
+            background: #ff5252;
+            transform: scale(1.1);
+        }
+
+        .close-modal:active {
+            transform: scale(0.95);
+        }
+
+        .modal-title {
+            color: var(--primary-color);
+            margin-bottom: clamp(12px, 2.5vw, 20px);
+            font-size: clamp(1.1rem, 4vw, 1.8rem);
+            line-height: 1.3;
+            padding-right: clamp(40px, 8vw, 50px);
+            text-align: center;
+            word-break: break-word;
+        }
+
+        /* CONTENIDOS RESPONSIVE DEL MODAL */
+        .modal-body {
+            width: 100%;
+        }
+
+        .modal-text-content {
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            font-weight: bold;
+            margin: clamp(15px, 3vw, 25px) 0;
+            text-align: center;
+            line-height: 1.4;
+            color: #1a472a;
+            padding: clamp(10px, 2vw, 15px);
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid var(--gold-color);
+            word-break: break-word;
+            hyphens: auto;
+        }
+
+        .modal-description {
+            color: #333;
+            margin: clamp(10px, 2vw, 15px) 0;
+            line-height: 1.6;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        /* Imágenes responsive */
+        .modal-image-container {
+            width: 100%;
+            margin: clamp(15px, 3vw, 25px) 0;
+            border-radius: clamp(8px, 1.5vw, 12px);
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background: #f0f0f0;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: auto;
+            max-height: 60vh;
+            object-fit: contain;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .modal-image:hover {
             transform: scale(1.02);
         }
-    }
 
-    @keyframes pulse {
-        0% { 
-            box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7);
-            transform: scale(1);
+        /* Audio responsive */
+        .modal-audio-container {
+            width: 100%;
+            margin: clamp(15px, 3vw, 25px) 0;
+            background: rgba(26, 71, 42, 0.1);
+            border-radius: clamp(8px, 1.5vw, 12px);
+            padding: clamp(15px, 3vw, 20px);
         }
-        50% { 
-            transform: scale(1.03);
-        }
-        70% { 
-            box-shadow: 0 0 0 10px rgba(255, 107, 107, 0);
-        }
-        100% { 
-            box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
-            transform: scale(1);
-        }
-    }
 
-    @keyframes countdownFlash {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.05); background: var(--accent-color); }
-        100% { transform: scale(1); }
-    }
+        .modal-audio {
+            width: 100%;
+            height: 54px;
+            border-radius: 27px;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border: 2px solid var(--secondary-color);
+        }
 
-    @keyframes christmasGlow {
-        0% { 
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-            transform: scale(1);
+        .modal-audio::-webkit-media-controls-panel {
+            background: white;
         }
-        100% { 
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.7);
-            transform: scale(1.03);
-        }
-    }
 
-    @keyframes newYearGlow {
-        0% { 
-            box-shadow: 0 0 15px rgba(74, 144, 226, 0.5);
-            transform: scale(1);
+        .modal-audio::-webkit-media-controls-play-button {
+            background-color: var(--secondary-color);
+            border-radius: 50%;
         }
-        100% { 
-            box-shadow: 0 0 30px rgba(155, 89, 182, 0.7);
-            transform: scale(1.03);
-        }
-    }
 
-    @keyframes reyesGlow {
-        0% { 
-            box-shadow: 0 0 15px rgba(139, 69, 19, 0.5);
-            transform: scale(1);
+        /* Opciones de audio responsive */
+        .audio-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: clamp(8px, 1.5vw, 12px);
+            margin: clamp(15px, 3vw, 25px) 0;
         }
-        100% { 
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
-            transform: scale(1.03);
-        }
-    }
 
-    @keyframes specialPulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.03); }
-        100% { transform: scale(1); }
-    }
+        @media (max-width: 480px) {
+            .audio-options {
+                grid-template-columns: 1fr;
+            }
+        }
 
-    @keyframes urgentFlash {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.03); }
-        100% { transform: scale(1); }
-    }
+        .audio-option {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: clamp(12px, 2vw, 16px);
+            border-radius: clamp(6px, 1vw, 8px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: clamp(0.85rem, 2vw, 1rem);
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
 
-    @keyframes progressBar {
-        from { transform: scaleX(1); }
-        to { transform: scaleX(0); }
-    }
+        .audio-option:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+        }
 
-    /* Estilos para navegación responsiva */
-    nav {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
-        margin-top: 10px;
-    }
-
-    @media (max-width: 480px) {
-        nav {
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-    }
-
-    /* Estilos para cuando el teclado está activo en móviles */
-    @media (max-height: 500px) and (orientation: landscape) {
-        .modal-content {
-            max-height: 70vh;
-            padding: 15px;
-        }
-        
-        .calendar {
-            gap: 4px;
-        }
-        
-        .day {
-            min-height: 30px;
-        }
-    }
-
-    /* Mejoras para tablets */
-    @media (min-width: 769px) and (max-width: 1024px) {
-        .container {
-            max-width: 95%;
-        }
-        
-        .countdown-item,
-        .special-countdown-item,
-        .detailed-countdown-item {
-            min-width: 85px;
-        }
-    }
-
-    /* Soporte para dispositivos con pantalla muy pequeña */
-    @media (max-width: 320px) {
-        body {
-            padding: 8px;
-        }
-        
-        h1 {
-            font-size: 1.5rem;
-        }
-        
-        .day {
-            min-height: 32px;
-            font-size: 0.8rem;
-        }
-        
-        .day-number {
-            font-size: 0.9rem;
-        }
-        
-        .day-content {
-            font-size: 0.55rem;
-        }
-        
-        .countdown-item,
-        .special-countdown-item,
-        .detailed-countdown-item {
-            min-width: 50px;
-            padding: 6px;
-        }
-        
-        .countdown-number,
-        .special-countdown-number,
-        .detailed-countdown-number {
-            font-size: 1rem;
-        }
-        
-        .music-btn {
-            min-width: 150px;
-        }
-    }
-
-    /* Mejoras para accesibilidad en móviles */
-    @media (hover: none) and (pointer: coarse) {
-        .day:hover {
-            transform: none;
-        }
-        
-        .day:active {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-        }
-        
-        .music-btn:active {
-            transform: scale(0.98);
-        }
-        
         .audio-option:active {
+            transform: translateY(0);
+        }
+
+        /* Controles de música responsive */
+        .music-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: clamp(10px, 2vw, 15px);
+            margin: clamp(15px, 3vw, 25px) 0;
+            padding: 0 clamp(5px, 1vw, 10px);
+        }
+
+        @media (max-width: 480px) {
+            .music-controls {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .music-btn {
+            background: linear-gradient(145deg, var(--accent-color), #ff5252);
+            color: white;
+            border: none;
+            padding: clamp(12px, 2.5vw, 16px);
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(6px, 1vw, 10px);
+            font-size: clamp(0.85rem, 2.2vw, 1rem);
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
+            min-height: 50px;
+        }
+
+        .music-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(255, 107, 107, 0.4);
+        }
+
+        .music-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Footer responsive */
+        footer {
+            margin-top: clamp(15px, 3vw, 25px);
+            padding: clamp(12px, 2.5vw, 18px);
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: clamp(8px, 1.5vw, 12px);
+            font-size: clamp(0.8rem, 2vw, 0.95rem);
+            line-height: 1.5;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Mensajes especiales responsive */
+        .special-message {
+            font-size: clamp(1.2rem, 4vw, 2.2rem);
+            font-weight: bold;
+            margin: clamp(15px, 3vw, 25px) 0;
+            text-align: center;
+            padding: clamp(15px, 3vw, 25px);
+            border-radius: clamp(10px, 2vw, 15px);
+            backdrop-filter: blur(10px);
+            line-height: 1.3;
+            word-break: break-word;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: textGlow 2s infinite alternate;
+            border: 3px solid;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .christmas-message {
+            color: #ff6b6b;
+            background: linear-gradient(135deg, rgba(179, 0, 0, 0.3), rgba(26, 71, 42, 0.3));
+            border-color: var(--gold-color);
+        }
+
+        .newyear-message {
+            color: #4a90e2;
+            background: linear-gradient(135deg, rgba(0, 78, 146, 0.3), rgba(0, 4, 40, 0.3));
+            border-color: #00ffff;
+        }
+
+        .reyes-message {
+            color: #FFD700;
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.3), rgba(210, 105, 30, 0.3));
+            border-color: var(--gold-color);
+        }
+
+        /* Contadores especiales responsive */
+        .special-countdown-section {
+            margin-bottom: clamp(20px, 4vw, 30px);
+            padding: clamp(15px, 3vw, 20px);
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: clamp(10px, 2vw, 15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .special-countdown-title {
+            font-size: clamp(0.95rem, 3vw, 1.4rem);
+            margin-bottom: clamp(12px, 2.5vw, 18px);
+            color: var(--gold-color);
+            text-align: center;
+        }
+
+        .detailed-countdown {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: clamp(8px, 1.5vw, 12px);
+        }
+
+        @media (max-width: 480px) {
+            .detailed-countdown {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 320px) {
+            .detailed-countdown {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .detailed-countdown-item {
+            background: linear-gradient(145deg, var(--secondary-color), var(--primary-color));
+            border-radius: clamp(6px, 1vw, 8px);
+            padding: clamp(10px, 2vw, 15px);
+            text-align: center;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .detailed-countdown-number {
+            font-size: clamp(1.2rem, 4vw, 2rem);
+            font-weight: bold;
+            color: var(--gold-color);
+            font-family: 'Courier New', monospace;
+            line-height: 1;
+        }
+
+        .detailed-countdown-label {
+            font-size: clamp(0.65rem, 1.8vw, 0.8rem);
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 5px;
+        }
+
+        .urgent-countdown {
+            animation: urgentFlash 1s infinite;
+            background: linear-gradient(145deg, #ff6b6b, #ff5252) !important;
+            border: 2px solid #ffd700 !important;
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.7) !important;
+        }
+
+        /* Información de tiempo responsive */
+        .time-info {
+            margin-top: clamp(10px, 2vw, 15px);
+            font-size: clamp(0.75rem, 2vw, 0.9rem);
+            opacity: 0.8;
+            text-align: center;
+            line-height: 1.4;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        /* Animaciones responsivas */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 107, 107, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); }
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes modalSlideIn {
+            from { 
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+            100% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+        }
+
+        @keyframes christmasGlow {
+            0% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.5); }
+            100% { box-shadow: 0 0 30px rgba(255, 0, 0, 0.7); }
+        }
+
+        @keyframes newYearGlow {
+            0% { box-shadow: 0 0 15px rgba(74, 144, 226, 0.5); }
+            100% { box-shadow: 0 0 30px rgba(155, 89, 182, 0.7); }
+        }
+
+        @keyframes reyesGlow {
+            0% { box-shadow: 0 0 15px rgba(139, 69, 19, 0.5); }
+            100% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.7); }
+        }
+
+        @keyframes urgentFlash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Loading state para imágenes */
+        .modal-image.loading {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Scrollbar personalizado */
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-content::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb {
+            background: var(--secondary-color);
+            border-radius: 4px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb:hover {
             background: var(--primary-color);
         }
-    }
 
-    /* Scroll suave para modal en móviles */
-    .modal-content {
-        -webkit-overflow-scrolling: touch;
-    }
-
-    /* Ajustes específicos para mantener compatibilidad con JS */
-    .special-countdown-section {
-        width: 100%;
-        margin-bottom: 20px;
-    }
-    
-    .special-countdown-section:last-child {
-        margin-bottom: 0;
-    }
-    
-    .special-countdown-title {
-        font-size: clamp(1rem, 2.5vw, 1.5rem);
-        margin-bottom: 10px;
-        color: var(--gold-color);
-    }
-    
-    @media (max-width: 480px) {
-        .special-countdown-section {
-            margin-bottom: 15px;
+        /* Fallback para navegadores antiguos */
+        @media (max-width: 768px) {
+            .modal-content {
+                font-size: 16px;
+            }
+            
+            .day {
+                font-size: 14px;
+            }
         }
-    }
-</style>
+
+        /* Ajustes para tablets en landscape */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .modal-content {
+                max-height: 85vh;
+                padding: 15px;
+            }
+            
+            .calendar {
+                gap: 3px;
+            }
+            
+            .day {
+                min-height: 40px;
+            }
+            
+            .modal-image-container {
+                max-height: 40vh;
+            }
+        }
+
+        /* Mejoras para accesibilidad */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* High contrast mode */
+        @media (prefers-contrast: high) {
+            .day {
+                border: 2px solid white;
+            }
+            
+            .modal-content {
+                border: 2px solid black;
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            .modal-content {
+                background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
+                color: #f0f0f0;
+            }
+            
+            .modal-text-content {
+                color: #ffd700;
+                background: rgba(255, 215, 0, 0.1);
+            }
+            
+            .modal-description {
+                color: #ccc;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .modal,
+            .music-controls,
+            .close-modal {
+                display: none !important;
+            }
+            
+            .day {
+                break-inside: avoid;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
-        <a href="https://grouvex.github.io/"> <div class="img-container" loading="lazy"></div></a> 
-        <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
+        <a href="https://grouvex.github.io/">
+            <div class="img-container" loading="lazy"></div>
+        </a>
+        <span style="font-family: Times New Roman; color: white; box-shadow: 0 0 10px gold; width: 100%">
             <nav>
                 <span id="menuG"></span>
                 <span id="menuT"></span>
@@ -1058,92 +920,125 @@
             </nav>
         </span>
     </header>
+    
     <!-- Anuncio -->
     <div id="news"></div>
- <main>
-    <div class="container">
-        <header>
-            <h1 id="mainTitle">🎄 Calendario de Adviento Mágico 🎅</h1>
-            <p class="subtitle" id="mainSubtitle">¡Abre una sorpresa cada día hasta Navidad y más allá!</p>
-            <div class="utc-notice">
-                ⚠️ <strong>CALENDARIO EN HORARIO UTC</strong> ⚠️<br>
-                Los días cambian según la hora UTC (Tiempo Universal Coordinado)<br>
-                <span class="utc-time" id="utcTimeDisplay">Hora UTC actual: calculando...</span>
-            </div>
-        </header>
+    
+    <main>
+        <div class="container">
+            <header>
+                <h1 id="mainTitle">🎄 Calendario de Adviento Mágico 🎅</h1>
+                <p class="subtitle" id="mainSubtitle">¡Abre una sorpresa cada día hasta Navidad y más allá!</p>
+                <div class="utc-notice">
+                    ⚠️ <strong>CALENDARIO EN HORARIO UTC</strong> ⚠️<br>
+                    Los días cambian según la hora UTC (Tiempo Universal Coordinado)<br>
+                    <span class="utc-time" id="utcTimeDisplay">Hora UTC actual: calculando...</span>
+                </div>
+            </header>
 
-        <!-- Mensajes especiales -->
-        <div id="specialMessages"></div>
+            <!-- Mensajes especiales -->
+            <div id="specialMessages"></div>
 
-        <!-- Contador hasta el inicio del calendario -->
-        <div class="countdown-container" id="countdownToCalendar">
-            <h2 class="countdown-title">¡Pronto comenzará la magia navideña!</h2>
-            <div class="countdown" id="countdownCalendar">
-                <div class="countdown-item">
-                    <div class="countdown-number" id="daysToCalendar">00</div>
-                    <div class="countdown-label">Días</div>
+            <!-- Contador hasta el inicio del calendario -->
+            <div class="countdown-container" id="countdownToCalendar">
+                <h2 class="countdown-title">¡Pronto comenzará la magia navideña!</h2>
+                <div class="countdown" id="countdownCalendar">
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="daysToCalendar">00</div>
+                        <div class="countdown-label">Días</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="hoursToCalendar">00</div>
+                        <div class="countdown-label">Horas</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="minutesToCalendar">00</div>
+                        <div class="countdown-label">Minutos</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="secondsToCalendar">00</div>
+                        <div class="countdown-label">Segundos</div>
+                    </div>
                 </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="hoursToCalendar">00</div>
-                    <div class="countdown-label">Horas</div>
+                <p class="countdown-message" id="messageToCalendar">El calendario se activará el 1 de diciembre (UTC)</p>
+                <div class="time-info" id="localTimeInfo"></div>
+            </div>
+
+            <!-- Contador especial para Navidad y Año Nuevo -->
+            <div class="countdown-container" id="specialCountdownContainer">
+                <h2 class="countdown-title" id="specialCountdownTitle">¡Cuenta atrás para las fiestas especiales!</h2>
+                <div class="detailed-countdown" id="specialCountdown">
+                    <!-- Se generará dinámicamente -->
                 </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="minutesToCalendar">00</div>
-                    <div class="countdown-label">Minutos</div>
+                <p class="countdown-message" id="specialCountdownMessage">¡Disfruta de cada día del calendario!</p>
+                <div class="time-info" id="specialTimeInfo"></div>
+            </div>
+
+            <!-- Calendario completo de diciembre -->
+            <div class="calendar-container" id="calendarContainer">
+                <div class="calendar" id="calendar">
+                    <!-- Los días se generarán con JavaScript -->
                 </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="secondsToCalendar">00</div>
-                    <div class="countdown-label">Segundos</div>
+
+                <div class="music-controls">
+                    <button class="music-btn" id="playMusic">
+                        <span>🎵</span> Reproducir Música Navideña
+                    </button>
+                    <button class="music-btn" id="stopMusic">
+                        <span>🔇</span> Detener Música
+                    </button>
+                </div>
+                <div class="time-info">
+                    Calendario activo del 1/12 al 7/01. Día actual (UTC): <span id="currentUTCDay"></span>
                 </div>
             </div>
-            <p class="countdown-message" id="messageToCalendar">El calendario se activará el 1 de diciembre (UTC)</p>
-            <div class="time-info" id="localTimeInfo"></div>
+
+            <footer id="mainFooter">
+                <p>Disfruta de cada día con una sorpresa única. ¡Felices fiestas! 🎁</p>
+            </footer>
         </div>
 
-        <!-- Contador especial para Navidad y Año Nuevo -->
-        <div class="countdown-container" id="specialCountdownContainer">
-            <h2 class="countdown-title" id="specialCountdownTitle">¡Cuenta atrás para las fiestas especiales!</h2>
-            <div class="detailed-countdown" id="specialCountdown">
-                <!-- Se generará dinámicamente -->
-            </div>
-            <p class="countdown-message" id="specialCountdownMessage">¡Disfruta de cada día del calendario!</p>
-            <div class="time-info" id="specialTimeInfo"></div>
-        </div>
-
-        <!-- Calendario completo de diciembre -->
-        <div class="calendar-container" id="calendarContainer">
-            <div class="calendar" id="calendar">
-                <!-- Los días se generarán con JavaScript -->
-            </div>
-
-            <div class="music-controls">
-                <button class="music-btn" id="playMusic">
-                    <span>🎵</span> Reproducir Música Navideña
-                </button>
-                <button class="music-btn" id="stopMusic">
-                    <span>🔇</span> Detener Música
-                </button>
-            </div>
-            <div class="time-info">
-                Calendario activo del 1/12 al 7/01. Día actual (UTC): <span id="currentUTCDay"></span>
+        <!-- MODAL RESPONSIVE MEJORADO -->
+        <div class="modal" id="modal">
+            <div class="modal-content">
+                <button class="close-modal" id="closeModal" aria-label="Cerrar">&times;</button>
+                <h2 class="modal-title" id="modalTitle">Día 1</h2>
+                <div class="modal-body" id="modalContent">
+                    <!-- El contenido específico del día se cargará aquí -->
+                </div>
             </div>
         </div>
+    </main>
 
-        <footer id="mainFooter">
-            <p>Disfruta de cada día con una sorpresa única. ¡Felices fiestas! 🎁</p>
-        </footer>
-    </div>
+    <!-- Footer -->
+    <div id="footer"></div>
 
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <span class="close-modal" id="closeModal">&times;</span>
-            <h2 class="modal-title" id="modalTitle">Día 1</h2>
-            <div id="modalContent">
-                <!-- El contenido específico del día se cargará aquí -->
-            </div>
-        </div>
-    </div>
+    <!-- Scripts (manteniendo la funcionalidad original) -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script src="jquery-3.5.1.min.js"></script>
+    
+    <!-- Scripts locales -->
+    <script>
+        // Carga de componentes con jQuery (manteniendo funcionalidad original)
+        document.addEventListener("DOMContentLoaded", function() { 
+            $("#menuG").load("menuG.html");
+            $("#menuE").load("menuE.html");
+            $("#menuT").load("menuT.html");
+            $("#menuU").load("menuU.html");
+            $("#footer").load("footer.html"); 
+            $("#news").load("news.html"); 
+            $("#tosypp").load("tosypp.html");
+        });
+    </script>
+    
+    <script src="time.js"></script>
+    <script src="index.js"></script>
+    <script src="preloader.js"></script>
 
+    <!-- Script principal del calendario (ACTUALIZADO para contenido responsive) -->
     <script>
         // URLs de música desde tu repositorio
         const musicBaseURL = "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/main/music/";
@@ -1733,7 +1628,6 @@
             }
         }
 
-
         // Inicializar el calendario
         function initCalendar() {
             // Añadir título y días de la semana
@@ -1846,7 +1740,7 @@
             return "";
         }
 
-        // Abrir un día del calendario
+        // NUEVA FUNCIÓN MEJORADA: Abrir un día del calendario (CONTENIDO RESPONSIVE)
         function openDay(dayKey, month) {
             const content = dailyContent[dayKey];
             if (!content) return;
@@ -1867,51 +1761,67 @@
             modalTitleEl.textContent = content.title;
             
             let contentHTML = '';
+            
             if (content.type === 'image') {
+                // IMAGEN RESPONSIVE
                 contentHTML = `
-                    <img src="${content.content}" alt="Imagen del día ${dayKey}" class="modal-image">
-                    <p class="modal-text">${content.text}</p>
+                    <div class="modal-image-container">
+                        <img src="${content.content}" 
+                             alt="Imagen del día ${dayKey}" 
+                             class="modal-image"
+                             loading="lazy"
+                             onerror="this.onerror=null; this.src='https://via.placeholder.com/600x400/1a472a/ffffff?text=Imagen+no+disponible';">
+                    </div>
+                    <p class="modal-description">${content.text}</p>
                 `;
             } else if (content.type === 'audio') {
+                // AUDIO RESPONSIVE
                 contentHTML = `
-                    <audio controls class="modal-audio">
-                        <source src="${content.content}" type="audio/mpeg">
-                        Tu navegador no soporta el elemento de audio.
-                    </audio>
-                    <p class="modal-text">${content.text}</p>
+                    <div class="modal-audio-container">
+                        <audio controls class="modal-audio" preload="metadata">
+                            <source src="${content.content}" type="audio/mpeg">
+                            Tu navegador no soporta el elemento de audio.
+                        </audio>
+                    </div>
+                    <p class="modal-description">${content.text}</p>
                 `;
             } else if (content.type === 'text') {
+                // TEXTO RESPONSIVE
                 contentHTML = `
-                    <div class="modal-text" style="font-size: 1.5rem; font-weight: bold; margin: 20px 0;">
-                        "${content.content}"
-                    </div>
-                    <p class="modal-text">${content.text}</p>
+                    <div class="modal-text-content">"${content.content}"</div>
+                    <p class="modal-description">${content.text}</p>
                 `;
             } else if (content.type === 'special-audio') {
+                // AUDIO ESPECIAL RESPONSIVE
                 contentHTML = `
-                    <p class="modal-text">${content.text}</p>
+                    <p class="modal-description">${content.text}</p>
                     <div class="audio-options">
-                        <button class="audio-option" onclick="playAudio('${musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World%20(Piano%20Version).mp3"}')">
+                        <button class="audio-option" onclick="playAudio('${musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World%20(Piano%20Version).mp3"}', 'Versión Piano')">
                             Versión Piano
                         </button>
-                        <button class="audio-option" onclick="playAudio('${musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World.mp3"}')">
+                        <button class="audio-option" onclick="playAudio('${musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World.mp3"}', 'Versión Completa')">
                             Versión Completa
                         </button>
-                        <button class="audio-option" onclick="playAudio('${musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World%20-Versión%20Instrumental.mp3"}')">
+                        <button class="audio-option" onclick="playAudio('${musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World%20-Versión%20Instrumental.mp3"}', 'Versión Instrumental')">
                             Versión Instrumental
                         </button>
-                        <button class="audio-option" onclick="playAudio('${musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World%20-%20Versión%20Karaoke.mp3"}')">
+                        <button class="audio-option" onclick="playAudio('${musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World%20-%20Versión%20Karaoke.mp3"}', 'Versión Karaoke')">
                             Versión Karaoke
                         </button>
                     </div>
-                    <audio id="specialAudio" controls class="modal-audio" style="display: none;">
-                        Tu navegador no soporta el elemento de audio.
-                    </audio>
+                    <div class="modal-audio-container">
+                        <audio id="specialAudio" controls class="modal-audio" style="display: none;">
+                            Tu navegador no soporta el elemento de audio.
+                        </audio>
+                    </div>
                 `;
             }
 
             modalContentEl.innerHTML = contentHTML;
             modalEl.style.display = 'flex';
+            
+            // Forzar reflow para asegurar que las animaciones funcionen
+            modalEl.offsetHeight;
 
             // Efectos especiales para días festivos
             if (dayKey === '24' || dayKey === '25' || dayKey === '1.1' || dayKey === '6.1') {
@@ -1919,31 +1829,72 @@
             }
         }
 
-        // Función para reproducir audio especial
-        function playAudio(url) {
+        // Función para reproducir audio especial (MEJORADA)
+        function playAudio(url, title) {
+            const audioContainer = document.querySelector('.modal-audio-container');
             const audioElement = document.getElementById('specialAudio');
+            
+            // Actualizar el título si se proporciona
+            if (title) {
+                modalTitleEl.textContent = title;
+            }
+            
+            // Configurar y mostrar el audio
             audioElement.src = url;
             audioElement.style.display = 'block';
-            audioElement.play();
+            audioElement.controls = true;
+            
+            // Reproducir automáticamente
+            const playPromise = audioElement.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("La reproducción automática falló:", error);
+                    // Mostrar mensaje para el usuario
+                    alert("Para reproducir el audio, haz clic en el botón de play del reproductor.");
+                });
+            }
         }
 
         // Cerrar el modal
         function closeModal() {
             modalEl.style.display = 'none';
+            
             // Detener cualquier audio que esté reproduciéndose
             const audios = document.querySelectorAll('audio');
             audios.forEach(audio => {
                 audio.pause();
                 audio.currentTime = 0;
             });
+            
+            // Ocultar el audio especial si está visible
+            const specialAudio = document.getElementById('specialAudio');
+            if (specialAudio) {
+                specialAudio.style.display = 'none';
+            }
         }
 
         // Reproducir música de fondo
         function playBackgroundMusic() {
-            backgroundMusic.play().catch(e => {
-                console.log("La reproducción automática fue bloqueada. Haz clic en reproducir.");
-                alert("Para reproducir la música, haz clic en el botón 'Reproducir Música Navideña'.");
-            });
+            // Seleccionar una canción navideña aleatoria
+            const christmasSongs = [
+                musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World.mp3",
+                musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World%20(Piano%20Version).mp3",
+                musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World%20-Versión%20Instrumental.mp3"
+            ];
+            
+            const randomSong = christmasSongs[Math.floor(Math.random() * christmasSongs.length)];
+            backgroundMusic.src = randomSong;
+            
+            const playPromise = backgroundMusic.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(e => {
+                    console.log("La reproducción automática fue bloqueada.");
+                    // Mostrar instrucciones amigables
+                    alert("Para reproducir la música navideña:\n\n1. Haz clic en 'Reproducir Música Navideña'\n2. Dale permiso al navegador si te lo pide\n\n¡Felices fiestas! 🎄");
+                });
+            }
         }
 
         // Detener música de fondo
@@ -1955,7 +1906,7 @@
         // Crear efecto de nieve
         function createSnowflakes() {
             const snowContainer = document.body;
-            const snowflakeCount = 100;
+            const snowflakeCount = Math.min(50, window.innerWidth / 20); // Menos copos en móviles
 
             for (let i = 0; i < snowflakeCount; i++) {
                 const snowflake = document.createElement('div');
@@ -1963,9 +1914,10 @@
                 snowflake.innerHTML = '❄';
                 snowflake.style.left = `${Math.random() * 100}vw`;
                 snowflake.style.animationDuration = `${Math.random() * 5 + 5}s`;
-                snowflake.style.opacity = Math.random();
-                snowflake.style.fontSize = `${Math.random() * 15 + 10}px`;
+                snowflake.style.opacity = Math.random() * 0.7 + 0.3;
+                snowflake.style.fontSize = `${Math.random() * 10 + 8}px`;
                 snowflake.style.animationDelay = `${Math.random() * 5}s`;
+                snowflake.style.pointerEvents = 'none';
                 
                 snowContainer.appendChild(snowflake);
             }
@@ -1973,32 +1925,38 @@
 
         // Crear efecto de fuegos artificiales
         function createFireworks() {
-            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffffff'];
+            if (window.innerWidth < 768) return; // No mostrar en móviles para mejor rendimiento
             
-            for (let i = 0; i < 50; i++) {
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffffff'];
+            const fireworkCount = Math.min(30, window.innerWidth / 25);
+
+            for (let i = 0; i < fireworkCount; i++) {
                 setTimeout(() => {
                     const firework = document.createElement('div');
                     firework.className = 'firework';
                     firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                     firework.style.left = `${Math.random() * 100}vw`;
                     firework.style.top = `${Math.random() * 100}vh`;
+                    firework.style.zIndex = '9998';
                     
                     document.body.appendChild(firework);
                     
                     // Animación
                     firework.animate([
                         { transform: 'scale(0)', opacity: 1 },
-                        { transform: `scale(${Math.random() * 3 + 1})`, opacity: 0 }
+                        { transform: `scale(${Math.random() * 2 + 1})`, opacity: 0 }
                     ], {
-                        duration: 1000 + Math.random() * 1000,
+                        duration: 800 + Math.random() * 800,
                         easing: 'ease-out'
                     });
                     
                     // Eliminar después de la animación
                     setTimeout(() => {
-                        firework.remove();
+                        if (firework.parentNode) {
+                            firework.remove();
+                        }
                     }, 2000);
-                }, i * 100);
+                }, i * 150);
             }
         }
 
@@ -2010,20 +1968,39 @@
         playMusicBtn.addEventListener('click', playBackgroundMusic);
         stopMusicBtn.addEventListener('click', stopBackgroundMusic);
 
+        // Cerrar modal con tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modalEl.style.display === 'flex') {
+                closeModal();
+            }
+        });
+
         // Inicializar la aplicación
         initApp();
         createSnowflakes();
 
+        // Optimización para móviles: ajustar dinámicamente
+        function optimizeForMobile() {
+            if (window.innerWidth < 768) {
+                // Ajustar cantidad de animaciones en móviles
+                const animatedElements = document.querySelectorAll('.day');
+                animatedElements.forEach(el => {
+                    el.style.animation = 'none';
+                });
+            }
+        }
+
+        // Llamar a la optimización al cargar y al cambiar tamaño
+        window.addEventListener('load', optimizeForMobile);
+        window.addEventListener('resize', optimizeForMobile);
+
         // Mensaje de consola divertido
         console.log(`
         🎄 ¡Feliz Navidad! 🎅
-        Este calendario de adviento fue creado con ❤️
+        Calendario de Adviento Responsive v2.0
+        Creado con ❤️ para Grouvex Studios
         ¡Disfruta de cada día con una sorpresa única!
         `);
     </script>
-    </main>
-    <!-- Footer -->
-    <div id="footer"></div>
-<script src="preloader.js"></script>
 </body>
 </html>

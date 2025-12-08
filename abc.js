@@ -71,6 +71,39 @@ const usuarios = {
 };
 
 // ============================================
+// CONFIGURACIÓN INSIGNIAS DESDE GOOGLE SHEETS
+// ============================================
+
+const SHEET_ID = '15FJWUFb6J52XDLbicgvTJmSCjJ0c0sRoWPpr5YFK5H8';
+const SHEET_NAME = 'Respuestas de formulario 2';
+
+// Mapeo de nombres de insignias a URLs
+const INSIGNIAS_MAP = {
+    'verified': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png',
+    'verified-team': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-team.png',
+    'sistema': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/sistema.png',
+    'verified-partner': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-partner.gif',
+    'verified-bughunter': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-bughunter.gif',
+    'artista': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/artista.gif',
+    'GROUVEX': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png',
+    'owner': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/owner.png',
+    'vvadmin': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/vvadmin.gif',
+    'vdeveloper': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/vdeveloper.gif',
+    'vbughunter': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-bughunter.gif',
+    'gsmember': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/gsmember.png',
+    'admin': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/admin.png',
+    'owner-recording': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/owner-recording.gif',
+    'owner-designs': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/owner-designs.gif',
+    'diseñador': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/diseñador.png',
+    'verified-voice': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-voice.gif',
+    'bughunter': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-bughunter.gif',
+    'partner': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-partner.gif',
+    'team': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-team.png',
+    'voice': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-voice.gif',
+    'developer': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/vdeveloper.gif'
+};
+
+// ============================================
 // FUNCIONES DE AUTENTICACIÓN
 // ============================================
 
@@ -113,28 +146,28 @@ function handleEmailAuth(email, password, isLogin) {
         });
 }
 
-  async function handleGoogleLogin() {
-      try {
-          const provider = new GoogleAuthProvider();
-          provider.setCustomParameters({ prompt: 'select_account' });
-          
-          const result = await firebase.auth().signInWithPopup(auth, provider);
-          
-          // Guardar información del usuario en la base de datos
-          await database.ref('users/' + result.user.uid).set({
-              email: result.user.email,
-              displayName: result.user.displayName,
-              photoURL: result.user.photoURL || "https://grouvex.com/img/GROUVEX.png",
-              lastLogin: Date.now(),
-              provider: "google"
-          });
-          
-          mostrarNotificacion('✅ Inicio de sesión con Google exitoso');
-          redirectUser();
-      } catch (error) {
-          mostrarNotificacion(`❌ ${traducirError(error)}`, true);
-      }
-  }
+async function handleGoogleLogin() {
+    try {
+        const provider = new GoogleAuthProvider();
+        provider.setCustomParameters({ prompt: 'select_account' });
+        
+        const result = await signInWithPopup(auth, provider);
+        
+        // Guardar información del usuario en la base de datos
+        await set(ref(database, `users/${result.user.uid}`), {
+            email: result.user.email,
+            displayName: result.user.displayName,
+            photoURL: result.user.photoURL || "https://grouvex.com/img/GROUVEX.png",
+            lastLogin: Date.now(),
+            provider: "google"
+        });
+        
+        mostrarNotificacion('✅ Inicio de sesión con Google exitoso');
+        redirectUser();
+    } catch (error) {
+        mostrarNotificacion(`❌ Error: ${error.message}`, true);
+    }
+}
 
 function reauthenticateUser(user, password) {
     if (!password) throw new Error('Se requiere contraseña para esta acción');
@@ -247,6 +280,7 @@ function mostrarnewsAdv() {
     `;
     document.body.appendChild(newsAdv);
 }
+
 // ============================================
 // FUNCIONES DE GESTIÓN DE CUENTA
 // ============================================
@@ -423,96 +457,499 @@ function redirectUser() {
 }
 
 // ============================================
-// INICIALIZACIÓN
+// FUNCIONES PARA OBTENER INSIGNIAS DESDE GOOGLE SHEETS
+// ============================================
+
+async function obtenerTodasInsigniasUsuario(userID) {
+    try {
+        console.log('🔍 Buscando insignias para UserID:', userID);
+        
+        // Normalizar el UserID (sin "GS-" si está presente)
+        const searchUserID = userID.replace(/^GS-/, '').trim();
+        
+        // URL para acceder a Google Sheets
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+        
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status}`);
+        }
+        
+        const text = await response.text();
+        
+        // Parsear respuesta JSON de Google Sheets
+        const jsonMatch = text.match(/google\.visualization\.Query\.setResponse\((.+)\);/);
+        
+        if (!jsonMatch) {
+            console.error('❌ No se pudo parsear JSON');
+            return [];
+        }
+        
+        const jsonData = JSON.parse(jsonMatch[1]);
+        
+        if (!jsonData.table || !jsonData.table.rows) {
+            console.error('❌ No hay datos en la hoja');
+            return [];
+        }
+        
+        // Obtener encabezados
+        const headers = jsonData.table.cols.map(col => col.label || '');
+        
+        // Buscar índices de las columnas
+        const userIDIndex = encontrarIndiceColumna(headers, ['userid', 'user id', 'id', 'grouvex']);
+        const insigniasIndex = encontrarIndiceColumna(headers, ['insignia', 'badge']);
+        
+        console.log('📊 Índices encontrados:', { 
+            userIDIndex, 
+            insigniasIndex,
+            userIDHeader: userIDIndex !== -1 ? headers[userIDIndex] : 'No encontrada',
+            insigniasHeader: insigniasIndex !== -1 ? headers[insigniasIndex] : 'No encontrada'
+        });
+        
+        if (userIDIndex === -1 || insigniasIndex === -1) {
+            console.error('❌ Faltan columnas necesarias');
+            return [];
+        }
+        
+        // Buscar el usuario
+        for (let i = 0; i < jsonData.table.rows.length; i++) {
+            const row = jsonData.table.rows[i];
+            const userIDCell = row.c && row.c[userIDIndex];
+            
+            if (userIDCell && userIDCell.v) {
+                const rowUserID = userIDCell.v.toString().trim();
+                const normalizedRowUserID = rowUserID.replace(/^GS-/, '');
+                
+                if (normalizedRowUserID === searchUserID) {
+                    console.log(`✅ Usuario encontrado en fila ${i + 1}`);
+                    
+                    // Obtener las insignias
+                    const insigniasCell = row.c[insigniasIndex];
+                    
+                    if (insigniasCell && insigniasCell.v) {
+                        const textoInsignias = insigniasCell.v.toString().trim();
+                        console.log('📝 Insignias encontradas:', textoInsignias);
+                        return procesarTextoInsignias(textoInsignias);
+                    }
+                    return [];
+                }
+            }
+        }
+        
+        console.log('❌ Usuario no encontrado en Google Sheets');
+        return obtenerInsigniasLocales(searchUserID);
+        
+    } catch (error) {
+        console.error('❌ Error obteniendo insignias:', error);
+        return obtenerInsigniasLocales(userID.replace(/^GS-/, ''));
+    }
+}
+
+function encontrarIndiceColumna(headers, palabrasClave) {
+    for (let i = 0; i < headers.length; i++) {
+        const header = headers[i].toLowerCase();
+        for (const palabra of palabrasClave) {
+            if (header.includes(palabra.toLowerCase())) {
+                return i;
+            }
+        }
+    }
+    return -1;
+}
+
+function procesarTextoInsignias(textoInsignias) {
+    if (!textoInsignias || textoInsignias.trim() === '') {
+        return [];
+    }
+    
+    // Separar por diferentes delimitadores
+    const delimitadores = /[,;|/\\\n\t]+/;
+    const insigniasCrudas = textoInsignias.split(delimitadores);
+    const insigniasProcesadas = [];
+    
+    insigniasCrudas.forEach(insignia => {
+        const insigniaLimpia = insignia.trim();
+        
+        if (insigniaLimpia && insigniaLimpia.length > 0) {
+            // Buscar en el mapa de insignias
+            const urlImagen = INSIGNIAS_MAP[insigniaLimpia.toLowerCase()];
+            
+            if (urlImagen) {
+                insigniasProcesadas.push({
+                    nombre: insigniaLimpia,
+                    url: urlImagen
+                });
+            } else {
+                // Intentar con diferentes formatos
+                const formatos = [
+                    insigniaLimpia.toLowerCase().replace(/\s+/g, '-'),
+                    `verified-${insigniaLimpia.toLowerCase().replace(/\s+/g, '-')}`,
+                    `v${insigniaLimpia.toLowerCase().replace(/\s+/g, '')}`
+                ];
+                
+                for (const formato of formatos) {
+                    if (INSIGNIAS_MAP[formato]) {
+                        insigniasProcesadas.push({
+                            nombre: insigniaLimpia,
+                            url: INSIGNIAS_MAP[formato]
+                        });
+                        break;
+                    }
+                }
+            }
+        }
+    });
+    
+    return insigniasProcesadas;
+}
+
+function obtenerInsigniasLocales(userID) {
+    console.log('Usando sistema local para:', userID);
+    
+    // Sistema de respaldo basado en UIDs
+    const insigniasPorUID = {
+        // Owner
+        'qY57xpuDyFdSOBxSNiehbRbJ1p32': ['verified-team', 'owner', 'sistema', 'GROUVEX'],
+        
+        // Team Admins
+        'cQRgzlky1eNHjUh61GMPTTRnIZq2': ['verified-team', 'vvadmin', 'vdeveloper'],
+        'aO5Y2hQVl9Zn7KlElpgI7jqsFfc2': ['verified-team', 'vvadmin', 'vdeveloper'],
+        
+        // Artistas
+        'bY7fMyURlggvZyXDL9dCjwZEmU62': ['verified-team', 'artista'],
+        'LTqeoFuZmqTSa4HiJkfNXbCHifa2': ['verified-team', 'artista']
+    };
+    
+    const insignias = insigniasPorUID[userID] || ['verified'];
+    return procesarTextoInsignias(insignias.join(','));
+}
+
+// ============================================
+// FUNCIONES PARA MOSTRAR INSIGNIAS
+// ============================================
+
+async function mostrarTodasInsigniasUsuario(userID, containerId = 'insignias-container') {
+    try {
+        // Obtener las insignias
+        const insigniasUsuario = await obtenerTodasInsigniasUsuario(userID);
+        
+        // Obtener o crear contenedor
+        let container = document.getElementById(containerId);
+        
+        if (!container) {
+            container = document.createElement('div');
+            container.id = containerId;
+            container.className = 'all-badges-container';
+            
+            // Buscar donde insertar
+            const lugaresInsercion = [
+                document.getElementById('profile-section'),
+                document.querySelector('.profile-container'),
+                document.getElementById('user-info'),
+                document.querySelector('.profile-info'),
+                document.querySelector('main')
+            ];
+            
+            for (const lugar of lugaresInsercion) {
+                if (lugar) {
+                    lugar.appendChild(container);
+                    break;
+                }
+            }
+            
+            // Si no se encontró lugar, crear uno nuevo
+            if (!container.parentElement) {
+                const profileSection = document.createElement('div');
+                profileSection.className = 'profile-badges-section';
+                profileSection.appendChild(container);
+                document.body.insertBefore(profileSection, document.body.firstChild);
+            }
+        }
+        
+        // Limpiar y mostrar
+        container.innerHTML = '';
+        
+        if (!insigniasUsuario || insigniasUsuario.length === 0) {
+            container.innerHTML = `
+                <div class="no-badges-message">
+                    <p>🎯 No hay insignias asignadas</p>
+                    <small>Completa el formulario de Grouvex Studios para obtener insignias</small>
+                </div>
+            `;
+            return;
+        }
+        
+        // Mostrar cada insignia
+        insigniasUsuario.forEach((insignia, index) => {
+            const badgeElement = crearElementoInsignia(insignia, index);
+            container.appendChild(badgeElement);
+        });
+        
+        // Aplicar estilos
+        aplicarEstilosInsignias();
+        
+    } catch (error) {
+        console.error('❌ Error mostrando insignias:', error);
+    }
+}
+
+function crearElementoInsignia(insignia, index) {
+    const badgeElement = document.createElement('div');
+    badgeElement.className = 'badge-item';
+    badgeElement.dataset.badge = insignia.nombre.toLowerCase();
+    badgeElement.style.animationDelay = `${index * 0.1}s`;
+    
+    // Crear imagen
+    const img = document.createElement('img');
+    img.src = insignia.url;
+    img.alt = insignia.nombre;
+    img.loading = 'lazy';
+    
+    // Crear tooltip
+    const tooltip = document.createElement('div');
+    tooltip.className = 'badge-tooltip';
+    tooltip.textContent = insignia.nombre.replace(/-/g, ' ').toUpperCase();
+    
+    // Crear contenedor interno
+    const innerContainer = document.createElement('div');
+    innerContainer.className = 'badge-inner';
+    innerContainer.appendChild(img);
+    innerContainer.appendChild(tooltip);
+    
+    badgeElement.appendChild(innerContainer);
+    
+    // Añadir eventos hover
+    badgeElement.addEventListener('mouseenter', () => {
+        badgeElement.classList.add('badge-hover');
+        tooltip.style.opacity = '1';
+        tooltip.style.visibility = 'visible';
+    });
+    
+    badgeElement.addEventListener('mouseleave', () => {
+        badgeElement.classList.remove('badge-hover');
+        tooltip.style.opacity = '0';
+        tooltip.style.visibility = 'hidden';
+    });
+    
+    return badgeElement;
+}
+
+function aplicarEstilosInsignias() {
+    if (!document.getElementById('badges-styles')) {
+        const style = document.createElement('style');
+        style.id = 'badges-styles';
+        style.textContent = `
+            .all-badges-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+                padding: 20px;
+                margin: 20px 0;
+                background: linear-gradient(135deg, rgba(15, 15, 30, 0.9), rgba(25, 25, 45, 0.9));
+                border-radius: 15px;
+                border: 1px solid rgba(100, 150, 255, 0.2);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+                backdrop-filter: blur(10px);
+                min-height: 100px;
+            }
+            
+            .badge-item {
+                position: relative;
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                overflow: hidden;
+                transition: all 0.3s ease;
+                animation: badgeAppear 0.5s ease-out forwards;
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            
+            @keyframes badgeAppear {
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            .badge-inner {
+                width: 100%;
+                height: 100%;
+                position: relative;
+            }
+            
+            .badge-item img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 50%;
+                border: 2px solid transparent;
+                transition: all 0.3s ease;
+            }
+            
+            .badge-item:hover img {
+                transform: scale(1.2);
+                border-color: gold;
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+                filter: brightness(1.1);
+            }
+            
+            .badge-tooltip {
+                position: absolute;
+                bottom: -35px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0, 0, 0, 0.9);
+                color: white;
+                padding: 6px 12px;
+                border-radius: 6px;
+                font-size: 12px;
+                font-weight: 600;
+                white-space: nowrap;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                z-index: 100;
+                pointer-events: none;
+            }
+            
+            .no-badges-message {
+                width: 100%;
+                text-align: center;
+                padding: 30px;
+                color: #aaa;
+            }
+            
+            .no-badges-message p {
+                font-size: 16px;
+                margin-bottom: 8px;
+                color: #888;
+            }
+            
+            .no-badges-message small {
+                font-size: 12px;
+                color: #666;
+            }
+            
+            .profile-badges-section {
+                margin: 20px auto;
+                max-width: 800px;
+            }
+            
+            @media (max-width: 768px) {
+                .all-badges-container {
+                    padding: 15px;
+                    gap: 10px;
+                }
+                
+                .badge-item {
+                    width: 50px;
+                    height: 50px;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
+
+// ============================================
+// FUNCIONES DE PERFIL Y USUARIO
+// ============================================
+
+async function updateProfileUI(targetUser) {
+    const nombreUsuario = targetUser.displayName || "Usuario";
+    const userID = targetUser.uid;
+    
+    // Actualizar elementos básicos
+    const actualizarElemento = (id, valor) => {
+        const elemento = document.getElementById(id);
+        if (elemento) elemento.textContent = valor;
+    };
+    
+    actualizarElemento('correoElectronico', targetUser.email || 'Sin email');
+    actualizarElemento('userID', `GS-${userID}`);
+    
+    const fotoPerfil = document.getElementById('fotoPerfil');
+    if (fotoPerfil) {
+        fotoPerfil.src = targetUser.photoURL || 'https://grouvex.com/img/GROUVEX.png';
+        fotoPerfil.alt = nombreUsuario;
+    }
+    
+    // Actualizar clase del usuario
+    const usuarioElement = document.querySelector('.usuario');
+    if (usuarioElement) {
+        usuarioElement.className = `usuario ${nombreUsuario.replace(/\s+/g, '-')}`;
+    }
+    
+    // Mostrar las insignias del usuario
+    await mostrarTodasInsigniasUsuario(userID);
+}
+
+async function getUserData(userId) {
+    try {
+        const userRef = ref(database, `users/${userId}`);
+        const snapshot = await get(userRef);
+        
+        if (snapshot.exists()) {
+            const userData = snapshot.val();
+            return {
+                uid: userId,
+                email: userData.email || '',
+                displayName: userData.displayName || 'Usuario',
+                photoURL: userData.photoURL || 'https://grouvex.com/img/GROUVEX.png'
+            };
+        } else {
+            return {
+                uid: userId,
+                email: 'Desconocido',
+                displayName: 'Usuario',
+                photoURL: 'https://grouvex.com/img/GROUVEX.png'
+            };
+        }
+    } catch (error) {
+        console.error('Error obteniendo datos de usuario:', error);
+        return {
+            uid: userId,
+            email: 'Error',
+            displayName: 'Usuario',
+            photoURL: 'https://grouvex.com/img/GROUVEX.png'
+        };
+    }
+}
+
+function eliminarDatosUsuario(userId) {
+    const userRef = ref(database, `users/${userId}`);
+    return remove(userRef);
+}
+
+// ============================================
+// INICIALIZACIÓN Y CONFIGURACIÓN
 // ============================================
 
 function inicializarFormularioDeAutenticacion() {
     const authForm = document.getElementById('authForm');
     const formTitle = document.getElementById('formTitle');
-    const toggleButton = document.getElementById('toggleButton');
     let isLogin = true;
-        formTitle.textContent = 'Inicio de Sesión';
-  
-    authForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = document.getElementById('authEmail').value;
-        const password = document.getElementById('authPassword').value;
-        handleEmailAuth(email, password, isLogin);
-    });
-
-    document.getElementById('google-login-btn').addEventListener('click', handleGoogleLogin);
-}
-
-document.addEventListener('DOMContentLoaded', () => {
     
-    // Configurar botones
-    document.getElementById('logoutBtn')?.addEventListener('click', () => signOut(auth));
-    document.getElementById('deleteBtn')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        handleAccountDeletion();
-    });
-    document.getElementById('resetPasswordBtn')?.addEventListener('click', () => {
-        const email = prompt('Introduce tu correo electrónico para restablecer la contraseña:');
-        if (email) {
-            sendPasswordResetEmail(auth, email)
-                .then(() => alert('Correo para restablecer la contraseña enviado.'))
-                .catch((error) => alert('Error al enviar el correo de restablecimiento: ' + error.message));
-        }
-    });
-
-    // Mostrar noticias
-    if (false) mostrarnewsAdv();
-
-    // Verificar acceso
-    const paginaActual = window.location.pathname.split("/").pop();
-    if (paginaActual !== 'login') verificarAcceso();
-});
-
-// Observador de autenticación principal
-onAuthStateChanged(auth, async (user) => {
-    if (user) {
-        console.log("Usuario autenticado:", user.email);
-        console.log("ID autenticado:", user.uid);
-        const urlParams = new URLSearchParams(window.location.search);
-        const viewedUserId = urlParams.get('userId');
-        const isViewingOwnProfile = !viewedUserId || viewedUserId === user.uid;
-        const targetUserId = isViewingOwnProfile ? user.uid : viewedUserId;
-        const targetUser = isViewingOwnProfile ? user : await getUserData(targetUserId);
-        const nombreUsuario = targetUser.displayName || "Usuario";
-        const usuarioElement = document.querySelector('.usuario');
-        const gsUserIdInput = document.getElementById('gs-user-id');
-        if (gsUserIdInput) {
-            if (user) {
-                gsUserIdInput.value = "GS-" + user.uid;
-                console.log("GSUserID actualizado (onAuthStateChanged):", user.uid);
-            } else {
-                gsUserIdInput.value = "Not Defined";
-                console.log("Usuario cerró sesión, GSUserID establecido como 'Not Defined'");
-            }
-        }
-        // Actualizar UI
-        const updateProfileUI = () => {
-            document.getElementById('correoElectronico').textContent = targetUser.email || 'Correo no definido';
-            usuarioElement.className = nombreUsuario.replace(/\s+/g, '-');
-            document.getElementById('userID').textContent = `GS-${targetUser.uid}`;
-            document.getElementById('fotoPerfil').src = targetUser.photoURL || 'https://grouvex.com/img/GROUVEX.png';
-          //  mostrarUsuarioYInsignias(nombreUsuario, [usuarioElement]);
-        };
-
-        // Manejar seguimiento
-
-        // Mostrar contenido
-        document.getElementById('auth-container').style.display = 'none';
-        document.getElementById('content').style.display = 'block';
-    } else {
-        console.log("Usuario no autenticado");
-        document.getElementById('auth-container').style.display = 'block';
-        document.getElementById('content').style.display = 'none';
-        if (window.location.pathname.includes('login')) {
-            inicializarFormularioDeAutenticacion();
-        }
+    if (formTitle) {
+        formTitle.textContent = 'Inicio de Sesión';
     }
-});
+    
+    if (authForm) {
+        authForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+            handleEmailAuth(email, password, isLogin);
+        });
+    }
+
+    const googleBtn = document.getElementById('google-login-btn');
+    if (googleBtn) {
+        googleBtn.addEventListener('click', handleGoogleLogin);
+    }
+}
 
 // Comprobar periódicamente si el campo gs-user-id existe
 function checkAndSetGSUserId() {
@@ -523,17 +960,106 @@ function checkAndSetGSUserId() {
         if (gsUserIdInput && user) {
             gsUserIdInput.value = "GS-" + user.uid;
             console.log("GSUserID actualizado:", user.uid);
-            clearInterval(checkInterval); // Detener la verificación una vez que se establece
+            clearInterval(checkInterval);
         } else if (gsUserIdInput && !user) {
             gsUserIdInput.value = "Not Defined";
             console.log("Usuario no autenticado, GSUserID establecido como 'Not Defined'");
-            clearInterval(checkInterval); // Detener la verificación
+            clearInterval(checkInterval);
         }
-    }, 1000); // Verificar cada segundo
+    }, 1000);
 }
 
-// Iniciar la verificación cuando la página cargue
-document.addEventListener('DOMContentLoaded', function() {
-    checkAndSetGSUserId();
+// ============================================
+// OBSERVADOR DE AUTENTICACIÓN PRINCIPAL
+// ============================================
+
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        console.log("✅ Usuario autenticado:", user.email);
+        console.log("🔑 ID autenticado:", user.uid);
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const viewedUserId = urlParams.get('userId');
+        const isViewingOwnProfile = !viewedUserId || viewedUserId === user.uid;
+        const targetUserId = isViewingOwnProfile ? user.uid : viewedUserId;
+        
+        let targetUser;
+        if (isViewingOwnProfile) {
+            targetUser = user;
+        } else {
+            targetUser = await getUserData(targetUserId);
+        }
+        
+        // Actualizar GSUserID
+        const gsUserIdInput = document.getElementById('gs-user-id');
+        if (gsUserIdInput) {
+            gsUserIdInput.value = "GS-" + user.uid;
+        }
+        
+        // Actualizar UI con insignias
+        await updateProfileUI(targetUser);
+        
+        // Mostrar contenido
+        const authContainer = document.getElementById('auth-container');
+        const content = document.getElementById('content');
+        
+        if (authContainer) authContainer.style.display = 'none';
+        if (content) content.style.display = 'block';
+        
+    } else {
+        console.log("❌ Usuario no autenticado");
+        
+        const authContainer = document.getElementById('auth-container');
+        const content = document.getElementById('content');
+        
+        if (authContainer) authContainer.style.display = 'block';
+        if (content) content.style.display = 'none';
+        
+        // Resetear GSUserID
+        const gsUserIdInput = document.getElementById('gs-user-id');
+        if (gsUserIdInput) {
+            gsUserIdInput.value = "Not Defined";
+        }
+        
+        if (window.location.pathname.includes('login')) {
+            inicializarFormularioDeAutenticacion();
+        }
+    }
 });
 
+// ============================================
+// EVENTOS AL CARGAR EL DOM
+// ============================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // Configurar botones
+    document.getElementById('logoutBtn')?.addEventListener('click', () => signOut(auth));
+    
+    document.getElementById('deleteBtn')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        handleAccountDeletion();
+    });
+    
+    document.getElementById('resetPasswordBtn')?.addEventListener('click', () => {
+        const email = prompt('Introduce tu correo electrónico para restablecer la contraseña:');
+        if (email) {
+            sendPasswordResetEmail(auth, email)
+                .then(() => alert('Correo para restablecer la contraseña enviado.'))
+                .catch((error) => alert('Error al enviar el correo de restablecimiento: ' + error.message));
+        }
+    });
+
+    // Mostrar noticias (deshabilitado por ahora)
+    if (false) mostrarnewsAdv();
+
+    // Verificar acceso
+    const paginaActual = window.location.pathname.split("/").pop();
+    if (paginaActual !== 'login') verificarAcceso();
+    
+    // Inicializar estilos de insignias
+    aplicarEstilosInsignias();
+    
+    // Iniciar verificación de GSUserID
+    checkAndSetGSUserId();
+});

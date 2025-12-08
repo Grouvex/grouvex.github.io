@@ -500,39 +500,10 @@ onAuthStateChanged(auth, async (user) => {
         };
 
         // Manejar seguimiento
-        const updateFollowUI = async () => {
-            const followButton = document.getElementById('followButton');
-            const followersCount = document.getElementById('followersCount');
-            const followingCount = document.getElementById('followingCount');
-
-            const stats = await getFollowStats(targetUser.uid);
-            followersCount.textContent = stats.followersCount;
-            followingCount.textContent = stats.followingCount;
-
-            if (!isViewingOwnProfile) {
-                const isFollowing = await checkIfFollowing(user.uid, targetUser.uid);
-                followButton.style.display = 'block';
-                followButton.textContent = isFollowing ? 'Dejar de seguir' : 'Seguir';
-                followButton.onclick = async () => {
-                    try {
-                        if (isFollowing) await unfollowUser(user.uid, targetUser.uid);
-                        else await followUser(user.uid, targetUser.uid);
-                        updateFollowUI();
-                    } catch (error) {
-                        mostrarNotificacion(`Error: ${error.message}`, true);
-                    }
-                };
-            } else {
-                followButton.style.display = 'none';
-            }
-        };
 
         // Mostrar contenido
         document.getElementById('auth-container').style.display = 'none';
         document.getElementById('content').style.display = 'block';
-        updateProfileUI();
-        await updateFollowUI();
-
     } else {
         console.log("Usuario no autenticado");
         document.getElementById('auth-container').style.display = 'block';

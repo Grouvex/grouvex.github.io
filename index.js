@@ -114,7 +114,6 @@ style.innerHTML = `
         border: 1px solid rgba(0, 0, 0, 0.1);
     }
 `;
-`;
 document.head.appendChild(style);
 console.log("Estilos CSS del modal añadidos correctamente.");
 

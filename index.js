@@ -41,323 +41,372 @@ style.innerHTML = `
         background-color: #4CAF50;
         color: white;
     }
+    /* ============================================
+       ESTILOS PARA INSIGNIAS (AÑADIR ESTO)
+       ============================================ */
+    
+    .insignia {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin: 2px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        vertical-align: middle;
+        border-radius: 3px;
+    }
+    
+    /* Mapeo de insignias a imágenes */
+    .insignia.verified { background-image: url('https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png'); }
+    .insignia.verified-team { background-image: url('https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-team.png'); }
+    .insignia.sistema { background-image: url('https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/sistema.png'); }
+    .insignia.verified-partner { background-image: url('https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-partner.gif'); }
+    .insignia.verified-bughunter { background-image: url('https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-bughunter.gif'); }
+    .insignia.artista { background-image: url('https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/artista.gif'); }
+    .insignia.GROUVEX { background-image: url('https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png'); }
+    .insignia.owner { background-image: url('https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/owner.png'); }
+    .insignia.vvadmin { background-image: url('https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/vvadmin.gif'); }
+    .insignia.vdeveloper { background-image: url('https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/vdeveloper.gif'); }
+    .insignia.vbughunter { background-image: url('https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-bughunter.gif'); }
+    .insignia.gsmember { background-image: url('https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/gsmember.png'); }
+    .insignia.admin { background-image: url('https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/admin.png'); }
+    .insignia.owner-recording { background-image: url('https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/owner-recording.gif'); }
+    .insignia.owner-designs { background-image: url('https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/owner-designs.gif'); }
+    .insignia.diseñador { background-image: url('https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/diseñador.png'); }
+    .insignia.verified-voice { background-image: url('https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-voice.gif'); }
+    
+    /* Estilos para detalles (si quieres mantener la funcionalidad de expandir) */
+    details {
+        margin: 5px 0;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    summary {
+        cursor: pointer;
+        font-weight: bold;
+        color: #666;
+        font-size: 12px;
+    }
+    
+    details div {
+        margin-top: 5px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2px;
+    }
+    
+    /* Para elementos con clase de usuario */
+    .Grouvex-Studios,
+    .Grouvex-Phoenix,
+    .Tarlight-Etherall,
+    .Maiki-Dran,
+    .Ángela {
+        display: flex;
+        align-items: center;
+        padding: 5px;
+        margin: 5px 0;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 5px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+`;
 `;
 document.head.appendChild(style);
 console.log("Estilos CSS del modal añadidos correctamente.");
 
-// Variables globales para el modal
-let modal, cancelButton, continueButton;
-let targetLink = null;
-let targetAttribute = null;
-let isConfirmed = false; // Bandera para indicar si el usuario ha confirmado
+// ============================================
+// CONFIGURACIÓN GOOGLE SHEETS
+// ============================================
 
-// Dominios permitidos
-const allowedDomains = ['www.grouvex.com', 'grouvex.com', 'grouvex.github.io', 'script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec'];
-console.log("Dominios permitidos:", allowedDomains);
+const SHEET_ID = '15FJWUFb6J52XDLbicgvTJmSCjJ0c0sRoWPpr5YFK5H8';
+const SHEET_NAME = 'Respuestas de formulario 2';
 
-// Función para verificar si un enlace es externo
-function isExternalLink(href) {
-    if (!href) {
-        console.log("El enlace no tiene href.");
-        return false;
-    }
-    try {
-        const url = new URL(href, window.location.origin);
-        const isExternal = !allowedDomains.includes(url.hostname);
-        console.log(`Enlace: ${href}, ¿Es externo? ${isExternal}`);
-        return isExternal;
-    } catch (e) {
-        console.log(`Error al procesar el enlace ${href}:`, e);
-        return false; // Si no es una URL válida, no es un enlace externo
-    }
-}
-
-// Función para manejar clics en elementos con href
-function handleLinkClick(event) {
-    console.log("Clic detectado en un elemento con href.");
-    const element = event.target.closest('[href]'); // Busca el elemento más cercano con href
-    if (element) {
-        const href = element.getAttribute('href');
-        console.log(`Enlace clickeado: ${href}`);
-
-        // Verificar si el enlace es externo
-        if (isExternalLink(href)) {
-            console.log("El enlace es externo. Mostrando modal...");
-            event.preventDefault(); // Evitar la acción predeterminada
-            targetLink = href; // Guardar el enlace objetivo
-            targetAttribute = element.getAttribute('target'); // Guardar el atributo target
-            console.log(`Enlace objetivo: ${targetLink}, Atributo target: ${targetAttribute}`);
-
-            // Si el modal no existe, crearlo
-            if (!modal) {
-                console.log("El modal no existe. Creándolo...");
-                createModal();
-            }
-            modal.style.display = 'block'; // Mostrar el modal
-        } else {
-            console.log("El enlace no es externo. No se muestra el modal.");
-        }
-    } else {
-        console.log("El clic no fue en un elemento con href.");
-    }
-}
-
-// Función para crear el modal dinámicamente
-function createModal() {
-    console.log("Creando el modal...");
-    const modalHTML = `
-    <div id="customModal" class="modal">
-        <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png" alt="Logo">
-        <p>Estás a punto de salir de <n>Grouvex Studios</n>. Grouvex Studios no se responsabiliza por el contenido, la seguridad, las políticas de privacidad o las prácticas de los sitios de terceros, fuera del dominio, puesto que los Términos de Servicio y Políticas de Privacidad, de Grouvex Studios, solo tienen validez dentro del dominio o donde el equipo tenga permiso para actuar.</p>
-            <p>Si le da a Cancelar, permanecerá dentro de Grouvex Studios.</p>
-            <p>Si le da a Continuar, se le redirigirá a la página seleccionada.</p>
-        <button class="cancel">Cancelar</button>
-        <button class="continue">Continuar</button>
-    </div>
-    `;
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
-    console.log("Modal creado y añadido al DOM.");
-
-    // Obtener referencias a los elementos del modal
-    modal = document.getElementById('customModal');
-    cancelButton = modal.querySelector('.cancel');
-    continueButton = modal.querySelector('.continue');
-
-    // Event listener para el botón "Cancelar"
-    cancelButton.addEventListener('click', function () {
-        console.log("Botón Cancelar clickeado.");
-        modal.style.display = 'none'; // Ocultar el modal
-        targetLink = null; // Limpiar el enlace objetivo
-        targetAttribute = null; // Limpiar el atributo target
-        isConfirmed = false; // Reiniciar la bandera de confirmación
-    });
-
-    // Event listener para el botón "Continuar"
-    continueButton.addEventListener('click', function () {
-        console.log("Botón Continuar clickeado.");
-        isConfirmed = true; // Establecer la bandera de confirmación
-        if (targetLink) {
-            console.log(`Redirigiendo a: ${targetLink}`);
-            modal.style.display = 'none'; // Ocultar el modal primero
-
-            // Redirigir según el atributo target
-            if (targetAttribute === '_blank') {
-                console.log("Abriendo en una nueva pestaña.");
-                window.open(targetLink, '_blank'); // Abrir en una nueva pestaña
-            } else {
-                console.log("Abriendo en la misma pestaña.");
-                window.location.href = targetLink; // Abrir en la misma pestaña
-            }
-
-            // Limpiar las variables
-            targetLink = null;
-            targetAttribute = null;
-        } else {
-            console.log("No hay enlace objetivo (targetLink es null).");
-        }
-    });
-}
-
-// Interceptar clics en todos los enlaces (incluso antes de que el DOM esté listo)
-document.addEventListener('click', handleLinkClick);
-console.log("Listener de clics añadido.");
-
-// Interceptar redirecciones mediante JavaScript
-const originalWindowOpen = window.open;
-window.open = function (url, target, features) {
-    console.log(`Interceptando window.open: ${url}`);
-    if (isExternalLink(url) && !isConfirmed) {
-        console.log("El enlace es externo. Mostrando modal...");
-        targetLink = url;
-        targetAttribute = target || '_self';
-        console.log(`Enlace objetivo: ${targetLink}, Atributo target: ${targetAttribute}`);
-
-        // Si el modal no existe, crearlo
-        if (!modal) {
-            console.log("El modal no existe. Creándolo...");
-            createModal();
-        }
-        modal.style.display = 'block'; // Mostrar el modal
-        return null; // Evitar que se abra la ventana inmediatamente
-    }
-    console.log("El enlace no es externo o ya fue confirmado. Redirigiendo normalmente.");
-    return originalWindowOpen(url, target, features); // Redirigir normalmente si no es un enlace externo o ya fue confirmado
+// Mapeo de nombres de insignias a URLs
+const INSIGNIAS_MAP = {
+    'verified': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png',
+    'verified-team': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-team.png',
+    'sistema': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/sistema.png',
+    'verified-partner': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-partner.gif',
+    'verified-bughunter': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-bughunter.gif',
+    'artista': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/artista.gif',
+    'GROUVEX': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png',
+    'owner': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/owner.png',
+    'vvadmin': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/vvadmin.gif',
+    'vdeveloper': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/vdeveloper.gif',
+    'vbughunter': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-bughunter.gif',
+    'gsmember': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/gsmember.png',
+    'admin': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/admin.png',
+    'owner-recording': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/owner-recording.gif',
+    'owner-designs': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/owner-designs.gif',
+    'diseñador': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/diseñador.png',
+    'verified-voice': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-voice.gif'
 };
-console.log("Interceptación de window.open configurada.");
 
 // ============================================
-// Código para animaciones estacionales
+// FUNCIONES PARA OBTENER DATOS DE GOOGLE SHEETS
 // ============================================
 
-window.addEventListener('load', () => {
-    flower();
-    sol();
-    leaf();
-    nieve();
-    aniversario();
-    googleTranslateElementInit();
+async function obtenerUsuariosDesdeSheets() {
+    try {
+        console.log('📥 Obteniendo datos de usuarios desde Google Sheets...');
+        
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+        
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status}`);
+        }
+        
+        const text = await response.text();
+        
+        // Parsear respuesta JSON de Google Sheets
+        const jsonMatch = text.match(/google\.visualization\.Query\.setResponse\((.+)\);/);
+        
+        if (!jsonMatch) {
+            console.error('❌ No se pudo parsear JSON');
+            return {};
+        }
+        
+        const jsonData = JSON.parse(jsonMatch[1]);
+        
+        if (!jsonData.table || !jsonData.table.rows) {
+            console.error('❌ No hay datos en la hoja');
+            return {};
+        }
+        
+        // Obtener encabezados
+        const headers = jsonData.table.cols.map(col => col.label || '');
+        
+        // Buscar índices de las columnas
+        const nombreIndex = encontrarIndiceColumna(headers, ['nombre', 'name', 'usuario', 'user']);
+        const insigniasIndex = encontrarIndiceColumna(headers, ['insignia', 'badge']);
+        
+        if (nombreIndex === -1 || insigniasIndex === -1) {
+            console.error('❌ Faltan columnas necesarias');
+            return {};
+        }
+        
+        const usuarios = {};
+        
+        // Procesar cada fila
+        for (let i = 0; i < jsonData.table.rows.length; i++) {
+            const row = jsonData.table.rows[i];
+            const nombreCell = row.c && row.c[nombreIndex];
+            
+            if (nombreCell && nombreCell.v) {
+                const nombreUsuario = nombreCell.v.toString().trim();
+                
+                if (nombreUsuario && nombreUsuario !== '') {
+                    // Obtener las insignias
+                    const insigniasCell = row.c[insigniasIndex];
+                    let insigniasTexto = '';
+                    
+                    if (insigniasCell && insigniasCell.v) {
+                        insigniasTexto = insigniasCell.v.toString().trim();
+                    }
+                    
+                    // Procesar las insignias
+                    const insigniasArray = procesarTextoInsignias(insigniasTexto);
+                    
+                    // Agrupar insignias por tipo (para compatibilidad con el código existente)
+                    const insigniasAgrupadas = agruparInsignias(insigniasArray);
+                    
+                    // Crear objeto de usuario con la misma estructura que antes
+                    usuarios[nombreUsuario] = {
+                        principales: insigniasAgrupadas.principales,
+                        GSRecording: insigniasAgrupadas.gsRecording,
+                        GSAnimation: insigniasAgrupadas.gsAnimation,
+                        GSDesign: insigniasAgrupadas.gsDesign,
+                        todasInsignias: insigniasArray
+                    };
+                }
+            }
+        }
+        
+        console.log(`📊 Usuarios cargados desde Google Sheets: ${Object.keys(usuarios).length}`);
+        return usuarios;
+        
+    } catch (error) {
+        console.error('❌ Error obteniendo datos de usuarios:', error);
+        // Retornar objeto vacío en caso de error
+        return {};
+    }
+}
+
+function encontrarIndiceColumna(headers, palabrasClave) {
+    for (let i = 0; i < headers.length; i++) {
+        const header = headers[i].toLowerCase();
+        for (const palabra of palabrasClave) {
+            if (header.includes(palabra.toLowerCase())) {
+                return i;
+            }
+        }
+    }
+    return -1;
+}
+
+function procesarTextoInsignias(textoInsignias) {
+    if (!textoInsignias || textoInsignias.trim() === '') {
+        return [];
+    }
+    
+    // Separar por diferentes delimitadores
+    const delimitadores = /[,;|/\\\n\t]+/;
+    return textoInsignias.split(delimitadores)
+        .map(insignia => insignia.trim())
+        .filter(insignia => insignia && insignia.length > 0);
+}
+
+function agruparInsignias(insigniasArray) {
+    const grupos = {
+        principales: [],
+        gsRecording: [],
+        gsAnimation: [],
+        gsDesign: []
+    };
+    
+    insigniasArray.forEach(insignia => {
+        const insigniaLower = insignia.toLowerCase();
+        
+        // Clasificar insignias según su tipo
+        if (insigniaLower.includes('recording') || 
+            insigniaLower.includes('grabacion') || 
+            insigniaLower.includes('artista') ||
+            insigniaLower.includes('owner-recording')) {
+            grupos.gsRecording.push(insignia);
+        } else if (insigniaLower.includes('animation') || 
+                  insigniaLower.includes('animacion') || 
+                  insigniaLower.includes('animador')) {
+            grupos.gsAnimation.push(insignia);
+        } else if (insigniaLower.includes('design') || 
+                  insigniaLower.includes('diseño') || 
+                  insigniaLower.includes('diseñador') ||
+                  insigniaLower.includes('owner-designs')) {
+            grupos.gsDesign.push(insignia);
+        } else {
+            grupos.principales.push(insignia);
+        }
+    });
+    
+    return grupos;
+}
+
+// ============================================
+// FUNCIÓN PARA MOSTRAR USUARIOS E INSIGNIAS
+// ============================================
+
+function mostrarUsuarioYInsignias(nombreUsuario, usuarioData, elements) {
+    elements.forEach(element => {
+        // Limpiar el elemento antes de agregar contenido
+        element.innerHTML = '';
+        
+        // Mostrar nombre de usuario
+        const spanNombre = document.createElement("span");
+        spanNombre.textContent = nombreUsuario;
+        spanNombre.style.fontWeight = 'bold';
+        spanNombre.style.marginRight = '10px';
+        element.appendChild(spanNombre);
+
+        // Mostrar insignias principales
+        const divPrincipales = document.createElement("div");
+        divPrincipales.style.display = 'inline-block';
+        
+        if (usuarioData.principales && usuarioData.principales.length > 0) {
+            usuarioData.principales.forEach(insignia => {
+                if (insignia) {
+                    const spanInsignia = document.createElement("span");
+                    spanInsignia.classList.add("insignia", insignia);
+                    spanInsignia.style.marginLeft = '2px';
+                    divPrincipales.appendChild(spanInsignia);
+                }
+            });
+        }
+        element.appendChild(divPrincipales);
+
+        // Función para crear detalles de insignias
+        function crearDetallesInsignias(titulo, insigniasArray) {
+            if (insigniasArray && insigniasArray.length > 0) {
+                const details = document.createElement("details");
+                details.style.marginLeft = '10px';
+                details.style.display = 'inline-block';
+                
+                const summary = document.createElement("summary");
+                summary.textContent = titulo;
+                summary.style.fontSize = "10px";
+                summary.style.cursor = 'pointer';
+
+                details.appendChild(summary);
+                const divInsignias = document.createElement("div");
+                divInsignias.style.display = 'flex';
+                divInsignias.style.flexWrap = 'wrap';
+                divInsignias.style.gap = '2px';
+                divInsignias.style.marginTop = '5px';
+                
+                insigniasArray.forEach(insignia => {
+                    if (insignia) {
+                        const spanInsignia = document.createElement("span");
+                        spanInsignia.classList.add("insignia", insignia);
+                        divInsignias.appendChild(spanInsignia);
+                    }
+                });
+                details.appendChild(divInsignias);
+                return details;
+            }
+            return null;
+        }
+
+        // Mostrar detalles de cada categoría si existen
+        const gsRecordingDetails = crearDetallesInsignias("GSRecording", usuarioData.GSRecording);
+        if (gsRecordingDetails) element.appendChild(gsRecordingDetails);
+
+        const gsAnimationDetails = crearDetallesInsignias("GSAnimation", usuarioData.GSAnimation);
+        if (gsAnimationDetails) element.appendChild(gsAnimationDetails);
+
+        const gsDesignDetails = crearDetallesInsignias("GSDesign", usuarioData.GSDesign);
+        if (gsDesignDetails) element.appendChild(gsDesignDetails);
+    });
+}
+
+// ============================================
+// CÓDIGO PRINCIPAL PARA INSIGNIAS
+// ============================================
+
+async function inicializarInsigniasUsuarios() {
+    console.log('🚀 Inicializando sistema de insignias...');
+    
+    // Obtener datos de Google Sheets
+    const usuarios = await obtenerUsuariosDesdeSheets();
+    
+    if (Object.keys(usuarios).length === 0) {
+        console.log('⚠️ No se encontraron usuarios en Google Sheets');
+        return;
+    }
+    
+    console.log('✅ Datos de usuarios cargados:', Object.keys(usuarios));
+    
+    // Buscar elementos con clases que coincidan con nombres de usuario
+    Object.keys(usuarios).forEach(usuario => {
+        // Convertir el nombre de usuario a formato de clase (reemplazar espacios con guiones)
+        const nombreClase = usuario.replace(/\s+/g, '-');
+        const elements = document.querySelectorAll(`.${nombreClase}`);
+        
+        if (elements.length > 0) {
+            console.log(`👤 Mostrando insignias para: ${usuario}`);
+            mostrarUsuarioYInsignias(usuario, usuarios[usuario], elements);
+        }
+    });
+}
+
+// ============================================
+// INICIALIZACIÓN CUANDO EL DOM ESTÁ LISTO
+// ============================================
+
+document.addEventListener("DOMContentLoaded", () => {
+    console.log('📄 DOM cargado, inicializando insignias...');
+    inicializarInsigniasUsuarios();
 });
-
-function flower() {
-    const today = new Date();
-    const month = today.getMonth();
-    const day = today.getDate();
-    if ((month === 2 && day >= 20) || (month === 2 && day <= 27)) {
-        createElements('flower', 200, 3, 2, 7);
-    }
-}
-
-function sol() {
-    const today = new Date();
-    const month = today.getMonth();
-    const day = today.getDate();
-    if ((month === 5 && day >= 21) || (month === 5 && day <= 28)) {
-        createElements('sun', 200, 3, 2, 7);
-    }
-}
-
-function leaf() {
-    const today = new Date();
-    const month = today.getMonth();
-    const day = today.getDate();
-    if ((month === 8 && day >= 20) || (month === 8 && day <= 30)) {
-        createElements('leaf', 200, 3, 2, 7);
-    }
-}
-
-function nieve() {
-    const today = new Date();
-    const month = today.getMonth();
-    const day = today.getDate();
-    if ((month >= 11 && day >= 1) || (month === 0 && day <= 5)) {
-        createElements('snowflake', 250, 6, 2, 10);
-    }
-}
-
-function aniversario() {
-    const today = new Date();
-    const month = today.getMonth();
-    const day = today.getDate();
-    if ((month === 6 && day >= 30) || (month === 7 && day <= 7)) {
-        createElements('aniversario', 200, 3, 2, 7);
-    }
-}
-
-function createElements(className, count, animDurationBase, animDurationOffset, animDelay) {
-    for (let i = 0; i < count; i++) {
-        const element = document.createElement('div');
-        element.className = className;
-        element.style.left = `${Math.random() * window.innerWidth}px`;
-        element.style.animationDuration = `${Math.random() * animDurationBase + animDurationOffset}s`;
-        element.style.animationDelay = `${Math.random() * animDelay}s`;
-        element.style.opacity = Math.random();
-        element.style.transform = `scale(${Math.random()})`;
-        document.body.appendChild(element);
-    }
-}
-
-// ============================================
-// Código para Google Translate
-// ============================================
-
-function googleTranslateElementInit() {
-    if (typeof google !== 'undefined' && google.translate) {
-        new google.translate.TranslateElement({
-            pageLanguage: 'es',
-            includedLanguages: 'es,en,fr,de,it,pt,zh-CN,ja,ko,ru,ar',
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-        }, 'google_translate_element');
-    } else {
-        console.error("Google Translate API no está disponible.");
-    }
-}
-// ============================================
-  // Código para insignias de usuarios
-  // ============================================
-  
-  const usuarios = {
-      "Grouvex Studios": {
-          principales: ["verified-team", "owner", "vvadmin", "vdeveloper", "vbughunter","gsmember"],
-          GSRecording: [],
-          GSAnimation: [],
-          GSDesign: []
-      },
-      "Grouvex Phoenix": {
-          principales: ["verified-team", "vvadmin", "vdeveloper", "vbughunter", "verified"],
-          GSRecording: ["owner-recording", "artista", "verified"],
-          GSAnimation: ["verified"],
-          GSDesign: ["diseñador", "verified"]
-      },
-      "Tarlight Etherall": {
-          principales: ["verified-team", "admin", "artista"],
-          GSRecording: ["vvadmin", "artista", "gsmember", "verified"],
-          GSAnimation: [],
-          GSDesign: ["owner-designs", "diseñador", "verified"]
-      },
-      "Maiki Dran": {
-          principales: ["gsmember", "verified"],
-          GSRecording: ["artista", "verified"],
-          GSAnimation: [],
-          GSDesign: []
-      }
-  };
-  
-  function mostrarUsuarioYInsignias(nombreUsuario, elements) {
-      elements.forEach(element => {
-          // Mostrar nombre de usuario
-          const spanNombre = document.createElement("span");
-          spanNombre.textContent = nombreUsuario;
-          element.appendChild(spanNombre);
-  
-          // Mostrar insignias principales
-          const divPrincipales = document.createElement("div");        usuarios[nombreUsuario].principales.forEach(insignia => {
-              if (insignia) { // Solo agregar si la insignia no está vacía
-                  const spanInsignia = document.createElement("span");
-                  spanInsignia.classList.add("insignia", insignia);
-                  divPrincipales.appendChild(spanInsignia);
-              }
-          });
-          element.appendChild(divPrincipales);
-  
-          function crearDetallesInsignias(titulo, categoria) {
-              if (usuarios[nombreUsuario][categoria] && usuarios[nombreUsuario][categoria].length > 0 && usuarios[nombreUsuario][categoria][0] !== "") {
-                  const details = document.createElement("details");
-                  const summary = document.createElement("summary");
-                  summary.textContent = titulo;
-                  summary.style.fontSize = "10px";
-  
-                  details.appendChild(summary);
-                  const divInsignias = document.createElement("div");
-                  usuarios[nombreUsuario][categoria].forEach(insignia => {
-                      if (insignia) {
-                          const spanInsignia = document.createElement("span");
-                          spanInsignia.classList.add("insignia", insignia);
-                          divInsignias.appendChild(spanInsignia);
-                      }
-                  });
-                  details.appendChild(divInsignias);
-                  return details;
-              }
-              return null;
-          }
-  
-          const gsRecordingDetails = crearDetallesInsignias("GSRecording", "GSRecording");
-          if (gsRecordingDetails) element.appendChild(gsRecordingDetails);
-  
-          const gsAnimationDetails = crearDetallesInsignias("GSAnimation", "GSAnimation");
-          if (gsAnimationDetails) element.appendChild(gsAnimationDetails);
-  
-          const gsDesignDetails = crearDetallesInsignias("GSDesign", "GSDesign");
-          if (gsDesignDetails) element.appendChild(gsDesignDetails);
-      });
-  }
-  
-  // Esperar a que el DOM esté completamente cargado
-  document.addEventListener("DOMContentLoaded", () => {
-      Object.keys(usuarios).forEach(usuario => {
-          const elements = document.querySelectorAll(`.${usuario.replace(/\s+/g, '-')}`);
-          if (elements.length > 0) {
-              mostrarUsuarioYInsignias(usuario, elements);
-          }
-      });
-  });

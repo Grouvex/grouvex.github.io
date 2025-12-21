@@ -24,84 +24,11 @@ const auth = getAuth(app);
 const database = getDatabase(app);
 
 // ============================================
-// CONSTANTES Y DATOS
-// ============================================
-
-const uidsOwner = ["qY57xpuDyFdSOBxSNiehbRbJ1p32"];
-const uidsTeamAdmins = ["cQRgzlky1eNHjUh61GMPTTRnIZq2", "aO5Y2hQVl9Zn7KlElpgI7jqsFfc2"];
-const uidsTeamMods = [];
-const uidsTeamBugs = [];
-const uidsTeam = [...uidsOwner, ...uidsTeamAdmins, ...uidsTeamMods, ...uidsTeamBugs];
-const uidsArtistas = [...uidsOwner, ...uidsTeamAdmins, "bY7fMyURlggvZyXDL9dCjwZEmU62", "LTqeoFuZmqTSa4HiJkfNXbCHifa2"];
-const uidsPremium = [...uidsOwner, ...uidsTeamAdmins];
-const uidsPartner = [...uidsOwner, ...uidsTeamAdmins];
-const uidsVPartner = [...uidsOwner, ...uidsTeamAdmins];
-
-const usuarios = {
-    "Grouvex Studios": {
-        principales: ["verified-team", "owner", "vvadmin", "vdeveloper", "vbughunter","gsmember"],
-        GSRecording: [],
-        GSAnimation: [],
-        GSDesign: []
-    },
-    "Grouvex Phoenix": {
-        principales: ["verified-team", "vvadmin", "vdeveloper", "vbughunter", "verified"],
-        GSRecording: ["owner-recording", "artista", "verified"],
-        GSAnimation: ["verified"],
-        GSDesign: ["diseñador", "verified"]
-    },
-    "Tarlight Etherall": {
-        principales: ["verified-team", "admin", "artista"],
-        GSRecording: ["vvadmin", "artista", "gsmember", "verified"],
-        GSAnimation: [],
-        GSDesign: ["owner-designs", "diseñador", "verified"]
-    },
-    "Maiki Dran": {
-        principales: ["gsmember", "verified"],
-        GSRecording: ["artista", "verified"],
-        GSAnimation: [],
-        GSDesign: []
-    },
-    "Ángela": {
-        principales: ["gsmember", "verified"],
-        GSRecording: ["artista", "verified"],
-        GSAnimation: [],
-        GSDesign: []
-    }
-};
-
-// ============================================
 // CONFIGURACIÓN INSIGNIAS DESDE GOOGLE SHEETS
 // ============================================
 
 const SHEET_ID = '15FJWUFb6J52XDLbicgvTJmSCjJ0c0sRoWPpr5YFK5H8';
 const SHEET_NAME = 'Respuestas de formulario 2';
-
-// Mapeo de nombres de insignias a URLs
-const INSIGNIAS_MAP = {
-    'verified': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png',
-    'verified-team': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-team.png',
-    'sistema': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/sistema.png',
-    'verified-partner': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-partner.gif',
-    'verified-bughunter': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-bughunter.gif',
-    'artista': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/artista.gif',
-    'GROUVEX': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png',
-    'owner': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/owner.png',
-    'vvadmin': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/vvadmin.gif',
-    'vdeveloper': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/vdeveloper.gif',
-    'vbughunter': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-bughunter.gif',
-    'gsmember': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/gsmember.png',
-    'admin': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/admin.png',
-    'owner-recording': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/owner-recording.gif',
-    'owner-designs': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/owner-designs.gif',
-    'diseñador': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/diseñador.png',
-    'verified-voice': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-voice.gif',
-    'bughunter': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-bughunter.gif',
-    'partner': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-partner.gif',
-    'team': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-team.png',
-    'voice': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-voice.gif',
-    'developer': 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/vdeveloper.gif'
-};
 
 // ============================================
 // FUNCIONES DE AUTENTICACIÓN
@@ -233,54 +160,6 @@ function mostrarNotificacionRegistro() {
     setTimeout(() => notificacion.remove(), 8000);
 }
 
-function mostrarnewsAdv() {
-    const newsAdv = document.createElement("div");
-    if (window.innerWidth < 768) {
-        newsAdv.style = `
-            position: fixed;
-            bottom: 3px;
-            left: 1px;
-            padding: 1px;
-            background: rgb(5 59 219);
-            color: white;
-            border-radius: 9px;
-            box-shadow: 2px 2px 2px gold;
-            z-index: 1;
-            width: 99%;
-            max-height: 90px;
-            overflow-y: auto;
-            text-align: center;
-            font-size: 12px;
-        `;
-    } else {
-        newsAdv.style = `
-            position: fixed;
-            top: 3px;
-            left: 1px;
-            padding: 1px;
-            background: rgb(5 59 219);
-            color: white;
-            border-radius: 9px;
-            box-shadow: 2px 2px 2px gold;
-            z-index: 1;
-            width: 28%;
-            max-height: 180px;
-            overflow-y: auto;
-            text-align: center;
-            font-size: 12px;
-        `;
-    }
-    newsAdv.innerHTML = `
-        <h1 style="color: black"><span class="insignia sistema"></span> | Activacion de Sis-GCO</h1>
-        <div style="margin-top: 10px; display: flex; justify-content: center; gap: 10px;flex-wrap: wrap;flex-direction: column;align-content: center;">
-        <p>El Equipo de Gestión de Grouvex Studios ha activado de manera <n>INMEDIATA</n> el <n>Sistema de Gestión de Continuidad Operacional (GCO)</n> (NOGS/2025/GCO-002), con efecto desde el <n>22 de noviembre de 2025 a las 20:40 UTC</n>.</p>
-        <p>Podrá ver dicha notificación con más detalle en el <a href="https://drive.google.com/file/d/1sjrcIYAqTSdJJP4rtIoW5iTFTDtzccSs/view" style="color: white; text-decoration: underline;">N.O.Grouvex Studios</a></p>
-        <button onclick="this.parentElement.parentElement.remove()" style="background: none; color: red; cursor: pointer;">Cerrar</button>
-        </div>
-    `;
-    document.body.appendChild(newsAdv);
-}
-
 // ============================================
 // FUNCIONES DE GESTIÓN DE CUENTA
 // ============================================
@@ -376,95 +255,52 @@ function manejarErroresEliminacion(error) {
 }
 
 // ============================================
-// FUNCIONES DE CONTROL DE ACCESO
-// ============================================
-
-function verificarAcceso() {
-    onAuthStateChanged(auth, (user) => {
-        const mantenimientoActivo = false;
-        const paginaMantenimiento = "mantenimiento";
-        const paginaOficial = "ddoo";
-        const paginaActual = window.location.pathname.split("/").pop();
-
-        if (mantenimientoActivo) {
-          if ( paginaActual === paginaOficial || paginaActual === paginaMantenimiento || (user && uidsTeam.includes(user.uid))) {
-            mostrarNotificacion(`🚧 La Página está en mantenimiento. ✅ Tienes acceso a ella.`);
-            return;
-            }
-            if (paginaActual !== paginaOficial && paginaActual !== paginaMantenimiento && !(user && uidsTeam.includes(user.uid))) {
-                alert(`🚧 La Página está en mantenimiento, se te refirigirá a ${paginaMantenimiento}.`);
-                mostrarNotificacion(`🚧 La Página está en mantenimiento, se te refirigirá a ${paginaMantenimiento}.`);
-                setTimeout(() => { window.location.href = `https://grouvex.github.io/${paginaMantenimiento}`; }, 3000);
-                return;
-            }
-        } else if (paginaActual === paginaMantenimiento) {
-            mostrarNotificacion(`Está página no está en mantenimiento, se te redirigirá a la página de inicio`,true);
-            setTimeout(() => { window.location.href = `https://grouvex.github.io`; }, 3000);
-            return;
-        }
-
-        const permisos = {
-            "grouvex-studios-recording": uidsArtistas,
-            "grouvex-studios-animation": uidsArtistas,
-            "team": uidsTeam,
-            "planeta": [...uidsPartner, ...uidsVPartner],
-            "pacman": [...uidsPremium, ...uidsPartner, ...uidsVPartner]
-        };
-
-        const nombresEquipos = {
-            "grouvex-studios-recording": "Artista",
-            "grouvex-studios-animation": "Artista",
-            "team": "Team",
-            "planeta": "Partner o VPartner",
-            "pacman": "Premium, Partner o VPartner"
-        };
-
-        if (permisos[paginaActual]) {
-            if (!user) {
-                alert(`🔒 Necesitas estar registrado y ser ${nombresEquipos[paginaActual]}`);
-                mostrarNotificacion(`🔒 Necesitas estar registrado y ser ${nombresEquipos[paginaActual]}`);
-                setTimeout(() => { window.location.href = "https://grouvex.github.io/login" }, 5000);
-                return;
-            }
-
-            if (!permisos[paginaActual].includes(user.uid)) {
-                const equipoRequerido = nombresEquipos[paginaActual];
-                alert(`⛔ Requieres ser ${equipoRequerido}. Redirigiendo a Equipo → Insignias...`);
-                mostrarNotificacion(`⛔ Requieres ser ${equipoRequerido}. Redirigiendo a Equipo → Insignias...`);
-                setTimeout(() => {
-                    window.location.href = "https://grouvex.github.io/equipo#insignias";
-                }, 5000);
-                return;
-            }
-        } else if (!user) {
-            mostrarNotificacionRegistro();
-        }
-    });
-}
-
-// ============================================
-// FUNCIONES DE NAVEGACIÓN
-// ============================================
-
-function redirectUser() {
-    const user = auth.currentUser;
-    if (!user) return;
-    
-    const defaultPath = "https://grouvex.github.io";
-    const lastPath = localStorage.getItem('lastVisitedPath') || defaultPath;
-    verificarAcceso();
-    setTimeout(() => { window.location.href = lastPath; }, 1000);
-}
-
-// ============================================
 // FUNCIONES PARA OBTENER INSIGNIAS DESDE GOOGLE SHEETS
 // ============================================
 
-async function obtenerTodasInsigniasUsuario(userID) {
+async function obtenerUserID() {
+    let userID = '';
+    
+    // Primero intentar leer del span con id="userID"
+    const userIDSpan = document.getElementById('userID');
+    if (userIDSpan && userIDSpan.textContent && userIDSpan.textContent.trim() !== '') {
+        userID = userIDSpan.textContent.trim();
+        console.log('✅ UserID obtenido del span:', userID);
+    }
+    
+    // Si no hay contenido en el span, buscar elementos cuyo ID sea un UID de Firebase
+    if (!userID) {
+        const elementos = document.querySelectorAll('[id]');
+        for (const elemento of elementos) {
+            const idValue = elemento.id.trim();
+            // Verificar si es un UID de Firebase (normalmente 28 caracteres)
+            if (idValue.length >= 20 && idValue.length <= 32 && !idValue.includes(' ')) {
+                userID = idValue;
+                console.log('✅ UserID obtenido del id del elemento:', userID);
+                break;
+            }
+        }
+    }
+    
+    // Si aún no hay userID, usar el UID del usuario autenticado
+    if (!userID && auth.currentUser) {
+        userID = auth.currentUser.uid;
+        console.log('✅ UserID obtenido del usuario autenticado:', userID);
+    }
+    
+    return userID;
+}
+
+async function obtenerInsigniasUsuario(userID) {
     try {
         console.log('🔍 Buscando insignias para UserID:', userID);
         
-        // Normalizar el UserID (sin "GS-" si está presente)
+        if (!userID) {
+            console.log('❌ No se pudo obtener el UserID');
+            return [];
+        }
+        
+        // Normalizar el UserID (remover "GS-" si está presente)
         const searchUserID = userID.replace(/^GS-/, '').trim();
         
         // URL para acceder a Google Sheets
@@ -496,9 +332,9 @@ async function obtenerTodasInsigniasUsuario(userID) {
         // Obtener encabezados
         const headers = jsonData.table.cols.map(col => col.label || '');
         
-        // Buscar índices de las columnas
-        const userIDIndex = encontrarIndiceColumna(headers, ['userid', 'user id', 'id', 'grouvex']);
-        const insigniasIndex = encontrarIndiceColumna(headers, ['insignia', 'badge']);
+        // Buscar índices de las columnas necesarias
+        const userIDIndex = encontrarIndiceColumna(headers, ['grouvex studios userid', 'grouvex studios user id', 'grouvex userid', 'userid', 'id']);
+        const insigniasIndex = encontrarIndiceColumna(headers, ['insignias', 'insignia', 'badges', 'badge', 'emblem']);
         
         console.log('📊 Índices encontrados:', { 
             userIDIndex, 
@@ -508,11 +344,11 @@ async function obtenerTodasInsigniasUsuario(userID) {
         });
         
         if (userIDIndex === -1 || insigniasIndex === -1) {
-            console.error('❌ Faltan columnas necesarias');
+            console.error('❌ No se encontraron las columnas necesarias');
             return [];
         }
         
-        // Buscar el usuario
+        // Buscar el usuario en todas las filas
         for (let i = 0; i < jsonData.table.rows.length; i++) {
             const row = jsonData.table.rows[i];
             const userIDCell = row.c && row.c[userIDIndex];
@@ -530,7 +366,7 @@ async function obtenerTodasInsigniasUsuario(userID) {
                     if (insigniasCell && insigniasCell.v) {
                         const textoInsignias = insigniasCell.v.toString().trim();
                         console.log('📝 Insignias encontradas:', textoInsignias);
-                        return procesarTextoInsignias(textoInsignias);
+                        return procesarInsignias(textoInsignias);
                     }
                     return [];
                 }
@@ -538,11 +374,11 @@ async function obtenerTodasInsigniasUsuario(userID) {
         }
         
         console.log('❌ Usuario no encontrado en Google Sheets');
-        return obtenerInsigniasLocales(searchUserID);
+        return [];
         
     } catch (error) {
         console.error('❌ Error obteniendo insignias:', error);
-        return obtenerInsigniasLocales(userID.replace(/^GS-/, ''));
+        return [];
     }
 }
 
@@ -558,135 +394,127 @@ function encontrarIndiceColumna(headers, palabrasClave) {
     return -1;
 }
 
-function procesarTextoInsignias(textoInsignias) {
+function procesarInsignias(textoInsignias) {
     if (!textoInsignias || textoInsignias.trim() === '') {
         return [];
     }
     
+    const insignias = [];
+    
     // Separar por diferentes delimitadores
     const delimitadores = /[,;|/\\\n\t]+/;
-    const insigniasCrudas = textoInsignias.split(delimitadores);
-    const insigniasProcesadas = [];
+    const linksInsignias = textoInsignias.split(delimitadores);
     
-    insigniasCrudas.forEach(insignia => {
-        const insigniaLimpia = insignia.trim();
+    linksInsignias.forEach(link => {
+        const linkLimpio = link.trim();
         
-        if (insigniaLimpia && insigniaLimpia.length > 0) {
-            // Buscar en el mapa de insignias
-            const urlImagen = INSIGNIAS_MAP[insigniaLimpia.toLowerCase()];
+        if (linkLimpio && linkLimpio.length > 0) {
+            // Extraer nombre de la insignia de la URL o usar el link completo
+            const nombre = extraerNombreInsignia(linkLimpio);
             
-            if (urlImagen) {
-                insigniasProcesadas.push({
-                    nombre: insigniaLimpia,
-                    url: urlImagen
-                });
-            } else {
-                // Intentar con diferentes formatos
-                const formatos = [
-                    insigniaLimpia.toLowerCase().replace(/\s+/g, '-'),
-                    `verified-${insigniaLimpia.toLowerCase().replace(/\s+/g, '-')}`,
-                    `v${insigniaLimpia.toLowerCase().replace(/\s+/g, '')}`
-                ];
-                
-                for (const formato of formatos) {
-                    if (INSIGNIAS_MAP[formato]) {
-                        insigniasProcesadas.push({
-                            nombre: insigniaLimpia,
-                            url: INSIGNIAS_MAP[formato]
-                        });
-                        break;
-                    }
-                }
-            }
+            insignias.push({
+                nombre: nombre,
+                url: linkLimpio,
+                tipo: determinarTipoInsignia(linkLimpio)
+            });
         }
     });
     
-    return insigniasProcesadas;
+    return insignias;
 }
 
-function obtenerInsigniasLocales(userID) {
-    console.log('Usando sistema local para:', userID);
-    
-    // Sistema de respaldo basado en UIDs
-    const insigniasPorUID = {
-        // Owner
-        'qY57xpuDyFdSOBxSNiehbRbJ1p32': ['verified-team', 'owner', 'sistema', 'GROUVEX'],
+function extraerNombreInsignia(url) {
+    try {
+        // Intentar extraer el nombre del archivo sin extensión
+        const nombreArchivo = url.split('/').pop();
+        const nombreSinExtension = nombreArchivo.split('.')[0];
         
-        // Team Admins
-        'cQRgzlky1eNHjUh61GMPTTRnIZq2': ['verified-team', 'vvadmin', 'vdeveloper'],
-        'aO5Y2hQVl9Zn7KlElpgI7jqsFfc2': ['verified-team', 'vvadmin', 'vdeveloper'],
-        
-        // Artistas
-        'bY7fMyURlggvZyXDL9dCjwZEmU62': ['verified-team', 'artista'],
-        'LTqeoFuZmqTSa4HiJkfNXbCHifa2': ['verified-team', 'artista']
-    };
+        // Convertir a formato legible
+        return nombreSinExtension
+            .replace(/-/g, ' ')
+            .replace(/_/g, ' ')
+            .replace(/verified/g, 'Verified ')
+            .replace(/gif$|png$|jpg$|jpeg$/, '')
+            .trim()
+            .toUpperCase();
+    } catch (e) {
+        return 'Insignia';
+    }
+}
+
+function determinarTipoInsignia(url) {
+    if (url.includes('.gif')) return 'animada';
+    if (url.includes('.png') || url.includes('.jpg') || url.includes('.jpeg')) return 'estatica';
+    return 'desconocido';
+}
+
+// Función para verificar si un usuario tiene una insignia específica
+function usuarioTieneInsignia(insignias, insigniaBuscada) {
+    if (!insignias || insignias.length === 0) return false;
     
-    const insignias = insigniasPorUID[userID] || ['verified'];
-    return procesarTextoInsignias(insignias.join(','));
+    const insigniaBuscadaLower = insigniaBuscada.toLowerCase();
+    
+    return insignias.some(insignia => {
+        const nombreInsignia = insignia.nombre.toLowerCase();
+        const urlInsignia = insignia.url.toLowerCase();
+        
+        return nombreInsignia.includes(insigniaBuscadaLower) || 
+               urlInsignia.includes(insigniaBuscadaLower);
+    });
 }
 
 // ============================================
 // FUNCIONES PARA MOSTRAR INSIGNIAS
 // ============================================
 
-async function mostrarTodasInsigniasUsuario(userID, containerId = 'insignias-container') {
+async function mostrarInsigniasUsuarioEnPerfil() {
     try {
-        // Obtener las insignias
-        const insigniasUsuario = await obtenerTodasInsigniasUsuario(userID);
+        const userID = await obtenerUserID();
+        const insignias = await obtenerInsigniasUsuario(userID);
         
-        // Obtener o crear contenedor
-        let container = document.getElementById(containerId);
+        // Buscar el contenedor de insignias
+        let insigniasContainer = document.querySelector('.insignias-container');
         
-        if (!container) {
-            container = document.createElement('div');
-            container.id = containerId;
-            container.className = 'all-badges-container';
+        if (!insigniasContainer) {
+            // Crear contenedor si no existe
+            insigniasContainer = document.createElement('div');
+            insigniasContainer.className = 'insignias-container';
             
-            // Buscar donde insertar
-            const lugaresInsercion = [
-                document.getElementById('profile-section'),
-                document.querySelector('.profile-container'),
-                document.getElementById('user-info'),
-                document.querySelector('.profile-info'),
-                document.querySelector('main')
-            ];
-            
-            for (const lugar of lugaresInsercion) {
-                if (lugar) {
-                    lugar.appendChild(container);
-                    break;
+            // Buscar donde insertar (después del usuario o en un lugar apropiado)
+            const usuarioElement = document.querySelector('.usuario');
+            if (usuarioElement && usuarioElement.parentElement) {
+                usuarioElement.parentElement.insertBefore(insigniasContainer, usuarioElement.nextSibling);
+            } else {
+                // Insertar en el contenedor de tarjetas
+                const tarjetasContainer = document.querySelector('.tarjetas');
+                if (tarjetasContainer) {
+                    tarjetasContainer.appendChild(insigniasContainer);
+                } else {
+                    // Insertar en el body
+                    document.body.appendChild(insigniasContainer);
                 }
-            }
-            
-            // Si no se encontró lugar, crear uno nuevo
-            if (!container.parentElement) {
-                const profileSection = document.createElement('div');
-                profileSection.className = 'profile-badges-section';
-                profileSection.appendChild(container);
-                document.body.insertBefore(profileSection, document.body.firstChild);
             }
         }
         
-        // Limpiar y mostrar
-        container.innerHTML = '';
+        // Limpiar contenedor
+        insigniasContainer.innerHTML = '';
         
-        if (!insigniasUsuario || insigniasUsuario.length === 0) {
-            container.innerHTML = `
-                <div class="no-badges-message">
-                    <p>🎯 No hay insignias asignadas</p>
-                    <small>Completa el formulario de Grouvex Studios para obtener insignias</small>
+        if (!insignias || insignias.length === 0) {
+            insigniasContainer.innerHTML = `
+                <div style="text-align: center; color: #888; font-size: 12px; margin: 10px 0;">
+                    🎯 No hay insignias asignadas
                 </div>
             `;
             return;
         }
         
-        // Mostrar cada insignia
-        insigniasUsuario.forEach((insignia, index) => {
-            const badgeElement = crearElementoInsignia(insignia, index);
-            container.appendChild(badgeElement);
+        // Crear y añadir cada insignia
+        insignias.forEach((insignia, index) => {
+            const insigniaElement = crearElementoInsignia(insignia, index);
+            insigniasContainer.appendChild(insigniaElement);
         });
         
-        // Aplicar estilos
+        // Aplicar estilos si no están ya aplicados
         aplicarEstilosInsignias();
         
     } catch (error) {
@@ -695,162 +523,165 @@ async function mostrarTodasInsigniasUsuario(userID, containerId = 'insignias-con
 }
 
 function crearElementoInsignia(insignia, index) {
-    const badgeElement = document.createElement('div');
-    badgeElement.className = 'badge-item';
-    badgeElement.dataset.badge = insignia.nombre.toLowerCase();
-    badgeElement.style.animationDelay = `${index * 0.1}s`;
+    const container = document.createElement('div');
+    container.className = 'insignia-item';
+    container.style.cssText = `
+        display: inline-block;
+        margin: 5px;
+        position: relative;
+        animation: fadeIn 0.5s ease ${index * 0.1}s forwards;
+        opacity: 0;
+    `;
     
-    // Crear imagen
     const img = document.createElement('img');
     img.src = insignia.url;
     img.alt = insignia.nombre;
-    img.loading = 'lazy';
+    img.title = insignia.nombre;
+    img.style.cssText = `
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    `;
     
-    // Crear tooltip
-    const tooltip = document.createElement('div');
-    tooltip.className = 'badge-tooltip';
-    tooltip.textContent = insignia.nombre.replace(/-/g, ' ').toUpperCase();
-    
-    // Crear contenedor interno
-    const innerContainer = document.createElement('div');
-    innerContainer.className = 'badge-inner';
-    innerContainer.appendChild(img);
-    innerContainer.appendChild(tooltip);
-    
-    badgeElement.appendChild(innerContainer);
-    
-    // Añadir eventos hover
-    badgeElement.addEventListener('mouseenter', () => {
-        badgeElement.classList.add('badge-hover');
-        tooltip.style.opacity = '1';
-        tooltip.style.visibility = 'visible';
+    // Añadir efecto hover
+    img.addEventListener('mouseenter', () => {
+        img.style.transform = 'scale(1.2)';
+        img.style.boxShadow = '0 0 10px rgba(255, 215, 0, 0.5)';
+        img.style.borderColor = 'gold';
     });
     
-    badgeElement.addEventListener('mouseleave', () => {
-        badgeElement.classList.remove('badge-hover');
-        tooltip.style.opacity = '0';
-        tooltip.style.visibility = 'hidden';
+    img.addEventListener('mouseleave', () => {
+        img.style.transform = 'scale(1)';
+        img.style.boxShadow = 'none';
+        img.style.borderColor = 'rgba(255, 255, 255, 0.2)';
     });
     
-    return badgeElement;
+    container.appendChild(img);
+    return container;
 }
 
 function aplicarEstilosInsignias() {
-    if (!document.getElementById('badges-styles')) {
+    if (!document.getElementById('insignias-styles')) {
         const style = document.createElement('style');
-        style.id = 'badges-styles';
+        style.id = 'insignias-styles';
         style.textContent = `
-            .all-badges-container {
+            .insignias-container {
                 display: flex;
                 flex-wrap: wrap;
-                gap: 12px;
-                padding: 20px;
-                margin: 20px 0;
-                background: linear-gradient(135deg, rgba(15, 15, 30, 0.9), rgba(25, 25, 45, 0.9));
-                border-radius: 15px;
-                border: 1px solid rgba(100, 150, 255, 0.2);
-                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-                backdrop-filter: blur(10px);
-                min-height: 100px;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                margin: 15px 0;
+                padding: 10px;
+                min-height: 50px;
             }
             
-            .badge-item {
-                position: relative;
-                width: 60px;
-                height: 60px;
-                border-radius: 50%;
-                overflow: hidden;
-                transition: all 0.3s ease;
-                animation: badgeAppear 0.5s ease-out forwards;
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            
-            @keyframes badgeAppear {
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
                 to {
                     opacity: 1;
                     transform: translateY(0);
                 }
             }
             
-            .badge-inner {
-                width: 100%;
-                height: 100%;
-                position: relative;
-            }
-            
-            .badge-item img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                border-radius: 50%;
-                border: 2px solid transparent;
-                transition: all 0.3s ease;
-            }
-            
-            .badge-item:hover img {
-                transform: scale(1.2);
-                border-color: gold;
-                box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-                filter: brightness(1.1);
-            }
-            
-            .badge-tooltip {
+            .insignia-item:hover::after {
+                content: attr(title);
                 position: absolute;
-                bottom: -35px;
+                bottom: -25px;
                 left: 50%;
                 transform: translateX(-50%);
-                background: rgba(0, 0, 0, 0.9);
+                background: rgba(0, 0, 0, 0.8);
                 color: white;
-                padding: 6px 12px;
-                border-radius: 6px;
-                font-size: 12px;
-                font-weight: 600;
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-size: 11px;
                 white-space: nowrap;
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
                 z-index: 100;
-                pointer-events: none;
-            }
-            
-            .no-badges-message {
-                width: 100%;
-                text-align: center;
-                padding: 30px;
-                color: #aaa;
-            }
-            
-            .no-badges-message p {
-                font-size: 16px;
-                margin-bottom: 8px;
-                color: #888;
-            }
-            
-            .no-badges-message small {
-                font-size: 12px;
-                color: #666;
-            }
-            
-            .profile-badges-section {
-                margin: 20px auto;
-                max-width: 800px;
-            }
-            
-            @media (max-width: 768px) {
-                .all-badges-container {
-                    padding: 15px;
-                    gap: 10px;
-                }
-                
-                .badge-item {
-                    width: 50px;
-                    height: 50px;
-                }
             }
         `;
         document.head.appendChild(style);
     }
+}
+
+// ============================================
+// FUNCIONES DE CONTROL DE ACCESO BASADAS EN INSIGNIAS
+// ============================================
+
+async function verificarAcceso() {
+    onAuthStateChanged(auth, async (user) => {
+        const paginaActual = window.location.pathname.split("/").pop();
+        
+        if (!user) {
+            // Usuario no autenticado
+            if (paginaActual === 'login' || paginaActual === 'register') {
+                return; // Permitir acceso a páginas de autenticación
+            }
+            
+            mostrarNotificacion('🔒 Necesitas iniciar sesión para acceder a esta página');
+            setTimeout(() => { 
+                window.location.href = "https://grouvex.github.io/login"; 
+            }, 3000);
+            return;
+        }
+
+        // Obtener insignias del usuario
+        const insigniasUsuario = await obtenerInsigniasUsuario(user.uid);
+        
+        // Definir permisos basados en insignias
+        const permisosPorPagina = {
+            "grouvex-studios-recording": ['artista', 'verified-employee', 'owner-recording', 'verified-team'],
+            "grouvex-studios-animation": ['artista', 'verified-employee', 'verified-team'],
+            "team": ['verified-team', 'admin', 'owner', 'verified-employee'],
+            "planeta": ['verified-partner', 'partner', 'verified-team'],
+            "pacman": ['premium', 'verified-partner', 'partner', 'verified-team', 'owner']
+        };
+
+        const nombresEquipos = {
+            "grouvex-studios-recording": "Artista o Empleado",
+            "grouvex-studios-animation": "Artista o Empleado",
+            "team": "Miembro del Team",
+            "planeta": "Partner o VPartner",
+            "pacman": "Premium, Partner o Miembro del Team"
+        };
+
+        if (permisosPorPagina[paginaActual]) {
+            const tieneAcceso = permisosPorPagina[paginaActual].some(insignia => 
+                usuarioTieneInsignia(insigniasUsuario, insignia)
+            );
+
+            if (!tieneAcceso) {
+                const equipoRequerido = nombresEquipos[paginaActual];
+                mostrarNotificacion(`⛔ Requieres ser ${equipoRequerido}. Redirigiendo...`);
+                setTimeout(() => {
+                    window.location.href = "https://grouvex.github.io";
+                }, 5000);
+                return;
+            }
+        }
+        
+        // Si el usuario está autenticado pero no hay página restringida, mostrar notificación de registro
+        mostrarNotificacionRegistro();
+    });
+}
+
+// ============================================
+// FUNCIONES DE NAVEGACIÓN
+// ============================================
+
+function redirectUser() {
+    const user = auth.currentUser;
+    if (!user) return;
+    
+    const defaultPath = "https://grouvex.github.io";
+    const lastPath = localStorage.getItem('lastVisitedPath') || defaultPath;
+    verificarAcceso();
+    setTimeout(() => { window.location.href = lastPath; }, 1000);
 }
 
 // ============================================
@@ -870,20 +701,24 @@ async function updateProfileUI(targetUser) {
     actualizarElemento('correoElectronico', targetUser.email || 'Sin email');
     actualizarElemento('userID', `GS-${userID}`);
     
+    // Actualizar nombre de usuario
+    const usuarioElement = document.querySelector('.usuario');
+    if (usuarioElement) {
+        usuarioElement.textContent = nombreUsuario;
+        usuarioElement.className = `usuario ${nombreUsuario.replace(/\s+/g, '-')}`;
+    }
+    
+    // Actualizar foto de perfil
     const fotoPerfil = document.getElementById('fotoPerfil');
     if (fotoPerfil) {
         fotoPerfil.src = targetUser.photoURL || 'https://grouvex.com/img/GROUVEX.png';
         fotoPerfil.alt = nombreUsuario;
     }
     
-    // Actualizar clase del usuario
-    const usuarioElement = document.querySelector('.usuario');
-    if (usuarioElement) {
-        usuarioElement.className = `usuario ${nombreUsuario.replace(/\s+/g, '-')}`;
-    }
-    
-    // Mostrar las insignias del usuario
-    await mostrarTodasInsigniasUsuario(userID);
+    // Mostrar insignias después de un breve delay para asegurar que el userID esté actualizado
+    setTimeout(() => {
+        mostrarInsigniasUsuarioEnPerfil();
+    }, 500);
 }
 
 async function getUserData(userId) {
@@ -1050,12 +885,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Mostrar noticias (deshabilitado por ahora)
-    if (false) mostrarnewsAdv();
-
     // Verificar acceso
     const paginaActual = window.location.pathname.split("/").pop();
-    if (paginaActual !== 'login') verificarAcceso();
+    if (paginaActual !== 'login') {
+        verificarAcceso();
+    }
     
     // Inicializar estilos de insignias
     aplicarEstilosInsignias();

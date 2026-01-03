@@ -24,11 +24,10 @@ const auth = getAuth(app);
 const database = getDatabase(app);
 
 // ============================================
-// CONFIGURACIÓN INSIGNIAS DESDE GOOGLE SHEETS
+// CONFIGURACIÓN INSIGNIAS
 // ============================================
 
-const SHEET_ID = '15FJWUFb6J52XDLbicgvTJmSCjJ0c0sRoWPpr5YFK5H8';
-const SHEET_NAME = 'Respuestas de formulario 2';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQBy3U9WSBBYfo9C-etH3KYe3_b9B_W1i40-XE6vUgatP16slZDnXtokxs25l80VBWjg/exec';
 
 // ============================================
 // FUNCIONES DE AUTENTICACIÓN
@@ -80,7 +79,6 @@ async function handleGoogleLogin() {
         
         const result = await signInWithPopup(auth, provider);
         
-        // Guardar información del usuario en la base de datos
         await set(ref(database, `users/${result.user.uid}`), {
             email: result.user.email,
             displayName: result.user.displayName,
@@ -94,12 +92,6 @@ async function handleGoogleLogin() {
     } catch (error) {
         mostrarNotificacion(`❌ Error: ${error.message}`, true);
     }
-}
-
-function reauthenticateUser(user, password) {
-    if (!password) throw new Error('Se requiere contraseña para esta acción');
-    const credential = EmailAuthProvider.credential(user.email, password);
-    return reauthenticateWithCredential(user, credential);
 }
 
 // ============================================
@@ -129,72 +121,9 @@ function mostrarNotificacion(mensaje, esError = false) {
     setTimeout(() => notificacion.remove(), 8000);
 }
 
-function mostrarNotificacionRegistro() {
-    const notificacion = document.createElement("div");
-    notificacion.style = `
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        padding: 15px;
-        background: #4CAF50;
-        color: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        z-index: 1000;
-        max-width: 90%;
-        width: 300px;
-        text-align: center;
-        font-size: 14px;
-    `;
-    notificacion.innerHTML = `
-        <p>🎁 ¡Regístrate Gratis para acceder a contenido exclusivo!</p>
-        <div style="margin-top: 10px; display: flex; justify-content: center; gap: 10px;">
-            <a href="script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec" style="color: white; text-decoration: underline;">Registrarme</a>
-            <button onclick="this.parentElement.parentElement.remove()" 
-                    style="background: none; border: none; color: white; cursor: pointer;">
-                Cerrar
-            </button>
-        </div>
-    `;
-    document.body.appendChild(notificacion);
-    setTimeout(() => notificacion.remove(), 8000);
-}
-
 // ============================================
 // FUNCIONES DE GESTIÓN DE CUENTA
 // ============================================
-
-async function verificarCorreoUsuario(user) {
-    return sendEmailVerification(user).then(() => {
-        alert('Por favor, verifica tu correo electrónico. Tienes 5 minutos para verificarlo.');
-
-        return new Promise((resolve, reject) => {
-            const checkVerificationInterval = setInterval(() => {
-                user.reload().then(() => {
-                    if (user.emailVerified) {
-                        clearInterval(checkVerificationInterval);
-                        clearTimeout(deleteAccountTimeout);
-                        alert('Correo verificado con éxito.');
-                        resolve();
-                    }
-                }).catch((error) => {
-                    console.error('Error al recargar el estado del usuario:', error.message);
-                    reject(error);
-                });
-            }, 1000);
-
-            const deleteAccountTimeout = setTimeout(() => {
-                clearInterval(checkVerificationInterval);
-                alert('Tiempo de verificación agotado. No se pudo verificar el correo en el tiempo dado.');
-                reject(new Error('Tiempo de verificación agotado.'));
-            }, 5 * 60 * 1000);
-        });
-    }).catch((error) => {
-        console.error("Error al enviar correo de verificación:", error.message);
-        alert('Error al enviar correo de verificación: ' + error.message);
-        throw error;
-    });
-}
 
 async function handleAccountDeletion() {
     const user = auth.currentUser;
@@ -255,7 +184,7 @@ function manejarErroresEliminacion(error) {
 }
 
 // ============================================
-// FUNCIONES PARA OBTENER INSIGNIAS DESDE GOOGLE SHEETS
+// FUNCIONES PARA OBTENER INSIGNIAS
 // ============================================
 
 async function obtenerUserID() {
@@ -268,24 +197,20 @@ async function obtenerUserID() {
         console.log('✅ UserID obtenido del span:', userID);
     }
     
-    // Si no hay contenido en el span, buscar elementos cuyo ID sea un UID de Firebase
-    if (!userID) {
-        const elementos = document.querySelectorAll('[id]');
-        for (const elemento of elementos) {
-            const idValue = elemento.id.trim();
-            // Verificar si es un UID de Firebase (normalmente 28 caracteres)
-            if (idValue.length >= 20 && idValue.length <= 32 && !idValue.includes(' ')) {
-                userID = idValue;
-                console.log('✅ UserID obtenido del id del elemento:', userID);
-                break;
-            }
-        }
+    // Si el span tiene "GS-" al principio, mantenerlo
+    if (userID.startsWith('GS-')) {
+        return userID;
     }
     
-    // Si aún no hay userID, usar el UID del usuario autenticado
+    // Si no hay userID, usar el UID del usuario autenticado
     if (!userID && auth.currentUser) {
         userID = auth.currentUser.uid;
         console.log('✅ UserID obtenido del usuario autenticado:', userID);
+    }
+    
+    // Asegurar que tenga formato GS-UID
+    if (userID && !userID.startsWith('GS-')) {
+        userID = 'GS-' + userID;
     }
     
     return userID;
@@ -301,53 +226,42 @@ async function obtenerInsigniasUsuario(userID) {
         }
         
         const searchUserID = userID.replace(/^GS-/, '').trim();
-        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
         
-        const response = await fetch(url);
-        
-        if (!response.ok) {
-            throw new Error(`Error HTTP: ${response.status}`);
-        }
+        // Usar Apps Script sin parámetros adicionales
+        const response = await fetch(APPS_SCRIPT_URL, {
+            method: 'GET',
+            mode: 'no-cors' // Importante: usar no-cors para Apps Script
+        });
         
         const text = await response.text();
-        const jsonMatch = text.match(/google\.visualization\.Query\.setResponse\((.+)\);/);
         
-        if (!jsonMatch) {
-            console.error('❌ No se pudo parsear JSON');
+        // Intentar parsear como JSON
+        let jsonData;
+        try {
+            jsonData = JSON.parse(text);
+        } catch (e) {
+            console.error('❌ Error parseando JSON:', e);
             return null;
         }
         
-        const jsonData = JSON.parse(jsonMatch[1]);
-        
-        if (!jsonData.table || !jsonData.table.rows) {
-            console.log('ℹ️ No hay datos en la hoja');
+        if (!jsonData.success) {
+            console.error('❌ Error en respuesta:', jsonData.error);
             return null;
         }
         
-        const headers = jsonData.table.cols.map(col => col.label || '');
-        console.log('📊 Encabezados:', headers);
+        const headers = jsonData.headers || [];
+        const data = jsonData.data || [];
         
-        // Buscar índice EXACTO de "Insignias"
+        console.log('📊 Datos recibidos:', { headers, rowCount: data.length });
+        
+        // Buscar índices de columnas
+        const userIDIndex = headers.findIndex(header => 
+            header && header.toString().toLowerCase().includes('userid')
+        );
+        
         const insigniasIndex = headers.findIndex(header => 
-            header.trim().toLowerCase() === 'insignias'
+            header && header.toString().toLowerCase().includes('insignias')
         );
-        
-        // Buscar índice EXACTO de "Grouvex Studios UserID" o similares
-        let userIDIndex = headers.findIndex(header => 
-            header.trim().toLowerCase() === 'grouvex studios userid'
-        );
-        
-        if (userIDIndex === -1) {
-            userIDIndex = headers.findIndex(header => 
-                header.trim().toLowerCase() === 'grouvex userid'
-            );
-        }
-        
-        if (userIDIndex === -1) {
-            userIDIndex = headers.findIndex(header => 
-                header.trim().toLowerCase().includes('userid')
-            );
-        }
         
         console.log('📊 Índices encontrados:', { 
             userIDIndex, 
@@ -362,42 +276,30 @@ async function obtenerInsigniasUsuario(userID) {
         }
         
         // Buscar el usuario
-        for (let i = 0; i < jsonData.table.rows.length; i++) {
-            const row = jsonData.table.rows[i];
-            const userIDCell = row.c && row.c[userIDIndex];
+        for (let i = 0; i < data.length; i++) {
+            const row = data[i];
+            const rowUserID = row[userIDIndex] ? row[userIDIndex].toString().trim() : '';
             
-            if (userIDCell && userIDCell.v) {
-                const rowUserID = userIDCell.v.toString().trim();
-                const normalizedRowUserID = rowUserID.replace(/^GS-/, '');
+            if (rowUserID) {
+                const normalizedRowUserID = rowUserID.replace(/^GS-/, '').trim();
                 
                 if (normalizedRowUserID === searchUserID) {
-                    console.log(`✅ Usuario encontrado en fila ${i + 1}`);
+                    console.log(`✅ Usuario encontrado en fila ${i + 2}`);
                     
-                    // Obtener las insignias
-                    const insigniasCell = row.c && row.c[insigniasIndex];
+                    const insigniasTexto = row[insigniasIndex] ? row[insigniasIndex].toString().trim() : '';
+                    console.log('📝 Texto de insignias:', insigniasTexto);
                     
-                    if (insigniasCell && insigniasCell.v) {
-                        const textoInsignias = insigniasCell.v.toString().trim();
-                        console.log('📝 Texto de insignias:', textoInsignias);
-                        
-                        // Procesar insignias
-                        if (textoInsignias === '' || textoInsignias.toLowerCase() === 'ninguna' || 
-                            textoInsignias.toLowerCase() === 'sin insignias' || 
-                            textoInsignias.toLowerCase() === 'no tiene') {
-                            console.log('ℹ️ Usuario sin insignias');
-                            return [];
-                        }
-                        
-                        return procesarInsignias(textoInsignias);
-                    } else {
-                        console.log('ℹ️ Celda de insignias vacía o sin valor');
+                    if (!insigniasTexto || insigniasTexto === '') {
+                        console.log('ℹ️ Usuario sin insignias');
                         return [];
                     }
+                    
+                    return procesarInsignias(insigniasTexto);
                 }
             }
         }
         
-        console.log('❌ Usuario no encontrado en Google Sheets');
+        console.log('❌ Usuario no encontrado');
         return null;
         
     } catch (error) {
@@ -406,20 +308,7 @@ async function obtenerInsigniasUsuario(userID) {
     }
 }
 
-function encontrarIndiceColumna(headers, palabrasClave) {
-    for (let i = 0; i < headers.length; i++) {
-        const header = headers[i].toLowerCase();
-        for (const palabra of palabrasClave) {
-            if (header.includes(palabra.toLowerCase())) {
-                return i;
-            }
-        }
-    }
-    return -1;
-}
-
 function procesarInsignias(textoInsignias) {
-    // Limpiar el texto
     textoInsignias = textoInsignias.trim();
     
     if (!textoInsignias || textoInsignias === '' || 
@@ -429,19 +318,15 @@ function procesarInsignias(textoInsignias) {
     }
     
     const insignias = [];
-    
-    // Separar por diferentes delimitadores
     const delimitadores = /[,;|/\\\n\t]+/;
     const partes = textoInsignias.split(delimitadores);
     
     partes.forEach(parte => {
         const linkLimpio = parte.trim();
         
-        // Validar que sea un link
         if (linkLimpio && linkLimpio.length > 3 && 
             (linkLimpio.includes('http') || linkLimpio.includes('.') || linkLimpio.includes('/'))) {
             
-            // Filtrar textos no válidos
             if (!linkLimpio.includes(' ') && 
                 !['ninguna', 'sin', 'no', 'tiene', 'n/a'].includes(linkLimpio.toLowerCase())) {
                 
@@ -461,11 +346,9 @@ function procesarInsignias(textoInsignias) {
 
 function extraerNombreInsignia(url) {
     try {
-        // Intentar extraer el nombre del archivo sin extensión
         const nombreArchivo = url.split('/').pop();
         const nombreSinExtension = nombreArchivo.split('.')[0];
         
-        // Convertir a formato legible
         return nombreSinExtension
             .replace(/-/g, ' ')
             .replace(/_/g, ' ')
@@ -484,7 +367,6 @@ function determinarTipoInsignia(url) {
     return 'desconocido';
 }
 
-// Función para verificar si un usuario tiene una insignia específica
 function usuarioTieneInsignia(insignias, insigniaBuscada) {
     if (!insignias || insignias.length === 0) return false;
     
@@ -508,31 +390,25 @@ async function mostrarInsigniasUsuarioEnPerfil() {
         const userID = await obtenerUserID();
         const insignias = await obtenerInsigniasUsuario(userID);
         
-        // Buscar el contenedor de insignias
         let insigniasContainer = document.querySelector('.insignias-container');
         
         if (!insigniasContainer) {
-            // Crear contenedor si no existe
             insigniasContainer = document.createElement('div');
             insigniasContainer.className = 'insignias-container';
             
-            // Buscar donde insertar (después del usuario o en un lugar apropiado)
             const usuarioElement = document.querySelector('.usuario');
             if (usuarioElement && usuarioElement.parentElement) {
                 usuarioElement.parentElement.insertBefore(insigniasContainer, usuarioElement.nextSibling);
             } else {
-                // Insertar en el contenedor de tarjetas
                 const tarjetasContainer = document.querySelector('.tarjetas');
                 if (tarjetasContainer) {
                     tarjetasContainer.appendChild(insigniasContainer);
                 } else {
-                    // Insertar en el body
                     document.body.appendChild(insigniasContainer);
                 }
             }
         }
         
-        // Limpiar contenedor
         insigniasContainer.innerHTML = '';
         
         if (insignias === null) {
@@ -553,13 +429,11 @@ async function mostrarInsigniasUsuarioEnPerfil() {
             return;
         }
         
-        // Crear y añadir cada insignia
         insignias.forEach((insignia, index) => {
             const insigniaElement = crearElementoInsignia(insignia, index);
             insigniasContainer.appendChild(insigniaElement);
         });
         
-        // Aplicar estilos si no están ya aplicados
         aplicarEstilosInsignias();
         
     } catch (error) {
@@ -591,7 +465,6 @@ function crearElementoInsignia(insignia, index) {
         cursor: pointer;
     `;
     
-    // Añadir efecto hover
     img.addEventListener('mouseenter', () => {
         img.style.transform = 'scale(1.2)';
         img.style.boxShadow = '0 0 10px rgba(255, 215, 0, 0.5)';
@@ -655,7 +528,7 @@ function aplicarEstilosInsignias() {
 }
 
 // ============================================
-// FUNCIONES DE CONTROL DE ACCESO BASADAS EN INSIGNIAS
+// FUNCIONES DE CONTROL DE ACCESO
 // ============================================
 
 async function verificarAcceso() {
@@ -663,9 +536,8 @@ async function verificarAcceso() {
         const paginaActual = window.location.pathname.split("/").pop();
         
         if (!user) {
-            // Usuario no autenticado
             if (paginaActual === 'login' || paginaActual === 'register') {
-                return; // Permitir acceso a páginas de autenticación
+                return;
             }
             
             mostrarNotificacion('🔒 Necesitas iniciar sesión para acceder a esta página');
@@ -675,10 +547,8 @@ async function verificarAcceso() {
             return;
         }
 
-        // Obtener insignias del usuario
         const insigniasUsuario = await obtenerInsigniasUsuario(user.uid);
         
-        // Definir permisos basados en insignias
         const permisosPorPagina = {
             "grouvex-studios-recording": ['artista', 'verified-employee', 'owner-recording', 'verified-team'],
             "grouvex-studios-animation": ['artista', 'verified-employee', 'verified-team'],
@@ -709,9 +579,6 @@ async function verificarAcceso() {
                 return;
             }
         }
-        
-        // Si el usuario está autenticado pero no hay página restringida, mostrar notificación de registro
-        mostrarNotificacionRegistro();
     });
 }
 
@@ -737,7 +604,6 @@ async function updateProfileUI(targetUser) {
     const nombreUsuario = targetUser.displayName || "Usuario";
     const userID = targetUser.uid;
     
-    // Actualizar elementos básicos
     const actualizarElemento = (id, valor) => {
         const elemento = document.getElementById(id);
         if (elemento) elemento.textContent = valor;
@@ -746,21 +612,18 @@ async function updateProfileUI(targetUser) {
     actualizarElemento('correoElectronico', targetUser.email || 'Sin email');
     actualizarElemento('userID', `GS-${userID}`);
     
-    // Actualizar nombre de usuario
     const usuarioElement = document.querySelector('.usuario');
     if (usuarioElement) {
         usuarioElement.textContent = nombreUsuario;
         usuarioElement.className = `usuario ${nombreUsuario.replace(/\s+/g, '-')}`;
     }
     
-    // Actualizar foto de perfil
     const fotoPerfil = document.getElementById('fotoPerfil');
     if (fotoPerfil) {
         fotoPerfil.src = targetUser.photoURL || 'https://grouvex.com/img/GROUVEX.png';
         fotoPerfil.alt = nombreUsuario;
     }
     
-    // Mostrar insignias después de un breve delay para asegurar que el userID esté actualizado
     setTimeout(() => {
         mostrarInsigniasUsuarioEnPerfil();
     }, 500);
@@ -804,52 +667,6 @@ function eliminarDatosUsuario(userId) {
 }
 
 // ============================================
-// INICIALIZACIÓN Y CONFIGURACIÓN
-// ============================================
-
-function inicializarFormularioDeAutenticacion() {
-    const authForm = document.getElementById('authForm');
-    const formTitle = document.getElementById('formTitle');
-    let isLogin = true;
-    
-    if (formTitle) {
-        formTitle.textContent = 'Inicio de Sesión';
-    }
-    
-    if (authForm) {
-        authForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('authEmail').value;
-            const password = document.getElementById('authPassword').value;
-            handleEmailAuth(email, password, isLogin);
-        });
-    }
-
-    const googleBtn = document.getElementById('google-login-btn');
-    if (googleBtn) {
-        googleBtn.addEventListener('click', handleGoogleLogin);
-    }
-}
-
-// Comprobar periódicamente si el campo gs-user-id existe
-function checkAndSetGSUserId() {
-    const checkInterval = setInterval(() => {
-        const gsUserIdInput = document.getElementById('gs-user-id');
-        const user = auth.currentUser;
-        
-        if (gsUserIdInput && user) {
-            gsUserIdInput.value = "GS-" + user.uid;
-            console.log("GSUserID actualizado:", user.uid);
-            clearInterval(checkInterval);
-        } else if (gsUserIdInput && !user) {
-            gsUserIdInput.value = "Not Defined";
-            console.log("Usuario no autenticado, GSUserID establecido como 'Not Defined'");
-            clearInterval(checkInterval);
-        }
-    }, 1000);
-}
-
-// ============================================
 // OBSERVADOR DE AUTENTICACIÓN PRINCIPAL
 // ============================================
 
@@ -870,16 +687,13 @@ onAuthStateChanged(auth, async (user) => {
             targetUser = await getUserData(targetUserId);
         }
         
-        // Actualizar GSUserID
         const gsUserIdInput = document.getElementById('gs-user-id');
         if (gsUserIdInput) {
             gsUserIdInput.value = "GS-" + user.uid;
         }
         
-        // Actualizar UI con insignias
         await updateProfileUI(targetUser);
         
-        // Mostrar contenido
         const authContainer = document.getElementById('auth-container');
         const content = document.getElementById('content');
         
@@ -895,14 +709,9 @@ onAuthStateChanged(auth, async (user) => {
         if (authContainer) authContainer.style.display = 'block';
         if (content) content.style.display = 'none';
         
-        // Resetear GSUserID
         const gsUserIdInput = document.getElementById('gs-user-id');
         if (gsUserIdInput) {
             gsUserIdInput.value = "Not Defined";
-        }
-        
-        if (window.location.pathname.includes('login')) {
-            inicializarFormularioDeAutenticacion();
         }
     }
 });
@@ -913,7 +722,6 @@ onAuthStateChanged(auth, async (user) => {
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // Configurar botones
     document.getElementById('logoutBtn')?.addEventListener('click', () => signOut(auth));
     
     document.getElementById('deleteBtn')?.addEventListener('click', (e) => {
@@ -930,15 +738,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Verificar acceso
     const paginaActual = window.location.pathname.split("/").pop();
     if (paginaActual !== 'login') {
         verificarAcceso();
     }
     
-    // Inicializar estilos de insignias
     aplicarEstilosInsignias();
-    
-    // Iniciar verificación de GSUserID
-    checkAndSetGSUserId();
 });

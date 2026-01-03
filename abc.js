@@ -29,32 +29,6 @@ const database = getDatabase(app);
 
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQBy3U9WSBBYfo9C-etH3KYe3_b9B_W1i40-XE6vUgatP16slZDnXtokxs25l80VBWjg/exec';
 const URL_BASE_INSIGNIAS = 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/';
-const INSIGNIAS_PREDEFINIDAS = {
-  'verified': `${URL_BASE_INSIGNIAS}verified.png`,
-  'verified-partner': `${URL_BASE_INSIGNIAS}verified-partner.gif`,
-  'verified-team': `${URL_BASE_INSIGNIAS}verified-team.png`,
-  'verified-employee': `${URL_BASE_INSIGNIAS}verified-employee.gif`,
-  'verified-moderator': `${URL_BASE_INSIGNIAS}verified-moderator.gif`,
-  'verified-developer-a': `${URL_BASE_INSIGNIAS}verified-developer-a.gif`,
-  'verified-bughunter': `${URL_BASE_INSIGNIAS}verified-bughunter.gif`,
-  'artista': `${URL_BASE_INSIGNIAS}artista.gif`,
-  'partner': `${URL_BASE_INSIGNIAS}partner.png`,
-  'owner': `${URL_BASE_INSIGNIAS}owner.png`,
-  'owner-recording': `${URL_BASE_INSIGNIAS}ownerRecording.png`,
-  'owner-designs': `${URL_BASE_INSIGNIAS}ownerDesigns.png`,
-  'owner-animations': `${URL_BASE_INSIGNIAS}ownerAnimations.png`,
-  'sistema': `${URL_BASE_INSIGNIAS}sistema.png`,
-  'palette': `${URL_BASE_INSIGNIAS}Palette.png`,
-  'video-creator': `${URL_BASE_INSIGNIAS}Video_Creator.png`,
-  'vip': `${URL_BASE_INSIGNIAS}VIP.png`,
-  'super-bughunter': `${URL_BASE_INSIGNIAS}super-bughunter.png`,
-  'developer': `${URL_BASE_INSIGNIAS}developer.png`,
-  'trial-moderator': `${URL_BASE_INSIGNIAS}trial-moderator.png`,
-  'moderator': `${URL_BASE_INSIGNIAS}moderator.png`,
-  'employee': `${URL_BASE_INSIGNIAS}employee.png`,
-  'grouvex': `${URL_BASE_INSIGNIAS}GROUVEX.png`,
-  'grouvex-gco': `${URL_BASE_INSIGNIAS}GROUVEX%20Studios%20GCO.png`
-};
 
 // ============================================
 // FUNCIONES DE AUTENTICACIÓN
@@ -211,36 +185,15 @@ function manejarErroresEliminacion(error) {
 }
 
 // ============================================
-// FUNCIONES PARA OBTENER INSIGNIAS
+// FUNCIONES PARA OBTENER DATOS DEL USUARIO
 // ============================================
 
-async function obtenerUserID() {
-    let userID = '';
-    
-    const userIDSpan = document.getElementById('userID');
-    if (userIDSpan && userIDSpan.textContent && userIDSpan.textContent.trim() !== '') {
-        userID = userIDSpan.textContent.trim();
-        console.log('✅ UserID obtenido del span:', userID);
-    }
-    
-    if (!userID && auth.currentUser) {
-        userID = auth.currentUser.uid;
-        console.log('✅ UserID obtenido del usuario autenticado:', userID);
-    }
-    
-    if (userID && !userID.startsWith('GS-')) {
-        userID = 'GS-' + userID;
-    }
-    
-    return userID;
-}
-
-async function obtenerInsigniasUsuario(userID) {
+async function obtenerDatosUsuarioPorUserID(userID) {
     try {
-        console.log('🔍 Buscando insignias para UserID:', userID);
+        console.log('🔍 Buscando datos para UserID:', userID);
         
-        if (!userID) {
-            console.log('❌ No se pudo obtener el UserID');
+        if (!userID || userID.trim() === '') {
+            console.log('❌ UserID vacío o inválido');
             return null;
         }
         
@@ -256,7 +209,6 @@ async function obtenerInsigniasUsuario(userID) {
         }
         
         const text = await response.text();
-        console.log('📄 Respuesta recibida (primeros 200 chars):', text.substring(0, 200));
         
         let jsonData;
         try {
@@ -279,10 +231,12 @@ async function obtenerInsigniasUsuario(userID) {
             rowCount: data.length
         });
         
+        // Buscar índices de columnas
         let userIDIndex = -1;
         let insigniasIndex = -1;
+        let nombreIndex = -1;
+        let emailIndex = -1;
         
-        // Buscar índices de columnas
         headers.forEach((header, index) => {
             const headerStr = header ? header.toString() : '';
             
@@ -295,16 +249,41 @@ async function obtenerInsigniasUsuario(userID) {
                 insigniasIndex = index;
                 console.log('✅ Columna Insignias encontrada en índice:', index);
             }
+            
+            if (nombreIndex === -1 && (headerStr.toLowerCase().includes('nombre de usuario') || 
+                                       headerStr.toLowerCase().includes('nombre del cliente') ||
+                                       headerStr.toLowerCase().includes('nombre y apellidos reales') ||
+                                       headerStr.toLowerCase().includes('nombre del artista/banda'))) {
+                nombreIndex = index;
+                console.log('✅ Columna Nombre encontrada en índice:', index);
+            }
+            
+            if (emailIndex === -1 && headerStr.toLowerCase().includes('email')) {
+                emailIndex = index;
+                console.log('✅ Columna Email encontrada en índice:', index);
+            }
         });
         
-        console.log('📊 Índices encontrados:', { 
+        // Si no encuentra columna específica de nombre, buscar cualquier columna con "nombre"
+        if (nombreIndex === -1) {
+            headers.forEach((header, index) => {
+                const headerStr = header ? header.toString() : '';
+                if (nombreIndex === -1 && headerStr.toLowerCase().includes('nombre')) {
+                    nombreIndex = index;
+                    console.log('✅ Columna Nombre (aproximada) encontrada en índice:', index);
+                }
+            });
+        }
+        
+        console.log('📊 Índices encontrados:', {
             userIDIndex, 
-            insigniasIndex
+            insigniasIndex, 
+            nombreIndex, 
+            emailIndex
         });
         
-        if (userIDIndex === -1 || insigniasIndex === -1) {
-            console.error('❌ No se encontraron las columnas necesarias');
-            console.log('Headers disponibles:', headers);
+        if (userIDIndex === -1) {
+            console.error('❌ No se encontró la columna UserID');
             return null;
         }
         
@@ -316,290 +295,228 @@ async function obtenerInsigniasUsuario(userID) {
             if (rowUserID) {
                 const normalizedRowUserID = rowUserID.replace(/^GS-/, '').trim();
                 
-                console.log(`Comparando: "${normalizedRowUserID}" con "${searchUserID}"`);
+                console.log(`Comparando fila ${i + 2}: "${normalizedRowUserID}" con "${searchUserID}"`);
                 
                 if (normalizedRowUserID === searchUserID) {
                     console.log(`✅ Usuario encontrado en fila ${i + 2}`);
                     
-                    const insigniasTexto = row[insigniasIndex] ? row[insigniasIndex].toString().trim() : '';
-                    console.log('📝 Insignias encontradas:', insigniasTexto);
+                    // Obtener datos
+                    const insigniasTexto = insigniasIndex !== -1 ? (row[insigniasIndex] ? row[insigniasIndex].toString().trim() : '') : '';
+                    const nombre = nombreIndex !== -1 ? (row[nombreIndex] ? row[nombreIndex].toString().trim() : '') : 'Usuario';
+                    const email = emailIndex !== -1 ? (row[emailIndex] ? row[emailIndex].toString().trim() : '') : '';
                     
-                    if (!insigniasTexto || insigniasTexto.trim() === '') {
-                        console.log('ℹ️ Usuario sin insignias');
-                        return [];
-                    }
+                    console.log('📝 Datos encontrados:', {
+                        nombre,
+                        email,
+                        insigniasTexto: insigniasTexto ? `${insigniasTexto.substring(0, 50)}...` : 'vacío'
+                    });
                     
-                    const insigniasProcesadas = procesarInsignias(insigniasTexto);
-                    console.log(`✅ ${insigniasProcesadas.length} insignias procesadas`);
-                    return insigniasProcesadas;
+                    return {
+                        userID: userID,
+                        nombre: nombre || 'Usuario',
+                        email: email || 'Sin email',
+                        insignias: insigniasTexto
+                    };
                 }
             }
         }
         
         console.log('❌ Usuario no encontrado en la base de datos');
-        return null;
+        return {
+            userID: userID,
+            nombre: 'Usuario no encontrado',
+            email: 'No disponible',
+            insignias: ''
+        };
         
     } catch (error) {
-        console.error('❌ Error obteniendo insignias:', error);
-        return null;
+        console.error('❌ Error obteniendo datos del usuario:', error);
+        return {
+            userID: userID,
+            nombre: 'Error al cargar',
+            email: 'Error',
+            insignias: ''
+        };
     }
 }
 
+// ============================================
+// FUNCIONES PARA PROCESAR INSIGNIAS
+// ============================================
+
 function procesarInsignias(textoInsignias) {
-    textoInsignias = textoInsignias.trim();
+    if (!textoInsignias || textoInsignias.trim() === '') {
+        return [];
+    }
     
-    console.log('🔄 Procesando texto de insignias:', textoInsignias);
+    const texto = textoInsignias.trim();
     
-    if (!textoInsignias || textoInsignias === '' || 
-        textoInsignias.toLowerCase() === 'ninguna' || 
-        textoInsignias.toLowerCase() === 'sin insignias') {
+    // Si indica que no hay insignias
+    if (texto.toLowerCase() === 'ninguna' || 
+        texto.toLowerCase() === 'sin insignias' ||
+        texto.toLowerCase() === 'n/a' ||
+        texto.toLowerCase() === 'no aplica') {
         return [];
     }
     
     const insignias = [];
     
-    // Primero buscar URLs completas
-    const regexUrls = /https?:\/\/[^\s,;|]+(?:\.(?:png|gif|jpg|jpeg|webp|svg))[^\s,;|]*/gi;
-    const urlsEncontradas = textoInsignias.match(regexUrls) || [];
+    // Separar por comas, punto y coma, o espacios
+    const separadores = /[,;]+/;
+    const partes = texto.split(separadores);
     
-    // Luego buscar nombres de insignias predefinidas sin URL completa
-    const nombresInsignias = Object.keys(INSIGNIAS_PREDEFINIDAS);
-    
-    // Procesar URLs encontradas
-    urlsEncontradas.forEach(url => {
-        const urlLimpia = url.trim();
-        if (urlLimpia && urlLimpia.toLowerCase().includes(URL_BASE_INSIGNIAS.toLowerCase())) {
-            // Verificar que sea una URL válida de insignias
-            const esValida = urlLimpia.toLowerCase().includes('.png') || 
-                           urlLimpia.toLowerCase().includes('.gif') || 
-                           urlLimpia.toLowerCase().includes('.jpg') || 
-                           urlLimpia.toLowerCase().includes('.jpeg') || 
-                           urlLimpia.toLowerCase().includes('.webp') || 
-                           urlLimpia.toLowerCase().includes('.svg');
+    partes.forEach(parte => {
+        const urlLimpia = parte.trim();
+        
+        if (urlLimpia && urlLimpia.toLowerCase().includes('githubusercontent.com')) {
+            // Verificar si tiene extensión de imagen
+            const tieneExtension = /\.(png|gif|jpg|jpeg|webp|svg)(\?.*)?$/i.test(urlLimpia);
             
-            if (esValida) {
+            if (tieneExtension) {
                 const nombre = extraerNombreInsignia(urlLimpia);
                 
                 insignias.push({
                     nombre: nombre,
                     url: urlLimpia,
-                    tipo: determinarTipoInsignia(urlLimpia),
-                    esPredefinida: true
+                    tipo: determinarTipoInsignia(urlLimpia)
                 });
-                
-                console.log(`✅ Insignia URL añadida: ${nombre}`);
             }
         }
     });
     
-    // Si no hay URLs, buscar nombres de insignias predefinidas
-    if (insignias.length === 0) {
-        nombresInsignias.forEach(nombreInsignia => {
-            if (textoInsignias.toLowerCase().includes(nombreInsignia.toLowerCase())) {
-                const url = INSIGNIAS_PREDEFINIDAS[nombreInsignia];
-                const nombreFormateado = formatearNombreInsignia(nombreInsignia);
-                
-                insignias.push({
-                    nombre: nombreFormateado,
-                    url: url,
-                    tipo: determinarTipoInsignia(url),
-                    esPredefinida: true
-                });
-                
-                console.log(`✅ Insignia predefinida añadida: ${nombreFormateado}`);
-            }
-        });
-    }
-    
-    // Si aún no hay insignias, procesar el texto como antes
-    if (insignias.length === 0) {
-        const delimitadores = /[,;|/\\\n\t]+/;
-        const partes = textoInsignias.split(delimitadores);
-        
-        console.log('📝 Partes encontradas:', partes.length);
-        
-        partes.forEach(parte => {
-            const linkLimpio = parte.trim();
-            
-            if (linkLimpio && linkLimpio.length > 3) {
-                // Verificar si es una URL completa
-                if (linkLimpio.toLowerCase().startsWith('http')) {
-                    if (linkLimpio.toLowerCase().includes(URL_BASE_INSIGNIAS.toLowerCase())) {
-                        const nombre = extraerNombreInsignia(linkLimpio);
-                        
-                        insignias.push({
-                            nombre: nombre,
-                            url: linkLimpio,
-                            tipo: determinarTipoInsignia(linkLimpio),
-                            esPredefinida: false
-                        });
-                        
-                        console.log(`✅ Insignia URL completa añadida: ${nombre}`);
-                    }
-                } else {
-                    // Buscar si es un nombre de insignia predefinida
-                    const nombreInsigniaEncontrado = nombresInsignias.find(nombre => 
-                        linkLimpio.toLowerCase().includes(nombre.toLowerCase())
-                    );
-                    
-                    if (nombreInsigniaEncontrado) {
-                        const url = INSIGNIAS_PREDEFINIDAS[nombreInsigniaEncontrado];
-                        const nombreFormateado = formatearNombreInsignia(nombreInsigniaEncontrado);
-                        
-                        insignias.push({
-                            nombre: nombreFormateado,
-                            url: url,
-                            tipo: determinarTipoInsignia(url),
-                            esPredefinida: true
-                        });
-                        
-                        console.log(`✅ Insignia por nombre añadida: ${nombreFormateado}`);
-                    }
-                }
-            }
-        });
-    }
-    
-    console.log(`🎯 Total de insignias válidas: ${insignias.length}`);
-    
-    // Eliminar duplicados
-    const insigniasUnicas = [];
-    const urlsVistas = new Set();
-    
-    insignias.forEach(insignia => {
-        if (!urlsVistas.has(insignia.url)) {
-            urlsVistas.add(insignia.url);
-            insigniasUnicas.push(insignia);
-        }
-    });
-    
-    return insigniasUnicas;
+    return insignias;
 }
 
 function extraerNombreInsignia(url) {
     try {
-        const nombreArchivo = url.split('/').pop();
+        // Decodificar URL si está codificada
+        const urlDecodificada = decodeURIComponent(url);
+        
+        // Extraer nombre del archivo
+        const nombreArchivo = urlDecodificada.split('/').pop();
         const nombreSinExtension = nombreArchivo.split('.')[0];
         
-        // Decodificar URL si está codificada
-        const nombreDecodificado = decodeURIComponent(nombreSinExtension);
-        
-        return formatearNombreInsignia(nombreDecodificado);
+        // Formatear nombre
+        return nombreSinExtension
+            .replace(/%20/g, ' ')
+            .replace(/-/g, ' ')
+            .replace(/_/g, ' ')
+            .replace(/verified/g, 'Verified ')
+            .replace(/owner/g, 'Owner ')
+            .replace(/employee/g, 'Employee ')
+            .replace(/moderator/g, 'Moderator ')
+            .replace(/developer/g, 'Developer ')
+            .replace(/bughunter/g, 'Bug Hunter ')
+            .replace(/partner/g, 'Partner ')
+            .replace(/team/g, 'Team ')
+            .replace(/recording/g, 'Recording ')
+            .replace(/designs/g, 'Designs ')
+            .replace(/animations/g, 'Animations ')
+            .replace(/sistema/g, 'Sistema ')
+            .replace(/grouvex/g, 'Grouvex ')
+            .replace(/gco/g, 'GCO')
+            .replace(/^\s+|\s+$/g, '')
+            .toUpperCase();
     } catch (e) {
-        return 'Insignia';
+        return 'INSIGNIA';
     }
 }
 
-function formatearNombreInsignia(nombre) {
-    return nombre
-        .replace(/%20/g, ' ')
-        .replace(/-/g, ' ')
-        .replace(/_/g, ' ')
-        .replace(/\.(png|gif|jpg|jpeg|webp|svg)$/i, '')
-        .replace(/verified/g, 'Verified ')
-        .replace(/owner/g, 'Owner ')
-        .replace(/employee/g, 'Employee ')
-        .replace(/moderator/g, 'Moderator ')
-        .replace(/developer/g, 'Developer ')
-        .replace(/bughunter/g, 'Bug Hunter ')
-        .replace(/partner/g, 'Partner ')
-        .replace(/team/g, 'Team ')
-        .replace(/recording/g, 'Recording ')
-        .replace(/designs/g, 'Designs ')
-        .replace(/animations/g, 'Animations ')
-        .replace(/sistema/g, 'Sistema ')
-        .replace(/grouvex/g, 'Grouvex ')
-        .replace(/gco/g, 'GCO')
-        .replace(/^\s+|\s+$/g, '')
-        .toUpperCase();
-}
-
 function determinarTipoInsignia(url) {
-    if (url.includes('.gif')) return 'animada';
-    if (url.includes('.png') || url.includes('.jpg') || url.includes('.jpeg')) return 'estatica';
-    if (url.includes('.svg')) return 'vectorial';
+    const urlLower = url.toLowerCase();
+    
+    if (urlLower.includes('.gif')) return 'animada';
+    if (urlLower.includes('.png')) return 'estatica';
+    if (urlLower.includes('.jpg') || urlLower.includes('.jpeg')) return 'imagen';
+    if (urlLower.includes('.svg')) return 'vectorial';
+    
     return 'desconocido';
 }
 
-function usuarioTieneInsignia(insignias, insigniaBuscada) {
-    if (!insignias || insignias.length === 0) return false;
-    
-    const insigniaBuscadaLower = insigniaBuscada.toLowerCase();
-    
-    return insignias.some(insignia => {
-        const nombreInsignia = insignia.nombre.toLowerCase();
-        const urlInsignia = insignia.url.toLowerCase();
-        
-        return nombreInsignia.includes(insigniaBuscadaLower) || 
-               urlInsignia.includes(insigniaBuscadaLower);
-    });
-}
-
 // ============================================
-// FUNCIONES PARA MOSTRAR INSIGNIAS
+// FUNCIONES PARA MOSTRAR DATOS E INSIGNIAS
 // ============================================
 
-async function mostrarInsigniasUsuarioEnPerfil() {
+async function mostrarDatosEInsigniasEnElemento(elementoTigsID) {
     try {
-        console.log('🎨 Verificando contenedor de insignias...');
-        
-        const insigniasContainer = document.querySelector('.insignias-container');
-        
-        if (!insigniasContainer) {
-            console.log('⏭️ No existe .insignias-container, no se mostrarán insignias');
+        const userID = elementoTigsID.getAttribute('tigsID');
+        if (!userID) {
+            console.log('❌ Elemento sin tigsID válido');
             return;
         }
         
-        console.log('✅ Contenedor .insignias-container encontrado');
+        console.log(`🎯 Procesando elemento con tigsID: ${userID}`);
         
-        const userID = await obtenerUserID();
-        console.log('📋 UserID para buscar:', userID);
+        // Mostrar indicador de carga en el span
+        elementoTigsID.textContent = 'Cargando...';
+        elementoTigsID.style.color = '#888';
+        elementoTigsID.style.fontStyle = 'italic';
         
-        const insignias = await obtenerInsigniasUsuario(userID);
-        console.log('📊 Resultado de obtenerInsigniasUsuario:', insignias);
+        // Buscar el contenedor de insignias más cercano
+        const contenedorInsignias = elementoTigsID.closest('div')?.querySelector('.insignias-container');
         
-        insigniasContainer.innerHTML = '';
+        // Obtener datos del usuario
+        const datosUsuario = await obtenerDatosUsuarioPorUserID(userID);
         
-        if (insignias === null) {
-            console.log('⚠️ Error obteniendo insignias (null)');
-            insigniasContainer.innerHTML = `
-                <div style="text-align: center; color: #888; font-size: 12px; margin: 10px 0;">
-                    ⚠️ Error al cargar insignias
-                </div>
-            `;
+        if (!datosUsuario) {
+            elementoTigsID.textContent = 'Error al cargar';
+            elementoTigsID.style.color = '#ff4444';
+            if (contenedorInsignias) {
+                contenedorInsignias.innerHTML = '<div class="error-insignias">❌ Error cargando datos</div>';
+            }
             return;
         }
         
-        if (!insignias || insignias.length === 0) {
-            console.log('ℹ️ Usuario sin insignias o array vacío');
-            insigniasContainer.innerHTML = `
-                <div style="text-align: center; color: #888; font-size: 12px; margin: 10px 0;">
-                    🎯 No hay insignias asignadas
-                </div>
-            `;
-            return;
+        // MOSTRAR NOMBRE EN EL SPAN (CASO 1)
+        elementoTigsID.textContent = datosUsuario.nombre;
+        elementoTigsID.style.color = '';
+        elementoTigsID.style.fontStyle = '';
+        elementoTigsID.title = `ID: ${userID}`;
+        
+        console.log(`✅ Nombre mostrado: ${datosUsuario.nombre} para ${userID}`);
+        
+        // MOSTRAR INSIGNIAS EN EL CONTENEDOR
+        if (contenedorInsignias) {
+            const insignias = procesarInsignias(datosUsuario.insignias);
+            
+            // Limpiar contenedor
+            contenedorInsignias.innerHTML = '';
+            
+            if (!insignias || insignias.length === 0) {
+                contenedorInsignias.innerHTML = '<div class="no-insignias-message">🎯 Sin insignias</div>';
+                return;
+            }
+            
+            console.log(`✅ Mostrando ${insignias.length} insignias para ${userID}`);
+            
+            // Ordenar insignias: animadas primero
+            const insigniasOrdenadas = insignias.sort((a, b) => {
+                if (a.tipo === 'animada' && b.tipo !== 'animada') return -1;
+                if (a.tipo !== 'animada' && b.tipo === 'animada') return 1;
+                return a.nombre.localeCompare(b.nombre);
+            });
+            
+            insigniasOrdenadas.forEach((insignia, index) => {
+                const insigniaElement = crearElementoInsignia(insignia, index);
+                contenedorInsignias.appendChild(insigniaElement);
+            });
+            
+            // Añadir contador si hay más de 1 insignia
+            if (insignias.length > 1) {
+                const contador = document.createElement('div');
+                contador.className = 'insignias-count';
+                contador.textContent = insignias.length;
+                contenedorInsignias.style.position = 'relative';
+                contenedorInsignias.appendChild(contador);
+            }
         }
-        
-        console.log(`✅ Mostrando ${insignias.length} insignias`);
-        
-        // Ordenar insignias: animadas primero, luego estáticas
-        const insigniasOrdenadas = insignias.sort((a, b) => {
-            if (a.tipo === 'animada' && b.tipo !== 'animada') return -1;
-            if (a.tipo !== 'animada' && b.tipo === 'animada') return 1;
-            return a.nombre.localeCompare(b.nombre);
-        });
-        
-        insigniasOrdenadas.forEach((insignia, index) => {
-            const insigniaElement = crearElementoInsignia(insignia, index);
-            insigniasContainer.appendChild(insigniaElement);
-        });
-        
-        aplicarEstilosInsignias();
-        
-        console.log('✅ Insignias mostradas correctamente');
         
     } catch (error) {
-        console.error('❌ Error mostrando insignias:', error);
+        console.error('❌ Error procesando elemento tigsID:', error);
+        if (elementoTigsID) {
+            elementoTigsID.textContent = 'Error';
+            elementoTigsID.style.color = '#ff4444';
+        }
     }
 }
 
@@ -614,6 +531,7 @@ function crearElementoInsignia(insignia, index) {
         position: relative;
         animation: fadeIn 0.5s ease ${index * 0.1}s forwards;
         opacity: 0;
+        transform-origin: center;
     `;
     
     const img = document.createElement('img');
@@ -622,18 +540,19 @@ function crearElementoInsignia(insignia, index) {
     img.title = insignia.nombre;
     img.loading = 'lazy';
     
-    // Estilos específicos según tipo
+    // Estilos base
     let estilosBase = `
-        width: 40px;
-        height: 40px;
-        border-radius: 8px;
-        border: 2px solid rgba(255, 255, 255, 0.1);
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        border: 2px solid rgba(255, 255, 255, 0.15);
         transition: all 0.3s ease;
         cursor: pointer;
         object-fit: contain;
         background: rgba(255, 255, 255, 0.05);
     `;
     
+    // Estilos según tipo
     if (insignia.tipo === 'animada') {
         estilosBase += `
             border-color: rgba(255, 215, 0, 0.3);
@@ -649,17 +568,13 @@ function crearElementoInsignia(insignia, index) {
     
     // Efectos hover
     img.addEventListener('mouseenter', () => {
-        img.style.transform = 'scale(1.15) rotate(5deg)';
-        img.style.boxShadow = '0 0 15px rgba(255, 215, 0, 0.4)';
+        img.style.transform = 'scale(1.2)';
+        img.style.boxShadow = '0 0 10px rgba(255, 215, 0, 0.4)';
         img.style.borderColor = 'gold';
-        
-        if (insignia.tipo === 'animada') {
-            img.style.boxShadow = '0 0 20px rgba(255, 100, 0, 0.6)';
-        }
     });
     
     img.addEventListener('mouseleave', () => {
-        img.style.transform = 'scale(1) rotate(0deg)';
+        img.style.transform = 'scale(1)';
         img.style.boxShadow = insignia.tipo === 'animada' 
             ? '0 0 5px rgba(255, 215, 0, 0.2)' 
             : 'none';
@@ -667,95 +582,107 @@ function crearElementoInsignia(insignia, index) {
             ? 'rgba(255, 215, 0, 0.3)' 
             : insignia.tipo === 'vectorial'
             ? 'rgba(0, 150, 255, 0.3)'
-            : 'rgba(255, 255, 255, 0.1)';
+            : 'rgba(255, 255, 255, 0.15)';
+    });
+    
+    // Manejo de error en carga de imagen
+    img.addEventListener('error', () => {
+        console.error(`❌ Error cargando insignia: ${insignia.url}`);
+        img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0icmdiYSgwLCAwLCAwLCAwLjEpIi8+CjxwYXRoIGQ9Ik0xNiAxMEgyMlYxNkgxNlYxMFpNMTYgMThIMjJWMjRIMTZWMThaIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjUiLz4KPHBhdGggZD0iTTEwIDEwSDIyVjIySDEwVjEwWk0xMiAxMlYyMEgyMFYxMkgxMloiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjciIHN0cm9rZS13aWR0aD0iMiIvPgo8L3N2Zz4=';
+        img.title = `❌ Error cargando: ${insignia.nombre}`;
     });
     
     container.appendChild(img);
     return container;
 }
 
-function aplicarEstilosInsignias() {
-    if (!document.getElementById('insignias-styles')) {
-        const style = document.createElement('style');
-        style.id = 'insignias-styles';
-        style.textContent = `
-            .insignias-container {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                align-items: center;
-                gap: 10px;
-                margin: 20px 0;
-                padding: 15px;
-                min-height: 60px;
-                background: rgba(255, 255, 255, 0.02);
-                border-radius: 12px;
-                border: 1px solid rgba(255, 255, 255, 0.05);
-            }
-            
-            @keyframes fadeIn {
-                from {
-                    opacity: 0;
-                    transform: translateY(15px) scale(0.9);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0) scale(1);
-                }
-            }
-            
-            @keyframes pulse {
-                0% { transform: scale(1); }
-                50% { transform: scale(1.05); }
-                100% { transform: scale(1); }
-            }
-            
-            .insignia-item:hover {
-                z-index: 10;
-            }
-            
-            .insignia-item:hover::after {
-                content: attr(data-nombre);
-                position: absolute;
-                bottom: -30px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: rgba(0, 0, 0, 0.9);
-                color: white;
-                padding: 6px 12px;
-                border-radius: 6px;
-                font-size: 12px;
-                font-weight: 500;
-                white-space: nowrap;
-                z-index: 100;
-                border: 1px solid rgba(255, 215, 0, 0.3);
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            }
-            
-            .insignia-item[data-tipo="animada"] {
-                animation: pulse 2s infinite ease-in-out;
-            }
-            
-            .insignias-count {
-                position: absolute;
-                top: -8px;
-                right: -8px;
-                background: #4CAF50;
-                color: white;
-                font-size: 10px;
-                padding: 2px 6px;
-                border-radius: 10px;
-                font-weight: bold;
-                z-index: 5;
-            }
-        `;
-        document.head.appendChild(style);
+// ============================================
+// FUNCIÓN PRINCIPAL PARA CARGAR DATOS E INSIGNIAS
+// ============================================
+
+async function cargarDatosEInsigniasEnTodosLosElementos() {
+    console.log('🚀 Iniciando carga de datos e insignias');
+    
+    // CASO 1: Elementos con atributo tigsID
+    const elementosConTigsID = document.querySelectorAll('[tigsID]');
+    console.log(`📊 Encontrados ${elementosConTigsID.length} elementos con tigsID`);
+    
+    // Procesar todos los elementos con tigsID en paralelo
+    const promesas = [];
+    
+    for (const elemento of elementosConTigsID) {
+        promesas.push(mostrarDatosEInsigniasEnElemento(elemento));
     }
+    
+    // Esperar a que se procesen todos los elementos con tigsID
+    await Promise.all(promesas);
+    
+    // CASO 2: Elementos donde el ID está en el texto del span con id="userID"
+    const userIDElement = document.getElementById('userID');
+    if (userIDElement && userIDElement.textContent.trim()) {
+        const userID = userIDElement.textContent.trim();
+        console.log(`📋 UserID encontrado en texto: ${userID}`);
+        
+        // Buscar contenedor de insignias en el mismo contexto
+        const contenedorInsignias = userIDElement.closest('div')?.querySelector('.insignias-container');
+        
+        if (contenedorInsignias) {
+            const datosUsuario = await obtenerDatosUsuarioPorUserID(userID);
+            
+            if (datosUsuario && datosUsuario.insignias) {
+                const insignias = procesarInsignias(datosUsuario.insignias);
+                
+                // Limpiar contenedor
+                contenedorInsignias.innerHTML = '';
+                
+                if (insignias.length > 0) {
+                    // Ordenar insignias: animadas primero
+                    const insigniasOrdenadas = insignias.sort((a, b) => {
+                        if (a.tipo === 'animada' && b.tipo !== 'animada') return -1;
+                        if (a.tipo !== 'animada' && b.tipo === 'animada') return 1;
+                        return a.nombre.localeCompare(b.nombre);
+                    });
+                    
+                    insigniasOrdenadas.forEach((insignia, index) => {
+                        const insigniaElement = crearElementoInsignia(insignia, index);
+                        contenedorInsignias.appendChild(insigniaElement);
+                    });
+                    
+                    // Añadir contador
+                    if (insignias.length > 1) {
+                        const contador = document.createElement('div');
+                        contador.className = 'insignias-count';
+                        contador.textContent = insignias.length;
+                        contenedorInsignias.style.position = 'relative';
+                        contenedorInsignias.appendChild(contador);
+                    }
+                } else {
+                    contenedorInsignias.innerHTML = '<div class="no-insignias-message">🎯 Sin insignias</div>';
+                }
+            }
+        }
+    }
+    
+    console.log('✅ Carga de datos e insignias completada');
 }
 
 // ============================================
 // FUNCIONES DE CONTROL DE ACCESO
 // ============================================
+
+function usuarioTieneInsignia(insignias, insigniaBuscada) {
+    if (!insignias || insignias.length === 0) return false;
+    
+    const insigniaBuscadaLower = insigniaBuscada.toLowerCase();
+    
+    return insignias.some(insignia => {
+        const nombreInsignia = insignia.nombre.toLowerCase();
+        const urlInsignia = insignia.url.toLowerCase();
+        
+        return nombreInsignia.includes(insigniaBuscadaLower) || 
+               urlInsignia.includes(insigniaBuscadaLower);
+    });
+}
 
 async function verificarAcceso() {
     onAuthStateChanged(auth, async (user) => {
@@ -773,7 +700,10 @@ async function verificarAcceso() {
             return;
         }
 
-        const insigniasUsuario = await obtenerInsigniasUsuario(user.uid);
+        const userID = `GS-${user.uid}`;
+        const datosUsuario = await obtenerDatosUsuarioPorUserID(userID);
+        const insigniasTexto = datosUsuario ? datosUsuario.insignias : '';
+        const insigniasUsuario = procesarInsignias(insigniasTexto);
         
         const permisosPorPagina = {
             "grouvex-studios-recording": ['artista', 'verified-employee', 'owner-recording', 'verified-team'],
@@ -850,9 +780,10 @@ async function updateProfileUI(targetUser) {
         fotoPerfil.alt = nombreUsuario;
     }
     
+    // Cargar datos e insignias después de un breve delay
     setTimeout(() => {
-        mostrarInsigniasUsuarioEnPerfil();
-    }, 1000);
+        cargarDatosEInsigniasEnTodosLosElementos();
+    }, 500);
 }
 
 async function getUserData(userId) {
@@ -939,6 +870,9 @@ onAuthStateChanged(auth, async (user) => {
         if (gsUserIdInput) {
             gsUserIdInput.value = "Not Defined";
         }
+        
+        // Aún podemos cargar datos para elementos con tigsID
+        cargarDatosEInsigniasEnTodosLosElementos();
     }
 });
 
@@ -948,6 +882,100 @@ onAuthStateChanged(auth, async (user) => {
 
 document.addEventListener('DOMContentLoaded', () => {
     
+    // Aplicar estilos CSS para insignias
+    if (!document.getElementById('insignias-styles')) {
+        const style = document.createElement('style');
+        style.id = 'insignias-styles';
+        style.textContent = `
+            .insignias-container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+                gap: 8px;
+                margin: 10px 0;
+                padding: 10px;
+                min-height: 50px;
+                background: rgba(255, 255, 255, 0.02);
+                border-radius: 8px;
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                position: relative;
+            }
+            
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px) scale(0.9);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+            
+            .insignia-item {
+                position: relative;
+            }
+            
+            .insignia-item:hover::after {
+                content: attr(data-nombre);
+                position: absolute;
+                bottom: -25px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0, 0, 0, 0.9);
+                color: white;
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-size: 11px;
+                font-weight: 500;
+                white-space: nowrap;
+                z-index: 100;
+                border: 1px solid rgba(255, 215, 0, 0.3);
+                pointer-events: none;
+            }
+            
+            .no-insignias-message {
+                text-align: center;
+                color: #888;
+                font-size: 12px;
+                padding: 10px;
+                font-style: italic;
+            }
+            
+            .loading-insignias {
+                text-align: center;
+                color: #667eea;
+                font-size: 12px;
+                padding: 10px;
+            }
+            
+            .error-insignias {
+                text-align: center;
+                color: #ff4444;
+                font-size: 12px;
+                padding: 10px;
+            }
+            
+            .insignias-count {
+                position: absolute;
+                top: -5px;
+                right: -5px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                font-size: 10px;
+                font-weight: bold;
+                padding: 2px 6px;
+                border-radius: 10px;
+                border: 2px solid white;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                z-index: 10;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    // Event listeners para autenticación
     document.getElementById('logoutBtn')?.addEventListener('click', () => signOut(auth));
     
     document.getElementById('deleteBtn')?.addEventListener('click', (e) => {
@@ -964,10 +992,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Verificar acceso según la página
     const paginaActual = window.location.pathname.split("/").pop();
     if (paginaActual !== 'login') {
         verificarAcceso();
     }
     
-    aplicarEstilosInsignias();
+    // Cargar datos e insignias cuando el DOM esté listo
+    setTimeout(() => {
+        cargarDatosEInsigniasEnTodosLosElementos();
+    }, 1000);
 });

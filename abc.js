@@ -190,25 +190,17 @@ function manejarErroresEliminacion(error) {
 async function obtenerUserID() {
     let userID = '';
     
-    // Primero intentar leer del span con id="userID"
     const userIDSpan = document.getElementById('userID');
     if (userIDSpan && userIDSpan.textContent && userIDSpan.textContent.trim() !== '') {
         userID = userIDSpan.textContent.trim();
         console.log('✅ UserID obtenido del span:', userID);
     }
     
-    // Si el span tiene "GS-" al principio, mantenerlo
-    if (userID.startsWith('GS-')) {
-        return userID;
-    }
-    
-    // Si no hay userID, usar el UID del usuario autenticado
     if (!userID && auth.currentUser) {
         userID = auth.currentUser.uid;
         console.log('✅ UserID obtenido del usuario autenticado:', userID);
     }
     
-    // Asegurar que tenga formato GS-UID
     if (userID && !userID.startsWith('GS-')) {
         userID = 'GS-' + userID;
     }
@@ -227,15 +219,15 @@ async function obtenerInsigniasUsuario(userID) {
         
         const searchUserID = userID.replace(/^GS-/, '').trim();
         
-        // Usar Apps Script sin parámetros adicionales
-        const response = await fetch(APPS_SCRIPT_URL, {
-            method: 'GET',
-            mode: 'no-cors' // Importante: usar no-cors para Apps Script
-        });
+        const url = `${APPS_SCRIPT_URL}?timestamp=${Date.now()}`;
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status} - ${response.statusText}`);
+        }
         
         const text = await response.text();
         
-        // Intentar parsear como JSON
         let jsonData;
         try {
             jsonData = JSON.parse(text);
@@ -252,22 +244,24 @@ async function obtenerInsigniasUsuario(userID) {
         const headers = jsonData.headers || [];
         const data = jsonData.data || [];
         
-        console.log('📊 Datos recibidos:', { headers, rowCount: data.length });
+        let userIDIndex = -1;
+        let insigniasIndex = -1;
         
-        // Buscar índices de columnas
-        const userIDIndex = headers.findIndex(header => 
-            header && header.toString().toLowerCase().includes('userid')
-        );
-        
-        const insigniasIndex = headers.findIndex(header => 
-            header && header.toString().toLowerCase().includes('insignias')
-        );
+        headers.forEach((header, index) => {
+            const headerStr = header ? header.toString() : '';
+            
+            if (userIDIndex === -1 && headerStr.toLowerCase().includes('grouvex studios userid')) {
+                userIDIndex = index;
+            }
+            
+            if (insigniasIndex === -1 && headerStr.toLowerCase() === 'insignias') {
+                insigniasIndex = index;
+            }
+        });
         
         console.log('📊 Índices encontrados:', { 
             userIDIndex, 
-            insigniasIndex,
-            userIDHeader: userIDIndex !== -1 ? headers[userIDIndex] : 'No encontrada',
-            insigniasHeader: insigniasIndex !== -1 ? headers[insigniasIndex] : 'No encontrada'
+            insigniasIndex
         });
         
         if (userIDIndex === -1 || insigniasIndex === -1) {
@@ -275,7 +269,6 @@ async function obtenerInsigniasUsuario(userID) {
             return null;
         }
         
-        // Buscar el usuario
         for (let i = 0; i < data.length; i++) {
             const row = data[i];
             const rowUserID = row[userIDIndex] ? row[userIDIndex].toString().trim() : '';
@@ -287,19 +280,20 @@ async function obtenerInsigniasUsuario(userID) {
                     console.log(`✅ Usuario encontrado en fila ${i + 2}`);
                     
                     const insigniasTexto = row[insigniasIndex] ? row[insigniasIndex].toString().trim() : '';
-                    console.log('📝 Texto de insignias:', insigniasTexto);
                     
-                    if (!insigniasTexto || insigniasTexto === '') {
+                    if (!insigniasTexto || insigniasTexto.trim() === '') {
                         console.log('ℹ️ Usuario sin insignias');
                         return [];
                     }
                     
-                    return procesarInsignias(insigniasTexto);
+                    const insigniasProcesadas = procesarInsignias(insigniasTexto);
+                    console.log(`✅ ${insigniasProcesadas.length} insignias procesadas`);
+                    return insigniasProcesadas;
                 }
             }
         }
         
-        console.log('❌ Usuario no encontrado');
+        console.log('❌ Usuario no encontrado en la base de datos');
         return null;
         
     } catch (error) {
@@ -387,31 +381,24 @@ function usuarioTieneInsignia(insignias, insigniaBuscada) {
 
 async function mostrarInsigniasUsuarioEnPerfil() {
     try {
-        const userID = await obtenerUserID();
-        const insignias = await obtenerInsigniasUsuario(userID);
+        console.log('🎨 Verificando contenedor de insignias...');
         
-        let insigniasContainer = document.querySelector('.insignias-container');
+        const insigniasContainer = document.querySelector('.insignias-container');
         
         if (!insigniasContainer) {
-            insigniasContainer = document.createElement('div');
-            insigniasContainer.className = 'insignias-container';
-            
-            const usuarioElement = document.querySelector('.usuario');
-            if (usuarioElement && usuarioElement.parentElement) {
-                usuarioElement.parentElement.insertBefore(insigniasContainer, usuarioElement.nextSibling);
-            } else {
-                const tarjetasContainer = document.querySelector('.tarjetas');
-                if (tarjetasContainer) {
-                    tarjetasContainer.appendChild(insigniasContainer);
-                } else {
-                    document.body.appendChild(insigniasContainer);
-                }
-            }
+            console.log('⏭️ No existe .insignias-container, no se mostrarán insignias');
+            return;
         }
+        
+        console.log('✅ Contenedor .insignias-container encontrado');
+        
+        const userID = await obtenerUserID();
+        const insignias = await obtenerInsigniasUsuario(userID);
         
         insigniasContainer.innerHTML = '';
         
         if (insignias === null) {
+            console.log('⚠️ Error obteniendo insignias (null)');
             insigniasContainer.innerHTML = `
                 <div style="text-align: center; color: #888; font-size: 12px; margin: 10px 0;">
                     ⚠️ Error al cargar insignias
@@ -421,6 +408,7 @@ async function mostrarInsigniasUsuarioEnPerfil() {
         }
         
         if (!insignias || insignias.length === 0) {
+            console.log('ℹ️ Usuario sin insignias o array vacío');
             insigniasContainer.innerHTML = `
                 <div style="text-align: center; color: #888; font-size: 12px; margin: 10px 0;">
                     🎯 No hay insignias asignadas
@@ -429,12 +417,16 @@ async function mostrarInsigniasUsuarioEnPerfil() {
             return;
         }
         
+        console.log(`✅ Mostrando ${insignias.length} insignias`);
+        
         insignias.forEach((insignia, index) => {
             const insigniaElement = crearElementoInsignia(insignia, index);
             insigniasContainer.appendChild(insigniaElement);
         });
         
         aplicarEstilosInsignias();
+        
+        console.log('✅ Insignias mostradas correctamente');
         
     } catch (error) {
         console.error('❌ Error mostrando insignias:', error);

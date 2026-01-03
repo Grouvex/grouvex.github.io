@@ -221,6 +221,8 @@ async function obtenerInsigniasUsuario(userID) {
         const searchUserID = userID.replace(/^GS-/, '').trim();
         
         const url = `${APPS_SCRIPT_URL}?timestamp=${Date.now()}`;
+        console.log('📡 URL de solicitud:', url);
+        
         const response = await fetch(url);
         
         if (!response.ok) {
@@ -228,6 +230,7 @@ async function obtenerInsigniasUsuario(userID) {
         }
         
         const text = await response.text();
+        console.log('📄 Respuesta recibida (primeros 200 chars):', text.substring(0, 200));
         
         let jsonData;
         try {
@@ -245,18 +248,26 @@ async function obtenerInsigniasUsuario(userID) {
         const headers = jsonData.headers || [];
         const data = jsonData.data || [];
         
+        console.log('📊 Datos recibidos:', {
+            headersCount: headers.length,
+            rowCount: data.length
+        });
+        
         let userIDIndex = -1;
         let insigniasIndex = -1;
         
+        // Buscar índices de columnas
         headers.forEach((header, index) => {
             const headerStr = header ? header.toString() : '';
             
             if (userIDIndex === -1 && headerStr.toLowerCase().includes('grouvex studios userid')) {
                 userIDIndex = index;
+                console.log('✅ Columna UserID encontrada en índice:', index);
             }
             
             if (insigniasIndex === -1 && headerStr.toLowerCase() === 'insignias') {
                 insigniasIndex = index;
+                console.log('✅ Columna Insignias encontrada en índice:', index);
             }
         });
         
@@ -267,9 +278,11 @@ async function obtenerInsigniasUsuario(userID) {
         
         if (userIDIndex === -1 || insigniasIndex === -1) {
             console.error('❌ No se encontraron las columnas necesarias');
+            console.log('Headers disponibles:', headers);
             return null;
         }
         
+        // Buscar el usuario en todas las filas
         for (let i = 0; i < data.length; i++) {
             const row = data[i];
             const rowUserID = row[userIDIndex] ? row[userIDIndex].toString().trim() : '';
@@ -277,10 +290,13 @@ async function obtenerInsigniasUsuario(userID) {
             if (rowUserID) {
                 const normalizedRowUserID = rowUserID.replace(/^GS-/, '').trim();
                 
+                console.log(`Comparando: "${normalizedRowUserID}" con "${searchUserID}"`);
+                
                 if (normalizedRowUserID === searchUserID) {
                     console.log(`✅ Usuario encontrado en fila ${i + 2}`);
                     
                     const insigniasTexto = row[insigniasIndex] ? row[insigniasIndex].toString().trim() : '';
+                    console.log('📝 Insignias encontradas:', insigniasTexto);
                     
                     if (!insigniasTexto || insigniasTexto.trim() === '') {
                         console.log('ℹ️ Usuario sin insignias');
@@ -306,6 +322,8 @@ async function obtenerInsigniasUsuario(userID) {
 function procesarInsignias(textoInsignias) {
     textoInsignias = textoInsignias.trim();
     
+    console.log('🔄 Procesando texto de insignias:', textoInsignias);
+    
     if (!textoInsignias || textoInsignias === '' || 
         textoInsignias.toLowerCase() === 'ninguna' || 
         textoInsignias.toLowerCase() === 'sin insignias') {
@@ -315,6 +333,8 @@ function procesarInsignias(textoInsignias) {
     const insignias = [];
     const delimitadores = /[,;|/\\\n\t]+/;
     const partes = textoInsignias.split(delimitadores);
+    
+    console.log('📝 Partes encontradas:', partes.length);
     
     partes.forEach(parte => {
         const linkLimpio = parte.trim();
@@ -342,7 +362,7 @@ function procesarInsignias(textoInsignias) {
                         tipo: determinarTipoInsignia(linkLimpio)
                     });
                     
-                    console.log(`✅ Insignia válida añadida: ${nombre}`);
+                    console.log(`✅ Insignia válida añadida: ${nombre} - ${linkLimpio}`);
                 } else {
                     console.log(`⚠️ URL ignorada (sin extensión válida o con espacios): ${linkLimpio}`);
                 }
@@ -352,6 +372,7 @@ function procesarInsignias(textoInsignias) {
         }
     });
     
+    console.log(`🎯 Total de insignias válidas: ${insignias.length}`);
     return insignias;
 }
 
@@ -410,7 +431,10 @@ async function mostrarInsigniasUsuarioEnPerfil() {
         console.log('✅ Contenedor .insignias-container encontrado');
         
         const userID = await obtenerUserID();
+        console.log('📋 UserID para buscar:', userID);
+        
         const insignias = await obtenerInsigniasUsuario(userID);
+        console.log('📊 Resultado de obtenerInsigniasUsuario:', insignias);
         
         insigniasContainer.innerHTML = '';
         
@@ -635,7 +659,7 @@ async function updateProfileUI(targetUser) {
     
     setTimeout(() => {
         mostrarInsigniasUsuarioEnPerfil();
-    }, 500);
+    }, 1000);
 }
 
 async function getUserData(userId) {

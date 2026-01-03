@@ -297,13 +297,10 @@ async function obtenerInsigniasUsuario(userID) {
         
         if (!userID) {
             console.log('❌ No se pudo obtener el UserID');
-            return [];
+            return null;
         }
         
-        // Normalizar el UserID (remover "GS-" si está presente)
         const searchUserID = userID.replace(/^GS-/, '').trim();
-        
-        // URL para acceder a Google Sheets
         const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
         
         const response = await fetch(url);
@@ -313,28 +310,44 @@ async function obtenerInsigniasUsuario(userID) {
         }
         
         const text = await response.text();
-        
-        // Parsear respuesta JSON de Google Sheets
         const jsonMatch = text.match(/google\.visualization\.Query\.setResponse\((.+)\);/);
         
         if (!jsonMatch) {
             console.error('❌ No se pudo parsear JSON');
-            return [];
+            return null;
         }
         
         const jsonData = JSON.parse(jsonMatch[1]);
         
         if (!jsonData.table || !jsonData.table.rows) {
-            console.error('❌ No hay datos en la hoja');
-            return [];
+            console.log('ℹ️ No hay datos en la hoja');
+            return null;
         }
         
-        // Obtener encabezados
         const headers = jsonData.table.cols.map(col => col.label || '');
+        console.log('📊 Encabezados:', headers);
         
-        // Buscar índices de las columnas necesarias
-        const userIDIndex = encontrarIndiceColumna(headers, ['grouvex studios userid', 'grouvex studios user id', 'grouvex userid', 'userid', 'id']);
-        const insigniasIndex = encontrarIndiceColumna(headers, ['insignias', 'insignia', 'badges', 'badge', 'emblem']);
+        // Buscar índice EXACTO de "Insignias"
+        const insigniasIndex = headers.findIndex(header => 
+            header.trim().toLowerCase() === 'insignias'
+        );
+        
+        // Buscar índice EXACTO de "Grouvex Studios UserID" o similares
+        let userIDIndex = headers.findIndex(header => 
+            header.trim().toLowerCase() === 'grouvex studios userid'
+        );
+        
+        if (userIDIndex === -1) {
+            userIDIndex = headers.findIndex(header => 
+                header.trim().toLowerCase() === 'grouvex userid'
+            );
+        }
+        
+        if (userIDIndex === -1) {
+            userIDIndex = headers.findIndex(header => 
+                header.trim().toLowerCase().includes('userid')
+            );
+        }
         
         console.log('📊 Índices encontrados:', { 
             userIDIndex, 
@@ -345,10 +358,10 @@ async function obtenerInsigniasUsuario(userID) {
         
         if (userIDIndex === -1 || insigniasIndex === -1) {
             console.error('❌ No se encontraron las columnas necesarias');
-            return [];
+            return null;
         }
         
-        // Buscar el usuario en todas las filas
+        // Buscar el usuario
         for (let i = 0; i < jsonData.table.rows.length; i++) {
             const row = jsonData.table.rows[i];
             const userIDCell = row.c && row.c[userIDIndex];
@@ -361,24 +374,35 @@ async function obtenerInsigniasUsuario(userID) {
                     console.log(`✅ Usuario encontrado en fila ${i + 1}`);
                     
                     // Obtener las insignias
-                    const insigniasCell = row.c[insigniasIndex];
+                    const insigniasCell = row.c && row.c[insigniasIndex];
                     
                     if (insigniasCell && insigniasCell.v) {
                         const textoInsignias = insigniasCell.v.toString().trim();
-                        console.log('📝 Insignias encontradas:', textoInsignias);
+                        console.log('📝 Texto de insignias:', textoInsignias);
+                        
+                        // Procesar insignias
+                        if (textoInsignias === '' || textoInsignias.toLowerCase() === 'ninguna' || 
+                            textoInsignias.toLowerCase() === 'sin insignias' || 
+                            textoInsignias.toLowerCase() === 'no tiene') {
+                            console.log('ℹ️ Usuario sin insignias');
+                            return [];
+                        }
+                        
                         return procesarInsignias(textoInsignias);
+                    } else {
+                        console.log('ℹ️ Celda de insignias vacía o sin valor');
+                        return [];
                     }
-                    return [];
                 }
             }
         }
         
         console.log('❌ Usuario no encontrado en Google Sheets');
-        return [];
+        return null;
         
     } catch (error) {
         console.error('❌ Error obteniendo insignias:', error);
-        return [];
+        return null;
     }
 }
 
@@ -395,7 +419,12 @@ function encontrarIndiceColumna(headers, palabrasClave) {
 }
 
 function procesarInsignias(textoInsignias) {
-    if (!textoInsignias || textoInsignias.trim() === '') {
+    // Limpiar el texto
+    textoInsignias = textoInsignias.trim();
+    
+    if (!textoInsignias || textoInsignias === '' || 
+        textoInsignias.toLowerCase() === 'ninguna' || 
+        textoInsignias.toLowerCase() === 'sin insignias') {
         return [];
     }
     
@@ -403,20 +432,27 @@ function procesarInsignias(textoInsignias) {
     
     // Separar por diferentes delimitadores
     const delimitadores = /[,;|/\\\n\t]+/;
-    const linksInsignias = textoInsignias.split(delimitadores);
+    const partes = textoInsignias.split(delimitadores);
     
-    linksInsignias.forEach(link => {
-        const linkLimpio = link.trim();
+    partes.forEach(parte => {
+        const linkLimpio = parte.trim();
         
-        if (linkLimpio && linkLimpio.length > 0) {
-            // Extraer nombre de la insignia de la URL o usar el link completo
-            const nombre = extraerNombreInsignia(linkLimpio);
+        // Validar que sea un link
+        if (linkLimpio && linkLimpio.length > 3 && 
+            (linkLimpio.includes('http') || linkLimpio.includes('.') || linkLimpio.includes('/'))) {
             
-            insignias.push({
-                nombre: nombre,
-                url: linkLimpio,
-                tipo: determinarTipoInsignia(linkLimpio)
-            });
+            // Filtrar textos no válidos
+            if (!linkLimpio.includes(' ') && 
+                !['ninguna', 'sin', 'no', 'tiene', 'n/a'].includes(linkLimpio.toLowerCase())) {
+                
+                const nombre = extraerNombreInsignia(linkLimpio);
+                
+                insignias.push({
+                    nombre: nombre,
+                    url: linkLimpio,
+                    tipo: determinarTipoInsignia(linkLimpio)
+                });
+            }
         }
     });
     
@@ -498,6 +534,15 @@ async function mostrarInsigniasUsuarioEnPerfil() {
         
         // Limpiar contenedor
         insigniasContainer.innerHTML = '';
+        
+        if (insignias === null) {
+            insigniasContainer.innerHTML = `
+                <div style="text-align: center; color: #888; font-size: 12px; margin: 10px 0;">
+                    ⚠️ Error al cargar insignias
+                </div>
+            `;
+            return;
+        }
         
         if (!insignias || insignias.length === 0) {
             insigniasContainer.innerHTML = `

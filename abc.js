@@ -28,6 +28,7 @@ const database = getDatabase(app);
 // ============================================
 
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQBy3U9WSBBYfo9C-etH3KYe3_b9B_W1i40-XE6vUgatP16slZDnXtokxs25l80VBWjg/exec';
+const URL_BASE_INSIGNIAS = 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/';
 
 // ============================================
 // FUNCIONES DE AUTENTICACIÓN
@@ -318,19 +319,35 @@ function procesarInsignias(textoInsignias) {
     partes.forEach(parte => {
         const linkLimpio = parte.trim();
         
-        if (linkLimpio && linkLimpio.length > 3 && 
-            (linkLimpio.includes('http') || linkLimpio.includes('.') || linkLimpio.includes('/'))) {
+        if (linkLimpio && linkLimpio.length > 3) {
+            // Verificar que sea una URL de GitHub válida
+            const esURLValida = linkLimpio.toLowerCase().startsWith(URL_BASE_INSIGNIAS.toLowerCase());
             
-            if (!linkLimpio.includes(' ') && 
-                !['ninguna', 'sin', 'no', 'tiene', 'n/a'].includes(linkLimpio.toLowerCase())) {
+            if (esURLValida) {
+                // Verificar que tenga extensión de imagen válida
+                const tieneExtensionValida = 
+                    linkLimpio.toLowerCase().includes('.png') || 
+                    linkLimpio.toLowerCase().includes('.jpg') || 
+                    linkLimpio.toLowerCase().includes('.jpeg') || 
+                    linkLimpio.toLowerCase().includes('.gif') || 
+                    linkLimpio.toLowerCase().includes('.webp') || 
+                    linkLimpio.toLowerCase().includes('.svg');
                 
-                const nombre = extraerNombreInsignia(linkLimpio);
-                
-                insignias.push({
-                    nombre: nombre,
-                    url: linkLimpio,
-                    tipo: determinarTipoInsignia(linkLimpio)
-                });
+                if (tieneExtensionValida && !linkLimpio.includes(' ')) {
+                    const nombre = extraerNombreInsignia(linkLimpio);
+                    
+                    insignias.push({
+                        nombre: nombre,
+                        url: linkLimpio,
+                        tipo: determinarTipoInsignia(linkLimpio)
+                    });
+                    
+                    console.log(`✅ Insignia válida añadida: ${nombre}`);
+                } else {
+                    console.log(`⚠️ URL ignorada (sin extensión válida o con espacios): ${linkLimpio}`);
+                }
+            } else {
+                console.log(`⚠️ URL ignorada (no comienza con la base correcta): ${linkLimpio}`);
             }
         }
     });

@@ -688,8 +688,8 @@ async function verificarAcceso() {
     onAuthStateChanged(auth, async (user) => {
         const paginaActual = window.location.pathname.split("/").pop();
         
-        if (!user) {
-            if (paginaActual === 'login' || paginaActual === 'register') {
+        /*if (!user) {
+            if (paginaActual === 'login') {
                 return;
             }
             
@@ -698,7 +698,7 @@ async function verificarAcceso() {
                 window.location.href = "https://grouvex.github.io/login"; 
             }, 3000);
             return;
-        }
+        }*/
 
         const userID = `GS-${user.uid}`;
         const datosUsuario = await obtenerDatosUsuarioPorUserID(userID);

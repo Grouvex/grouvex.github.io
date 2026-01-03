@@ -29,6 +29,32 @@ const database = getDatabase(app);
 
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQBy3U9WSBBYfo9C-etH3KYe3_b9B_W1i40-XE6vUgatP16slZDnXtokxs25l80VBWjg/exec';
 const URL_BASE_INSIGNIAS = 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/';
+const INSIGNIAS_PREDEFINIDAS = {
+  'verified': `${URL_BASE_INSIGNIAS}verified.png`,
+  'verified-partner': `${URL_BASE_INSIGNIAS}verified-partner.gif`,
+  'verified-team': `${URL_BASE_INSIGNIAS}verified-team.png`,
+  'verified-employee': `${URL_BASE_INSIGNIAS}verified-employee.gif`,
+  'verified-moderator': `${URL_BASE_INSIGNIAS}verified-moderator.gif`,
+  'verified-developer-a': `${URL_BASE_INSIGNIAS}verified-developer-a.gif`,
+  'verified-bughunter': `${URL_BASE_INSIGNIAS}verified-bughunter.gif`,
+  'artista': `${URL_BASE_INSIGNIAS}artista.gif`,
+  'partner': `${URL_BASE_INSIGNIAS}partner.png`,
+  'owner': `${URL_BASE_INSIGNIAS}owner.png`,
+  'owner-recording': `${URL_BASE_INSIGNIAS}ownerRecording.png`,
+  'owner-designs': `${URL_BASE_INSIGNIAS}ownerDesigns.png`,
+  'owner-animations': `${URL_BASE_INSIGNIAS}ownerAnimations.png`,
+  'sistema': `${URL_BASE_INSIGNIAS}sistema.png`,
+  'palette': `${URL_BASE_INSIGNIAS}Palette.png`,
+  'video-creator': `${URL_BASE_INSIGNIAS}Video_Creator.png`,
+  'vip': `${URL_BASE_INSIGNIAS}VIP.png`,
+  'super-bughunter': `${URL_BASE_INSIGNIAS}super-bughunter.png`,
+  'developer': `${URL_BASE_INSIGNIAS}developer.png`,
+  'trial-moderator': `${URL_BASE_INSIGNIAS}trial-moderator.png`,
+  'moderator': `${URL_BASE_INSIGNIAS}moderator.png`,
+  'employee': `${URL_BASE_INSIGNIAS}employee.png`,
+  'grouvex': `${URL_BASE_INSIGNIAS}GROUVEX.png`,
+  'grouvex-gco': `${URL_BASE_INSIGNIAS}GROUVEX%20Studios%20GCO.png`
+};
 
 // ============================================
 // FUNCIONES DE AUTENTICACIÓN
@@ -331,49 +357,123 @@ function procesarInsignias(textoInsignias) {
     }
     
     const insignias = [];
-    const delimitadores = /[,;|/\\\n\t]+/;
-    const partes = textoInsignias.split(delimitadores);
     
-    console.log('📝 Partes encontradas:', partes.length);
+    // Primero buscar URLs completas
+    const regexUrls = /https?:\/\/[^\s,;|]+(?:\.(?:png|gif|jpg|jpeg|webp|svg))[^\s,;|]*/gi;
+    const urlsEncontradas = textoInsignias.match(regexUrls) || [];
     
-    partes.forEach(parte => {
-        const linkLimpio = parte.trim();
-        
-        if (linkLimpio && linkLimpio.length > 3) {
-            // Verificar que sea una URL de GitHub válida
-            const esURLValida = linkLimpio.toLowerCase().startsWith(URL_BASE_INSIGNIAS.toLowerCase());
+    // Luego buscar nombres de insignias predefinidas sin URL completa
+    const nombresInsignias = Object.keys(INSIGNIAS_PREDEFINIDAS);
+    
+    // Procesar URLs encontradas
+    urlsEncontradas.forEach(url => {
+        const urlLimpia = url.trim();
+        if (urlLimpia && urlLimpia.toLowerCase().includes(URL_BASE_INSIGNIAS.toLowerCase())) {
+            // Verificar que sea una URL válida de insignias
+            const esValida = urlLimpia.toLowerCase().includes('.png') || 
+                           urlLimpia.toLowerCase().includes('.gif') || 
+                           urlLimpia.toLowerCase().includes('.jpg') || 
+                           urlLimpia.toLowerCase().includes('.jpeg') || 
+                           urlLimpia.toLowerCase().includes('.webp') || 
+                           urlLimpia.toLowerCase().includes('.svg');
             
-            if (esURLValida) {
-                // Verificar que tenga extensión de imagen válida
-                const tieneExtensionValida = 
-                    linkLimpio.toLowerCase().includes('.png') || 
-                    linkLimpio.toLowerCase().includes('.jpg') || 
-                    linkLimpio.toLowerCase().includes('.jpeg') || 
-                    linkLimpio.toLowerCase().includes('.gif') || 
-                    linkLimpio.toLowerCase().includes('.webp') || 
-                    linkLimpio.toLowerCase().includes('.svg');
+            if (esValida) {
+                const nombre = extraerNombreInsignia(urlLimpia);
                 
-                if (tieneExtensionValida && !linkLimpio.includes(' ')) {
-                    const nombre = extraerNombreInsignia(linkLimpio);
-                    
-                    insignias.push({
-                        nombre: nombre,
-                        url: linkLimpio,
-                        tipo: determinarTipoInsignia(linkLimpio)
-                    });
-                    
-                    console.log(`✅ Insignia válida añadida: ${nombre} - ${linkLimpio}`);
-                } else {
-                    console.log(`⚠️ URL ignorada (sin extensión válida o con espacios): ${linkLimpio}`);
-                }
-            } else {
-                console.log(`⚠️ URL ignorada (no comienza con la base correcta): ${linkLimpio}`);
+                insignias.push({
+                    nombre: nombre,
+                    url: urlLimpia,
+                    tipo: determinarTipoInsignia(urlLimpia),
+                    esPredefinida: true
+                });
+                
+                console.log(`✅ Insignia URL añadida: ${nombre}`);
             }
         }
     });
     
+    // Si no hay URLs, buscar nombres de insignias predefinidas
+    if (insignias.length === 0) {
+        nombresInsignias.forEach(nombreInsignia => {
+            if (textoInsignias.toLowerCase().includes(nombreInsignia.toLowerCase())) {
+                const url = INSIGNIAS_PREDEFINIDAS[nombreInsignia];
+                const nombreFormateado = formatearNombreInsignia(nombreInsignia);
+                
+                insignias.push({
+                    nombre: nombreFormateado,
+                    url: url,
+                    tipo: determinarTipoInsignia(url),
+                    esPredefinida: true
+                });
+                
+                console.log(`✅ Insignia predefinida añadida: ${nombreFormateado}`);
+            }
+        });
+    }
+    
+    // Si aún no hay insignias, procesar el texto como antes
+    if (insignias.length === 0) {
+        const delimitadores = /[,;|/\\\n\t]+/;
+        const partes = textoInsignias.split(delimitadores);
+        
+        console.log('📝 Partes encontradas:', partes.length);
+        
+        partes.forEach(parte => {
+            const linkLimpio = parte.trim();
+            
+            if (linkLimpio && linkLimpio.length > 3) {
+                // Verificar si es una URL completa
+                if (linkLimpio.toLowerCase().startsWith('http')) {
+                    if (linkLimpio.toLowerCase().includes(URL_BASE_INSIGNIAS.toLowerCase())) {
+                        const nombre = extraerNombreInsignia(linkLimpio);
+                        
+                        insignias.push({
+                            nombre: nombre,
+                            url: linkLimpio,
+                            tipo: determinarTipoInsignia(linkLimpio),
+                            esPredefinida: false
+                        });
+                        
+                        console.log(`✅ Insignia URL completa añadida: ${nombre}`);
+                    }
+                } else {
+                    // Buscar si es un nombre de insignia predefinida
+                    const nombreInsigniaEncontrado = nombresInsignias.find(nombre => 
+                        linkLimpio.toLowerCase().includes(nombre.toLowerCase())
+                    );
+                    
+                    if (nombreInsigniaEncontrado) {
+                        const url = INSIGNIAS_PREDEFINIDAS[nombreInsigniaEncontrado];
+                        const nombreFormateado = formatearNombreInsignia(nombreInsigniaEncontrado);
+                        
+                        insignias.push({
+                            nombre: nombreFormateado,
+                            url: url,
+                            tipo: determinarTipoInsignia(url),
+                            esPredefinida: true
+                        });
+                        
+                        console.log(`✅ Insignia por nombre añadida: ${nombreFormateado}`);
+                    }
+                }
+            }
+        });
+    }
+    
     console.log(`🎯 Total de insignias válidas: ${insignias.length}`);
-    return insignias;
+    
+    // Eliminar duplicados
+    const insigniasUnicas = [];
+    const urlsVistas = new Set();
+    
+    insignias.forEach(insignia => {
+        if (!urlsVistas.has(insignia.url)) {
+            urlsVistas.add(insignia.url);
+            insigniasUnicas.push(insignia);
+        }
+    });
+    
+    return insigniasUnicas;
 }
 
 function extraerNombreInsignia(url) {
@@ -381,21 +481,43 @@ function extraerNombreInsignia(url) {
         const nombreArchivo = url.split('/').pop();
         const nombreSinExtension = nombreArchivo.split('.')[0];
         
-        return nombreSinExtension
-            .replace(/-/g, ' ')
-            .replace(/_/g, ' ')
-            .replace(/verified/g, 'Verified ')
-            .replace(/gif$|png$|jpg$|jpeg$/, '')
-            .trim()
-            .toUpperCase();
+        // Decodificar URL si está codificada
+        const nombreDecodificado = decodeURIComponent(nombreSinExtension);
+        
+        return formatearNombreInsignia(nombreDecodificado);
     } catch (e) {
         return 'Insignia';
     }
 }
 
+function formatearNombreInsignia(nombre) {
+    return nombre
+        .replace(/%20/g, ' ')
+        .replace(/-/g, ' ')
+        .replace(/_/g, ' ')
+        .replace(/\.(png|gif|jpg|jpeg|webp|svg)$/i, '')
+        .replace(/verified/g, 'Verified ')
+        .replace(/owner/g, 'Owner ')
+        .replace(/employee/g, 'Employee ')
+        .replace(/moderator/g, 'Moderator ')
+        .replace(/developer/g, 'Developer ')
+        .replace(/bughunter/g, 'Bug Hunter ')
+        .replace(/partner/g, 'Partner ')
+        .replace(/team/g, 'Team ')
+        .replace(/recording/g, 'Recording ')
+        .replace(/designs/g, 'Designs ')
+        .replace(/animations/g, 'Animations ')
+        .replace(/sistema/g, 'Sistema ')
+        .replace(/grouvex/g, 'Grouvex ')
+        .replace(/gco/g, 'GCO')
+        .replace(/^\s+|\s+$/g, '')
+        .toUpperCase();
+}
+
 function determinarTipoInsignia(url) {
     if (url.includes('.gif')) return 'animada';
     if (url.includes('.png') || url.includes('.jpg') || url.includes('.jpeg')) return 'estatica';
+    if (url.includes('.svg')) return 'vectorial';
     return 'desconocido';
 }
 
@@ -460,7 +582,14 @@ async function mostrarInsigniasUsuarioEnPerfil() {
         
         console.log(`✅ Mostrando ${insignias.length} insignias`);
         
-        insignias.forEach((insignia, index) => {
+        // Ordenar insignias: animadas primero, luego estáticas
+        const insigniasOrdenadas = insignias.sort((a, b) => {
+            if (a.tipo === 'animada' && b.tipo !== 'animada') return -1;
+            if (a.tipo !== 'animada' && b.tipo === 'animada') return 1;
+            return a.nombre.localeCompare(b.nombre);
+        });
+        
+        insigniasOrdenadas.forEach((insignia, index) => {
             const insigniaElement = crearElementoInsignia(insignia, index);
             insigniasContainer.appendChild(insigniaElement);
         });
@@ -477,6 +606,8 @@ async function mostrarInsigniasUsuarioEnPerfil() {
 function crearElementoInsignia(insignia, index) {
     const container = document.createElement('div');
     container.className = 'insignia-item';
+    container.dataset.tipo = insignia.tipo;
+    container.dataset.nombre = insignia.nombre;
     container.style.cssText = `
         display: inline-block;
         margin: 5px;
@@ -489,25 +620,54 @@ function crearElementoInsignia(insignia, index) {
     img.src = insignia.url;
     img.alt = insignia.nombre;
     img.title = insignia.nombre;
-    img.style.cssText = `
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        border: 2px solid rgba(255, 255, 255, 0.2);
+    img.loading = 'lazy';
+    
+    // Estilos específicos según tipo
+    let estilosBase = `
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        border: 2px solid rgba(255, 255, 255, 0.1);
         transition: all 0.3s ease;
         cursor: pointer;
+        object-fit: contain;
+        background: rgba(255, 255, 255, 0.05);
     `;
     
+    if (insignia.tipo === 'animada') {
+        estilosBase += `
+            border-color: rgba(255, 215, 0, 0.3);
+            box-shadow: 0 0 5px rgba(255, 215, 0, 0.2);
+        `;
+    } else if (insignia.tipo === 'vectorial') {
+        estilosBase += `
+            border-color: rgba(0, 150, 255, 0.3);
+        `;
+    }
+    
+    img.style.cssText = estilosBase;
+    
+    // Efectos hover
     img.addEventListener('mouseenter', () => {
-        img.style.transform = 'scale(1.2)';
-        img.style.boxShadow = '0 0 10px rgba(255, 215, 0, 0.5)';
+        img.style.transform = 'scale(1.15) rotate(5deg)';
+        img.style.boxShadow = '0 0 15px rgba(255, 215, 0, 0.4)';
         img.style.borderColor = 'gold';
+        
+        if (insignia.tipo === 'animada') {
+            img.style.boxShadow = '0 0 20px rgba(255, 100, 0, 0.6)';
+        }
     });
     
     img.addEventListener('mouseleave', () => {
-        img.style.transform = 'scale(1)';
-        img.style.boxShadow = 'none';
-        img.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+        img.style.transform = 'scale(1) rotate(0deg)';
+        img.style.boxShadow = insignia.tipo === 'animada' 
+            ? '0 0 5px rgba(255, 215, 0, 0.2)' 
+            : 'none';
+        img.style.borderColor = insignia.tipo === 'animada' 
+            ? 'rgba(255, 215, 0, 0.3)' 
+            : insignia.tipo === 'vectorial'
+            ? 'rgba(0, 150, 255, 0.3)'
+            : 'rgba(255, 255, 255, 0.1)';
     });
     
     container.appendChild(img);
@@ -525,35 +685,68 @@ function aplicarEstilosInsignias() {
                 justify-content: center;
                 align-items: center;
                 gap: 10px;
-                margin: 15px 0;
-                padding: 10px;
-                min-height: 50px;
+                margin: 20px 0;
+                padding: 15px;
+                min-height: 60px;
+                background: rgba(255, 255, 255, 0.02);
+                border-radius: 12px;
+                border: 1px solid rgba(255, 255, 255, 0.05);
             }
             
             @keyframes fadeIn {
                 from {
                     opacity: 0;
-                    transform: translateY(10px);
+                    transform: translateY(15px) scale(0.9);
                 }
                 to {
                     opacity: 1;
-                    transform: translateY(0);
+                    transform: translateY(0) scale(1);
                 }
             }
             
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+                100% { transform: scale(1); }
+            }
+            
+            .insignia-item:hover {
+                z-index: 10;
+            }
+            
             .insignia-item:hover::after {
-                content: attr(title);
+                content: attr(data-nombre);
                 position: absolute;
-                bottom: -25px;
+                bottom: -30px;
                 left: 50%;
                 transform: translateX(-50%);
-                background: rgba(0, 0, 0, 0.8);
+                background: rgba(0, 0, 0, 0.9);
                 color: white;
-                padding: 4px 8px;
-                border-radius: 4px;
-                font-size: 11px;
+                padding: 6px 12px;
+                border-radius: 6px;
+                font-size: 12px;
+                font-weight: 500;
                 white-space: nowrap;
                 z-index: 100;
+                border: 1px solid rgba(255, 215, 0, 0.3);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            }
+            
+            .insignia-item[data-tipo="animada"] {
+                animation: pulse 2s infinite ease-in-out;
+            }
+            
+            .insignias-count {
+                position: absolute;
+                top: -8px;
+                right: -8px;
+                background: #4CAF50;
+                color: white;
+                font-size: 10px;
+                padding: 2px 6px;
+                border-radius: 10px;
+                font-weight: bold;
+                z-index: 5;
             }
         `;
         document.head.appendChild(style);

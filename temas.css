@@ -437,7 +437,7 @@ html, body {
 }
 
 .img-container { 
-  background-image: url('https://grouvex.github.io/img/Grouvex1.png'); 
+  background-image: url('https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png'); 
 }
 
 hr { 
@@ -1140,3 +1140,4 @@ aside.httyd, aside.wicked {
     transition: none;
   }
 }
+

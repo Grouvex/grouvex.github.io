@@ -293,11 +293,11 @@ async function obtenerDatosUsuarioPorUserID(userID) {
             const rowUserID = row[userIDIndex] ? row[userIDIndex].toString().trim() : '';
             
             if (rowUserID) {
-                const normalizedRowUserID = rowUserID.replace(/^GS-/, '').trim();
+                const normalizedRowUserID = rowUserID.replace(/^GS-/i, '').trim();
                 
                 console.log(`Comparando fila ${i + 2}: "${normalizedRowUserID}" con "${searchUserID}"`);
                 
-                if (normalizedRowUserID === searchUserID) {
+                if (normalizedRowUserID.toLowerCase() === searchUserID.toLowerCase()) {
                     console.log(`✅ Usuario encontrado en fila ${i + 2}`);
                     
                     // Obtener datos
@@ -322,21 +322,11 @@ async function obtenerDatosUsuarioPorUserID(userID) {
         }
         
         console.log('❌ Usuario no encontrado en la base de datos');
-        return {
-            userID: userID,
-            nombre: 'Usuario no encontrado',
-            email: 'No disponible',
-            insignias: ''
-        };
+        return null;
         
     } catch (error) {
         console.error('❌ Error obteniendo datos del usuario:', error);
-        return {
-            userID: userID,
-            nombre: 'Error al cargar',
-            email: 'Error',
-            insignias: ''
-        };
+        return null;
     }
 }
 
@@ -434,6 +424,38 @@ function determinarTipoInsignia(url) {
 }
 
 // ============================================
+// FUNCIONES PARA OBTENER IMAGEN DE FIREBASE
+// ============================================
+
+async function obtenerFotoPerfilFirebase(userID) {
+    try {
+        if (!userID || userID.trim() === '') {
+            return 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png';
+        }
+        
+        // Extraer UID del formato GS-UID
+        const uid = userID.replace(/^GS-/i, '').trim();
+        
+        if (!uid) {
+            return 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png';
+        }
+        
+        const userRef = ref(database, `users/${uid}`);
+        const snapshot = await get(userRef);
+        
+        if (snapshot.exists()) {
+            const userData = snapshot.val();
+            return userData.photoURL || 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png';
+        }
+        
+        return 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png';
+    } catch (error) {
+        console.error('❌ Error obteniendo foto de perfil:', error);
+        return 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png';
+    }
+}
+
+// ============================================
 // FUNCIONES PARA MOSTRAR DATOS E INSIGNIAS
 // ============================================
 
@@ -455,14 +477,41 @@ async function mostrarDatosEInsigniasEnElemento(elementoTigsID) {
         // Buscar el contenedor de insignias más cercano
         const contenedorInsignias = elementoTigsID.closest('div')?.querySelector('.insignias-container');
         
+        // Buscar la imagen imgTIGS específica para este elemento (en el contexto del elemento)
+        const tarjeta = elementoTigsID.closest('.tarjeta');
+        const imgTIGS = tarjeta ? tarjeta.querySelector('#imgTIGS') : null;
+        
+        // Obtener y establecer imagen de perfil para la imagen #imgTIGS específica
+        if (imgTIGS) {
+            const fotoURL = await obtenerFotoPerfilFirebase(userID);
+            imgTIGS.src = fotoURL;
+            imgTIGS.alt = `Foto de ${userID}`;
+            console.log(`✅ Imagen establecida para ${userID}: ${fotoURL}`);
+            
+            // Aplicar estilos si no los tiene
+            if (!imgTIGS.style.borderRadius) {
+                imgTIGS.style.cssText = `
+                    border-radius: 50%;
+                    width: 60px;
+                    height: 60px;
+                    object-fit: cover;
+                    margin-right: 15px;
+                    flex-shrink: 0;
+                    border: 2px solid rgba(255, 255, 255, 0.1);
+                    transition: all 0.3s ease;
+                `;
+            }
+        }
+        
         // Obtener datos del usuario
         const datosUsuario = await obtenerDatosUsuarioPorUserID(userID);
         
         if (!datosUsuario) {
-            elementoTigsID.textContent = 'Error al cargar';
-            elementoTigsID.style.color = '#ff4444';
+            elementoTigsID.textContent = 'Usuario no encontrado';
+            elementoTigsID.style.color = '#888';
+            elementoTigsID.style.fontStyle = 'italic';
             if (contenedorInsignias) {
-                contenedorInsignias.innerHTML = '<div class="error-insignias">❌ Error cargando datos</div>';
+                contenedorInsignias.innerHTML = '<div class="no-insignias-message">🎯 Sin datos</div>';
             }
             return;
         }
@@ -489,14 +538,8 @@ async function mostrarDatosEInsigniasEnElemento(elementoTigsID) {
             
             console.log(`✅ Mostrando ${insignias.length} insignias para ${userID}`);
             
-            // Ordenar insignias: animadas primero
-            const insigniasOrdenadas = insignias.sort((a, b) => {
-                if (a.tipo === 'animada' && b.tipo !== 'animada') return -1;
-                if (a.tipo !== 'animada' && b.tipo === 'animada') return 1;
-                return a.nombre.localeCompare(b.nombre);
-            });
-            
-            insigniasOrdenadas.forEach((insignia, index) => {
+            // Mostrar insignias en el orden en que aparecen (sin ordenar)
+            insignias.forEach((insignia, index) => {
                 const insigniaElement = crearElementoInsignia(insignia, index);
                 contenedorInsignias.appendChild(insigniaElement);
             });
@@ -607,15 +650,10 @@ async function cargarDatosEInsigniasEnTodosLosElementos() {
     const elementosConTigsID = document.querySelectorAll('[tigsID]');
     console.log(`📊 Encontrados ${elementosConTigsID.length} elementos con tigsID`);
     
-    // Procesar todos los elementos con tigsID en paralelo
-    const promesas = [];
-    
+    // Procesar todos los elementos con tigsID en el orden en que aparecen en el DOM
     for (const elemento of elementosConTigsID) {
-        promesas.push(mostrarDatosEInsigniasEnElemento(elemento));
+        await mostrarDatosEInsigniasEnElemento(elemento);
     }
-    
-    // Esperar a que se procesen todos los elementos con tigsID
-    await Promise.all(promesas);
     
     // CASO 2: Elementos donde el ID está en el texto del span con id="userID"
     const userIDElement = document.getElementById('userID');
@@ -625,6 +663,31 @@ async function cargarDatosEInsigniasEnTodosLosElementos() {
         
         // Buscar contenedor de insignias en el mismo contexto
         const contenedorInsignias = userIDElement.closest('div')?.querySelector('.insignias-container');
+        
+        // Buscar imagen fotoPerfil en el contexto actual
+        const fotoPerfil = document.getElementById('fotoPerfil');
+        
+        // Obtener y establecer imagen de perfil
+        if (fotoPerfil) {
+            const fotoURL = await obtenerFotoPerfilFirebase(userID);
+            fotoPerfil.src = fotoURL;
+            fotoPerfil.alt = 'Foto de perfil';
+            console.log(`✅ Foto de perfil establecida: ${fotoURL}`);
+            
+            // Aplicar estilos si no los tiene
+            if (!fotoPerfil.style.borderRadius) {
+                fotoPerfil.style.cssText = `
+                    border-radius: 50%;
+                    width: 60px;
+                    height: 60px;
+                    object-fit: cover;
+                    margin-right: 15px;
+                    flex-shrink: 0;
+                    border: 2px solid rgba(255, 255, 255, 0.1);
+                    transition: all 0.3s ease;
+                `;
+            }
+        }
         
         if (contenedorInsignias) {
             const datosUsuario = await obtenerDatosUsuarioPorUserID(userID);
@@ -636,14 +699,8 @@ async function cargarDatosEInsigniasEnTodosLosElementos() {
                 contenedorInsignias.innerHTML = '';
                 
                 if (insignias.length > 0) {
-                    // Ordenar insignias: animadas primero
-                    const insigniasOrdenadas = insignias.sort((a, b) => {
-                        if (a.tipo === 'animada' && b.tipo !== 'animada') return -1;
-                        if (a.tipo !== 'animada' && b.tipo === 'animada') return 1;
-                        return a.nombre.localeCompare(b.nombre);
-                    });
-                    
-                    insigniasOrdenadas.forEach((insignia, index) => {
+                    // Mostrar insignias en el orden en que aparecen en la base de datos (sin ordenar)
+                    insignias.forEach((insignia, index) => {
                         const insigniaElement = crearElementoInsignia(insignia, index);
                         contenedorInsignias.appendChild(insigniaElement);
                     });
@@ -659,6 +716,29 @@ async function cargarDatosEInsigniasEnTodosLosElementos() {
                 } else {
                     contenedorInsignias.innerHTML = '<div class="no-insignias-message">🎯 Sin insignias</div>';
                 }
+            }
+        }
+    }
+    
+    // CASO 3: Establecer imagen por defecto para imgTIGS que no tengan tigsID o sean independientes
+    const imagenesTIGSIndependientes = document.querySelectorAll('#imgTIGS');
+    for (const img of imagenesTIGSIndependientes) {
+        if (!img.src || img.src === '' || img.src.includes(window.location.origin)) {
+            img.src = 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png';
+            img.alt = 'Imagen por defecto';
+            
+            // Aplicar estilos si no los tiene
+            if (!img.style.borderRadius) {
+                img.style.cssText = `
+                    border-radius: 50%;
+                    width: 60px;
+                    height: 60px;
+                    object-fit: cover;
+                    margin-right: 15px;
+                    flex-shrink: 0;
+                    border: 2px solid rgba(255, 255, 255, 0.1);
+                    transition: all 0.3s ease;
+                `;
             }
         }
     }
@@ -776,7 +856,9 @@ async function updateProfileUI(targetUser) {
     
     const fotoPerfil = document.getElementById('fotoPerfil');
     if (fotoPerfil) {
-        fotoPerfil.src = targetUser.photoURL || 'https://grouvex.com/img/GROUVEX.png';
+        // Obtener imagen de Firebase o usar por defecto
+        const fotoURL = await obtenerFotoPerfilFirebase(`GS-${userID}`);
+        fotoPerfil.src = fotoURL;
         fotoPerfil.alt = nombreUsuario;
     }
     
@@ -797,14 +879,14 @@ async function getUserData(userId) {
                 uid: userId,
                 email: userData.email || '',
                 displayName: userData.displayName || 'Usuario',
-                photoURL: userData.photoURL || 'https://grouvex.com/img/GROUVEX.png'
+                photoURL: userData.photoURL || 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png'
             };
         } else {
             return {
                 uid: userId,
                 email: 'Desconocido',
                 displayName: 'Usuario',
-                photoURL: 'https://grouvex.com/img/GROUVEX.png'
+                photoURL: 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png'
             };
         }
     } catch (error) {
@@ -813,7 +895,7 @@ async function getUserData(userId) {
             uid: userId,
             email: 'Error',
             displayName: 'Usuario',
-            photoURL: 'https://grouvex.com/img/GROUVEX.png'
+            photoURL: 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png'
         };
     }
 }

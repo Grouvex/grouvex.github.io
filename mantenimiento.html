@@ -257,7 +257,18 @@
         function mostrarNotificacion(mensaje, esError = false) {
             const notificacion = document.createElement("div");
             notificacion.className = `notificacion ${esError ? 'error' : ''}`;
-            notificacion.innerHTML = `<p>${mensaje}</p><div class="progress-bar"></div>`;
+
+            // Crear elemento de texto de forma segura para evitar XSS
+            const mensajeElemento = document.createElement("p");
+            mensajeElemento.textContent = mensaje;
+
+            // Crear barra de progreso
+            const progressBar = document.createElement("div");
+            progressBar.className = "progress-bar";
+
+            notificacion.appendChild(mensajeElemento);
+            notificacion.appendChild(progressBar);
+
             document.body.appendChild(notificacion);
             setTimeout(() => notificacion.remove(), 5000);
         }

@@ -17,7 +17,8 @@ document.addEventListener('DOMContentLoaded', function() {
 function searchArtist() {
   const artistId = document.getElementById('artistIdInput').value.trim();
   if (artistId) {
-    window.location.href = `artist-gsrecording?id=${artistId}`;
+    const encodedArtistId = encodeURIComponent(artistId);
+    window.location.href = `artist-gsrecording?id=${encodedArtistId}`;
   } else {
     alert('Por favor introduce un GS-UserID válido');
   }

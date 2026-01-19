@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <meta charset="UTF-8">
     <title>Calendario Oficial de Grouvex Studios</title>
     <meta name="description" content="Calendario Oficial de Grouvex Studios">
@@ -994,12 +995,6 @@
     gap: 8px;
 }
 
-.cal-info-label::before {
-    content: '✓';
-    color: var(--cal-secondary);
-    font-weight: bold;
-}
-
 .cal-event-actions {
     display: flex;
     gap: 15px;
@@ -1556,41 +1551,41 @@
                 <div class="cal-event-details">
                     <div class="cal-event-info">
                         <div class="cal-info-item">
-                            <span class="cal-info-label">Fecha inicio:</span>
+                            <span class="cal-info-label"><i class="fa-regular fa-calendar"></i>Fecha inicio:</span>
                             <span id="modalStartDate">N/A</span>
                         </div>
                         <div class="cal-info-item">
-                            <span class="cal-info-label">Fecha fin:</span>
+                            <span class="cal-info-label"><i class="fa-solid fa-calendar"></i>Fecha fin:</span>
                             <span id="modalEndDate">N/A</span>
                         </div>
                         <div class="cal-info-item">
-                            <span class="cal-info-label">Importancia:</span>
+                            <span class="cal-info-label"><i class="fa-solid fa-circle-exclamation"></i>Importancia:</span>
                             <span id="modalImportance">N/A</span>
                         </div>
                         <div class="cal-info-item">
-                            <span class="cal-info-label">Repetición:</span>
+                            <span class="cal-info-label"><i class="fa-solid fa-arrow-rotate-left"></i>Repetición:</span>
                             <span id="modalRecurrence">N/A</span>
                         </div>
                         <div class="cal-info-item">
-                            <span class="cal-info-label">Descripción:</span>
+                            <span class="cal-info-label"><i class="fa-regular fa-file-lines"></i>Descripción:</span>
                             <span id="modalDescription">N/A</span>
                         </div>
                         <div class="cal-info-item">
-                            <span class="cal-info-label">Autor:</span>
+                            <span class="cal-info-label"><i class="fa-solid fa-at"></i>Autor:</span>
                             <span id="modalAuthor">N/A</span>
                         </div>
                         <div class="cal-info-item">
-                            <span class="cal-info-label">Organismo:</span>
+                            <span class="cal-info-label"><i class="fa-regular fa-copyright"></i>Organismo:</span>
                             <span id="modalOrganization">N/A</span>
                         </div>
                         <div class="cal-info-item">
-                            <span class="cal-info-label">Otros:</span>
+                            <span class="cal-info-label"><i class="fa-solid fa-globe"></i>Otros:</span>
                             <span id="modalOthers">N/A</span>
                         </div>
                     </div>
                     <div class="cal-event-content">
                         <div class="cal-info-item">
-                            <span class="cal-info-label">Enlace:</span>
+                            <span class="cal-info-label"><i class="fa-solid fa-link"></i>Enlace:</span>
                             <a href="#" id="modalLink" target="_blank">Ver más información</a>
                         </div>
                         <iframe id="modalIframe" class="cal-event-iframe" src="" frameborder="0"></iframe>
@@ -1623,7 +1618,7 @@
     </div>
 
     <script>
-        // Base de datos de eventos en JSON
+        // Base de datos de Eventos
         const eventsData = [
             {
                 "id": 1,
@@ -1750,6 +1745,22 @@
                 "importance": "medio",
                 "recurrence": true,
                 "recurrenceEndYear": 2050
+            },
+            {
+                "id": 7,
+                "title": "Modificación de Documentos Oficiales",
+                "description": "Se realizarán modificaciones en los documentos oficiales favoreciendo así a todos los usuarios. Podrá ",
+                "startDate": "20/04/2026 00:00:00",
+                "endDate": "27/04/2026 23:59:59",
+                "image": "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png",
+                "author": "Grouvex Studios",
+                "organization": "Head de Grouvex Studios",
+                "link": "https://drive.google.com/file/d/1IEEuTuQh_YiJwVRycS8OVuUJVMebovHy/view?pli=1",
+                "others": "Modificaciones de los reglamentos, vease el enlace para ver más sobre este asunto.",
+                "color": "#ff00b3ff",
+                "importance": "alto",
+                "recurrence": false,
+                "recurrenceEndYear": null
             }
         ];
 

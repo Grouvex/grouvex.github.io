@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Versiones - Grouvex Studios</title>
+    <style>
+        /* ESTILOS ÚNICOS PARA ESTA PÁGINA - No se ven afectados por otros estilos */
+        .version-tracker {
+            --primary-color: #3a86ff;
+            --secondary-color: #8338ec;
+            --success-color: #38b000;
+            --warning-color: #ffbe0b;
+            --danger-color: #ff006e;
+            --dark-color: #1a1a2e;
+            --light-color: #f8f9fa;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+            box-sizing: border-box;
+        }
+
+        .version-tracker * {
+            box-sizing: border-box;
+        }
+
+        .version-tracker h1,
+        .version-tracker h2,
+        .version-tracker h3 {
+            margin-top: 0;
+            color: var(--dark-color);
+        }
+
+        .version-tracker h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .version-tracker .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        /* Filtros */
+        .version-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            background-color: var(--light-color);
+            border: 1px solid #ddd;
+            padding: 8px 16px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn:hover {
+            background-color: #e9ecef;
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Contenedor de versiones */
+        .versions-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        @media (min-width: 768px) {
+            .versions-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Tarjeta de versión */
+        .version-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            border: 1px solid #eaeaea;
+            transition: transform 0.3s ease;
+        }
+
+        .version-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .version-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            background-color: #f8f9fa;
+        }
+
+        .version-type {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .version-type.website {
+            background-color: rgba(58, 134, 255, 0.1);
+            color: var(--primary-color);
+        }
+
+        .version-type.panel {
+            background-color: rgba(131, 56, 236, 0.1);
+            color: var(--secondary-color);
+        }
+
+        .version-title {
+            font-size: 1.4rem;
+            margin: 0 0 5px 0;
+        }
+
+        .version-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .version-number {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: var(--dark-color);
+            font-size: 1.1rem;
+        }
+
+        .version-number a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .version-number a:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+
+        .version-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Contenido de la versión */
+        .version-content {
+            padding: 20px;
+        }
+
+        .changes-list {
+            margin: 0;
+            padding-left: 0;
+            list-style-type: none;
+        }
+
+        .change-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .change-item:last-child {
+            border-bottom: none;
+        }
+
+        .change-type {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .change-type.added {
+            background-color: rgba(56, 176, 0, 0.1);
+            color: var(--success-color);
+        }
+
+        .change-type.updated {
+            background-color: rgba(255, 190, 11, 0.1);
+            color: var(--warning-color);
+        }
+
+        .change-type.fixed {
+            background-color: rgba(58, 134, 255, 0.1);
+            color: var(--primary-color);
+        }
+
+        .change-type.removed {
+            background-color: rgba(255, 0, 110, 0.1);
+            color: var(--danger-color);
+        }
+
+        .change-detail {
+            margin: 8px 0 0 0;
+            line-height: 1.5;
+        }
+
+        /* Recursos */
+        .version-resources {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px dashed #ddd;
+        }
+
+        .resources-title {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .resources-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .resource-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background-color: #f0f2f5;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #333;
+            font-size: 0.85rem;
+            transition: background-color 0.2s;
+        }
+
+        .resource-item:hover {
+            background-color: #e4e6e9;
+        }
+
+        .resource-icon {
+            font-size: 0.9rem;
+        }
+
+        /* Mensaje cuando no hay versiones */
+        .no-versions {
+            text-align: center;
+            padding: 40px 20px;
+            grid-column: 1 / -1;
+            color: #666;
+        }
+
+        /* Estilos para el ancla de versión */
+        .version-anchor {
+            display: block;
+            position: relative;
+            top: -80px;
+            visibility: hidden;
+        }
+
+        /* Responsividad */
+        @media (max-width: 767px) {
+            .version-tracker {
+                padding: 15px;
+            }
+            
+            .version-title {
+                font-size: 1.2rem;
+            }
+            
+            .version-meta {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .version-date {
+                align-self: flex-end;
+                margin-top: -20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .filter-btn {
+                padding: 6px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .version-header,
+            .version-content {
+                padding: 15px;
+            }
+            
+            .version-date {
+                font-size: 0.8rem;
+                margin-top: 0;
+                align-self: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <article>
+            <div class="version-tracker">
+                <h1>Historial de Versiones</h1>
+                <p class="subtitle">Seguimiento de actualizaciones del sitio web y panel de Grouvex Studios</p>
+                
+                <div class="version-filters">
+                    <button class="filter-btn active" data-filter="all">Todas las versiones</button>
+                    <button class="filter-btn" data-filter="website">Sitio Web</button>
+                    <button class="filter-btn" data-filter="panel">Panel</button>
+                </div>
+                
+                <div class="versions-container" id="versionsContainer">
+                    <!-- Las versiones se cargarán aquí mediante JavaScript -->
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        // Código JavaScript para cargar y mostrar las versiones
+        document.addEventListener('DOMContentLoaded', function() {
+            // Referencias a elementos del DOM
+            const versionsContainer = document.getElementById('versionsContainer');
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            let allVersions = [];
+            
+            // Cargar datos del JSON
+            async function loadVersionsData() {
+                try {
+                    const response = await fetch('versions-data.json');
+                    const data = await response.json();
+                    allVersions = data.versions;
+                    displayVersions(allVersions);
+                } catch (error) {
+                    console.error('Error cargando los datos:', error);
+                    versionsContainer.innerHTML = `
+                        <div class="no-versions">
+                            <h3>Error al cargar los datos</h3>
+                            <p>No se pudieron cargar las versiones. Por favor, intente más tarde.</p>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Mostrar versiones en el contenedor
+            function displayVersions(versions) {
+                if (versions.length === 0) {
+                    versionsContainer.innerHTML = `
+                        <div class="no-versions">
+                            <h3>No hay versiones para mostrar</h3>
+                            <p>Seleccione otro filtro para ver más versiones.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                versionsContainer.innerHTML = '';
+                
+                versions.forEach((version, index) => {
+                    const versionCard = createVersionCard(version, index);
+                    versionsContainer.appendChild(versionCard);
+                });
+            }
+            
+            // Crear tarjeta de versión
+            function createVersionCard(version, index) {
+                const card = document.createElement('div');
+                card.className = 'version-card';
+                
+                // Convertir fecha Unix a formato legible
+                const date = new Date(version.date * 1000);
+                const formattedDate = date.toUTCString();
+                
+                // Obtener tipo de versión en español
+                const typeLabel = version.type === 'website' ? 'Sitio Web' : 'Panel';
+                
+                // Crear ID único para el ancla
+                const anchorId = `version-${version.type}-${version.version.replace(/\./g, '_')}`;
+                
+                // Crear HTML de cambios
+                let changesHTML = '';
+                version.changes.forEach(change => {
+                    const typeText = getChangeTypeText(change.type);
+                    changesHTML += `
+                        <li class="change-item">
+                            <span class="change-type ${change.type}">${typeText}</span>
+                            <p class="change-detail">${change.detail}</p>
+                        </li>
+                    `;
+                });
+                
+                // Crear HTML de recursos
+                let resourcesHTML = '';
+                if (version.resources && version.resources.length > 0) {
+                    let resourcesListHTML = '';
+                    
+                    version.resources.forEach(resource => {
+                        const icon = getResourceIcon(resource.type);
+                        let resourceHTML = '';
+                        
+                        if (resource.type === 'video') {
+                            resourceHTML = `
+                                <a href="#" class="resource-item" data-video-url="${resource.url}">
+                                    <span class="resource-icon">${icon}</span>
+                                    <span>${resource.label}</span>
+                                </a>
+                            `;
+                        } else if (resource.type === 'image') {
+                            resourceHTML = `
+                                <a href="#" class="resource-item" data-image-url="${resource.url}">
+                                    <span class="resource-icon">${icon}</span>
+                                    <span>${resource.label}</span>
+                                </a>
+                            `;
+                        } else {
+                            resourceHTML = `
+                                <a href="${resource.url}" class="resource-item" target="_blank">
+                                    <span class="resource-icon">${icon}</span>
+                                    <span>${resource.label}</span>
+                                </a>
+                            `;
+                        }
+                        
+                        resourcesListHTML += resourceHTML;
+                    });
+                    
+                    resourcesHTML = `
+                        <div class="version-resources">
+                            <h4 class="resources-title">Recursos relacionados</h4>
+                            <div class="resources-list">
+                                ${resourcesListHTML}
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // Agregar ancla invisible para enlace interno
+                const anchorHTML = `<span id="${anchorId}" class="version-anchor"></span>`;
+                
+                card.innerHTML = `
+                    ${anchorHTML}
+                    <div class="version-header">
+                        <span class="version-type ${version.type}">${typeLabel}</span>
+                        <h2 class="version-title">${version.title}</h2>
+                        <div class="version-meta">
+                            <span class="version-number">
+                                <a href="#${anchorId}">v${version.version}</a>
+                            </span>
+                            <span class="version-date">${formattedDate}</span>
+                        </div>
+                    </div>
+                    <div class="version-content">
+                        <ul class="changes-list">
+                            ${changesHTML}
+                        </ul>
+                        ${resourcesHTML}
+                    </div>
+                `;
+                
+                // Agregar eventos para recursos multimedia
+                const resourceLinks = card.querySelectorAll('.resource-item[data-image-url], .resource-item[data-video-url]');
+                resourceLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        if (this.hasAttribute('data-image-url')) {
+                            const imageUrl = this.getAttribute('data-image-url');
+                            openLightbox('image', imageUrl);
+                        } else if (this.hasAttribute('data-video-url')) {
+                            const videoUrl = this.getAttribute('data-video-url');
+                            openLightbox('video', videoUrl);
+                        }
+                    });
+                });
+                
+                return card;
+            }
+            
+            // Obtener texto para tipo de cambio
+            function getChangeTypeText(type) {
+                const typeMap = {
+                    'added': 'Añadido',
+                    'updated': 'Actualizado',
+                    'fixed': 'Corregido',
+                    'removed': 'Eliminado'
+                };
+                return typeMap[type] || type;
+            }
+            
+            // Obtener icono para tipo de recurso
+            function getResourceIcon(type) {
+                const iconMap = {
+                    'image': '🖼️',
+                    'video': '🎬',
+                    'link': '🔗'
+                };
+                return iconMap[type] || '📄';
+            }
+            
+            // Lightbox para recursos multimedia
+            function openLightbox(type, url) {
+                const lightbox = document.createElement('div');
+                lightbox.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(0, 0, 0, 0.9);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 1000;
+                `;
+                
+                const closeBtn = document.createElement('button');
+                closeBtn.textContent = '×';
+                closeBtn.style.cssText = `
+                    position: absolute;
+                    top: 20px;
+                    right: 20px;
+                    background: none;
+                    border: none;
+                    color: white;
+                    font-size: 40px;
+                    cursor: pointer;
+                    z-index: 1001;
+                `;
+                
+                closeBtn.addEventListener('click', () => {
+                    document.body.removeChild(lightbox);
+                });
+                
+                lightbox.addEventListener('click', (e) => {
+                    if (e.target === lightbox) {
+                        document.body.removeChild(lightbox);
+                    }
+                });
+                
+                let content;
+                if (type === 'image') {
+                    content = document.createElement('img');
+                    content.src = url;
+                    content.style.maxWidth = '90%';
+                    content.style.maxHeight = '90%';
+                    content.style.objectFit = 'contain';
+                } else if (type === 'video') {
+                    content = document.createElement('iframe');
+                    content.src = url;
+                    content.style.width = '90%';
+                    content.style.height = '90%';
+                    content.style.maxWidth = '800px';
+                    content.style.border = 'none';
+                }
+                
+                lightbox.appendChild(content);
+                lightbox.appendChild(closeBtn);
+                document.body.appendChild(lightbox);
+            }
+            
+            // Filtrado de versiones
+            function filterVersions(filterType) {
+                if (filterType === 'all') {
+                    displayVersions(allVersions);
+                } else {
+                    const filtered = allVersions.filter(version => version.type === filterType);
+                    displayVersions(filtered);
+                }
+            }
+            
+            // Eventos para botones de filtro
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remover clase activa de todos los botones
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Agregar clase activa al botón clickeado
+                    this.classList.add('active');
+                    
+                    // Filtrar versiones
+                    const filterType = this.getAttribute('data-filter');
+                    filterVersions(filterType);
+                });
+            });
+            
+            // Cargar datos al iniciar
+            loadVersionsData();
+            
+            // Manejar enlaces de anclas al cargar la página
+            if (window.location.hash) {
+                setTimeout(() => {
+                    const element = document.querySelector(window.location.hash);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }, 100);
+            }
+        });
+    </script>
+</body>
+</html>

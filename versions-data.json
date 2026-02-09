@@ -1,0 +1,183 @@
+{
+  "versions": [
+    {
+      "type": "website",
+      "version": "2.1.0",
+      "title": "Mejoras en el sistema de notificaciones",
+      "date": 1690848000,
+      "changes": [
+        {
+          "type": "added",
+          "detail": "Nuevo sistema de notificaciones en tiempo real"
+        },
+        {
+          "type": "updated",
+          "detail": "Mejorado el rendimiento de la página principal"
+        },
+        {
+          "type": "fixed",
+          "detail": "Corregido error en el formulario de contacto"
+        }
+      ],
+      "resources": [
+        {
+          "type": "image",
+          "url": "https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+          "label": "Captura del nuevo sistema"
+        },
+        {
+          "type": "link",
+          "url": "https://grouvexstudios.com/notificaciones",
+          "label": "Documentación"
+        }
+      ]
+    },
+    {
+      "type": "panel",
+      "version": "1.5.2",
+      "title": "Actualización de seguridad y nuevas funciones",
+      "date": 1688169600,
+      "changes": [
+        {
+          "type": "added",
+          "detail": "Autenticación de dos factores para administradores"
+        },
+        {
+          "type": "updated",
+          "detail": "Panel de estadísticas con nuevos gráficos"
+        },
+        {
+          "type": "fixed",
+          "detail": "Vulnerabilidad en la gestión de sesiones"
+        },
+        {
+          "type": "removed",
+          "detail": "Función obsoleta de exportación en CSV"
+        }
+      ],
+      "resources": [
+        {
+          "type": "video",
+          "url": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+          "label": "Video tutorial"
+        },
+        {
+          "type": "image",
+          "url": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+          "label": "Nuevo panel de gráficos"
+        }
+      ]
+    },
+    {
+      "type": "website",
+      "version": "2.0.5",
+      "title": "Optimización para móviles y correcciones",
+      "date": 1685577600,
+      "changes": [
+        {
+          "type": "updated",
+          "detail": "Diseño completamente responsivo para dispositivos móviles"
+        },
+        {
+          "type": "fixed",
+          "detail": "Problemas de visualización en navegadores Safari"
+        },
+        {
+          "type": "added",
+          "detail": "Nuevas animaciones de carga"
+        }
+      ],
+      "resources": [
+        {
+          "type": "image",
+          "url": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+          "label": "Vista móvil mejorada"
+        }
+      ]
+    },
+    {
+      "type": "panel",
+      "version": "1.4.0",
+      "title": "Rediseño del dashboard principal",
+      "date": 1682899200,
+      "changes": [
+        {
+          "type": "added",
+          "detail": "Nuevo diseño de interfaz con modo oscuro"
+        },
+        {
+          "type": "updated",
+          "detail": "Reestructuración del menú de navegación"
+        },
+        {
+          "type": "fixed",
+          "detail": "Errores en la visualización de reportes"
+        },
+        {
+          "type": "added",
+          "detail": "Soporte para múltiples idiomas"
+        }
+      ],
+      "resources": [
+        {
+          "type": "image",
+          "url": "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+          "label": "Nuevo dashboard"
+        },
+        {
+          "type": "link",
+          "url": "https://grouvexstudios.com/panel-guide",
+          "label": "Guía de usuario"
+        }
+      ]
+    },
+    {
+      "type": "website",
+      "version": "1.9.3",
+      "title": "Actualización de contenido y SEO",
+      "date": 1680307200,
+      "changes": [
+        {
+          "type": "updated",
+          "detail": "Contenido optimizado para motores de búsqueda"
+        },
+        {
+          "type": "added",
+          "detail": "Mapa del sitio actualizado"
+        },
+        {
+          "type": "fixed",
+          "detail": "Enlaces rotos en la sección de blog"
+        }
+      ],
+      "resources": [
+        {
+          "type": "link",
+          "url": "https://grouvexstudios.com/sitemap.xml",
+          "label": "Mapa del sitio"
+        }
+      ]
+    },
+    {
+      "type": "panel",
+      "version": "1.3.1",
+      "title": "Correcciones menores y mejoras de rendimiento",
+      "date": 1677628800,
+      "changes": [
+        {
+          "type": "fixed",
+          "detail": "Error en la subida de archivos grandes"
+        },
+        {
+          "type": "updated",
+          "detail": "Tiempos de respuesta del servidor optimizados"
+        },
+        {
+          "type": "fixed",
+          "detail": "Problema con la sincronización de usuarios"
+        }
+      ],
+      "resources": []
+    }
+  ]
+}

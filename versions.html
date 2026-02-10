@@ -730,682 +730,902 @@
     
     <script src="preloader.js"></script>
     
-    <script>
-        // DATOS COMPLETOS DE VERSIONES CON TIMESTAMP
-        const vhVersionsData = {
-            versions: [
+<script>
+// DATOS COMPLETOS DE VERSIONES CON TIMESTAMP
+const vhVersionsData = {
+    versions: [
+        {
+            id: 1,
+            type: "website",
+            version: "2.1.0",
+            title: "Mejoras en sistema de notificaciones y seguridad avanzada",
+            timestamp: 1738627200, // 5 febrero 2025 00:00:00 UTC
+            current: true,
+            changes: [
                 {
-                    id: 1,
-                    type: "website",
-                    version: "2.1.0",
-                    title: "Mejoras en sistema de notificaciones y seguridad avanzada",
-                    timestamp: 1738627200, // 5 febrero 2025 00:00:00 UTC
-                    current: true,
-                    changes: [
-                        {
-                            type: "added",
-                            detail: "Nuevo sistema de notificaciones en tiempo real con WebSockets",
-                            description: "Implementación completa de WebSockets para notificaciones instantáneas"
-                        },
-                        {
-                            type: "added",
-                            detail: "Autenticación de dos factores (2FA) para usuarios administradores",
-                            description: "Integración con Google Authenticator y códigos de respaldo"
-                        },
-                        {
-                            type: "updated",
-                            detail: "Rediseño completo del dashboard principal",
-                            description: "Nueva interfaz con mejoras en usabilidad y experiencia de usuario"
-                        },
-                        {
-                            type: "fixed",
-                            detail: "Corrección de vulnerabilidad XSS en formularios de contacto",
-                            description: "Implementación de sanitización de inputs y protección CSRF"
-                        },
-                        {
-                            type: "updated",
-                            detail: "Optimización de rendimiento en carga de imágenes",
-                            description: "Reducción del tiempo de carga en un 40% con lazy loading"
-                        }
-                    ],
-                    resources: [
-                        {
-                            type: "document",
-                            icon: "📄",
-                            label: "Documentación técnica v2.1.0",
-                            url: "docs/technical-doc-v2.1.0.pdf"
-                        },
-                        {
-                            type: "video",
-                            icon: "🎥",
-                            label: "Video tutorial nuevas funciones",
-                            url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
-                        },
-                        {
-                            type: "image",
-                            icon: "🖼️",
-                            label: "Capturas del nuevo dashboard",
-                            url: "images/dashboard-screenshots.zip"
-                        },
-                        {
-                            type: "link",
-                            icon: "🔗",
-                            label: "Guía de migración v2.0 → v2.1",
-                            url: "guides/migration-v2.1.html"
-                        }
-                    ]
+                    type: "added",
+                    detail: "Nuevo sistema de notificaciones en tiempo real con WebSockets",
+                    description: "Implementación completa de WebSockets para notificaciones instantáneas"
                 },
                 {
-                    id: 2,
-                    type: "panel",
-                    version: "1.5.2",
-                    title: "Actualización de seguridad y panel de estadísticas",
-                    timestamp: 1738620000, // 4 febrero 2025 22:00:00 UTC
-                    current: true,
-                    changes: [
-                        {
-                            type: "added",
-                            detail: "Panel de estadísticas con gráficos interactivos",
-                            description: "Implementación de Chart.js para visualización de datos"
-                        },
-                        {
-                            type: "added",
-                            detail: "Exportación de datos en múltiples formatos (PDF, Excel, CSV)",
-                            description: "Soporte para exportación directa desde el panel"
-                        },
-                        {
-                            type: "fixed",
-                            detail: "Corrección de vulnerabilidad en gestión de sesiones",
-                            description: "Implementación de tokens JWT con expiración controlada"
-                        },
-                        {
-                            type: "updated",
-                            detail: "Mejoras en la interfaz de gestión de usuarios",
-                            description: "Nuevos filtros y opciones de búsqueda avanzada"
-                        },
-                        {
-                            type: "removed",
-                            detail: "Función obsoleta de sincronización manual",
-                            description: "Reemplazada por sincronización automática en tiempo real"
-                        }
-                    ],
-                    resources: [
-                        {
-                            type: "document",
-                            icon: "📄",
-                            label: "Manual de administración v1.5.2",
-                            url: "docs/admin-manual-v1.5.2.pdf"
-                        },
-                        {
-                            type: "image",
-                            icon: "🖼️",
-                            label: "Galería de gráficos nuevos",
-                            url: "images/charts-gallery.zip"
-                        },
-                        {
-                            type: "link",
-                            icon: "🔗",
-                            label: "Reporte de auditoría de seguridad",
-                            url: "reports/security-audit.html"
-                        }
-                    ]
+                    type: "added",
+                    detail: "Autenticación de dos factores (2FA) para usuarios administradores",
+                    description: "Integración con Google Authenticator y códigos de respaldo"
                 },
                 {
-                    id: 3,
-                    type: "api",
-                    version: "3.0.1",
-                    title: "Nuevos endpoints y mejoras de rendimiento API",
-                    timestamp: 1738612800, // 4 febrero 2025 20:00:00 UTC
-                    current: true,
-                    changes: [
-                        {
-                            type: "added",
-                            detail: "5 nuevos endpoints REST para gestión de usuarios",
-                            description: "CRUD completo con validaciones mejoradas"
-                        },
-                        {
-                            type: "added",
-                            detail: "Soporte para paginación avanzada en todos los endpoints",
-                            description: "Paginación con límites, offsets y ordenamiento"
-                        },
-                        {
-                            type: "updated",
-                            detail: "Límite de rate aumentado a 1000 requests/minuto",
-                            description: "Mejora en la capacidad de procesamiento"
-                        },
-                        {
-                            type: "fixed",
-                            detail: "Corrección de errores en validación de datos de entrada",
-                            description: "Implementación de validadores específicos por tipo"
-                        },
-                        {
-                            type: "updated",
-                            detail: "Documentación Swagger completamente actualizada",
-                            description: "Incluye ejemplos para todos los endpoints"
-                        }
-                    ],
-                    resources: [
-                        {
-                            type: "document",
-                            icon: "📄",
-                            label: "Documentación API v3.0.1",
-                            url: "docs/api-documentation-v3.0.1.pdf"
-                        },
-                        {
-                            type: "link",
-                            icon: "🔗",
-                            label: "Swagger UI interactivo",
-                            url: "api/swagger/v3.0.1"
-                        },
-                        {
-                            type: "code",
-                            icon: "💻",
-                            label: "Ejemplos de código",
-                            url: "examples/api-examples.zip"
-                        }
-                    ]
+                    type: "updated",
+                    detail: "Rediseño completo del dashboard principal",
+                    description: "Nueva interfaz con mejoras en usabilidad y experiencia de usuario"
                 },
                 {
-                    id: 4,
-                    type: "website",
-                    version: "2.0.5",
-                    title: "Optimización móvil y correcciones menores",
-                    timestamp: 1738429200, // 2 febrero 2025 17:00:00 UTC
-                    current: false,
-                    changes: [
-                        {
-                            type: "updated",
-                            detail: "Diseño completamente responsivo para móviles",
-                            description: "Mejoras en la experiencia en dispositivos móviles"
-                        },
-                        {
-                            type: "fixed",
-                            detail: "Corrección de problemas en navegadores Safari",
-                            description: "Compatibilidad mejorada con WebKit"
-                        },
-                        {
-                            type: "fixed",
-                            detail: "Error 404 en páginas específicas del blog",
-                            description: "Corrección de rutas y redirecciones"
-                        },
-                        {
-                            type: "updated",
-                            detail: "Mejoras en tiempo de carga de imágenes",
-                            description: "Optimización de compresión y caché"
-                        }
-                    ],
-                    resources: [
-                        {
-                            type: "document",
-                            icon: "📄",
-                            label: "Reporte de optimización móvil",
-                            url: "reports/mobile-optimization.pdf"
-                        },
-                        {
-                            type: "image",
-                            icon: "🖼️",
-                            label: "Comparativa móvil vs desktop",
-                            url: "images/mobile-comparison.zip"
-                        }
-                    ]
+                    type: "fixed",
+                    detail: "Corrección de vulnerabilidad XSS en formularios de contacto",
+                    description: "Implementación de sanitización de inputs y protección CSRF"
                 },
                 {
-                    id: 5,
-                    type: "panel",
-                    version: "1.4.8",
-                    title: "Correcciones de bugs y mejoras en interfaz",
-                    timestamp: 1738342800, // 1 febrero 2025 17:00:00 UTC
-                    current: false,
-                    changes: [
-                        {
-                            type: "fixed",
-                            detail: "Bug en subida de archivos mayores a 50MB",
-                            description: "Implementación de chunk upload para archivos grandes"
-                        },
-                        {
-                            type: "updated",
-                            detail: "Nuevas opciones de filtrado en tablas de datos",
-                            description: "Filtros por fecha, tipo y estado"
-                        },
-                        {
-                            type: "fixed",
-                            detail: "Problema de sincronización con base de datos",
-                            description: "Corrección en las consultas de actualización"
-                        },
-                        {
-                            type: "updated",
-                            detail: "Mejoras en la interfaz de reportes",
-                            description: "Nuevos formatos de visualización"
-                        }
-                    ],
-                    resources: [
-                        {
-                            type: "document",
-                            icon: "📄",
-                            label: "Lista de bugs corregidos",
-                            url: "docs/bugs-fixed-v1.4.8.pdf"
-                        },
-                        {
-                            type: "link",
-                            icon: "🔗",
-                            label: "Guía rápida de nuevas funciones",
-                            url: "guides/quick-guide-v1.4.8.html"
-                        }
-                    ]
+                    type: "updated",
+                    detail: "Optimización de rendimiento en carga de imágenes",
+                    description: "Reducción del tiempo de carga en un 40% con lazy loading"
+                }
+            ],
+            resources: [
+                {
+                    type: "document",
+                    icon: "📄",
+                    label: "Documentación técnica v2.1.0",
+                    url: "docs/technical-doc-v2.1.0.pdf"
                 },
                 {
-                    id: 6,
-                    type: "website",
-                    version: "2.0.0",
-                    title: "Lanzamiento principal con nuevas funcionalidades",
-                    timestamp: 1738256400, // 31 enero 2025 17:00:00 UTC
-                    current: false,
-                    changes: [
-                        {
-                            type: "added",
-                            detail: "Sistema completo de gestión de usuarios",
-                            description: "Registro, autenticación y perfiles de usuario"
-                        },
-                        {
-                            type: "added",
-                            detail: "Panel administrativo básico",
-                            description: "Interfaz inicial para administradores"
-                        },
-                        {
-                            type: "added",
-                            detail: "API REST v1.0",
-                            description: "Primera versión de la API pública"
-                        },
-                        {
-                            type: "updated",
-                            detail: "Rediseño completo de la interfaz",
-                            description: "Nuevo sistema de diseño y componentes"
-                        }
-                    ],
-                    resources: [
-                        {
-                            type: "document",
-                            icon: "📄",
-                            label: "Documentación v2.0.0",
-                            url: "docs/website-v2.0.0.pdf"
-                        },
-                        {
-                            type: "link",
-                            icon: "🔗",
-                            label: "Changelog completo",
-                            url: "changelog/v2.0.0.html"
-                        }
-                    ]
+                    type: "video",
+                    icon: "🎥",
+                    label: "Video tutorial nuevas funciones",
+                    url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+                },
+                {
+                    type: "image",
+                    icon: "🖼️",
+                    label: "Capturas del nuevo dashboard",
+                    url: "images/dashboard-screenshots.zip"
+                },
+                {
+                    type: "link",
+                    icon: "🔗",
+                    label: "Guía de migración v2.0 → v2.1",
+                    url: "guides/migration-v2.1.html"
                 }
             ]
-        };
-
-        // FUNCIONES PARA FORMATO UTC
-        function formatTimestampUTC(timestamp) {
-            const date = new Date(timestamp * 1000);
-            
-            // Formato: DD/MM/YYYY HH:MM UTC
-            const day = String(date.getUTCDate()).padStart(2, '0');
-            const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-            const year = date.getUTCFullYear();
-            const hours = String(date.getUTCHours()).padStart(2, '0');
-            const minutes = String(date.getUTCMinutes()).padStart(2, '0');
-            
-            return `${day}/${month}/${year} ${hours}:${minutes} UTC`;
+        },
+        {
+            id: 2,
+            type: "panel",
+            version: "1.5.2",
+            title: "Actualización de seguridad y panel de estadísticas",
+            timestamp: 1738620000, // 4 febrero 2025 22:00:00 UTC
+            current: true,
+            changes: [
+                {
+                    type: "added",
+                    detail: "Panel de estadísticas con gráficos interactivos",
+                    description: "Implementación de Chart.js para visualización de datos"
+                },
+                {
+                    type: "added",
+                    detail: "Exportación de datos en múltiples formatos (PDF, Excel, CSV)",
+                    description: "Soporte para exportación directa desde el panel"
+                },
+                {
+                    type: "fixed",
+                    detail: "Corrección de vulnerabilidad en gestión de sesiones",
+                    description: "Implementación de tokens JWT con expiración controlada"
+                },
+                {
+                    type: "updated",
+                    detail: "Mejoras en la interfaz de gestión de usuarios",
+                    description: "Nuevos filtros y opciones de búsqueda avanzada"
+                },
+                {
+                    type: "removed",
+                    detail: "Función obsoleta de sincronización manual",
+                    description: "Reemplazada por sincronización automática en tiempo real"
+                }
+            ],
+            resources: [
+                {
+                    type: "document",
+                    icon: "📄",
+                    label: "Manual de administración v1.5.2",
+                    url: "docs/admin-manual-v1.5.2.pdf"
+                },
+                {
+                    type: "image",
+                    icon: "🖼️",
+                    label: "Galería de gráficos nuevos",
+                    url: "images/charts-gallery.zip"
+                },
+                {
+                    type: "link",
+                    icon: "🔗",
+                            label: "Reporte de auditoría de seguridad",
+                    url: "reports/security-audit.html"
+                }
+            ]
+        },
+        {
+            id: 3,
+            type: "api",
+            version: "3.0.1",
+            title: "Nuevos endpoints y mejoras de rendimiento API",
+            timestamp: 1738612800, // 4 febrero 2025 20:00:00 UTC
+            current: true,
+            changes: [
+                {
+                    type: "added",
+                    detail: "5 nuevos endpoints REST para gestión de usuarios",
+                    description: "CRUD completo con validaciones mejoradas"
+                },
+                {
+                    type: "added",
+                    detail: "Soporte para paginación avanzada en todos los endpoints",
+                    description: "Paginación con límites, offsets y ordenamiento"
+                },
+                {
+                    type: "updated",
+                    detail: "Límite de rate aumentado a 1000 requests/minuto",
+                    description: "Mejora en la capacidad de procesamiento"
+                },
+                {
+                    type: "fixed",
+                    detail: "Corrección de errores en validación de datos de entrada",
+                    description: "Implementación de validadores específicos por tipo"
+                },
+                {
+                    type: "updated",
+                    detail: "Documentación Swagger completamente actualizada",
+                    description: "Incluye ejemplos para todos los endpoints"
+                }
+            ],
+            resources: [
+                {
+                    type: "document",
+                    icon: "📄",
+                    label: "Documentación API v3.0.1",
+                    url: "docs/api-documentation-v3.0.1.pdf"
+                },
+                {
+                    type: "link",
+                    icon: "🔗",
+                    label: "Swagger UI interactivo",
+                    url: "api/swagger/v3.0.1"
+                },
+                {
+                    type: "code",
+                    icon: "💻",
+                    label: "Ejemplos de código",
+                    url: "examples/api-examples.zip"
+                }
+            ]
+        },
+        {
+            id: 4,
+            type: "website",
+            version: "2.0.5",
+            title: "Optimización móvil y correcciones menores",
+            timestamp: 1738429200, // 2 febrero 2025 17:00:00 UTC
+            current: false,
+            changes: [
+                {
+                    type: "updated",
+                    detail: "Diseño completamente responsivo para móviles",
+                    description: "Mejoras en la experiencia en dispositivos móviles"
+                },
+                {
+                    type: "fixed",
+                    detail: "Corrección de problemas en navegadores Safari",
+                    description: "Compatibilidad mejorada con WebKit"
+                },
+                {
+                    type: "fixed",
+                    detail: "Error 404 en páginas específicas del blog",
+                    description: "Corrección de rutas y redirecciones"
+                },
+                {
+                    type: "updated",
+                    detail: "Mejoras en tiempo de carga de imágenes",
+                    description: "Optimización de compresión y caché"
+                }
+            ],
+            resources: [
+                {
+                    type: "document",
+                    icon: "📄",
+                    label: "Reporte de optimización móvil",
+                    url: "reports/mobile-optimization.pdf"
+                },
+                {
+                    type: "image",
+                    icon: "🖼️",
+                    label: "Comparativa móvil vs desktop",
+                    url: "images/mobile-comparison.zip"
+                }
+            ]
+        },
+        {
+            id: 5,
+            type: "panel",
+            version: "1.4.8",
+            title: "Correcciones de bugs y mejoras en interfaz",
+            timestamp: 1738342800, // 1 febrero 2025 17:00:00 UTC
+            current: false,
+            changes: [
+                {
+                    type: "fixed",
+                    detail: "Bug en subida de archivos mayores a 50MB",
+                    description: "Implementación de chunk upload para archivos grandes"
+                },
+                {
+                    type: "updated",
+                    detail: "Nuevas opciones de filtrado en tablas de datos",
+                    description: "Filtros por fecha, tipo y estado"
+                },
+                {
+                    type: "fixed",
+                    detail: "Problema de sincronización con base de datos",
+                    description: "Corrección en las consultas de actualización"
+                },
+                {
+                    type: "updated",
+                    detail: "Mejoras en la interfaz de reportes",
+                    description: "Nuevos formatos de visualización"
+                }
+            ],
+            resources: [
+                {
+                    type: "document",
+                    icon: "📄",
+                    label: "Lista de bugs corregidos",
+                    url: "docs/bugs-fixed-v1.4.8.pdf"
+                },
+                {
+                    type: "link",
+                    icon: "🔗",
+                    label: "Guía rápida de nuevas funciones",
+                    url: "guides/quick-guide-v1.4.8.html"
+                }
+            ]
+        },
+        {
+            id: 6,
+            type: "website",
+            version: "2.0.0",
+            title: "Lanzamiento principal con nuevas funcionalidades",
+            timestamp: 1738256400, // 31 enero 2025 17:00:00 UTC
+            current: false,
+            changes: [
+                {
+                    type: "added",
+                    detail: "Sistema completo de gestión de usuarios",
+                    description: "Registro, autenticación y perfiles de usuario"
+                },
+                {
+                    type: "added",
+                    detail: "Panel administrativo básico",
+                    description: "Interfaz inicial para administradores"
+                },
+                {
+                    type: "added",
+                    detail: "API REST v1.0",
+                    description: "Primera versión de la API pública"
+                },
+                {
+                    type: "updated",
+                    detail: "Rediseño completo de la interfaz",
+                    description: "Nuevo sistema de diseño y componentes"
+                }
+            ],
+            resources: [
+                {
+                    type: "document",
+                    icon: "📄",
+                    label: "Documentación v2.0.0",
+                    url: "docs/website-v2.0.0.pdf"
+                },
+                {
+                    type: "link",
+                    icon: "🔗",
+                    label: "Changelog completo",
+                    url: "changelog/v2.0.0.html"
+                }
+            ]
         }
+    ]
+};
 
-        function formatRelativeTime(timestamp) {
-            const now = Math.floor(Date.now() / 1000);
-            const diff = now - timestamp;
+// FUNCIONES PARA FORMATO UTC
+function formatTimestampUTC(timestamp) {
+    const date = new Date(timestamp * 1000);
+    
+    // Formato: DD/MM/YYYY HH:MM UTC
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    const year = date.getUTCFullYear();
+    const hours = String(date.getUTCHours()).padStart(2, '0');
+    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+    
+    return `${day}/${month}/${year} ${hours}:${minutes} UTC`;
+}
+
+function formatRelativeTime(timestamp) {
+    const now = Math.floor(Date.now() / 1000);
+    const diff = now - timestamp;
+    
+    if (diff < 60) return 'hace unos segundos';
+    if (diff < 3600) return `hace ${Math.floor(diff / 60)} minutos`;
+    if (diff < 86400) return `hace ${Math.floor(diff / 3600)} horas`;
+    if (diff < 2592000) return `hace ${Math.floor(diff / 86400)} días`;
+    
+    return formatTimestampUTC(timestamp);
+}
+
+// Función para generar el anchor ID de la versión
+function getVersionAnchor(version) {
+    return `v${version.version}`;
+}
+
+// INICIALIZACIÓN DEL SISTEMA
+document.addEventListener('DOMContentLoaded', function() {
+    const container = document.getElementById('vh-versions-container');
+    const filterButtons = document.querySelectorAll('.vh-filter-btn');
+    
+    // Actualizar versión actual en cada categoría
+    updateCurrentVersions();
+    
+    // Mostrar todas las versiones inicialmente
+    displayVersions(vhVersionsData.versions);
+    
+    // Configurar filtros
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Remover clase active de todos
+            filterButtons.forEach(btn => btn.classList.remove('active'));
             
-            if (diff < 60) return 'hace unos segundos';
-            if (diff < 3600) return `hace ${Math.floor(diff / 60)} minutos`;
-            if (diff < 86400) return `hace ${Math.floor(diff / 3600)} horas`;
-            if (diff < 2592000) return `hace ${Math.floor(diff / 86400)} días`;
+            // Agregar clase active al clickeado
+            this.classList.add('active');
             
-            return formatTimestampUTC(timestamp);
-        }
-
-        // INICIALIZACIÓN DEL SISTEMA
-        document.addEventListener('DOMContentLoaded', function() {
-            const container = document.getElementById('vh-versions-container');
-            const filterButtons = document.querySelectorAll('.vh-filter-btn');
+            // Obtener filtro
+            const filterType = this.getAttribute('data-filter');
             
-            // Actualizar versión actual en cada categoría
-            updateCurrentVersions();
+            // Filtrar versiones
+            if (filterType === 'all') {
+                displayVersions(vhVersionsData.versions);
+            } else {
+                const filtered = vhVersionsData.versions.filter(v => v.type === filterType);
+                displayVersions(filtered);
+            }
             
-            // Mostrar todas las versiones inicialmente
-            displayVersions(vhVersionsData.versions);
-            
-            // Configurar filtros
-            filterButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    // Remover clase active de todos
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
-                    
-                    // Agregar clase active al clickeado
-                    this.classList.add('active');
-                    
-                    // Obtener filtro
-                    const filterType = this.getAttribute('data-filter');
-                    
-                    // Filtrar versiones
-                    if (filterType === 'all') {
-                        displayVersions(vhVersionsData.versions);
-                    } else {
-                        const filtered = vhVersionsData.versions.filter(v => v.type === filterType);
-                        displayVersions(filtered);
-                    }
-                });
-            });
-
-            // Función para actualizar las versiones actuales
-            function updateCurrentVersions() {
-                const websiteCurrent = vhVersionsData.versions
-                    .filter(v => v.type === 'website' && v.current)
-                    .sort((a, b) => b.timestamp - a.timestamp)[0];
-                
-                const panelCurrent = vhVersionsData.versions
-                    .filter(v => v.type === 'panel' && v.current)
-                    .sort((a, b) => b.timestamp - a.timestamp)[0];
-                
-                const apiCurrent = vhVersionsData.versions
-                    .filter(v => v.type === 'api' && v.current)
-                    .sort((a, b) => b.timestamp - a.timestamp)[0];
-                
-                if (websiteCurrent) {
-                    document.getElementById('current-web-version').textContent = `v${websiteCurrent.version}`;
-                    document.getElementById('current-web-timestamp').textContent = formatTimestampUTC(websiteCurrent.timestamp);
-                }
-                
-                if (panelCurrent) {
-                    document.getElementById('current-panel-version').textContent = `v${panelCurrent.version}`;
-                    document.getElementById('current-panel-timestamp').textContent = formatTimestampUTC(panelCurrent.timestamp);
-                }
-                
-                if (apiCurrent) {
-                    document.getElementById('current-api-version').textContent = `v${apiCurrent.version}`;
-                    document.getElementById('current-api-timestamp').textContent = formatTimestampUTC(apiCurrent.timestamp);
-                }
-            }
-
-            // Función para mostrar versiones
-            function displayVersions(versions) {
-                if (versions.length === 0) {
-                    container.innerHTML = `
-                        <div class="vh-empty-state">
-                            <div class="vh-empty-icon">📭</div>
-                            <h3 class="vh-empty-title">No hay versiones para mostrar</h3>
-                            <p class="vh-empty-text">Seleccione otro filtro para ver más versiones.</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                container.innerHTML = '';
-
-                // Ordenar por timestamp (más reciente primero)
-                versions.sort((a, b) => b.timestamp - a.timestamp);
-
-                versions.forEach(version => {
-                    const card = createVersionCard(version);
-                    container.appendChild(card);
-                });
-            }
-
-            // Función para crear tarjeta de versión
-            function createVersionCard(version) {
-                const card = document.createElement('article');
-                card.className = 'vh-version-card';
-                
-                // Obtener datos de la versión
-                const typeLabel = getTypeLabel(version.type);
-                const typeIcon = getTypeIcon(version.type);
-                const formattedTimestamp = formatTimestampUTC(version.timestamp);
-                const relativeTime = formatRelativeTime(version.timestamp);
-                
-                // Crear cambios HTML
-                let changesHTML = '';
-                if (version.changes && version.changes.length > 0) {
-                    changesHTML = version.changes.map(change => `
-                        <li class="vh-change-item">
-                            <span class="vh-change-type ${change.type}">
-                                ${getChangeIcon(change.type)} ${getChangeLabel(change.type)}
-                            </span>
-                            <div class="vh-change-detail">
-                                <strong>${change.detail}</strong>
-                                ${change.description ? 
-                                    `<span class="vh-change-description">${change.description}</span>` 
-                                    : ''}
-                            </div>
-                        </li>
-                    `).join('');
-                }
-                
-                // Crear recursos HTML
-                let resourcesHTML = '';
-                if (version.resources && version.resources.length > 0) {
-                    resourcesHTML = version.resources.map(resource => `
-                        <a href="${resource.url}" class="vh-resource-card ${resource.type}" 
-                           ${resource.type === 'video' || resource.type === 'image' ? 'target="_blank"' : ''}
-                           ${resource.type === 'link' ? 'target="_blank" rel="noopener noreferrer"' : ''}>
-                            <span class="vh-resource-icon">${resource.icon}</span>
-                            <span>${resource.label}</span>
-                        </a>
-                    `).join('');
-                }
-
-                card.innerHTML = `
-                    <div class="vh-version-header">
-                        <div class="vh-version-tag">
-                            ${typeIcon} ${typeLabel}
-                            ${version.current ? '<span style="color: var(--vh-success); margin-left: 0.25rem;">🏆</span>' : ''}
-                        </div>
-                        <h2 class="vh-version-title">${version.title}</h2>
-                        <div class="vh-version-meta">
-                            <span class="vh-version-number">v${version.version}</span>
-                            <span class="vh-version-timestamp" title="${formattedTimestamp}">
-                                📅 ${relativeTime}
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <div class="vh-changes-section">
-                        <h3 class="vh-changes-title">
-                            <span>📋</span>
-                            <span>Cambios realizados</span>
-                            <span style="font-size: 0.75rem; color: var(--vh-gray-500); margin-left: auto;">
-                                ${version.changes ? version.changes.length : 0} cambios
-                            </span>
-                        </h3>
-                        <ul class="vh-changes-list">
-                            ${changesHTML}
-                        </ul>
-                    </div>
-                    
-                    ${version.resources && version.resources.length > 0 ? `
-                    <div class="vh-resources-section">
-                        <h3 class="vh-resources-title">
-                            <span>📎</span>
-                            <span>Recursos relacionados</span>
-                            <span style="font-size: 0.75rem; color: var(--vh-gray-500); margin-left: auto;">
-                                ${version.resources.length} recursos
-                            </span>
-                        </h3>
-                        <div class="vh-resources-grid">
-                            ${resourcesHTML}
-                        </div>
-                    </div>
-                    ` : ''}
-                `;
-                
-                return card;
-            }
-
-            // Funciones auxiliares
-            function getTypeLabel(type) {
-                const typeMap = {
-                    'website': 'Sitio Web',
-                    'panel': 'Panel de Control',
-                    'api': 'API',
-                    'mobile': 'Aplicación Móvil'
-                };
-                return typeMap[type] || type;
-            }
-
-            function getTypeIcon(type) {
-                const iconMap = {
-                    'website': '🌐',
-                    'panel': '⚙️',
-                    'api': '🔧',
-                    'mobile': '📱'
-                };
-                return iconMap[type] || '📄';
-            }
-
-            function getChangeLabel(type) {
-                const labelMap = {
-                    'added': 'Añadido',
-                    'updated': 'Actualizado',
-                    'fixed': 'Corregido',
-                    'removed': 'Eliminado'
-                };
-                return labelMap[type] || type;
-            }
-
-            function getChangeIcon(type) {
-                const iconMap = {
-                    'added': '➕',
-                    'updated': '🔄',
-                    'fixed': '🔧',
-                    'removed': '🗑️'
-                };
-                return iconMap[type] || '📝';
-            }
-
-            // Actualizar contadores de filtros
-            function updateFilterCounts() {
-                const allCount = vhVersionsData.versions.length;
-                const websiteCount = vhVersionsData.versions.filter(v => v.type === 'website').length;
-                const panelCount = vhVersionsData.versions.filter(v => v.type === 'panel').length;
-                const apiCount = vhVersionsData.versions.filter(v => v.type === 'api').length;
-                
-                document.querySelector('[data-filter="all"] .vh-filter-count').textContent = allCount;
-                document.querySelector('[data-filter="website"] .vh-filter-count').textContent = websiteCount;
-                document.querySelector('[data-filter="panel"] .vh-filter-count').textContent = panelCount;
-                document.querySelector('[data-filter="api"] .vh-filter-count').textContent = apiCount;
-            }
-
-            // Inicializar contadores
-            updateFilterCounts();
-
-            // Configurar eventos para recursos multimedia
-            document.addEventListener('click', function(e) {
-                if (e.target.closest('.vh-resource-card.video') || e.target.closest('.vh-resource-card.image')) {
-                    e.preventDefault();
-                    const card = e.target.closest('.vh-resource-card');
-                    const url = card.getAttribute('href');
-                    const label = card.textContent.trim();
-                    const type = card.classList.contains('video') ? 'video' : 'image';
-                    
-                    openMediaModal(type, url, label);
-                }
-            });
-
-            // Función para abrir modal de medios
-            function openMediaModal(type, url, label) {
-                const modal = document.createElement('div');
-                modal.style.cssText = `
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(0, 0, 0, 0.9);
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    z-index: 10000;
-                    padding: 1rem;
-                `;
-
-                const content = document.createElement('div');
-                content.style.cssText = `
-                    max-width: 90%;
-                    max-height: 90%;
-                    position: relative;
-                `;
-
-                const closeBtn = document.createElement('button');
-                closeBtn.innerHTML = '×';
-                closeBtn.style.cssText = `
-                    position: absolute;
-                    top: -40px;
-                    right: 0;
-                    background: #fff;
-                    border: none;
-                    color: #000;
-                    font-size: 24px;
-                    cursor: pointer;
-                    width: 36px;
-                    height: 36px;
-                    border-radius: 50%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                `;
-                closeBtn.onclick = () => document.body.removeChild(modal);
-
-                let mediaElement;
-                if (type === 'video') {
-                    mediaElement = document.createElement('iframe');
-                    mediaElement.src = url;
-                    mediaElement.style.cssText = `
-                        width: 80vw;
-                        height: 45vw;
-                        max-width: 800px;
-                        max-height: 450px;
-                        border: none;
-                        border-radius: 8px;
-                    `;
-                    mediaElement.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-                    mediaElement.allowFullscreen = true;
-                } else if (type === 'image') {
-                    mediaElement = document.createElement('img');
-                    mediaElement.src = url;
-                    mediaElement.alt = label;
-                    mediaElement.style.cssText = `
-                        max-width: 100%;
-                        max-height: 80vh;
-                        object-fit: contain;
-                        border-radius: 8px;
-                    `;
-                }
-
-                const caption = document.createElement('div');
-                caption.textContent = label;
-                caption.style.cssText = `
-                    color: white;
-                    text-align: center;
-                    margin-top: 1rem;
-                    font-size: 0.9rem;
-                `;
-
-                content.appendChild(mediaElement);
-                content.appendChild(closeBtn);
-                if (label) content.appendChild(caption);
-                modal.appendChild(content);
-                document.body.appendChild(modal);
-
-                // Cerrar con ESC
-                modal.onkeydown = (e) => {
-                    if (e.key === 'Escape') {
-                        document.body.removeChild(modal);
-                    }
-                };
-                modal.focus();
-            }
+            // Actualizar URL sin recargar
+            updateUrlWithFilter(filterType);
         });
-    </script>
+    });
+
+    // Verificar si hay un hash en la URL para desplazarse a esa versión
+    checkHashAndScroll();
+
+    // Función para actualizar las versiones actuales
+    function updateCurrentVersions() {
+        const websiteCurrent = vhVersionsData.versions
+            .filter(v => v.type === 'website' && v.current)
+            .sort((a, b) => b.timestamp - a.timestamp)[0];
+        
+        const panelCurrent = vhVersionsData.versions
+            .filter(v => v.type === 'panel' && v.current)
+            .sort((a, b) => b.timestamp - a.timestamp)[0];
+        
+        const apiCurrent = vhVersionsData.versions
+            .filter(v => v.type === 'api' && v.current)
+            .sort((a, b) => b.timestamp - a.timestamp)[0];
+        
+        if (websiteCurrent) {
+            document.getElementById('current-web-version').textContent = `v${websiteCurrent.version}`;
+            document.getElementById('current-web-timestamp').textContent = formatTimestampUTC(websiteCurrent.timestamp);
+        }
+        
+        if (panelCurrent) {
+            document.getElementById('current-panel-version').textContent = `v${panelCurrent.version}`;
+            document.getElementById('current-panel-timestamp').textContent = formatTimestampUTC(panelCurrent.timestamp);
+        }
+        
+        if (apiCurrent) {
+            document.getElementById('current-api-version').textContent = `v${apiCurrent.version}`;
+            document.getElementById('current-api-timestamp').textContent = formatTimestampUTC(apiCurrent.timestamp);
+        }
+    }
+
+    // Función para mostrar versiones
+    function displayVersions(versions) {
+        if (versions.length === 0) {
+            container.innerHTML = `
+                <div class="vh-empty-state">
+                    <div class="vh-empty-icon">📭</div>
+                    <h3 class="vh-empty-title">No hay versiones para mostrar</h3>
+                    <p class="vh-empty-text">Seleccione otro filtro para ver más versiones.</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = '';
+
+        // Ordenar por timestamp (más reciente primero)
+        versions.sort((a, b) => b.timestamp - a.timestamp);
+
+        versions.forEach(version => {
+            const card = createVersionCard(version);
+            container.appendChild(card);
+        });
+        
+        // Después de mostrar las versiones, verificar si hay un hash
+        setTimeout(checkHashAndScroll, 100);
+    }
+
+    // Función para crear tarjeta de versión
+    function createVersionCard(version) {
+        const card = document.createElement('article');
+        card.className = 'vh-version-card';
+        card.id = getVersionAnchor(version);
+        
+        // Obtener datos de la versión
+        const typeLabel = getTypeLabel(version.type);
+        const typeIcon = getTypeIcon(version.type);
+        const formattedTimestamp = formatTimestampUTC(version.timestamp);
+        const relativeTime = formatRelativeTime(version.timestamp);
+        
+        // Crear cambios HTML
+        let changesHTML = '';
+        if (version.changes && version.changes.length > 0) {
+            changesHTML = version.changes.map(change => `
+                <li class="vh-change-item">
+                    <span class="vh-change-type ${change.type}">
+                        ${getChangeIcon(change.type)} ${getChangeLabel(change.type)}
+                    </span>
+                    <div class="vh-change-detail">
+                        <strong>${change.detail}</strong>
+                        ${change.description ? 
+                            `<span class="vh-change-description">${change.description}</span>` 
+                            : ''}
+                    </div>
+                </li>
+            `).join('');
+        }
+        
+        // Crear recursos HTML
+        let resourcesHTML = '';
+        if (version.resources && version.resources.length > 0) {
+            resourcesHTML = version.resources.map(resource => `
+                <a href="${resource.url}" class="vh-resource-card ${resource.type}" 
+                   ${resource.type === 'video' || resource.type === 'image' ? 'target="_blank"' : ''}
+                   ${resource.type === 'link' ? 'target="_blank" rel="noopener noreferrer"' : ''}>
+                    <span class="vh-resource-icon">${resource.icon}</span>
+                    <span>${resource.label}</span>
+                </a>
+            `).join('');
+        }
+
+        card.innerHTML = `
+            <div class="vh-version-header">
+                <div class="vh-version-tag">
+                    ${typeIcon} ${typeLabel}
+                    ${version.current ? '<span style="color: var(--vh-success); margin-left: 0.25rem;">🏆</span>' : ''}
+                </div>
+                <h2 class="vh-version-title">
+                    ${version.title}
+                    <a href="#${getVersionAnchor(version)}" class="vh-version-link" 
+                       title="Enlace directo a esta versión"
+                       onclick="copyVersionLink('${getVersionAnchor(version)}', event)">
+                        🔗
+                    </a>
+                </h2>
+                <div class="vh-version-meta">
+                    <span class="vh-version-number">v${version.version}</span>
+                    <span class="vh-version-timestamp" title="${formattedTimestamp}">
+                        📅 ${relativeTime}
+                    </span>
+                </div>
+            </div>
+            
+            <div class="vh-changes-section">
+                <h3 class="vh-changes-title">
+                    <span>📋</span>
+                    <span>Cambios realizados</span>
+                    <span style="font-size: 0.75rem; color: var(--vh-gray-500); margin-left: auto;">
+                        ${version.changes ? version.changes.length : 0} cambios
+                    </span>
+                </h3>
+                <ul class="vh-changes-list">
+                    ${changesHTML}
+                </ul>
+            </div>
+            
+            ${version.resources && version.resources.length > 0 ? `
+            <div class="vh-resources-section">
+                <h3 class="vh-resources-title">
+                    <span>📎</span>
+                    <span>Recursos relacionados</span>
+                    <span style="font-size: 0.75rem; color: var(--vh-gray-500); margin-left: auto;">
+                        ${version.resources.length} recursos
+                    </span>
+                </h3>
+                <div class="vh-resources-grid">
+                    ${resourcesHTML}
+                </div>
+            </div>
+            ` : ''}
+            
+            <div class="vh-share-section" style="padding: 1rem 2rem; border-top: 1px solid var(--vh-gray-200); text-align: center;">
+                <button class="vh-share-btn" 
+                        onclick="shareVersion('${version.type}', '${version.version}', '${version.title}')"
+                        style="background: var(--vh-gray-100); border: 1px solid var(--vh-gray-300); 
+                               padding: 0.5rem 1rem; border-radius: var(--vh-radius-md); 
+                               color: var(--vh-gray-700); cursor: pointer; font-size: 0.875rem;
+                               display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <span>📤</span>
+                    <span>Compartir esta versión</span>
+                </button>
+            </div>
+        `;
+        
+        return card;
+    }
+
+    // Funciones auxiliares
+    function getTypeLabel(type) {
+        const typeMap = {
+            'website': 'Sitio Web',
+            'panel': 'Panel de Control',
+            'api': 'API',
+            'mobile': 'Aplicación Móvil'
+        };
+        return typeMap[type] || type;
+    }
+
+    function getTypeIcon(type) {
+        const iconMap = {
+            'website': '🌐',
+            'panel': '⚙️',
+            'api': '🔧',
+            'mobile': '📱'
+        };
+        return iconMap[type] || '📄';
+    }
+
+    function getChangeLabel(type) {
+        const labelMap = {
+            'added': 'Añadido',
+            'updated': 'Actualizado',
+            'fixed': 'Corregido',
+            'removed': 'Eliminado'
+        };
+        return labelMap[type] || type;
+    }
+
+    function getChangeIcon(type) {
+        const iconMap = {
+            'added': '➕',
+            'updated': '🔄',
+            'fixed': '🔧',
+            'removed': '🗑️'
+        };
+        return iconMap[type] || '📝';
+    }
+
+    // Actualizar contadores de filtros
+    function updateFilterCounts() {
+        const allCount = vhVersionsData.versions.length;
+        const websiteCount = vhVersionsData.versions.filter(v => v.type === 'website').length;
+        const panelCount = vhVersionsData.versions.filter(v => v.type === 'panel').length;
+        const apiCount = vhVersionsData.versions.filter(v => v.type === 'api').length;
+        
+        document.querySelector('[data-filter="all"] .vh-filter-count').textContent = allCount;
+        document.querySelector('[data-filter="website"] .vh-filter-count').textContent = websiteCount;
+        document.querySelector('[data-filter="panel"] .vh-filter-count').textContent = panelCount;
+        document.querySelector('[data-filter="api"] .vh-filter-count').textContent = apiCount;
+    }
+
+    // Función para verificar hash y desplazarse
+    function checkHashAndScroll() {
+        const hash = window.location.hash;
+        if (hash && hash.startsWith('#v')) {
+            const versionElement = document.getElementById(hash.substring(1));
+            if (versionElement) {
+                // Esperar un momento para que se renderice
+                setTimeout(() => {
+                    versionElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    
+                    // Añadir efecto visual
+                    versionElement.style.transition = 'all 0.5s ease';
+                    versionElement.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.3)';
+                    versionElement.style.borderColor = 'var(--vh-secondary)';
+                    
+                    setTimeout(() => {
+                        versionElement.style.boxShadow = '';
+                        versionElement.style.borderColor = '';
+                    }, 2000);
+                    
+                    // Actualizar filtro activo basado en la versión
+                    const versionData = vhVersionsData.versions.find(v => getVersionAnchor(v) === hash.substring(1));
+                    if (versionData) {
+                        const filterBtn = document.querySelector(`[data-filter="${versionData.type}"]`);
+                        if (filterBtn && !filterBtn.classList.contains('active')) {
+                            filterButtons.forEach(btn => btn.classList.remove('active'));
+                            filterBtn.classList.add('active');
+                            
+                            const filtered = vhVersionsData.versions.filter(v => v.type === versionData.type);
+                            displayVersions(filtered);
+                        }
+                    }
+                }, 300);
+            }
+        }
+    }
+
+    // Función para actualizar URL con filtro
+    function updateUrlWithFilter(filterType) {
+        const currentHash = window.location.hash;
+        const newHash = filterType === 'all' ? '' : `filter=${filterType}`;
+        
+        // Actualizar URL sin recargar
+        const newUrl = `${window.location.pathname}${newHash ? `#${newHash}` : ''}`;
+        window.history.pushState({ filter: filterType }, '', newUrl);
+    }
+
+    // Configurar eventos para recursos multimedia
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.vh-resource-card.video') || e.target.closest('.vh-resource-card.image')) {
+            e.preventDefault();
+            const card = e.target.closest('.vh-resource-card');
+            const url = card.getAttribute('href');
+            const label = card.textContent.trim();
+            const type = card.classList.contains('video') ? 'video' : 'image';
+            
+            openMediaModal(type, url, label);
+        }
+    });
+
+    // Función para abrir modal de medios
+    function openMediaModal(type, url, label) {
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            padding: 1rem;
+        `;
+
+        const content = document.createElement('div');
+        content.style.cssText = `
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        `;
+
+        const closeBtn = document.createElement('button');
+        closeBtn.innerHTML = '×';
+        closeBtn.style.cssText = `
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: #fff;
+            border: none;
+            color: #000;
+            font-size: 24px;
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        `;
+        closeBtn.onclick = () => document.body.removeChild(modal);
+
+        let mediaElement;
+        if (type === 'video') {
+            mediaElement = document.createElement('iframe');
+            mediaElement.src = url;
+            mediaElement.style.cssText = `
+                width: 80vw;
+                height: 45vw;
+                max-width: 800px;
+                max-height: 450px;
+                border: none;
+                border-radius: 8px;
+            `;
+            mediaElement.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            mediaElement.allowFullscreen = true;
+        } else if (type === 'image') {
+            mediaElement = document.createElement('img');
+            mediaElement.src = url;
+            mediaElement.alt = label;
+            mediaElement.style.cssText = `
+                max-width: 100%;
+                max-height: 80vh;
+                object-fit: contain;
+                border-radius: 8px;
+            `;
+        }
+
+        const caption = document.createElement('div');
+        caption.textContent = label;
+        caption.style.cssText = `
+            color: white;
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        `;
+
+        content.appendChild(mediaElement);
+        content.appendChild(closeBtn);
+        if (label) content.appendChild(caption);
+        modal.appendChild(content);
+        document.body.appendChild(modal);
+
+        // Cerrar con ESC
+        modal.onkeydown = (e) => {
+            if (e.key === 'Escape') {
+                document.body.removeChild(modal);
+            }
+        };
+        modal.focus();
+    }
+
+    // Inicializar contadores
+    updateFilterCounts();
+    
+    // Configurar listener para cambios en el hash
+    window.addEventListener('hashchange', function() {
+        checkHashAndScroll();
+    });
+});
+
+// FUNCIONES GLOBALES PARA COMPARTIR VERSIONES
+function copyVersionLink(anchorId, event) {
+    if (event) event.preventDefault();
+    
+    const url = `${window.location.origin}${window.location.pathname}#${anchorId}`;
+    
+    // Usar Clipboard API si está disponible
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(() => {
+            showToast('✅ Enlace copiado al portapapeles');
+        }).catch(err => {
+            // Fallback para navegadores más antiguos
+            copyToClipboardFallback(url);
+        });
+    } else {
+        // Fallback para navegadores más antiguos
+        copyToClipboardFallback(url);
+    }
+}
+
+function copyToClipboardFallback(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        document.execCommand('copy');
+        showToast('✅ Enlace copiado al portapapeles');
+    } catch (err) {
+        console.error('Error al copiar: ', err);
+        showToast('❌ Error al copiar el enlace');
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+function shareVersion(type, version, title) {
+    const url = `${window.location.origin}${window.location.pathname}#v${version}`;
+    const text = `Versión ${version} de ${type}: ${title}`;
+    
+    // Verificar si Web Share API está disponible
+    if (navigator.share) {
+        navigator.share({
+            title: `Grouvex Studios - v${version}`,
+            text: text,
+            url: url
+        }).catch(err => {
+            console.log('Error al compartir:', err);
+            // Fallback a copiar enlace
+            copyVersionLink(`v${version}`);
+        });
+    } else {
+        // Fallback a copiar enlace
+        copyVersionLink(`v${version}`);
+    }
+}
+
+function showToast(message) {
+    // Crear o reutilizar toast
+    let toast = document.getElementById('vh-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'vh-toast';
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--vh-gray-900);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--vh-radius-md);
+            font-size: 0.875rem;
+            font-weight: 500;
+            z-index: 10001;
+            box-shadow: var(--vh-shadow-xl);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        `;
+        document.body.appendChild(toast);
+    }
+    
+    toast.textContent = message;
+    toast.style.opacity = '1';
+    
+    setTimeout(() => {
+        toast.style.opacity = '0';
+    }, 3000);
+}
+
+// Añadir estilos adicionales para el enlace de versión
+const additionalStyles = document.createElement('style');
+additionalStyles.textContent = `
+    #versions-history .vh-version-link {
+        text-decoration: none;
+        color: var(--vh-gray-400);
+        font-size: 0.875rem;
+        margin-left: 0.5rem;
+        opacity: 0.5;
+        transition: opacity 0.2s ease, color 0.2s ease;
+    }
+    
+    #versions-history .vh-version-link:hover {
+        opacity: 1;
+        color: var(--vh-secondary);
+    }
+    
+    #versions-history .vh-version-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    #versions-history .vh-version-title a {
+        flex-shrink: 0;
+    }
+    
+    #versions-history .vh-share-btn {
+        transition: all 0.2s ease;
+    }
+    
+    #versions-history .vh-share-btn:hover {
+        background: var(--vh-gray-200) !important;
+        border-color: var(--vh-gray-400) !important;
+        transform: translateY(-1px);
+    }
+`;
+document.head.appendChild(additionalStyles);
+</script>
 </body>
 </html>

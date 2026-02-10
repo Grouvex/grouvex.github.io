@@ -44,777 +44,549 @@
     </script>
     
     <style>
-        /* ESTILOS PROFESIONALES PARA HISTORIAL DE VERSIONES */
-        :root {
-            /* Sistema de colores profesional */
-            --gs-blue: #2563eb;
-            --gs-blue-light: #3b82f6;
-            --gs-blue-dark: #1d4ed8;
-            --gs-purple: #7c3aed;
-            --gs-purple-light: #8b5cf6;
-            --gs-purple-dark: #6d28d9;
-            --gs-success: #10b981;
-            --gs-success-dark: #059669;
-            --gs-warning: #f59e0b;
-            --gs-warning-dark: #d97706;
-            --gs-error: #ef4444;
-            --gs-error-dark: #dc2626;
-            --gs-info: #06b6d4;
-            --gs-info-dark: #0891b2;
+        /* ESTILOS EXCLUSIVOS PARA HISTORIAL DE VERSIONES - EVITA CONFLICTOS */
+        #versions-history {
+            --vh-primary: #1e3a8a;
+            --vh-secondary: #3b82f6;
+            --vh-accent: #8b5cf6;
+            --vh-success: #10b981;
+            --vh-warning: #f59e0b;
+            --vh-error: #ef4444;
+            --vh-info: #06b6d4;
             
-            /* Sistema de grises profesionales */
-            --gs-gray-50: #f9fafb;
-            --gs-gray-100: #f3f4f6;
-            --gs-gray-200: #e5e7eb;
-            --gs-gray-300: #d1d5db;
-            --gs-gray-400: #9ca3af;
-            --gs-gray-500: #6b7280;
-            --gs-gray-600: #4b5563;
-            --gs-gray-700: #374151;
-            --gs-gray-800: #1f2937;
-            --gs-gray-900: #111827;
+            --vh-gray-50: #f9fafb;
+            --vh-gray-100: #f3f4f6;
+            --vh-gray-200: #e5e7eb;
+            --vh-gray-300: #d1d5db;
+            --vh-gray-400: #9ca3af;
+            --vh-gray-500: #6b7280;
+            --vh-gray-600: #4b5563;
+            --vh-gray-700: #374151;
+            --vh-gray-800: #1f2937;
+            --vh-gray-900: #111827;
             
-            /* Variables de diseño */
-            --gs-elevation-1: 0 1px 2px rgba(0, 0, 0, 0.05);
-            --gs-elevation-2: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
-            --gs-elevation-3: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);
-            --gs-elevation-4: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
-            --gs-elevation-5: 0 20px 25px rgba(0, 0, 0, 0.12), 0 10px 10px rgba(0, 0, 0, 0.04);
+            --vh-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --vh-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --vh-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --vh-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
             
-            --gs-border-radius-sm: 6px;
-            --gs-border-radius-md: 10px;
-            --gs-border-radius-lg: 14px;
-            --gs-border-radius-xl: 18px;
-            --gs-border-radius-2xl: 24px;
+            --vh-radius-sm: 0.375rem;
+            --vh-radius-md: 0.5rem;
+            --vh-radius-lg: 0.75rem;
+            --vh-radius-xl: 1rem;
+            --vh-radius-2xl: 1.5rem;
             
-            --gs-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-            --gs-transition-medium: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-            --gs-transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
-            
-            --gs-max-width: 1200px;
-            --gs-side-padding: clamp(1rem, 5vw, 2rem);
-        }
-
-        /* Reset y estilos base */
-        .version-tracker {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            font-feature-settings: 'kern', 'liga', 'clig', 'calt';
-            color: var(--gs-gray-900);
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             min-height: 100vh;
-            line-height: 1.6;
+            padding: 2rem 0;
+            box-sizing: border-box;
         }
 
-        .version-tracker * {
+        #versions-history * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
         /* Contenedor principal */
-        .version-tracker-container {
-            max-width: var(--gs-max-width);
+        #versions-history .vh-container {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: clamp(2rem, 5vw, 4rem) var(--gs-side-padding);
+            padding: 0 1.5rem;
         }
 
-        /* Cabecera profesional */
-        .version-tracker-header {
+        /* Cabecera */
+        #versions-history .vh-header {
             text-align: center;
-            margin-bottom: clamp(3rem, 6vw, 5rem);
+            margin-bottom: 3rem;
             position: relative;
         }
 
-        .version-tracker-header::after {
+        #versions-history .vh-header::after {
             content: '';
             position: absolute;
-            bottom: -1.5rem;
+            bottom: -1rem;
             left: 50%;
             transform: translateX(-50%);
-            width: min(200px, 80%);
+            width: 150px;
             height: 4px;
-            background: linear-gradient(90deg, 
-                transparent, 
-                var(--gs-blue), 
-                var(--gs-purple), 
-                transparent);
+            background: linear-gradient(90deg, var(--vh-primary), var(--vh-accent));
             border-radius: 2px;
         }
 
-        .version-tracker-title {
-            font-size: clamp(2rem, 4vw, 3rem);
+        #versions-history .vh-title {
+            font-size: 2.5rem;
             font-weight: 800;
-            line-height: 1.1;
+            color: var(--vh-gray-900);
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--gs-blue), var(--gs-purple));
+            background: linear-gradient(135deg, var(--vh-primary), var(--vh-accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            letter-spacing: -0.025em;
         }
 
-        .version-tracker-subtitle {
-            font-size: clamp(1rem, 1.5vw, 1.2rem);
-            color: var(--gs-gray-600);
+        #versions-history .vh-subtitle {
+            font-size: 1.125rem;
+            color: var(--vh-gray-600);
             max-width: 800px;
             margin: 0 auto;
-            line-height: 1.7;
-            font-weight: 400;
+            line-height: 1.6;
         }
 
-        /* Panel de versiones actuales */
-        .current-versions-panel {
+        /* Versiones actuales */
+        #versions-history .vh-current-versions {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
             margin-bottom: 3rem;
         }
 
-        .current-version-card {
+        #versions-history .vh-current-card {
             background: white;
-            border-radius: var(--gs-border-radius-xl);
+            border-radius: var(--vh-radius-xl);
             padding: 2rem;
-            box-shadow: var(--gs-elevation-4);
-            border: 1px solid var(--gs-gray-200);
+            box-shadow: var(--vh-shadow-lg);
+            border: 1px solid var(--vh-gray-200);
             position: relative;
-            transition: var(--gs-transition-medium);
             overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .current-version-card::before {
+        #versions-history .vh-current-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--vh-shadow-xl);
+        }
+
+        #versions-history .vh-current-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 6px;
-            background: linear-gradient(90deg, var(--gs-blue), var(--gs-purple));
+            height: 5px;
+            background: linear-gradient(90deg, var(--vh-primary), var(--vh-accent));
         }
 
-        .current-version-card.website::before {
-            background: var(--gs-blue);
-        }
-
-        .current-version-card.panel::before {
-            background: var(--gs-purple);
-        }
-
-        .current-version-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--gs-elevation-5);
-            border-color: var(--gs-gray-300);
-        }
-
-        .current-version-header {
+        #versions-history .vh-current-header {
             display: flex;
             align-items: center;
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
 
-        .current-version-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 14px;
+        #versions-history .vh-current-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
-            flex-shrink: 0;
-        }
-
-        .current-version-card.website .current-version-icon {
-            background: linear-gradient(135deg, var(--gs-blue-light), var(--gs-blue));
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--vh-primary), var(--vh-secondary));
             color: white;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
 
-        .current-version-card.panel .current-version-icon {
-            background: linear-gradient(135deg, var(--gs-purple-light), var(--gs-purple));
-            color: white;
-            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
-        }
-
-        .current-version-title {
+        #versions-history .vh-current-title {
             font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--gs-gray-900);
-            line-height: 1.3;
+            font-weight: 700;
+            color: var(--vh-gray-900);
         }
 
-        .current-version-badge {
+        #versions-history .vh-current-badge {
             display: inline-block;
-            background: var(--gs-gray-100);
-            color: var(--gs-gray-700);
+            background: var(--vh-success);
+            color: white;
             font-size: 0.75rem;
             font-weight: 600;
             padding: 0.25rem 0.75rem;
-            border-radius: 100px;
+            border-radius: 20px;
             margin-top: 0.5rem;
-            border: 1px solid var(--gs-gray-200);
         }
 
-        .current-version-content {
-            margin-top: 1.5rem;
-        }
-
-        .current-version-number {
-            font-family: 'SF Mono', 'Roboto Mono', 'Consolas', monospace;
+        #versions-history .vh-current-version {
+            font-family: 'SF Mono', monospace;
             font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--gs-gray-900);
+            font-weight: 800;
+            color: var(--vh-primary);
             line-height: 1;
             margin-bottom: 0.5rem;
         }
 
-        .current-version-card.website .current-version-number {
-            color: var(--gs-blue);
-        }
-
-        .current-version-card.panel .current-version-number {
-            color: var(--gs-purple);
-        }
-
-        .current-version-date {
-            color: var(--gs-gray-600);
-            font-size: 0.95rem;
+        #versions-history .vh-current-date {
+            color: var(--vh-gray-600);
+            font-size: 0.875rem;
             font-weight: 500;
         }
 
-        /* Sistema de filtros profesional */
-        .version-filters {
+        /* Filtros */
+        #versions-history .vh-filters {
             display: flex;
             flex-wrap: wrap;
             gap: 0.75rem;
             margin-bottom: 2.5rem;
             padding: 1.5rem;
             background: white;
-            border-radius: var(--gs-border-radius-lg);
-            box-shadow: var(--gs-elevation-3);
-            border: 1px solid var(--gs-gray-200);
+            border-radius: var(--vh-radius-lg);
+            box-shadow: var(--vh-shadow-md);
+            border: 1px solid var(--vh-gray-200);
         }
 
-        .filter-button {
+        #versions-history .vh-filter-btn {
             flex: 1;
             min-width: 140px;
             padding: 0.875rem 1.5rem;
-            background: var(--gs-gray-50);
-            border: 1px solid var(--gs-gray-300);
-            border-radius: var(--gs-border-radius-md);
-            color: var(--gs-gray-700);
+            background: var(--vh-gray-50);
+            border: 1px solid var(--vh-gray-300);
+            border-radius: var(--vh-radius-md);
+            color: var(--vh-gray-700);
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.875rem;
             cursor: pointer;
-            transition: var(--gs-transition-fast);
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            position: relative;
-            overflow: hidden;
         }
 
-        .filter-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.6s;
+        #versions-history .vh-filter-btn:hover {
+            background: var(--vh-gray-100);
+            border-color: var(--vh-gray-400);
+            color: var(--vh-gray-900);
         }
 
-        .filter-button:hover::before {
-            left: 100%;
-        }
-
-        .filter-button:hover {
-            background: var(--gs-gray-100);
-            border-color: var(--gs-gray-400);
-            color: var(--gs-gray-900);
-        }
-
-        .filter-button.active {
-            background: var(--gs-blue);
-            border-color: var(--gs-blue);
+        #versions-history .vh-filter-btn.active {
+            background: var(--vh-primary);
+            border-color: var(--vh-primary);
             color: white;
         }
 
-        .filter-button.active:hover {
-            background: var(--gs-blue-dark);
-            border-color: var(--gs-blue-dark);
-        }
-
-        .filter-button .filter-count {
+        #versions-history .vh-filter-count {
             background: rgba(255, 255, 255, 0.2);
             padding: 0.125rem 0.5rem;
-            border-radius: 100px;
-            font-size: 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
             font-weight: 700;
-            min-width: 28px;
+            min-width: 24px;
             text-align: center;
         }
 
-        .filter-button:not(.active) .filter-count {
-            background: var(--gs-gray-200);
-            color: var(--gs-gray-700);
+        #versions-history .vh-filter-btn:not(.active) .vh-filter-count {
+            background: var(--vh-gray-200);
+            color: var(--vh-gray-700);
         }
 
-        /* Sistema de grid responsivo */
-        .versions-grid {
+        /* Grid de versiones */
+        #versions-history .vh-versions-grid {
             display: grid;
             grid-template-columns: 1fr;
             gap: 2rem;
         }
 
         @media (min-width: 768px) {
-            .versions-grid {
+            #versions-history .vh-versions-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
 
-        @media (min-width: 1200px) {
-            .versions-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        /* Tarjeta de versión profesional */
-        .version-card {
+        /* Tarjeta de versión */
+        #versions-history .vh-version-card {
             background: white;
-            border-radius: var(--gs-border-radius-xl);
+            border-radius: var(--vh-radius-xl);
             overflow: hidden;
-            box-shadow: var(--gs-elevation-3);
-            border: 1px solid var(--gs-gray-200);
-            transition: var(--gs-transition-medium);
-            position: relative;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            box-shadow: var(--vh-shadow-md);
+            border: 1px solid var(--vh-gray-200);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .version-card:hover {
+        #versions-history .vh-version-card:hover {
             transform: translateY(-4px);
-            box-shadow: var(--gs-elevation-5);
-            border-color: var(--gs-gray-300);
+            box-shadow: var(--vh-shadow-lg);
         }
 
-        .version-card-header {
+        #versions-history .vh-version-header {
             padding: 2rem;
-            border-bottom: 1px solid var(--gs-gray-100);
-            cursor: pointer;
-            transition: var(--gs-transition-fast);
-            position: relative;
-            overflow: hidden;
+            border-bottom: 1px solid var(--vh-gray-100);
+            background: linear-gradient(135deg, rgba(248, 250, 252, 1), rgba(241, 245, 249, 1));
         }
 
-        .version-card-header:hover {
-            background: var(--gs-gray-50);
-        }
-
-        .version-card-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 6px;
-            height: 100%;
-        }
-
-        .version-card.website .version-card-header::before {
-            background: var(--gs-blue);
-        }
-
-        .version-card.panel .version-card-header::before {
-            background: var(--gs-purple);
-        }
-
-        .version-type-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-        }
-
-        .version-type-tag {
+        #versions-history .vh-version-tag {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
             padding: 0.5rem 1rem;
-            border-radius: var(--gs-border-radius-sm);
+            border-radius: var(--vh-radius-sm);
             font-size: 0.75rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            background: rgba(30, 58, 138, 0.1);
+            color: var(--vh-primary);
+            border: 1px solid rgba(30, 58, 138, 0.2);
+            margin-bottom: 1rem;
         }
 
-        .version-card.website .version-type-tag {
-            background: rgba(37, 99, 235, 0.1);
-            color: var(--gs-blue);
-            border: 1px solid rgba(37, 99, 235, 0.2);
-        }
-
-        .version-card.panel .version-type-tag {
-            background: rgba(124, 58, 237, 0.1);
-            color: var(--gs-purple);
-            border: 1px solid rgba(124, 58, 237, 0.2);
-        }
-
-        .current-version-tag {
-            background: linear-gradient(135deg, var(--gs-success), var(--gs-info));
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: var(--gs-border-radius-sm);
-            font-size: 0.75rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .version-title {
+        #versions-history .vh-version-title {
             font-size: 1.5rem;
             font-weight: 700;
-            color: var(--gs-gray-900);
+            color: var(--vh-gray-900);
+            margin-bottom: 1rem;
             line-height: 1.3;
-            margin: 0.5rem 0 1rem;
         }
 
-        .version-meta {
+        #versions-history .vh-version-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
             margin-top: 1.5rem;
             padding-top: 1.5rem;
-            border-top: 1px solid var(--gs-gray-100);
+            border-top: 1px solid var(--vh-gray-200);
         }
 
-        .version-number {
-            font-family: 'SF Mono', 'Roboto Mono', 'Consolas', monospace;
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--gs-gray-900);
-            text-decoration: none;
-            transition: var(--gs-transition-fast);
-            padding: 0.5rem 1rem;
-            border-radius: var(--gs-border-radius-md);
-            background: var(--gs-gray-50);
-            border: 1px solid var(--gs-gray-200);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .version-number:hover {
-            background: var(--gs-gray-100);
-            border-color: var(--gs-gray-300);
-            transform: translateY(-1px);
-        }
-
-        .version-card.website .version-number {
-            color: var(--gs-blue);
-        }
-
-        .version-card.panel .version-number {
-            color: var(--gs-purple);
-        }
-
-        .version-date {
-            color: var(--gs-gray-600);
-            font-size: 0.9rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        /* Previsualización compacta */
-        .version-preview {
-            padding: 1.5rem 2rem;
-            border-bottom: 1px solid var(--gs-gray-100);
-            background: var(--gs-gray-50);
-        }
-
-        .preview-title {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--gs-gray-700);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .preview-items {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
-            gap: 0.75rem;
-        }
-
-        .preview-item {
-            padding: 0.75rem 1rem;
-            border-radius: var(--gs-border-radius-sm);
-            font-size: 0.875rem;
-            line-height: 1.5;
-            border-left: 4px solid;
-            background: white;
-            border: 1px solid var(--gs-gray-200);
-            transition: var(--gs-transition-fast);
-        }
-
-        .preview-item:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--gs-elevation-2);
-        }
-
-        .preview-item.added {
-            border-left-color: var(--gs-success);
-            background: rgba(16, 185, 129, 0.05);
-        }
-
-        .preview-item.updated {
-            border-left-color: var(--gs-warning);
-            background: rgba(245, 158, 11, 0.05);
-        }
-
-        .preview-item.fixed {
-            border-left-color: var(--gs-blue);
-            background: rgba(37, 99, 235, 0.05);
-        }
-
-        .preview-item.removed {
-            border-left-color: var(--gs-error);
-            background: rgba(239, 68, 68, 0.05);
-        }
-
-        .preview-more {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 0.75rem;
-            color: var(--gs-gray-600);
-            font-size: 0.875rem;
-            font-style: italic;
-            background: white;
-            border: 1px solid var(--gs-gray-200);
-            border-radius: var(--gs-border-radius-sm);
-        }
-
-        /* Botón de expandir */
-        .expand-button {
-            width: 100%;
-            padding: 1rem;
-            background: var(--gs-gray-50);
-            border: none;
-            color: var(--gs-gray-700);
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: var(--gs-transition-fast);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0.75rem;
-            border-top: 1px solid var(--gs-gray-200);
-        }
-
-        .expand-button:hover {
-            background: var(--gs-gray-100);
-            color: var(--gs-gray-900);
-        }
-
-        .expand-button .expand-icon {
-            transition: transform var(--gs-transition-medium);
-        }
-
-        .expand-button.expanded .expand-icon {
-            transform: rotate(180deg);
-        }
-
-        /* Contenido expandido - SOLO RECURSOS */
-        .version-content {
-            padding: 2rem;
-            display: none;
-            animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: linear-gradient(145deg, rgba(248, 250, 252, 0.98), rgba(241, 245, 249, 0.95));
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .resources-section {
-            margin-bottom: 0;
-        }
-
-        .resources-title {
+        #versions-history .vh-version-number {
+            font-family: 'SF Mono', monospace;
             font-size: 1.25rem;
             font-weight: 700;
-            color: var(--gs-gray-900);
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 2px solid var(--gs-gray-200);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
+            color: var(--vh-primary);
+            text-decoration: none;
+            transition: color 0.2s ease;
         }
 
-        .resources-grid {
+        #versions-history .vh-version-number:hover {
+            color: var(--vh-secondary);
+        }
+
+        #versions-history .vh-version-date {
+            color: var(--vh-gray-600);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* Cambios de versión */
+        #versions-history .vh-changes-section {
+            padding: 2rem;
+        }
+
+        #versions-history .vh-changes-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--vh-gray-900);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        #versions-history .vh-changes-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        #versions-history .vh-change-item {
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border-radius: var(--vh-radius-md);
+            background: var(--vh-gray-50);
+            border: 1px solid var(--vh-gray-200);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            transition: background-color 0.2s ease;
+        }
+
+        #versions-history .vh-change-item:hover {
+            background: var(--vh-gray-100);
+        }
+
+        #versions-history .vh-change-type {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--vh-radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            min-width: 80px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        #versions-history .vh-change-type.added {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--vh-success);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        #versions-history .vh-change-type.updated {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--vh-warning);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        #versions-history .vh-change-type.fixed {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--vh-secondary);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        #versions-history .vh-change-type.removed {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--vh-error);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        #versions-history .vh-change-detail {
+            flex: 1;
+            color: var(--vh-gray-800);
+            line-height: 1.5;
+            font-size: 0.875rem;
+        }
+
+        /* Recursos */
+        #versions-history .vh-resources-section {
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(248, 250, 252, 1), rgba(241, 245, 249, 1));
+            border-top: 1px solid var(--vh-gray-200);
+        }
+
+        #versions-history .vh-resources-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--vh-gray-900);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        #versions-history .vh-resources-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 1rem;
         }
 
-        .resource-card {
+        #versions-history .vh-resource-card {
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            padding: 1rem 1.25rem;
+            padding: 1rem;
             background: white;
-            border: 1px solid var(--gs-gray-200);
-            border-radius: var(--gs-border-radius-md);
+            border: 1px solid var(--vh-gray-200);
+            border-radius: var(--vh-radius-md);
             text-decoration: none;
-            color: var(--gs-gray-800);
-            font-size: 0.95rem;
+            color: var(--vh-gray-800);
+            font-size: 0.875rem;
             font-weight: 500;
-            transition: var(--gs-transition-fast);
+            transition: all 0.2s ease;
         }
 
-        .resource-card:hover {
-            background: var(--gs-gray-50);
-            border-color: var(--gs-gray-300);
+        #versions-history .vh-resource-card:hover {
+            background: var(--vh-gray-50);
+            border-color: var(--vh-gray-300);
             transform: translateY(-2px);
-            box-shadow: var(--gs-elevation-2);
+            box-shadow: var(--vh-shadow-sm);
         }
 
-        .resource-card.video:hover {
-            border-color: var(--gs-error);
-            color: var(--gs-error-dark);
-        }
-
-        .resource-card.image:hover {
-            border-color: var(--gs-success);
-            color: var(--gs-success-dark);
-        }
-
-        .resource-card.link:hover {
-            border-color: var(--gs-blue);
-            color: var(--gs-blue-dark);
-        }
-
-        .resource-icon {
+        #versions-history .vh-resource-icon {
             font-size: 1.25rem;
             width: 24px;
             text-align: center;
         }
 
+        #versions-history .vh-resource-card.document:hover {
+            border-color: var(--vh-primary);
+            color: var(--vh-primary);
+        }
+
+        #versions-history .vh-resource-card.image:hover {
+            border-color: var(--vh-success);
+            color: var(--vh-success);
+        }
+
+        #versions-history .vh-resource-card.video:hover {
+            border-color: var(--vh-error);
+            color: var(--vh-error);
+        }
+
+        #versions-history .vh-resource-card.link:hover {
+            border-color: var(--vh-accent);
+            color: var(--vh-accent);
+        }
+
         /* Estado vacío */
-        .empty-state {
+        #versions-history .vh-empty-state {
             grid-column: 1 / -1;
             text-align: center;
             padding: 4rem 2rem;
             background: white;
-            border-radius: var(--gs-border-radius-xl);
-            box-shadow: var(--gs-elevation-3);
-            border: 1px solid var(--gs-gray-200);
+            border-radius: var(--vh-radius-xl);
+            box-shadow: var(--vh-shadow-md);
+            border: 1px solid var(--vh-gray-200);
         }
 
-        .empty-state-icon {
+        #versions-history .vh-empty-icon {
             font-size: 3rem;
             margin-bottom: 1.5rem;
             opacity: 0.5;
+            color: var(--vh-gray-400);
         }
 
-        .empty-state h3 {
+        #versions-history .vh-empty-title {
             font-size: 1.5rem;
             font-weight: 700;
-            color: var(--gs-gray-900);
+            color: var(--vh-gray-900);
             margin-bottom: 1rem;
         }
 
-        .empty-state p {
-            color: var(--gs-gray-600);
+        #versions-history .vh-empty-text {
+            color: var(--vh-gray-600);
             max-width: 400px;
             margin: 0 auto;
             line-height: 1.6;
         }
 
-        /* Anclas para navegación */
-        .version-anchor {
-            display: block;
-            position: relative;
-            top: -100px;
-            visibility: hidden;
-        }
-
-        /* Lightbox profesional */
-        .lightbox-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            animation: fadeIn 0.2s ease;
-        }
-
-        .lightbox-content {
-            position: relative;
-            max-width: 90%;
-            max-height: 90%;
-            animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes scaleIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
+        /* Responsive */
+        @media (max-width: 768px) {
+            #versions-history .vh-title {
+                font-size: 2rem;
             }
-            to {
-                opacity: 1;
-                transform: scale(1);
+            
+            #versions-history .vh-current-versions {
+                grid-template-columns: 1fr;
+            }
+            
+            #versions-history .vh-filter-btn {
+                min-width: 100%;
+            }
+            
+            #versions-history .vh-versions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            #versions-history .vh-change-item {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            #versions-history .vh-change-type {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            #versions-history .vh-resources-grid {
+                grid-template-columns: 1fr;
             }
         }
 
         /* Scroll suave */
         html {
             scroll-behavior: smooth;
-            scroll-padding-top: 100px;
         }
 
-        /* Utilidades responsivas */
-        .sr-only {
+        /* Utilitarios */
+        .vh-sr-only {
             position: absolute;
             width: 1px;
             height: 1px;
@@ -824,152 +596,6 @@
             clip: rect(0, 0, 0, 0);
             white-space: nowrap;
             border: 0;
-        }
-
-        /* Estilos para diferentes tamaños de pantalla */
-        @media (max-width: 640px) {
-            .version-filters {
-                padding: 1rem;
-            }
-            
-            .filter-button {
-                min-width: calc(50% - 0.5rem);
-                flex: none;
-            }
-            
-            .version-card-header,
-            .version-content {
-                padding: 1.5rem;
-            }
-            
-            .preview-items {
-                grid-template-columns: 1fr;
-            }
-            
-            .resources-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .current-version-card {
-                padding: 1.5rem;
-            }
-            
-            .current-version-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.75rem;
-            }
-            
-            .filter-button {
-                min-width: 100%;
-            }
-            
-            .version-title {
-                font-size: 1.25rem;
-            }
-            
-            .version-meta {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.75rem;
-            }
-        }
-
-        /* Mejoras de accesibilidad */
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-                scroll-behavior: auto !important;
-            }
-        }
-
-        /* Modo oscuro automático */
-        @media (prefers-color-scheme: dark) {
-            .version-tracker {
-                background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-                color: #f1f5f9;
-            }
-            
-            .version-tracker-subtitle {
-                color: #cbd5e1;
-            }
-            
-            .current-version-card,
-            .version-filters,
-            .version-card,
-            .empty-state {
-                background: #1e293b;
-                border-color: #334155;
-                color: #f1f5f9;
-            }
-            
-            .current-version-card:hover,
-            .version-card:hover {
-                border-color: #475569;
-            }
-            
-            .current-version-title,
-            .version-title,
-            .resources-title,
-            .empty-state h3 {
-                color: #f1f5f9;
-            }
-            
-            .current-version-date,
-            .version-date,
-            .preview-title,
-            .empty-state p {
-                color: #cbd5e1;
-            }
-            
-            .filter-button {
-                background: #334155;
-                border-color: #475569;
-                color: #cbd5e1;
-            }
-            
-            .filter-button:hover {
-                background: #475569;
-                color: #f1f5f9;
-            }
-            
-            .filter-button.active {
-                background: var(--gs-blue);
-                color: white;
-            }
-            
-            .version-card-header:hover {
-                background: #334155;
-            }
-            
-            .version-preview {
-                background: #0f172a;
-            }
-            
-            .preview-item,
-            .preview-more,
-            .resource-card {
-                background: #334155;
-                border-color: #475569;
-                color: #e2e8f0;
-            }
-            
-            .expand-button {
-                background: #0f172a;
-                border-color: #334155;
-                color: #cbd5e1;
-            }
-            
-            .expand-button:hover {
-                background: #1e293b;
-                color: #f1f5f9;
-            }
         }
     </style>
 </head>
@@ -1007,81 +633,87 @@
             actualizarFechas(uTActualizado, "ActualizadoDATE");
         </script>
         
-        <!-- Historial de Versiones -->
-        <article>
-            <div class="version-tracker">
-                <div class="version-tracker-container">
-                    <!-- Cabecera -->
-                    <header class="version-tracker-header">
-                        <h1 class="version-tracker-title">Historial de Versiones</h1>
-                        <p class="version-tracker-subtitle">
-                            Seguimiento detallado de todas las actualizaciones del sitio web y Panel de Grouvex Studios.
-                            Cada versión incluye cambios documentados, recursos multimedia y enlaces permanentes.
-                        </p>
-                    </header>
-                    
-                    <!-- Versiones actuales -->
-                    <section class="current-versions-panel">
-                        <div class="current-version-card website" id="current-website">
-                            <div class="current-version-header">
-                                <div class="current-version-icon">🌐</div>
-                                <div>
-                                    <h3 class="current-version-title">Sitio Web Actual</h3>
-                                    <span class="current-version-badge">Versión actual</span>
-                                </div>
-                            </div>
-                            <div class="current-version-content">
-                                <div class="current-version-number">v2.1.0</div>
-                                <div class="current-version-date">Última actualización: 22 nov 2023</div>
+        <!-- Historial de Versiones - CONTENIDO NUEVO -->
+        <section id="versions-history">
+            <div class="vh-container">
+                <!-- Cabecera -->
+                <header class="vh-header">
+                    <h1 class="vh-title">Historial de Versiones</h1>
+                    <p class="vh-subtitle">
+                        Registro completo de todas las actualizaciones del sistema. Cada versión incluye 
+                        cambios detallados y recursos relacionados para referencia.
+                    </p>
+                </header>
+                
+                <!-- Versiones actuales -->
+                <div class="vh-current-versions">
+                    <div class="vh-current-card" id="current-web">
+                        <div class="vh-current-header">
+                            <div class="vh-current-icon">🌐</div>
+                            <div>
+                                <h3 class="vh-current-title">Sitio Web</h3>
+                                <span class="vh-current-badge">Versión Actual</span>
                             </div>
                         </div>
-                        
-                        <div class="current-version-card panel" id="current-panel">
-                            <div class="current-version-header">
-                                <div class="current-version-icon">⚙️</div>
-                                <div>
-                                    <h3 class="current-version-title">Panel de Grouvex Studios</h3>
-                                    <span class="current-version-badge">Versión actual</span>
-                                </div>
-                            </div>
-                            <div class="current-version-content">
-                                <div class="current-version-number">v1.5.2</div>
-                                <div class="current-version-date">Última actualización: 15 nov 2023</div>
+                        <div class="vh-current-version" id="current-web-version">v2.1.0</div>
+                        <div class="vh-current-date" id="current-web-date">Actualizado: 22 nov 2023</div>
+                    </div>
+                    
+                    <div class="vh-current-card" id="current-panel">
+                        <div class="vh-current-header">
+                            <div class="vh-current-icon">⚙️</div>
+                            <div>
+                                <h3 class="vh-current-title">Panel de Control</h3>
+                                <span class="vh-current-badge">Versión Actual</span>
                             </div>
                         </div>
-                    </section>
+                        <div class="vh-current-version" id="current-panel-version">v1.5.2</div>
+                        <div class="vh-current-date" id="current-panel-date">Actualizado: 15 nov 2023</div>
+                    </div>
                     
-                    <!-- Filtros -->
-                    <nav class="version-filters" aria-label="Filtros de versiones">
-                        <button class="filter-button active" data-filter="all" aria-pressed="true">
-                            <span class="filter-icon">📋</span>
-                            <span>Todas las versiones</span>
-                            <span class="filter-count">12</span>
-                        </button>
-                        <button class="filter-button" data-filter="website" aria-pressed="false">
-                            <span class="filter-icon">🌐</span>
-                            <span>Sitio Web</span>
-                            <span class="filter-count">6</span>
-                        </button>
-                        <button class="filter-button" data-filter="panel" aria-pressed="false">
-                            <span class="filter-icon">⚙️</span>
-                            <span>Panel de Grouvex Studios</span>
-                            <span class="filter-count">4</span>
-                        </button>
-                        <button class="filter-button" data-filter="api" aria-pressed="false">
-                            <span class="filter-icon">🔧</span>
-                            <span>API</span>
-                            <span class="filter-count">2</span>
-                        </button>
-                    </nav>
-                    
-                    <!-- Contenedor de versiones -->
-                    <div class="versions-grid" id="versionsContainer">
-                        <!-- Las versiones se cargarán aquí mediante JavaScript -->
+                    <div class="vh-current-card" id="current-api">
+                        <div class="vh-current-header">
+                            <div class="vh-current-icon">🔧</div>
+                            <div>
+                                <h3 class="vh-current-title">API</h3>
+                                <span class="vh-current-badge">Versión Actual</span>
+                            </div>
+                        </div>
+                        <div class="vh-current-version" id="current-api-version">v3.0.1</div>
+                        <div class="vh-current-date" id="current-api-date">Actualizado: 10 nov 2023</div>
                     </div>
                 </div>
+                
+                <!-- Filtros -->
+                <nav class="vh-filters" aria-label="Filtros de versiones">
+                    <button class="vh-filter-btn active" data-filter="all">
+                        <span>📋</span>
+                        <span>Todas las versiones</span>
+                        <span class="vh-filter-count">8</span>
+                    </button>
+                    <button class="vh-filter-btn" data-filter="website">
+                        <span>🌐</span>
+                        <span>Sitio Web</span>
+                        <span class="vh-filter-count">3</span>
+                    </button>
+                    <button class="vh-filter-btn" data-filter="panel">
+                        <span>⚙️</span>
+                        <span>Panel</span>
+                        <span class="vh-filter-count">3</span>
+                    </button>
+                    <button class="vh-filter-btn" data-filter="api">
+                        <span>🔧</span>
+                        <span>API</span>
+                        <span class="vh-filter-count">2</span>
+                    </button>
+                </nav>
+                
+                <!-- Grid de versiones -->
+                <div class="vh-versions-grid" id="vh-versions-container">
+                    <!-- Las versiones se cargarán aquí -->
+                </div>
             </div>
-        </article>
+        </section>
     </main>
 
     <!-- Footer -->
@@ -1090,456 +722,441 @@
     <script src="preloader.js"></script>
     
     <script>
-        // DATOS DE VERSIONES CON RECURSOS
-        const versionsData = {
+        // DATOS COMPLETOS DE VERSIONES
+        const vhVersionsData = {
             versions: [
                 {
+                    id: 1,
                     type: "website",
                     version: "2.1.0",
-                    title: "Mejoras en el sistema de notificaciones y seguridad",
+                    title: "Mejoras en sistema de notificaciones y seguridad avanzada",
                     date: "2023-11-22",
                     timestamp: 1700601600,
+                    current: true,
                     changes: [
-                        "Nuevo sistema de notificaciones en tiempo real",
-                        "Implementación de autenticación de dos factores",
-                        "Mejoras en el rendimiento de la página principal",
-                        "Corrección de vulnerabilidades de seguridad"
+                        {
+                            type: "added",
+                            detail: "Nuevo sistema de notificaciones en tiempo real con WebSockets",
+                            description: "Implementación completa de WebSockets para notificaciones instantáneas"
+                        },
+                        {
+                            type: "added",
+                            detail: "Autenticación de dos factores (2FA) para usuarios administradores",
+                            description: "Integración con Google Authenticator y códigos de respaldo"
+                        },
+                        {
+                            type: "updated",
+                            detail: "Rediseño completo del dashboard principal",
+                            description: "Nueva interfaz con mejoras en usabilidad y experiencia de usuario"
+                        },
+                        {
+                            type: "fixed",
+                            detail: "Corrección de vulnerabilidad XSS en formularios de contacto",
+                            description: "Implementación de sanitización de inputs y protección CSRF"
+                        },
+                        {
+                            type: "updated",
+                            detail: "Optimización de rendimiento en carga de imágenes",
+                            description: "Reducción del tiempo de carga en un 40% con lazy loading"
+                        }
                     ],
                     resources: [
                         {
                             type: "document",
                             icon: "📄",
-                            label: "Documentación técnica completa",
+                            label: "Documentación técnica v2.1.0",
                             url: "docs/technical-doc-v2.1.0.pdf"
-                        },
-                        {
-                            type: "image",
-                            icon: "🖼️",
-                            label: "Capturas del nuevo sistema",
-                            url: "images/notifications-screenshots.zip"
                         },
                         {
                             type: "video",
                             icon: "🎥",
-                            label: "Video tutorial de nuevas funciones",
-                            url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                            label: "Video tutorial nuevas funciones",
+                            url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+                        },
+                        {
+                            type: "image",
+                            icon: "🖼️",
+                            label: "Capturas del nuevo dashboard",
+                            url: "images/dashboard-screenshots.zip"
                         },
                         {
                             type: "link",
                             icon: "🔗",
-                            label: "Notas de la versión detalladas",
-                            url: "changelog/v2.1.0.html"
+                            label: "Guía de migración v2.0 → v2.1",
+                            url: "guides/migration-v2.1.html"
                         }
                     ]
                 },
                 {
+                    id: 2,
                     type: "panel",
                     version: "1.5.2",
-                    title: "Actualización de seguridad y nuevas funciones administrativas",
+                    title: "Actualización de seguridad y panel de estadísticas",
                     date: "2023-11-15",
                     timestamp: 1699996800,
+                    current: true,
                     changes: [
-                        "Panel de estadísticas completamente rediseñado",
-                        "Nuevos gráficos interactivos",
-                        "Exportación de datos en múltiples formatos",
-                        "Corrección de vulnerabilidad en gestión de sesiones"
+                        {
+                            type: "added",
+                            detail: "Panel de estadísticas con gráficos interactivos",
+                            description: "Implementación de Chart.js para visualización de datos"
+                        },
+                        {
+                            type: "added",
+                            detail: "Exportación de datos en múltiples formatos (PDF, Excel, CSV)",
+                            description: "Soporte para exportación directa desde el panel"
+                        },
+                        {
+                            type: "fixed",
+                            detail: "Corrección de vulnerabilidad en gestión de sesiones",
+                            description: "Implementación de tokens JWT con expiración controlada"
+                        },
+                        {
+                            type: "updated",
+                            detail: "Mejoras en la interfaz de gestión de usuarios",
+                            description: "Nuevos filtros y opciones de búsqueda avanzada"
+                        },
+                        {
+                            type: "removed",
+                            detail: "Función obsoleta de sincronización manual",
+                            description: "Reemplazada por sincronización automática en tiempo real"
+                        }
                     ],
                     resources: [
                         {
                             type: "document",
                             icon: "📄",
-                            label: "Manual de administración actualizado",
+                            label: "Manual de administración v1.5.2",
                             url: "docs/admin-manual-v1.5.2.pdf"
                         },
                         {
                             type: "image",
                             icon: "🖼️",
-                            label: "Galería del nuevo panel",
-                            url: "images/new-panel-gallery.zip"
+                            label: "Galería de gráficos nuevos",
+                            url: "images/charts-gallery.zip"
                         },
                         {
                             type: "link",
                             icon: "🔗",
-                            label: "API documentation para desarrolladores",
-                            url: "api/docs/v1.5.2"
+                            label: "Reporte de auditoría de seguridad",
+                            url: "reports/security-audit.html"
                         }
                     ]
                 },
                 {
+                    id: 3,
                     type: "api",
                     version: "3.0.1",
-                    title: "Nuevos endpoints y mejoras de rendimiento",
+                    title: "Nuevos endpoints y mejoras de rendimiento API",
                     date: "2023-11-10",
                     timestamp: 1699564800,
+                    current: true,
                     changes: [
-                        "5 nuevos endpoints REST para gestión de usuarios",
-                        "Límite de rate aumentado a 1000 requests/minuto",
-                        "Documentación Swagger completamente actualizada",
-                        "Errores de validación optimizados"
+                        {
+                            type: "added",
+                            detail: "5 nuevos endpoints REST para gestión de usuarios",
+                            description: "CRUD completo con validaciones mejoradas"
+                        },
+                        {
+                            type: "added",
+                            detail: "Soporte para paginación avanzada en todos los endpoints",
+                            description: "Paginación con límites, offsets y ordenamiento"
+                        },
+                        {
+                            type: "updated",
+                            detail: "Límite de rate aumentado a 1000 requests/minuto",
+                            description: "Mejora en la capacidad de procesamiento"
+                        },
+                        {
+                            type: "fixed",
+                            detail: "Corrección de errores en validación de datos de entrada",
+                            description: "Implementación de validadores específicos por tipo"
+                        },
+                        {
+                            type: "updated",
+                            detail: "Documentación Swagger completamente actualizada",
+                            description: "Incluye ejemplos para todos los endpoints"
+                        }
                     ],
                     resources: [
                         {
                             type: "document",
                             icon: "📄",
-                            label: "Guía de migración v2.x a v3.x",
-                            url: "docs/migration-guide.pdf"
-                        },
-                        {
-                            type: "code",
-                            icon: "💻",
-                            label: "Ejemplos de código en múltiples lenguajes",
-                            url: "examples/api-examples.zip"
+                            label: "Documentación API v3.0.1",
+                            url: "docs/api-documentation-v3.0.1.pdf"
                         },
                         {
                             type: "link",
                             icon: "🔗",
-                            label: "Documentación Swagger interactiva",
+                            label: "Swagger UI interactivo",
                             url: "api/swagger/v3.0.1"
+                        },
+                        {
+                            type: "code",
+                            icon: "💻",
+                            label: "Ejemplos de código",
+                            url: "examples/api-examples.zip"
                         }
                     ]
                 },
                 {
+                    id: 4,
                     type: "website",
                     version: "2.0.5",
-                    title: "Optimización para móviles y correcciones menores",
+                    title: "Optimización móvil y correcciones menores",
                     date: "2023-10-28",
                     timestamp: 1698451200,
+                    current: false,
                     changes: [
-                        "Diseño completamente responsivo para móviles",
-                        "Corrección de problemas en navegadores Safari",
-                        "Mejoras en tiempo de carga de imágenes",
-                        "Actualización de dependencias de seguridad"
+                        {
+                            type: "updated",
+                            detail: "Diseño completamente responsivo para móviles",
+                            description: "Mejoras en la experiencia en dispositivos móviles"
+                        },
+                        {
+                            type: "fixed",
+                            detail: "Corrección de problemas en navegadores Safari",
+                            description: "Compatibilidad mejorada con WebKit"
+                        },
+                        {
+                            type: "fixed",
+                            detail: "Error 404 en páginas específicas del blog",
+                            description: "Corrección de rutas y redirecciones"
+                        },
+                        {
+                            type: "updated",
+                            detail: "Mejoras en tiempo de carga de imágenes",
+                            description: "Optimización de compresión y caché"
+                        }
                     ],
                     resources: [
+                        {
+                            type: "document",
+                            icon: "📄",
+                            label: "Reporte de optimización móvil",
+                            url: "reports/mobile-optimization.pdf"
+                        },
                         {
                             type: "image",
                             icon: "🖼️",
                             label: "Comparativa móvil vs desktop",
                             url: "images/mobile-comparison.zip"
-                        },
-                        {
-                            type: "link",
-                            icon: "🔗",
-                            label: "Reporte de optimización de rendimiento",
-                            url: "reports/performance-optimization.html"
                         }
                     ]
                 },
                 {
+                    id: 5,
                     type: "panel",
                     version: "1.4.8",
-                    title: "Correcciones de bugs y mejoras en la interfaz",
+                    title: "Correcciones de bugs y mejoras en interfaz",
                     date: "2023-10-15",
                     timestamp: 1697328000,
+                    current: false,
                     changes: [
-                        "Corrección de bug en subida de archivos grandes",
-                        "Mejoras en la interfaz de gestión de usuarios",
-                        "Nuevas opciones de filtrado en tablas",
-                        "Optimización de consultas a la base de datos"
+                        {
+                            type: "fixed",
+                            detail: "Bug en subida de archivos mayores a 50MB",
+                            description: "Implementación de chunk upload para archivos grandes"
+                        },
+                        {
+                            type: "updated",
+                            detail: "Nuevas opciones de filtrado en tablas de datos",
+                            description: "Filtros por fecha, tipo y estado"
+                        },
+                        {
+                            type: "fixed",
+                            detail: "Problema de sincronización con base de datos",
+                            description: "Corrección en las consultas de actualización"
+                        },
+                        {
+                            type: "updated",
+                            detail: "Mejoras en la interfaz de reportes",
+                            description: "Nuevos formatos de visualización"
+                        }
                     ],
                     resources: [
                         {
                             type: "document",
                             icon: "📄",
-                            label: "Lista completa de bugs corregidos",
+                            label: "Lista de bugs corregidos",
                             url: "docs/bugs-fixed-v1.4.8.pdf"
                         },
                         {
                             type: "link",
                             icon: "🔗",
                             label: "Guía rápida de nuevas funciones",
-                            url: "quick-guide/v1.4.8.html"
-                        }
-                    ]
-                },
-                {
-                    type: "website",
-                    version: "1.9.3",
-                    title: "Actualización de contenido y SEO",
-                    date: "2023-09-30",
-                    timestamp: 1696032000,
-                    changes: [
-                        "Contenido optimizado para motores de búsqueda",
-                        "Nuevo mapa del sitio XML",
-                        "Mejoras en meta tags y descripciones",
-                        "Corrección de enlaces rotos en el blog"
-                    ],
-                    resources: [
-                        {
-                            type: "document",
-                            icon: "📄",
-                            label: "Reporte de análisis SEO",
-                            url: "docs/seo-analysis-report.pdf"
-                        },
-                        {
-                            type: "link",
-                            icon: "🔗",
-                            label: "Mapa del sitio actualizado",
-                            url: "sitemap.xml"
+                            url: "guides/quick-guide-v1.4.8.html"
                         }
                     ]
                 }
             ]
         };
 
-        // SISTEMA DE GESTIÓN DE VERSIONES
+        // INICIALIZACIÓN DEL SISTEMA
         document.addEventListener('DOMContentLoaded', function() {
-            const versionsContainer = document.getElementById('versionsContainer');
-            const filterButtons = document.querySelectorAll('.filter-button');
+            const container = document.getElementById('vh-versions-container');
+            const filterButtons = document.querySelectorAll('.vh-filter-btn');
             
-            // Cargar y mostrar todas las versiones inicialmente
-            displayVersions(versionsData.versions);
+            // Actualizar versión actual en cada categoría
+            updateCurrentVersions();
+            
+            // Mostrar todas las versiones inicialmente
+            displayVersions(vhVersionsData.versions);
             
             // Configurar filtros
             filterButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     // Remover clase active de todos
-                    filterButtons.forEach(btn => {
-                        btn.classList.remove('active');
-                        btn.setAttribute('aria-pressed', 'false');
-                    });
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
                     
-                    // Agregar clase active al botón clickeado
+                    // Agregar clase active al clickeado
                     this.classList.add('active');
-                    this.setAttribute('aria-pressed', 'true');
+                    
+                    // Obtener filtro
+                    const filterType = this.getAttribute('data-filter');
                     
                     // Filtrar versiones
-                    const filterType = this.getAttribute('data-filter');
-                    filterVersions(filterType);
+                    if (filterType === 'all') {
+                        displayVersions(vhVersionsData.versions);
+                    } else {
+                        const filtered = vhVersionsData.versions.filter(v => v.type === filterType);
+                        displayVersions(filtered);
+                    }
                 });
             });
-            
+
+            // Función para actualizar las versiones actuales
+            function updateCurrentVersions() {
+                const websiteCurrent = vhVersionsData.versions
+                    .filter(v => v.type === 'website' && v.current)
+                    .sort((a, b) => b.timestamp - a.timestamp)[0];
+                
+                const panelCurrent = vhVersionsData.versions
+                    .filter(v => v.type === 'panel' && v.current)
+                    .sort((a, b) => b.timestamp - a.timestamp)[0];
+                
+                const apiCurrent = vhVersionsData.versions
+                    .filter(v => v.type === 'api' && v.current)
+                    .sort((a, b) => b.timestamp - a.timestamp)[0];
+                
+                if (websiteCurrent) {
+                    document.getElementById('current-web-version').textContent = `v${websiteCurrent.version}`;
+                    document.getElementById('current-web-date').textContent = `Actualizado: ${formatDate(websiteCurrent.date)}`;
+                }
+                
+                if (panelCurrent) {
+                    document.getElementById('current-panel-version').textContent = `v${panelCurrent.version}`;
+                    document.getElementById('current-panel-date').textContent = `Actualizado: ${formatDate(panelCurrent.date)}`;
+                }
+                
+                if (apiCurrent) {
+                    document.getElementById('current-api-version').textContent = `v${apiCurrent.version}`;
+                    document.getElementById('current-api-date').textContent = `Actualizado: ${formatDate(apiCurrent.date)}`;
+                }
+            }
+
             // Función para mostrar versiones
             function displayVersions(versions) {
                 if (versions.length === 0) {
-                    versionsContainer.innerHTML = `
-                        <div class="empty-state">
-                            <div class="empty-state-icon">📭</div>
-                            <h3>No hay versiones para mostrar</h3>
-                            <p>Seleccione otro filtro para ver más versiones o vuelva más tarde para nuevas actualizaciones.</p>
+                    container.innerHTML = `
+                        <div class="vh-empty-state">
+                            <div class="vh-empty-icon">📭</div>
+                            <h3 class="vh-empty-title">No hay versiones para mostrar</h3>
+                            <p class="vh-empty-text">Seleccione otro filtro para ver más versiones.</p>
                         </div>
                     `;
                     return;
                 }
-                
-                versionsContainer.innerHTML = '';
-                
+
+                container.innerHTML = '';
+
                 // Ordenar por fecha (más reciente primero)
                 versions.sort((a, b) => b.timestamp - a.timestamp);
-                
-                versions.forEach((version, index) => {
-                    const versionCard = createVersionCard(version, index);
-                    versionsContainer.appendChild(versionCard);
+
+                versions.forEach(version => {
+                    const card = createVersionCard(version);
+                    container.appendChild(card);
                 });
             }
-            
+
             // Función para crear tarjeta de versión
-            function createVersionCard(version, index) {
+            function createVersionCard(version) {
                 const card = document.createElement('article');
-                card.className = `version-card ${version.type}`;
-                card.style.animationDelay = `${index * 0.1}s`;
+                card.className = 'vh-version-card';
                 
-                // Datos de la versión
-                const formattedDate = formatDate(version.date);
+                // Obtener datos de la versión
                 const typeLabel = getTypeLabel(version.type);
                 const typeIcon = getTypeIcon(version.type);
+                const formattedDate = formatDate(version.date);
                 
-                // Crear ID único para el ancla
-                const anchorId = `version-${version.type}-${version.version.replace(/\./g, '-')}`;
-                
-                // Crear previsualización de cambios
-                let previewHTML = '';
-                const previewChanges = version.changes.slice(0, 3);
-                previewChanges.forEach(change => {
-                    previewHTML += `
-                        <div class="preview-item updated">
-                            ${change}
-                        </div>
-                    `;
-                });
-                
-                if (version.changes.length > 3) {
-                    previewHTML += `
-                        <div class="preview-more">
-                            + ${version.changes.length - 3} cambio${version.changes.length - 3 > 1 ? 's' : ''} adicionales
-                        </div>
-                    `;
+                // Crear cambios HTML
+                let changesHTML = '';
+                if (version.changes && version.changes.length > 0) {
+                    changesHTML = version.changes.map(change => `
+                        <li class="vh-change-item">
+                            <span class="vh-change-type ${change.type}">
+                                ${getChangeIcon(change.type)} ${getChangeLabel(change.type)}
+                            </span>
+                            <div class="vh-change-detail">
+                                <strong>${change.detail}</strong>
+                                ${change.description ? `<br><small>${change.description}</small>` : ''}
+                            </div>
+                        </li>
+                    `).join('');
                 }
                 
-                // Crear HTML de recursos
+                // Crear recursos HTML
                 let resourcesHTML = '';
                 if (version.resources && version.resources.length > 0) {
-                    let resourcesListHTML = '';
-                    
-                    version.resources.forEach(resource => {
-                        let resourceHTML = '';
-                        
-                        if (resource.type === 'video') {
-                            resourceHTML = `
-                                <a href="#" class="resource-card video" 
-                                   data-video-url="${resource.url}" 
-                                   data-label="${resource.label}">
-                                    <span class="resource-icon">${resource.icon}</span>
-                                    <span>${resource.label}</span>
-                                </a>
-                            `;
-                        } else if (resource.type === 'image') {
-                            resourceHTML = `
-                                <a href="#" class="resource-card image" 
-                                   data-image-url="${resource.url}" 
-                                   data-label="${resource.label}">
-                                    <span class="resource-icon">${resource.icon}</span>
-                                    <span>${resource.label}</span>
-                                </a>
-                            `;
-                        } else {
-                            resourceHTML = `
-                                <a href="${resource.url}" class="resource-card link" 
-                                   target="_blank" rel="noopener noreferrer">
-                                    <span class="resource-icon">${resource.icon}</span>
-                                    <span>${resource.label}</span>
-                                </a>
-                            `;
-                        }
-                        
-                        resourcesListHTML += resourceHTML;
-                    });
-                    
-                    resourcesHTML = `
-                        <section class="resources-section">
-                            <h3 class="resources-title">
-                                <span>📎</span>
-                                <span>Recursos relacionados</span>
-                            </h3>
-                            <div class="resources-grid">
-                                ${resourcesListHTML}
-                            </div>
-                        </section>
-                    `;
+                    resourcesHTML = version.resources.map(resource => `
+                        <a href="${resource.url}" class="vh-resource-card ${resource.type}" 
+                           ${resource.type === 'video' || resource.type === 'image' ? 'target="_blank"' : ''}
+                           ${resource.type === 'link' ? 'target="_blank" rel="noopener noreferrer"' : ''}>
+                            <span class="vh-resource-icon">${resource.icon}</span>
+                            <span>${resource.label}</span>
+                        </a>
+                    `).join('');
                 }
-                
-                // Agregar ancla para navegación
-                const anchorHTML = `<span id="${anchorId}" class="version-anchor" aria-hidden="true"></span>`;
-                
+
                 card.innerHTML = `
-                    ${anchorHTML}
-                    
-                    <header class="version-card-header">
-                        <div class="version-type-container">
-                            <span class="version-type-tag">
-                                ${typeIcon}
-                                <span>${typeLabel}</span>
-                            </span>
+                    <div class="vh-version-header">
+                        <div class="vh-version-tag">
+                            ${typeIcon} ${typeLabel}
+                            ${version.current ? '🏆' : ''}
                         </div>
-                        
-                        <h2 class="version-title">${version.title}</h2>
-                        
-                        <div class="version-meta">
-                            <a href="#${anchorId}" class="version-number" aria-label="Enlace permanente a la versión ${version.version}">
-                                <span>#</span>
-                                <span>v${version.version}</span>
-                            </a>
-                            <time class="version-date" datetime="${version.date}">
-                                <span>📅</span>
-                                <span>${formattedDate}</span>
-                            </time>
+                        <h2 class="vh-version-title">${version.title}</h2>
+                        <div class="vh-version-meta">
+                            <span class="vh-version-number">v${version.version}</span>
+                            <span class="vh-version-date">${formattedDate}</span>
                         </div>
-                    </header>
-                    
-                    <section class="version-preview">
-                        <h3 class="preview-title">
-                            <span>🔍</span>
-                            <span>Resumen de cambios</span>
-                        </h3>
-                        <div class="preview-items">
-                            ${previewHTML}
-                        </div>
-                    </section>
-                    
-                    <button class="expand-button" data-target="${anchorId}" aria-expanded="false" aria-controls="content-${anchorId}">
-                        <span class="expand-text">Ver recursos relacionados</span>
-                        <span class="expand-icon" aria-hidden="true">▼</span>
-                    </button>
-                    
-                    <div class="version-content" id="content-${anchorId}" hidden>
-                        ${resourcesHTML}
                     </div>
+                    
+                    <div class="vh-changes-section">
+                        <h3 class="vh-changes-title">
+                            <span>📋</span>
+                            <span>Cambios realizados</span>
+                        </h3>
+                        <ul class="vh-changes-list">
+                            ${changesHTML}
+                        </ul>
+                    </div>
+                    
+                    ${version.resources && version.resources.length > 0 ? `
+                    <div class="vh-resources-section">
+                        <h3 class="vh-resources-title">
+                            <span>📎</span>
+                            <span>Recursos relacionados</span>
+                        </h3>
+                        <div class="vh-resources-grid">
+                            ${resourcesHTML}
+                        </div>
+                    </div>
+                    ` : ''}
                 `;
-                
-                // Configurar eventos
-                setupCardEvents(card, anchorId);
-                setupResourceEvents(card);
                 
                 return card;
             }
-            
-            // Configurar eventos de tarjeta
-            function setupCardEvents(card, anchorId) {
-                const expandBtn = card.querySelector('.expand-button');
-                const versionContent = card.querySelector('.version-content');
-                const cardHeader = card.querySelector('.version-card-header');
-                
-                expandBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    toggleCardExpansion(this, versionContent);
-                });
-                
-                cardHeader.addEventListener('click', function() {
-                    expandBtn.click();
-                });
-                
-                // Manejar teclado para accesibilidad
-                cardHeader.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        expandBtn.click();
-                    }
-                });
-            }
-            
-            // Alternar expansión de tarjeta
-            function toggleCardExpansion(button, content) {
-                const isExpanded = !content.hidden;
-                
-                if (isExpanded) {
-                    content.hidden = true;
-                    button.classList.remove('expanded');
-                    button.querySelector('.expand-text').textContent = 'Ver recursos relacionados';
-                    button.setAttribute('aria-expanded', 'false');
-                } else {
-                    content.hidden = false;
-                    button.classList.add('expanded');
-                    button.querySelector('.expand-text').textContent = 'Ocultar recursos';
-                    button.setAttribute('aria-expanded', 'true');
-                    
-                    // Scroll suave al contenido expandido
-                    setTimeout(() => {
-                        content.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'nearest'
-                        });
-                    }, 300);
-                }
-            }
-            
-            // Configurar eventos de recursos
-            function setupResourceEvents(card) {
-                const resourceLinks = card.querySelectorAll('.resource-card[data-video-url], .resource-card[data-image-url]');
-                
-                resourceLinks.forEach(link => {
-                    link.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        
-                        const resourceType = this.hasAttribute('data-video-url') ? 'video' : 'image';
-                        const resourceUrl = this.getAttribute(`data-${resourceType}-url`);
-                        const resourceLabel = this.getAttribute('data-label');
-                        
-                        openLightbox(resourceType, resourceUrl, resourceLabel);
-                    });
-                });
-            }
-            
+
             // Funciones auxiliares
             function getTypeLabel(type) {
                 const typeMap = {
@@ -1550,7 +1167,7 @@
                 };
                 return typeMap[type] || type;
             }
-            
+
             function getTypeIcon(type) {
                 const iconMap = {
                     'website': '🌐',
@@ -1560,196 +1177,159 @@
                 };
                 return iconMap[type] || '📄';
             }
-            
+
+            function getChangeLabel(type) {
+                const labelMap = {
+                    'added': 'Añadido',
+                    'updated': 'Actualizado',
+                    'fixed': 'Corregido',
+                    'removed': 'Eliminado'
+                };
+                return labelMap[type] || type;
+            }
+
+            function getChangeIcon(type) {
+                const iconMap = {
+                    'added': '➕',
+                    'updated': '🔄',
+                    'fixed': '🔧',
+                    'removed': '🗑️'
+                };
+                return iconMap[type] || '📝';
+            }
+
             function formatDate(dateString) {
                 const date = new Date(dateString);
-                return date.toLocaleDateString('es-ES', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
+                const options = { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                };
+                return date.toLocaleDateString('es-ES', options);
             }
-            
-            // Lightbox profesional para recursos multimedia
-            function openLightbox(type, url, label) {
-                const lightbox = document.createElement('div');
-                lightbox.className = 'lightbox-overlay';
-                lightbox.setAttribute('role', 'dialog');
-                lightbox.setAttribute('aria-modal', 'true');
-                lightbox.setAttribute('aria-label', label || 'Recurso multimedia');
+
+            // Actualizar contadores de filtros
+            function updateFilterCounts() {
+                const allCount = vhVersionsData.versions.length;
+                const websiteCount = vhVersionsData.versions.filter(v => v.type === 'website').length;
+                const panelCount = vhVersionsData.versions.filter(v => v.type === 'panel').length;
+                const apiCount = vhVersionsData.versions.filter(v => v.type === 'api').length;
                 
+                document.querySelector('[data-filter="all"] .vh-filter-count').textContent = allCount;
+                document.querySelector('[data-filter="website"] .vh-filter-count').textContent = websiteCount;
+                document.querySelector('[data-filter="panel"] .vh-filter-count').textContent = panelCount;
+                document.querySelector('[data-filter="api"] .vh-filter-count').textContent = apiCount;
+            }
+
+            // Inicializar contadores
+            updateFilterCounts();
+
+            // Configurar eventos para recursos multimedia
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.vh-resource-card.video') || e.target.closest('.vh-resource-card.image')) {
+                    e.preventDefault();
+                    const card = e.target.closest('.vh-resource-card');
+                    const url = card.getAttribute('href');
+                    const label = card.textContent.trim();
+                    const type = card.classList.contains('video') ? 'video' : 'image';
+                    
+                    openMediaModal(type, url, label);
+                }
+            });
+
+            // Función para abrir modal de medios
+            function openMediaModal(type, url, label) {
+                const modal = document.createElement('div');
+                modal.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.9);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 10000;
+                    padding: 1rem;
+                `;
+
                 const content = document.createElement('div');
-                content.className = 'lightbox-content';
-                
+                content.style.cssText = `
+                    max-width: 90%;
+                    max-height: 90%;
+                    position: relative;
+                `;
+
                 const closeBtn = document.createElement('button');
                 closeBtn.innerHTML = '×';
                 closeBtn.style.cssText = `
                     position: absolute;
-                    top: -3rem;
+                    top: -40px;
                     right: 0;
-                    background: rgba(255, 255, 255, 0.1);
+                    background: #fff;
                     border: none;
-                    color: white;
-                    font-size: 2rem;
+                    color: #000;
+                    font-size: 24px;
                     cursor: pointer;
-                    width: 2.5rem;
-                    height: 2.5rem;
+                    width: 36px;
+                    height: 36px;
                     border-radius: 50%;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    transition: all 0.2s ease;
                 `;
-                closeBtn.setAttribute('aria-label', 'Cerrar');
-                
-                closeBtn.addEventListener('mouseenter', () => {
-                    closeBtn.style.background = 'rgba(255, 255, 255, 0.2)';
-                    closeBtn.style.transform = 'scale(1.1)';
-                });
-                
-                closeBtn.addEventListener('mouseleave', () => {
-                    closeBtn.style.background = 'rgba(255, 255, 255, 0.1)';
-                    closeBtn.style.transform = 'scale(1)';
-                });
-                
-                const caption = document.createElement('div');
-                caption.style.cssText = `
-                    position: absolute;
-                    bottom: -3rem;
-                    left: 0;
-                    width: 100%;
-                    text-align: center;
-                    color: white;
-                    font-size: 0.95rem;
-                    padding: 0.75rem;
-                `;
-                caption.textContent = label || '';
-                
-                closeBtn.addEventListener('click', () => {
-                    document.body.removeChild(lightbox);
-                });
-                
-                lightbox.addEventListener('click', (e) => {
-                    if (e.target === lightbox) {
-                        document.body.removeChild(lightbox);
-                    }
-                });
-                
-                // Cerrar con tecla ESC
-                const handleEscape = (e) => {
-                    if (e.key === 'Escape') {
-                        document.body.removeChild(lightbox);
-                        document.removeEventListener('keydown', handleEscape);
-                    }
-                };
-                document.addEventListener('keydown', handleEscape);
-                
+                closeBtn.onclick = () => document.body.removeChild(modal);
+
                 let mediaElement;
-                if (type === 'image') {
-                    mediaElement = document.createElement('img');
-                    mediaElement.src = url;
-                    mediaElement.alt = label || 'Imagen de recurso';
-                    mediaElement.style.cssText = `
-                        max-width: 100%;
-                        max-height: 80vh;
-                        object-fit: contain;
-                        border-radius: 0.5rem;
-                        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-                    `;
-                } else if (type === 'video') {
+                if (type === 'video') {
                     mediaElement = document.createElement('iframe');
                     mediaElement.src = url;
-                    mediaElement.title = label || 'Video de recurso';
                     mediaElement.style.cssText = `
                         width: 80vw;
                         height: 45vw;
                         max-width: 800px;
                         max-height: 450px;
                         border: none;
-                        border-radius: 0.5rem;
-                        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+                        border-radius: 8px;
                     `;
                     mediaElement.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
                     mediaElement.allowFullscreen = true;
+                } else if (type === 'image') {
+                    mediaElement = document.createElement('img');
+                    mediaElement.src = url;
+                    mediaElement.alt = label;
+                    mediaElement.style.cssText = `
+                        max-width: 100%;
+                        max-height: 80vh;
+                        object-fit: contain;
+                        border-radius: 8px;
+                    `;
                 }
-                
+
+                const caption = document.createElement('div');
+                caption.textContent = label;
+                caption.style.cssText = `
+                    color: white;
+                    text-align: center;
+                    margin-top: 1rem;
+                    font-size: 0.9rem;
+                `;
+
                 content.appendChild(mediaElement);
                 content.appendChild(closeBtn);
                 if (label) content.appendChild(caption);
-                lightbox.appendChild(content);
-                document.body.appendChild(lightbox);
-                
-                // Enfocar el botón de cerrar para accesibilidad
-                setTimeout(() => closeBtn.focus(), 100);
-            }
-            
-            // Filtrado de versiones
-            function filterVersions(filterType) {
-                let filtered;
-                
-                if (filterType === 'all') {
-                    filtered = [...versionsData.versions];
-                } else {
-                    filtered = versionsData.versions.filter(version => version.type === filterType);
-                }
-                
-                // Ordenar por fecha (más reciente primero)
-                filtered.sort((a, b) => b.timestamp - a.timestamp);
-                displayVersions(filtered);
-            }
-            
-            // Actualizar contadores en botones
-            function updateFilterCounts() {
-                const allCount = versionsData.versions.length;
-                const websiteCount = versionsData.versions.filter(v => v.type === 'website').length;
-                const panelCount = versionsData.versions.filter(v => v.type === 'panel').length;
-                const apiCount = versionsData.versions.filter(v => v.type === 'api').length;
-                
-                filterButtons.forEach(btn => {
-                    const filter = btn.getAttribute('data-filter');
-                    let count = 0;
-                    
-                    switch(filter) {
-                        case 'all': count = allCount; break;
-                        case 'website': count = websiteCount; break;
-                        case 'panel': count = panelCount; break;
-                        case 'api': count = apiCount; break;
+                modal.appendChild(content);
+                document.body.appendChild(modal);
+
+                // Cerrar con ESC
+                modal.onkeydown = (e) => {
+                    if (e.key === 'Escape') {
+                        document.body.removeChild(modal);
                     }
-                    
-                    const countSpan = btn.querySelector('.filter-count');
-                    if (countSpan) {
-                        countSpan.textContent = count;
-                    }
-                });
+                };
+                modal.focus();
             }
-            
-            // Manejar enlaces de anclas al cargar la página
-            if (window.location.hash) {
-                setTimeout(() => {
-                    const element = document.querySelector(window.location.hash);
-                    if (element) {
-                        // Scroll a la versión
-                        element.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'center'
-                        });
-                        
-                        // Expandir automáticamente la versión
-                        setTimeout(() => {
-                            const versionCard = element.closest('.version-card');
-                            if (versionCard) {
-                                const expandBtn = versionCard.querySelector('.expand-button');
-                                if (expandBtn && expandBtn.getAttribute('aria-expanded') === 'false') {
-                                    expandBtn.click();
-                                }
-                            }
-                        }, 600);
-                    }
-                }, 400);
-            }
-            
-            // Inicializar contadores
-            updateFilterCounts();
         });
     </script>
 </body>

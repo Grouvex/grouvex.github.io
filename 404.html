@@ -3,125 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <title>Página no Encontrada (404) | Grouvex Studios</title>
-    <meta name="description" content="Sitio web oficial de Grouvex Studios, una organización que cuenta con Sello Discográfico, Diseño, entre otros.">
+    <meta name="description" content="Sitio web oficial de Grouvex Studios, organización multiproyecto con sellos discográficos y servicios de diseño.">
     <meta property="og:title" content="Grouvex Studios">
-    <meta property="og:description" content="Sitio web oficial de Grouvex Studios, una organización que cuenta con Sello Discográfico, Diseño, entre otros.">
-    <meta property="og:image" content="img/GROUVEX.png">
-    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects">
+    <meta property="og:description" content="Organización oficial de Grouvex Studios - Boletín Oficial B.O.Grouvex Studios">
+    <meta property="og:image" content="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/Grouvex-patch-1/img/GROUVEX%20Studio.png">
+    <meta name="keywords" content="Grouvex Studios, Grouvex Studios Records, Grouvex Studios Designs, BOGS, Documentos Oficiales">
     <meta name="author" content="Grouvex Studios">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="theme-color" content="#8B5CF6">
+    <meta name="theme-color" content="#1a365d">
     <meta property="og:url" content="https://grouvex.com/">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="es_ES">
     <link rel="canonical" href="https://grouvex.com/">
-    <link rel="icon" href="img/GROUVEX.png" type="image/x-icon">
+    <link rel="icon" href="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/Grouvex-patch-1/img/GROUVEX%20Studio.png" type="image/x-icon">
     <meta property="og:site_name" content="Grouvex Studios">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
     
     <style>
-        /* Reset y variables modernas */
+        /* Variables y reset */
         :root {
-            --primary: #8B5CF6;
-            --primary-dark: #7C3AED;
-            --secondary: #10B981;
-            --dark: #1F2937;
-            --light: #F9FAFB;
-            --gray: #6B7280;
-            --gray-light: #E5E7EB;
-            --gradient: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
-            --shadow: 0 10px 25px rgba(139, 92, 246, 0.15);
-            --shadow-lg: 0 20px 40px rgba(139, 92, 246, 0.2);
+            --primary: #1a365d;
+            --primary-light: #2d4a7a;
+            --secondary: #2b6cb0;
+            --accent: #4299e1;
+            --dark: #1a202c;
+            --light: #f7fafc;
+            --gray: #718096;
+            --gray-light: #e2e8f0;
+            --success: #38a169;
+            --warning: #d69e2e;
+            --danger: #e53e3e;
+            --gradient: linear-gradient(135deg, #1a365d 0%, #2b6cb0 100%);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background-color: var(--light);
             color: var(--dark);
             line-height: 1.6;
             min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
+            display: flex;
+            flex-direction: column;
         }
-        
-        /* SVG decorativos superpuestos */
-        .svg-bg {
-            position: fixed;
-            z-index: -1;
-            opacity: 0.15;
-            pointer-events: none;
-        }
-        
-        .music-note {
-            position: absolute;
-            top: 15%;
-            right: 10%;
-            width: 120px;
-            height: 120px;
-            animation: float 20s infinite linear;
-        }
-        
-        .sound-wave {
-            position: absolute;
-            bottom: 20%;
-            left: 5%;
-            width: 200px;
-            height: 200px;
-            animation: pulse 8s infinite ease-in-out;
-        }
-        
-        .abstract-shape {
-            position: absolute;
-            top: 60%;
-            right: 20%;
-            width: 150px;
-            height: 150px;
-            animation: rotate 40s infinite linear;
-        }
-        
-        /* Animaciones */
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-30px) rotate(5deg); }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.1; }
-            50% { transform: scale(1.1); opacity: 0.2; }
-        }
-        
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes glow {
-            0%, 100% { text-shadow: 0 0 10px rgba(139, 92, 246, 0.3); }
-            50% { text-shadow: 0 0 20px rgba(139, 92, 246, 0.6); }
-        }
-        
-        /* Header estilizado */
+
+        /* Header */
         .main-header {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
+            background: white;
             border-bottom: 1px solid var(--gray-light);
-            padding: 1.5rem 0;
+            padding: 1rem 0;
             position: sticky;
             top: 0;
             z-index: 100;
+            box-shadow: var(--shadow);
         }
-        
+
         .header-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -130,607 +78,605 @@
             justify-content: space-between;
             align-items: center;
         }
-        
-        .studio-logo {
+
+        .logo-container {
             display: flex;
             align-items: center;
             gap: 1rem;
             text-decoration: none;
-            transition: transform 0.3s ease;
+            transition: var(--transition);
         }
-        
-        .studio-logo:hover {
+
+        .logo-container:hover {
             transform: translateY(-2px);
         }
-        
-        .logo-icon {
-            width: 40px;
+
+        .logo-img {
             height: 40px;
-            background: var(--gradient);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 1.2rem;
-            box-shadow: var(--shadow);
+            width: auto;
         }
-        
+
         .logo-text {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
         }
-        
-        /* Contenido principal mejorado */
-        .error-hero {
-            min-height: 80vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+
+        .logo-subtext {
+            font-size: 0.75rem;
+            color: var(--gray);
+            font-weight: 400;
+        }
+
+        /* Contenido principal */
+        .main-content {
+            flex: 1;
             padding: 4rem 2rem;
-            position: relative;
-        }
-        
-        .error-container {
             max-width: 1200px;
             margin: 0 auto;
+            width: 100%;
+        }
+
+        .error-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 4rem;
             align-items: center;
-            animation: fadeIn 1s ease-out;
+            animation: fadeIn 0.8s ease-out;
         }
-        
-        @media (max-width: 968px) {
+
+        @media (max-width: 768px) {
             .error-container {
                 grid-template-columns: 1fr;
                 text-align: center;
-                gap: 3rem;
+                gap: 2rem;
             }
         }
-        
+
         .error-content {
             position: relative;
-            z-index: 2;
         }
-        
-        .error-graphic {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .error-code-display {
-            font-size: 12rem;
-            font-weight: 900;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+
+        .error-code {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 8rem;
+            font-weight: 700;
+            color: var(--primary);
             line-height: 1;
             margin-bottom: 1rem;
-            animation: glow 3s infinite ease-in-out;
             position: relative;
+            display: inline-block;
         }
-        
-        .error-code-display::after {
-            content: '404';
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: blur(15px);
-            opacity: 0.5;
-            z-index: -1;
-        }
-        
-        .error-title {
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
-        }
-        
-        .error-description {
-            font-size: 1.25rem;
-            color: var(--gray);
-            margin-bottom: 3rem;
-            max-width: 500px;
-        }
-        
-        /* Botones mejorados */
-        .action-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 3rem;
-        }
-        
-        .action-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .action-btn::before {
+
+        .error-code::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
+            bottom: 10px;
+            left: 0;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: 0.5s;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
         }
-        
-        .action-btn:hover::before {
-            left: 100%;
+
+        .error-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1rem;
         }
-        
+
+        .error-description {
+            font-size: 1.125rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            max-width: 500px;
+        }
+
+        /* Tarjetas de organismos */
+        .org-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .org-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-top: 4px solid var(--primary);
+        }
+
+        .org-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .org-card.grecords {
+            border-top-color: var(--secondary);
+        }
+
+        .org-card.gdesigns {
+            border-top-color: var(--accent);
+        }
+
+        .org-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .org-card.grecords .org-icon {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+        }
+
+        .org-card.gdesigns .org-icon {
+            background: linear-gradient(135deg, var(--accent) 0%, #63b3ed 100%);
+        }
+
+        .org-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .org-description {
+            font-size: 0.875rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        /* Botones */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 2px solid transparent;
+        }
+
         .btn-primary {
             background: var(--gradient);
             color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
             box-shadow: var(--shadow);
         }
-        
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-lg);
-        }
-        
+
         .btn-secondary {
             background: white;
             color: var(--primary);
-            border: 2px solid var(--primary);
+            border-color: var(--gray-light);
         }
-        
+
         .btn-secondary:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-3px);
+            border-color: var(--primary);
+            background: var(--light);
         }
-        
-        /* Búsqueda mejorada */
-        .search-wrapper {
+
+        /* Búsqueda */
+        .search-section {
             background: white;
-            border-radius: 16px;
+            border-radius: var(--border-radius);
             padding: 2rem;
             box-shadow: var(--shadow);
-            margin-top: 2rem;
+            margin: 2rem 0;
         }
-        
+
         .search-title {
             font-size: 1.25rem;
             font-weight: 600;
             color: var(--dark);
             margin-bottom: 1rem;
         }
-        
-        .search-box-modern {
+
+        .search-box {
             display: flex;
             gap: 0.5rem;
         }
-        
-        .search-input-modern {
+
+        .search-input {
             flex: 1;
-            padding: 1rem 1.5rem;
-            border: 2px solid var(--gray-light);
-            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-light);
+            border-radius: var(--border-radius);
             font-size: 1rem;
-            transition: all 0.3s ease;
-            background: var(--light);
+            transition: var(--transition);
         }
-        
-        .search-input-modern:focus {
+
+        .search-input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+            box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.1);
         }
-        
-        .search-btn-modern {
+
+        .search-btn {
             background: var(--gradient);
             color: white;
             border: none;
-            border-radius: 12px;
-            padding: 1rem 2rem;
-            font-weight: 600;
+            border-radius: var(--border-radius);
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            transition: var(--transition);
         }
-        
-        .search-btn-modern:hover {
+
+        .search-btn:hover {
             transform: translateY(-2px);
             box-shadow: var(--shadow);
         }
-        
-        /* Tarjeta informativa */
-        .info-card {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            margin-top: 3rem;
-            border-left: 5px solid var(--primary);
-        }
-        
-        .info-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 1rem;
-        }
-        
-        .info-list {
-            list-style: none;
-            display: grid;
-            gap: 0.75rem;
-        }
-        
-        .info-list li {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: var(--gray);
-        }
-        
-        .info-list li::before {
-            content: '✓';
-            color: var(--secondary);
-            font-weight: bold;
-        }
-        
-        /* Footer mejorado */
+
+        /* Footer */
         .main-footer {
-            background: var(--dark);
+            background: var(--primary);
             color: white;
-            padding: 4rem 0 2rem;
-            margin-top: 4rem;
+            padding: 3rem 0 1.5rem;
+            margin-top: auto;
         }
-        
+
         .footer-container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
         }
-        
+
         .footer-section h3 {
-            font-size: 1.25rem;
+            font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        
-        .footer-links-modern {
+
+        .footer-links {
             list-style: none;
         }
-        
-        .footer-links-modern li {
-            margin-bottom: 0.75rem;
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
         }
-        
-        .footer-links-modern a {
+
+        .footer-links a {
             color: var(--gray-light);
             text-decoration: none;
-            transition: all 0.3s ease;
-            display: inline-flex;
+            transition: var(--transition);
+            font-size: 0.875rem;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray-light);
+            font-size: 0.75rem;
+        }
+
+        /* Información oficial */
+        .official-info {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-left: 4px solid var(--primary);
+        }
+
+        .info-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-        
-        .footer-links-modern a:hover {
-            color: white;
-            transform: translateX(5px);
+
+        .info-list {
+            list-style: none;
+            font-size: 0.875rem;
+            color: var(--gray);
         }
-        
-        .copyright {
-            text-align: center;
-            padding-top: 3rem;
-            margin-top: 3rem;
-            border-top: 1px solid var(--gray);
-            color: var(--gray-light);
-            font-size: 0.9rem;
-        }
-        
-        /* Elementos interactivos */
-        .music-player {
-            background: var(--gradient);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            display: inline-flex;
+
+        .info-list li {
+            margin-bottom: 0.5rem;
+            display: flex;
             align-items: center;
-            gap: 1rem;
-            margin-top: 2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            gap: 0.5rem;
         }
-        
-        .music-player:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
+
+        .info-list li::before {
+            content: '•';
+            color: var(--primary);
+            font-weight: bold;
         }
-        
-        .visualizer {
-            width: 100%;
-            height: 60px;
-            margin-top: 2rem;
-            border-radius: 12px;
-            overflow: hidden;
-            background: rgba(139, 92, 246, 0.1);
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
-        .visualizer-bar {
-            display: inline-block;
-            width: 4px;
-            background: var(--gradient);
-            margin-right: 2px;
-            animation: equalizer 1.5s infinite ease-in-out;
-            border-radius: 2px;
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
-        
-        @keyframes equalizer {
-            0%, 100% { height: 20px; }
-            50% { height: 60px; }
+
+        /* Estado del sistema */
+        .system-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            background: rgba(56, 161, 105, 0.1);
+            color: var(--success);
+            margin-top: 1rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .header-container {
+                padding: 0 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .main-content {
+                padding: 2rem 1rem;
+            }
+            
+            .error-code {
+                font-size: 6rem;
+            }
+            
+            .error-title {
+                font-size: 2rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- SVG decorativos superpuestos -->
-    <div class="svg-bg music-note">
-        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50 20C40 20 30 30 30 40V70C30 80 40 90 50 90C60 90 70 80 70 70V40C70 30 60 20 50 20Z" stroke="var(--primary)" stroke-width="2"/>
-            <path d="M30 40L20 30M70 40L80 30" stroke="var(--primary)" stroke-width="2"/>
-        </svg>
-    </div>
-    
-    <div class="svg-bg sound-wave">
-        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M40 100H60V40H40V100ZM80 100H100V20H80V100ZM120 100H140V60H120V100ZM160 100H180V80H160V100Z" fill="var(--primary)" opacity="0.3"/>
-        </svg>
-    </div>
-    
-    <div class="svg-bg abstract-shape">
-        <svg viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="75" cy="75" r="60" stroke="var(--secondary)" stroke-width="2" stroke-dasharray="5 5"/>
-            <path d="M75 15L95 55L140 60L105 90L115 135L75 115L35 135L45 90L10 60L55 55L75 15Z" stroke="var(--primary)" stroke-width="2" fill="none"/>
-        </svg>
-    </div>
-
-    <!-- Header moderno -->
+    <!-- Header -->
     <header class="main-header">
         <div class="header-container">
-            <a href="/" class="studio-logo">
-                <div class="logo-icon">G</div>
-                <div class="logo-text">Grouvex Studios</div>
+            <a href="/" class="logo-container">
+                <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/Grouvex-patch-1/img/GROUVEX%20Studio.png" 
+                     alt="Grouvex Studios Logo" class="logo-img">
+                <div>
+                    <div class="logo-text">GROUVEX STUDIOS</div>
+                    <div class="logo-subtext">Organismo Principal | B.O.Grouvex Studios</div>
+                </div>
             </a>
-            <div style="display: flex; gap: 1rem;">
-                <a href="/" class="action-btn btn-secondary" style="padding: 0.5rem 1rem;">Inicio</a>
-                <a href="/contacto" class="action-btn btn-primary" style="padding: 0.5rem 1rem;">Contacto</a>
+            <div class="system-status">
+                <span class="status-dot"></span>
+                <span>Sistema GCO: Normal</span>
             </div>
         </div>
     </header>
 
-    <!-- Contenido principal mejorado -->
-    <main class="error-hero">
+    <!-- Contenido principal -->
+    <main class="main-content">
         <div class="error-container">
             <div class="error-content">
-                <div class="error-code-display">404</div>
-                <h1 class="error-title">¡Melodía no encontrada!</h1>
+                <div class="error-code">404</div>
+                <h1 class="error-title">Documento no encontrado</h1>
                 <p class="error-description">
-                    La página que buscas parece haberse perdido en el estudio. 
-                    Puede que haya cambiado de dirección o esté en proceso de mezcla. 
-                    Mientras tanto, te invitamos a explorar nuestro catálogo.
+                    La página que busca no está disponible en este momento. 
+                    Puede que haya sido archivada, modificada o esté en proceso de revisión 
+                    según el Reglamento de Documentación Corporativa (Artículo 20).
                 </p>
                 
-                <div class="action-grid">
-                    <a href="/" class="action-btn btn-primary">
-                        <span>🎵</span>
-                        Volver al Inicio
+                <div class="action-buttons">
+                    <a href="/" class="btn btn-primary">
+                        <span>🏠</span>
+                        Volver al Dashboard
                     </a>
-                    <a href="/musica" class="action-btn btn-secondary">
-                        <span>🎶</span>
-                        Explorar Música
+                    <a href="/documentos" class="btn btn-secondary">
+                        <span>📄</span>
+                        Ver Boletín Oficial
                     </a>
-                    <a href="/diseno" class="action-btn btn-secondary">
-                        <span>🎨</span>
-                        Ver Diseños
-                    </a>
-                    <a href="/contacto" class="action-btn btn-primary">
+                    <a href="/contacto" class="btn btn-secondary">
                         <span>📧</span>
                         Contactar Soporte
                     </a>
                 </div>
-                
-                <!-- Elemento interactivo de música -->
-                <div class="music-player" onclick="window.location.href='/musica'">
-                    <span>▶️</span>
-                    <div>
-                        <div style="font-weight: 600;">Escucha nuestro último lanzamiento</div>
-                        <div style="font-size: 0.9rem; opacity: 0.9;">Grouvex Studios - Session 404</div>
+
+                <!-- Tarjetas de organismos -->
+                <div class="org-cards">
+                    <div class="org-card">
+                        <div class="org-icon">GS</div>
+                        <h3 class="org-title">Grouvex Studios</h3>
+                        <p class="org-description">Organismo Principal multiproyecto</p>
+                        <a href="/gs" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                            Acceder al Organismo
+                        </a>
+                    </div>
+                    
+                    <div class="org-card grecords">
+                        <div class="org-icon">🎵</div>
+                        <h3 class="org-title">Grouvex Studios Records</h3>
+                        <p class="org-description">Sello discográfico y distribución musical</p>
+                        <a href="/records" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                            Ver Planes de Distribución
+                        </a>
+                    </div>
+                    
+                    <div class="org-card gdesigns">
+                        <div class="org-icon">🎨</div>
+                        <h3 class="org-title">Grouvex Studios Designs</h3>
+                        <p class="org-description">Diseño gráfico y creativo</p>
+                        <a href="/designs" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                            Ver Proyectos
+                        </a>
                     </div>
                 </div>
-                
-                <!-- Visualizador de audio -->
-                <div class="visualizer" id="audioVisualizer">
-                    <!-- Las barras se generan con JavaScript -->
+
+                <!-- Información oficial -->
+                <div class="official-info">
+                    <div class="info-title">
+                        <span>📋</span>
+                        Información Oficial
+                    </div>
+                    <ul class="info-list">
+                        <li>Boletín Oficial: BOGS/2025/001</li>
+                        <li>Última actualización: 22 nov 2025 20:15 UTC</li>
+                        <li>Próxima revisión: 20 dic 2025 18:00 UTC</li>
+                        <li>ISSN: BOGS/2025/001</li>
+                    </ul>
                 </div>
-                
-                <div class="search-wrapper">
-                    <div class="search-title">¿Buscas algo específico?</div>
-                    <div class="search-box-modern">
-                        <input type="search" class="search-input-modern" placeholder="Buscar en Grouvex Studios..." id="studio-search">
-                        <button class="search-btn-modern" onclick="performStudioSearch()">
+
+                <!-- Búsqueda -->
+                <div class="search-section">
+                    <div class="search-title">Buscar en Documentos Oficiales</div>
+                    <div class="search-box">
+                        <input type="search" class="search-input" placeholder="Buscar términos, artículos o disposiciones..." id="doc-search">
+                        <button class="search-btn" onclick="searchDocuments()">
                             <span>🔍</span>
                             Buscar
                         </button>
                     </div>
                 </div>
-                
-                <div class="info-card">
-                    <h3 class="info-title">Mientras tanto, puedes:</h3>
-                    <ul class="info-list">
-                        <li>Explorar nuestro catálogo musical</li>
-                        <li>Ver nuestros proyectos de diseño</li>
-                        <li>Conocer a nuestros artistas</li>
-                        <li>Contactar con nuestro equipo</li>
-                        <li>Seguirnos en redes sociales</li>
-                    </ul>
-                </div>
             </div>
             
             <div class="error-graphic">
-                <!-- Ilustración SVG mejorada -->
-                <svg width="100%" height="auto" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="250" cy="250" r="200" fill="url(#gradient)" opacity="0.1"/>
-                    <circle cx="250" cy="250" r="180" stroke="var(--primary)" stroke-width="2" stroke-dasharray="10 5"/>
+                <!-- Ilustración relacionada con documentos -->
+                <svg width="100%" height="auto" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="50" y="50" width="300" height="400" rx="8" fill="white" stroke="var(--gray-light)" stroke-width="2"/>
+                    <rect x="70" y="80" width="260" height="30" rx="4" fill="var(--primary)" opacity="0.1"/>
+                    <rect x="70" y="120" width="200" height="20" rx="2" fill="var(--gray-light)"/>
+                    <rect x="70" y="150" width="260" height="20" rx="2" fill="var(--gray-light)"/>
+                    <rect x="70" y="180" width="180" height="20" rx="2" fill="var(--gray-light)"/>
+                    <rect x="70" y="210" width="260" height="20" rx="2" fill="var(--gray-light)"/>
+                    <rect x="70" y="240" width="220" height="20" rx="2" fill="var(--gray-light)"/>
                     
-                    <!-- Elementos musicales -->
-                    <path d="M150 200C150 150 200 150 200 200V300C200 350 150 350 150 300V200Z" fill="var(--primary)" opacity="0.6"/>
-                    <path d="M250 180C250 130 300 130 300 180V320C300 370 250 370 250 320V180Z" fill="var(--secondary)" opacity="0.6"/>
-                    <path d="M350 220C350 170 400 170 400 220V280C400 330 350 330 350 280V220Z" fill="var(--primary)" opacity="0.8"/>
+                    <!-- Elementos decorativos -->
+                    <circle cx="100" cy="350" r="30" fill="var(--primary)" opacity="0.05"/>
+                    <circle cx="300" cy="350" r="30" fill="var(--secondary)" opacity="0.05"/>
                     
-                    <!-- Notas musicales -->
-                    <path d="M100 150L120 130L140 150L120 170L100 150Z" fill="var(--primary)"/>
-                    <path d="M400 150L420 130L440 150L420 170L400 150Z" fill="var(--secondary)"/>
-                    <path d="M250 100L270 80L290 100L270 120L250 100Z" fill="var(--primary)"/>
-                    
-                    <!-- Onda de sonido -->
-                    <path d="M100 400C150 380 200 420 250 380 300 420 350 380 400 400" stroke="var(--secondary)" stroke-width="3" fill="none"/>
-                    
-                    <!-- Texto 404 estilizado -->
-                    <text x="250" y="280" text-anchor="middle" fill="var(--dark)" font-family="Arial, sans-serif" font-size="60" font-weight="bold" opacity="0.1">
+                    <!-- Texto 404 -->
+                    <text x="200" y="320" text-anchor="middle" font-family="Arial" font-size="48" font-weight="bold" fill="var(--primary)" opacity="0.1">
                         404
                     </text>
                     
-                    <defs>
-                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="var(--primary)"/>
-                            <stop offset="100%" stop-color="var(--secondary)"/>
-                        </linearGradient>
-                    </defs>
+                    <!-- Sello oficial -->
+                    <circle cx="330" cy="100" r="20" fill="none" stroke="var(--danger)" stroke-width="2" stroke-dasharray="5,5"/>
+                    <text x="330" y="105" text-anchor="middle" font-family="Arial" font-size="10" font-weight="bold" fill="var(--danger)">
+                        BOGS
+                    </text>
                 </svg>
             </div>
         </div>
     </main>
 
-    <!-- Footer mejorado -->
+    <!-- Footer -->
     <footer class="main-footer">
         <div class="footer-container">
             <div>
                 <h3>Grouvex Studios</h3>
-                <p style="color: var(--gray-light); margin-bottom: 1.5rem;">
-                    Creatividad, innovación y pasión por la música y el diseño.
-                </p>
-                <div style="display: flex; gap: 1rem;">
-                    <div style="width: 40px; height: 40px; background: var(--gradient); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">G</div>
-                    <div>
-                        <div style="font-weight: 600;">Sello Discográfico & Diseño</div>
-                        <div style="font-size: 0.9rem; color: var(--gray-light);">Desde 2023</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div>
-                <h3>Explorar</h3>
-                <ul class="footer-links-modern">
-                    <li><a href="/musica">🎵 Catálogo Musical</a></li>
-                    <li><a href="/diseno">🎨 Proyectos de Diseño</a></li>
-                    <li><a href="/artistas">👥 Nuestros Artistas</a></li>
-                    <li><a href="/estudio">🏢 El Estudio</a></li>
+                <ul class="footer-links">
+                    <li><a href="/documentos">📄 Boletín Oficial</a></li>
+                    <li><a href="/organismos">🏛️ Organismos</a></li>
+                    <li><a href="/normativa">⚖️ Normativa</a></li>
+                    <li><a href="/tigis">🪪 Sistema TIGS</a></li>
                 </ul>
             </div>
             
             <div>
-                <h3>Conectar</h3>
-                <ul class="footer-links-modern">
-                    <li><a href="/contacto">📧 Contacto</a></li>
-                    <li><a href="/soporte">🛠️ Soporte</a></li>
-                    <li><a href="/privacidad">🔒 Privacidad</a></li>
-                    <li><a href="/terminos">📄 Términos</a></li>
+                <h3>Organismos Secundarios</h3>
+                <ul class="footer-links">
+                    <li><a href="/records">🎵 Grouvex Studios Records</a></li>
+                    <li><a href="/designs">🎨 Grouvex Studios Designs</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3>Contacto Oficial</h3>
+                <ul class="footer-links">
+                    <li><a href="mailto:oficina@grouvex.com">📧 oficina@grouvex.com</a></li>
+                    <li><a href="mailto:legal@grouvex.com">⚖️ legal@grouvex.com</a></li>
+                    <li><a href="/soporte">🛠️ Soporte Técnico</a></li>
+                    <li><a href="/privacidad">🔒 Política de Privacidad</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3>Documentación</h3>
+                <ul class="footer-links">
+                    <li><a href="/tos">📝 Términos de Servicio</a></li>
+                    <li><a href="/privacidad">🔐 Políticas de Privacidad</a></li>
+                    <li><a href="/gco">🔄 Sistema GCO</a></li>
+                    <li><a href="/miembros">👥 Miembros Registrados</a></li>
                 </ul>
             </div>
         </div>
         
         <div class="copyright">
-            <p>&copy; <span id="currentYear"></span> Grouvex Studios. Todos los derechos reservados.</p>
-            <p style="margin-top: 0.5rem;">Página 404 | Creatividad en cada error</p>
+            <p>&copy; 2021-2025 Grouvex Studios. Madrid, España. Todos los derechos reservados.</p>
+            <p>Documento Oficial | BOGS/2025/001 | Página 404</p>
         </div>
     </footer>
 
     <script>
-        // Año actual
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
-        
-        // Generar visualizador de audio
-        const visualizer = document.getElementById('audioVisualizer');
-        for (let i = 0; i < 50; i++) {
-            const bar = document.createElement('div');
-            bar.className = 'visualizer-bar';
-            bar.style.height = `${20 + Math.random() * 40}px`;
-            bar.style.animationDelay = `${i * 0.1}s`;
-            visualizer.appendChild(bar);
-        }
-        
-        // Función de búsqueda
-        function performStudioSearch() {
-            const searchInput = document.getElementById('studio-search');
-            const query = searchInput.value.trim();
-            
-            if (query) {
-                // Redirigir a página de búsqueda
-                window.location.href = `/buscar?q=${encodeURIComponent(query)}`;
-            } else {
-                searchInput.focus();
-                // Efecto de shake
-                searchInput.style.animation = 'shake 0.5s';
-                setTimeout(() => searchInput.style.animation = '', 500);
-            }
-        }
-        
-        // Permitir búsqueda con Enter
-        document.getElementById('studio-search').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') performStudioSearch();
-        });
-        
-        // Efectos interactivos
-        document.querySelectorAll('.action-btn').forEach(btn => {
-            btn.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-3px)';
-            });
-            btn.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-            });
-        });
-        
-        // Animación de carga
+        // Año actual para el copyright
         document.addEventListener('DOMContentLoaded', function() {
+            const yearSpan = document.querySelector('.copyright p');
+            if (yearSpan) {
+                yearSpan.innerHTML = yearSpan.innerHTML.replace('2025', new Date().getFullYear());
+            }
+            
+            // Efecto de aparición
             document.body.style.opacity = '0';
             document.body.style.transition = 'opacity 0.5s';
             
@@ -739,16 +685,59 @@
             }, 100);
         });
         
-        // Añadir CSS para shake animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes shake {
-                0%, 100% { transform: translateX(0); }
-                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-                20%, 40%, 60%, 80% { transform: translateX(5px); }
+        // Función de búsqueda
+        function searchDocuments() {
+            const searchInput = document.getElementById('doc-search');
+            const query = searchInput.value.trim();
+            
+            if (query) {
+                // Simular búsqueda en documentos
+                window.location.href = `/buscar?q=${encodeURIComponent(query)}&tipo=documento`;
+            } else {
+                searchInput.focus();
+                searchInput.style.borderColor = 'var(--danger)';
+                setTimeout(() => {
+                    searchInput.style.borderColor = 'var(--gray-light)';
+                }, 1000);
             }
-        `;
-        document.head.appendChild(style);
+        }
+        
+        // Permitir búsqueda con Enter
+        document.getElementById('doc-search').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') searchDocuments();
+        });
+        
+        // Estado del sistema GCO (basado en el PDF)
+        function updateSystemStatus() {
+            const statusElement = document.querySelector('.system-status');
+            const dotElement = document.querySelector('.status-dot');
+            
+            // Simular diferentes estados basados en el PDF
+            const statuses = [
+                { status: 'Normal', color: 'var(--success)', icon: '●' },
+                { status: 'Alerta Operacional', color: 'var(--warning)', icon: '⚠️' },
+                { status: 'Emergencia Parcial', color: '#f97316', icon: '⚠️' },
+                { status: 'Emergencia Crítica', color: 'var(--danger)', icon: '🚨' }
+            ];
+            
+            // Para demostración, cambiar cada 10 segundos
+            let currentIndex = 0;
+            
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % statuses.length;
+                const currentStatus = statuses[currentIndex];
+                
+                statusElement.innerHTML = `
+                    <span class="status-dot" style="background: ${currentStatus.color}"></span>
+                    <span>Sistema GCO: ${currentStatus.status}</span>
+                `;
+                
+                dotElement.style.background = currentStatus.color;
+            }, 10000);
+        }
+        
+        // Inicializar estado del sistema
+        updateSystemStatus();
     </script>
 </body>
 </html>

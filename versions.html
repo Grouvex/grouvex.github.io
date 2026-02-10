@@ -1218,14 +1218,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 <h2 class="vh-version-title">
                     ${version.title}
-                    <a href="#${getVersionAnchor(version)}" class="vh-version-link" 
-                       title="Enlace directo a esta versión"
-                       onclick="copyVersionLink('${getVersionAnchor(version)}', event)">
-                        🔗
-                    </a>
                 </h2>
                 <div class="vh-version-meta">
-                    <span class="vh-version-number">v${version.version}</span>
+                    <a href="#${getVersionAnchor(version)}" class="vh-version-link" title="Enlace directo a esta versión" onclick="copyVersionLink('${getVersionAnchor(version)}', event)"><span class="vh-version-number">v${version.version}</span></a>
                     <span class="vh-version-timestamp" title="${formattedTimestamp}">
                         📅 ${relativeTime}
                     </span>
@@ -1246,18 +1241,18 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             
             ${version.resources && version.resources.length > 0 ? `
-            <div class="vh-resources-section">
-                <h3 class="vh-resources-title">
+            <details class="vh-resources-section">
+                <summary><h3 class="vh-resources-title">
                     <span>📎</span>
                     <span>Recursos relacionados</span>
                     <span style="font-size: 0.75rem; color: var(--vh-gray-500); margin-left: auto;">
                         ${version.resources.length} recursos
                     </span>
-                </h3>
+                </h3></summary>
                 <div class="vh-resources-grid">
                     ${resourcesHTML}
                 </div>
-            </div>
+            </details>
             ` : ''}
             
             <div class="vh-share-section" style="padding: 1rem 2rem; border-top: 1px solid var(--vh-gray-200); text-align: center;">

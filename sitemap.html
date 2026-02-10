@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa del Sitio - Grouvex</title>
+    <meta name="description" content="Mapa completo de todas las páginas de grouvex.com - Navega por todo el contenido">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Mapa del Sitio - Grouvex">
+    <meta property="og:description" content="Explora todas las páginas y secciones de grouvex.com">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://grouvex.com/sitemap.html">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mapa del Sitio - Grouvex">
+    <meta name="twitter:description" content="Navega por todo el contenido de grouvex.com">
+    
+    <style>
+        :root {
+            --primary: #8B5CF6;
+            --primary-dark: #7C3AED;
+            --secondary: #10B981;
+            --dark: #1F2937;
+            --light: #F9FAFB;
+            --gray: #6B7280;
+            --gray-light: #E5E7EB;
+            --gradient: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+            --shadow: 0 10px 25px rgba(139, 92, 246, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            border-bottom: 1px solid var(--gray-light);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--gradient);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            background: white;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Hero */
+        .hero {
+            background: var(--gradient);
+            color: white;
+            padding: 3rem 1.5rem;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Contenido principal */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+
+        /* Estadísticas */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            border: 1px solid var(--gray-light);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Búsqueda */
+        .search-section {
+            margin-bottom: 3rem;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 0.5rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.875rem 1.25rem;
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        .search-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 0 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Mapa de páginas */
+        .sitemap-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-light);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--gray-light);
+        }
+
+        .category-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .category-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .pages-list {
+            list-style: none;
+        }
+
+        .page-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .page-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            text-decoration: none;
+            color: var(--dark);
+            transition: all 0.2s ease;
+        }
+
+        .page-link:hover {
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--primary);
+        }
+
+        .page-icon {
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        /* Todas las páginas */
+        .all-pages {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-top: 3rem;
+        }
+
+        .all-pages-header {
+            background: var(--gradient);
+            color: white;
+            padding: 1.5rem;
+        }
+
+        .all-pages-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .pages-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .pages-table th {
+            background: var(--gray-light);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+
+        .pages-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-light);
+            font-size: 0.95rem;
+        }
+
+        .pages-table tr:hover {
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        .type-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .type-html { background: #DBEAFE; color: #1E40AF; }
+        .type-md { background: #D1FAE5; color: #065F46; }
+        .type-pdf { background: #FEF3C7; color: #92400E; }
+        .type-other { background: #F3E8FF; color: #7C3AED; }
+
+        /* Exportar */
+        .export-section {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        .export-btn {
+            padding: 0.75rem 1.5rem;
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .export-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 1.5rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: var(--gray-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: var(--gray-light);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .pages-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .export-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .export-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+
+        /* Estados */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--gray-light);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: #FEE2E2;
+            color: #991B1B;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .success {
+            background: #D1FAE5;
+            color: #065F46;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <a href="/" class="logo">
+                <div class="logo-icon">G</div>
+                <span>Grouvex</span>
+            </a>
+            <div class="nav-buttons">
+                <a href="/" class="nav-btn">🏠 Inicio</a>
+                <a href="/buscar" class="nav-btn">🔍 Buscar</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>🗺️ Mapa del Sitio</h1>
+        <p>Descubre y navega por todas las páginas de grouvex.com</p>
+        <p style="font-size: 0.95rem; opacity: 0.9; margin-top: 0.5rem;">
+            Generado automáticamente para GitHub Pages
+        </p>
+    </section>
+
+    <!-- Contenido principal -->
+    <main class="container">
+        <!-- Estadísticas -->
+        <div class="stats">
+            <div class="stat-card fade-in">
+                <div class="stat-number" id="totalPages">0</div>
+                <div class="stat-label">Páginas Totales</div>
+            </div>
+            <div class="stat-card fade-in">
+                <div class="stat-number" id="totalWords">0</div>
+                <div class="stat-label">Palabras Totales</div>
+            </div>
+            <div class="stat-card fade-in">
+                <div class="stat-number" id="lastUpdate">Hoy</div>
+                <div class="stat-label">Última Actualización</div>
+            </div>
+            <div class="stat-card fade-in">
+                <div class="stat-number" id="indexSize">0 KB</div>
+                <div class="stat-label">Tamaño del Índice</div>
+            </div>
+        </div>
+
+        <!-- Búsqueda -->
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" class="search-input" id="searchInput" 
+                       placeholder="Buscar página específica..." autocomplete="off">
+                <button class="search-btn" onclick="searchPage()">Buscar</button>
+            </div>
+        </div>
+
+        <!-- Mapa por categorías -->
+        <div class="sitemap-grid" id="sitemapGrid">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Cargando mapa del sitio...</p>
+            </div>
+        </div>
+
+        <!-- Exportar sitemap -->
+        <div class="export-section fade-in">
+            <h2 style="margin-bottom: 1rem; color: var(--dark);">Exportar Sitemap</h2>
+            <p style="color: var(--gray); margin-bottom: 1rem;">
+                Descarga el mapa del sitio en diferentes formatos para motores de búsqueda
+            </p>
+            <div class="export-buttons">
+                <a href="javascript:void(0)" onclick="exportSitemap('xml')" class="export-btn">
+                    📥 Sitemap.xml
+                </a>
+                <a href="javascript:void(0)" onclick="exportSitemap('txt')" class="export-btn">
+                    📄 Sitemap.txt
+                </a>
+                <a href="/robots.txt" class="export-btn" target="_blank">
+                    🤖 Robots.txt
+                </a>
+            </div>
+        </div>
+
+        <!-- Todas las páginas -->
+        <div class="all-pages fade-in">
+            <div class="all-pages-header">
+                <h2>📋 Todas las Páginas</h2>
+                <p>Lista completa de todas las páginas indexadas</p>
+            </div>
+            <table class="pages-table" id="pagesTable">
+                <thead>
+                    <tr>
+                        <th>URL</th>
+                        <th>Título</th>
+                        <th>Tipo</th>
+                        <th>Palabras</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="pagesTableBody">
+                    <!-- Las páginas se cargarán aquí -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Información técnica -->
+        <div class="export-section" style="margin-top: 2rem;">
+            <h3 style="margin-bottom: 1rem; color: var(--dark);">🔄 Información Técnica</h3>
+            <p style="color: var(--gray); margin-bottom: 1rem;">
+                Este sitemap se genera automáticamente desde el índice de búsqueda.
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="export-btn" onclick="refreshIndex()">
+                    🔄 Actualizar Índice
+                </button>
+                <button class="export-btn" onclick="viewRawIndex()">
+                    👁️ Ver Índice Crudo
+                </button>
+                <button class="export-btn" onclick="clearCache()">
+                    🗑️ Limpiar Caché
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div>
+                <h3>Grouvex</h3>
+                <p style="color: var(--gray-light); margin-top: 0.5rem;">
+                    Mapa del sitio generado automáticamente para GitHub Pages.
+                </p>
+            </div>
+            
+            <div>
+                <h3>Herramientas</h3>
+                <ul class="footer-links">
+                    <li><a href="/buscar">🔍 Buscador del sitio</a></li>
+                    <li><a href="/sitemap.xml">🗺️ Sitemap XML</a></li>
+                    <li><a href="/robots.txt">🤖 Robots.txt</a></li>
+                    <li><a href="https://github.com/grouvex" target="_blank">💻 GitHub</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3>SEO</h3>
+                <ul class="footer-links">
+                    <li><a href="javascript:void(0)" onclick="testSitemap()">✅ Validar Sitemap</a></li>
+                    <li><a href="javascript:void(0)" onclick="checkIndexStatus()">📊 Estado del Índice</a></li>
+                    <li><a href="javascript:void(0)" onclick="generateRobotsTxt()">🤖 Generar Robots.txt</a></li>
+                    <li><a href="https://search.google.com/search-console" target="_blank">📈 Google Search Console</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; <span id="currentYear"></span> grouvex.com | Mapa del Sitio Automático</p>
+            <p style="margin-top: 0.5rem;">
+                Última actualización: <span id="footerLastUpdate">Cargando...</span> |
+                <span id="pageCountFooter">0</span> páginas indexadas
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Configuración
+        const CACHE_KEY = 'grouvex_search_index_v2';
+        const CACHE_TIMESTAMP_KEY = 'grouvex_index_timestamp';
+        const SITE_URL = window.location.origin;
+        
+        // Estado
+        let allPages = [];
+        let categories = {};
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            // Año actual
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+            
+            // Cargar datos del índice
+            loadSitemapData();
+            
+            // Configurar eventos
+            setupEventListeners();
+        });
+
+        // Cargar datos del sitemap
+        function loadSitemapData() {
+            try {
+                // Intentar cargar del índice de búsqueda
+                const cachedData = localStorage.getItem(CACHE_KEY);
+                
+                if (cachedData) {
+                    const searchIndex = JSON.parse(cachedData);
+                    processIndexData(searchIndex);
+                } else {
+                    // Si no hay índice, usar datos de ejemplo
+                    showLoadingMessage();
+                    // Intentar descubrir páginas automáticamente
+                    discoverPagesAutomatically();
+                }
+            } catch (error) {
+                console.error('Error cargando sitemap:', error);
+                showErrorMessage('Error cargando el sitemap. Intenta actualizar la página.');
+            }
+        }
+
+        // Procesar datos del índice
+        function processIndexData(searchIndex) {
+            allPages = searchIndex.map(page => ({
+                url: page.url.replace(SITE_URL, '') || '/',
+                fullUrl: page.url,
+                title: page.title || 'Sin título',
+                description: page.description || '',
+                type: page.type || 'html',
+                wordCount: page.wordCount || 0,
+                category: determineCategory(page.url, page.title),
+                lastIndexed: page.lastIndexed || new Date().toISOString()
+            }));
+
+            // Organizar por categorías
+            organizeByCategories();
+            
+            // Actualizar UI
+            updateStatistics();
+            renderCategoryCards();
+            renderAllPagesTable();
+            
+            // Actualizar footer
+            updateFooter();
+        }
+
+        // Determinar categoría
+        function determineCategory(url, title) {
+            const urlLower = url.toLowerCase();
+            const titleLower = title.toLowerCase();
+            
+            if (url === '/' || url === '/index.html') return 'principal';
+            if (url.includes('/blog') || title.includes('blog')) return 'blog';
+            if (url.includes('/music') || url.includes('/artists') || url.includes('/genres')) return 'música';
+            if (url.includes('/design') || url.includes('/portfolio') || url.includes('/gallery')) return 'diseño';
+            if (url.includes('/projects') || url.includes('/proyectos')) return 'proyectos';
+            if (url.includes('/about') || url.includes('/sobre') || url.includes('/nosotros')) return 'acerca';
+            if (url.includes('/contact') || url.includes('/contacto')) return 'contacto';
+            if (url.includes('/services') || url.includes('/servicios')) return 'servicios';
+            if (url.includes('/tutorial') || url.includes('/guide') || url.includes('/guía')) return 'tutoriales';
+            if (url.includes('/faq') || url.includes('/help') || url.includes('/ayuda')) return 'ayuda';
+            if (url.includes('/legal') || url.includes('/privacy') || url.includes('/terms')) return 'legal';
+            
+            return 'otros';
+        }
+
+        // Organizar por categorías
+        function organizeByCategories() {
+            categories = {};
+            
+            allPages.forEach(page => {
+                if (!categories[page.category]) {
+                    categories[page.category] = [];
+                }
+                categories[page.category].push(page);
+            });
+            
+            // Ordenar categorías por cantidad de páginas
+            const sortedEntries = Object.entries(categories)
+                .sort((a, b) => b[1].length - a[1].length);
+            
+            categories = Object.fromEntries(sortedEntries);
+        }
+
+        // Actualizar estadísticas
+        function updateStatistics() {
+            const totalPages = allPages.length;
+            const totalWords = allPages.reduce((sum, page) => sum + page.wordCount, 0);
+            const indexSize = JSON.stringify(allPages).length / 1024; // KB
+            
+            // Obtener fecha de último índice
+            const timestamp = localStorage.getItem(CACHE_TIMESTAMP_KEY);
+            let lastUpdate = 'Hoy';
+            
+            if (timestamp) {
+                const date = new Date(parseInt(timestamp));
+                const now = new Date();
+                const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+                
+                if (diffDays === 0) lastUpdate = 'Hoy';
+                else if (diffDays === 1) lastUpdate = 'Ayer';
+                else lastUpdate = `Hace ${diffDays} días`;
+            }
+            
+            // Actualizar UI
+            document.getElementById('totalPages').textContent = totalPages.toLocaleString();
+            document.getElementById('totalWords').textContent = totalWords.toLocaleString();
+            document.getElementById('lastUpdate').textContent = lastUpdate;
+            document.getElementById('indexSize').textContent = `${indexSize.toFixed(1)} KB`;
+        }
+
+        // Renderizar tarjetas de categorías
+        function renderCategoryCards() {
+            const grid = document.getElementById('sitemapGrid');
+            let html = '';
+            
+            const categoryIcons = {
+                'principal': '🏠',
+                'blog': '📝',
+                'música': '🎵',
+                'diseño': '🎨',
+                'proyectos': '🚀',
+                'acerca': '👤',
+                'contacto': '📧',
+                'servicios': '🛠️',
+                'tutoriales': '📚',
+                'ayuda': '❓',
+                'legal': '⚖️',
+                'otros': '📄'
+            };
+            
+            const categoryNames = {
+                'principal': 'Páginas Principales',
+                'blog': 'Blog y Artículos',
+                'música': 'Música y Audio',
+                'diseño': 'Diseño y Arte',
+                'proyectos': 'Proyectos',
+                'acerca': 'Acerca de',
+                'contacto': 'Contacto',
+                'servicios': 'Servicios',
+                'tutoriales': 'Tutoriales',
+                'ayuda': 'Ayuda y FAQ',
+                'legal': 'Legal',
+                'otros': 'Otras Páginas'
+            };
+            
+            for (const [category, pages] of Object.entries(categories)) {
+                html += `
+                    <div class="category-card fade-in">
+                        <div class="category-header">
+                            <div class="category-icon">${categoryIcons[category] || '📄'}</div>
+                            <h3 class="category-title">${categoryNames[category] || category}</h3>
+                        </div>
+                        <ul class="pages-list">
+                            ${pages.slice(0, 10).map(page => `
+                                <li class="page-item">
+                                    <a href="${page.url}" class="page-link" title="${page.title}">
+                                        <span class="page-icon">${getPageIcon(page.type)}</span>
+                                        <span>${page.title.length > 40 ? page.title.substring(0, 40) + '...' : page.title}</span>
+                                    </a>
+                                </li>
+                            `).join('')}
+                        </ul>
+                        ${pages.length > 10 ? `<div style="text-align: center; margin-top: 0.5rem;">
+                            <small style="color: var(--gray);">+${pages.length - 10} más...</small>
+                        </div>` : ''}
+                    </div>
+                `;
+            }
+            
+            grid.innerHTML = html;
+        }
+
+        // Renderizar tabla de todas las páginas
+        function renderAllPagesTable() {
+            const tbody = document.getElementById('pagesTableBody');
+            
+            if (allPages.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 3rem; color: var(--gray);">
+                            No hay páginas indexadas. Visita el buscador para crear el índice.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            let html = '';
+            
+            allPages.forEach(page => {
+                const typeClass = `type-${page.type}`;
+                const typeText = page.type.toUpperCase();
+                
+                html += `
+                    <tr class="fade-in">
+                        <td>
+                            <a href="${page.url}" style="color: var(--primary); text-decoration: none; font-weight: 500;">
+                                ${page.url}
+                            </a>
+                        </td>
+                        <td>${page.title}</td>
+                        <td>
+                            <span class="type-badge ${typeClass}">
+                                ${typeText}
+                            </span>
+                        </td>
+                        <td>${page.wordCount.toLocaleString()}</td>
+                        <td>
+                            <a href="${page.url}" style="margin-right: 10px; color: var(--primary);">🔗</a>
+                            <a href="/buscar?q=${encodeURIComponent(page.title.split(' - ')[0])}" style="color: var(--secondary);">🔍</a>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = html;
+        }
+
+        // Actualizar footer
+        function updateFooter() {
+            const timestamp = localStorage.getItem(CACHE_TIMESTAMP_KEY);
+            let lastUpdate = 'Hoy';
+            
+            if (timestamp) {
+                const date = new Date(parseInt(timestamp));
+                lastUpdate = date.toLocaleDateString('es-ES', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+            }
+            
+            document.getElementById('footerLastUpdate').textContent = lastUpdate;
+            document.getElementById('pageCountFooter').textContent = allPages.length;
+        }
+
+        // Configurar eventos
+        function setupEventListeners() {
+            // Búsqueda en tiempo real
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', function() {
+                filterPagesTable(this.value);
+            });
+            
+            // Búsqueda con Enter
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchPage();
+                }
+            });
+        }
+
+        // Filtrar tabla de páginas
+        function filterPagesTable(query) {
+            const tbody = document.getElementById('pagesTableBody');
+            
+            if (!query.trim()) {
+                renderAllPagesTable();
+                return;
+            }
+            
+            const filtered = allPages.filter(page => 
+                page.title.toLowerCase().includes(query.toLowerCase()) ||
+                page.url.toLowerCase().includes(query.toLowerCase()) ||
+                page.description.toLowerCase().includes(query.toLowerCase())
+            );
+            
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 3rem; color: var(--gray);">
+                            No se encontraron páginas que coincidan con "${query}"
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            let html = '';
+            filtered.forEach(page => {
+                const typeClass = `type-${page.type}`;
+                const typeText = page.type.toUpperCase();
+                
+                html += `
+                    <tr>
+                        <td><a href="${page.url}">${page.url}</a></td>
+                        <td>${page.title}</td>
+                        <td><span class="type-badge ${typeClass}">${typeText}</span></td>
+                        <td>${page.wordCount.toLocaleString()}</td>
+                        <td>
+                            <a href="${page.url}" style="margin-right: 10px;">🔗</a>
+                            <a href="/buscar?q=${encodeURIComponent(query)}">🔍</a>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = html;
+        }
+
+        // Buscar página
+        function searchPage() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (query) {
+                window.location.href = `/buscar?q=${encodeURIComponent(query)}`;
+            }
+        }
+
+        // Exportar sitemap
+        function exportSitemap(format) {
+            const baseUrl = SITE_URL;
+            const today = new Date().toISOString().split('T')[0];
+            
+            let content = '';
+            let mimeType = '';
+            let filename = '';
+            
+            switch(format) {
+                case 'xml':
+                    content = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${allPages.map(page => {
+    const priority = page.url === '/' ? '1.0' : 
+                     page.category === 'principal' ? '0.9' : '0.8';
+    return `  <url>
+    <loc>${baseUrl}${page.url}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>${priority}</priority>
+  </url>`;
+}).join('\n')}
+</urlset>`;
+                    mimeType = 'application/xml';
+                    filename = 'sitemap.xml';
+                    break;
+                    
+                case 'txt':
+                    content = allPages.map(page => `${baseUrl}${page.url}`).join('\n');
+                    mimeType = 'text/plain';
+                    filename = 'sitemap.txt';
+                    break;
+            }
+            
+            // Descargar archivo
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            // Mostrar notificación
+            showSuccessMessage(`Sitemap exportado como ${filename}`);
+        }
+
+        // Funciones auxiliares
+        function getPageIcon(type) {
+            const icons = {
+                'html': '🌐',
+                'md': '📝',
+                'pdf': '📄',
+                'xml': '📊',
+                'txt': '📄'
+            };
+            return icons[type] || '📄';
+        }
+
+        function showLoadingMessage() {
+            const grid = document.getElementById('sitemapGrid');
+            grid.innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>No hay índice disponible. Creando sitemap básico...</p>
+                    <button class="export-btn" onclick="discoverPagesAutomatically()" style="margin-top: 1rem;">
+                        🔍 Descubrir páginas automáticamente
+                    </button>
+                </div>
+            `;
+        }
+
+        function showErrorMessage(message) {
+            const grid = document.getElementById('sitemapGrid');
+            grid.innerHTML = `
+                <div class="error">
+                    ❌ ${message}
+                    <button class="export-btn" onclick="location.reload()" style="margin-top: 0.5rem;">
+                        🔄 Recargar página
+                    </button>
+                </div>
+            `;
+        }
+
+        function showSuccessMessage(message) {
+            const notification = document.createElement('div');
+            notification.className = 'success';
+            notification.innerHTML = `✅ ${message}`;
+            notification.style.position = 'fixed';
+            notification.style.top = '20px';
+            notification.style.right = '20px';
+            notification.style.zIndex = '1000';
+            notification.style.padding = '1rem 1.5rem';
+            notification.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateY(-20px)';
+                setTimeout(() => document.body.removeChild(notification), 300);
+            }, 3000);
+        }
+
+        // Descubrir páginas automáticamente
+        async function discoverPagesAutomatically() {
+            const commonPages = [
+                '/', '/index.html',
+                '/about', '/about.html',
+                '/contact', '/contact.html',
+                '/blog', '/blog.html',
+                '/projects', '/projects.html',
+                '/music', '/music.html',
+                '/design', '/design.html',
+                '/portfolio', '/portfolio.html',
+                '/services', '/services.html',
+                '/tutorials', '/tutorials.html',
+                '/faq', '/faq.html'
+            ];
+            
+            allPages = commonPages.map(url => ({
+                url: url,
+                fullUrl: SITE_URL + url,
+                title: url === '/' ? 'Inicio' : url.split('/').pop().replace('.html', '').replace('-', ' '),
+                type: 'html',
+                wordCount: 0,
+                category: determineCategory(url, ''),
+                lastIndexed: new Date().toISOString()
+            }));
+            
+            organizeByCategories();
+            updateStatistics();
+            renderCategoryCards();
+            renderAllPagesTable();
+            updateFooter();
+            
+            showSuccessMessage('Sitemap básico creado con páginas comunes');
+        }
+
+        // Funciones de utilidad
+        function refreshIndex() {
+            if (confirm('¿Actualizar el índice desde el buscador?')) {
+                window.location.href = '/buscar';
+            }
+        }
+
+        function viewRawIndex() {
+            const index = localStorage.getItem(CACHE_KEY);
+            if (index) {
+                const win = window.open();
+                win.document.write('<pre>' + JSON.stringify(JSON.parse(index), null, 2) + '</pre>');
+            } else {
+                alert('No hay índice en caché');
+            }
+        }
+
+        function clearCache() {
+            if (confirm('¿Limpiar caché del sitemap?')) {
+                localStorage.removeItem(CACHE_KEY);
+                localStorage.removeItem(CACHE_TIMESTAMP_KEY);
+                location.reload();
+            }
+        }
+
+        function testSitemap() {
+            window.open('https://www.xml-sitemaps.com/validate-xml-sitemap.html', '_blank');
+        }
+
+        function checkIndexStatus() {
+            const index = localStorage.getItem(CACHE_KEY);
+            if (index) {
+                const data = JSON.parse(index);
+                alert(`✅ Índice activo\n\n• Páginas: ${data.length}\n• Tamaño: ${(JSON.stringify(data).length / 1024).toFixed(1)} KB\n• Última actualización: ${new Date(parseInt(localStorage.getItem(CACHE_TIMESTAMP_KEY) || Date.now())).toLocaleString()}`);
+            } else {
+                alert('ℹ️ No hay índice en caché');
+            }
+        }
+
+        function generateRobotsTxt() {
+            const content = `# Robots.txt para grouvex.com
+# Generado automáticamente
+
+User-agent: *
+Allow: /
+Disallow: /private/
+Disallow: /admin/
+
+Sitemap: ${SITE_URL}/sitemap.xml
+Sitemap: ${SITE_URL}/sitemap.html
+
+# Crawl-delay: 1
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /`;
+            
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'robots.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>

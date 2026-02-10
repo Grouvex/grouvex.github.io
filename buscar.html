@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Buscar en Grouvex</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Busca en todo el contenido de grouvex.com">
+    <meta name="description" content="Busca en todo el contenido de Grouvex">
     <style>
         :root {
             --primary: #8B5CF6;
@@ -41,6 +41,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
         .header-container {
@@ -59,17 +60,10 @@
             text-decoration: none;
         }
 
-        .logo-icon {
-            width: 36px;
-            height: 36px;
-            background: var(--gradient);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 1rem;
+        .logo-img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
         }
 
         .logo-text {
@@ -285,7 +279,9 @@
 
         .result-type.html { background: #DBEAFE; color: #1E40AF; }
         .result-type.md { background: #D1FAE5; color: #065F46; }
-        .result-type.other { background: #FEF3C7; color: #92400E; }
+        .result-type.pdf { background: #FEF3C7; color: #92400E; }
+        .result-type.txt { background: #E5E7EB; color: #374151; }
+        .result-type.other { background: #F3E8FF; color: #7C3AED; }
 
         /* Paginación */
         .pagination {
@@ -348,6 +344,30 @@
 
         @keyframes spin {
             to { transform: rotate(360deg); }
+        }
+
+        /* Progress bar */
+        .progress-container {
+            width: 100%;
+            background: var(--gray-light);
+            border-radius: 10px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: var(--gradient);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: var(--gray);
+            text-align: center;
+            margin-top: 0.5rem;
         }
 
         /* No results */
@@ -445,6 +465,31 @@
             margin-top: 0.5rem;
         }
 
+        /* Control de indexación */
+        .index-controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .index-btn {
+            padding: 0.5rem 1rem;
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 6px;
+            color: var(--primary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .index-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .search-form {
@@ -465,16 +510,93 @@
                 flex-direction: column;
                 gap: 1rem;
             }
+            
+            .index-controls {
+                flex-direction: column;
+            }
+            
+            .logo-img {
+                height: 32px;
+            }
+            
+            .logo-text {
+                font-size: 1.25rem;
+            }
+        }
+
+        /* Filtros de búsqueda */
+        .search-filters {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: white;
+            border: 1px solid var(--gray-light);
+            border-radius: 20px;
+            color: var(--gray);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Logo fallback */
+        .logo-fallback {
+            width: 36px;
+            height: 36px;
+            background: var(--gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        /* Brand styling */
+        .brand-section {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .brand-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--dark);
         }
     </style>
+    
+    <!-- Preconnect para carga rápida del logo -->
+    <link rel="preconnect" href="https://raw.githubusercontent.com">
+    <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
 </head>
 <body>
     <!-- Header -->
     <header class="main-header">
         <div class="header-container">
             <a href="/" class="logo-link">
-                <div class="logo-icon">G</div>
-                <div class="logo-text">Grouvex</div>
+                <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/Grouvex-patch-1/img/GROUVEX%20Studio.png" 
+                     alt="Grouvex Logo" 
+                     class="logo-img"
+                     onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex';">
+                <div class="logo-fallback" id="logoFallback" style="display: none;">G</div>
+                <div class="brand-text">Grouvex</div>
             </a>
             <a href="/" class="page-btn" style="text-decoration: none;">← Volver al inicio</a>
         </div>
@@ -484,7 +606,7 @@
     <main class="search-page">
         <div class="search-header">
             <h1 class="search-title">🔍 Buscar en Grouvex</h1>
-            <p class="search-subtitle">Busca automáticamente en todas las páginas del sitio</p>
+            <p class="search-subtitle">Buscador inteligente que indexa TODO el sitio web automáticamente</p>
         </div>
 
         <!-- Barra de búsqueda principal -->
@@ -500,9 +622,19 @@
                 >
                 <button type="submit" class="search-button-main">
                     <span>🔍</span>
-                    Buscar
+                    Buscar en todo el sitio
                 </button>
             </form>
+
+            <!-- Filtros de búsqueda rápida -->
+            <div class="search-filters">
+                <button class="filter-btn" onclick="quickSearch('tutorial')">📚 Tutoriales</button>
+                <button class="filter-btn" onclick="quickSearch('proyecto')">🚀 Proyectos</button>
+                <button class="filter-btn" onclick="quickSearch('música')">🎵 Música</button>
+                <button class="filter-btn" onclick="quickSearch('diseño')">🎨 Diseño</button>
+                <button class="filter-btn" onclick="quickSearch('blog')">📝 Blog</button>
+                <button class="filter-btn" onclick="showAllPages()">📄 Ver todo</button>
+            </div>
 
             <!-- Estadísticas -->
             <div class="stats-container" id="statsContainer" style="display: none;">
@@ -513,6 +645,10 @@
                 <div class="stat-item">
                     <span>🔤</span>
                     <span>Palabras totales: <span class="stat-value" id="wordCount">0</span></span>
+                </div>
+                <div class="stat-item">
+                    <span>📁</span>
+                    <span>Directorios: <span class="stat-value" id="dirCount">0</span></span>
                 </div>
                 <div class="stat-item">
                     <span>🔄</span>
@@ -527,9 +663,19 @@
         <div class="auto-index-status" id="indexStatus">
             <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
                 <div class="loading-spinner" style="width: 20px; height: 20px;"></div>
-                <span>Creando índice automático del sitio...</span>
+                <span id="indexStatusText">Iniciando indexación del sitio...</span>
             </div>
-            <div style="font-size: 0.8rem;">Escaneando todas las páginas de grouvex.com</div>
+            <div class="progress-container">
+                <div class="progress-bar" id="indexProgress"></div>
+            </div>
+            <div class="progress-text" id="indexProgressText">Preparando...</div>
+            
+            <div class="index-controls">
+                <button class="index-btn" onclick="pauseIndexing()" id="pauseBtn">⏸️ Pausar</button>
+                <button class="index-btn" onclick="resumeIndexing()" id="resumeBtn" style="display: none;">▶️ Continuar</button>
+                <button class="index-btn" onclick="stopIndexing()" id="stopBtn">⏹️ Detener</button>
+                <button class="index-btn" onclick="skipToDiscovery()" id="skipBtn">⏭️ Saltar a descubrimiento</button>
+            </div>
         </div>
 
         <!-- Resultados -->
@@ -540,6 +686,8 @@
                     <option value="relevance">Más relevantes</option>
                     <option value="alphabetical">A → Z</option>
                     <option value="reverse">Z → A</option>
+                    <option value="date">Más recientes</option>
+                    <option value="words">Más contenido</option>
                 </select>
             </div>
 
@@ -549,8 +697,11 @@
                     <div class="loading-spinner"></div>
                     <p>Cargando buscador e indexando el sitio...</p>
                     <p style="font-size: 0.9rem; color: var(--gray); margin-top: 1rem;">
-                        Esto puede tomar unos segundos la primera vez
+                        Escaneando recursivamente TODO el sitio web (esto puede tomar tiempo)
                     </p>
+                    <div class="progress-container" style="max-width: 300px; margin: 1rem auto;">
+                        <div class="progress-bar" id="initialProgress"></div>
+                    </div>
                 </div>
             </div>
 
@@ -565,59 +716,78 @@
             <div>
                 <h3>Grouvex</h3>
                 <p style="color: var(--gray-light); margin-bottom: 1.5rem;">
-                    Buscador automático de todo el contenido del sitio.
+                    Buscador automático que indexa TODO el contenido del sitio.
                 </p>
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                    <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/Grouvex-patch-1/img/GROUVEX%20Studio.png" 
+                         alt="Grouvex Logo" 
+                         style="height: 24px; width: auto; filter: brightness(0) invert(1); opacity: 0.8;">
+                    <span style="color: var(--gray-light); font-size: 0.9rem;">Grouvex Studio</span>
+                </div>
             </div>
             
             <div>
                 <h3>Búsqueda</h3>
                 <ul class="footer-links">
                     <li><a href="/buscar?q=">Buscar en todo el sitio</a></li>
-                    <li><a href="/buscar?q=recents">Páginas recientes</a></li>
-                    <li><a href="/buscar?q=index">Ver índice completo</a></li>
-                    <li><a href="/buscar?q=" onclick="document.getElementById('mainSearchInput').value=''; return false;">Nueva búsqueda</a></li>
+                    <li><a href="javascript:void(0)" onclick="showAllPages()">Ver índice completo</a></li>
+                    <li><a href="javascript:void(0)" onclick="searchByType('html')">Solo páginas HTML</a></li>
+                    <li><a href="javascript:void(0)" onclick="searchByType('md')">Solo Markdown</a></li>
                 </ul>
             </div>
             
             <div>
-                <h3>Ayuda</h3>
+                <h3>Herramientas</h3>
                 <ul class="footer-links">
-                    <li><a href="javascript:void(0)" onclick="clearCache()">🔄 Limpiar caché de búsqueda</a></li>
+                    <li><a href="javascript:void(0)" onclick="clearCache()">🔄 Limpiar caché</a></li>
                     <li><a href="javascript:void(0)" onclick="reindexSite()">🔍 Re-indexar sitio</a></li>
-                    <li><a href="/contacto">📧 Reportar problema</a></li>
-                    <li><a href="/">🏠 Volver al inicio</a></li>
+                    <li><a href="/sitemap.html">🗺️ Mapa del sitio</a></li>
+                    <li><a href="javascript:void(0)" onclick="exportIndex()">📥 Exportar índice</a></li>
                 </ul>
             </div>
         </div>
         
         <div class="copyright">
-            <p>&copy; <span id="currentYear"></span> grouvex.com | Buscador automático</p>
-            <p style="margin-top: 0.5rem;">Índice generado automáticamente desde GitHub Pages</p>
+            <p>&copy; <span id="currentYear"></span> Grouvex Studio | Buscador automático</p>
+            <p style="margin-top: 0.5rem;">Indexación recursiva de todo el sitio web</p>
         </div>
     </footer>
 
     <script>
-        // Configuración
+        // ==================== CONFIGURACIÓN AVANZADA ====================
         const SITE_URL = window.location.origin;
-        const CACHE_KEY = 'grouvex_search_index_v2';
-        const CACHE_TIMESTAMP_KEY = 'grouvex_index_timestamp';
-        const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 horas en milisegundos
-
-        // Estado de la búsqueda
+        const CACHE_KEY = 'grouvex_search_index_v3';
+        const CACHE_TIMESTAMP_KEY = 'grouvex_index_timestamp_v3';
+        const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 horas
+        
+        // Estado del buscador
         let searchIndex = [];
         let currentPage = 1;
         const resultsPerPage = 10;
         let currentSort = 'relevance';
         let currentSearchTerm = '';
+        
+        // Estado de indexación
+        let indexingPaused = false;
+        let indexingStopped = false;
+        let currentIndexingTask = null;
+        let discoveredDirectories = new Set(['/']);
+        let discoveredPages = new Set();
+        let totalIndexed = 0;
+        let maxDepth = 5; // Profundidad máxima de recursión
 
-        // Inicialización
+        // ==================== INICIALIZACIÓN ====================
         document.addEventListener('DOMContentLoaded', async function() {
             // Año actual
             document.getElementById('currentYear').textContent = new Date().getFullYear();
             
+            // Pre-cargar logo
+            preloadLogo();
+            
             // Manejar parámetros de URL
             const urlParams = new URLSearchParams(window.location.search);
             const searchQuery = urlParams.get('q');
+            const showAll = urlParams.get('show') === 'all';
             
             // Cargar o crear índice
             await loadOrCreateIndex();
@@ -629,10 +799,27 @@
             if (searchQuery) {
                 document.getElementById('mainSearchInput').value = searchQuery;
                 performSearch(searchQuery);
+            } else if (showAll) {
+                showAllPages();
             }
         });
 
-        // Cargar o crear índice
+        // Pre-cargar logo para evitar fallos
+        function preloadLogo() {
+            const logoImg = new Image();
+            logoImg.src = 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/Grouvex-patch-1/img/GROUVEX%20Studio.png';
+            logoImg.onload = function() {
+                console.log('Logo de Grouvex cargado correctamente');
+            };
+            logoImg.onerror = function() {
+                console.warn('No se pudo cargar el logo, usando fallback');
+                document.getElementById('logoFallback').style.display = 'flex';
+                const logoImgs = document.querySelectorAll('.logo-img');
+                logoImgs.forEach(img => img.style.display = 'none');
+            };
+        }
+
+        // ==================== SISTEMA DE INDEXACIÓN RECURSIVA ====================
         async function loadOrCreateIndex() {
             try {
                 // Verificar caché
@@ -645,19 +832,21 @@
                     searchIndex = JSON.parse(cachedData);
                     updateStats();
                     showIndexStatus('success', 'Índice cargado desde caché');
+                    hideInitialLoading();
                     return;
                 }
                 
-                // Crear nuevo índice
-                showIndexStatus('loading', 'Creando índice automático...');
-                await createAutoIndex();
+                // Crear nuevo índice recursivo
+                showIndexStatus('loading', 'Iniciando indexación recursiva del sitio...');
+                await createRecursiveIndex();
                 
                 // Guardar en caché
                 localStorage.setItem(CACHE_KEY, JSON.stringify(searchIndex));
                 localStorage.setItem(CACHE_TIMESTAMP_KEY, now.toString());
                 
                 updateStats();
-                showIndexStatus('success', 'Índice creado y guardado en caché');
+                showIndexStatus('success', 'Índice completo creado y guardado en caché');
+                hideInitialLoading();
                 
             } catch (error) {
                 console.error('Error creando índice:', error);
@@ -668,192 +857,267 @@
                 if (cachedData) {
                     searchIndex = JSON.parse(cachedData);
                     updateStats();
+                    hideInitialLoading();
                 }
             }
         }
 
-        // Crear índice automáticamente
-        async function createAutoIndex() {
-            showIndexStatus('loading', 'Buscando sitemap...');
+        // Crear índice recursivo
+        async function createRecursiveIndex() {
+            indexingPaused = false;
+            indexingStopped = false;
+            totalIndexed = 0;
+            discoveredDirectories.clear();
+            discoveredDirectories.add('/');
+            discoveredPages.clear();
             
-            // Primero intentar cargar sitemap
-            let urls = await tryLoadSitemap();
+            // Iniciar desde la raíz
+            await discoverAndIndexDirectory('/', 0);
             
-            // Si no hay sitemap, usar páginas comunes
-            if (!urls || urls.length === 0) {
-                urls = await discoverPages();
-            }
+            // Buscar en directorios adicionales comunes
+            const additionalDirs = [
+                '/blog/', '/posts/', '/articles/',
+                '/projects/', '/proyectos/',
+                '/music/', '/musica/', '/audio/',
+                '/design/', '/diseño/', '/art/',
+                '/docs/', '/documentation/', '/help/',
+                '/tutorials/', '/tutoriales/',
+                '/about/', '/acerca/', '/contact/', '/contacto/'
+            ];
             
-            // Indexar cada página
-            searchIndex = [];
-            const totalPages = urls.length;
-            
-            for (let i = 0; i < totalPages; i++) {
-                const url = urls[i];
-                showIndexStatus('loading', `Indexando página ${i + 1} de ${totalPages}: ${getFileName(url)}`);
-                
-                try {
-                    const pageData = await indexPage(url);
-                    if (pageData) {
-                        searchIndex.push(pageData);
-                    }
-                } catch (error) {
-                    console.warn(`Error indexando ${url}:`, error);
-                }
-                
-                // Actualizar progreso cada 5 páginas
-                if ((i + 1) % 5 === 0 || i + 1 === totalPages) {
-                    const percent = Math.round(((i + 1) / totalPages) * 100);
-                    showIndexStatus('loading', `Indexando... ${percent}% completado`);
+            for (const dir of additionalDirs) {
+                if (!indexingStopped) {
+                    await discoverAndIndexDirectory(dir, 0);
                 }
             }
             
             return searchIndex;
         }
 
-        // Intentar cargar sitemap
-        async function tryLoadSitemap() {
-            const sitemapUrls = [
-                '/sitemap.xml',
-                '/sitemap.txt',
-                '/sitemap.html',
-                '/sitemap_index.xml',
-                '/sitemap/sitemap.xml'
-            ];
+        // Descubrir e indexar directorio recursivamente
+        async function discoverAndIndexDirectory(directory, depth) {
+            if (depth > maxDepth || indexingStopped) return;
             
-            for (const sitemapUrl of sitemapUrls) {
-                try {
-                    const response = await fetch(sitemapUrl);
-                    if (response.ok) {
-                        const text = await response.text();
-                        return parseSitemap(text);
-                    }
-                } catch (error) {
-                    // Continuar con siguiente URL
-                }
-            }
-            
-            return null;
-        }
-
-        // Parsear sitemap
-        function parseSitemap(content) {
-            const urls = [];
-            
-            // XML sitemap
-            const locMatches = content.match(/<loc>(.*?)<\/loc>/gi);
-            if (locMatches) {
-                locMatches.forEach(match => {
-                    const url = match.replace(/<\/?loc>/gi, '').trim();
-                    if (url.startsWith(SITE_URL)) {
-                        urls.push(url);
-                    } else if (url.startsWith('/')) {
-                        urls.push(SITE_URL + url);
-                    }
-                });
-                return urls;
-            }
-            
-            // TXT sitemap (una URL por línea)
-            const lines = content.split('\n');
-            lines.forEach(line => {
-                const url = line.trim();
-                if (url && (url.startsWith(SITE_URL) || url.startsWith('/'))) {
-                    urls.push(url.startsWith('/') ? SITE_URL + url : url);
-                }
-            });
-            
-            return urls.length > 0 ? urls : null;
-        }
-
-        // Descubrir páginas automáticamente
-        async function discoverPages() {
-            const commonPages = [
-                '/', '/index.html', '/index.htm',
-                '/about', '/about.html',
-                '/contact', '/contact.html',
-                '/projects', '/projects.html',
-                '/blog', '/blog.html',
-                '/portfolio', '/portfolio.html',
-                '/services', '/services.html',
-                '/music', '/music.html',
-                '/design', '/design.html',
-                '/artists', '/artists.html',
-                '/404.html'
-            ];
-            
-            // También buscar en robots.txt
             try {
-                const robotsResponse = await fetch('/robots.txt');
-                if (robotsResponse.ok) {
-                    const robotsText = await robotsResponse.text();
-                    const lines = robotsText.split('\n');
-                    lines.forEach(line => {
-                        if (line.toLowerCase().includes('sitemap:')) {
-                            const sitemapUrl = line.split(':')[1].trim();
-                            commonPages.push(sitemapUrl);
+                // Actualizar progreso
+                updateProgress(`Escaneando directorio: ${directory}`, 
+                    (depth / maxDepth) * 100);
+                
+                // Obtener lista de archivos del directorio
+                const fileList = await getDirectoryListing(directory);
+                
+                if (!fileList || indexingStopped || indexingPaused) return;
+                
+                // Procesar cada elemento encontrado
+                for (const item of fileList) {
+                    if (indexingStopped || indexingPaused) break;
+                    
+                    if (item.type === 'directory') {
+                        // Es un subdirectorio - explorar recursivamente
+                        const subDir = directory.endsWith('/') ? 
+                            directory + item.name + '/' : 
+                            directory + '/' + item.name + '/';
+                        
+                        if (!discoveredDirectories.has(subDir)) {
+                            discoveredDirectories.add(subDir);
+                            await discoverAndIndexDirectory(subDir, depth + 1);
                         }
-                    });
+                    } else if (item.type === 'file') {
+                        // Es un archivo - indexar si es de tipo soportado
+                        const fileUrl = directory.endsWith('/') ? 
+                            directory + item.name : 
+                            directory + '/' + item.name;
+                        
+                        if (!discoveredPages.has(fileUrl) && isIndexableFile(item.name)) {
+                            discoveredPages.add(fileUrl);
+                            await indexPage(SITE_URL + fileUrl);
+                            totalIndexed++;
+                            
+                            // Actualizar progreso
+                            updateProgress(`Indexando: ${item.name}`, 
+                                (totalIndexed / 500) * 100); // Estimado
+                        }
+                    }
                 }
+                
             } catch (error) {
-                // Ignorar error de robots.txt
+                console.warn(`Error explorando directorio ${directory}:`, error);
             }
+        }
+
+        // Obtener listado de directorio (simulación para GitHub Pages)
+        async function getDirectoryListing(directory) {
+            try {
+                // Para GitHub Pages, intentamos diferentes métodos
+                
+                // Método 1: Intentar obtener índice del directorio
+                const indexPath = directory.endsWith('/') ? 
+                    directory + 'index.html' : directory + '/index.html';
+                
+                try {
+                    const response = await fetch(SITE_URL + indexPath);
+                    if (response.ok) {
+                        // Encontramos un index.html - procesarlo para enlaces
+                        const html = await response.text();
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        
+                        // Extraer enlaces del documento
+                        const links = doc.querySelectorAll('a[href]');
+                        const items = [];
+                        
+                        links.forEach(link => {
+                            const href = link.getAttribute('href');
+                            if (href && !href.startsWith('http') && !href.startsWith('#') && !href.startsWith('mailto:')) {
+                                // Determinar si es directorio o archivo
+                                const isDir = href.endsWith('/') || 
+                                             (href.includes('/') && !href.includes('.'));
+                                items.push({
+                                    name: href.split('/').pop() || href,
+                                    type: isDir ? 'directory' : 'file',
+                                    url: href
+                                });
+                            }
+                        });
+                        
+                        return items;
+                    }
+                } catch (e) {
+                    // Continuar con siguiente método
+                }
+                
+                // Método 2: Usar GitHub API si está disponible
+                if (SITE_URL.includes('github.io')) {
+                    const repoPath = SITE_URL.split('github.io/')[1] || '';
+                    const githubApiUrl = `https://api.github.com/repos/${repoPath.split('/')[0]}/${repoPath.split('/')[1] || repoPath}/contents/${directory.replace(/^\//, '')}`;
+                    
+                    try {
+                        const response = await fetch(githubApiUrl);
+                        if (response.ok) {
+                            const data = await response.json();
+                            return data.map(item => ({
+                                name: item.name,
+                                type: item.type === 'dir' ? 'directory' : 'file',
+                                url: item.path
+                            }));
+                        }
+                    } catch (e) {
+                        // Continuar con siguiente método
+                    }
+                }
+                
+                // Método 3: Intentar descubrir archivos comunes
+                return discoverCommonFiles(directory);
+                
+            } catch (error) {
+                console.warn(`Error obteniendo listado de ${directory}:`, error);
+                return discoverCommonFiles(directory);
+            }
+        }
+
+        // Descubrir archivos comunes en un directorio
+        function discoverCommonFiles(directory) {
+            const commonFiles = [
+                'index.html', 'index.htm', 'readme.md', 'README.md',
+                'about.html', 'contact.html', 'projects.html', 'blog.html',
+                'music.html', 'design.html', 'portfolio.html'
+            ];
             
-            return commonPages.map(page => page.startsWith('/') ? SITE_URL + page : page);
+            const commonExtensions = ['.html', '.htm', '.md', '.txt', '.pdf', '.json'];
+            
+            return commonFiles.map(file => ({
+                name: file,
+                type: 'file',
+                url: directory + file
+            })).concat(
+                commonExtensions.map(ext => ({
+                    name: `page${ext}`,
+                    type: 'file',
+                    url: directory + `page${ext}`
+                }))
+            );
+        }
+
+        // Verificar si un archivo es indexable
+        function isIndexableFile(filename) {
+            const indexableExtensions = [
+                '.html', '.htm', '.md', '.markdown', 
+                '.txt', '.text', '.pdf', '.json', '.xml'
+            ];
+            
+            return indexableExtensions.some(ext => 
+                filename.toLowerCase().endsWith(ext));
         }
 
         // Indexar una página individual
         async function indexPage(url) {
+            if (indexingStopped || indexingPaused) return null;
+            
             try {
                 const response = await fetch(url);
                 if (!response.ok) return null;
                 
-                const html = await response.text();
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
+                const contentType = response.headers.get('content-type') || '';
+                let content = '';
                 
-                // Extraer información
-                const title = doc.querySelector('title')?.textContent || 
-                             doc.querySelector('h1')?.textContent || 
-                             getFileName(url);
+                if (contentType.includes('text/html') || contentType.includes('text/plain')) {
+                    content = await response.text();
+                } else if (contentType.includes('application/pdf')) {
+                    // Para PDFs, usar texto simple
+                    content = `[Documento PDF: ${url.split('/').pop()}]`;
+                } else {
+                    return null;
+                }
                 
-                const description = doc.querySelector('meta[name="description"]')?.getAttribute('content') ||
-                                  doc.querySelector('meta[property="og:description"]')?.getAttribute('content') ||
-                                  extractFirstParagraph(doc);
+                // Parsear contenido según tipo
+                let title = '';
+                let description = '';
+                let textContent = '';
                 
-                const keywords = doc.querySelector('meta[name="keywords"]')?.getAttribute('content') || '';
+                if (contentType.includes('text/html')) {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(content, 'text/html');
+                    
+                    title = doc.querySelector('title')?.textContent || 
+                           doc.querySelector('h1')?.textContent || 
+                           getFileName(url);
+                    
+                    description = doc.querySelector('meta[name="description"]')?.getAttribute('content') ||
+                                doc.querySelector('meta[property="og:description"]')?.getAttribute('content') ||
+                                extractFirstParagraph(doc);
+                    
+                    // Extraer contenido de texto
+                    const body = doc.body;
+                    if (body) {
+                        // Remover scripts y estilos
+                        const scripts = body.querySelectorAll('script, style');
+                        scripts.forEach(script => script.remove());
+                        textContent = body.textContent || '';
+                    }
+                } else {
+                    // Para texto plano, MD, etc.
+                    title = getFileName(url);
+                    textContent = content.substring(0, 10000); // Limitar
+                }
                 
-                // Extraer contenido de texto (sin scripts/styles)
-                const bodyText = doc.body?.textContent || '';
-                const cleanText = bodyText.replace(/\s+/g, ' ').trim();
+                // Limpiar texto
+                const cleanText = textContent.replace(/\s+/g, ' ').trim();
+                const wordCount = cleanText.split(/\s+/).filter(w => w.length > 0).length;
                 
                 // Determinar tipo de archivo
                 const fileType = getFileType(url);
-                
-                // Calcular palabras
-                const wordCount = cleanText.split(/\s+/).filter(w => w.length > 0).length;
-                
-                // Extraer encabezados para contexto
-                const headers = [];
-                ['h1', 'h2', 'h3'].forEach(tag => {
-                    doc.querySelectorAll(tag).forEach(header => {
-                        const text = header.textContent.trim();
-                        if (text) headers.push(text);
-                    });
-                });
                 
                 return {
                     id: generatePageId(url),
                     url: url,
                     title: title.trim(),
                     description: description?.trim() || '',
-                    keywords: keywords,
-                    content: cleanText.substring(0, 5000), // Limitar contenido
-                    headers: headers,
+                    content: cleanText.substring(0, 5000),
                     type: fileType,
                     wordCount: wordCount,
                     lastIndexed: new Date().toISOString(),
-                    relevance: calculateInitialRelevance(url, title, wordCount)
+                    directory: getDirectoryFromUrl(url),
+                    depth: (url.match(/\//g) || []).length - 1
                 };
                 
             } catch (error) {
@@ -862,16 +1126,26 @@
             }
         }
 
-        // Funciones auxiliares
+        // ==================== FUNCIONES AUXILIARES ====================
         function getFileName(url) {
             const path = new URL(url).pathname;
             return path.split('/').pop() || 'index';
+        }
+
+        function getDirectoryFromUrl(url) {
+            const path = new URL(url).pathname;
+            const parts = path.split('/');
+            parts.pop(); // Remover nombre de archivo
+            return parts.join('/') || '/';
         }
 
         function getFileType(url) {
             const extension = url.split('.').pop().toLowerCase();
             if (['html', 'htm'].includes(extension)) return 'html';
             if (['md', 'markdown'].includes(extension)) return 'md';
+            if (['pdf'].includes(extension)) return 'pdf';
+            if (['txt', 'text'].includes(extension)) return 'txt';
+            if (['json', 'xml'].includes(extension)) return extension;
             return 'other';
         }
 
@@ -884,25 +1158,47 @@
             return btoa(url).replace(/[+/=]/g, '').substring(0, 12);
         }
 
-        function calculateInitialRelevance(url, title, wordCount) {
-            let score = 50; // Puntuación base
-            
-            // Página principal tiene más relevancia
-            if (url === SITE_URL + '/' || url === SITE_URL + '/index.html') {
-                score += 30;
-            }
-            
-            // Títulos más largos pueden indicar contenido más específico
-            if (title.length > 20) score += 10;
-            
-            // Más contenido = potencialmente más relevante
-            if (wordCount > 500) score += 20;
-            if (wordCount > 1000) score += 10;
-            
-            return Math.min(score, 100);
+        // ==================== CONTROL DE INDEXACIÓN ====================
+        function pauseIndexing() {
+            indexingPaused = true;
+            document.getElementById('pauseBtn').style.display = 'none';
+            document.getElementById('resumeBtn').style.display = 'block';
+            showIndexStatus('info', 'Indexación pausada');
         }
 
-        // Configurar event listeners
+        function resumeIndexing() {
+            indexingPaused = false;
+            document.getElementById('pauseBtn').style.display = 'block';
+            document.getElementById('resumeBtn').style.display = 'none';
+            showIndexStatus('loading', 'Reanudando indexación...');
+            // Continuar donde se quedó
+        }
+
+        function stopIndexing() {
+            indexingStopped = true;
+            showIndexStatus('warning', 'Indexación detenida. Usando páginas indexadas hasta ahora.');
+            updateStats();
+            hideInitialLoading();
+        }
+
+        function skipToDiscovery() {
+            // Saltar a descubrimiento rápido
+            showIndexStatus('loading', 'Usando descubrimiento rápido...');
+            setTimeout(() => {
+                useQuickDiscovery();
+            }, 100);
+        }
+
+        async function useQuickDiscovery() {
+            // Método rápido: buscar páginas comunes
+            const quickPages = await discoverCommonPages();
+            searchIndex = quickPages;
+            updateStats();
+            showIndexStatus('success', 'Descubrimiento rápido completado');
+            hideInitialLoading();
+        }
+
+        // ==================== INTERFAZ DE USUARIO ====================
         function setupEventListeners() {
             // Formulario de búsqueda
             document.getElementById('searchForm').addEventListener('submit', function(e) {
@@ -920,7 +1216,7 @@
                 applySearch();
             });
             
-            // Búsqueda en tiempo real (opcional)
+            // Búsqueda en tiempo real
             let searchTimeout;
             document.getElementById('mainSearchInput').addEventListener('input', function() {
                 clearTimeout(searchTimeout);
@@ -949,7 +1245,6 @@
             });
         }
 
-        // Actualizar URL con búsqueda
         function updateUrlWithSearch(query) {
             const newUrl = new URL(window.location);
             if (query) {
@@ -960,7 +1255,6 @@
             window.history.pushState({}, '', newUrl);
         }
 
-        // Realizar búsqueda
         function performSearch(query) {
             currentSearchTerm = query.toLowerCase().trim();
             currentPage = 1;
@@ -976,7 +1270,6 @@
             }, 100);
         }
 
-        // Aplicar búsqueda
         function applySearch() {
             let results = searchIndex.filter(page => 
                 matchesSearch(page, currentSearchTerm)
@@ -984,22 +1277,25 @@
             
             // Ordenar resultados
             results.sort((a, b) => {
-                if (currentSort === 'alphabetical') {
-                    return a.title.localeCompare(b.title);
-                } else if (currentSort === 'reverse') {
-                    return b.title.localeCompare(a.title);
-                } else {
-                    // Por relevancia (calcular score dinámico)
-                    const scoreA = calculateRelevanceScore(a, currentSearchTerm);
-                    const scoreB = calculateRelevanceScore(b, currentSearchTerm);
-                    return scoreB - scoreA;
+                switch(currentSort) {
+                    case 'alphabetical':
+                        return a.title.localeCompare(b.title);
+                    case 'reverse':
+                        return b.title.localeCompare(a.title);
+                    case 'date':
+                        return new Date(b.lastIndexed) - new Date(a.lastIndexed);
+                    case 'words':
+                        return b.wordCount - a.wordCount;
+                    default: // relevance
+                        const scoreA = calculateRelevanceScore(a, currentSearchTerm);
+                        const scoreB = calculateRelevanceScore(b, currentSearchTerm);
+                        return scoreB - scoreA;
                 }
             });
             
             displayResults(results);
         }
 
-        // Verificar si una página coincide con la búsqueda
         function matchesSearch(page, searchTerm) {
             if (!searchTerm) return false;
             
@@ -1010,11 +1306,10 @@
                 
                 const inTitle = page.title.toLowerCase().includes(term);
                 const inDescription = page.description.toLowerCase().includes(term);
-                const inKeywords = page.keywords.toLowerCase().includes(term);
                 const inContent = page.content.toLowerCase().includes(term);
-                const inHeaders = page.headers.some(h => h.toLowerCase().includes(term));
+                const inUrl = page.url.toLowerCase().includes(term);
                 
-                if (inTitle || inDescription || inKeywords || inContent || inHeaders) {
+                if (inTitle || inDescription || inContent || inUrl) {
                     return true;
                 }
             }
@@ -1022,26 +1317,27 @@
             return false;
         }
 
-        // Calcular puntuación de relevancia
         function calculateRelevanceScore(page, searchTerm) {
-            let score = page.relevance || 50;
+            let score = 50;
             const searchTerms = searchTerm.toLowerCase().split(/\s+/);
             
             searchTerms.forEach(term => {
                 if (term.length < 2) return;
                 
-                // Ponderaciones
-                if (page.title.toLowerCase().includes(term)) score += 30;
-                if (page.description.toLowerCase().includes(term)) score += 20;
-                if (page.keywords.toLowerCase().includes(term)) score += 15;
-                if (page.headers.some(h => h.toLowerCase().includes(term))) score += 10;
-                if (page.content.toLowerCase().includes(term)) score += 5;
+                // Ponderaciones mejoradas
+                if (page.title.toLowerCase().includes(term)) score += 40;
+                if (page.description.toLowerCase().includes(term)) score += 25;
+                if (page.url.toLowerCase().includes(term)) score += 20;
+                if (page.content.toLowerCase().includes(term)) score += 10;
+                
+                // Bonus por páginas principales
+                if (page.url === SITE_URL + '/') score += 30;
+                if (page.depth === 1) score += 10; // Páginas en raíz
             });
             
             return score;
         }
 
-        // Mostrar loading
         function showLoading() {
             document.getElementById('resultsList').innerHTML = `
                 <div class="loading">
@@ -1054,14 +1350,13 @@
             document.getElementById('currentQuery').textContent = `Buscando: "${currentSearchTerm}"`;
         }
 
-        // Limpiar resultados
         function clearResults() {
             document.getElementById('resultsList').innerHTML = `
                 <div class="no-results">
                     <div class="no-results-icon">🔍</div>
                     <h3 class="no-results-title">Busca en todo el sitio</h3>
                     <p class="no-results-text">
-                        Escribe palabras clave en el campo de búsqueda arriba para encontrar páginas en grouvex.com
+                        Escribe palabras clave para buscar en ${searchIndex.length} páginas indexadas
                     </p>
                 </div>
             `;
@@ -1070,26 +1365,21 @@
             document.getElementById('currentQuery').textContent = '';
         }
 
-        // Mostrar resultados
         function displayResults(results) {
             const resultsList = document.getElementById('resultsList');
             const totalResults = results.length;
             
-            // Actualizar contador
             document.getElementById('resultsCount').textContent = 
                 totalResults === 0 ? 'No se encontraron resultados' :
                 `${totalResults} resultado${totalResults !== 1 ? 's' : ''} para "${currentSearchTerm}"`;
             
-            // Mostrar header
             document.getElementById('resultsHeader').style.display = 'flex';
             
-            // Calcular páginas
             const totalPages = Math.ceil(totalResults / resultsPerPage);
             const startIndex = (currentPage - 1) * resultsPerPage;
             const endIndex = Math.min(startIndex + resultsPerPage, totalResults);
             const pageResults = results.slice(startIndex, endIndex);
             
-            // Mostrar resultados
             if (pageResults.length === 0) {
                 resultsList.innerHTML = `
                     <div class="no-results">
@@ -1122,9 +1412,10 @@
                             <p class="result-snippet">${snippet}</p>
                             <div class="result-meta">
                                 <span class="result-type ${page.type}">${page.type.toUpperCase()}</span>
-                                <span>📊 Relevancia: ${relevanceScore}%</span>
+                                <span>📊 Relevancia: ${Math.min(relevanceScore, 100)}%</span>
                                 <span>📝 Palabras: ${page.wordCount}</span>
-                                <span>🕒 Indexado: ${formatDate(page.lastIndexed)}</span>
+                                <span>📁 ${page.directory}</span>
+                                <span>🕒 ${formatDate(page.lastIndexed)}</span>
                             </div>
                         </div>
                     `;
@@ -1133,7 +1424,6 @@
                 resultsList.innerHTML = html;
             }
             
-            // Mostrar paginación
             if (totalPages > 1) {
                 showPagination(totalPages);
             } else {
@@ -1141,23 +1431,20 @@
             }
         }
 
-        // Generar snippet con contexto
         function generateSnippet(page, searchTerm) {
             const content = page.content.toLowerCase();
             const searchTerms = searchTerm.toLowerCase().split(/\s+/);
             
-            // Buscar la primera ocurrencia de cualquier término
             for (const term of searchTerms) {
                 if (term.length < 2) continue;
                 
                 const index = content.indexOf(term);
                 if (index !== -1) {
-                    const start = Math.max(0, index - 50);
-                    const end = Math.min(content.length, index + 100);
-                    let snippet = content.substring(start, end);
+                    const start = Math.max(0, index - 60);
+                    const end = Math.min(content.length, index + 120);
+                    let snippet = page.content.substring(start, end);
                     
-                    // Limpiar y formatear snippet
-                    snippet = snippet.replace(/[^\w\s]/g, ' ');
+                    snippet = snippet.replace(/[^\w\s.,!?-]/g, ' ');
                     snippet = snippet.replace(/\s+/g, ' ').trim();
                     
                     if (start > 0) snippet = '...' + snippet;
@@ -1167,12 +1454,10 @@
                 }
             }
             
-            // Si no se encuentra término, usar descripción o primeras palabras
-            const fallback = page.description || page.content.substring(0, 150);
+            const fallback = page.description || page.content.substring(0, 180);
             return highlightMatches(fallback) + '...';
         }
 
-        // Resaltar coincidencias
         function highlightMatches(text) {
             if (!currentSearchTerm || !text) return text;
             
@@ -1189,17 +1474,19 @@
             return highlighted;
         }
 
-        // Obtener ícono según tipo
         function getTypeIcon(type) {
             const icons = {
                 'html': '🌐',
                 'md': '📝',
+                'pdf': '📄',
+                'txt': '📝',
+                'json': '📊',
+                'xml': '📊',
                 'other': '📄'
             };
             return icons[type] || '📄';
         }
 
-        // Formatear fecha
         function formatDate(dateString) {
             const date = new Date(dateString);
             const now = new Date();
@@ -1214,24 +1501,22 @@
             
             return date.toLocaleDateString('es-ES', {
                 day: '2-digit',
-                month: '2-digit'
+                month: '2-digit',
+                year: 'numeric'
             });
         }
 
-        // Mostrar paginación
         function showPagination(totalPages) {
             const pagination = document.getElementById('pagination');
             let html = '';
             
-            // Botón anterior
             html += `
                 <button class="page-btn" ${currentPage === 1 ? 'disabled' : ''} 
-                        onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'style="opacity:0.5;cursor:not-allowed;"' : ''}>
+                        onclick="changePage(${currentPage - 1})">
                     ← Anterior
                 </button>
             `;
             
-            // Páginas
             const maxVisible = 5;
             let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
             let endPage = Math.min(totalPages, startPage + maxVisible - 1);
@@ -1259,10 +1544,9 @@
                 html += `<button class="page-btn" onclick="changePage(${totalPages})">${totalPages}</button>`;
             }
             
-            // Botón siguiente
             html += `
                 <button class="page-btn" ${currentPage === totalPages ? 'disabled' : ''} 
-                        onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'style="opacity:0.5;cursor:not-allowed;"' : ''}>
+                        onclick="changePage(${currentPage + 1})">
                     Siguiente →
                 </button>
             `;
@@ -1271,7 +1555,6 @@
             pagination.style.display = 'flex';
         }
 
-        // Cambiar página
         function changePage(page) {
             currentPage = page;
             applySearch();
@@ -1281,19 +1564,20 @@
             });
         }
 
-        // Actualizar estadísticas
         function updateStats() {
             const pageCount = searchIndex.length;
             const wordCount = searchIndex.reduce((sum, page) => sum + (page.wordCount || 0), 0);
+            const dirCount = new Set(searchIndex.map(p => p.directory)).size;
             const lastIndexed = localStorage.getItem(CACHE_TIMESTAMP_KEY);
             
             document.getElementById('pageCount').textContent = pageCount;
             document.getElementById('wordCount').textContent = wordCount.toLocaleString();
+            document.getElementById('dirCount').textContent = dirCount;
             
             if (lastIndexed) {
                 const date = new Date(parseInt(lastIndexed));
                 document.getElementById('lastIndexed').innerHTML = `
-                    <span>Última indexación:</span>
+                    <span>Indexado: </span>
                     <span style="color: var(--primary); font-weight: 500;">
                         ${formatDate(date.toISOString())}
                     </span>
@@ -1303,9 +1587,11 @@
             document.getElementById('statsContainer').style.display = 'flex';
         }
 
-        // Mostrar estado del índice
         function showIndexStatus(type, message) {
             const statusEl = document.getElementById('indexStatus');
+            const textEl = document.getElementById('indexStatusText');
+            
+            textEl.textContent = message;
             
             if (type === 'success') {
                 statusEl.innerHTML = `
@@ -1314,14 +1600,9 @@
                         <span>${message}</span>
                     </div>
                     <div style="font-size: 0.8rem; margin-top: 0.5rem;">
-                        El índice se actualizará automáticamente cada 24 horas
+                        ${searchIndex.length} páginas indexadas - Se actualiza cada 24h
                     </div>
                 `;
-                
-                // Ocultar después de 3 segundos
-                setTimeout(() => {
-                    statusEl.style.opacity = '0.7';
-                }, 3000);
                 
             } else if (type === 'error') {
                 statusEl.innerHTML = `
@@ -1330,34 +1611,152 @@
                         <span>${message}</span>
                     </div>
                 `;
-            } else {
+            } else if (type === 'warning') {
                 statusEl.innerHTML = `
-                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                        <div class="loading-spinner" style="width: 20px; height: 20px;"></div>
+                    <div style="color: #F59E0B; display: flex; align-items: center; gap: 0.5rem;">
+                        <span>⚠️</span>
                         <span>${message}</span>
                     </div>
-                    <div style="font-size: 0.8rem;">Escaneando todas las páginas de grouvex.com</div>
+                `;
+            } else if (type === 'info') {
+                statusEl.innerHTML = `
+                    <div style="color: #3B82F6; display: flex; align-items: center; gap: 0.5rem;">
+                        <span>ℹ️</span>
+                        <span>${message}</span>
+                    </div>
                 `;
             }
         }
 
-        // Función para re-indexar sitio
+        function updateProgress(message, percent) {
+            document.getElementById('indexProgress').style.width = `${percent}%`;
+            document.getElementById('indexProgressText').textContent = message;
+            
+            // También actualizar loading inicial
+            document.getElementById('initialProgress').style.width = `${percent}%`;
+        }
+
+        function hideInitialLoading() {
+            document.getElementById('initialLoading').style.display = 'none';
+        }
+
+        // ==================== FUNCIONES DE USUARIO ====================
+        function quickSearch(term) {
+            document.getElementById('mainSearchInput').value = term;
+            performSearch(term);
+        }
+
+        function showAllPages() {
+            currentSearchTerm = '';
+            currentPage = 1;
+            
+            document.getElementById('resultsList').innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Mostrando todas las páginas indexadas...</p>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                let results = [...searchIndex];
+                results.sort((a, b) => b.wordCount - a.wordCount);
+                
+                document.getElementById('resultsCount').textContent = 
+                    `${results.length} páginas indexadas en total`;
+                document.getElementById('resultsHeader').style.display = 'flex';
+                document.getElementById('currentQuery').textContent = 'Todas las páginas indexadas';
+                
+                displayResults(results);
+            }, 100);
+        }
+
+        function searchByType(type) {
+            const results = searchIndex.filter(page => page.type === type);
+            currentSearchTerm = '';
+            currentPage = 1;
+            
+            document.getElementById('resultsCount').textContent = 
+                `${results.length} páginas ${type.toUpperCase()}`;
+            document.getElementById('resultsHeader').style.display = 'flex';
+            document.getElementById('currentQuery').textContent = `Páginas ${type.toUpperCase()}`;
+            
+            displayResults(results);
+        }
+
+        function clearCache() {
+            if (confirm('¿Limpiar caché de búsqueda? La próxima búsqueda re-indexará todo el sitio.')) {
+                localStorage.removeItem(CACHE_KEY);
+                localStorage.removeItem(CACHE_TIMESTAMP_KEY);
+                showIndexStatus('success', 'Caché limpiada. Recargando...');
+                setTimeout(() => location.reload(), 1000);
+            }
+        }
+
         function reindexSite() {
-            if (confirm('¿Re-indexar todo el sitio? Esto puede tomar unos segundos.')) {
+            if (confirm('¿Re-indexar TODO el sitio web? Esto puede tomar varios minutos.')) {
                 localStorage.removeItem(CACHE_KEY);
                 localStorage.removeItem(CACHE_TIMESTAMP_KEY);
                 location.reload();
             }
         }
 
-        // Función para limpiar caché
-        function clearCache() {
-            if (confirm('¿Limpiar caché de búsqueda? La próxima búsqueda será más lenta.')) {
-                localStorage.removeItem(CACHE_KEY);
-                localStorage.removeItem(CACHE_TIMESTAMP_KEY);
-                showIndexStatus('success', 'Caché limpiada. Recargando...');
-                setTimeout(() => location.reload(), 1000);
+        function exportIndex() {
+            const data = {
+                metadata: {
+                    generated: new Date().toISOString(),
+                    site: SITE_URL,
+                    totalPages: searchIndex.length,
+                    totalWords: searchIndex.reduce((sum, p) => sum + p.wordCount, 0)
+                },
+                pages: searchIndex
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `grouvex-index-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Descubrir páginas comunes (fallback)
+        async function discoverCommonPages() {
+            const pagesToTry = [
+                '/', '/index.html',
+                '/about', '/about.html', '/sobre', '/sobre.html',
+                '/contact', '/contact.html', '/contacto', '/contacto.html',
+                '/blog', '/blog.html',
+                '/projects', '/projects.html', '/proyectos', '/proyectos.html',
+                '/music', '/music.html', '/musica', '/musica.html',
+                '/design', '/design.html', '/diseño', '/diseño.html',
+                '/portfolio', '/portfolio.html',
+                '/services', '/services.html', '/servicios', '/servicios.html',
+                '/tutorials', '/tutorials.html', '/tutoriales', '/tutoriales.html',
+                '/faq', '/faq.html', '/preguntas', '/preguntas.html',
+                '/privacy', '/privacy.html', '/privacidad', '/privacidad.html',
+                '/terms', '/terms.html', '/terminos', '/terminos.html',
+                '/sitemap.html', '/sitemap.xml',
+                '/404.html', '/404'
+            ];
+            
+            const discovered = [];
+            
+            for (const page of pagesToTry) {
+                try {
+                    const url = SITE_URL + page;
+                    const pageData = await indexPage(url);
+                    if (pageData) {
+                        discovered.push(pageData);
+                    }
+                } catch (error) {
+                    // Continuar con siguiente página
+                }
             }
+            
+            return discovered;
         }
     </script>
 </body>

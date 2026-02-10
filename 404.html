@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página no encontrada (404) | grouvex.com</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <style>
+        /* Reset y estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+        
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+        
+        /* Header */
+        .site-header {
+            padding: 24px 0;
+            border-bottom: 1px solid #e2e8f0;
+            background-color: white;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2563eb;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .logo:hover {
+            color: #1d4ed8;
+        }
+        
+        .logo-icon {
+            margin-right: 8px;
+            font-size: 1.5rem;
+        }
+        
+        /* Contenido principal */
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            padding: 60px 0;
+        }
+        
+        .error-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        @media (max-width: 768px) {
+            .error-section {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+        }
+        
+        .error-info {
+            padding-right: 20px;
+        }
+        
+        .error-code {
+            font-size: 6rem;
+            font-weight: 800;
+            color: #2563eb;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+        
+        .error-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 20px;
+        }
+        
+        .error-description {
+            font-size: 1.125rem;
+            color: #64748b;
+            margin-bottom: 30px;
+            max-width: 500px;
+        }
+        
+        .error-illustration {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .illustration-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .illustration {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
+        }
+        
+        /* Botones y acciones */
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background-color: #2563eb;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.2);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: #2563eb;
+            border: 1px solid #cbd5e1;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f1f5f9;
+            border-color: #94a3b8;
+            transform: translateY(-2px);
+        }
+        
+        .btn-icon {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+        
+        /* Búsqueda */
+        .search-section {
+            margin-top: 30px;
+            max-width: 500px;
+        }
+        
+        .search-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #475569;
+        }
+        
+        .search-box {
+            display: flex;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 1px solid #cbd5e1;
+            border-right: none;
+            border-radius: 8px 0 0 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .search-input:focus {
+            border-color: #2563eb;
+        }
+        
+        .search-btn {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 0 25px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .search-btn:hover {
+            background-color: #1d4ed8;
+        }
+        
+        /* Footer */
+        .site-footer {
+            background-color: #1e293b;
+            color: #cbd5e1;
+            padding: 40px 0;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        
+        .footer-section h3 {
+            color: white;
+            font-size: 1.125rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+            font-size: 0.875rem;
+        }
+        
+        /* Animación para el código 404 */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        .error-code {
+            animation: pulse 3s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header del sitio -->
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="logo">
+                <span class="logo-icon">🔗</span>
+                <span>grouvex.com</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Contenido principal -->
+    <main class="main-content">
+        <div class="container">
+            <section class="error-section">
+                <div class="error-info">
+                    <div class="error-code">404</div>
+                    <h1 class="error-title">Página no encontrada</h1>
+                    <p class="error-description">
+                        Lo sentimos, no pudimos encontrar la página que estás buscando. 
+                        Es posible que la dirección URL haya cambiado o que la página 
+                        ya no exista. Te sugerimos volver a la página de inicio o 
+                        utilizar el buscador para encontrar lo que necesitas.
+                    </p>
+                    
+                    <div class="action-buttons">
+                        <a href="/" class="btn btn-primary">
+                            <span class="btn-icon">🏠</span>
+                            <span>Volver al inicio</span>
+                        </a>
+                        <a href="/contacto" class="btn btn-secondary">
+                            <span class="btn-icon">📧</span>
+                            <span>Contactar soporte</span>
+                        </a>
+                    </div>
+                    
+                    <div class="search-section">
+                        <label for="site-search" class="search-label">¿Buscas algo en específico?</label>
+                        <div class="search-box">
+                            <input 
+                                type="search" 
+                                id="site-search" 
+                                class="search-input" 
+                                placeholder="Buscar en grouvex.com..."
+                                aria-label="Buscar en el sitio"
+                            >
+                            <button type="button" class="search-btn" onclick="performSearch()">
+                                🔍
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="error-illustration">
+                    <div class="illustration-container">
+                        <!-- Ilustración SVG de error -->
+                        <svg class="illustration" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="50" y="50" width="300" height="200" fill="#e0f2fe" rx="15"/>
+                            <rect x="70" y="80" width="260" height="40" fill="#93c5fd" rx="8"/>
+                            <rect x="70" y="140" width="180" height="20" fill="#cbd5e1" rx="4"/>
+                            <rect x="70" y="170" width="120" height="20" fill="#cbd5e1" rx="4"/>
+                            <rect x="70" y="200" width="150" height="20" fill="#cbd5e1" rx="4"/>
+                            <circle cx="300" cy="150" r="40" fill="#ef4444"/>
+                            <path d="M285 135 L315 165 M315 135 L285 165" stroke="white" stroke-width="8" stroke-linecap="round"/>
+                            <rect x="140" y="230" width="120" height="15" fill="#d1d5db" rx="7"/>
+                        </svg>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer del sitio -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>grouvex.com</h3>
+                    <p>Soluciones profesionales y desarrollo web de alta calidad.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Enlaces rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="/">Inicio</a></li>
+                        <li><a href="/servicios">Servicios</a></li>
+                        <li><a href="/proyectos">Proyectos</a></li>
+                        <li><a href="/blog">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <ul class="footer-links">
+                        <li><a href="/contacto">Formulario de contacto</a></li>
+                        <li><a href="/soporte">Soporte técnico</a></li>
+                        <li><a href="/privacidad">Política de privacidad</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; <span id="current-year"></span> grouvex.com. Todos los derechos reservados.</p>
+                <p>Página 404 personalizada | Código de error: 404 - Recurso no encontrado</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Año actual para el copyright
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        
+        // Función de búsqueda (puedes personalizarla según tu sitio)
+        function performSearch() {
+            const searchInput = document.getElementById('site-search');
+            const query = searchInput.value.trim();
+            
+            if (query) {
+                // Redirige a una página de búsqueda o realiza búsqueda en el sitio
+                // Esta es una implementación básica - personaliza según tus necesidades
+                window.location.href = `/buscar?q=${encodeURIComponent(query)}`;
+            } else {
+                searchInput.focus();
+            }
+        }
+        
+        // Permitir búsqueda con Enter
+        document.getElementById('site-search').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+        
+        // Efecto sutil al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            const errorCode = document.querySelector('.error-code');
+            setTimeout(() => {
+                errorCode.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    errorCode.style.transform = 'scale(1)';
+                }, 300);
+            }, 500);
+        });
+    </script>
+</body>
+</html>

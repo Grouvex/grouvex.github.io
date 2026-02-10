@@ -2,450 +2,1754 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Historial de Versiones - Grouvex Studios</title>
+    <meta name="description" content="Historial de Versiones de Grouvex Studios">
+    <meta property="og:title" content="Grouvex Studios">
+    <meta property="og:description" content="Historial de Versiones de Grouvex Studios">
+    <meta property="og:image" content="img/GROUVEX.png">
+    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects">
+    <meta name="author" content="Grouvex Studios">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#2563eb">
+    <meta property="og:url" content="https://grouvex.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_ES">
+    <link rel="canonical" href="https://grouvex.com/">
+    <link rel="icon" href="img/GROUVEX.png" type="image/x-icon">
+    <meta property="og:site_name" content="Grouvex Studios">
+    
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="temas.css">
+    <script src="time.js"></script>
+    <script type="module" src="abc.js"></script>
+    <script src="index.js"></script>
+    <script src="jquery-3.5.1.min.js"></script>
+    
+    <script> 
+        document.addEventListener("DOMContentLoaded", function() { 
+            $("#menuG").load("menuG.html");
+            $("#menuE").load("menuE.html");
+            $("#menuT").load("menuT.html");
+            $("#menuU").load("menuU.html");
+            $("#footer").load("footer.html"); 
+            $("#news").load("news.html"); 
+            $("#tosypp").load("tosypp.html");
+        });
+    </script>
+    
     <style>
-        /* Estilos formales y profesionales */
-        * {
+        /* ESTILOS PROFESIONALES PARA HISTORIAL DE VERSIONES */
+        :root {
+            /* Sistema de colores profesional */
+            --gs-blue: #2563eb;
+            --gs-blue-light: #3b82f6;
+            --gs-blue-dark: #1d4ed8;
+            --gs-purple: #7c3aed;
+            --gs-purple-light: #8b5cf6;
+            --gs-purple-dark: #6d28d9;
+            --gs-success: #10b981;
+            --gs-success-dark: #059669;
+            --gs-warning: #f59e0b;
+            --gs-warning-dark: #d97706;
+            --gs-error: #ef4444;
+            --gs-error-dark: #dc2626;
+            --gs-info: #06b6d4;
+            --gs-info-dark: #0891b2;
+            
+            /* Sistema de grises profesionales */
+            --gs-gray-50: #f9fafb;
+            --gs-gray-100: #f3f4f6;
+            --gs-gray-200: #e5e7eb;
+            --gs-gray-300: #d1d5db;
+            --gs-gray-400: #9ca3af;
+            --gs-gray-500: #6b7280;
+            --gs-gray-600: #4b5563;
+            --gs-gray-700: #374151;
+            --gs-gray-800: #1f2937;
+            --gs-gray-900: #111827;
+            
+            /* Variables de diseño */
+            --gs-elevation-1: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --gs-elevation-2: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+            --gs-elevation-3: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);
+            --gs-elevation-4: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+            --gs-elevation-5: 0 20px 25px rgba(0, 0, 0, 0.12), 0 10px 10px rgba(0, 0, 0, 0.04);
+            
+            --gs-border-radius-sm: 6px;
+            --gs-border-radius-md: 10px;
+            --gs-border-radius-lg: 14px;
+            --gs-border-radius-xl: 18px;
+            --gs-border-radius-2xl: 24px;
+            
+            --gs-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --gs-transition-medium: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+            --gs-transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+            
+            --gs-max-width: 1200px;
+            --gs-side-padding: clamp(1rem, 5vw, 2rem);
+        }
+
+        /* Reset y estilos base */
+        .version-tracker {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-feature-settings: 'kern', 'liga', 'clig', 'calt';
+            color: var(--gs-gray-900);
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .version-tracker * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f8f9fa;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
+        /* Contenedor principal */
+        .version-tracker-container {
+            max-width: var(--gs-max-width);
             margin: 0 auto;
+            padding: clamp(2rem, 5vw, 4rem) var(--gs-side-padding);
         }
 
-        /* Header formal */
-        .header {
+        /* Cabecera profesional */
+        .version-tracker-header {
             text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: clamp(3rem, 6vw, 5rem);
+            position: relative;
         }
 
-        .header h1 {
-            font-size: 2.5rem;
-            color: #1a237e;
-            margin-bottom: 10px;
-            font-weight: 600;
+        .version-tracker-header::after {
+            content: '';
+            position: absolute;
+            bottom: -1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(200px, 80%);
+            height: 4px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--gs-blue), 
+                var(--gs-purple), 
+                transparent);
+            border-radius: 2px;
         }
 
-        .header .subtitle {
-            color: #666;
-            font-size: 1.1rem;
-            max-width: 600px;
+        .version-tracker-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--gs-blue), var(--gs-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.025em;
+        }
+
+        .version-tracker-subtitle {
+            font-size: clamp(1rem, 1.5vw, 1.2rem);
+            color: var(--gs-gray-600);
+            max-width: 800px;
             margin: 0 auto;
+            line-height: 1.7;
+            font-weight: 400;
         }
 
-        /* Sistema de filtros minimalista */
-        .filters {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
+        /* Panel de versiones actuales */
+        .current-versions-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
         }
 
-        .filter-btn {
-            padding: 8px 16px;
+        .current-version-card {
             background: white;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s;
-            color: #555;
+            border-radius: var(--gs-border-radius-xl);
+            padding: 2rem;
+            box-shadow: var(--gs-elevation-4);
+            border: 1px solid var(--gs-gray-200);
+            position: relative;
+            transition: var(--gs-transition-medium);
+            overflow: hidden;
         }
 
-        .filter-btn:hover {
-            border-color: #1a237e;
-            color: #1a237e;
+        .current-version-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--gs-blue), var(--gs-purple));
         }
 
-        .filter-btn.active {
-            background: #1a237e;
+        .current-version-card.website::before {
+            background: var(--gs-blue);
+        }
+
+        .current-version-card.panel::before {
+            background: var(--gs-purple);
+        }
+
+        .current-version-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--gs-elevation-5);
+            border-color: var(--gs-gray-300);
+        }
+
+        .current-version-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .current-version-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .current-version-card.website .current-version-icon {
+            background: linear-gradient(135deg, var(--gs-blue-light), var(--gs-blue));
             color: white;
-            border-color: #1a237e;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
         }
 
-        /* Grid de versiones */
+        .current-version-card.panel .current-version-icon {
+            background: linear-gradient(135deg, var(--gs-purple-light), var(--gs-purple));
+            color: white;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+        }
+
+        .current-version-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gs-gray-900);
+            line-height: 1.3;
+        }
+
+        .current-version-badge {
+            display: inline-block;
+            background: var(--gs-gray-100);
+            color: var(--gs-gray-700);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            margin-top: 0.5rem;
+            border: 1px solid var(--gs-gray-200);
+        }
+
+        .current-version-content {
+            margin-top: 1.5rem;
+        }
+
+        .current-version-number {
+            font-family: 'SF Mono', 'Roboto Mono', 'Consolas', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gs-gray-900);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-version-card.website .current-version-number {
+            color: var(--gs-blue);
+        }
+
+        .current-version-card.panel .current-version-number {
+            color: var(--gs-purple);
+        }
+
+        .current-version-date {
+            color: var(--gs-gray-600);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* Sistema de filtros profesional */
+        .version-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: var(--gs-border-radius-lg);
+            box-shadow: var(--gs-elevation-3);
+            border: 1px solid var(--gs-gray-200);
+        }
+
+        .filter-button {
+            flex: 1;
+            min-width: 140px;
+            padding: 0.875rem 1.5rem;
+            background: var(--gs-gray-50);
+            border: 1px solid var(--gs-gray-300);
+            border-radius: var(--gs-border-radius-md);
+            color: var(--gs-gray-700);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--gs-transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.6s;
+        }
+
+        .filter-button:hover::before {
+            left: 100%;
+        }
+
+        .filter-button:hover {
+            background: var(--gs-gray-100);
+            border-color: var(--gs-gray-400);
+            color: var(--gs-gray-900);
+        }
+
+        .filter-button.active {
+            background: var(--gs-blue);
+            border-color: var(--gs-blue);
+            color: white;
+        }
+
+        .filter-button.active:hover {
+            background: var(--gs-blue-dark);
+            border-color: var(--gs-blue-dark);
+        }
+
+        .filter-button .filter-count {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.125rem 0.5rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            min-width: 28px;
+            text-align: center;
+        }
+
+        .filter-button:not(.active) .filter-count {
+            background: var(--gs-gray-200);
+            color: var(--gs-gray-700);
+        }
+
+        /* Sistema de grid responsivo */
         .versions-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
+            grid-template-columns: 1fr;
+            gap: 2rem;
         }
 
-        /* Tarjeta de versión */
+        @media (min-width: 768px) {
+            .versions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .versions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Tarjeta de versión profesional */
         .version-card {
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: var(--gs-border-radius-xl);
             overflow: hidden;
-            transition: transform 0.2s;
+            box-shadow: var(--gs-elevation-3);
+            border: 1px solid var(--gs-gray-200);
+            transition: var(--gs-transition-medium);
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .version-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-4px);
+            box-shadow: var(--gs-elevation-5);
+            border-color: var(--gs-gray-300);
         }
 
-        .version-header {
-            padding: 20px;
-            background: #f5f5f5;
-            border-bottom: 1px solid #eee;
+        .version-card-header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--gs-gray-100);
+            cursor: pointer;
+            transition: var(--gs-transition-fast);
+            position: relative;
+            overflow: hidden;
         }
 
-        .version-number {
-            display: inline-block;
-            background: #1a237e;
+        .version-card-header:hover {
+            background: var(--gs-gray-50);
+        }
+
+        .version-card-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+        }
+
+        .version-card.website .version-card-header::before {
+            background: var(--gs-blue);
+        }
+
+        .version-card.panel .version-card-header::before {
+            background: var(--gs-purple);
+        }
+
+        .version-type-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .version-type-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: var(--gs-border-radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .version-card.website .version-type-tag {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--gs-blue);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+        }
+
+        .version-card.panel .version-type-tag {
+            background: rgba(124, 58, 237, 0.1);
+            color: var(--gs-purple);
+            border: 1px solid rgba(124, 58, 237, 0.2);
+        }
+
+        .current-version-tag {
+            background: linear-gradient(135deg, var(--gs-success), var(--gs-info));
             color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 10px;
+            padding: 0.5rem 1rem;
+            border-radius: var(--gs-border-radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .version-title {
-            font-size: 18px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gs-gray-900);
+            line-height: 1.3;
+            margin: 0.5rem 0 1rem;
+        }
+
+        .version-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gs-gray-100);
+        }
+
+        .version-number {
+            font-family: 'SF Mono', 'Roboto Mono', 'Consolas', monospace;
+            font-size: 1.25rem;
             font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
+            color: var(--gs-gray-900);
+            text-decoration: none;
+            transition: var(--gs-transition-fast);
+            padding: 0.5rem 1rem;
+            border-radius: var(--gs-border-radius-md);
+            background: var(--gs-gray-50);
+            border: 1px solid var(--gs-gray-200);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .version-number:hover {
+            background: var(--gs-gray-100);
+            border-color: var(--gs-gray-300);
+            transform: translateY(-1px);
+        }
+
+        .version-card.website .version-number {
+            color: var(--gs-blue);
+        }
+
+        .version-card.panel .version-number {
+            color: var(--gs-purple);
         }
 
         .version-date {
-            color: #666;
-            font-size: 14px;
+            color: var(--gs-gray-600);
+            font-size: 0.9rem;
+            font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 0.5rem;
         }
 
-        /* Lista de cambios */
-        .changes-list {
-            padding: 20px;
+        /* Previsualización compacta */
+        .version-preview {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--gs-gray-100);
+            background: var(--gs-gray-50);
         }
 
-        .changes-list h4 {
-            font-size: 16px;
-            color: #444;
-            margin-bottom: 15px;
+        .preview-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--gs-gray-700);
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.5rem;
         }
 
-        .change-item {
-            padding: 8px 0;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 14px;
-            color: #555;
+        .preview-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
+            gap: 0.75rem;
         }
 
-        .change-item:last-child {
-            border-bottom: none;
+        .preview-item {
+            padding: 0.75rem 1rem;
+            border-radius: var(--gs-border-radius-sm);
+            font-size: 0.875rem;
+            line-height: 1.5;
+            border-left: 4px solid;
+            background: white;
+            border: 1px solid var(--gs-gray-200);
+            transition: var(--gs-transition-fast);
         }
 
-        /* Sección de recursos */
+        .preview-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--gs-elevation-2);
+        }
+
+        .preview-item.added {
+            border-left-color: var(--gs-success);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .preview-item.updated {
+            border-left-color: var(--gs-warning);
+            background: rgba(245, 158, 11, 0.05);
+        }
+
+        .preview-item.fixed {
+            border-left-color: var(--gs-blue);
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .preview-item.removed {
+            border-left-color: var(--gs-error);
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .preview-more {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 0.75rem;
+            color: var(--gs-gray-600);
+            font-size: 0.875rem;
+            font-style: italic;
+            background: white;
+            border: 1px solid var(--gs-gray-200);
+            border-radius: var(--gs-border-radius-sm);
+        }
+
+        /* Botón de expandir */
+        .expand-button {
+            width: 100%;
+            padding: 1rem;
+            background: var(--gs-gray-50);
+            border: none;
+            color: var(--gs-gray-700);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--gs-transition-fast);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.75rem;
+            border-top: 1px solid var(--gs-gray-200);
+        }
+
+        .expand-button:hover {
+            background: var(--gs-gray-100);
+            color: var(--gs-gray-900);
+        }
+
+        .expand-button .expand-icon {
+            transition: transform var(--gs-transition-medium);
+        }
+
+        .expand-button.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Contenido expandido - SOLO RECURSOS */
+        .version-content {
+            padding: 2rem;
+            display: none;
+            animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(145deg, rgba(248, 250, 252, 0.98), rgba(241, 245, 249, 0.95));
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .resources-section {
-            padding: 20px;
-            background: #f9f9f9;
-            border-top: 1px solid #eee;
+            margin-bottom: 0;
         }
 
         .resources-title {
-            font-size: 16px;
-            color: #444;
-            margin-bottom: 15px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--gs-gray-900);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--gs-gray-200);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.75rem;
         }
 
         .resources-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
+            gap: 1rem;
         }
 
-        .resource-item {
+        .resource-card {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 10px;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem;
             background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
+            border: 1px solid var(--gs-gray-200);
+            border-radius: var(--gs-border-radius-md);
             text-decoration: none;
-            color: #333;
-            font-size: 14px;
-            transition: all 0.2s;
+            color: var(--gs-gray-800);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: var(--gs-transition-fast);
         }
 
-        .resource-item:hover {
-            border-color: #1a237e;
-            background: #f8f9ff;
+        .resource-card:hover {
+            background: var(--gs-gray-50);
+            border-color: var(--gs-gray-300);
+            transform: translateY(-2px);
+            box-shadow: var(--gs-elevation-2);
+        }
+
+        .resource-card.video:hover {
+            border-color: var(--gs-error);
+            color: var(--gs-error-dark);
+        }
+
+        .resource-card.image:hover {
+            border-color: var(--gs-success);
+            color: var(--gs-success-dark);
+        }
+
+        .resource-card.link:hover {
+            border-color: var(--gs-blue);
+            color: var(--gs-blue-dark);
         }
 
         .resource-icon {
-            font-size: 18px;
+            font-size: 1.25rem;
+            width: 24px;
+            text-align: center;
         }
 
-        /* Estados vacíos */
+        /* Estado vacío */
         .empty-state {
+            grid-column: 1 / -1;
             text-align: center;
-            padding: 60px 20px;
-            color: #666;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: var(--gs-border-radius-xl);
+            box-shadow: var(--gs-elevation-3);
+            border: 1px solid var(--gs-gray-200);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.5;
         }
 
         .empty-state h3 {
-            font-size: 18px;
-            margin-bottom: 10px;
-            color: #444;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gs-gray-900);
+            margin-bottom: 1rem;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .versions-grid {
+        .empty-state p {
+            color: var(--gs-gray-600);
+            max-width: 400px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Anclas para navegación */
+        .version-anchor {
+            display: block;
+            position: relative;
+            top: -100px;
+            visibility: hidden;
+        }
+
+        /* Lightbox profesional */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Scroll suave */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+
+        /* Utilidades responsivas */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Estilos para diferentes tamaños de pantalla */
+        @media (max-width: 640px) {
+            .version-filters {
+                padding: 1rem;
+            }
+            
+            .filter-button {
+                min-width: calc(50% - 0.5rem);
+                flex: none;
+            }
+            
+            .version-card-header,
+            .version-content {
+                padding: 1.5rem;
+            }
+            
+            .preview-items {
                 grid-template-columns: 1fr;
             }
             
-            .header h1 {
-                font-size: 2rem;
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .current-version-card {
+                padding: 1.5rem;
             }
             
-            .filters {
-                justify-content: flex-start;
-                overflow-x: auto;
-                padding-bottom: 10px;
+            .current-version-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+            
+            .filter-button {
+                min-width: 100%;
+            }
+            
+            .version-title {
+                font-size: 1.25rem;
+            }
+            
+            .version-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+        }
+
+        /* Mejoras de accesibilidad */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* Modo oscuro automático */
+        @media (prefers-color-scheme: dark) {
+            .version-tracker {
+                background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+                color: #f1f5f9;
+            }
+            
+            .version-tracker-subtitle {
+                color: #cbd5e1;
+            }
+            
+            .current-version-card,
+            .version-filters,
+            .version-card,
+            .empty-state {
+                background: #1e293b;
+                border-color: #334155;
+                color: #f1f5f9;
+            }
+            
+            .current-version-card:hover,
+            .version-card:hover {
+                border-color: #475569;
+            }
+            
+            .current-version-title,
+            .version-title,
+            .resources-title,
+            .empty-state h3 {
+                color: #f1f5f9;
+            }
+            
+            .current-version-date,
+            .version-date,
+            .preview-title,
+            .empty-state p {
+                color: #cbd5e1;
+            }
+            
+            .filter-button {
+                background: #334155;
+                border-color: #475569;
+                color: #cbd5e1;
+            }
+            
+            .filter-button:hover {
+                background: #475569;
+                color: #f1f5f9;
+            }
+            
+            .filter-button.active {
+                background: var(--gs-blue);
+                color: white;
+            }
+            
+            .version-card-header:hover {
+                background: #334155;
+            }
+            
+            .version-preview {
+                background: #0f172a;
+            }
+            
+            .preview-item,
+            .preview-more,
+            .resource-card {
+                background: #334155;
+                border-color: #475569;
+                color: #e2e8f0;
+            }
+            
+            .expand-button {
+                background: #0f172a;
+                border-color: #334155;
+                color: #cbd5e1;
+            }
+            
+            .expand-button:hover {
+                background: #1e293b;
+                color: #f1f5f9;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1>Historial de Versiones</h1>
-            <p class="subtitle">Registro oficial de todas las actualizaciones del sistema</p>
-        </header>
-
-        <div class="filters">
-            <button class="filter-btn active" data-filter="all">Todas</button>
-            <button class="filter-btn" data-filter="web">Sitio Web</button>
-            <button class="filter-btn" data-filter="panel">Panel</button>
-            <button class="filter-btn" data-filter="api">API</button>
-            <button class="filter-btn" data-filter="mobile">Móvil</button>
+    <header>
+        <a href="https://grouvex.github.io/"><div class="img-container" loading="lazy"></div></a> 
+        <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
+            <nav>
+                <span id="menuG"></span>
+                <span id="menuT"></span>
+                <span id="menuU"></span>
+            </nav>
+        </span>
+    </header>
+    
+    <!-- Anuncio -->
+    <div id="news"></div>
+    
+    <main>
+        <!-- Publicado por -->
+        <div class="tarjetas">
+            <div class="tarjeta">
+                <img id="imgTIGS" src="" alt="">
+                <div>
+                    <h2 style="margin:2px; font-size: 7.5px;height:auto">Publicado por:</h2>
+                    <h2><span tigsID="GS-NOF9eRLdQmU6fiHSbAYaknAiGOU2"></span></h2>
+                    <hr>
+                    <span class="insignias-container"></span>
+                    <p><span id="ActualizadoDATE"></span></p>
+                </div>
+            </div>
         </div>
+        <script>
+            const uTActualizado = 1738429200; 
+            actualizarFechas(uTActualizado, "ActualizadoDATE");
+        </script>
+        
+        <!-- Historial de Versiones -->
+        <article>
+            <div class="version-tracker">
+                <div class="version-tracker-container">
+                    <!-- Cabecera -->
+                    <header class="version-tracker-header">
+                        <h1 class="version-tracker-title">Historial de Versiones</h1>
+                        <p class="version-tracker-subtitle">
+                            Seguimiento detallado de todas las actualizaciones del sitio web y Panel de Grouvex Studios.
+                            Cada versión incluye cambios documentados, recursos multimedia y enlaces permanentes.
+                        </p>
+                    </header>
+                    
+                    <!-- Versiones actuales -->
+                    <section class="current-versions-panel">
+                        <div class="current-version-card website" id="current-website">
+                            <div class="current-version-header">
+                                <div class="current-version-icon">🌐</div>
+                                <div>
+                                    <h3 class="current-version-title">Sitio Web Actual</h3>
+                                    <span class="current-version-badge">Versión actual</span>
+                                </div>
+                            </div>
+                            <div class="current-version-content">
+                                <div class="current-version-number">v2.1.0</div>
+                                <div class="current-version-date">Última actualización: 22 nov 2023</div>
+                            </div>
+                        </div>
+                        
+                        <div class="current-version-card panel" id="current-panel">
+                            <div class="current-version-header">
+                                <div class="current-version-icon">⚙️</div>
+                                <div>
+                                    <h3 class="current-version-title">Panel de Grouvex Studios</h3>
+                                    <span class="current-version-badge">Versión actual</span>
+                                </div>
+                            </div>
+                            <div class="current-version-content">
+                                <div class="current-version-number">v1.5.2</div>
+                                <div class="current-version-date">Última actualización: 15 nov 2023</div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Filtros -->
+                    <nav class="version-filters" aria-label="Filtros de versiones">
+                        <button class="filter-button active" data-filter="all" aria-pressed="true">
+                            <span class="filter-icon">📋</span>
+                            <span>Todas las versiones</span>
+                            <span class="filter-count">12</span>
+                        </button>
+                        <button class="filter-button" data-filter="website" aria-pressed="false">
+                            <span class="filter-icon">🌐</span>
+                            <span>Sitio Web</span>
+                            <span class="filter-count">6</span>
+                        </button>
+                        <button class="filter-button" data-filter="panel" aria-pressed="false">
+                            <span class="filter-icon">⚙️</span>
+                            <span>Panel de Grouvex Studios</span>
+                            <span class="filter-count">4</span>
+                        </button>
+                        <button class="filter-button" data-filter="api" aria-pressed="false">
+                            <span class="filter-icon">🔧</span>
+                            <span>API</span>
+                            <span class="filter-count">2</span>
+                        </button>
+                    </nav>
+                    
+                    <!-- Contenedor de versiones -->
+                    <div class="versions-grid" id="versionsContainer">
+                        <!-- Las versiones se cargarán aquí mediante JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </article>
+    </main>
 
-        <div class="versions-grid" id="versionsContainer">
-            <!-- Las versiones se cargarán aquí -->
-        </div>
-    </div>
-
+    <!-- Footer -->
+    <div id="footer"></div>
+    
+    <script src="preloader.js"></script>
+    
     <script>
-        // Datos de ejemplo de versiones
-        const versionsData = [
-            {
-                id: 1,
-                type: "web",
-                version: "2.1.0",
-                title: "Mejoras en el sistema de notificaciones",
-                date: "2023-11-22",
-                changes: [
-                    "Nuevo sistema de notificaciones en tiempo real",
-                    "Mejorado el rendimiento de la página principal",
-                    "Corregido error en el formulario de contacto",
-                    "Optimización de imágenes y recursos"
-                ],
-                resources: [
-                    { type: "doc", icon: "📄", label: "Documentación técnica", url: "#" },
-                    { type: "img", icon: "🖼️", label: "Capturas de pantalla", url: "#" },
-                    { type: "video", icon: "🎥", label: "Video tutorial", url: "#" }
-                ]
-            },
-            {
-                id: 2,
-                type: "panel",
-                version: "1.5.2",
-                title: "Actualización de seguridad",
-                date: "2023-11-15",
-                changes: [
-                    "Autenticación de dos factores",
-                    "Panel de estadísticas mejorado",
-                    "Vulnerabilidad en sesiones corregida",
-                    "Función obsoleta eliminada"
-                ],
-                resources: [
-                    { type: "doc", icon: "📄", label: "Manual de seguridad", url: "#" },
-                    { type: "link", icon: "🔗", label: "Reporte de auditoría", url: "#" }
-                ]
-            },
-            {
-                id: 3,
-                type: "api",
-                version: "3.0.1",
-                title: "Nuevos endpoints y mejoras",
-                date: "2023-11-10",
-                changes: [
-                    "5 nuevos endpoints REST",
-                    "Límite de rate aumentado",
-                    "Documentación Swagger actualizada",
-                    "Errores de validación corregidos"
-                ],
-                resources: [
-                    { type: "doc", icon: "📄", label: "Documentación API", url: "#" },
-                    { type: "link", icon: "🔗", label: "Changelog completo", url: "#" },
-                    { type: "code", icon: "💻", label: "Ejemplos de código", url: "#" }
-                ]
-            },
-            {
-                id: 4,
-                type: "mobile",
-                version: "1.3.0",
-                title: "App móvil rediseñada",
-                date: "2023-11-05",
-                changes: [
-                    "Nueva interfaz de usuario",
-                    "Sincronización en tiempo real",
-                    "Notificaciones push mejoradas",
-                    "Rendimiento optimizado"
-                ],
-                resources: [
-                    { type: "app", icon: "📱", label: "Descargar APK", url: "#" },
-                    { type: "doc", icon: "📄", label: "Guía de actualización", url: "#" }
-                ]
-            },
-            {
-                id: 5,
-                type: "web",
-                version: "2.0.5",
-                title: "Correcciones menores",
-                date: "2023-10-28",
-                changes: [
-                    "Error 404 en algunas páginas",
-                    "Problema con formularios en Safari",
-                    "Mejoras en responsive design",
-                    "Actualización de dependencias"
-                ],
-                resources: [
-                    { type: "doc", icon: "📄", label: "Notas de la versión", url: "#" }
-                ]
-            }
-        ];
+        // DATOS DE VERSIONES CON RECURSOS
+        const versionsData = {
+            versions: [
+                {
+                    type: "website",
+                    version: "2.1.0",
+                    title: "Mejoras en el sistema de notificaciones y seguridad",
+                    date: "2023-11-22",
+                    timestamp: 1700601600,
+                    changes: [
+                        "Nuevo sistema de notificaciones en tiempo real",
+                        "Implementación de autenticación de dos factores",
+                        "Mejoras en el rendimiento de la página principal",
+                        "Corrección de vulnerabilidades de seguridad"
+                    ],
+                    resources: [
+                        {
+                            type: "document",
+                            icon: "📄",
+                            label: "Documentación técnica completa",
+                            url: "docs/technical-doc-v2.1.0.pdf"
+                        },
+                        {
+                            type: "image",
+                            icon: "🖼️",
+                            label: "Capturas del nuevo sistema",
+                            url: "images/notifications-screenshots.zip"
+                        },
+                        {
+                            type: "video",
+                            icon: "🎥",
+                            label: "Video tutorial de nuevas funciones",
+                            url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                        },
+                        {
+                            type: "link",
+                            icon: "🔗",
+                            label: "Notas de la versión detalladas",
+                            url: "changelog/v2.1.0.html"
+                        }
+                    ]
+                },
+                {
+                    type: "panel",
+                    version: "1.5.2",
+                    title: "Actualización de seguridad y nuevas funciones administrativas",
+                    date: "2023-11-15",
+                    timestamp: 1699996800,
+                    changes: [
+                        "Panel de estadísticas completamente rediseñado",
+                        "Nuevos gráficos interactivos",
+                        "Exportación de datos en múltiples formatos",
+                        "Corrección de vulnerabilidad en gestión de sesiones"
+                    ],
+                    resources: [
+                        {
+                            type: "document",
+                            icon: "📄",
+                            label: "Manual de administración actualizado",
+                            url: "docs/admin-manual-v1.5.2.pdf"
+                        },
+                        {
+                            type: "image",
+                            icon: "🖼️",
+                            label: "Galería del nuevo panel",
+                            url: "images/new-panel-gallery.zip"
+                        },
+                        {
+                            type: "link",
+                            icon: "🔗",
+                            label: "API documentation para desarrolladores",
+                            url: "api/docs/v1.5.2"
+                        }
+                    ]
+                },
+                {
+                    type: "api",
+                    version: "3.0.1",
+                    title: "Nuevos endpoints y mejoras de rendimiento",
+                    date: "2023-11-10",
+                    timestamp: 1699564800,
+                    changes: [
+                        "5 nuevos endpoints REST para gestión de usuarios",
+                        "Límite de rate aumentado a 1000 requests/minuto",
+                        "Documentación Swagger completamente actualizada",
+                        "Errores de validación optimizados"
+                    ],
+                    resources: [
+                        {
+                            type: "document",
+                            icon: "📄",
+                            label: "Guía de migración v2.x a v3.x",
+                            url: "docs/migration-guide.pdf"
+                        },
+                        {
+                            type: "code",
+                            icon: "💻",
+                            label: "Ejemplos de código en múltiples lenguajes",
+                            url: "examples/api-examples.zip"
+                        },
+                        {
+                            type: "link",
+                            icon: "🔗",
+                            label: "Documentación Swagger interactiva",
+                            url: "api/swagger/v3.0.1"
+                        }
+                    ]
+                },
+                {
+                    type: "website",
+                    version: "2.0.5",
+                    title: "Optimización para móviles y correcciones menores",
+                    date: "2023-10-28",
+                    timestamp: 1698451200,
+                    changes: [
+                        "Diseño completamente responsivo para móviles",
+                        "Corrección de problemas en navegadores Safari",
+                        "Mejoras en tiempo de carga de imágenes",
+                        "Actualización de dependencias de seguridad"
+                    ],
+                    resources: [
+                        {
+                            type: "image",
+                            icon: "🖼️",
+                            label: "Comparativa móvil vs desktop",
+                            url: "images/mobile-comparison.zip"
+                        },
+                        {
+                            type: "link",
+                            icon: "🔗",
+                            label: "Reporte de optimización de rendimiento",
+                            url: "reports/performance-optimization.html"
+                        }
+                    ]
+                },
+                {
+                    type: "panel",
+                    version: "1.4.8",
+                    title: "Correcciones de bugs y mejoras en la interfaz",
+                    date: "2023-10-15",
+                    timestamp: 1697328000,
+                    changes: [
+                        "Corrección de bug en subida de archivos grandes",
+                        "Mejoras en la interfaz de gestión de usuarios",
+                        "Nuevas opciones de filtrado en tablas",
+                        "Optimización de consultas a la base de datos"
+                    ],
+                    resources: [
+                        {
+                            type: "document",
+                            icon: "📄",
+                            label: "Lista completa de bugs corregidos",
+                            url: "docs/bugs-fixed-v1.4.8.pdf"
+                        },
+                        {
+                            type: "link",
+                            icon: "🔗",
+                            label: "Guía rápida de nuevas funciones",
+                            url: "quick-guide/v1.4.8.html"
+                        }
+                    ]
+                },
+                {
+                    type: "website",
+                    version: "1.9.3",
+                    title: "Actualización de contenido y SEO",
+                    date: "2023-09-30",
+                    timestamp: 1696032000,
+                    changes: [
+                        "Contenido optimizado para motores de búsqueda",
+                        "Nuevo mapa del sitio XML",
+                        "Mejoras en meta tags y descripciones",
+                        "Corrección de enlaces rotos en el blog"
+                    ],
+                    resources: [
+                        {
+                            type: "document",
+                            icon: "📄",
+                            label: "Reporte de análisis SEO",
+                            url: "docs/seo-analysis-report.pdf"
+                        },
+                        {
+                            type: "link",
+                            icon: "🔗",
+                            label: "Mapa del sitio actualizado",
+                            url: "sitemap.xml"
+                        }
+                    ]
+                }
+            ]
+        };
 
+        // SISTEMA DE GESTIÓN DE VERSIONES
         document.addEventListener('DOMContentLoaded', function() {
-            const container = document.getElementById('versionsContainer');
-            const filterButtons = document.querySelectorAll('.filter-btn');
-            let currentFilter = 'all';
-
-            // Mostrar todas las versiones inicialmente
-            displayVersions(versionsData);
-
-            // Configurar eventos de filtrado
+            const versionsContainer = document.getElementById('versionsContainer');
+            const filterButtons = document.querySelectorAll('.filter-button');
+            
+            // Cargar y mostrar todas las versiones inicialmente
+            displayVersions(versionsData.versions);
+            
+            // Configurar filtros
             filterButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     // Remover clase active de todos
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.setAttribute('aria-pressed', 'false');
+                    });
                     
-                    // Agregar active al clickeado
+                    // Agregar clase active al botón clickeado
                     this.classList.add('active');
-                    
-                    // Obtener filtro
-                    currentFilter = this.getAttribute('data-filter');
+                    this.setAttribute('aria-pressed', 'true');
                     
                     // Filtrar versiones
-                    if (currentFilter === 'all') {
-                        displayVersions(versionsData);
-                    } else {
-                        const filtered = versionsData.filter(v => v.type === currentFilter);
-                        displayVersions(filtered);
-                    }
+                    const filterType = this.getAttribute('data-filter');
+                    filterVersions(filterType);
                 });
             });
-
+            
+            // Función para mostrar versiones
             function displayVersions(versions) {
                 if (versions.length === 0) {
-                    container.innerHTML = `
+                    versionsContainer.innerHTML = `
                         <div class="empty-state">
+                            <div class="empty-state-icon">📭</div>
                             <h3>No hay versiones para mostrar</h3>
-                            <p>No se encontraron versiones con el filtro seleccionado.</p>
+                            <p>Seleccione otro filtro para ver más versiones o vuelva más tarde para nuevas actualizaciones.</p>
                         </div>
                     `;
                     return;
                 }
-
-                container.innerHTML = '';
-
+                
+                versionsContainer.innerHTML = '';
+                
                 // Ordenar por fecha (más reciente primero)
-                versions.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-                versions.forEach(version => {
-                    const card = createVersionCard(version);
-                    container.appendChild(card);
+                versions.sort((a, b) => b.timestamp - a.timestamp);
+                
+                versions.forEach((version, index) => {
+                    const versionCard = createVersionCard(version, index);
+                    versionsContainer.appendChild(versionCard);
                 });
             }
-
-            function createVersionCard(version) {
-                const card = document.createElement('div');
-                card.className = 'version-card';
-
-                // Crear HTML de cambios
-                let changesHTML = '';
-                if (version.changes && version.changes.length > 0) {
-                    changesHTML = `
-                        <div class="changes-list">
-                            <h4>📋 Cambios realizados</h4>
-                            ${version.changes.map(change => `
-                                <div class="change-item">• ${change}</div>
-                            `).join('')}
+            
+            // Función para crear tarjeta de versión
+            function createVersionCard(version, index) {
+                const card = document.createElement('article');
+                card.className = `version-card ${version.type}`;
+                card.style.animationDelay = `${index * 0.1}s`;
+                
+                // Datos de la versión
+                const formattedDate = formatDate(version.date);
+                const typeLabel = getTypeLabel(version.type);
+                const typeIcon = getTypeIcon(version.type);
+                
+                // Crear ID único para el ancla
+                const anchorId = `version-${version.type}-${version.version.replace(/\./g, '-')}`;
+                
+                // Crear previsualización de cambios
+                let previewHTML = '';
+                const previewChanges = version.changes.slice(0, 3);
+                previewChanges.forEach(change => {
+                    previewHTML += `
+                        <div class="preview-item updated">
+                            ${change}
+                        </div>
+                    `;
+                });
+                
+                if (version.changes.length > 3) {
+                    previewHTML += `
+                        <div class="preview-more">
+                            + ${version.changes.length - 3} cambio${version.changes.length - 3 > 1 ? 's' : ''} adicionales
                         </div>
                     `;
                 }
-
+                
                 // Crear HTML de recursos
                 let resourcesHTML = '';
                 if (version.resources && version.resources.length > 0) {
+                    let resourcesListHTML = '';
+                    
+                    version.resources.forEach(resource => {
+                        let resourceHTML = '';
+                        
+                        if (resource.type === 'video') {
+                            resourceHTML = `
+                                <a href="#" class="resource-card video" 
+                                   data-video-url="${resource.url}" 
+                                   data-label="${resource.label}">
+                                    <span class="resource-icon">${resource.icon}</span>
+                                    <span>${resource.label}</span>
+                                </a>
+                            `;
+                        } else if (resource.type === 'image') {
+                            resourceHTML = `
+                                <a href="#" class="resource-card image" 
+                                   data-image-url="${resource.url}" 
+                                   data-label="${resource.label}">
+                                    <span class="resource-icon">${resource.icon}</span>
+                                    <span>${resource.label}</span>
+                                </a>
+                            `;
+                        } else {
+                            resourceHTML = `
+                                <a href="${resource.url}" class="resource-card link" 
+                                   target="_blank" rel="noopener noreferrer">
+                                    <span class="resource-icon">${resource.icon}</span>
+                                    <span>${resource.label}</span>
+                                </a>
+                            `;
+                        }
+                        
+                        resourcesListHTML += resourceHTML;
+                    });
+                    
                     resourcesHTML = `
-                        <div class="resources-section">
-                            <h4>📎 Recursos relacionados</h4>
+                        <section class="resources-section">
+                            <h3 class="resources-title">
+                                <span>📎</span>
+                                <span>Recursos relacionados</span>
+                            </h3>
                             <div class="resources-grid">
-                                ${version.resources.map(resource => `
-                                    <a href="${resource.url}" class="resource-item" target="_blank">
-                                        <span class="resource-icon">${resource.icon}</span>
-                                        <span>${resource.label}</span>
-                                    </a>
-                                `).join('')}
+                                ${resourcesListHTML}
                             </div>
-                        </div>
+                        </section>
                     `;
                 }
-
+                
+                // Agregar ancla para navegación
+                const anchorHTML = `<span id="${anchorId}" class="version-anchor" aria-hidden="true"></span>`;
+                
                 card.innerHTML = `
-                    <div class="version-header">
-                        <div class="version-number">v${version.version}</div>
-                        <h3 class="version-title">${version.title}</h3>
-                        <div class="version-date">
-                            <span>📅</span>
-                            <span>${version.date}</span>
+                    ${anchorHTML}
+                    
+                    <header class="version-card-header">
+                        <div class="version-type-container">
+                            <span class="version-type-tag">
+                                ${typeIcon}
+                                <span>${typeLabel}</span>
+                            </span>
                         </div>
+                        
+                        <h2 class="version-title">${version.title}</h2>
+                        
+                        <div class="version-meta">
+                            <a href="#${anchorId}" class="version-number" aria-label="Enlace permanente a la versión ${version.version}">
+                                <span>#</span>
+                                <span>v${version.version}</span>
+                            </a>
+                            <time class="version-date" datetime="${version.date}">
+                                <span>📅</span>
+                                <span>${formattedDate}</span>
+                            </time>
+                        </div>
+                    </header>
+                    
+                    <section class="version-preview">
+                        <h3 class="preview-title">
+                            <span>🔍</span>
+                            <span>Resumen de cambios</span>
+                        </h3>
+                        <div class="preview-items">
+                            ${previewHTML}
+                        </div>
+                    </section>
+                    
+                    <button class="expand-button" data-target="${anchorId}" aria-expanded="false" aria-controls="content-${anchorId}">
+                        <span class="expand-text">Ver recursos relacionados</span>
+                        <span class="expand-icon" aria-hidden="true">▼</span>
+                    </button>
+                    
+                    <div class="version-content" id="content-${anchorId}" hidden>
+                        ${resourcesHTML}
                     </div>
-                    ${changesHTML}
-                    ${resourcesHTML}
                 `;
-
+                
+                // Configurar eventos
+                setupCardEvents(card, anchorId);
+                setupResourceEvents(card);
+                
                 return card;
             }
+            
+            // Configurar eventos de tarjeta
+            function setupCardEvents(card, anchorId) {
+                const expandBtn = card.querySelector('.expand-button');
+                const versionContent = card.querySelector('.version-content');
+                const cardHeader = card.querySelector('.version-card-header');
+                
+                expandBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleCardExpansion(this, versionContent);
+                });
+                
+                cardHeader.addEventListener('click', function() {
+                    expandBtn.click();
+                });
+                
+                // Manejar teclado para accesibilidad
+                cardHeader.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        expandBtn.click();
+                    }
+                });
+            }
+            
+            // Alternar expansión de tarjeta
+            function toggleCardExpansion(button, content) {
+                const isExpanded = !content.hidden;
+                
+                if (isExpanded) {
+                    content.hidden = true;
+                    button.classList.remove('expanded');
+                    button.querySelector('.expand-text').textContent = 'Ver recursos relacionados';
+                    button.setAttribute('aria-expanded', 'false');
+                } else {
+                    content.hidden = false;
+                    button.classList.add('expanded');
+                    button.querySelector('.expand-text').textContent = 'Ocultar recursos';
+                    button.setAttribute('aria-expanded', 'true');
+                    
+                    // Scroll suave al contenido expandido
+                    setTimeout(() => {
+                        content.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'nearest'
+                        });
+                    }, 300);
+                }
+            }
+            
+            // Configurar eventos de recursos
+            function setupResourceEvents(card) {
+                const resourceLinks = card.querySelectorAll('.resource-card[data-video-url], .resource-card[data-image-url]');
+                
+                resourceLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        const resourceType = this.hasAttribute('data-video-url') ? 'video' : 'image';
+                        const resourceUrl = this.getAttribute(`data-${resourceType}-url`);
+                        const resourceLabel = this.getAttribute('data-label');
+                        
+                        openLightbox(resourceType, resourceUrl, resourceLabel);
+                    });
+                });
+            }
+            
+            // Funciones auxiliares
+            function getTypeLabel(type) {
+                const typeMap = {
+                    'website': 'Sitio Web',
+                    'panel': 'Panel de Control',
+                    'api': 'API',
+                    'mobile': 'Aplicación Móvil'
+                };
+                return typeMap[type] || type;
+            }
+            
+            function getTypeIcon(type) {
+                const iconMap = {
+                    'website': '🌐',
+                    'panel': '⚙️',
+                    'api': '🔧',
+                    'mobile': '📱'
+                };
+                return iconMap[type] || '📄';
+            }
+            
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('es-ES', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            }
+            
+            // Lightbox profesional para recursos multimedia
+            function openLightbox(type, url, label) {
+                const lightbox = document.createElement('div');
+                lightbox.className = 'lightbox-overlay';
+                lightbox.setAttribute('role', 'dialog');
+                lightbox.setAttribute('aria-modal', 'true');
+                lightbox.setAttribute('aria-label', label || 'Recurso multimedia');
+                
+                const content = document.createElement('div');
+                content.className = 'lightbox-content';
+                
+                const closeBtn = document.createElement('button');
+                closeBtn.innerHTML = '×';
+                closeBtn.style.cssText = `
+                    position: absolute;
+                    top: -3rem;
+                    right: 0;
+                    background: rgba(255, 255, 255, 0.1);
+                    border: none;
+                    color: white;
+                    font-size: 2rem;
+                    cursor: pointer;
+                    width: 2.5rem;
+                    height: 2.5rem;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.2s ease;
+                `;
+                closeBtn.setAttribute('aria-label', 'Cerrar');
+                
+                closeBtn.addEventListener('mouseenter', () => {
+                    closeBtn.style.background = 'rgba(255, 255, 255, 0.2)';
+                    closeBtn.style.transform = 'scale(1.1)';
+                });
+                
+                closeBtn.addEventListener('mouseleave', () => {
+                    closeBtn.style.background = 'rgba(255, 255, 255, 0.1)';
+                    closeBtn.style.transform = 'scale(1)';
+                });
+                
+                const caption = document.createElement('div');
+                caption.style.cssText = `
+                    position: absolute;
+                    bottom: -3rem;
+                    left: 0;
+                    width: 100%;
+                    text-align: center;
+                    color: white;
+                    font-size: 0.95rem;
+                    padding: 0.75rem;
+                `;
+                caption.textContent = label || '';
+                
+                closeBtn.addEventListener('click', () => {
+                    document.body.removeChild(lightbox);
+                });
+                
+                lightbox.addEventListener('click', (e) => {
+                    if (e.target === lightbox) {
+                        document.body.removeChild(lightbox);
+                    }
+                });
+                
+                // Cerrar con tecla ESC
+                const handleEscape = (e) => {
+                    if (e.key === 'Escape') {
+                        document.body.removeChild(lightbox);
+                        document.removeEventListener('keydown', handleEscape);
+                    }
+                };
+                document.addEventListener('keydown', handleEscape);
+                
+                let mediaElement;
+                if (type === 'image') {
+                    mediaElement = document.createElement('img');
+                    mediaElement.src = url;
+                    mediaElement.alt = label || 'Imagen de recurso';
+                    mediaElement.style.cssText = `
+                        max-width: 100%;
+                        max-height: 80vh;
+                        object-fit: contain;
+                        border-radius: 0.5rem;
+                        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+                    `;
+                } else if (type === 'video') {
+                    mediaElement = document.createElement('iframe');
+                    mediaElement.src = url;
+                    mediaElement.title = label || 'Video de recurso';
+                    mediaElement.style.cssText = `
+                        width: 80vw;
+                        height: 45vw;
+                        max-width: 800px;
+                        max-height: 450px;
+                        border: none;
+                        border-radius: 0.5rem;
+                        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+                    `;
+                    mediaElement.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+                    mediaElement.allowFullscreen = true;
+                }
+                
+                content.appendChild(mediaElement);
+                content.appendChild(closeBtn);
+                if (label) content.appendChild(caption);
+                lightbox.appendChild(content);
+                document.body.appendChild(lightbox);
+                
+                // Enfocar el botón de cerrar para accesibilidad
+                setTimeout(() => closeBtn.focus(), 100);
+            }
+            
+            // Filtrado de versiones
+            function filterVersions(filterType) {
+                let filtered;
+                
+                if (filterType === 'all') {
+                    filtered = [...versionsData.versions];
+                } else {
+                    filtered = versionsData.versions.filter(version => version.type === filterType);
+                }
+                
+                // Ordenar por fecha (más reciente primero)
+                filtered.sort((a, b) => b.timestamp - a.timestamp);
+                displayVersions(filtered);
+            }
+            
+            // Actualizar contadores en botones
+            function updateFilterCounts() {
+                const allCount = versionsData.versions.length;
+                const websiteCount = versionsData.versions.filter(v => v.type === 'website').length;
+                const panelCount = versionsData.versions.filter(v => v.type === 'panel').length;
+                const apiCount = versionsData.versions.filter(v => v.type === 'api').length;
+                
+                filterButtons.forEach(btn => {
+                    const filter = btn.getAttribute('data-filter');
+                    let count = 0;
+                    
+                    switch(filter) {
+                        case 'all': count = allCount; break;
+                        case 'website': count = websiteCount; break;
+                        case 'panel': count = panelCount; break;
+                        case 'api': count = apiCount; break;
+                    }
+                    
+                    const countSpan = btn.querySelector('.filter-count');
+                    if (countSpan) {
+                        countSpan.textContent = count;
+                    }
+                });
+            }
+            
+            // Manejar enlaces de anclas al cargar la página
+            if (window.location.hash) {
+                setTimeout(() => {
+                    const element = document.querySelector(window.location.hash);
+                    if (element) {
+                        // Scroll a la versión
+                        element.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+                        
+                        // Expandir automáticamente la versión
+                        setTimeout(() => {
+                            const versionCard = element.closest('.version-card');
+                            if (versionCard) {
+                                const expandBtn = versionCard.querySelector('.expand-button');
+                                if (expandBtn && expandBtn.getAttribute('aria-expanded') === 'false') {
+                                    expandBtn.click();
+                                }
+                            }
+                        }, 600);
+                    }
+                }, 400);
+            }
+            
+            // Inicializar contadores
+            updateFilterCounts();
         });
     </script>
 </body>

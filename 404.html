@@ -3,24 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Página no Encontrada (404) | Grouvex Studios</title>
-    <meta name="description" content="Sitio web oficial de Grouvex Studios, organización multiproyecto con sellos discográficos y servicios de diseño.">
+    <meta name="description" content="Sitio web oficial de Grouvex Studios, organización multiproyecto con sellos discográficos.">
     <meta property="og:title" content="Grouvex Studios">
-    <meta property="og:description" content="Organización oficial de Grouvex Studios - Boletín Oficial B.O.Grouvex Studios">
+    <meta property="og:description" content="Organización oficial de Grouvex Studios">
     <meta property="og:image" content="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/Grouvex-patch-1/img/GROUVEX%20Studio.png">
-    <meta name="keywords" content="Grouvex Studios, Grouvex Studios Records, Grouvex Studios Designs, BOGS, Documentos Oficiales">
+    <meta name="keywords" content="Grouvex Studios, Grouvex Studios Records, Documentos Oficiales, DDOO">
     <meta name="author" content="Grouvex Studios">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="theme-color" content="#1a365d">
     <meta property="og:url" content="https://grouvex.com/">
     <meta property="og:type" content="website">
-    <meta property="og:locale" content="es_ES">
     <link rel="canonical" href="https://grouvex.com/">
     <link rel="icon" href="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/Grouvex-patch-1/img/GROUVEX%20Studio.png" type="image/x-icon">
     <meta property="og:site_name" content="Grouvex Studios">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         /* Variables y reset */
@@ -97,16 +96,10 @@
         }
 
         .logo-text {
-            font-family: 'Space Grotesk', sans-serif;
             font-size: 1.5rem;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--primary);
-        }
-
-        .logo-subtext {
-            font-size: 0.75rem;
-            color: var(--gray);
-            font-weight: 400;
+            letter-spacing: -0.5px;
         }
 
         /* Contenido principal */
@@ -139,9 +132,8 @@
         }
 
         .error-code {
-            font-family: 'Space Grotesk', sans-serif;
             font-size: 8rem;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--primary);
             line-height: 1;
             margin-bottom: 1rem;
@@ -174,68 +166,43 @@
             max-width: 500px;
         }
 
-        /* Tarjetas de organismos */
-        .org-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin: 3rem 0;
-        }
-
-        .org-card {
+        /* Información DDOO */
+        .ddoo-info {
             background: white;
             border-radius: var(--border-radius);
             padding: 1.5rem;
+            margin: 2rem 0;
             box-shadow: var(--shadow);
-            transition: var(--transition);
-            border-top: 4px solid var(--primary);
+            border-left: 4px solid var(--primary);
         }
 
-        .org-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .org-card.grecords {
-            border-top-color: var(--secondary);
-        }
-
-        .org-card.gdesigns {
-            border-top-color: var(--accent);
-        }
-
-        .org-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .org-card.grecords .org-icon {
-            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
-        }
-
-        .org-card.gdesigns .org-icon {
-            background: linear-gradient(135deg, var(--accent) 0%, #63b3ed 100%);
-        }
-
-        .org-title {
+        .ddoo-title {
             font-size: 1.25rem;
             font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .org-description {
+        .ddoo-list {
+            list-style: none;
             font-size: 0.875rem;
             color: var(--gray);
-            margin-bottom: 1rem;
+        }
+
+        .ddoo-list li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ddoo-list li::before {
+            content: '•';
+            color: var(--primary);
+            font-weight: bold;
         }
 
         /* Botones */
@@ -256,6 +223,7 @@
             align-items: center;
             gap: 0.5rem;
             border: 2px solid transparent;
+            cursor: pointer;
         }
 
         .btn-primary {
@@ -277,6 +245,20 @@
         .btn-secondary:hover {
             border-color: var(--primary);
             background: var(--light);
+        }
+
+        .btn-disabled {
+            background: var(--gray-light);
+            color: var(--gray);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .btn-disabled:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: var(--gray-light);
+            background: var(--gray-light);
         }
 
         /* Búsqueda */
@@ -386,82 +368,16 @@
             font-size: 0.75rem;
         }
 
-        /* Información oficial */
-        .official-info {
-            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            margin: 2rem 0;
-            border-left: 4px solid var(--primary);
-        }
-
-        .info-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .info-list {
-            list-style: none;
-            font-size: 0.875rem;
-            color: var(--gray);
-        }
-
-        .info-list li {
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .info-list li::before {
-            content: '•';
-            color: var(--primary);
-            font-weight: bold;
-        }
-
         /* Animaciones */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        /* Estado del sistema */
-        .system-status {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            background: rgba(56, 161, 105, 0.1);
-            color: var(--success);
-            margin-top: 1rem;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--success);
-            animation: pulse 2s infinite;
-        }
-
         /* Responsive */
         @media (max-width: 480px) {
             .header-container {
                 padding: 0 1rem;
-                flex-direction: column;
-                gap: 1rem;
             }
             
             .main-content {
@@ -484,6 +400,10 @@
                 width: 100%;
                 justify-content: center;
             }
+            
+            .search-box {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -494,15 +414,8 @@
             <a href="/" class="logo-container">
                 <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/Grouvex-patch-1/img/GROUVEX%20Studio.png" 
                      alt="Grouvex Studios Logo" class="logo-img">
-                <div>
-                    <div class="logo-text">GROUVEX STUDIOS</div>
-                    <div class="logo-subtext">Organismo Principal | B.O.Grouvex Studios</div>
-                </div>
+                <div class="logo-text">GROUVEX STUDIOS</div>
             </a>
-            <div class="system-status">
-                <span class="status-dot"></span>
-                <span>Sistema GCO: Normal</span>
-            </div>
         </div>
     </header>
 
@@ -511,78 +424,56 @@
         <div class="error-container">
             <div class="error-content">
                 <div class="error-code">404</div>
-                <h1 class="error-title">Documento no encontrado</h1>
+                <h1 class="error-title">Página no encontrada</h1>
                 <p class="error-description">
-                    La página que busca no está disponible en este momento. 
-                    Puede que haya sido archivada, modificada o esté en proceso de revisión 
-                    según el Reglamento de Documentación Corporativa (Artículo 20).
+                    La página que buscas no está disponible. Puede que haya sido movida, 
+                    eliminada o que la dirección no sea correcta.
                 </p>
                 
                 <div class="action-buttons">
                     <a href="/" class="btn btn-primary">
                         <span>🏠</span>
-                        Volver al Dashboard
+                        Volver al Inicio
                     </a>
-                    <a href="/documentos" class="btn btn-secondary">
-                        <span>📄</span>
-                        Ver Boletín Oficial
+                    <a href="https://script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec" 
+                       class="btn btn-primary" target="_blank">
+                        <span>📊</span>
+                        Panel de Grouvex Studios
                     </a>
                     <a href="/contacto" class="btn btn-secondary">
                         <span>📧</span>
-                        Contactar Soporte
+                        Contacto
                     </a>
+                    <a href="/tos_pp" class="btn btn-secondary">
+                        <span>📄</span>
+                        Términos y Privacidad
+                    </a>
+                    <span class="btn btn-disabled">
+                        <span>🎨</span>
+                        GSDesigns (Deshabilitado)
+                    </span>
                 </div>
 
-                <!-- Tarjetas de organismos -->
-                <div class="org-cards">
-                    <div class="org-card">
-                        <div class="org-icon">GS</div>
-                        <h3 class="org-title">Grouvex Studios</h3>
-                        <p class="org-description">Organismo Principal multiproyecto</p>
-                        <a href="/gs" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
-                            Acceder al Organismo
-                        </a>
-                    </div>
-                    
-                    <div class="org-card grecords">
-                        <div class="org-icon">🎵</div>
-                        <h3 class="org-title">Grouvex Studios Records</h3>
-                        <p class="org-description">Sello discográfico y distribución musical</p>
-                        <a href="/records" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
-                            Ver Planes de Distribución
-                        </a>
-                    </div>
-                    
-                    <div class="org-card gdesigns">
-                        <div class="org-icon">🎨</div>
-                        <h3 class="org-title">Grouvex Studios Designs</h3>
-                        <p class="org-description">Diseño gráfico y creativo</p>
-                        <a href="/designs" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
-                            Ver Proyectos
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Información oficial -->
-                <div class="official-info">
-                    <div class="info-title">
+                <!-- Información de Documentos Oficiales (DDOO) -->
+                <div class="ddoo-info">
+                    <div class="ddoo-title">
                         <span>📋</span>
-                        Información Oficial
+                        Documentos Oficiales (DDOO)
                     </div>
-                    <ul class="info-list">
+                    <ul class="ddoo-list">
                         <li>Boletín Oficial: BOGS/2025/001</li>
-                        <li>Última actualización: 22 nov 2025 20:15 UTC</li>
-                        <li>Próxima revisión: 20 dic 2025 18:00 UTC</li>
+                        <li>Última actualización: 22 nov 2025</li>
+                        <li>Documentación corporativa según Artículo 20</li>
                         <li>ISSN: BOGS/2025/001</li>
                     </ul>
                 </div>
 
                 <!-- Búsqueda -->
                 <div class="search-section">
-                    <div class="search-title">Buscar en Documentos Oficiales</div>
+                    <div class="search-title">Buscar en el sitio</div>
                     <div class="search-box">
-                        <input type="search" class="search-input" placeholder="Buscar términos, artículos o disposiciones..." id="doc-search">
-                        <button class="search-btn" onclick="searchDocuments()">
+                        <input type="search" class="search-input" placeholder="Buscar contenido..." id="site-search">
+                        <button class="search-btn" onclick="performSearch()">
                             <span>🔍</span>
                             Buscar
                         </button>
@@ -591,29 +482,28 @@
             </div>
             
             <div class="error-graphic">
-                <!-- Ilustración relacionada con documentos -->
+                <!-- Ilustración simple -->
                 <svg width="100%" height="auto" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="50" y="50" width="300" height="400" rx="8" fill="white" stroke="var(--gray-light)" stroke-width="2"/>
-                    <rect x="70" y="80" width="260" height="30" rx="4" fill="var(--primary)" opacity="0.1"/>
-                    <rect x="70" y="120" width="200" height="20" rx="2" fill="var(--gray-light)"/>
-                    <rect x="70" y="150" width="260" height="20" rx="2" fill="var(--gray-light)"/>
-                    <rect x="70" y="180" width="180" height="20" rx="2" fill="var(--gray-light)"/>
-                    <rect x="70" y="210" width="260" height="20" rx="2" fill="var(--gray-light)"/>
-                    <rect x="70" y="240" width="220" height="20" rx="2" fill="var(--gray-light)"/>
+                    <rect x="50" y="50" width="300" height="300" rx="8" fill="white" stroke="var(--gray-light)" stroke-width="2"/>
                     
-                    <!-- Elementos decorativos -->
-                    <circle cx="100" cy="350" r="30" fill="var(--primary)" opacity="0.05"/>
-                    <circle cx="300" cy="350" r="30" fill="var(--secondary)" opacity="0.05"/>
+                    <!-- Elemento principal -->
+                    <rect x="100" y="100" width="200" height="200" rx="4" fill="var(--primary)" opacity="0.05"/>
                     
-                    <!-- Texto 404 -->
-                    <text x="200" y="320" text-anchor="middle" font-family="Arial" font-size="48" font-weight="bold" fill="var(--primary)" opacity="0.1">
+                    <!-- Líneas de texto -->
+                    <rect x="120" y="120" width="160" height="20" rx="2" fill="var(--gray-light)"/>
+                    <rect x="120" y="150" width="120" height="20" rx="2" fill="var(--gray-light)"/>
+                    <rect x="120" y="180" width="140" height="20" rx="2" fill="var(--gray-light)"/>
+                    <rect x="120" y="210" width="100" height="20" rx="2" fill="var(--gray-light)"/>
+                    
+                    <!-- Número 404 -->
+                    <text x="200" y="300" text-anchor="middle" font-family="Arial" font-size="72" font-weight="bold" fill="var(--primary)" opacity="0.1">
                         404
                     </text>
                     
-                    <!-- Sello oficial -->
-                    <circle cx="330" cy="100" r="20" fill="none" stroke="var(--danger)" stroke-width="2" stroke-dasharray="5,5"/>
-                    <text x="330" y="105" text-anchor="middle" font-family="Arial" font-size="10" font-weight="bold" fill="var(--danger)">
-                        BOGS
+                    <!-- Logo simplificado -->
+                    <circle cx="200" cy="360" r="20" fill="var(--primary)" opacity="0.1"/>
+                    <text x="200" y="365" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="var(--primary)">
+                        GS
                     </text>
                 </svg>
             </div>
@@ -626,55 +516,43 @@
             <div>
                 <h3>Grouvex Studios</h3>
                 <ul class="footer-links">
-                    <li><a href="/documentos">📄 Boletín Oficial</a></li>
-                    <li><a href="/organismos">🏛️ Organismos</a></li>
-                    <li><a href="/normativa">⚖️ Normativa</a></li>
-                    <li><a href="/tigis">🪪 Sistema TIGS</a></li>
+                    <li><a href="/">🏠 Inicio</a></li>
+                    <li><a href="/contacto">📧 Contacto</a></li>
+                    <li><a href="/tos_pp">📄 Términos y Privacidad</a></li>
                 </ul>
             </div>
             
             <div>
-                <h3>Organismos Secundarios</h3>
+                <h3>Servicios</h3>
                 <ul class="footer-links">
-                    <li><a href="/records">🎵 Grouvex Studios Records</a></li>
-                    <li><a href="/designs">🎨 Grouvex Studios Designs</a></li>
+                    <li><a href="/gsrecords">🎵 Grouvex Studios Records</a></li>
+                    <li><span style="color: var(--gray); cursor: not-allowed;">🎨 Grouvex Studios Designs</span></li>
+                    <li><a href="/ddoo">📋 Documentos Oficiales</a></li>
                 </ul>
             </div>
             
             <div>
-                <h3>Contacto Oficial</h3>
+                <h3>Recursos</h3>
                 <ul class="footer-links">
-                    <li><a href="mailto:oficina@grouvex.com">📧 oficina@grouvex.com</a></li>
-                    <li><a href="mailto:legal@grouvex.com">⚖️ legal@grouvex.com</a></li>
-                    <li><a href="/soporte">🛠️ Soporte Técnico</a></li>
-                    <li><a href="/privacidad">🔒 Política de Privacidad</a></li>
-                </ul>
-            </div>
-            
-            <div>
-                <h3>Documentación</h3>
-                <ul class="footer-links">
-                    <li><a href="/tos">📝 Términos de Servicio</a></li>
-                    <li><a href="/privacidad">🔐 Políticas de Privacidad</a></li>
-                    <li><a href="/gco">🔄 Sistema GCO</a></li>
-                    <li><a href="/miembros">👥 Miembros Registrados</a></li>
+                    <li><a href="https://script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec" 
+                           target="_blank">📊 Panel de Control</a></li>
+                    <li><a href="mailto:oficina@grouvex.com">📨 Oficina</a></li>
+                    <li><a href="mailto:legal@grouvex.com">⚖️ Legal</a></li>
                 </ul>
             </div>
         </div>
         
         <div class="copyright">
-            <p>&copy; 2021-2025 Grouvex Studios. Madrid, España. Todos los derechos reservados.</p>
-            <p>Documento Oficial | BOGS/2025/001 | Página 404</p>
+            <p>&copy; 2021-<span id="currentYear"></span> Grouvex Studios. Madrid, España.</p>
+            <p>Todos los derechos reservados.</p>
         </div>
     </footer>
 
     <script>
         // Año actual para el copyright
         document.addEventListener('DOMContentLoaded', function() {
-            const yearSpan = document.querySelector('.copyright p');
-            if (yearSpan) {
-                yearSpan.innerHTML = yearSpan.innerHTML.replace('2025', new Date().getFullYear());
-            }
+            const currentYear = new Date().getFullYear();
+            document.getElementById('currentYear').textContent = currentYear;
             
             // Efecto de aparición
             document.body.style.opacity = '0';
@@ -685,14 +563,14 @@
             }, 100);
         });
         
-        // Función de búsqueda
-        function searchDocuments() {
-            const searchInput = document.getElementById('doc-search');
+        // Función de búsqueda usando /buscar?q=
+        function performSearch() {
+            const searchInput = document.getElementById('site-search');
             const query = searchInput.value.trim();
             
             if (query) {
-                // Simular búsqueda en documentos
-                window.location.href = `/buscar?q=${encodeURIComponent(query)}&tipo=documento`;
+                // Redirigir a la página de búsqueda
+                window.location.href = `/buscar?q=${encodeURIComponent(query)}`;
             } else {
                 searchInput.focus();
                 searchInput.style.borderColor = 'var(--danger)';
@@ -703,41 +581,9 @@
         }
         
         // Permitir búsqueda con Enter
-        document.getElementById('doc-search').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') searchDocuments();
+        document.getElementById('site-search').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') performSearch();
         });
-        
-        // Estado del sistema GCO (basado en el PDF)
-        function updateSystemStatus() {
-            const statusElement = document.querySelector('.system-status');
-            const dotElement = document.querySelector('.status-dot');
-            
-            // Simular diferentes estados basados en el PDF
-            const statuses = [
-                { status: 'Normal', color: 'var(--success)', icon: '●' },
-                { status: 'Alerta Operacional', color: 'var(--warning)', icon: '⚠️' },
-                { status: 'Emergencia Parcial', color: '#f97316', icon: '⚠️' },
-                { status: 'Emergencia Crítica', color: 'var(--danger)', icon: '🚨' }
-            ];
-            
-            // Para demostración, cambiar cada 10 segundos
-            let currentIndex = 0;
-            
-            setInterval(() => {
-                currentIndex = (currentIndex + 1) % statuses.length;
-                const currentStatus = statuses[currentIndex];
-                
-                statusElement.innerHTML = `
-                    <span class="status-dot" style="background: ${currentStatus.color}"></span>
-                    <span>Sistema GCO: ${currentStatus.status}</span>
-                `;
-                
-                dotElement.style.background = currentStatus.color;
-            }, 10000);
-        }
-        
-        // Inicializar estado del sistema
-        updateSystemStatus();
     </script>
 </body>
 </html>

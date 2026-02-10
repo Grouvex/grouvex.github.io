@@ -214,7 +214,7 @@
             margin-bottom: 0.5rem;
         }
 
-        #versions-history .vh-current-date {
+        #versions-history .vh-current-timestamp {
             color: var(--vh-gray-600);
             font-size: 0.875rem;
             font-weight: 500;
@@ -358,7 +358,7 @@
             color: var(--vh-secondary);
         }
 
-        #versions-history .vh-version-date {
+        #versions-history .vh-version-timestamp {
             color: var(--vh-gray-600);
             font-size: 0.875rem;
             font-weight: 500;
@@ -442,6 +442,15 @@
             color: var(--vh-gray-800);
             line-height: 1.5;
             font-size: 0.875rem;
+        }
+
+        #versions-history .vh-change-description {
+            display: block;
+            margin-top: 0.25rem;
+            color: var(--vh-gray-600);
+            font-size: 0.75rem;
+            line-height: 1.4;
+            font-style: italic;
         }
 
         /* Recursos */
@@ -656,7 +665,7 @@
                             </div>
                         </div>
                         <div class="vh-current-version" id="current-web-version">v2.1.0</div>
-                        <div class="vh-current-date" id="current-web-date">Actualizado: 22 nov 2023</div>
+                        <div class="vh-current-timestamp" id="current-web-timestamp"></div>
                     </div>
                     
                     <div class="vh-current-card" id="current-panel">
@@ -668,7 +677,7 @@
                             </div>
                         </div>
                         <div class="vh-current-version" id="current-panel-version">v1.5.2</div>
-                        <div class="vh-current-date" id="current-panel-date">Actualizado: 15 nov 2023</div>
+                        <div class="vh-current-timestamp" id="current-panel-timestamp"></div>
                     </div>
                     
                     <div class="vh-current-card" id="current-api">
@@ -680,7 +689,7 @@
                             </div>
                         </div>
                         <div class="vh-current-version" id="current-api-version">v3.0.1</div>
-                        <div class="vh-current-date" id="current-api-date">Actualizado: 10 nov 2023</div>
+                        <div class="vh-current-timestamp" id="current-api-timestamp"></div>
                     </div>
                 </div>
                 
@@ -722,7 +731,7 @@
     <script src="preloader.js"></script>
     
     <script>
-        // DATOS COMPLETOS DE VERSIONES
+        // DATOS COMPLETOS DE VERSIONES CON TIMESTAMP
         const vhVersionsData = {
             versions: [
                 {
@@ -730,8 +739,7 @@
                     type: "website",
                     version: "2.1.0",
                     title: "Mejoras en sistema de notificaciones y seguridad avanzada",
-                    date: "2023-11-22",
-                    timestamp: 1700601600,
+                    timestamp: 1738627200, // 5 febrero 2025 00:00:00 UTC
                     current: true,
                     changes: [
                         {
@@ -792,8 +800,7 @@
                     type: "panel",
                     version: "1.5.2",
                     title: "Actualización de seguridad y panel de estadísticas",
-                    date: "2023-11-15",
-                    timestamp: 1699996800,
+                    timestamp: 1738620000, // 4 febrero 2025 22:00:00 UTC
                     current: true,
                     changes: [
                         {
@@ -848,8 +855,7 @@
                     type: "api",
                     version: "3.0.1",
                     title: "Nuevos endpoints y mejoras de rendimiento API",
-                    date: "2023-11-10",
-                    timestamp: 1699564800,
+                    timestamp: 1738612800, // 4 febrero 2025 20:00:00 UTC
                     current: true,
                     changes: [
                         {
@@ -904,8 +910,7 @@
                     type: "website",
                     version: "2.0.5",
                     title: "Optimización móvil y correcciones menores",
-                    date: "2023-10-28",
-                    timestamp: 1698451200,
+                    timestamp: 1738429200, // 2 febrero 2025 17:00:00 UTC
                     current: false,
                     changes: [
                         {
@@ -949,8 +954,7 @@
                     type: "panel",
                     version: "1.4.8",
                     title: "Correcciones de bugs y mejoras en interfaz",
-                    date: "2023-10-15",
-                    timestamp: 1697328000,
+                    timestamp: 1738342800, // 1 febrero 2025 17:00:00 UTC
                     current: false,
                     changes: [
                         {
@@ -988,9 +992,79 @@
                             url: "guides/quick-guide-v1.4.8.html"
                         }
                     ]
+                },
+                {
+                    id: 6,
+                    type: "website",
+                    version: "2.0.0",
+                    title: "Lanzamiento principal con nuevas funcionalidades",
+                    timestamp: 1738256400, // 31 enero 2025 17:00:00 UTC
+                    current: false,
+                    changes: [
+                        {
+                            type: "added",
+                            detail: "Sistema completo de gestión de usuarios",
+                            description: "Registro, autenticación y perfiles de usuario"
+                        },
+                        {
+                            type: "added",
+                            detail: "Panel administrativo básico",
+                            description: "Interfaz inicial para administradores"
+                        },
+                        {
+                            type: "added",
+                            detail: "API REST v1.0",
+                            description: "Primera versión de la API pública"
+                        },
+                        {
+                            type: "updated",
+                            detail: "Rediseño completo de la interfaz",
+                            description: "Nuevo sistema de diseño y componentes"
+                        }
+                    ],
+                    resources: [
+                        {
+                            type: "document",
+                            icon: "📄",
+                            label: "Documentación v2.0.0",
+                            url: "docs/website-v2.0.0.pdf"
+                        },
+                        {
+                            type: "link",
+                            icon: "🔗",
+                            label: "Changelog completo",
+                            url: "changelog/v2.0.0.html"
+                        }
+                    ]
                 }
             ]
         };
+
+        // FUNCIONES PARA FORMATO UTC
+        function formatTimestampUTC(timestamp) {
+            const date = new Date(timestamp * 1000);
+            
+            // Formato: DD/MM/YYYY HH:MM UTC
+            const day = String(date.getUTCDate()).padStart(2, '0');
+            const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+            const year = date.getUTCFullYear();
+            const hours = String(date.getUTCHours()).padStart(2, '0');
+            const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+            
+            return `${day}/${month}/${year} ${hours}:${minutes} UTC`;
+        }
+
+        function formatRelativeTime(timestamp) {
+            const now = Math.floor(Date.now() / 1000);
+            const diff = now - timestamp;
+            
+            if (diff < 60) return 'hace unos segundos';
+            if (diff < 3600) return `hace ${Math.floor(diff / 60)} minutos`;
+            if (diff < 86400) return `hace ${Math.floor(diff / 3600)} horas`;
+            if (diff < 2592000) return `hace ${Math.floor(diff / 86400)} días`;
+            
+            return formatTimestampUTC(timestamp);
+        }
 
         // INICIALIZACIÓN DEL SISTEMA
         document.addEventListener('DOMContentLoaded', function() {
@@ -1041,17 +1115,17 @@
                 
                 if (websiteCurrent) {
                     document.getElementById('current-web-version').textContent = `v${websiteCurrent.version}`;
-                    document.getElementById('current-web-date').textContent = `Actualizado: ${formatDate(websiteCurrent.date)}`;
+                    document.getElementById('current-web-timestamp').textContent = formatTimestampUTC(websiteCurrent.timestamp);
                 }
                 
                 if (panelCurrent) {
                     document.getElementById('current-panel-version').textContent = `v${panelCurrent.version}`;
-                    document.getElementById('current-panel-date').textContent = `Actualizado: ${formatDate(panelCurrent.date)}`;
+                    document.getElementById('current-panel-timestamp').textContent = formatTimestampUTC(panelCurrent.timestamp);
                 }
                 
                 if (apiCurrent) {
                     document.getElementById('current-api-version').textContent = `v${apiCurrent.version}`;
-                    document.getElementById('current-api-date').textContent = `Actualizado: ${formatDate(apiCurrent.date)}`;
+                    document.getElementById('current-api-timestamp').textContent = formatTimestampUTC(apiCurrent.timestamp);
                 }
             }
 
@@ -1070,7 +1144,7 @@
 
                 container.innerHTML = '';
 
-                // Ordenar por fecha (más reciente primero)
+                // Ordenar por timestamp (más reciente primero)
                 versions.sort((a, b) => b.timestamp - a.timestamp);
 
                 versions.forEach(version => {
@@ -1087,7 +1161,8 @@
                 // Obtener datos de la versión
                 const typeLabel = getTypeLabel(version.type);
                 const typeIcon = getTypeIcon(version.type);
-                const formattedDate = formatDate(version.date);
+                const formattedTimestamp = formatTimestampUTC(version.timestamp);
+                const relativeTime = formatRelativeTime(version.timestamp);
                 
                 // Crear cambios HTML
                 let changesHTML = '';
@@ -1099,7 +1174,9 @@
                             </span>
                             <div class="vh-change-detail">
                                 <strong>${change.detail}</strong>
-                                ${change.description ? `<br><small>${change.description}</small>` : ''}
+                                ${change.description ? 
+                                    `<span class="vh-change-description">${change.description}</span>` 
+                                    : ''}
                             </div>
                         </li>
                     `).join('');
@@ -1122,12 +1199,14 @@
                     <div class="vh-version-header">
                         <div class="vh-version-tag">
                             ${typeIcon} ${typeLabel}
-                            ${version.current ? '🏆' : ''}
+                            ${version.current ? '<span style="color: var(--vh-success); margin-left: 0.25rem;">🏆</span>' : ''}
                         </div>
                         <h2 class="vh-version-title">${version.title}</h2>
                         <div class="vh-version-meta">
                             <span class="vh-version-number">v${version.version}</span>
-                            <span class="vh-version-date">${formattedDate}</span>
+                            <span class="vh-version-timestamp" title="${formattedTimestamp}">
+                                📅 ${relativeTime}
+                            </span>
                         </div>
                     </div>
                     
@@ -1135,6 +1214,9 @@
                         <h3 class="vh-changes-title">
                             <span>📋</span>
                             <span>Cambios realizados</span>
+                            <span style="font-size: 0.75rem; color: var(--vh-gray-500); margin-left: auto;">
+                                ${version.changes ? version.changes.length : 0} cambios
+                            </span>
                         </h3>
                         <ul class="vh-changes-list">
                             ${changesHTML}
@@ -1146,6 +1228,9 @@
                         <h3 class="vh-resources-title">
                             <span>📎</span>
                             <span>Recursos relacionados</span>
+                            <span style="font-size: 0.75rem; color: var(--vh-gray-500); margin-left: auto;">
+                                ${version.resources.length} recursos
+                            </span>
                         </h3>
                         <div class="vh-resources-grid">
                             ${resourcesHTML}
@@ -1196,16 +1281,6 @@
                     'removed': '🗑️'
                 };
                 return iconMap[type] || '📝';
-            }
-
-            function formatDate(dateString) {
-                const date = new Date(dateString);
-                const options = { 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                };
-                return date.toLocaleDateString('es-ES', options);
             }
 
             // Actualizar contadores de filtros

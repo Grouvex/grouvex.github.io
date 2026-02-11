@@ -987,23 +987,32 @@
                 }
                 
                 // Método 2: Usar GitHub API si está disponible
-                if (SITE_URL.includes('github.io')) {
-                    const repoPath = SITE_URL.split('github.io/')[1] || '';
-                    const githubApiUrl = `https://api.github.com/repos/${repoPath.split('/')[0]}/${repoPath.split('/')[1] || repoPath}/contents/${directory.replace(/^\//, '')}`;
-                    
-                    try {
-                        const response = await fetch(githubApiUrl);
-                        if (response.ok) {
-                            const data = await response.json();
-                            return data.map(item => ({
-                                name: item.name,
-                                type: item.type === 'dir' ? 'directory' : 'file',
-                                url: item.path
-                            }));
+                try {
+                    const githubUrl = new URL(SITE_URL, window.location.origin);
+                    const githubHost = githubUrl.hostname;
+
+                    // Verificar que el host sea exactamente github.io o un subdominio válido de github.io
+                    if (githubHost === 'github.io' || githubHost.endsWith('.github.io')) {
+                        // Obtener la ruta del repositorio a partir del pathname
+                        const repoPath = githubUrl.pathname.replace(/^\/+/, '');
+                        const githubApiUrl = `https://api.github.com/repos/${repoPath.split('/')[0]}/${repoPath.split('/')[1] || repoPath}/contents/${directory.replace(/^\//, '')}`;
+
+                        try {
+                            const response = await fetch(githubApiUrl);
+                            if (response.ok) {
+                                const data = await response.json();
+                                return data.map(item => ({
+                                    name: item.name,
+                                    type: item.type === 'dir' ? 'directory' : 'file',
+                                    url: item.path
+                                }));
+                            }
+                        } catch (e) {
+                            // Continuar con siguiente método
                         }
-                    } catch (e) {
-                        // Continuar con siguiente método
                     }
+                } catch (e) {
+                    // Si SITE_URL no es una URL válida, continuar con siguiente método
                 }
                 
                 // Método 3: Intentar descubrir archivos comunes

@@ -1,0 +1,37 @@
+# Robots.txt para grouvex.com
+
+User-agent: *
+Allow: /
+Disallow: /private/
+Disallow: /admin/
+Disallow: /cgi-bin/
+
+Sitemap: https://grouvex.com/sitemap.xml
+Sitemap: https://grouvex.com/sitemap.html
+
+# Google específico
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+# Bloquear IA scrapers
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+# Twitter bot
+User-agent: Twitterbot
+Allow: /
+Crawl-delay: 2
+
+# Archivos estáticos
+User-agent: *
+Allow: /assets/
+Allow: /css/
+Allow: /js/
+Allow: /images/

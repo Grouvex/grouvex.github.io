@@ -347,7 +347,7 @@ document.addEventListener("DOMContentLoaded", function () {
             updateRequired: true,
             mandatory: true,
             changes: [
-              "Bienvenidx a WebSite", 
+              "Bienvenidx a DataBase", 
               "Primera versión estable", 
               "Funcionalidades básicas", 
               "Sistema de autenticación", 
@@ -940,6 +940,8 @@ document.addEventListener("DOMContentLoaded", function () {
         modal.innerHTML = `
           <div style="
             max-width: 800px;
+            height: 100%;
+            overflow: auto;
             width: 100%;
             text-align: center;
             animation: slideUp 0.5s ease-out;
@@ -1258,7 +1260,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // PASOS FINALES
         setTimeout(() => nextStep("Aplicando configuraciones finales..."), accumulatedTime + 1000);
         setTimeout(() => nextStep("Verificando instalación..."), accumulatedTime + 2500);
-        setTimeout(() => nextStep("Guardando cambios en DataBase Personal..."), accumulatedTime + 4000);
+        setTimeout(() => nextStep("Guardando cambios en localStorage..."), accumulatedTime + 4000);
         
         // GUARDAR EN LOCALSTORAGE
         setTimeout(() => {
@@ -1288,6 +1290,8 @@ document.addEventListener("DOMContentLoaded", function () {
         modal.innerHTML = `
           <div style="
             max-width: 700px;
+            height: 100%;
+            overflow: auto;
             width: 100%;
             text-align: center;
             animation: slideUp 0.5s ease-out;

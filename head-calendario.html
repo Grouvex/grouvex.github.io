@@ -1462,6 +1462,40 @@
 </style>
 </head>
 <body>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grouvex Studios - Administración DDOO</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<!-- Auth Section -->
+<div id="authSection" class="auth-section">
+    <div class="auth-card">
+        <div class="auth-header">
+            <i class="fas fa-lock"></i>
+            <h2>Acceso Restringido</h2>
+            <p>Inicia sesión con tu cuenta @grouvex.com</p>
+        </div>
+        
+        <div class="auth-methods">
+            <button onclick="signInWithGoogle()" class="btn-google">
+                <i class="fab fa-google"></i>
+                Continuar con Google
+            </button>
+        </div>
+        
+        <div id="authMessage" class="auth-message"></div>
+    </div>
+</div>
+
+<!-- Admin Panel -->
+<div id="adminPanel" class="admin-panel" style="display: none;">
     <!-- Este es el código que puedes copiar y pegar en cualquier página -->
     <div class="calendar-container">
         <div class="calendar-header">
@@ -1616,8 +1650,72 @@
             </div>
         </div>
     </div>
+</div>
+</body>
+</html>
+  
 
     <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        setupAuthListener();
+    });
+function setupAuthListener() {
+    auth.onAuthStateChanged(async (user) => {
+        if (user && isAuthorized(user.email)) {
+            currentUser = user;
+            showAdminPanel();
+            await loadCurrentData();
+        } else {
+            if (user) {
+                await auth.signOut();
+                showAuthMessage('error', 'No tienes permisos para acceder');
+            }
+            showAuthSection();
+        }
+    });
+}
+
+function showAdminPanel() {
+    document.getElementById('authSection').style.display = 'none';
+    document.getElementById('adminPanel').style.display = 'block';
+}
+
+function showAuthSection() {
+    document.getElementById('authSection').style.display = 'flex';
+    document.getElementById('adminPanel').style.display = 'none';
+}
+
+function signInWithGoogle() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider)
+        .catch(error => {
+            console.error('Error signing in:', error);
+            showAuthMessage('error', 'Error al iniciar sesión');
+        });
+}
+
+function signOut() {
+    auth.signOut()
+        .then(() => {
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Error signing out:', error);
+        });
+}
+
+const authorizedEmails = [
+    'admin@grouvex.com',
+    'legal@grouvex.com',
+    'grouvex.phoenix@grouvex.com',
+    'director@grouvex.com',
+    'grouvex.studio@gmail.com',
+    'gco.gstudios@gmail.com'
+];
+
+function isAuthorized(email) {
+    return authorizedEmails.includes(email);
+}
         // Base de datos de Eventos
         const eventsData = [
             {

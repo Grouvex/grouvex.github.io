@@ -1,0 +1,2766 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <title>Calendario Oficial de Grouvex Studios</title>
+    <meta name="description" content="Calendario Oficial de Grouvex Studios">
+    <meta property="og:title" content="Grouvex Studios">
+    <meta property="og:description" content="Sitio web oficial de Grouvex Studios, una organización que cuenta con Sello Discográfico, Diseño, entre otros.">
+    <meta property="og:image" content="img/GROUVEX.png">
+    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects"><meta name="author" content="Grouvex Studios"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="theme-color" content="#hexcode"><meta property="og:url" content="https://grouvex.com/"><meta property="og:type" content="website"><meta property="og:locale" content="es_ES"><link rel="canonical" href="https://grouvex.com/"><link rel="icon" href="img/GROUVEX.png" type="image/x-icon"><meta property="og:site_name" content="Grouvex Studios">
+    <script src="time.js"></script></script><script type="module" src="abc.js"></script><script src="index.js"></script>
+    <script src="jquery-3.5.1.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+/* Estilos encapsulados para evitar conflictos */
+:root {
+    --cal-primary: #1a472a;
+    --cal-secondary: #2e8b57;
+    --cal-accent: #ff6b6b;
+    --cal-gold: #ffd700;
+    --cal-light: #f8f9fa;
+    --cal-dark: #1a1a2e;
+    --cal-blue: #4a90e2;
+    --cal-purple: #9b59b6;
+    --cal-red: #e74c3c;
+    --cal-bg-gradient: linear-gradient(135deg, #0f2b1d 0%, var(--cal-primary) 30%, var(--cal-secondary) 100%);
+    --cal-card-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    --cal-hover-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.calendar-container {
+    font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--cal-bg-gradient);
+    color: var(--cal-light);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: var(--cal-card-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    min-height: 100vh;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.calendar-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--cal-gold), var(--cal-accent), var(--cal-blue));
+    z-index: 1;
+}
+
+.calendar-container * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.calendar-header {
+    text-align: center;
+    margin-bottom: 35px;
+    padding-bottom: 25px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+    position: relative;
+}
+
+.calendar-header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 25%;
+    width: 50%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cal-gold), transparent);
+}
+
+.header-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.header-logo a {
+    display: inline-block;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+}
+
+.header-logo a:hover {
+    transform: scale(1.08) rotate(2deg);
+}
+
+.header-logo img {
+    height: clamp(70px, 10vw, 110px);
+    width: auto;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.header-logo a:hover img {
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.calendar-header h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 15px;
+    color: var(--cal-gold);
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(to right, var(--cal-gold), #fff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    padding: 0 20px;
+}
+
+.calendar-header .subtitle {
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    opacity: 0.95;
+    line-height: 1.5;
+    max-width: 600px;
+    margin: 0 auto;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.current-time {
+    font-size: clamp(1rem, 1.5vw, 1.3rem);
+    margin: 15px 0 25px;
+    color: var(--cal-gold);
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: rgba(255, 215, 0, 0.1);
+    padding: 12px 25px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Contador de eventos importantes */
+.important-events-counter {
+    margin: 30px 0;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 165, 0, 0.1));
+    border-radius: 15px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    display: none;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.important-events-counter.active {
+    display: block;
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.important-events-counter h3 {
+    color: var(--cal-gold);
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: clamp(1.3rem, 2.5vw, 1.6rem);
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+.important-events-counter h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--cal-gold), transparent);
+}
+
+.important-events-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.important-event-card {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border-radius: 12px;
+    padding: 20px;
+    border-left: 5px solid var(--cal-gold);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.important-event-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.important-event-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.important-event-card:hover::before {
+    transform: translateX(100%);
+}
+
+.important-event-title {
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--cal-gold);
+    font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+    line-height: 1.4;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.important-event-date {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.important-event-date::before {
+    content: '📅';
+    font-size: 0.9rem;
+}
+
+.important-countdown {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.important-countdown-item {
+    text-align: center;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.25), rgba(255, 165, 0, 0.2));
+    border-radius: 8px;
+    padding: 10px 8px;
+    min-width: 55px;
+    flex: 1;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.important-countdown-item:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.35), rgba(255, 165, 0, 0.3));
+}
+
+.important-countdown-number {
+    font-weight: 800;
+    font-size: clamp(1.2rem, 1.5vw, 1.5rem);
+    color: var(--cal-gold);
+    display: block;
+    margin-bottom: 3px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.important-countdown-label {
+    font-size: 0.75rem;
+    opacity: 0.9;
+    letter-spacing: 0.5px;
+}
+
+.calendar-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navigation {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.view-selector {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.cal-btn {
+    background: linear-gradient(135deg, var(--cal-secondary), var(--cal-primary));
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-weight: 600;
+    font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    letter-spacing: 0.5px;
+}
+
+.cal-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.cal-btn:hover {
+    background: linear-gradient(135deg, var(--cal-primary), #153922);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.cal-btn:hover::before {
+    left: 100%;
+}
+
+.cal-btn.active {
+    background: linear-gradient(135deg, var(--cal-gold), #ffed4e);
+    color: var(--cal-dark);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    font-weight: 700;
+}
+
+.current-date {
+    font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+    font-weight: 800;
+    color: var(--cal-gold);
+    min-width: min-content;
+    text-align: center;
+    padding: 0 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.2);
+    padding: 15px 25px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+/* Estilos para vista mensual */
+.month-view {
+    display: none;
+}
+
+.month-view.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.month-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.day-header {
+    text-align: center;
+    padding: 15px 5px;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.day-header:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.month-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.day {
+    min-height: clamp(100px, 15vw, 140px);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+}
+
+.day::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+}
+
+.day:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.03) translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+}
+
+.day-number {
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-align: right;
+    font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+    color: rgba(255, 255, 255, 0.9);
+    position: relative;
+    display: inline-block;
+    align-self: flex-end;
+    padding: 5px 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    min-width: 35px;
+    text-align: center;
+}
+
+.day-events {
+    flex-grow: 1;
+    overflow-y: auto;
+    font-size: clamp(0.75rem, 1vw, 0.85rem);
+}
+
+.event-preview {
+    border-radius: 6px;
+    padding: 5px 8px;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    font-size: clamp(0.7rem, 0.9vw, 0.8rem);
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.1);
+    border-left: 3px solid var(--cal-secondary);
+    font-weight: 500;
+}
+
+.event-preview:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(3px);
+    padding-left: 12px;
+}
+
+.event-preview.multi-day {
+    border-left-color: var(--cal-blue);
+}
+
+.day.other-month {
+    opacity: 0.4;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.day.today {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.15));
+    border: 2px solid var(--cal-gold);
+    box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+}
+
+.day.today .day-number {
+    background: var(--cal-gold);
+    color: var(--cal-dark);
+    font-weight: 800;
+}
+
+/* Estilos para vista semanal */
+.week-view {
+    display: none;
+}
+
+.week-view.active {
+    display: block;
+    overflow-x: auto;
+    animation: fadeIn 0.5s ease;
+}
+
+.week-header {
+    display: grid;
+    grid-template-columns: minmax(60px, 70px) repeat(7, 1fr);
+    gap: 3px;
+    margin-bottom: 8px;
+    min-width: 850px;
+}
+
+.week-grid {
+    display: grid;
+    grid-template-columns: minmax(60px, 70px) repeat(7, 1fr);
+    gap: 3px;
+    min-width: 850px;
+}
+
+.time-slot {
+    padding: 8px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    font-size: clamp(0.75rem, 1vw, 0.85rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.week-day {
+    min-height: 50px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 5px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.week-day:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.02);
+}
+
+.week-day.today {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.15));
+    border: 2px solid var(--cal-gold);
+}
+
+.week-event {
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    border-radius: 6px;
+    padding: 6px 8px;
+    font-size: clamp(0.65rem, 0.8vw, 0.75rem);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    z-index: 1;
+    border-left: 4px solid rgba(0,0,0,0.4);
+    transition: all 0.3s ease;
+    font-weight: 600;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.week-event:hover {
+    transform: scale(1.05);
+    z-index: 10;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilos para vista anual */
+.year-view {
+    display: none;
+}
+
+.year-view.active {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    animation: fadeIn 0.5s ease;
+}
+
+.year-month {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    border-radius: 15px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.year-month::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--cal-accent), var(--cal-blue), var(--cal-purple));
+}
+
+.year-month:hover {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.year-month-header {
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 800;
+    color: var(--cal-gold);
+    font-size: clamp(1.2rem, 1.5vw, 1.4rem);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.year-month-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.year-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(0.8rem, 1vw, 0.9rem);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.year-day:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.2);
+    z-index: 2;
+}
+
+.year-day.has-events::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: var(--cal-accent);
+    border-radius: 50%;
+}
+
+.year-day.today {
+    background: linear-gradient(135deg, var(--cal-gold), #ffed4e);
+    color: var(--cal-dark);
+    font-weight: 800;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+/* Estilos para eventos próximos y en curso */
+.events-section {
+    margin-top: 40px;
+    padding: 25px;
+    background: linear-gradient(145deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.15));
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.events-section h2 {
+    margin-bottom: 20px;
+    color: var(--cal-gold);
+    font-size: clamp(1.5rem, 2.5vw, 1.8rem);
+    font-weight: 800;
+    text-align: center;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.events-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--cal-gold), transparent);
+}
+
+.event-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.event-card {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06));
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    border-left: 5px solid var(--cal-secondary);
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.event-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.event-card:hover {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.1));
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.event-card:hover::before {
+    transform: translateX(100%);
+}
+
+.event-card-title {
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: var(--cal-gold);
+    font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+    line-height: 1.4;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.event-card-date {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+}
+
+.event-card-date::before {
+    content: '⏰';
+    font-size: 0.9rem;
+}
+
+.event-card-countdown {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.countdown-item {
+    text-align: center;
+    background: linear-gradient(135deg, var(--cal-secondary), var(--cal-primary));
+    border-radius: 8px;
+    padding: 10px 8px;
+    min-width: 50px;
+    flex: 1;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.countdown-item:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(135deg, var(--cal-primary), #1c3b24);
+}
+
+.countdown-number {
+    font-weight: 800;
+    font-size: clamp(1.2rem, 1.5vw, 1.5rem);
+    color: white;
+    display: block;
+    margin-bottom: 3px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.countdown-label {
+    font-size: 0.75rem;
+    opacity: 0.9;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Modal de evento */
+.cal-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.cal-modal-content {
+    background: linear-gradient(135deg, #ffffff, #f0f2f5);
+    color: var(--cal-dark);
+    width: 95%;
+    max-width: 900px;
+    max-height: 95vh;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    animation: modalAppear 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+@keyframes modalAppear {
+    from { transform: scale(0.7) translateY(50px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.cal-modal-header {
+    background: linear-gradient(45deg, var(--cal-blue), var(--cal-purple));
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.cal-modal-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, var(--cal-blue), var(--cal-purple));
+    z-index: -1;
+}
+
+.cal-modal-header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+    background-size: cover;
+    opacity: 0.5;
+}
+
+.cal-close-modal {
+    font-size: 2rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.cal-close-modal:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+}
+
+.cal-modal-body {
+    background: white;
+    padding: 30px;
+    overflow-y: auto;
+    max-height: calc(95vh - 140px);
+    background: radial-gradient(ellipse at 20% 20%, rgba(90, 150, 255, 0.1) 0%, transparent 40%),
+                radial-gradient(ellipse at 80% 80%, rgba(155, 89, 182, 0.1) 0%, transparent 40%),
+                linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+.cal-event-image {
+    width: 100%;
+    max-height: 350px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border: 3px solid white;
+}
+
+.cal-event-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.cal-event-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.cal-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.cal-info-label {
+    font-weight: 700;
+    color: var(--cal-primary);
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cal-event-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.cal-action-btn {
+    padding: 15px 25px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    flex: 1;
+    min-width: 150px;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.cal-action-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s ease;
+}
+
+.cal-action-btn:hover::before {
+    left: 100%;
+}
+
+.cal-action-btn.primary {
+    background: linear-gradient(135deg, var(--cal-secondary), var(--cal-primary));
+    color: white;
+}
+
+.cal-action-btn.secondary {
+    background: linear-gradient(135deg, var(--cal-gold), #ffed4e);
+    color: var(--cal-dark);
+}
+
+.cal-action-btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.cal-event-iframe {
+    width: 100%;
+    height: 350px;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    margin-top: 20px;
+}
+
+/* Estilos para modal de lista de eventos */
+.events-list-modal .event-item {
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.1);
+    border-left: 5px solid var(--cal-secondary);
+}
+
+.events-list-modal .event-item:hover {
+    transform: translateX(10px);
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.events-list-modal .event-date {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+}
+
+.events-list-modal .event-title {
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: var(--cal-gold);
+    font-size: 1.2rem;
+}
+
+.events-list-modal .event-importance {
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    margin-right: 10px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive mejorado */
+@media (max-width: 1200px) {
+    .calendar-container {
+        padding: 20px;
+        border-radius: 18px;
+    }
+    
+    .year-view.active {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    .calendar-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    
+    .navigation, .view-selector {
+        justify-content: center;
+    }
+    
+    .year-view.active {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .cal-event-details {
+        grid-template-columns: 1fr;
+    }
+    
+    .event-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .month-grid .day {
+        min-height: clamp(90px, 12vw, 110px);
+    }
+    
+    .week-header, .week-grid {
+        grid-template-columns: 50px repeat(7, 1fr);
+    }
+    
+    .time-slot {
+        font-size: 0.8rem;
+        padding: 6px;
+    }
+    
+    .week-event {
+        font-size: 0.7rem;
+    }
+    
+    .important-events-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .cal-modal-content {
+        width: 98%;
+        margin: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .calendar-container {
+        padding: 15px;
+        border-radius: 15px;
+    }
+    
+    .calendar-header {
+        margin-bottom: 25px;
+        padding-bottom: 20px;
+    }
+    
+    .events-section {
+        margin-top: 30px;
+        padding: 20px;
+    }
+    
+    .year-view.active {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .year-month {
+        padding: 15px;
+    }
+    
+    .important-countdown, 
+    .event-card-countdown {
+        gap: 8px;
+    }
+    
+    .important-countdown-item,
+    .countdown-item {
+        min-width: 45px;
+        padding: 8px;
+    }
+    
+    .cal-event-iframe {
+        height: 300px;
+    }
+    
+    .calendar-header h1 {
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+    }
+}
+
+@media (max-width: 576px) {
+    .calendar-container {
+        padding: 12px;
+        border-radius: 12px;
+    }
+    
+    .calendar-header h1 {
+        font-size: 1.8rem;
+        padding: 0 10px;
+    }
+    
+    .calendar-header .subtitle {
+        font-size: 1rem;
+    }
+    
+    .current-date {
+        font-size: 1.3rem;
+        padding: 12px 20px;
+    }
+    
+    .cal-btn {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+        border-radius: 8px;
+    }
+    
+    .month-header {
+        gap: 3px;
+    }
+    
+    .day-header {
+        padding: 12px 3px;
+        font-size: 0.8rem;
+    }
+    
+    .month-grid {
+        gap: 3px;
+    }
+    
+    .day {
+        min-height: clamp(80px, 10vw, 100px);
+        padding: 8px;
+        border-radius: 8px;
+    }
+    
+    .day-number {
+        font-size: 0.85rem;
+        padding: 4px 8px;
+    }
+    
+    .event-preview {
+        font-size: 0.7rem;
+        padding: 4px 6px;
+        margin-bottom: 3px;
+    }
+    
+    .events-section h2 {
+        font-size: 1.5rem;
+    }
+    
+    .event-card {
+        padding: 15px;
+        min-height: 140px;
+        border-radius: 10px;
+    }
+    
+    .event-card-title {
+        font-size: 1.1rem;
+    }
+    
+    .cal-modal {
+        padding: 10px;
+    }
+    
+    .cal-modal-content {
+        width: 100%;
+        margin: 10px;
+        border-radius: 15px;
+    }
+    
+    .cal-modal-header {
+        padding: 20px;
+    }
+    
+    .cal-modal-body {
+        padding: 20px;
+    }
+    
+    .cal-event-iframe {
+        height: 250px;
+    }
+    
+    .cal-action-btn {
+        padding: 12px 20px;
+        min-width: 120px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .calendar-container {
+        padding: 10px;
+    }
+    
+    .navigation {
+        gap: 8px;
+    }
+    
+    .view-selector {
+        gap: 8px;
+    }
+    
+    .cal-btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+    
+    .current-date {
+        font-size: 1.1rem;
+        padding: 10px 15px;
+    }
+    
+    .day {
+        min-height: 70px;
+        padding: 6px;
+    }
+    
+    .event-card {
+        padding: 12px;
+        min-height: 130px;
+    }
+    
+    .important-countdown, 
+    .event-card-countdown {
+        gap: 5px;
+    }
+    
+    .important-countdown-item,
+    .countdown-item {
+        min-width: 40px;
+        padding: 6px;
+    }
+    
+    .important-countdown-number,
+    .countdown-number {
+        font-size: 1.1rem;
+    }
+}
+
+/* Soporte para orientación landscape en móviles */
+@media (max-height: 600px) and (orientation: landscape) {
+    .calendar-container {
+        min-height: auto;
+    }
+    
+    .cal-modal-content {
+        max-height: 90vh;
+    }
+    
+    .cal-modal-body {
+        max-height: calc(90vh - 120px);
+    }
+    
+    .cal-event-iframe {
+        height: 250px;
+    }
+    
+    .month-grid .day {
+        min-height: 70px;
+    }
+}
+
+/* Mejoras de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    .cal-btn,
+    .day,
+    .event-card,
+    .year-month,
+    .week-event,
+    .cal-action-btn,
+    .important-event-card,
+    .cal-close-modal {
+        transition: none;
+        transform: none;
+        animation: none;
+    }
+    
+    @keyframes modalAppear {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    .important-events-counter.active,
+    .month-view.active,
+    .week-view.active,
+    .year-view.active {
+        animation: none;
+    }
+}
+
+/* Soporte para modo oscuro del sistema */
+@media (prefers-color-scheme: dark) {
+    .cal-modal-content {
+        background: linear-gradient(135deg, #2d3748, #4a5568);
+        color: white;
+    }
+    
+    .cal-modal-body {
+        background: radial-gradient(ellipse at 20% 20%, rgba(90, 150, 255, 0.1) 0%, transparent 40%),
+                    radial-gradient(ellipse at 80% 80%, rgba(155, 89, 182, 0.1) 0%, transparent 40%),
+                    linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+    }
+    
+    .cal-info-item {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--cal-secondary), var(--cal-primary));
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--cal-primary), var(--cal-secondary));
+}
+
+/* Efectos de focus para accesibilidad */
+.cal-btn:focus,
+.day:focus,
+.event-preview:focus,
+.year-month:focus,
+.week-event:focus,
+.event-card:focus,
+.cal-action-btn:focus {
+    outline: 2px solid var(--cal-gold);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.3);
+}
+</style>
+</head>
+<body>
+    <!-- Este es el código que puedes copiar y pegar en cualquier página -->
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <div class="header-logo">
+                <a href="https://grouvex.github.io/">
+                    <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png" alt="Grouvex Studios Logo">
+                </a>
+            </div>
+            <h1>Calendario Oficial de Grouvex Studios</h1>
+            <p class="subtitle">Ponte al día con los enventos, proyectos, anuncios, etc, de Grouvex Studios</p>
+            <div class="current-time" id="currentTime">Cargando hora UTC...</div>
+        </div>
+
+        <!-- Contador de eventos importantes -->
+        <div class="important-events-counter" id="importantEventsCounter">
+            <h3>Eventos Importantes Próximos</h3>
+            <div class="important-events-list" id="importantEventsList">
+                <!-- Eventos importantes se generarán con JS -->
+            </div>
+        </div>
+
+        <div class="calendar-controls">
+            <div class="navigation">
+                <button class="cal-btn" id="prevPeriod">« Anterior</button>
+                <button class="cal-btn" id="todayBtn">Hoy</button>
+                <span class="current-date" id="currentDate">Enero 2024</span>
+                <button class="cal-btn" id="nextPeriod">Siguiente »</button>
+            </div>
+            <div class="view-selector">
+                <button class="cal-btn view-btn active" data-view="month">Mensual</button>
+                <button class="cal-btn view-btn" data-view="week">Semanal</button>
+                <button class="cal-btn view-btn" data-view="year">Anual</button>
+            </div>
+        </div>
+
+        <!-- Vista Mensual -->
+        <div class="month-view active" id="monthView">
+            <div class="month-header" id="monthHeader">
+                <!-- Días de la semana se generan con JS -->
+            </div>
+            <div class="month-grid" id="monthGrid">
+                <!-- Días del mes se generan con JS -->
+            </div>
+        </div>
+
+        <!-- Vista Semanal -->
+        <div class="week-view" id="weekView">
+            <div class="week-header" id="weekHeader">
+                <!-- Encabezados de días y horas se generan con JS -->
+            </div>
+            <div class="week-grid" id="weekGrid">
+                <!-- Horarios y eventos se generan con JS -->
+            </div>
+        </div>
+
+        <!-- Vista Anual -->
+        <div class="year-view" id="yearView">
+            <!-- Meses del año se generan con JS -->
+        </div>
+
+        <!-- Eventos Próximos -->
+        <div class="events-section" id="upcomingEvents">
+            <h2>Próximos Eventos (30 días)</h2>
+            <div class="event-list" id="upcomingEventsList">
+                <!-- Eventos próximos se generan con JS -->
+            </div>
+        </div>
+
+        <!-- Eventos en Curso -->
+        <div class="events-section" id="ongoingEvents">
+            <h2>Eventos en Curso (14 días)</h2>
+            <div class="event-list" id="ongoingEventsList">
+                <!-- Eventos en curso se generan con JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Evento -->
+    <div class="cal-modal" id="eventModal">
+        <div class="cal-modal-content">
+            <div class="cal-modal-header" id="modalHeader">
+                <h2 id="modalTitle">Título del Evento</h2>
+                <button class="cal-close-modal" id="closeModal">&times;</button>
+            </div>
+            <div class="cal-modal-body">
+                <img id="modalImage" src="" alt="Imagen del evento" class="cal-event-image">
+                <div class="cal-event-details">
+                    <div class="cal-event-info">
+                        <div class="cal-info-item">
+                            <span class="cal-info-label"><i class="fa-regular fa-calendar"></i>Fecha inicio:</span>
+                            <span id="modalStartDate">N/A</span>
+                        </div>
+                        <div class="cal-info-item">
+                            <span class="cal-info-label"><i class="fa-solid fa-calendar"></i>Fecha fin:</span>
+                            <span id="modalEndDate">N/A</span>
+                        </div>
+                        <div class="cal-info-item">
+                            <span class="cal-info-label"><i class="fa-solid fa-circle-exclamation"></i>Importancia:</span>
+                            <span id="modalImportance">N/A</span>
+                        </div>
+                        <div class="cal-info-item">
+                            <span class="cal-info-label"><i class="fa-solid fa-arrow-rotate-left"></i>Repetición:</span>
+                            <span id="modalRecurrence">N/A</span>
+                        </div>
+                        <div class="cal-info-item">
+                            <span class="cal-info-label"><i class="fa-regular fa-file-lines"></i>Descripción:</span>
+                            <span id="modalDescription">N/A</span>
+                        </div>
+                        <div class="cal-info-item">
+                            <span class="cal-info-label"><i class="fa-solid fa-at"></i>Autor:</span>
+                            <span id="modalAuthor">N/A</span>
+                        </div>
+                        <div class="cal-info-item">
+                            <span class="cal-info-label"><i class="fa-regular fa-copyright"></i>Organismo:</span>
+                            <span id="modalOrganization">N/A</span>
+                        </div>
+                        <div class="cal-info-item">
+                            <span class="cal-info-label"><i class="fa-solid fa-globe"></i>Otros:</span>
+                            <span id="modalOthers">N/A</span>
+                        </div>
+                    </div>
+                    <div class="cal-event-content">
+                        <div class="cal-info-item">
+                            <span class="cal-info-label"><i class="fa-solid fa-link"></i>Enlace:</span>
+                            <a href="#" id="modalLink" target="_blank">Ver más información</a>
+                        </div>
+                        <iframe id="modalIframe" class="cal-event-iframe" src="" frameborder="0"></iframe>
+                    </div>
+                </div>
+                <div class="cal-event-actions">
+                    <button class="cal-action-btn primary" id="modalLinkBtn">Abrir Enlace</button>
+                    <button class="cal-action-btn secondary" id="modalCloseBtn">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Lista de Eventos -->
+    <div class="cal-modal events-list-modal" id="eventsListModal">
+        <div class="cal-modal-content">
+            <div class="cal-modal-header">
+                <h2 id="eventsListTitle">Eventos del Día</h2>
+                <button class="cal-close-modal" id="closeEventsListModal">&times;</button>
+            </div>
+            <div class="cal-modal-body">
+                <div id="eventsListContent">
+                    <!-- Lista de eventos se generará aquí -->
+                </div>
+                <div class="cal-event-actions">
+                    <button class="cal-action-btn secondary" id="closeEventsListBtn">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Base de datos de Eventos
+        const eventsData = [
+            {
+                "id": 1,
+                "title": "Activación del Sistema GCO",
+                "description": "El Equipo de Gestión de Grouvex Studios ha activado de manera INMEDIATA el Sistema de Gestión de Continuidad Operacional (GCO) (NOGS/2025/GCO-002), con efecto desde el 22 de noviembre de 2025 a las 20:40 UTC.",
+                "startDate": "22/11/2025 20:40:00",
+                "endDate": "22/04/2026 20:40:00",
+                "image": "https://cityofukiah.com/wp-content/uploads/2021/10/emergency-services-1500x650.jpeg",
+                "author": "Sistema - Grouvex Studios GCO",
+                "organization": "Sistema Grouvex Studios",
+                "link": "https://drive.google.com/file/d/1sjrcIYAqTSdJJP4rtIoW5iTFTDtzccSs/view?usp=sharing",
+                "others": "Todos los organismos están en Estado de Alerta de Nivel 3",
+                "color": "#ff0000ff",
+                "importance": "superalto",
+                "recurrence": false
+            },
+            {
+                "id": 1,
+                "title": "🎄Calendario de Adviento - Navidad❄",
+                "description": "Ve al día con nosotros de cuando es cada navidad, año nuevo, etc y... abre sorpresas cada día. 🎁",
+                "startDate": "01/12/2025 00:00:00",
+                "endDate": "08/01/2025 00:00:00",
+                "image": "https://img.freepik.com/vector-gratis/diseno-plano-feliz-navidad_23-2148773634.jpg",
+                "author": "Grouvex Studios",
+                "organization": "Grouvex Studios",
+                "link": "https://www.grouvex.com/christmas",
+                "others": "Vive la Magia de la Navidad.",
+                "color": "#ff0000ff",
+                "importance": "superalto",
+                "recurrence": true,
+                "recurrenceEndYear": 2050
+            },
+            {
+                "id": 1,
+                "title": "🎁 Juegos de Navidad 🎄",
+                "description": "Diversión en la Web Oficial de Grouvex Studios. Obten XP solo divertíendote y solicitando que te den los XP, en la comunidad!. Felices Fiestas.",
+                "startDate": "01/12/2025 00:00:00",
+                "endDate": "01/02/2026 00:00:00",
+                "image": "https://w0.peakpx.com/wallpaper/225/337/HD-wallpaper-fondos-feliz-navidad-2018.jpg",
+                "author": "Grouvex Studios",
+                "organization": "Grouvex Studios",
+                "link": "https://www.grouvex.com/games/navidad2025",
+                "others": "Divertete en la Navidad con nosotros!.",
+                "color": "#00ff40ff",
+                "importance": "alto",
+                "recurrence": true,
+                "recurrenceEndYear": 2050
+            },
+            {
+                "id": 1,
+                "title": "🎊 Año Nuevo 🎇",
+                "description": "Exposición de las últimas innovaciones tecnológicas.",
+                "startDate": "01/01/2025 00:00:00",
+                "endDate": "01/01/2025 23:59:59",
+                "image": "https://img.freepik.com/foto-gratis/banner-feliz-ano-nuevo-fuegos-artificiales_23-2149539969.jpg",
+                "author": "Grouvex Studios",
+                "organization": "Grouvex Studios",
+                "link": "https://www.grouvex.com/games/navidad2025",
+                "others": "Divertete en la Navidad con nosotros!.",
+                "color": "#00ff40ff",
+                "importance": "alto",
+                "recurrence": true,
+                "recurrenceEndYear": 2050
+            },
+            {
+                "id": 3,
+                "title": "Yo Quiero - A New World (Version Maiki Dran)",
+                "description": "Disfruta de la nueva canción de Maiki Dran en las plataformas de musica",
+                "startDate": "26/11/2025 00:00:00",
+                "endDate": "27/11/2025 00:00:00",
+                "image": "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/port/Yo%20Quiero%20-%20A%20New%20World%20-%20Version%20Maiki%20Dran.jpg",
+                "author": "Maiki Dran",
+                "organization": "Grouvex Studios Records",
+                "link": "https://www.grouvex.com/maikidran/discografia",
+                "others": "",
+                "color": "#0396f8ff",
+                "importance": "medio",
+                "recurrence": true,
+                "recurrenceEndYear": 2050
+            },
+            {
+                "id": 4,
+                "title": "🔐Mantenimiento de Portal de Miembros🛠",
+                "description": "El portal de miembros se actualizará y mejorará para que vaya todo mejor.",
+                "startDate": "25/11/2025 19:30:00",
+                "endDate": "30/11/2025 18:00:00",
+                "image": "https://wallpapers.com/images/hd/technical-support-it-technology-maintenance-1quikv1pksvr9gvi.jpg",
+                "author": "Grouvex Studios Developers",
+                "organization": "GS - Developers",
+                "link": "https://script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec",
+                "others": "",
+                "color": "#c2e20eff",
+                "importance": "alto",
+                "recurrence": false
+            },
+            {
+                "id": 5,
+                "title": "Vacaciones de Verano 🏖",
+                "description": "Periodo de vacaciones de verano.",
+                "startDate": "27/06/2025 00:00:00",
+                "endDate": "28/08/2025 23:59:59",
+                "image": "https://st.depositphotos.com/2208320/2466/v/450/depositphotos_24663647-stock-illustration-shiny-seaside-banner-vector-illustration.jpg",
+                "author": "Grouvex Studios",
+                "organization": "Grouvex Studios",
+                "link": "https://www.grouvex.com/",
+                "others": "Periodo de descanso para de todos los trabajadores. Acceder al enlace para ver más información al respecto.",
+                "color": "#FFEB3B",
+                "importance": "medio",
+                "recurrence": true,
+                "recurrenceEndYear": 2050
+            },
+            {
+                "id": 6,
+                "title": "Vacaciones de Invierno ❄",
+                "description": "Periodo de vacaciones de invierno.",
+                "startDate": "15/12/2025 00:00:00",
+                "endDate": "14/02/2026 23:59:59",
+                "image": "https://www.freevector.com/uploads/vector/preview/23788/happy-winter-holidays.jpg",
+                "author": "Grouvex Studios",
+                "organization": "Grouvex Studios",
+                "link": "https://www.grouvex.com/",
+                "others": "Periodo de descanso para de todos los trabajadores. Acceder al enlace para ver más información al respecto.",
+                "color": "#54a2e6ff",
+                "importance": "medio",
+                "recurrence": true,
+                "recurrenceEndYear": 2050
+            },
+            {
+                "id": 7,
+                "title": "Modificación de Documentos Oficiales",
+                "description": "Se realizarán modificaciones en los documentos oficiales favoreciendo así a todos los usuarios. Podrá ",
+                "startDate": "20/04/2026 00:00:00",
+                "endDate": "27/04/2026 23:59:59",
+                "image": "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png",
+                "author": "Grouvex Studios",
+                "organization": "Head de Grouvex Studios",
+                "link": "https://drive.google.com/file/d/1IEEuTuQh_YiJwVRycS8OVuUJVMebovHy/view?pli=1",
+                "others": "Modificaciones de los reglamentos, vease el enlace para ver más sobre este asunto.",
+                "color": "#ff00b3ff",
+                "importance": "alto",
+                "recurrence": false,
+                "recurrenceEndYear": null
+            }
+        ];
+
+        // Variables globales
+        let currentDate = new Date();
+        let currentView = 'month';
+
+        // Elementos DOM
+        const currentTimeEl = document.getElementById('currentTime');
+        const currentDateEl = document.getElementById('currentDate');
+        const importantEventsCounterEl = document.getElementById('importantEventsCounter');
+        const importantEventsListEl = document.getElementById('importantEventsList');
+        const monthViewEl = document.getElementById('monthView');
+        const weekViewEl = document.getElementById('weekView');
+        const yearViewEl = document.getElementById('yearView');
+        const monthHeaderEl = document.getElementById('monthHeader');
+        const monthGridEl = document.getElementById('monthGrid');
+        const weekHeaderEl = document.getElementById('weekHeader');
+        const weekGridEl = document.getElementById('weekGrid');
+        const yearViewContainerEl = document.getElementById('yearView');
+        const upcomingEventsListEl = document.getElementById('upcomingEventsList');
+        const ongoingEventsListEl = document.getElementById('ongoingEventsList');
+        const eventModalEl = document.getElementById('eventModal');
+        const eventsListModalEl = document.getElementById('eventsListModal');
+        const modalHeaderEl = document.getElementById('modalHeader');
+        const modalTitleEl = document.getElementById('modalTitle');
+        const modalImageEl = document.getElementById('modalImage');
+        const modalStartDateEl = document.getElementById('modalStartDate');
+        const modalEndDateEl = document.getElementById('modalEndDate');
+        const modalImportanceEl = document.getElementById('modalImportance');
+        const modalRecurrenceEl = document.getElementById('modalRecurrence');
+        const modalDescriptionEl = document.getElementById('modalDescription');
+        const modalAuthorEl = document.getElementById('modalAuthor');
+        const modalOrganizationEl = document.getElementById('modalOrganization');
+        const modalLinkEl = document.getElementById('modalLink');
+        const modalIframeEl = document.getElementById('modalIframe');
+        const modalOthersEl = document.getElementById('modalOthers');
+        const modalLinkBtnEl = document.getElementById('modalLinkBtn');
+        const modalCloseBtnEl = document.getElementById('modalCloseBtn');
+        const closeModalEl = document.getElementById('closeModal');
+        const eventsListTitleEl = document.getElementById('eventsListTitle');
+        const eventsListContentEl = document.getElementById('eventsListContent');
+        const closeEventsListModalEl = document.getElementById('closeEventsListModal');
+        const closeEventsListBtnEl = document.getElementById('closeEventsListBtn');
+        const prevPeriodBtn = document.getElementById('prevPeriod');
+        const nextPeriodBtn = document.getElementById('nextPeriod');
+        const todayBtn = document.getElementById('todayBtn');
+
+        // Obtener fecha UTC actual
+        function getUTCDate() {
+            const now = new Date();
+            return new Date(Date.UTC(
+                now.getUTCFullYear(),
+                now.getUTCMonth(),
+                now.getUTCDate(),
+                now.getUTCHours(),
+                now.getUTCMinutes(),
+                now.getUTCSeconds()
+            ));
+        }
+
+        // Actualizar display de hora UTC
+        function updateUTCTimeDisplay() {
+            const now = getUTCDate();
+            const utcTimeString = now.toUTCString().replace('GMT', 'UTC');
+            currentTimeEl.textContent = `Hora actual (UTC): ${utcTimeString}`;
+        }
+
+        // Inicializar la aplicación
+        function initApp() {
+            setupEventListeners();
+            updateUTCTimeDisplay();
+            setInterval(updateUTCTimeDisplay, 1000);
+            updateCalendar();
+            updateEventsSections();
+            updateImportantEventsCounter();
+            
+            // Actualizar contadores cada segundo
+            setInterval(() => {
+                updateEventsSections();
+                updateImportantEventsCounter();
+            }, 1000);
+        }
+
+        // Configurar event listeners
+        function setupEventListeners() {
+            // Navegación
+            prevPeriodBtn.addEventListener('click', navigatePrevious);
+            nextPeriodBtn.addEventListener('click', navigateNext);
+            todayBtn.addEventListener('click', goToToday);
+
+            // Cambio de vista
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    currentView = e.target.dataset.view;
+                    updateCalendar();
+                });
+            });
+
+            // Modal
+            closeModalEl.addEventListener('click', closeModal);
+            modalCloseBtnEl.addEventListener('click', closeModal);
+            modalLinkBtnEl.addEventListener('click', openEventLink);
+            eventModalEl.addEventListener('click', (e) => {
+                if (e.target === eventModalEl) closeModal();
+            });
+
+            // Modal de lista de eventos
+            closeEventsListModalEl.addEventListener('click', closeEventsListModal);
+            closeEventsListBtnEl.addEventListener('click', closeEventsListModal);
+            eventsListModalEl.addEventListener('click', (e) => {
+                if (e.target === eventsListModalEl) closeEventsListModal();
+            });
+        }
+
+        // Actualizar contador de eventos importantes
+        function updateImportantEventsCounter() {
+            // Obtener TODOS los eventos importantes (alto o superalto) que están próximos
+            const importantEvents = eventsData.filter(event => 
+                (event.importance === 'alto' || event.importance === 'superalto') && 
+                parseEventDate(event.startDate) > new Date()
+            ).sort((a, b) => parseEventDate(a.startDate) - parseEventDate(b.startDate));
+            
+            if (importantEvents.length === 0) {
+                importantEventsCounterEl.classList.remove('active');
+                return;
+            }
+            
+            // Limpiar lista
+            importantEventsListEl.innerHTML = '';
+            
+            // Crear tarjetas para TODOS los eventos importantes
+            importantEvents.forEach(event => {
+                const eventCard = document.createElement('div');
+                eventCard.className = 'important-event-card';
+                eventCard.addEventListener('click', () => openEventModal(event));
+                
+                const startDate = parseEventDate(event.startDate);
+                const timeRemaining = startDate - new Date();
+                
+                // Calcular días, horas, minutos y segundos
+                const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+                
+                const countdownId = `important-countdown-${event.id}`;
+                
+                eventCard.innerHTML = `
+                    <div class="important-event-title">${event.title}</div>
+                    <div class="important-event-date">${formatEventDate(event.startDate)} - ${formatEventDate(event.endDate)}</div>
+                    <div class="important-countdown" id="${countdownId}">
+                        <div class="important-countdown-item">
+                            <div class="important-countdown-number">${days}</div>
+                            <div class="important-countdown-label">Días</div>
+                        </div>
+                        <div class="important-countdown-item">
+                            <div class="important-countdown-number">${hours}</div>
+                            <div class="important-countdown-label">Horas</div>
+                        </div>
+                        <div class="important-countdown-item">
+                            <div class="important-countdown-number">${minutes}</div>
+                            <div class="important-countdown-label">Minutos</div>
+                        </div>
+                        <div class="important-countdown-item">
+                            <div class="important-countdown-number">${seconds}</div>
+                            <div class="important-countdown-label">Segundos</div>
+                        </div>
+                    </div>
+                `;
+                
+                importantEventsListEl.appendChild(eventCard);
+                
+                // Actualizar contador cada segundo
+                setInterval(() => {
+                    updateImportantEventCountdown(event, countdownId);
+                }, 1000);
+            });
+            
+            importantEventsCounterEl.classList.add('active');
+        }
+
+        // Actualizar contador de eventos importantes
+        function updateImportantEventCountdown(event, countdownId) {
+            const countdownEl = document.getElementById(countdownId);
+            if (!countdownEl) return;
+            
+            const startDate = parseEventDate(event.startDate);
+            const now = new Date();
+            const timeRemaining = startDate - now;
+            
+            if (timeRemaining < 0) {
+                // Si el evento ya pasó, actualizar la sección
+                updateImportantEventsCounter();
+                return;
+            }
+            
+            // Calcular días, horas, minutos y segundos
+            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+            
+            // Actualizar los números del contador
+            const countdownNumbers = countdownEl.querySelectorAll('.important-countdown-number');
+            countdownNumbers[0].textContent = days;
+            countdownNumbers[1].textContent = hours;
+            countdownNumbers[2].textContent = minutes;
+            countdownNumbers[3].textContent = seconds;
+        }
+
+        // Navegar al periodo anterior según la vista actual
+        function navigatePrevious() {
+            if (currentView === 'month') {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+            } else if (currentView === 'week') {
+                currentDate.setDate(currentDate.getDate() - 7);
+            } else if (currentView === 'year') {
+                currentDate.setFullYear(currentDate.getFullYear() - 1);
+            }
+            updateCalendar();
+        }
+
+        // Navegar al periodo siguiente según la vista actual
+        function navigateNext() {
+            if (currentView === 'month') {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+            } else if (currentView === 'week') {
+                currentDate.setDate(currentDate.getDate() + 7);
+            } else if (currentView === 'year') {
+                currentDate.setFullYear(currentDate.getFullYear() + 1);
+            }
+            updateCalendar();
+        }
+
+        // Ir al día actual
+        function goToToday() {
+            currentDate = getUTCDate();
+            updateCalendar();
+        }
+
+        // Actualizar el calendario según la vista actual
+        function updateCalendar() {
+            updateCurrentDateDisplay();
+            
+            // Ocultar todas las vistas
+            monthViewEl.classList.remove('active');
+            weekViewEl.classList.remove('active');
+            yearViewEl.classList.remove('active');
+            
+            // Mostrar la vista actual
+            if (currentView === 'month') {
+                monthViewEl.classList.add('active');
+                renderMonthView();
+            } else if (currentView === 'week') {
+                weekViewEl.classList.add('active');
+                renderWeekView();
+            } else if (currentView === 'year') {
+                yearViewEl.classList.add('active');
+                renderYearView();
+            }
+            
+            // Actualizar botones de navegación
+            updateNavigationButtons();
+        }
+
+        // Actualizar la fecha actual mostrada
+        function updateCurrentDateDisplay() {
+            if (currentView === 'month') {
+                const options = { year: 'numeric', month: 'long', timeZone: 'UTC' };
+                currentDateEl.textContent = currentDate.toLocaleDateString('es-ES', options);
+            } else if (currentView === 'week') {
+                const weekStart = new Date(currentDate);
+                weekStart.setDate(currentDate.getDate() - currentDate.getDay());
+                const weekEnd = new Date(weekStart);
+                weekEnd.setDate(weekStart.getDate() + 6);
+                
+                const startStr = weekStart.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+                const endStr = weekEnd.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+                currentDateEl.textContent = `${startStr} - ${endStr}`;
+            } else if (currentView === 'year') {
+                currentDateEl.textContent = currentDate.getUTCFullYear().toString();
+            }
+        }
+
+        // Actualizar etiquetas de los botones de navegación
+        function updateNavigationButtons() {
+            if (currentView === 'month') {
+                prevPeriodBtn.textContent = '« Mes anterior';
+                nextPeriodBtn.textContent = 'Mes siguiente »';
+            } else if (currentView === 'week') {
+                prevPeriodBtn.textContent = '« Semana anterior';
+                nextPeriodBtn.textContent = 'Semana siguiente »';
+            } else if (currentView === 'year') {
+                prevPeriodBtn.textContent = '« Año anterior';
+                nextPeriodBtn.textContent = 'Año siguiente »';
+            }
+        }
+
+        // Renderizar vista mensual
+        function renderMonthView() {
+            // Limpiar contenedores
+            monthHeaderEl.innerHTML = '';
+            monthGridEl.innerHTML = '';
+            
+            // Añadir encabezados de días
+            const daysOfWeek = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+            daysOfWeek.forEach((day, index) => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'day-header';
+                dayHeader.textContent = day;
+                dayHeader.dataset.dayIndex = index;
+                dayHeader.addEventListener('click', () => goToWeekFromDay(index));
+                monthHeaderEl.appendChild(dayHeader);
+            });
+            
+            // Obtener primer día del mes y último día del mes (UTC)
+            const firstDay = new Date(Date.UTC(currentDate.getUTCFullYear(), currentDate.getUTCMonth(), 1));
+            const lastDay = new Date(Date.UTC(currentDate.getUTCFullYear(), currentDate.getUTCMonth() + 1, 0));
+            
+            // Obtener día de la semana del primer día (0 = Domingo, 6 = Sábado)
+            const firstDayOfWeek = firstDay.getUTCDay();
+            
+            // Añadir días del mes anterior para completar la primera semana
+            const prevMonthLastDay = new Date(Date.UTC(currentDate.getUTCFullYear(), currentDate.getUTCMonth(), 0)).getUTCDate();
+            for (let i = firstDayOfWeek - 1; i >= 0; i--) {
+                const day = document.createElement('div');
+                day.className = 'day other-month';
+                day.innerHTML = `<div class="day-number">${prevMonthLastDay - i}</div>`;
+                monthGridEl.appendChild(day);
+            }
+            
+            // Añadir días del mes actual
+            const today = getUTCDate();
+            for (let i = 1; i <= lastDay.getUTCDate(); i++) {
+                const day = document.createElement('div');
+                day.className = 'day';
+                
+                // Marcar si es hoy
+                if (i === today.getUTCDate() && 
+                    currentDate.getUTCMonth() === today.getUTCMonth() && 
+                    currentDate.getUTCFullYear() === today.getUTCFullYear()) {
+                    day.classList.add('today');
+                }
+                
+                day.innerHTML = `<div class="day-number">${i}</div><div class="day-events"></div>`;
+                
+                // Añadir eventos del día
+                const dayDate = new Date(Date.UTC(currentDate.getUTCFullYear(), currentDate.getUTCMonth(), i));
+                const dayEvents = getEventsForDate(dayDate);
+                const dayEventsEl = day.querySelector('.day-events');
+                
+                // Si hay eventos, mostrar hasta 3 como preview
+                dayEvents.slice(0, 3).forEach(event => {
+                    const eventPreview = document.createElement('div');
+                    eventPreview.className = 'event-preview';
+                    eventPreview.style.backgroundColor = event.color;
+                    if (isMultiDayEvent(event)) {
+                        eventPreview.classList.add('multi-day');
+                    }
+                    eventPreview.textContent = event.title;
+                    eventPreview.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openEventModal(event);
+                    });
+                    dayEventsEl.appendChild(eventPreview);
+                });
+                
+                // Si hay más de 3 eventos, mostrar indicador
+                if (dayEvents.length > 3) {
+                    const moreEvents = document.createElement('div');
+                    moreEvents.className = 'event-preview';
+                    moreEvents.textContent = `+${dayEvents.length - 3} más`;
+                    moreEvents.style.fontStyle = 'italic';
+                    dayEventsEl.appendChild(moreEvents);
+                }
+                
+                // Hacer clic en el día abre la lista de eventos
+                day.addEventListener('click', () => {
+                    if (dayEvents.length > 0) {
+                        if (dayEvents.length === 1) {
+                            openEventModal(dayEvents[0]);
+                        } else {
+                            openEventsListModal(dayDate, dayEvents);
+                        }
+                    }
+                });
+                
+                monthGridEl.appendChild(day);
+            }
+            
+            // Añadir días del mes siguiente para completar la última semana
+            const totalCells = 42; // 6 semanas * 7 días
+            const daysSoFar = monthGridEl.children.length;
+            for (let i = 1; i <= totalCells - daysSoFar; i++) {
+                const day = document.createElement('div');
+                day.className = 'day other-month';
+                day.innerHTML = `<div class="day-number">${i}</div>`;
+                monthGridEl.appendChild(day);
+            }
+        }
+
+        // Ir a la vista semanal desde un día de la semana en vista mensual
+        function goToWeekFromDay(dayIndex) {
+            // Cambiar a vista semanal
+            document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('.view-btn[data-view="week"]').classList.add('active');
+            currentView = 'week';
+            
+            // Ajustar la fecha actual para mostrar la semana que contiene el día seleccionado
+            const today = getUTCDate();
+            const dayOfWeek = today.getUTCDay(); // 0 = Domingo, 6 = Sábado
+            const diff = dayIndex - dayOfWeek;
+            currentDate.setUTCDate(today.getUTCDate() + diff);
+            
+            updateCalendar();
+        }
+
+        // Renderizar vista semanal
+        function renderWeekView() {
+            // Limpiar contenedores
+            weekHeaderEl.innerHTML = '';
+            weekGridEl.innerHTML = '';
+            
+            // Añadir encabezado de horas
+            const timeSlot = document.createElement('div');
+            timeSlot.className = 'time-slot';
+            timeSlot.textContent = 'Hora';
+            weekHeaderEl.appendChild(timeSlot);
+            
+            // Obtener primer día de la semana (domingo) UTC
+            const weekStart = new Date(currentDate);
+            weekStart.setUTCDate(currentDate.getUTCDate() - currentDate.getUTCDay());
+            
+            // Añadir encabezados de días
+            for (let i = 0; i < 7; i++) {
+                const day = new Date(weekStart);
+                day.setUTCDate(weekStart.getUTCDate() + i);
+                
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'day-header';
+                dayHeader.textContent = day.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', timeZone: 'UTC' });
+                weekHeaderEl.appendChild(dayHeader);
+            }
+            
+            // Añadir franjas horarias
+            for (let hour = 0; hour < 24; hour++) {
+                // Celda de hora
+                const timeSlot = document.createElement('div');
+                timeSlot.className = 'time-slot';
+                timeSlot.textContent = `${hour}:00`;
+                weekGridEl.appendChild(timeSlot);
+                
+                // Celdas de días
+                for (let i = 0; i < 7; i++) {
+                    const day = new Date(weekStart);
+                    day.setUTCDate(weekStart.getUTCDate() + i);
+                    
+                    const dayCell = document.createElement('div');
+                    dayCell.className = 'week-day';
+                    
+                    // Marcar si es hoy
+                    const today = getUTCDate();
+                    if (day.getUTCDate() === today.getUTCDate() && 
+                        day.getUTCMonth() === today.getUTCMonth() && 
+                        day.getUTCFullYear() === today.getUTCFullYear()) {
+                        dayCell.classList.add('today');
+                    }
+                    
+                    // Obtener eventos para este día y hora específica
+                    const hourEvents = getEventsForDateAndHour(new Date(day.getUTCFullYear(), day.getUTCMonth(), day.getUTCDate(), hour));
+                    
+                    // Posicionar eventos en la celda
+                    hourEvents.forEach((event, index) => {
+                        const eventEl = document.createElement('div');
+                        eventEl.className = 'week-event';
+                        eventEl.style.backgroundColor = event.color;
+                        eventEl.textContent = event.title;
+                        eventEl.style.top = `${index * 20}px`;
+                        eventEl.style.height = '18px';
+                        eventEl.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            openEventModal(event);
+                        });
+                        dayCell.appendChild(eventEl);
+                    });
+                    
+                    // Hacer clic en el día abre la lista de eventos
+                    const dayEvents = getEventsForDate(new Date(weekStart.getUTCFullYear(), weekStart.getUTCMonth(), weekStart.getUTCDate() + i));
+                    dayCell.addEventListener('click', () => {
+                        if (dayEvents.length > 0) {
+                            if (dayEvents.length === 1) {
+                                openEventModal(dayEvents[0]);
+                            } else {
+                                const dayDate = new Date(weekStart.getUTCFullYear(), weekStart.getUTCMonth(), weekStart.getUTCDate() + i);
+                                openEventsListModal(dayDate, dayEvents);
+                            }
+                        }
+                    });
+                    
+                    weekGridEl.appendChild(dayCell);
+                }
+            }
+        }
+
+        // Renderizar vista anual
+        function renderYearView() {
+            // Limpiar contenedor
+            yearViewContainerEl.innerHTML = '';
+            
+            // Crear meses
+            for (let month = 0; month < 12; month++) {
+                const monthDate = new Date(Date.UTC(currentDate.getUTCFullYear(), month, 1));
+                const monthEl = document.createElement('div');
+                monthEl.className = 'year-month';
+                monthEl.dataset.month = month;
+                monthEl.addEventListener('click', () => goToMonthFromYear(month));
+                
+                // Encabezado del mes
+                const monthHeader = document.createElement('div');
+                monthHeader.className = 'year-month-header';
+                monthHeader.textContent = monthDate.toLocaleDateString('es-ES', { month: 'long', timeZone: 'UTC' });
+                monthEl.appendChild(monthHeader);
+                
+                // Grid de días del mes
+                const monthGrid = document.createElement('div');
+                monthGrid.className = 'year-month-grid';
+                
+                // Añadir encabezados de días de la semana
+                const daysOfWeek = ['D', 'L', 'M', 'X', 'J', 'V', 'S'];
+                daysOfWeek.forEach(day => {
+                    const dayHeader = document.createElement('div');
+                    dayHeader.className = 'year-day';
+                    dayHeader.textContent = day;
+                    dayHeader.style.fontWeight = 'bold';
+                    monthGrid.appendChild(dayHeader);
+                });
+                
+                // Obtener primer día del mes y último día del mes (UTC)
+                const firstDay = new Date(Date.UTC(currentDate.getUTCFullYear(), month, 1));
+                const lastDay = new Date(Date.UTC(currentDate.getUTCFullYear(), month + 1, 0));
+                
+                // Obtener día de la semana del primer día (0 = Domingo, 6 = Sábado)
+                const firstDayOfWeek = firstDay.getUTCDay();
+                
+                // Añadir días vacíos para alinear el primer día
+                for (let i = 0; i < firstDayOfWeek; i++) {
+                    const emptyDay = document.createElement('div');
+                    emptyDay.className = 'year-day';
+                    monthGrid.appendChild(emptyDay);
+                }
+                
+                // Añadir días del mes
+                const today = getUTCDate();
+                for (let i = 1; i <= lastDay.getUTCDate(); i++) {
+                    const day = document.createElement('div');
+                    day.className = 'year-day';
+                    day.textContent = i;
+                    
+                    // Marcar si es hoy
+                    if (i === today.getUTCDate() && 
+                        month === today.getUTCMonth() && 
+                        currentDate.getUTCFullYear() === today.getUTCFullYear()) {
+                        day.classList.add('today');
+                    }
+                    
+                    // Obtener eventos del día
+                    const dayEvents = getEventsForDate(new Date(Date.UTC(currentDate.getUTCFullYear(), month, i)));
+                    
+                    // Aplicar color según los eventos
+                    if (dayEvents.length > 0) {
+                        day.classList.add('has-events');
+                        
+                        // Si hay un solo evento, usar su color
+                        if (dayEvents.length === 1) {
+                            day.style.backgroundColor = dayEvents[0].color;
+                            day.style.color = 'white';
+                        } 
+                        // Si hay múltiples eventos, crear gradiente radial
+                        else {
+                            const colors = dayEvents.map(event => event.color);
+                            const gradientStops = colors.map((color, index) => {
+                                const position = (index / (colors.length - 1)) * 100;
+                                return `${color}`;
+                            }).join(', ');
+                            
+                            day.style.background = `linear-gradient(45deg, ${gradientStops})`;
+                            day.style.color = 'white';
+                        }
+                    }
+                    
+                    monthGrid.appendChild(day);
+                }
+                
+                monthEl.appendChild(monthGrid);
+                yearViewContainerEl.appendChild(monthEl);
+            }
+        }
+
+        // Ir a la vista mensual desde un mes en vista anual
+        function goToMonthFromYear(month) {
+            // Cambiar a vista mensual
+            document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('.view-btn[data-view="month"]').classList.add('active');
+            currentView = 'month';
+            
+            // Ajustar la fecha actual para mostrar el mes seleccionado
+            currentDate.setUTCMonth(month);
+            
+            updateCalendar();
+        }
+
+        // Actualizar secciones de eventos
+        function updateEventsSections() {
+            updateUpcomingEvents();
+            updateOngoingEvents();
+        }
+
+        // Actualizar eventos próximos
+        function updateUpcomingEvents() {
+            // Limpiar lista
+            upcomingEventsListEl.innerHTML = '';
+            
+            // Obtener eventos próximos (en los próximos 30 días)
+            const upcomingEvents = getUpcomingEvents(30);
+            
+            if (upcomingEvents.length === 0) {
+                upcomingEventsListEl.innerHTML = '<p>No hay eventos próximos en los próximos 30 días.</p>';
+                return;
+            }
+            
+            // Crear tarjetas de eventos
+            upcomingEvents.forEach(event => {
+                const eventCard = document.createElement('div');
+                eventCard.className = 'event-card';
+                eventCard.style.borderLeftColor = event.color;
+                eventCard.addEventListener('click', () => openEventModal(event));
+                
+                const startDate = parseEventDate(event.startDate);
+                const timeRemaining = startDate - new Date();
+                
+                // Calcular días, horas, minutos y segundos
+                const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+                
+                // Crear contador dinámico
+                const countdownId = `countdown-upcoming-${event.id}`;
+                
+                eventCard.innerHTML = `
+                    <div class="event-card-title">${event.title}</div>
+                    <div class="event-card-date">${formatEventDate(event.startDate)} - ${formatEventDate(event.endDate)}</div>
+                    <div class="event-card-countdown" id="${countdownId}">
+                        <div class="countdown-item">
+                            <div class="countdown-number">${days}</div>
+                            <div class="countdown-label">Días</div>
+                        </div>
+                        <div class="countdown-item">
+                            <div class="countdown-number">${hours}</div>
+                            <div class="countdown-label">Horas</div>
+                        </div>
+                        <div class="countdown-item">
+                            <div class="countdown-number">${minutes}</div>
+                            <div class="countdown-label">Minutos</div>
+                        </div>
+                        <div class="countdown-item">
+                            <div class="countdown-number">${seconds}</div>
+                            <div class="countdown-label">Segundos</div>
+                        </div>
+                    </div>
+                `;
+                
+                upcomingEventsListEl.appendChild(eventCard);
+                
+                // Actualizar contador cada segundo
+                setInterval(() => {
+                    updateEventCountdown(event, countdownId, 'start');
+                }, 1000);
+            });
+        }
+
+        // Actualizar eventos en curso
+        function updateOngoingEvents() {
+            // Limpiar lista
+            ongoingEventsListEl.innerHTML = '';
+            
+            // Obtener eventos en curso (que terminan en los próximos 14 días)
+            const ongoingEvents = getOngoingEvents(14);
+            
+            if (ongoingEvents.length === 0) {
+                ongoingEventsListEl.innerHTML = '<p>No hay eventos en curso que terminen en los próximos 14 días.</p>';
+                return;
+            }
+            
+            // Crear tarjetas de eventos
+            ongoingEvents.forEach(event => {
+                const eventCard = document.createElement('div');
+                eventCard.className = 'event-card';
+                eventCard.style.borderLeftColor = event.color;
+                eventCard.addEventListener('click', () => openEventModal(event));
+                
+                const endDate = parseEventDate(event.endDate);
+                const timeRemaining = endDate - new Date();
+                
+                // Calcular días, horas, minutos y segundos
+                const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+                
+                // Crear contador dinámico
+                const countdownId = `countdown-ongoing-${event.id}`;
+                
+                eventCard.innerHTML = `
+                    <div class="event-card-title">${event.title}</div>
+                    <div class="event-card-date">${formatEventDate(event.startDate)} - ${formatEventDate(event.endDate)}</div>
+                    <div class="event-card-countdown" id="${countdownId}">
+                        <div class="countdown-item">
+                            <div class="countdown-number">${days}</div>
+                            <div class="countdown-label">Días</div>
+                        </div>
+                        <div class="countdown-item">
+                            <div class="countdown-number">${hours}</div>
+                            <div class="countdown-label">Horas</div>
+                        </div>
+                        <div class="countdown-item">
+                            <div class="countdown-number">${minutes}</div>
+                            <div class="countdown-label">Minutos</div>
+                        </div>
+                        <div class="countdown-item">
+                            <div class="countdown-number">${seconds}</div>
+                            <div class="countdown-label">Segundos</div>
+                        </div>
+                    </div>
+                `;
+                
+                ongoingEventsListEl.appendChild(eventCard);
+                
+                // Actualizar contador cada segundo
+                setInterval(() => {
+                    updateEventCountdown(event, countdownId, 'end');
+                }, 1000);
+            });
+        }
+
+        // Actualizar contador de eventos
+        function updateEventCountdown(event, countdownId, type) {
+            const countdownEl = document.getElementById(countdownId);
+            if (!countdownEl) return;
+            
+            const targetDate = type === 'start' ? parseEventDate(event.startDate) : parseEventDate(event.endDate);
+            const now = new Date();
+            const timeRemaining = targetDate - now;
+            
+            if (timeRemaining < 0) {
+                // Si el evento ya pasó, actualizar las secciones
+                updateEventsSections();
+                return;
+            }
+            
+            // Calcular días, horas, minutos y segundos
+            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+            
+            // Actualizar los números del contador
+            const countdownNumbers = countdownEl.querySelectorAll('.countdown-number');
+            countdownNumbers[0].textContent = days;
+            countdownNumbers[1].textContent = hours;
+            countdownNumbers[2].textContent = minutes;
+            countdownNumbers[3].textContent = seconds;
+        }
+
+// Obtener eventos para una fecha específica
+function getEventsForDate(date) {
+    const allEvents = [];
+    
+    eventsData.forEach(event => {
+        const eventStartDate = parseEventDate(event.startDate);
+        const eventEndDate = parseEventDate(event.endDate);
+        
+        // Si el evento no se repite, verificar si ocurre en esta fecha
+        if (!event.recurrence) {
+            if (date >= eventStartDate && date <= eventEndDate) {
+                allEvents.push(event);
+            }
+        }
+        // Si el evento se repite anualmente
+        else if (event.recurrence) {
+            // Para eventos anuales, crear instancias para cada año dentro del rango
+            const startYear = eventStartDate.getUTCFullYear();
+            const endYear = event.recurrenceEndYear;
+            
+            for (let year = startYear; year <= endYear; year++) {
+                // Crear fecha de inicio para este año
+                const yearlyStartDate = new Date(Date.UTC(
+                    year,
+                    eventStartDate.getUTCMonth(),
+                    eventStartDate.getUTCDate(),
+                    eventStartDate.getUTCHours(),
+                    eventStartDate.getUTCMinutes(),
+                    eventStartDate.getUTCSeconds()
+                ));
+                
+                // Crear fecha de fin para este año - IMPORTANTE: usar el año correcto
+                // Si el evento termina en el año siguiente, ajustar el año de fin
+                let endYearForThisInstance = year;
+                if (eventEndDate.getUTCMonth() < eventStartDate.getUTCMonth()) {
+                    // Si el mes de fin es menor que el mes de inicio, significa que termina al año siguiente
+                    endYearForThisInstance = year + 1;
+                }
+                
+                const yearlyEndDate = new Date(Date.UTC(
+                    endYearForThisInstance,
+                    eventEndDate.getUTCMonth(),
+                    eventEndDate.getUTCDate(),
+                    eventEndDate.getUTCHours(),
+                    eventEndDate.getUTCMinutes(),
+                    eventEndDate.getUTCSeconds()
+                ));
+                
+                // Verificar si la fecha está dentro del intervalo de este año
+                if (date >= yearlyStartDate && date <= yearlyEndDate) {
+                    allEvents.push(event);
+                    break; // Solo necesitamos una instancia por evento
+                }
+            }
+        }
+    });
+    
+    return allEvents;
+}
+
+        // Obtener eventos para una fecha y hora específicas
+        function getEventsForDateAndHour(dateTime) {
+            return getEventsForDate(dateTime).filter(event => {
+                const eventStartDate = parseEventDate(event.startDate);
+                const eventEndDate = parseEventDate(event.endDate);
+                
+                // Verificar si el evento ocurre en esta fecha y hora
+                return dateTime >= eventStartDate && dateTime <= eventEndDate;
+            });
+        }
+
+        // Verificar si un evento dura varios días
+        function isMultiDayEvent(event) {
+            const startDate = parseEventDate(event.startDate);
+            const endDate = parseEventDate(event.endDate);
+            
+            // Diferencia en días
+            const diffTime = Math.abs(endDate - startDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            return diffDays > 1;
+        }
+
+        // Obtener eventos próximos
+        function getUpcomingEvents(daysAhead = 30) {
+            const now = getUTCDate();
+            const futureDate = new Date(now);
+            futureDate.setUTCDate(now.getUTCDate() + daysAhead);
+            
+            return eventsData.filter(event => {
+                const eventStartDate = parseEventDate(event.startDate);
+                return eventStartDate >= now && eventStartDate <= futureDate;
+            }).sort((a, b) => {
+                return parseEventDate(a.startDate) - parseEventDate(b.startDate);
+            });
+        }
+
+        // Obtener eventos en curso
+        function getOngoingEvents(daysAhead = 14) {
+            const now = getUTCDate();
+            const futureDate = new Date(now);
+            futureDate.setUTCDate(now.getUTCDate() + daysAhead);
+            
+            return eventsData.filter(event => {
+                const eventStartDate = parseEventDate(event.startDate);
+                const eventEndDate = parseEventDate(event.endDate);
+                
+                // Eventos que ya han comenzado y terminan en los próximos días
+                return eventStartDate <= now && eventEndDate >= now && eventEndDate <= futureDate;
+            }).sort((a, b) => {
+                return parseEventDate(a.endDate) - parseEventDate(b.endDate);
+            });
+        }
+
+        // Parsear fecha de evento desde string
+        function parseEventDate(dateString) {
+            const [datePart, timePart] = dateString.split(' ');
+            const [day, month, year] = datePart.split('/').map(Number);
+            const [hours, minutes, seconds] = timePart ? timePart.split(':').map(Number) : [0, 0, 0];
+            
+            return new Date(Date.UTC(year, month - 1, day, hours, minutes, seconds));
+        }
+
+        // Formatear fecha de evento para mostrar
+        function formatEventDate(dateString) {
+            const date = parseEventDate(dateString);
+            return date.toLocaleDateString('es-ES', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                timeZone: 'UTC'
+            });
+        }
+
+        // Obtener texto de repetición
+        function getRecurrenceText(event) {
+            if (!event.recurrence) return 'No se repite';
+            return `Se repite cada año hasta ${event.recurrenceEndYear}`;
+        }
+
+        // Abrir modal de evento
+        function openEventModal(event) {
+            modalTitleEl.textContent = event.title;
+            modalImageEl.src = event.image;
+            modalImageEl.alt = event.title;
+            modalStartDateEl.textContent = formatEventDate(event.startDate);
+            modalEndDateEl.textContent = formatEventDate(event.endDate);
+            modalImportanceEl.textContent = event.importance.charAt(0).toUpperCase() + event.importance.slice(1);
+            modalRecurrenceEl.textContent = getRecurrenceText(event);
+            modalDescriptionEl.textContent = event.description;
+            modalAuthorEl.textContent = event.author;
+            modalOrganizationEl.textContent = event.organization;
+            modalLinkEl.href = event.link;
+            modalIframeEl.src = event.link;
+            modalOthersEl.textContent = event.others;
+            
+            // Guardar el enlace para el botón
+            modalLinkBtnEl.dataset.link = event.link;
+            
+            eventModalEl.style.display = 'flex';
+        }
+
+        // Abrir modal de lista de eventos
+        function openEventsListModal(date, events) {
+            eventsListTitleEl.textContent = `Eventos del ${date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })}`;
+            eventsListContentEl.innerHTML = '';
+            
+            events.forEach(event => {
+                const eventItem = document.createElement('div');
+                eventItem.className = 'event-item';
+                eventItem.style.backgroundColor = event.color || '#2ecc71';
+                eventItem.style.color = 'white';
+                eventItem.addEventListener('click', () => {
+                    closeEventsListModal();
+                    openEventModal(event);
+                });
+                
+                const eventDate = document.createElement('div');
+                eventDate.className = 'event-date';
+                eventDate.textContent = `${formatEventDate(event.startDate)} - ${formatEventDate(event.endDate)}`;
+                
+                const eventTitle = document.createElement('div');
+                eventTitle.className = 'event-title';
+                eventTitle.textContent = event.title;
+                
+                const eventImportance = document.createElement('span');
+                eventImportance.className = 'event-importance';
+                eventImportance.textContent = event.importance.toUpperCase();
+                eventImportance.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+                eventImportance.style.borderRadius = '10px';
+                eventImportance.style.padding = '2px 8px';
+                eventImportance.style.fontSize = '0.8rem';
+                
+                eventItem.appendChild(eventDate);
+                eventItem.appendChild(eventTitle);
+                eventItem.appendChild(eventImportance);
+                
+                eventsListContentEl.appendChild(eventItem);
+            });
+            
+            eventsListModalEl.style.display = 'flex';
+        }
+
+        // Cerrar modal
+        function closeModal() {
+            eventModalEl.style.display = 'none';
+            modalIframeEl.src = '';
+        }
+
+        // Cerrar modal de lista de eventos
+        function closeEventsListModal() {
+            eventsListModalEl.style.display = 'none';
+        }
+
+        // Abrir enlace del evento
+        function openEventLink() {
+            window.open(modalLinkBtnEl.dataset.link, '_blank');
+        }
+
+        // Inicializar la aplicación cuando se carga la página
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>

@@ -1459,19 +1459,125 @@
     outline-offset: 2px;
     box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.3);
 }
-</style>
-</head>
-<body>
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grouvex Studios - Administración DDOO</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+/* ============================================
+   AUTH SECTION
+   ============================================ */
+
+.auth-section {
+    min-height: min(400px, 60vh);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.auth-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: var(--spacing-xl);
+    width: min(90%, 400px);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.auth-header i {
+    font-size: clamp(2rem, 8vw, 3rem);
+    color: var(--primary-light);
+    margin-bottom: var(--spacing-md);
+}
+
+.auth-header h2 {
+    font-size: clamp(1.3rem, 4vw, 1.5rem);
+    margin-bottom: var(--spacing-xs);
+    color: var(--dark);
+}
+
+.auth-header p {
+    color: var(--gray);
+    word-break: break-word;
+}
+
+.auth-methods {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    width: 100%;
+}
+
+.btn-google, .btn-primary, .btn-secondary, .btn-outline {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    width: 100%;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.btn-google {
+    background: white;
+    border: 2px solid var(--border);
+    color: var(--dark);
+}
+
+.btn-google:hover {
+    background: var(--light);
+    border-color: var(--primary-light);
+}
+
+.btn-primary {
+    background: var(--success);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #047857;
+}
+
+.btn-secondary {
+    background: var(--light);
+    border: 1px solid var(--border);
+    color: var(--dark);
+}
+
+.btn-secondary:hover {
+    background: var(--border);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+}
+
+.btn-outline:hover {
+    background: white;
+    color: var(--primary);
+}
+
+.auth-message {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius);
+    text-align: center;
+    font-size: 0.9rem;
+    word-break: break-word;
+}
+</style>
 </head>
 <body>
 <!-- Auth Section -->
@@ -1656,6 +1762,23 @@
   
 
     <script>
+// Configuración de Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
+  authDomain: "grouvex-studios.firebaseapp.com",
+  databaseURL: "https://grouvex-studios-default-rtdb.firebaseio.com",
+  projectId: "grouvex-studios",
+  storageBucket: "grouvex-studios.appspot.com",
+  messagingSenderId: "1070842606062",
+  appId: "1:1070842606062:web:5d887863048fd100b49eff",
+  measurementId: "G-75BR8D2CR3"
+};
+
+// Inicializar Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Inicializar servicios
+const auth = firebase.auth();
     document.addEventListener('DOMContentLoaded', () => {
         setupAuthListener();
     });

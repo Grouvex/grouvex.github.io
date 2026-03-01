@@ -1789,7 +1789,6 @@ function setupAuthListener() {
         if (user && isAuthorized(user.email)) {
             currentUser = user;
             showAdminPanel();
-            await loadCurrentData();
         } else {
             if (user) {
                 await auth.signOut();

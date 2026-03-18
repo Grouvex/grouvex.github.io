@@ -343,7 +343,6 @@
         }
 
         .calendar-controls {
-            display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
@@ -1507,7 +1506,6 @@
 
         .auth-input-wrapper i {
             position: absolute;
-            left: 15px;
             top: 50%;
             transform: translateY(-50%);
             color: #999;
@@ -2300,9 +2298,9 @@
                     <button class="cal-btn" id="nextPeriod">Siguiente »</button>
                 </div>
                 <div class="view-selector">
-                    <button class="cal-btn view-btn active" data-view="month">Mensual</button>
-                    <button class="cal-btn view-btn" data-view="week">Semanal</button>
                     <button class="cal-btn view-btn" data-view="day">Diario</button>
+                    <button class="cal-btn view-btn" data-view="week">Semanal</button>
+                    <button class="cal-btn view-btn active" data-view="month">Mensual</button>
                     <button class="cal-btn view-btn" data-view="year">Anual</button>
                     <button class="cal-btn view-btn" data-view="years">Años</button>
                 </div>
@@ -4389,4 +4387,4 @@
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
-    </html>
+</html>

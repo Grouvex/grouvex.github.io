@@ -3590,7 +3590,7 @@ function autoRequestNotificationPermission() {
         // Función para cambiar modo
         function switchMode(mode) {
             currentMode = mode;
-            
+            loadEventsForNotificationSettings();
             // Actualizar clases de los botones
             modeOptions.forEach(opt => {
                 opt.classList.remove('active');
@@ -5150,12 +5150,6 @@ document.addEventListener('DOMContentLoaded', () => {
             checkEventsForNotifications();
         }
     }, 30000); // Cada 30 segundos
-    
-    // Verificar también al cambiar de modo
-    window.switchMode = function(mode) {
-        switchMode(mode);
-        setTimeout(() => checkEventsForNotifications(), 1000);
-    };
 });
 
         // Iniciar cuando se carga la página

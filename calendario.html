@@ -2380,7 +2380,6 @@
                     <button class="notify-btn" id="enableNotificationsBtn" onclick="requestNotificationPermission()">
                         <i class="fas fa-bell"></i> Activar Notificaciones
                     </button>
-                    <button onclick="testNotification()">Prueba</button>
                 </div>
             </div>
             <div id="notificationStatus" class="notify-status"></div>
@@ -5126,11 +5125,11 @@ function autoRequestNotificationPermission() {
 
 function testNotification() {
     if (notificationPermission && userNotificationSettings.enabled) {
-        new Notification('🔔 Prueba de Notificaciones', {
+        new Notification('🔔 Notificaciones Activadas', {
             body: '¡Las notificaciones funcionan correctamente!',
             icon: 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png'
         });
-        showNotificationStatus('success', '✅ Notificación de prueba enviada');
+        showNotificationStatus('success', '✅ Notificaciones Activadas');
     } else {
         showNotificationStatus('error', '❌ Las notificaciones no están activadas');
     }

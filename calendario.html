@@ -837,10 +837,10 @@
             display: grid;
             grid-template-columns: 100px 1fr;
             gap: 10px;
-            min-height: 60px;
+            min-height: 106px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
-            overflow: hidden;
+            overflow: overlay;
             transition: all 0.3s ease;
         }
 
@@ -2930,39 +2930,6 @@
                 "recurrence": true,
                 "recurrenceEndYear": 2050,
                 "visibility": "all"
-            },{
-                "id": 11,
-                "title": "Vacaciones de Verano 🏖",
-                "description": "Periodo de vacaciones de verano.",
-                "startDate": "21/03/2026 14:46:00",
-                "endDate": "28/08/2026 23:59:59",
-                "image": "https://st.depositphotos.com/2208320/2466/v/450/depositphotos_24663647-stock-illustration-shiny-seaside-banner-vector-illustration.jpg",
-                "author": "Grouvex Studios",
-                "organization": "Grouvex Studios",
-                "link": "https://www.grouvex.com/",
-                "others": "Periodo de descanso para de todos los trabajadores. Acceder al enlace para ver más información al respecto.",
-                "color": "#FFEB3B",
-                "importance": "medio",
-                "recurrence": true,
-                "recurrenceEndYear": 2050,
-                "visibility": "all"
-            },
-            {
-                "id": 12,
-                "title": "Vacaciones de Invierno ❄",
-                "description": "Periodo de vacaciones de invierno.",
-                "startDate": "15/12/2025 00:00:00",
-                "endDate": "14/02/2026 23:59:59",
-                "image": "https://www.freevector.com/uploads/vector/preview/23788/happy-winter-holidays.jpg",
-                "author": "Grouvex Studios",
-                "organization": "Grouvex Studios",
-                "link": "https://www.grouvex.com/",
-                "others": "Periodo de descanso para de todos los trabajadores. Acceder al enlace para ver más información al respecto.",
-                "color": "#54a2e6ff",
-                "importance": "medio",
-                "recurrence": true,
-                "recurrenceEndYear": 2050,
-                "visibility": "all"
             },
             {
                 "id": 13,
@@ -3922,150 +3889,323 @@ function autoRequestNotificationPermission() {
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             return diffDays > 1;
         }
+function getAllFutureEventInstances(event, currentDate, daysAhead = 30) {
+    if (!event.recurrence) {
+        // Si no es recurrente, solo devolver la instancia original si está en el futuro
+        const eventStart = parseEventDate(event.startDate);
+        if (eventStart >= currentDate) {
+            return [{
+                ...event,
+                instanceStartDate: eventStart,
+                instanceEndDate: parseEventDate(event.endDate),
+                isRecurring: false
+            }];
+        }
+        return [];
+    }
+
+    // Para eventos recurrentes, generar todas las instancias futuras
+    const instances = [];
+    const baseStart = parseEventDate(event.startDate);
+    const baseEnd = parseEventDate(event.endDate);
+    const recurrenceEndYear = event.recurrenceEndYear || 2050;
+    
+    // Calcular la duración del evento en días
+    const durationDays = Math.ceil((baseEnd - baseStart) / (1000 * 60 * 60 * 24));
+    
+    // Obtener el año actual y el año límite
+    const currentYear = currentDate.getUTCFullYear();
+    const endYear = Math.min(recurrenceEndYear, currentYear + 5); // Limitar a 5 años en el futuro para rendimiento
+    
+    // Para cada año desde el año base hasta el año límite
+    for (let year = baseStart.getUTCFullYear(); year <= endYear; year++) {
+        // Crear la instancia para este año
+        const instanceStart = new Date(Date.UTC(
+            year,
+            baseStart.getUTCMonth(),
+            baseStart.getUTCDate(),
+            baseStart.getUTCHours(),
+            baseStart.getUTCMinutes(),
+            baseStart.getUTCSeconds()
+        ));
+        
+        // Calcular la fecha de fin para esta instancia (manejar cruce de año)
+        let endYearForInstance = year;
+        if (baseEnd.getUTCMonth() < baseStart.getUTCMonth()) {
+            endYearForInstance = year + 1;
+        }
+        
+        const instanceEnd = new Date(Date.UTC(
+            endYearForInstance,
+            baseEnd.getUTCMonth(),
+            baseEnd.getUTCDate(),
+            baseEnd.getUTCHours(),
+            baseEnd.getUTCMinutes(),
+            baseEnd.getUTCSeconds()
+        ));
+        
+        // Solo incluir si la instancia está en el futuro
+        if (instanceStart >= currentDate) {
+            // Verificar si está dentro del rango de días que nos interesa
+            const daysUntil = Math.ceil((instanceStart - currentDate) / (1000 * 60 * 60 * 24));
+            if (daysUntil <= daysAhead) {
+                instances.push({
+                    ...event,
+                    instanceStartDate: instanceStart,
+                    instanceEndDate: instanceEnd,
+                    isRecurring: true,
+                    recurrenceYear: year
+                });
+            }
+        }
+    }
+    
+    // Ordenar por fecha de inicio
+    instances.sort((a, b) => a.instanceStartDate - b.instanceStartDate);
+    
+    // Limitar a las primeras 100 instancias para rendimiento
+    return instances.slice(0, 100);
+}
 
         // Funciones para obtener eventos
-        function getEventsForDate(date, mode) {
-            const events = getFilteredEvents(mode);
-            const allEvents = [];
+function getEventsForDate(date, mode) {
+    const events = getFilteredEvents(mode);
+    const eventsForDate = [];
+    
+    events.forEach(event => {
+        if (!event.recurrence) {
+            const eventStartDate = parseEventDate(event.startDate);
+            const eventEndDate = parseEventDate(event.endDate);
+            if (date >= eventStartDate && date <= eventEndDate) {
+                eventsForDate.push({
+                    ...event,
+                    instanceStartDate: eventStartDate,
+                    instanceEndDate: eventEndDate
+                });
+            }
+        } else {
+            // Para eventos recurrentes, buscar la instancia que cubre esta fecha
+            const baseStart = parseEventDate(event.startDate);
+            const baseEnd = parseEventDate(event.endDate);
+            const recurrenceEndYear = event.recurrenceEndYear || 2050;
+            const targetYear = date.getUTCFullYear();
             
-            events.forEach(event => {
-                const eventStartDate = parseEventDate(event.startDate);
-                const eventEndDate = parseEventDate(event.endDate);
+            // Buscar en un rango de años alrededor de la fecha objetivo
+            for (let year = Math.max(baseStart.getUTCFullYear(), targetYear - 1); 
+                 year <= Math.min(recurrenceEndYear, targetYear + 1); 
+                 year++) {
                 
-                if (!event.recurrence) {
-                    if (date >= eventStartDate && date <= eventEndDate) {
-                        allEvents.push(event);
-                    }
-                } else if (event.recurrence) {
-                    const startYear = eventStartDate.getUTCFullYear();
-                    const endYear = event.recurrenceEndYear;
-                    
-                    for (let year = startYear; year <= endYear; year++) {
-                        const yearlyStartDate = new Date(Date.UTC(
-                            year,
-                            eventStartDate.getUTCMonth(),
-                            eventStartDate.getUTCDate(),
-                            eventStartDate.getUTCHours(),
-                            eventStartDate.getUTCMinutes(),
-                            eventStartDate.getUTCSeconds()
-                        ));
-                        
-                        let endYearForThisInstance = year;
-                        if (eventEndDate.getUTCMonth() < eventStartDate.getUTCMonth()) {
-                            endYearForThisInstance = year + 1;
-                        }
-                        
-                        const yearlyEndDate = new Date(Date.UTC(
-                            endYearForThisInstance,
-                            eventEndDate.getUTCMonth(),
-                            eventEndDate.getUTCDate(),
-                            eventEndDate.getUTCHours(),
-                            eventEndDate.getUTCMinutes(),
-                            eventEndDate.getUTCSeconds()
-                        ));
-                        
-                        if (date >= yearlyStartDate && date <= yearlyEndDate) {
-                            allEvents.push(event);
-                            break;
-                        }
-                    }
-                }
-            });
-            
-            return allEvents;
-        }
-
-        function getEventsForDateAndHour(dateTime, mode) {
-            return getEventsForDate(dateTime, mode).filter(event => {
-                const eventStartDate = parseEventDate(event.startDate);
-                const eventEndDate = parseEventDate(event.endDate);
-                return dateTime >= eventStartDate && dateTime <= eventEndDate;
-            });
-        }
-
-        function getEventsForMonth(year, month, mode) {
-            const events = getFilteredEvents(mode);
-            const monthEvents = [];
-            const startOfMonth = new Date(Date.UTC(year, month, 1));
-            const endOfMonth = new Date(Date.UTC(year, month + 1, 0, 23, 59, 59));
-            
-            events.forEach(event => {
-                const eventStartDate = parseEventDate(event.startDate);
-                const eventEndDate = parseEventDate(event.endDate);
+                const instanceStart = new Date(Date.UTC(
+                    year,
+                    baseStart.getUTCMonth(),
+                    baseStart.getUTCDate(),
+                    baseStart.getUTCHours(),
+                    baseStart.getUTCMinutes(),
+                    baseStart.getUTCSeconds()
+                ));
                 
-                if (!event.recurrence) {
-                    if (eventStartDate <= endOfMonth && eventEndDate >= startOfMonth) {
-                        monthEvents.push(event);
-                    }
-                } else if (event.recurrence) {
-                    const startYear = eventStartDate.getUTCFullYear();
-                    const endYear = event.recurrenceEndYear;
-                    
-                    for (let y = startYear; y <= endYear; y++) {
-                        const yearlyStartDate = new Date(Date.UTC(
-                            y,
-                            eventStartDate.getUTCMonth(),
-                            eventStartDate.getUTCDate(),
-                            eventStartDate.getUTCHours(),
-                            eventStartDate.getUTCMinutes(),
-                            eventStartDate.getUTCSeconds()
-                        ));
-                        
-                        let endYearForThisInstance = y;
-                        if (eventEndDate.getUTCMonth() < eventStartDate.getUTCMonth()) {
-                            endYearForThisInstance = y + 1;
-                        }
-                        
-                        const yearlyEndDate = new Date(Date.UTC(
-                            endYearForThisInstance,
-                            eventEndDate.getUTCMonth(),
-                            eventEndDate.getUTCDate(),
-                            eventEndDate.getUTCHours(),
-                            eventEndDate.getUTCMinutes(),
-                            eventEndDate.getUTCSeconds()
-                        ));
-                        
-                        if (yearlyStartDate <= endOfMonth && yearlyEndDate >= startOfMonth) {
-                            monthEvents.push({
-                                ...event,
-                                actualStartDate: yearlyStartDate,
-                                actualEndDate: yearlyEndDate
-                            });
-                            break;
-                        }
-                    }
+                let endYearForInstance = year;
+                if (baseEnd.getUTCMonth() < baseStart.getUTCMonth()) {
+                    endYearForInstance = year + 1;
                 }
-            });
-            
-            return monthEvents;
+                
+                const instanceEnd = new Date(Date.UTC(
+                    endYearForInstance,
+                    baseEnd.getUTCMonth(),
+                    baseEnd.getUTCDate(),
+                    baseEnd.getUTCHours(),
+                    baseEnd.getUTCMinutes(),
+                    baseEnd.getUTCSeconds()
+                ));
+                
+                if (date >= instanceStart && date <= instanceEnd) {
+                    eventsForDate.push({
+                        ...event,
+                        instanceStartDate: instanceStart,
+                        instanceEndDate: instanceEnd,
+                        isRecurring: true,
+                        recurrenceYear: year
+                    });
+                    break;
+                }
+            }
         }
+    });
+    
+    return eventsForDate;
+}
 
-        function getUpcomingEvents(daysAhead = 30, mode) {
-            const now = getUTCDate();
-            const futureDate = new Date(now);
-            futureDate.setUTCDate(now.getUTCDate() + daysAhead);
-            
-            return getFilteredEvents(mode).filter(event => {
-                const eventStartDate = parseEventDate(event.startDate);
-                return eventStartDate >= now && eventStartDate <= futureDate;
-            }).sort((a, b) => {
-                return parseEventDate(a.startDate) - parseEventDate(b.startDate);
-            });
-        }
+function getEventsForDateAndHour(dateTime, mode) {
+    return getEventsForDate(dateTime, mode).filter(event => {
+        const eventStart = event.instanceStartDate || parseEventDate(event.startDate);
+        const eventEnd = event.instanceEndDate || parseEventDate(event.endDate);
+        return dateTime >= eventStart && dateTime <= eventEnd;
+    });
+}
 
-        function getOngoingEvents(daysAhead = 14, mode) {
-            const now = getUTCDate();
-            const futureDate = new Date(now);
-            futureDate.setUTCDate(now.getUTCDate() + daysAhead);
+function getEventsForMonth(year, month, mode) {
+    const events = getFilteredEvents(mode);
+    const monthEvents = [];
+    const startOfMonth = new Date(Date.UTC(year, month, 1));
+    const endOfMonth = new Date(Date.UTC(year, month + 1, 0, 23, 59, 59));
+    
+    events.forEach(event => {
+        if (!event.recurrence) {
+            const eventStartDate = parseEventDate(event.startDate);
+            const eventEndDate = parseEventDate(event.endDate);
+            if (eventStartDate <= endOfMonth && eventEndDate >= startOfMonth) {
+                monthEvents.push(event);
+            }
+        } else {
+            // Para eventos recurrentes, buscar instancias que caigan en este mes
+            const baseStart = parseEventDate(event.startDate);
+            const baseEnd = parseEventDate(event.endDate);
+            const recurrenceEndYear = event.recurrenceEndYear || 2050;
             
-            return getFilteredEvents(mode).filter(event => {
-                const eventStartDate = parseEventDate(event.startDate);
-                const eventEndDate = parseEventDate(event.endDate);
-                return eventStartDate <= now && eventEndDate >= now && eventEndDate <= futureDate;
-            }).sort((a, b) => {
-                return parseEventDate(a.endDate) - parseEventDate(b.endDate);
-            });
+            // Buscar desde el año base hasta el año límite
+            for (let y = baseStart.getUTCFullYear(); y <= recurrenceEndYear; y++) {
+                const instanceStart = new Date(Date.UTC(
+                    y,
+                    baseStart.getUTCMonth(),
+                    baseStart.getUTCDate(),
+                    baseStart.getUTCHours(),
+                    baseStart.getUTCMinutes(),
+                    baseStart.getUTCSeconds()
+                ));
+                
+                let endYearForInstance = y;
+                if (baseEnd.getUTCMonth() < baseStart.getUTCMonth()) {
+                    endYearForInstance = y + 1;
+                }
+                
+                const instanceEnd = new Date(Date.UTC(
+                    endYearForInstance,
+                    baseEnd.getUTCMonth(),
+                    baseEnd.getUTCDate(),
+                    baseEnd.getUTCHours(),
+                    baseEnd.getUTCMinutes(),
+                    baseEnd.getUTCSeconds()
+                ));
+                
+                if (instanceStart <= endOfMonth && instanceEnd >= startOfMonth) {
+                    monthEvents.push({
+                        ...event,
+                        actualStartDate: instanceStart,
+                        actualEndDate: instanceEnd
+                    });
+                    break; // Solo una instancia por año
+                }
+                
+                // Si la instancia de este año ya pasó el mes, podemos saltar años
+                if (instanceEnd < startOfMonth) continue;
+                if (instanceStart > endOfMonth) break;
+            }
         }
+    });
+    
+    return monthEvents;
+}
+
+function getUpcomingEvents(daysAhead = 30, mode) {
+    const now = getUTCDate();
+    const futureDate = new Date(now);
+    futureDate.setUTCDate(now.getUTCDate() + daysAhead);
+    
+    const filteredEvents = getFilteredEvents(mode);
+    const upcomingInstances = [];
+    
+    filteredEvents.forEach(event => {
+        const instances = getAllFutureEventInstances(event, now, daysAhead);
+        upcomingInstances.push(...instances);
+    });
+    
+    // Ordenar por fecha de inicio de la instancia
+    upcomingInstances.sort((a, b) => {
+        const dateA = a.instanceStartDate || parseEventDate(a.startDate);
+        const dateB = b.instanceStartDate || parseEventDate(b.startDate);
+        return dateA - dateB;
+    });
+    
+    return upcomingInstances;
+}
+
+function getOngoingEvents(daysAhead = 14, mode) {
+    const now = getUTCDate();
+    const futureDate = new Date(now);
+    futureDate.setUTCDate(now.getUTCDate() + daysAhead);
+    
+    const filteredEvents = getFilteredEvents(mode);
+    const ongoingInstances = [];
+    
+    filteredEvents.forEach(event => {
+        if (!event.recurrence) {
+            const eventStart = parseEventDate(event.startDate);
+            const eventEnd = parseEventDate(event.endDate);
+            // Verificar si el evento está en curso AHORA y termina dentro del rango
+            if (eventStart <= now && eventEnd >= now && eventEnd <= futureDate) {
+                ongoingInstances.push({
+                    ...event,
+                    instanceStartDate: eventStart,
+                    instanceEndDate: eventEnd,
+                    isRecurring: false
+                });
+            }
+        } else {
+            // Para eventos recurrentes, verificar si hay alguna instancia en curso
+            const baseStart = parseEventDate(event.startDate);
+            const baseEnd = parseEventDate(event.endDate);
+            const recurrenceEndYear = event.recurrenceEndYear || 2050;
+            const currentYear = now.getUTCFullYear();
+            const endYear = Math.min(recurrenceEndYear, currentYear + 2);
+            
+            for (let year = baseStart.getUTCFullYear(); year <= endYear; year++) {
+                const instanceStart = new Date(Date.UTC(
+                    year,
+                    baseStart.getUTCMonth(),
+                    baseStart.getUTCDate(),
+                    baseStart.getUTCHours(),
+                    baseStart.getUTCMinutes(),
+                    baseStart.getUTCSeconds()
+                ));
+                
+                let endYearForInstance = year;
+                if (baseEnd.getUTCMonth() < baseStart.getUTCMonth()) {
+                    endYearForInstance = year + 1;
+                }
+                
+                const instanceEnd = new Date(Date.UTC(
+                    endYearForInstance,
+                    baseEnd.getUTCMonth(),
+                    baseEnd.getUTCDate(),
+                    baseEnd.getUTCHours(),
+                    baseEnd.getUTCMinutes(),
+                    baseEnd.getUTCSeconds()
+                ));
+                
+                // Verificar si esta instancia está en curso AHORA y termina dentro del rango
+                if (instanceStart <= now && instanceEnd >= now && instanceEnd <= futureDate) {
+                    ongoingInstances.push({
+                        ...event,
+                        instanceStartDate: instanceStart,
+                        instanceEndDate: instanceEnd,
+                        isRecurring: true,
+                        recurrenceYear: year
+                    });
+                    break; // Solo agregar una instancia por evento recurrente
+                }
+            }
+        }
+    });
+    
+    // Ordenar por fecha de fin
+    ongoingInstances.sort((a, b) => {
+        const dateA = a.instanceEndDate || parseEventDate(a.endDate);
+        const dateB = b.instanceEndDate || parseEventDate(b.endDate);
+        return dateA - dateB;
+    });
+    
+    return ongoingInstances;
+}
 
         // Funciones de actualización de calendarios
         function updateNormalCalendar() {
@@ -4693,95 +4833,131 @@ function autoRequestNotificationPermission() {
             updateCurrentDateDisplay(headElements, currentDateHead, 'day');
         }
 
-        function updateImportantEventsCounter(elements, mode) {
-            const importantEvents = getFilteredEvents(mode).filter(event => 
-                (event.importance === 'alto' || event.importance === 'superalto') && 
-                parseEventDate(event.startDate) > new Date()
-            ).sort((a, b) => parseEventDate(a.startDate) - parseEventDate(b.startDate));
-            
-            if (importantEvents.length === 0) {
-                elements.importantEventsCounter.classList.remove('active');
-                return;
-            }
-            
-            elements.importantEventsList.innerHTML = '';
-            
-            importantEvents.forEach(event => {
-                const eventCard = document.createElement('div');
-                eventCard.className = 'important-event-card';
-                eventCard.addEventListener('click', () => openEventModal(event));
-                
-                const startDate = parseEventDate(event.startDate);
-                const timeRemaining = startDate - new Date();
-                
-                const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-                
-                const countdownId = `important-countdown-${mode}-${event.id}`;
-                
-                eventCard.innerHTML = `
-                    <div class="important-event-title">${event.title}</div>
-                    <div class="important-event-date">${formatEventDate(event.startDate)} - ${formatEventDate(event.endDate)}</div>
-                    <div class="important-countdown" id="${countdownId}">
-                        <div class="important-countdown-item">
-                            <div class="important-countdown-number">${days}</div>
-                            <div class="important-countdown-label">Días</div>
-                        </div>
-                        <div class="important-countdown-item">
-                            <div class="important-countdown-number">${hours}</div>
-                            <div class="important-countdown-label">Horas</div>
-                        </div>
-                        <div class="important-countdown-item">
-                            <div class="important-countdown-number">${minutes}</div>
-                            <div class="important-countdown-label">Minutos</div>
-                        </div>
-                        <div class="important-countdown-item">
-                            <div class="important-countdown-number">${seconds}</div>
-                            <div class="important-countdown-label">Segundos</div>
-                        </div>
-                    </div>
-                `;
-                
-                elements.importantEventsList.appendChild(eventCard);
-                
-                setInterval(() => {
-                    updateImportantEventCountdown(event, countdownId);
-                }, 1000);
-            });
-            
-            elements.importantEventsCounter.classList.add('active');
+function updateImportantEventsCounter(elements, mode) {
+    const now = getUTCDate();
+    const daysAhead = 60; // Buscar eventos importantes en los próximos 60 días
+    const importantEvents = [];
+    
+    const filteredEvents = getFilteredEvents(mode);
+    
+    filteredEvents.forEach(event => {
+        if (event.importance === 'alto' || event.importance === 'superalto') {
+            const instances = getAllFutureEventInstances(event, now, daysAhead);
+            importantEvents.push(...instances);
         }
+    });
+    
+    // Ordenar por fecha
+    importantEvents.sort((a, b) => {
+        const dateA = a.instanceStartDate || parseEventDate(a.startDate);
+        const dateB = b.instanceStartDate || parseEventDate(b.startDate);
+        return dateA - dateB;
+    });
+    
+    // Limitar a los primeros 10 eventos importantes
+    const topImportantEvents = importantEvents.slice(0, 10);
+    
+    if (topImportantEvents.length === 0) {
+        elements.importantEventsCounter.classList.remove('active');
+        return;
+    }
+    
+    elements.importantEventsList.innerHTML = '';
+    
+    topImportantEvents.forEach((event, index) => {
+        const eventCard = document.createElement('div');
+        eventCard.className = 'important-event-card';
+        eventCard.addEventListener('click', () => openEventModal(event));
+        
+        const startDate = event.instanceStartDate || parseEventDate(event.startDate);
+        const timeRemaining = startDate - now;
+        
+        const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+        
+        const countdownId = `important-countdown-${mode}-${event.id}-${index}`;
+        
+        // Mostrar si es recurrente
+        const recurrenceBadge = event.recurrence ? 
+            `<span style="display: inline-block; background: rgba(255,215,0,0.3); border-radius: 12px; padding: 2px 8px; font-size: 0.7rem; margin-left: 8px;">🔄 Recurrente</span>` : '';
+        
+        eventCard.innerHTML = `
+            <div class="important-event-title">
+                ${event.title}
+                ${recurrenceBadge}
+            </div>
+            <div class="important-event-date">
+                ${formatEventDate(event.startDate)} - ${formatEventDate(event.endDate)}
+                ${event.recurrence ? `<br><small style="font-size: 0.7rem;">(Instancia de ${startDate.getUTCFullYear()})</small>` : ''}
+            </div>
+            <div class="important-countdown" id="${countdownId}">
+                <div class="important-countdown-item">
+                    <div class="important-countdown-number">${days}</div>
+                    <div class="important-countdown-label">Días</div>
+                </div>
+                <div class="important-countdown-item">
+                    <div class="important-countdown-number">${hours}</div>
+                    <div class="important-countdown-label">Horas</div>
+                </div>
+                <div class="important-countdown-item">
+                    <div class="important-countdown-number">${minutes}</div>
+                    <div class="important-countdown-label">Minutos</div>
+                </div>
+                <div class="important-countdown-item">
+                    <div class="important-countdown-number">${seconds}</div>
+                    <div class="important-countdown-label">Segundos</div>
+                </div>
+            </div>
+        `;
+        
+        elements.importantEventsList.appendChild(eventCard);
+        
+        // Actualizar contador cada segundo
+        const interval = setInterval(() => {
+            updateImportantEventCountdown(event, countdownId, mode, elements);
+        }, 1000);
+        
+        // Guardar el intervalo para limpiarlo después si es necesario
+        if (!window.countdownIntervals) window.countdownIntervals = [];
+        window.countdownIntervals.push(interval);
+    });
+    
+    elements.importantEventsCounter.classList.add('active');
+}
 
-        function updateImportantEventCountdown(event, countdownId) {
-            const countdownEl = document.getElementById(countdownId);
-            if (!countdownEl) return;
-            
-            const startDate = parseEventDate(event.startDate);
-            const now = new Date();
-            const timeRemaining = startDate - now;
-            
-            if (timeRemaining < 0) {
-                if (currentMode === 'normal') {
-                    updateImportantEventsCounter(normalElements, 'normal');
-                } else {
-                    updateImportantEventsCounter(headElements, 'head');
-                }
-                return;
-            }
-            
-            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-            
-            const countdownNumbers = countdownEl.querySelectorAll('.important-countdown-number');
-            countdownNumbers[0].textContent = days;
-            countdownNumbers[1].textContent = hours;
-            countdownNumbers[2].textContent = minutes;
-            countdownNumbers[3].textContent = seconds;
+function updateImportantEventCountdown(event, countdownId, mode, elements) {
+    const countdownEl = document.getElementById(countdownId);
+    if (!countdownEl) return;
+    
+    const startDate = event.instanceStartDate || parseEventDate(event.startDate);
+    const now = getUTCDate();
+    const timeRemaining = startDate - now;
+    
+    if (timeRemaining < 0) {
+        // Actualizar todo el contador de eventos importantes
+        if (mode === 'normal') {
+            updateImportantEventsCounter(normalElements, 'normal');
+        } else {
+            updateImportantEventsCounter(headElements, 'head');
         }
+        return;
+    }
+    
+    const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+    
+    const countdownNumbers = countdownEl.querySelectorAll('.important-countdown-number');
+    if (countdownNumbers.length >= 4) {
+        countdownNumbers[0].textContent = days;
+        countdownNumbers[1].textContent = hours;
+        countdownNumbers[2].textContent = minutes;
+        countdownNumbers[3].textContent = seconds;
+    }
+}
 
         function updateEventsSections(elements, mode) {
             // Upcoming events
@@ -4811,52 +4987,68 @@ function autoRequestNotificationPermission() {
             }
         }
 
-        function createEventCard(event, type) {
-            const eventCard = document.createElement('div');
-            eventCard.className = 'event-card';
-            eventCard.style.borderLeftColor = event.color;
-            eventCard.addEventListener('click', () => openEventModal(event));
-            
-            const targetDate = type === 'start' ? parseEventDate(event.startDate) : parseEventDate(event.endDate);
-            const now = new Date();
-            const timeRemaining = targetDate - now;
-            
-            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-            
-            const countdownId = `countdown-${type}-${event.id}-${Math.random()}`;
-            
-            eventCard.innerHTML = `
-                <div class="event-card-title">${event.title}</div>
-                <div class="event-card-date">${formatEventDate(event.startDate)} - ${formatEventDate(event.endDate)}</div>
-                <div class="event-card-countdown" id="${countdownId}">
-                    <div class="countdown-item">
-                        <div class="countdown-number">${days}</div>
-                        <div class="countdown-label">Días</div>
-                    </div>
-                    <div class="countdown-item">
-                        <div class="countdown-number">${hours}</div>
-                        <div class="countdown-label">Horas</div>
-                    </div>
-                    <div class="countdown-item">
-                        <div class="countdown-number">${minutes}</div>
-                        <div class="countdown-label">Minutos</div>
-                    </div>
-                    <div class="countdown-item">
-                        <div class="countdown-number">${seconds}</div>
-                        <div class="countdown-label">Segundos</div>
-                    </div>
-                </div>
-            `;
-            
-            setInterval(() => {
-                updateEventCountdown(event, countdownId, type);
-            }, 1000);
-            
-            return eventCard;
-        }
+function createEventCard(event, type) {
+    const eventCard = document.createElement('div');
+    eventCard.className = 'event-card';
+    eventCard.style.borderLeftColor = event.color;
+    eventCard.addEventListener('click', () => openEventModal(event));
+    
+    const targetDate = type === 'start' 
+        ? (event.instanceStartDate || parseEventDate(event.startDate))
+        : (event.instanceEndDate || parseEventDate(event.endDate));
+    const now = getUTCDate();
+    const timeRemaining = targetDate - now;
+    
+    const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+    
+    const countdownId = `countdown-${type}-${event.id}-${Math.random()}`;
+    
+    // Mostrar si es recurrente
+    const recurrenceBadge = event.recurrence ? 
+        `<span style="display: inline-block; background: rgba(255,215,0,0.3); border-radius: 12px; padding: 2px 8px; font-size: 0.7rem; margin-left: 8px;">🔄 Recurrente</span>` : '';
+    
+    eventCard.innerHTML = `
+        <div class="event-card-title">
+            ${event.title}
+            ${recurrenceBadge}
+        </div>
+        <div class="event-card-date">
+            ${formatEventDate(event.startDate)} - ${formatEventDate(event.endDate)}
+            ${event.instanceStartDate ? `<br><small style="font-size: 0.7rem;">(Próxima: ${event.instanceStartDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' })})</small>` : ''}
+        </div>
+        <div class="event-card-countdown" id="${countdownId}">
+            <div class="countdown-item">
+                <div class="countdown-number">${days}</div>
+                <div class="countdown-label">Días</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number">${hours}</div>
+                <div class="countdown-label">Horas</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number">${minutes}</div>
+                <div class="countdown-label">Minutos</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number">${seconds}</div>
+                <div class="countdown-label">Segundos</div>
+            </div>
+        </div>
+    `;
+    
+    const interval = setInterval(() => {
+        updateEventCountdown(event, countdownId, type);
+    }, 1000);
+    
+    // Guardar el intervalo para limpiarlo
+    if (!window.eventCardIntervals) window.eventCardIntervals = [];
+    window.eventCardIntervals.push({ id: countdownId, interval });
+    
+    return eventCard;
+}
 
         function updateEventCountdown(event, countdownId, type) {
             const countdownEl = document.getElementById(countdownId);

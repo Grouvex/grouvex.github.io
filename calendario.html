@@ -21,7 +21,7 @@
     <meta property="og:site_name" content="Grouvex Studios">
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <script src="jquery-3.5.1.min.js"></script>
+    
     <style>
         /* Estilos encapsulados para evitar conflictos */
         :root {
@@ -2380,6 +2380,7 @@
                     <button class="notify-btn" id="enableNotificationsBtn" onclick="requestNotificationPermission()">
                         <i class="fas fa-bell"></i> Activar Notificaciones
                     </button>
+                    <button onclick="testNotification()">Prueba</button>
                 </div>
             </div>
             <div id="notificationStatus" class="notify-status"></div>
@@ -2759,6 +2760,7 @@
             enabled: false,
             events: {} // { eventId: { notify: true, advanceTime: 30 } } (minutos antes)
         };
+        let intervals = [];
 
         // Base de datos de Eventos
         const eventsData = [
@@ -2847,7 +2849,7 @@
                 "visibility": "normal"
             },
             {
-                "id": 5,
+                "id": 6,
                 "title": "The Infinite",
                 "description": "Disfruta de la primera música que fue lanzada desde Grouvex Studios Recording, actualmente conocido como Grouvex Studios Records.",
                 "startDate": "07/11/2023 00:00:00",
@@ -2864,7 +2866,7 @@
                 "visibility": "normal"
             },
             {
-                "id": 5,
+                "id": 7,
                 "title": "The Life",
                 "description": "Un poco The Life nunca viene mal!",
                 "startDate": "11/11/2023 00:00:00",
@@ -2881,7 +2883,7 @@
                 "visibility": "normal"
             },
             {
-                "id": 5,
+                "id": 8,
                 "title": "Alpha Version",
                 "description": "Disfruta del primer álbum Worldwide de Grouvex.",
                 "startDate": "22/12/2023 00:00:00",
@@ -2898,7 +2900,7 @@
                 "visibility": "normal"
             }, 
             {
-                "id": 6,
+                "id": 9,
                 "title": "🔐Mantenimiento de Portal de Miembros🛠",
                 "description": "El portal de miembros se actualizará y mejorará para que vaya todo mejor.",
                 "startDate": "25/11/2025 19:30:00",
@@ -2914,7 +2916,7 @@
                 "visibility": "head"
             },
             {
-                "id": 7,
+                "id": 10,
                 "title": "Vacaciones de Verano 🏖",
                 "description": "Periodo de vacaciones de verano.",
                 "startDate": "27/06/2026 00:00:00",
@@ -2929,9 +2931,25 @@
                 "recurrence": true,
                 "recurrenceEndYear": 2050,
                 "visibility": "all"
+            },{
+                "id": 11,
+                "title": "Vacaciones de Verano 🏖",
+                "description": "Periodo de vacaciones de verano.",
+                "startDate": "21/03/2026 14:46:00",
+                "endDate": "28/08/2026 23:59:59",
+                "image": "https://st.depositphotos.com/2208320/2466/v/450/depositphotos_24663647-stock-illustration-shiny-seaside-banner-vector-illustration.jpg",
+                "author": "Grouvex Studios",
+                "organization": "Grouvex Studios",
+                "link": "https://www.grouvex.com/",
+                "others": "Periodo de descanso para de todos los trabajadores. Acceder al enlace para ver más información al respecto.",
+                "color": "#FFEB3B",
+                "importance": "medio",
+                "recurrence": true,
+                "recurrenceEndYear": 2050,
+                "visibility": "all"
             },
             {
-                "id": 8,
+                "id": 12,
                 "title": "Vacaciones de Invierno ❄",
                 "description": "Periodo de vacaciones de invierno.",
                 "startDate": "15/12/2025 00:00:00",
@@ -2948,7 +2966,7 @@
                 "visibility": "all"
             },
             {
-                "id": 9,
+                "id": 13,
                 "title": "Modificación de Documentos Oficiales",
                 "description": "Se realizarán modificaciones en los documentos oficiales favoreciendo así a todos los usuarios.",
                 "startDate": "20/04/2026 00:00:00",
@@ -3104,6 +3122,7 @@
                 userNotificationSettings.enabled = true;
                 saveNotificationSettings();
                 showNotificationStatus('success', '✅ Notificaciones activadas correctamente');
+                testNotification();
                 updateNotificationUI();
                 startNotificationChecker();
                 return;
@@ -3135,89 +3154,280 @@
         // Enviar notificación de evento
         function sendEventNotification(event) {
             if (!notificationPermission || Notification.permission !== 'granted') return;
-            if (!userNotificationSettings.enabled) return;
-            if (!userNotificationSettings.events[event.id] || !userNotificationSettings.events[event.id].notify) return;
-
+            
+            const eventStartDate = parseEventDate(event.startDate);
+            const now = new Date();
+            const timeUntil = eventStartDate - now;
+            
+            // Obtener tiempo de anticipación
+            let advanceMinutes = 30;
+            if (userNotificationSettings.events[event.id]) {
+                advanceMinutes = userNotificationSettings.events[event.id].advanceTime || 30;
+            }
+            
+            // Solo notificar si falta el tiempo configurado o menos
+            if (timeUntil > advanceMinutes * 60 * 1000) return;
+            
+            // Verificar si ya se notificó (usando timestamp más preciso)
+            const notificationKey = `notified_${event.id}_${eventStartDate.getTime()}`;
+            if (localStorage.getItem(notificationKey)) return;
+            
+            const minutesLeft = Math.floor(timeUntil / (1000 * 60));
+            const hoursLeft = Math.floor(minutesLeft / 60);
+            
+            let timeText = '';
+            if (hoursLeft > 0) {
+                timeText = `${hoursLeft} hora${hoursLeft !== 1 ? 's' : ''} ${minutesLeft % 60 > 0 ? `y ${minutesLeft % 60} minuto${minutesLeft % 60 !== 1 ? 's' : ''}` : ''}`;
+            } else if (minutesLeft > 0) {
+                timeText = `${minutesLeft} minuto${minutesLeft !== 1 ? 's' : ''}`;
+            } else {
+                timeText = 'ahora mismo';
+            }
+            
+            const importanceEmoji = event.importance === 'superalto' ? '🔴🔥' : event.importance === 'alto' ? '🟠⚠️' : '🟢ℹ️';
+            const importanceTitle = event.importance === 'superalto' ? '⚠️ URGENTE ⚠️' : event.importance === 'alto' ? '📢 IMPORTANTE' : '📅 Recordatorio';
+            
             try {
-                const eventStartDate = parseEventDate(event.startDate);
-                const now = new Date();
-                const timeUntil = eventStartDate - now;
-                const advanceMinutes = userNotificationSettings.events[event.id].advanceTime || 30;
+                const notification = new Notification(importanceTitle, {
+                    body: `${event.title}\n${importanceEmoji} Comienza en ${timeText}\n📅 ${formatEventDate(event.startDate)}`,
+                    icon: event.image || 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png',
+                    badge: 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png',
+                    tag: `event-${event.id}`,
+                    requireInteraction: event.importance === 'superalto',
+                    silent: false,
+                    vibrate: event.importance === 'superalto' ? [200, 100, 200] : undefined
+                });
                 
-                // Solo notificar si falta el tiempo configurado o menos
-                if (timeUntil <= advanceMinutes * 60 * 1000 && timeUntil > 0) {
-                    // Verificar si ya se notificó este evento
-                    const notificationKey = `notified_${event.id}_${eventStartDate.getTime()}`;
-                    if (localStorage.getItem(notificationKey)) return;
-                    
-                    const minutesLeft = Math.floor(timeUntil / (1000 * 60));
-                    const hoursLeft = Math.floor(minutesLeft / 60);
-                    
-                    let timeText = '';
-                    if (hoursLeft > 0) {
-                        timeText = `${hoursLeft} hora${hoursLeft !== 1 ? 's' : ''} y ${minutesLeft % 60} minuto${minutesLeft % 60 !== 1 ? 's' : ''}`;
-                    } else {
-                        timeText = `${minutesLeft} minuto${minutesLeft !== 1 ? 's' : ''}`;
-                    }
-                    
-                    const importanceEmoji = event.importance === 'superalto' ? '🔴🔥' : event.importance === 'alto' ? '🟠⚠️' : '🟢ℹ️';
-                    
-                    const notification = new Notification(`📅 ${event.title}`, {
-                        body: `${importanceEmoji} Comienza en ${timeText}\n📅 ${formatEventDate(event.startDate)}`,
-                        icon: event.image || 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png',
-                        badge: 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png',
-                        tag: `event-${event.id}`,
-                        requireInteraction: event.importance === 'superalto',
-                        silent: false
-                    });
-                    
-                    notification.onclick = function() {
-                        window.focus();
-                        notification.close();
-                        // Abrir modal del evento
-                        openEventModal(event);
-                    };
-                    
-                    // Marcar como notificado
-                    localStorage.setItem(notificationKey, 'true');
-                    
-                    // Limpiar después de 24 horas
-                    setTimeout(() => {
-                        localStorage.removeItem(notificationKey);
-                    }, 24 * 60 * 60 * 1000);
-                    
-                    showNotificationStatus('info', `🔔 Notificación enviada para: ${event.title}`);
-                }
+                notification.onclick = function() {
+                    window.focus();
+                    notification.close();
+                    openEventModal(event);
+                };
+                
+                // Cerrar automáticamente después de 30 segundos
+                setTimeout(() => notification.close(), 30000);
+                
+                // Marcar como notificado
+                localStorage.setItem(notificationKey, Date.now().toString());
+                
+                // Limpiar después de 24 horas
+                setTimeout(() => {
+                    localStorage.removeItem(notificationKey);
+                }, 24 * 60 * 60 * 1000);
+                
+                console.log(`🔔 Notificación enviada: ${event.title} (en ${timeText})`);
+                showNotificationStatus('info', `🔔 ${event.title} comenzará en ${timeText}`);
+                
             } catch (error) {
                 console.error('Error al enviar notificación:', error);
             }
         }
 
         // Verificar eventos y enviar notificaciones
-        function checkEventsForNotifications() {
-            if (!notificationPermission || !userNotificationSettings.enabled) return;
-            
-            const events = getFilteredEvents(currentMode);
-            const now = new Date();
-            
-            events.forEach(event => {
-                const eventStartDate = parseEventDate(event.startDate);
-                const timeUntil = eventStartDate - now;
-                const advanceMinutes = userNotificationSettings.events[event.id]?.advanceTime || 30;
-                
-                // Verificar si el evento está por comenzar
-                if (timeUntil > 0 && timeUntil <= advanceMinutes * 60 * 1000) {
-                    sendEventNotification(event);
-                }
-            });
+// Variable global para control de depuración
+const NOTIFICATION_DEBUG = true; // Cambia a false para desactivar logs
+
+function logDebug(message, data = null, type = 'info') {
+    if (!NOTIFICATION_DEBUG) return;
+    
+    const timestamp = new Date().toLocaleTimeString();
+    const styles = {
+        info: 'color: #3498db; font-weight: normal;',
+        success: 'color: #2ecc71; font-weight: bold;',
+        warning: 'color: #f39c12; font-weight: bold;',
+        error: 'color: #e74c3c; font-weight: bold;',
+        event: 'color: #9b59b6; font-weight: bold;',
+        debug: 'color: #95a5a6; font-style: italic;'
+    };
+    
+    console.log(`%c[${timestamp}] [Notificaciones] ${message}`, styles[type] || styles.info);
+    if (data) {
+        console.log('📦 Datos:', data);
+    }
+}
+
+function checkEventsForNotifications() {
+    logDebug('🔍 Iniciando verificación de eventos...', null, 'debug');
+    
+    // Verificar permisos
+    if (!notificationPermission) {
+        logDebug('❌ Permiso de notificaciones NO concedido', { 
+            permission: Notification.permission,
+            userEnabled: userNotificationSettings.enabled 
+        }, 'error');
+        return;
+    }
+    
+    if (!userNotificationSettings.enabled) {
+        logDebug('⚠️ Notificaciones desactivadas por el usuario', null, 'warning');
+        return;
+    }
+    
+    logDebug('✅ Permisos verificados correctamente', {
+        notificationPermission: true,
+        userEnabled: true,
+        currentMode: currentMode
+    }, 'success');
+    
+    // Obtener eventos
+    const events = getFilteredEvents(currentMode);
+    const now = new Date();
+    
+    logDebug(`📅 Total de eventos en modo ${currentMode}: ${events.length}`, null, 'info');
+    
+    let eventsToCheck = 0;
+    let eventsNotified = 0;
+    
+    events.forEach(event => {
+        const eventStartDate = parseEventDate(event.startDate);
+        const timeUntil = eventStartDate - now;
+        const timeUntilMinutes = Math.floor(timeUntil / (1000 * 60));
+        const timeUntilHours = Math.floor(timeUntilMinutes / 60);
+        const timeUntilDays = Math.floor(timeUntilHours / 24);
+        const timeUntilMonths = Math.floor(timeUntilDays / 30);
+
+        // Formatear tiempo restante
+        let timeRemainingStr = '';
+        if(timeUntilMonths > 0){
+            timeRemainingStr = `${timeUntilMonths} mes ${timeUntilDays % 30}d`;
+        } else if (timeUntilDays > 0) {
+            timeRemainingStr = `${timeUntilDays}d ${timeUntilHours % 24}h`;
+        } else if (timeUntilHours > 0) {
+            timeRemainingStr = `${timeUntilHours}h ${timeUntilMinutes % 60}m`;
+        } else if (timeUntilMinutes > 0) {
+            timeRemainingStr = `${timeUntilMinutes}m`;
+        } else if (timeUntil > 0) {
+            timeRemainingStr = `${Math.floor(timeUntil / 1000)}s`;
+        } else {
+            timeRemainingStr = 'ya pasó';
         }
+        
+        logDebug(`📌 Evaluando evento: "${event.title}"`, {
+            id: event.id,
+            importancia: event.importance,
+            fechaInicio: event.startDate,
+            fechaFin: event.endDate,
+            tiempoRestante: timeRemainingStr,
+            tiempoRestanteMs: timeUntil
+        }, 'debug');
+        
+        // Verificar si el evento ya pasó
+        if (timeUntil <= 0) {
+            logDebug(`⏭️ Evento "${event.title}" ya ha comenzado o pasado (${timeRemainingStr})`, null, 'debug');
+            return;
+        }
+        
+        // Configuración de notificación
+        let advanceMinutes = 30;
+        let shouldNotify = true;
+        let configSource = 'default';
+        
+        if (userNotificationSettings.events[event.id]) {
+            shouldNotify = userNotificationSettings.events[event.id].notify;
+            advanceMinutes = userNotificationSettings.events[event.id].advanceTime || 30;
+            configSource = 'usuario';
+            logDebug(`⚙️ Configuración personalizada para "${event.title}":`, {
+                notify: shouldNotify,
+                advanceMinutes: advanceMinutes,
+                source: configSource
+            }, 'info');
+        } else {
+            // Si no tiene configuración, notificar eventos importantes automáticamente
+            shouldNotify = (event.importance === 'alto' || event.importance === 'superalto');
+            if (shouldNotify) {
+                advanceMinutes = event.importance === 'superalto' ? 60 : 30;
+                configSource = 'auto (importante)';
+                userNotificationSettings.events[event.id] = {
+                    notify: true,
+                    advanceTime: advanceMinutes
+                };
+                saveNotificationSettings();
+                logDebug(`🤖 Configuración automática para evento importante "${event.title}":`, {
+                    notify: true,
+                    advanceMinutes: advanceMinutes,
+                    importance: event.importance,
+                    source: configSource
+                }, 'success');
+            } else {
+                configSource = 'auto (no importante)';
+                logDebug(`ℹ️ Evento "${event.title}" no importante, no se auto-configura`, {
+                    importance: event.importance
+                }, 'debug');
+            }
+        }
+        
+        const advanceMs = advanceMinutes * 60 * 1000;
+        const isWithinWindow = timeUntil <= advanceMs;
+        
+        logDebug(`⏰ Evaluando ventana de notificación para "${event.title}":`, {
+            tiempoRestanteMs: timeUntil,
+            tiempoRestante: timeRemainingStr,
+            tiempoAnticipacionMs: advanceMs,
+            tiempoAnticipacionMin: advanceMinutes,
+            dentroVentana: isWithinWindow ? '✅ SÍ' : '❌ NO',
+            debeNotificar: shouldNotify ? '✅ SÍ' : '❌ NO',
+            configuracion: configSource
+        }, isWithinWindow && shouldNotify ? 'event' : 'debug');
+        
+        // Verificar si está dentro del tiempo para notificar
+        if (shouldNotify && isWithinWindow) {
+            eventsToCheck++;
+            logDebug(`🎯 Evento "${event.title}" CANDIDATO para notificación`, {
+                tiempoRestante: timeRemainingStr,
+                tiempoAnticipacion: `${advanceMinutes} minutos`,
+                diferencia: `${Math.floor((advanceMs - timeUntil) / 1000)} segundos para el límite`
+            }, 'event');
+            
+            // Verificar si ya fue notificado
+            const notificationKey = `notified_${event.id}_${eventStartDate.getTime()}`;
+            const alreadyNotified = localStorage.getItem(notificationKey);
+            
+            if (alreadyNotified) {
+                const notifiedTime = new Date(parseInt(alreadyNotified));
+                logDebug(`⏭️ Evento "${event.title}" YA FUE NOTIFICADO anteriormente`, {
+                    notificadoEn: notifiedTime.toLocaleString(),
+                    haceMs: Date.now() - parseInt(alreadyNotified),
+                    haceMin: Math.floor((Date.now() - parseInt(alreadyNotified)) / 60000)
+                }, 'warning');
+                return;
+            }
+            
+            logDebug(`✅ Enviando notificación para "${event.title}"...`, null, 'success');
+            sendEventNotification(event);
+            eventsNotified++;
+        } else if (!shouldNotify) {
+            logDebug(`🔕 Evento "${event.title}" no será notificado (notificaciones desactivadas)`, null, 'debug');
+        } else if (!isWithinWindow) {
+            const timeUntilWindow = Math.floor((advanceMs - timeUntil) / 60000);
+            logDebug(`⏳ Evento "${event.title}" aún no está en ventana de notificación`, {
+                faltaParaVentana: `${timeUntilWindow} minutos`,
+                tiempoRestante: timeRemainingStr
+            }, 'debug');
+        }
+    });
+    
+    // Resumen de la verificación
+    logDebug(`📊 RESUMEN DE VERIFICACIÓN:`, {
+        totalEventos: events.length,
+        candidatosNotificacion: eventsToCheck,
+        notificacionesEnviadas: eventsNotified,
+        timestamp: new Date().toISOString(),
+        modoActual: currentMode,
+        notificacionesActivas: notificationPermission && userNotificationSettings.enabled
+    }, 'info');
+    
+    if (eventsToCheck === 0) {
+        logDebug('💤 No hay eventos candidatos para notificación en este momento', null, 'debug');
+    }
+}
+
 
         // Iniciar verificador periódico de notificaciones
         function startNotificationChecker() {
             if (notificationInterval) clearInterval(notificationInterval);
             notificationInterval = setInterval(() => {
                 checkEventsForNotifications();
-            }, 60000); // Verificar cada minuto
+            }, 30000); // Verificar cada minuto
         }
 
         // Detener verificador
@@ -3293,6 +3503,7 @@
                         <small>${formatEventDate(event.startDate)}</small>
                     </label>
                     <select class="notification-time-select" data-event="${event.id}" ${!isNotifying ? 'disabled' : ''}>
+                        <option value="0" ${advanceTime === 0 ? 'selected' : ''}>Al instante</option>
                         <option value="15" ${advanceTime === 15 ? 'selected' : ''}>15 min antes</option>
                         <option value="30" ${advanceTime === 30 ? 'selected' : ''}>30 min antes</option>
                         <option value="60" ${advanceTime === 60 ? 'selected' : ''}>1 hora antes</option>
@@ -3301,7 +3512,6 @@
                         <option value="2880" ${advanceTime === 2880 ? 'selected' : ''}>2 día antes</option>
                         <option value="10080" ${advanceTime === 10080 ? 'selected' : ''}>1 semana antes</option>
                         <option value="20160" ${advanceTime === 20160 ? 'selected' : ''}>2 semana antes</option>
-                        <option value="40320" ${advanceTime === 40320 ? 'selected' : ''}>1 mes antes</option>
                     </select>
                 `;
                 
@@ -3341,6 +3551,42 @@
                 container.appendChild(eventDiv);
             });
         }
+
+// 1. Solicitar permiso automáticamente al cargar
+function autoRequestNotificationPermission() {
+    if (!('Notification' in window)) {
+        console.log('Este navegador no soporta notificaciones');
+        return;
+    }
+    
+    // Si ya tiene permiso, activar automáticamente
+    if (Notification.permission === 'granted') {
+        notificationPermission = true;
+        userNotificationSettings.enabled = true;
+        saveNotificationSettings();
+        updateNotificationUI();
+        startNotificationChecker();
+        console.log('✅ Notificaciones automáticas activadas');
+    } 
+    // Si no ha sido preguntado antes, preguntar automáticamente
+    else if (Notification.permission === 'default') {
+        // Pequeño delay para no molestar al cargar
+        setTimeout(async () => {
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                notificationPermission = true;
+                userNotificationSettings.enabled = true;
+                saveNotificationSettings();
+                updateNotificationUI();
+                startNotificationChecker();
+                console.log('✅ Notificaciones activadas automáticamente');
+                
+                // Mostrar mensaje de bienvenida
+                showNotificationStatus('success', '🔔 Notificaciones activadas. Recibirás alertas de eventos importantes.');
+            }
+        }, 3000); // Espera 3 segundos para no interrumpir
+    }
+}
 
         // Función para cambiar modo
         function switchMode(mode) {
@@ -4541,7 +4787,7 @@
         function updateEventsSections(elements, mode) {
             // Upcoming events
             elements.upcomingEventsList.innerHTML = '';
-            const upcomingEvents = getUpcomingEvents(30, mode);
+            const upcomingEvents = getUpcomingEvents(31, mode);
             
             if (upcomingEvents.length === 0) {
                 elements.upcomingEventsList.innerHTML = '<p>No hay eventos próximos en los próximos 30 días.</p>';
@@ -4877,6 +5123,41 @@
                 }
             }, 60000);
         }
+
+function testNotification() {
+    if (notificationPermission && userNotificationSettings.enabled) {
+        new Notification('🔔 Prueba de Notificaciones', {
+            body: '¡Las notificaciones funcionan correctamente!',
+            icon: 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png'
+        });
+        showNotificationStatus('success', '✅ Notificación de prueba enviada');
+    } else {
+        showNotificationStatus('error', '❌ Las notificaciones no están activadas');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Cargar configuración guardada
+    loadNotificationSettings();
+    
+    // Solicitar permiso automáticamente
+    setTimeout(() => {
+        autoRequestNotificationPermission();
+    }, 2000);
+    
+    // Iniciar verificador de eventos (cada 30 segundos para mayor precisión)
+    setInterval(() => {
+        if (notificationPermission && userNotificationSettings.enabled) {
+            checkEventsForNotifications();
+        }
+    }, 30000); // Cada 30 segundos
+    
+    // Verificar también al cambiar de modo
+    window.switchMode = function(mode) {
+        switchMode(mode);
+        setTimeout(() => checkEventsForNotifications(), 1000);
+    };
+});
 
         // Iniciar cuando se carga la página
         document.addEventListener('DOMContentLoaded', initApp);

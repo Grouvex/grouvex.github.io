@@ -163,6 +163,160 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
+        /* Notificaciones Panel */
+        .notifications-panel {
+            background: linear-gradient(145deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.2));
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .notifications-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .notifications-header h3 {
+            color: var(--cal-gold);
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .notify-btn {
+            background: linear-gradient(135deg, var(--cal-secondary), var(--cal-primary));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .notify-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .notify-btn.active {
+            background: linear-gradient(135deg, #ff6b6b, #e74c3c);
+        }
+
+        .notify-status {
+            padding: 10px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            margin-top: 10px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .notify-status.active {
+            display: block;
+        }
+
+        .notify-status.success {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+            border-left: 4px solid #2ecc71;
+        }
+
+        .notify-status.error {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .notify-status.info {
+            background: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+            border-left: 4px solid #3498db;
+        }
+
+        .events-notification-settings {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .events-notification-settings h4 {
+            color: var(--cal-gold);
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .notification-events-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .notification-event-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+        }
+
+        .notification-event-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
+        }
+
+        .notification-event-item.notifying {
+            background: rgba(255, 215, 0, 0.3);
+            border-left: 3px solid var(--cal-gold);
+        }
+
+        .notification-event-item input {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+
+        .notification-event-item label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .notification-time-select {
+            margin-left: auto;
+            padding: 5px 10px;
+            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+
+        .notification-time-select option {
+            background: var(--cal-dark);
+        }
+
         /* Botón deslizante para cambiar modo */
         .mode-toggle {
             display: flex;
@@ -2218,6 +2372,28 @@
             <div class="current-time" id="currentTime">Cargando hora UTC...</div>
         </div>
 
+        <!-- Panel de Notificaciones -->
+        <div class="notifications-panel" id="notificationsPanel">
+            <div class="notifications-header">
+                <h3><i class="fas fa-bell"></i> Notificaciones Push</h3>
+                <div class="notification-buttons">
+                    <button class="notify-btn" id="enableNotificationsBtn" onclick="requestNotificationPermission()">
+                        <i class="fas fa-bell"></i> Activar Notificaciones
+                    </button>
+                </div>
+            </div>
+            <div id="notificationStatus" class="notify-status"></div>
+            <div id="eventNotificationsSettings" class="events-notification-settings" style="display: none;">
+                <h4><i class="fas fa-calendar-check"></i> Eventos a notificar</h4>
+                <div id="notificationEventsList" class="notification-events-list">
+                    <!-- Eventos se cargarán dinámicamente -->
+                </div>
+                <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.7;">
+                    <i class="fas fa-info-circle"></i> Selecciona los eventos que quieres que te notifiquen. Recibirás una notificación antes de que comience cada evento.
+                </p>
+            </div>
+        </div>
+
         <!-- Botón deslizante para cambiar modo -->
         <div class="mode-toggle">
             <div class="mode-option active" onclick="switchMode('normal')">📅 Calendario Normal</div>
@@ -2576,6 +2752,13 @@
         let currentViewHead = 'month';
         let currentDecadeStartNormal = 2020;
         let currentDecadeStartHead = 2020;
+        let notificationPermission = false;
+        let notificationSubscription = null;
+        let notificationInterval = null;
+        let userNotificationSettings = {
+            enabled: false,
+            events: {} // { eventId: { notify: true, advanceTime: 30 } } (minutos antes)
+        };
 
         // Base de datos de Eventos
         const eventsData = [
@@ -2889,6 +3072,275 @@
             closeEventsListModal: document.getElementById('closeEventsListModal'),
             closeEventsListBtn: document.getElementById('closeEventsListBtn')
         };
+
+       // Cargar configuración de notificaciones desde localStorage
+        function loadNotificationSettings() {
+            const saved = localStorage.getItem('grouvex_notifications');
+            if (saved) {
+                try {
+                    userNotificationSettings = JSON.parse(saved);
+                    if (userNotificationSettings.enabled) {
+                        notificationPermission = true;
+                        updateNotificationUI();
+                    }
+                } catch(e) {}
+            }
+        }
+
+        // Guardar configuración de notificaciones
+        function saveNotificationSettings() {
+            localStorage.setItem('grouvex_notifications', JSON.stringify(userNotificationSettings));
+        }
+
+        // Solicitar permiso de notificaciones
+        async function requestNotificationPermission() {
+            if (!('Notification' in window)) {
+                showNotificationStatus('error', 'Tu navegador no soporta notificaciones push');
+                return;
+            }
+
+            if (Notification.permission === 'granted') {
+                notificationPermission = true;
+                userNotificationSettings.enabled = true;
+                saveNotificationSettings();
+                showNotificationStatus('success', '✅ Notificaciones activadas correctamente');
+                updateNotificationUI();
+                startNotificationChecker();
+                return;
+            }
+
+            if (Notification.permission === 'denied') {
+                showNotificationStatus('error', '❌ Has bloqueado las notificaciones. Por favor, permite las notificaciones en la configuración de tu navegador.');
+                return;
+            }
+
+            try {
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    notificationPermission = true;
+                    userNotificationSettings.enabled = true;
+                    saveNotificationSettings();
+                    showNotificationStatus('success', '✅ Notificaciones activadas correctamente. ¡Recibirás alertas de tus eventos!');
+                    updateNotificationUI();
+                    startNotificationChecker();
+                } else {
+                    showNotificationStatus('error', '❌ No se activaron las notificaciones. Puedes activarlas más tarde desde la configuración.');
+                }
+            } catch (error) {
+                console.error('Error al solicitar permiso:', error);
+                showNotificationStatus('error', 'Error al solicitar permiso para notificaciones');
+            }
+        }
+
+        // Enviar notificación de evento
+        function sendEventNotification(event) {
+            if (!notificationPermission || Notification.permission !== 'granted') return;
+            if (!userNotificationSettings.enabled) return;
+            if (!userNotificationSettings.events[event.id] || !userNotificationSettings.events[event.id].notify) return;
+
+            try {
+                const eventStartDate = parseEventDate(event.startDate);
+                const now = new Date();
+                const timeUntil = eventStartDate - now;
+                const advanceMinutes = userNotificationSettings.events[event.id].advanceTime || 30;
+                
+                // Solo notificar si falta el tiempo configurado o menos
+                if (timeUntil <= advanceMinutes * 60 * 1000 && timeUntil > 0) {
+                    // Verificar si ya se notificó este evento
+                    const notificationKey = `notified_${event.id}_${eventStartDate.getTime()}`;
+                    if (localStorage.getItem(notificationKey)) return;
+                    
+                    const minutesLeft = Math.floor(timeUntil / (1000 * 60));
+                    const hoursLeft = Math.floor(minutesLeft / 60);
+                    
+                    let timeText = '';
+                    if (hoursLeft > 0) {
+                        timeText = `${hoursLeft} hora${hoursLeft !== 1 ? 's' : ''} y ${minutesLeft % 60} minuto${minutesLeft % 60 !== 1 ? 's' : ''}`;
+                    } else {
+                        timeText = `${minutesLeft} minuto${minutesLeft !== 1 ? 's' : ''}`;
+                    }
+                    
+                    const importanceEmoji = event.importance === 'superalto' ? '🔴🔥' : event.importance === 'alto' ? '🟠⚠️' : '🟢ℹ️';
+                    
+                    const notification = new Notification(`📅 ${event.title}`, {
+                        body: `${importanceEmoji} Comienza en ${timeText}\n📅 ${formatEventDate(event.startDate)}`,
+                        icon: event.image || 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png',
+                        badge: 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png',
+                        tag: `event-${event.id}`,
+                        requireInteraction: event.importance === 'superalto',
+                        silent: false
+                    });
+                    
+                    notification.onclick = function() {
+                        window.focus();
+                        notification.close();
+                        // Abrir modal del evento
+                        openEventModal(event);
+                    };
+                    
+                    // Marcar como notificado
+                    localStorage.setItem(notificationKey, 'true');
+                    
+                    // Limpiar después de 24 horas
+                    setTimeout(() => {
+                        localStorage.removeItem(notificationKey);
+                    }, 24 * 60 * 60 * 1000);
+                    
+                    showNotificationStatus('info', `🔔 Notificación enviada para: ${event.title}`);
+                }
+            } catch (error) {
+                console.error('Error al enviar notificación:', error);
+            }
+        }
+
+        // Verificar eventos y enviar notificaciones
+        function checkEventsForNotifications() {
+            if (!notificationPermission || !userNotificationSettings.enabled) return;
+            
+            const events = getFilteredEvents(currentMode);
+            const now = new Date();
+            
+            events.forEach(event => {
+                const eventStartDate = parseEventDate(event.startDate);
+                const timeUntil = eventStartDate - now;
+                const advanceMinutes = userNotificationSettings.events[event.id]?.advanceTime || 30;
+                
+                // Verificar si el evento está por comenzar
+                if (timeUntil > 0 && timeUntil <= advanceMinutes * 60 * 1000) {
+                    sendEventNotification(event);
+                }
+            });
+        }
+
+        // Iniciar verificador periódico de notificaciones
+        function startNotificationChecker() {
+            if (notificationInterval) clearInterval(notificationInterval);
+            notificationInterval = setInterval(() => {
+                checkEventsForNotifications();
+            }, 60000); // Verificar cada minuto
+        }
+
+        // Detener verificador
+        function stopNotificationChecker() {
+            if (notificationInterval) {
+                clearInterval(notificationInterval);
+                notificationInterval = null;
+            }
+        }
+
+        // Mostrar estado de notificaciones en UI
+        function showNotificationStatus(type, message) {
+            const statusDiv = document.getElementById('notificationStatus');
+            statusDiv.className = `notify-status ${type} active`;
+            statusDiv.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i> ${message}`;
+            
+            setTimeout(() => {
+                if (statusDiv.className.includes(type)) {
+                    statusDiv.classList.remove('active');
+                }
+            }, 5000);
+        }
+
+        // Actualizar UI de notificaciones
+        function updateNotificationUI() {
+            const enableBtn = document.getElementById('enableNotificationsBtn');
+            const settingsDiv = document.getElementById('eventNotificationsSettings');
+            
+            if (notificationPermission && userNotificationSettings.enabled) {
+                enableBtn.innerHTML = '<i class="fas fa-check-circle"></i> Notificaciones Activadas';
+                enableBtn.classList.add('active');
+                settingsDiv.style.display = 'block';
+                loadEventsForNotificationSettings();
+            } else if (Notification.permission === 'granted') {
+                enableBtn.innerHTML = '<i class="fas fa-bell"></i> Activar Notificaciones';
+                enableBtn.classList.remove('active');
+                settingsDiv.style.display = 'none';
+            } else {
+                enableBtn.innerHTML = '<i class="fas fa-bell-slash"></i> Activar Notificaciones';
+                enableBtn.classList.remove('active');
+                settingsDiv.style.display = 'none';
+            }
+        }
+
+        // Cargar eventos para configuración de notificaciones
+        function loadEventsForNotificationSettings() {
+            const container = document.getElementById('notificationEventsList');
+            if (!container) return;
+            
+            const events = getFilteredEvents(currentMode);
+            const upcomingEvents = events.filter(event => {
+                const eventStart = parseEventDate(event.startDate);
+                return eventStart > new Date();
+            }).sort((a, b) => parseEventDate(a.startDate) - parseEventDate(b.startDate));
+            
+            if (upcomingEvents.length === 0) {
+                container.innerHTML = '<p style="opacity: 0.7;">No hay eventos próximos para configurar notificaciones</p>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            upcomingEvents.forEach(event => {
+                const isNotifying = userNotificationSettings.events[event.id]?.notify || false;
+                const advanceTime = userNotificationSettings.events[event.id]?.advanceTime || 30;
+                
+                const eventDiv = document.createElement('div');
+                eventDiv.className = `notification-event-item ${isNotifying ? 'notifying' : ''}`;
+                eventDiv.innerHTML = `
+                    <input type="checkbox" id="notify_event_${event.id}" ${isNotifying ? 'checked' : ''}>
+                    <label for="notify_event_${event.id}">
+                        <strong>${event.title}</strong><br>
+                        <small>${formatEventDate(event.startDate)}</small>
+                    </label>
+                    <select class="notification-time-select" data-event="${event.id}" ${!isNotifying ? 'disabled' : ''}>
+                        <option value="15" ${advanceTime === 15 ? 'selected' : ''}>15 min antes</option>
+                        <option value="30" ${advanceTime === 30 ? 'selected' : ''}>30 min antes</option>
+                        <option value="60" ${advanceTime === 60 ? 'selected' : ''}>1 hora antes</option>
+                        <option value="120" ${advanceTime === 120 ? 'selected' : ''}>2 horas antes</option>
+                        <option value="1440" ${advanceTime === 1440 ? 'selected' : ''}>1 día antes</option>
+                        <option value="2880" ${advanceTime === 2880 ? 'selected' : ''}>2 día antes</option>
+                        <option value="10080" ${advanceTime === 10080 ? 'selected' : ''}>1 semana antes</option>
+                        <option value="20160" ${advanceTime === 20160 ? 'selected' : ''}>2 semana antes</option>
+                        <option value="40320" ${advanceTime === 40320 ? 'selected' : ''}>1 mes antes</option>
+                    </select>
+                `;
+                
+                const checkbox = eventDiv.querySelector(`input[type="checkbox"]`);
+                const select = eventDiv.querySelector('.notification-time-select');
+                
+                checkbox.addEventListener('change', (e) => {
+                    const isChecked = e.target.checked;
+                    if (isChecked) {
+                        if (!userNotificationSettings.events[event.id]) {
+                            userNotificationSettings.events[event.id] = {};
+                        }
+                        userNotificationSettings.events[event.id].notify = true;
+                        userNotificationSettings.events[event.id].advanceTime = parseInt(select.value);
+                        eventDiv.classList.add('notifying');
+                        select.disabled = false;
+                        showNotificationStatus('success', `✅ Notificaciones activadas para: ${event.title}`);
+                    } else {
+                        if (userNotificationSettings.events[event.id]) {
+                            delete userNotificationSettings.events[event.id];
+                        }
+                        eventDiv.classList.remove('notifying');
+                        select.disabled = true;
+                        showNotificationStatus('info', `🔕 Notificaciones desactivadas para: ${event.title}`);
+                    }
+                    saveNotificationSettings();
+                });
+                
+                select.addEventListener('change', (e) => {
+                    if (userNotificationSettings.events[event.id]) {
+                        userNotificationSettings.events[event.id].advanceTime = parseInt(e.target.value);
+                        saveNotificationSettings();
+                        showNotificationStatus('info', `⏰ Tiempo de anticipación actualizado para: ${event.title}`);
+                    }
+                });
+                
+                container.appendChild(eventDiv);
+            });
+        }
 
         // Función para cambiar modo
         function switchMode(mode) {
@@ -4403,7 +4855,12 @@
             currentDateNormal = getUTCDate();
             currentDateHead = getUTCDate();
             updateNormalCalendar();
-            
+            auth.onAuthStateChanged((user) => {
+                currentUser = user;
+                if (user && isAuthorized(user.email) && currentMode === 'head') switchMode('head');
+                else if (currentMode === 'head') switchMode('normal');
+            });
+            startNotificationChecker();
             // Actualizar contadores cada segundo
             setInterval(() => {
                 if (currentMode === 'normal') {
@@ -4414,6 +4871,11 @@
                     updateImportantEventsCounter(headElements, 'head');
                 }
             }, 1000);
+            setInterval(() => {
+                if (notificationPermission && userNotificationSettings.enabled) {
+                    loadEventsForNotificationSettings();
+                }
+            }, 60000);
         }
 
         // Iniciar cuando se carga la página

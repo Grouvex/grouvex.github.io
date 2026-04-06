@@ -19,13 +19,7 @@
 
         body, html { margin: 0; padding: 0; height: 100%; background: var(--bg); overflow: hidden; font-family: 'Segoe UI', monospace; cursor: none; }
 
-        .holographic-workspace {
-            position: relative;
-            width: calc(100vw - (var(--margin) * 2));
-            height: calc(100vh - (var(--margin) * 2));
-            margin: var(--margin);
-            display: flex; justify-content: center; align-items: center;
-            border-radius: 15px; overflow: hidden; perspective: 1000px;
+        .holographic-workspace { position: relative; width: calc(100vw - (var(--margin) * 2)); height: calc(100vh - (var(--margin) * 2)); margin: var(--margin); display: flex; justify-content: center; align-items: center; border-radius: 15px; overflow: hidden;perspective: 1000px;
         }
 
         /* --- FONDO --- */
@@ -35,10 +29,7 @@
 
         /* --- DRAGÓN --- */
         .dragon-head-shell { position: fixed; width: 60px; height: 60px; z-index: 1000; pointer-events: none; transform: translate(-50%, -50%); display: flex; justify-content: center; align-items: center; }
-        .dragon-head-geometry {
-            position: relative; width: 30px; height: 45px; background: var(--head-color);
-            clip-path: polygon(50% 0%, 90% 20%, 100% 50%, 80% 90%, 50% 100%, 20% 90%, 0% 50%, 10% 20%);
-            border: 1px solid rgba(255,255,255,0.1);
+        .dragon-head-geometry { position: relative; width: 30px; height: 45px; background: var(--head-color); clip-path: polygon(50% 0%, 90% 20%, 100% 50%, 80% 90%, 50% 100%, 20% 90%, 0% 50%, 10% 20%); border: 1px solid rgba(255,255,255,0.1);
         }
         .dragon-horn { position: absolute; width: 8px; height: 25px; background: linear-gradient(to bottom, var(--accent) 0%, var(--head-color) 100%); top: -15px; clip-path: polygon(50% 0%, 100% 100%, 0% 100%); }
         .dragon-horn.left { left: 0; transform: rotate(-20deg); }
@@ -50,11 +41,7 @@
         @keyframes eye-blink { 0%, 90%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
 
         /* --- INTERFAZ --- */
-        .neo-shell {
-            position: relative; width: 100%; max-width: 1250px; height: 95%;
-            background: rgba(8, 12, 20, 0.92); backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px;
-            display: flex; flex-direction: column; box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+        .neo-shell { position: relative; width: 100%; max-width: 1250px; height: 95%; background: rgba(8, 12, 20, 0.92); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; display: flex; flex-direction: column;box-shadow: 0 40px 100px rgba(0,0,0,0.8);
         }
 
         .system-header { padding: 0.8rem 1.2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.2); }
@@ -72,53 +59,99 @@
 
         /* --- CONTENEDOR PRINCIPAL --- */
         .main-content { padding: 1rem; flex: 1; display: flex; flex-direction: column; overflow: hidden; gap: 1rem; }
-        .calendar-wrapper { position: relative; flex: 1; border-radius: 12px; overflow-y: auto; background: #05070a; display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.05); }
-        .google-iframe { width: 100%; height: 100%; border: none; background: #fff; }
-        .glass-reflection { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 40%); pointer-events: none; z-index: 2; }
+        .calendar-wrapper {
+            position: relative; flex: 1; border-radius: 12px;
+            background: #05070a; border: 1px solid rgba(255, 255, 255, 0.05); overflow: auto;  display: flex; flex-direction: column;
+        }
 
-        /* --- NUEVO BLOQUE DE BOTONES --- */
-        .system-shortcuts {
-            display: flex;
-            gap: 10px;
-            padding: 5px 0;
-            justify-content: center;
-            flex-wrap: wrap;
+        /* Personalización del scrollbar para que no rompa la estética Dark */
+        .calendar-wrapper::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .calendar-wrapper::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .calendar-wrapper::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        /* Forzar que el iframe ocupe todo el espacio y gestione su propio scroll si es necesario */
+        .google-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            flex: 1;
+            /* Algunos navegadores necesitan esto para respetar el border-radius del padre */
+            mask-image: radial-gradient(white, black); 
+            -webkit-mask-image: -webkit-radial-gradient(white, black);
+        }
+
+        /* 1. Tamaño de la barra (Vertical y Horizontal) */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px; 
+        }
+
+        /* 2. El fondo de la barra (Track) */
+        ::-webkit-scrollbar-track {
+            background: rgba(8, 12, 20, 0.5); 
+            border-radius: 10px;
+        }
+
+        /* 3. La parte que se mueve (Thumb/Pestaña) */
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 242, 255, 0.3);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 242, 255, 0.1);
+            box-shadow: inset 0 0 5px rgba(0, 242, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        /* 4. Efecto cuando pasas el ratón por encima */
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+            box-shadow: 0 0 15px var(--accent); 
+        }
+
+        /* 5. Esquina donde se juntan ambas barras */
+        ::-webkit-scrollbar-corner {
+            background: transparent;
+        }
+
+        /* Firefox (Soporte limitado para personalización) */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) transparent;
+        }
+                .glass-reflection { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 40%); pointer-events: none; z-index: 2; }
+
+                /* --- BOTONES --- */
+                .system-shortcuts { display: flex; gap: 10px; padding: 10px 15px; justify-content: flex-start;
+            overflow-x: auto; overflow-y: hidden; white-space: nowrap; -webkit-overflow-scrolling: touch;
         }
 
         .btn-shortcut {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(0, 242, 255, 0.2);
-            color: var(--accent);
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 11px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(0, 242, 255, 0.2);
+            color: var(--accent); padding: 10px 20px; border-radius: 30px;
+            text-decoration: none; font-size: 8px;font-weight: bold; letter-spacing: 1px;
+            transition: all 0.3s ease; text-transform: uppercase; backdrop-filter: blur(10px);
+            display: flex; align-items: center; gap: 8px;
         }
 
         .btn-shortcut:hover {
-            background: rgba(0, 242, 255, 0.1);
-            border-color: var(--accent);
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
-            transform: translateY(-2px);
-            color: white;
+            background: rgba(0, 242, 255, 0.1); border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.3); transform: translateY(-2px); color: white;
         }
 
-        .btn-shortcut::before {
-            content: '>';
-            font-family: monospace;
-            opacity: 0.5;
-        }
+        .btn-shortcut::before { content: '>'; font-family: monospace; opacity: 0.5; }
 
-        /* --- LOGIN CARD --- */
-        .auth-card { max-width: 400px; margin: auto; padding: 40px; background: rgba(255,255,255,0.03); border: 1px solid var(--accent); border-radius: 15px; text-align: center; color: white; }
+        /* --- AUTH CARD --- */
+        .auth-card { max-width: 400px; margin: auto; padding: 40px; background: rgba(255,255,255,0.03); border: 1px solid var(--accent); border-radius: 15px; text-align: center; color: white; z-index: 5; }
         .auth-card h3 { letter-spacing: 5px; color: var(--accent); }
         .auth-methods { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
         .auth-methods input { background: rgba(0,0,0,0.5); border: 1px solid #333; padding: 12px; color: white; border-radius: 5px; font-family: monospace; }
@@ -128,7 +161,8 @@
         .divider-text { margin: 15px 0; border-bottom: 1px solid #333; height: 10px; text-align: center; }
         .divider-text span { background: #080c14; padding: 0 10px; font-size: 10px; color: #555; }
         
-        .logout-mini { position: absolute; bottom: 15px; right: 15px; z-index: 10; background: rgba(255, 95, 87, 0.2); border: 1px solid #ff5f57; color: #ff5f57; font-size: 9px; padding: 6px 12px; cursor: pointer; border-radius: 4px; }
+        .logout-mini { position: block;background: rgba(255, 95, 87, 0.2); border: 1px solid #ff5f57; color: #ff5f57; font-size: 9px; padding: 6px 12px; cursor: pointer; border-radius: 0px 0px 15px 15px; transition: 0.3s; }
+        .logout-mini:hover { background: #ff5f57; color: white; }
 
         .system-footer { padding: 0.8rem 1.5rem; display: flex; justify-content: space-between; font-size: 8px; color: #374151; letter-spacing: 1px; }
 
@@ -153,8 +187,6 @@
                 <div class="dragon-horn right"></div>
                 <div class="dragon-eye left"></div>
                 <div class="dragon-eye right"></div>
-                <div class="head-face top"></div>
-                <div class="head-face snout"></div>
             </div>
         </div>
     </div>
@@ -176,35 +208,34 @@
                         <span class="pulse"></span>
                         DRAKO_v7
                     </div>
-                    <span class="title-text">GROUVEX_CALENDAR</span>
+                    <span class="title-text">Calendario Oficial de GStudios</span>
                 </div>
             </div>
             <div class="system-stats">
-                <span class="stat" style="color: var(--accent); font-size: 9px;">SECURE_NODE: ACTIVE</span>
+                <span class="stat" style="color: var(--accent); font-size: 9px;">Version: V.1</span>
             </div>
         </nav>
 
         <div class="main-content">
             <div class="calendar-wrapper" id="auth-container">
-            </div>
-            <div id="extra-links" class="system-shortcuts" >
-                <a href="https://grouvex.github.io/" target="_blank" class="btn-shortcut">Main Terminal</a>
-                <a href="#" class="btn-shortcut">Documentation</a>
-                <a href="#" class="btn-shortcut">System Logs</a>
+                </div>
+            <div id="extra-links" class="system-shortcuts" style="display: none;">
+                <a href="https://grouvex.github.io/" target="_blank" class="btn-shortcut">WebSite</a>
+                <a href="https://grouvex.github.io/calendario-head" class="btn-shortcut">Calendario Staff</a>
+                <a href="https://grouvex.github.io/calendario-head" class="btn-shortcut">Calendario GSRecords</a>
             </div>
         </div>
 
         <footer class="system-footer">
-                    
             <div>STATUS: STABLE_CONNECTION</div>
-            <div class="text-right">© 2026 GROUVEX STUDIOS</div>
+            <div class="text-right">©2026 GROUVEX STUDIOS</div>
         </footer>
     </div>
 </div>
 
 <script>
     // --- LÓGICA DEL DRAGÓN ---
-    const numSegments = 14;
+    const numSegments = 13;
     const segments = [];
     const coords = { x: 0, y: 0 };
 
@@ -244,8 +275,8 @@
     }
     updateDragon();
 
-    // --- LÓGICA FIREBASE ---
-    const checkAuth = false; 
+    // --- LÓGICA DE FIREBASE Y SEGURIDAD ---
+    const checkAuth = true;
     const authorizedEmails = [
         "admin@grouvex.com",
         "developer@grouvex.com",
@@ -263,6 +294,7 @@
         measurementId: "G-75BR8D2CR3"
     };
 
+    // Inicializar Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const container = document.getElementById('auth-container');
@@ -287,13 +319,19 @@
     }
 
     function showCalendar() {
-        extraLinks.style.display = 'flex'; // Mostrar botones al entrar
+        extraLinks.style.display = 'flex';
         container.innerHTML = `
             <div class="glass-reflection"></div>
-            <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=UTC&showPrint=0&title=Calendario%20Oficial%20de%20Grouvex%20Studios&src=ZW4uc3BhaW4jaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&src=NjViZjRiY2YxZDgyZjBhNTBlMzViMDVmMzhhYWNjYmE4OTdlMmY4YzZmMWI1ZTkyN2Y1YTIyNWFiMmI0YTZhMkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%230b8043&color=%23e67c73" class="google-iframe" scrolling="no"></iframe>
+            <iframe 
+                src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=UTC&showPrint=0&title=Calendario%20Oficial%20de%20Grouvex%20Studios&src=ZW4uc3BhaW4jaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&src=NjViZjRiY2YxZDgyZjBhNTBlMzViMDVmMzhhYWNjYmE4OTdlMmY4YzZmMWI1ZTkyN2Y1YTIyNWFiMmI0YTZhMkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%230b8043&color=%23e67c73" 
+                class="google-iframe" 
+                frameborder="0" 
+                scrolling="no">
+            </iframe>
             <button class="logout-mini" onclick="auth.signOut()">TERMINATE_SESSION</button>`;
     }
 
+    // Funciones de Login
     window.loginGoogle = () => {
         const provider = new firebase.auth.GoogleAuthProvider();
         auth.signInWithPopup(provider).catch(err => alert(err.message));
@@ -305,18 +343,34 @@
         auth.signInWithEmailAndPassword(email, pass).catch(err => alert("Fallo: " + err.message));
     };
 
-    auth.onAuthStateChanged(user => {
-        if (user) {
-            if (authorizedEmails.includes(user.email)) {
-                showCalendar();
-            } else {
-                extraLinks.style.display = 'none';
-                container.innerHTML = `<div class="auth-card"><h3 style="color:#ff5f57">UNAUTHORIZED</h3><p>El usuario <b>${user.email}</b> no tiene permisos.</p><button onclick="auth.signOut()" class="btn-auth primary">SWITCH_ACCOUNT</button></div>`;
-            }
-        } else {
-            showLoginUI();
+    // Inicialización de Acceso
+    function initializeAccess() {
+        if (!checkAuth) {
+            showCalendar();
+            return;
         }
-    });
+
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                if (authorizedEmails.includes(user.email)) {
+                    showCalendar();
+                } else {
+                    extraLinks.style.display = 'none';
+                    container.innerHTML = `
+                        <div class="auth-card">
+                            <h3 style="color:#ff5f57">UNAUTHORIZED</h3>
+                            <p>El usuario <b>${user.email}</b> no tiene permisos.</p>
+                            <button onclick="auth.signOut()" class="btn-auth primary">SWITCH_ACCOUNT</button>
+                        </div>`;
+                }
+            } else {
+                showLoginUI();
+            }
+        });
+    }
+
+    // Arrancar sistema
+    initializeAccess();
 </script>
 </body>
 </html>

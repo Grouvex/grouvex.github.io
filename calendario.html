@@ -21,7 +21,21 @@
             --margin: 0.5rem;
             --glass: rgba(255, 255, 255, 0.05);
         }
-
+        /* Select deshabilitado */
+        select:disabled,
+        select.disabled {
+            opacity: 0.5;
+            background: rgba(255, 0, 0, 0.2);
+            border-color: var(--danger);
+            color: #ff8888;
+            cursor: not-allowed;
+        }
+        
+        /* Para las opciones dentro de un select deshabilitado */
+        select:disabled option {
+            background: #1a1a1a;
+            color: #666;
+        }
         body, html { margin: 0; padding: 0; height: 100%; background: var(--bg); overflow: hidden; font-family: 'Segoe UI', monospace; color: white; cursor: none; }
 
         /* --- ESPACIO DE TRABAJO --- */
@@ -55,6 +69,7 @@
         .status-pill { font-size: 10px; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; font-weight: bold; border: 1px solid; }
         .status-pill.public { color: var(--accent); border-color: var(--accent); }
         .status-pill.register { color: var(--warning); border-color: var(--warning); }
+        .status-pill.blocked { color: red; border-color: red }
         .status-pill.private { color: var(--staff); border-color: var(--staff); box-shadow: 0 0 10px rgba(255, 74, 74, 0.2); }
 
         .iframe-controls { display: flex; gap: 15px; background: rgba(0,0,0,0.3); padding: 10px 20px; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
@@ -86,10 +101,38 @@
         .login-box { padding: 30px; border: 1px solid var(--accent); border-radius: 20px; background: rgba(0,0,0,0.8); text-align: center; width: 320px; }
         .auth-methods { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
         .auth-methods input { background: rgba(255,255,255,0.05); border: 1px solid #333; padding: 12px; color: white; border-radius: 5px; outline: none; }
-
+        .error-box {  padding: 30px;  border: 1px solid var(--danger);  border-radius: 20px;  background: rgba(0,0,0,0.8);   text-align: center;  width: 320px; }
         .btn-logout { background: rgba(255, 95, 87, 0.1); border: 1px solid var(--danger); color: var(--danger); font-size: 9px; padding: 6px 15px; border-radius: 0 0 10px 10px; cursor: pointer; align-self: center; }
 
         @media (max-width: 768px) { .dragon-head-shell, .dragon-segment { display: none; } body { cursor: auto; } }
+        /* --- BOTÓN INFO Y MODAL --- */
+        .info-trigger {
+            margin-left: 8px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: 0.3s;
+            font-size: 1.1em;
+        }
+        .info-trigger:hover { opacity: 1; color: var(--accent); }
+        
+        .desc-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(3, 5, 8, 0.9);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .desc-card {
+            background: var(--head-color);  border: 1px solid var(--accent);  padding: 25px; border-radius: 15px; max-width: 400px; text-align: center; box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
+        }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
@@ -116,26 +159,165 @@
             <div class="status-pill public" id="access-indicator">PÚBLICO</div>
         </header>
 
-        <div class="iframe-controls">
+          <div class="iframe-controls">
             <div class="control-group">
                 <span>TIMEZONE:</span>
                 <select id="tz-select" class="select-mini" onchange="updateIframeParams()">
-                    <option value="UTC">UTC / GMT</option>
-                    <option value="Europe/Madrid" selected>Madrid / España</option>
-                    <option value="America/New_York">Nueva York</option>
-                    <option value="America/Mexico_City">México DF</option>
-                    <option value="America/Bogota">Bogotá</option>
-                    <option value="America/Argentina/Buenos_Aires">Buenos Aires</option>
+                    <option value="UTC">UTC / GMT (Universal)</option>
+                    
+                    <optgroup label="Europa">
+                        <option value="Europe/Andorra">Andorra</option>
+                        <option value="Europe/Athens">Atenas / Grecia</option>
+                        <option value="Europe/Belgrade">Belgrado</option>
+                        <option value="Europe/Berlin">Berlín / Alemania</option>
+                        <option value="Europe/Brussels">Bruselas / Bélgica</option>
+                        <option value="Europe/Bucharest">Bucarest</option>
+                        <option value="Europe/Budapest">Budapest</option>
+                        <option value="Europe/Copenhagen">Copenhague</option>
+                        <option value="Europe/Dublin">Dublín / Irlanda</option>
+                        <option value="Europe/Helsinki">Helsinki</option>
+                        <option value="Europe/Istanbul">Estambul / Turquía</option>
+                        <option value="Europe/Lisbon">Lisboa / Portugal</option>
+                        <option value="Europe/London">Londres / UK</option>
+                        <option value="Europe/Luxembourg">Luxemburgo</option>
+                        <option value="Europe/Madrid" selected>Madrid / España</option>
+                        <option value="Europe/Monaco">Mónaco</option>
+                        <option value="Europe/Moscow">Moscú / Rusia</option>
+                        <option value="Europe/Oslo">Oslo / Noruega</option>
+                        <option value="Europe/Paris">París / Francia</option>
+                        <option value="Europe/Prague">Praga</option>
+                        <option value="Europe/Rome">Roma / Italia</option>
+                        <option value="Europe/Stockholm">Estocolmo</option>
+                        <option value="Europe/Vienna">Viena</option>
+                        <option value="Europe/Warsaw">Varsovia</option>
+                        <option value="Europe/Zurich">Zúrich / Suiza</option>
+                    </optgroup>
+                
+                    <optgroup label="Norteamérica">
+                        <option value="America/Anchorage">Alaska (AST)</option>
+                        <option value="America/Chicago">Chicago (CST)</option>
+                        <option value="America/Denver">Denver (MST)</option>
+                        <option value="America/Los_Angeles">Los Ángeles (PST)</option>
+                        <option value="America/Mexico_City">México DF (CST)</option>
+                        <option value="America/Monterrey">Monterrey</option>
+                        <option value="America/New_York">Nueva York (EST)</option>
+                        <option value="America/Phoenix">Phoenix (MST)</option>
+                        <option value="America/Tijuana">Tijuana</option>
+                        <option value="America/Toronto">Toronto</option>
+                        <option value="America/Vancouver">Vancouver</option>
+                    </optgroup>
+                
+                    <optgroup label="Centroamérica / Caribe">
+                        <option value="America/Costa_Rica">Costa Rica</option>
+                        <option value="America/El_Salvador">El Salvador</option>
+                        <option value="America/Guatemala">Guatemala</option>
+                        <option value="America/Havana">La Habana / Cuba</option>
+                        <option value="America/Managua">Managua / Nicaragua</option>
+                        <option value="America/Panama">Panamá</option>
+                        <option value="America/Puerto_Rico">Puerto Rico</option>
+                        <option value="America/Santo_Domingo">Santo Domingo</option>
+                        <option value="America/Tegucigalpa">Tegucigalpa</option>
+                    </optgroup>
+                
+                    <optgroup label="Sudamérica">
+                        <option value="America/Asuncion">Asunción / Paraguay</option>
+                        <option value="America/Bogota">Bogotá / Colombia</option>
+                        <option value="America/Buenos_Aires">Buenos Aires / Argentina</option>
+                        <option value="America/Caracas">Caracas / Venezuela</option>
+                        <option value="America/Guayaquil">Guayaquil / Ecuador</option>
+                        <option value="America/La_Paz">La Paz / Bolivia</option>
+                        <option value="America/Lima">Lima / Perú</option>
+                        <option value="America/Montevideo">Montevideo / Uruguay</option>
+                        <option value="America/Paramaribo">Surinam</option>
+                        <option value="America/Santiago">Santiago / Chile</option>
+                        <option value="America/Sao_Paulo">São Paulo / Brasil</option>
+                    </optgroup>
+                
+                    <optgroup label="Asia">
+                        <option value="Asia/Bangkok">Bangkok</option>
+                        <option value="Asia/Dubai">Dubai</option>
+                        <option value="Asia/Hong_Kong">Hong Kong</option>
+                        <option value="Asia/Jakarta">Jakarta</option>
+                        <option value="Asia/Jerusalem">Jerusalén</option>
+                        <option value="Asia/Kabul">Kabul</option>
+                        <option value="Asia/Karachi">Karachi</option>
+                        <option value="Asia/Kathmandu">Katmandú</option>
+                        <option value="Asia/Kolkata">Calcuta / India</option>
+                        <option value="Asia/Manila">Manila</option>
+                        <option value="Asia/Qatar">Qatar</option>
+                        <option value="Asia/Riyadh">Riad / Arabia Saudí</option>
+                        <option value="Asia/Seoul">Seúl / Corea</option>
+                        <option value="Asia/Shanghai">Shanghai / China</option>
+                        <option value="Asia/Singapore">Singapur</option>
+                        <option value="Asia/Taipei">Taipei</option>
+                        <option value="Asia/Tokyo">Tokio / Japón</option>
+                    </optgroup>
+                
+                    <optgroup label="Oceanía">
+                        <option value="Australia/Adelaide">Adelaida</option>
+                        <option value="Australia/Brisbane">Brisbane</option>
+                        <option value="Australia/Darwin">Darwin</option>
+                        <option value="Australia/Melbourne">Melbourne</option>
+                        <option value="Australia/Perth">Perth</option>
+                        <option value="Australia/Sydney">Sydney</option>
+                        <option value="Pacific/Auckland">Auckland / NZ</option>
+                        <option value="Pacific/Fiji">Fiji</option>
+                        <option value="Pacific/Guadalcanal">Islas Salomón</option>
+                        <option value="Pacific/Honolulu">Honolulu / Hawaii</option>
+                    </optgroup>
+                
+                    <optgroup label="África">
+                        <option value="Africa/Algiers">Argel</option>
+                        <option value="Africa/Cairo">El Cairo</option>
+                        <option value="Africa/Casablanca">Casablanca / Marruecos</option>
+                        <option value="Africa/Johannesburg">Johannesburgo</option>
+                        <option value="Africa/Lagos">Lagos / Nigeria</option>
+                        <option value="Africa/Nairobi">Nairobi / Kenia</option>
+                        <option value="Africa/Tunis">Túnez</option>
+                    </optgroup>
                 </select>
             </div>
             <div class="control-group">
                 <span>LANG:</span>
-                <select id="lang-select" class="select-mini" onchange="updateIframeParams()">
-                    <option value="es" selected>Español</option>
-                    <option value="en">English</option>
-                    <option value="fr">Français</option>
-                    <option value="de">Deutsch</option>
-                </select>
+                    <select id="lang-select" class="select-mini" onchange="updateIframeParams()">
+                        <optgroup label="Europa">
+                            <option value="es" selected>Español</option>
+                            <option value="en_GB">English (UK)</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="it">Italiano</option>
+                            <option value="pt_PT">Português (Portugal)</option>
+                            <option value="nl">Nederlands (Holandés)</option>
+                            <option value="ru">Русский (Ruso)</option>
+                            <option value="pl">Polski (Polaco)</option>
+                            <option value="uk">Українська (Ucraniano)</option>
+                        </optgroup>
+                        
+                        <optgroup label="América">
+                            <option value="en">English (US)</option>
+                            <option value="es_419">Español (Latinoamérica)</option>
+                            <option value="pt_BR">Português (Brasil)</option>
+                            <option value="fr_CA">Français (Canadá)</option>
+                        </optgroup>
+                    
+                        <optgroup label="Asia / Oceanía">
+                            <option value="ja">日本語 (Japonés)</option>
+                            <option value="ko">한국어 (Coreano)</option>
+                            <option value="zh_CN">简体中文 (Chino Simplificado)</option>
+                            <option value="zh_TW">繁體中文 (Chino Tradicional)</option>
+                            <option value="hi">हिन्दी (Hindi)</option>
+                            <option value="th">ไทย (Tailandés)</option>
+                            <option value="vi">Tiếng Việt (Vietnamita)</option>
+                            <option value="id">Bahasa Indonesia</option>
+                        </optgroup>
+                    
+                        <optgroup label="Medio Oriente / África">
+                            <option value="ar">العربية (Árabe)</option>
+                            <option value="iw">עברית (Hebreo)</option>
+                            <option value="tr">Türkçe (Turco)</option>
+                            <option value="sw">Kiswahili (Suajili)</option>
+                        </optgroup>
+                    </select>
             </div>
         </div>
 
@@ -145,13 +327,28 @@
                 
                 <div id="auth-screen" class="auth-overlay" style="display: none;">
                     <div class="login-box">
-                        <h3 style="color: var(--accent); margin: 0; letter-spacing: 2px;">RESTRICCIÓN</h3>
+                        <h3 style="color: var(--accent); margin: 0; letter-spacing: 2px;">AUTENTICACIÓN</h3>
                         <div class="auth-methods">
                             <button onclick="loginGoogle()" class="btn" style="background:white; color:black; width:100%">Google Login</button>
                             <input type="email" id="email" placeholder="Terminal ID">
                             <input type="password" id="pass" placeholder="Passcode">
-                            <button onclick="loginEmail()" class="btn" style="width:100%">Iniciar Sesión</button>
+                            <button onclick="loginEmail()" class="btn" style="width:100%">Acceder</button>
                         </div>
+                    </div>
+                </div>
+
+                <div id="error-screen" class="auth-overlay" style="display: none;">
+                    <div class="error-box">
+                        <h3 style="margin: 0; letter-spacing: 2px;">ACCESO DENEGADO</h3>
+                        <p style="font-size: 11px; margin: 15px 0;">Tu identidad actual no tiene privilegios para este sector.</p>
+                        <button onclick="handleLogout()" class="btn" style="border-color: var(--danger); color: var(--danger);">Cambiar Cuenta</button>
+                    </div>
+                </div>
+                
+                <div id="blocked-screen" class="auth-overlay" style="display: none;">
+                    <div class="error-box">
+                        <h3 style="margin: 0; letter-spacing: 2px;">CALENDARIO CERRADO</h3>
+                        <p style="font-size: 11px; margin: 15px 0;">Este calendario se ha cerrado temporalmente.</p>
                     </div>
                 </div>
             </div>
@@ -165,15 +362,23 @@
                 <div class="row-wrapper" id="sub-nav" style="display: none; background: rgba(0, 242, 255, 0.03); padding: 8px; border-radius: 8px;"></div>
             </nav>
 
-            <div id="logout-zone" style="display: none; display: flex; justify-content: center;">
+            <div id="logout-zone" style="display: none; justify-content: center;">
                 <button class="btn-logout" onclick="handleLogout()">TERMINATE_SESSION</button>
             </div>
         </main>
+        
+        <div id="desc-modal" class="desc-overlay" onclick="this.style.display='none'">
+            <div class="desc-card">
+                <div style="color: var(--accent); font-size: 10px; margin-bottom: 10px; letter-spacing: 2px;">FILE_DESCRIPTION</div>
+                <p id="desc-content" style="font-size: 13px; line-height: 1.5; color: #ccc;"></p>
+                <div style="font-size: 9px; margin-top: 15px; color: #555;">CLICK_ANYWHERE_TO_CLOSE</div>
+            </div>
+        </div>
+
     </div>
 </div>
 
 <script>
-    // --- FIREBASE ---
     const firebaseConfig = {
         apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
         authDomain: "grouvex-studios.firebaseapp.com",
@@ -183,49 +388,72 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    // --- DATA ---
     const DATA = [
         {
             label: "1. Calendario Principal",
+            desc: "Eventos globales de la comunidad y lanzamientos generales de Grouvex Studios.",
             url: "https://calendar.google.com/calendar/embed?src=249e7ac6e1075e491ac32995d932d1d84b9ddf5bf7e3c73431b668dec90b09e4%40group.calendar.google.com",
             private: false,
             allowed: [],
             subs: [
                 {
                     label: "1.2 Calendario Social",
-                    url: "https://calendar.google.com/calendar/embed?src=es.spain%23holiday%40group.v.calendar.google.com",
+                    desc: "Festividades, reuniones y eventos sociales para miembros registrados.",
+                    url: "https://calendar.google.com/calendar/embed?src=435839cc43a9b9209f4bec91144ed82501770ba555249e87c60707f60d8051ee%40group.calendar.google.com",
                     private: true,
                     allowed: ["register"] 
                 }
             ]
         },
         {
-            label: "2. GS Records",
+            label: "2. GSRecords",
+            desc: "Cronograma de grabaciones, producción musical, gestión de talentos, eventos y mucho más.",
             url: "https://calendar.google.com/calendar/embed?src=435839cc43a9b9209f4bec91144ed82501770ba555249e87c60707f60d8051ee%40group.calendar.google.com",
             private: true,
             allowed: ["register"], 
             subs: [
-                { label: "Grouvex - Artista", url: "https://calendar.google.com/calendar/embed?src=example1", private: true, allowed: ['tarlightetherall@gmail.com'] },
-                { label: "Maiki Dran - Artista", url: "https://calendar.google.com/calendar/embed?src=example2", private: true, allowed: ['tarlightetherall@gmail.com'] }
+                { label: "Grouvex - Artista", desc: "Discografía, conciertos, eventos y mucho más de Grouvex.", url: "https://calendar.google.com/calendar/embed?src=435839cc43a9b9209f4bec91144ed82501770ba555249e87c60707f60d8051ee%40group.calendar.google.com", private: true, allowed: ["register"] },
+                { label: "Maiki Dran - Artista", desc: "Discografía, conciertos, eventos y mucho más de Maiki Dran.", url: "https://calendar.google.com/calendar/embed?src=435839cc43a9b9209f4bec91144ed82501770ba555249e87c60707f60d8051ee%40group.calendar.google.com", private: true, allowed: ["register"] }
             ]
-        }
+        },
+        {
+            label: "2. GSDesigns",
+            desc: "Diseños, gestión de talentos, eventos y mucho más.",
+            url: "https://calendar.google.com/calendar/embed?src=435839cc43a9b9209f4bec91144ed82501770ba555249e87c60707f60d8051ee%40group.calendar.google.com",
+            private: true,
+            allowed: ["blocked"], 
+            subs: [  ]
+        },
     ];
 
     let userSession = null;
     let currentConfig = null;
 
-    // --- LÓGICA DE INTERFAZ ---
     function init() {
         const mainNav = document.getElementById('main-nav');
         DATA.forEach((cat, index) => {
+            const container = document.createElement('div');
+            container.style.display = 'inline-flex';
+            container.style.alignItems = 'center';
+    
             const b = document.createElement('button');
             b.className = 'btn';
             b.innerText = cat.label;
             b.onclick = () => selectMain(cat, b);
-            mainNav.appendChild(b);
+            
+            // Icono de información
+            const info = document.createElement('span');
+            info.className = 'info-trigger';
+            info.innerHTML = 'ℹ️'; // Emoji común
+            info.onclick = (e) => { e.stopPropagation(); showDesc(cat.desc || "Sin descripción disponible."); };
+    
+            container.appendChild(b);
+            container.appendChild(info);
+            mainNav.appendChild(container);
+            
             if(index === 0) selectMain(cat, b);
         });
-
+    
         auth.onAuthStateChanged(user => {
             userSession = user;
             document.getElementById('logout-zone').style.display = user ? 'flex' : 'none';
@@ -246,6 +474,11 @@
             subNav.style.display = 'flex';
             subNav.innerHTML = '';
             cat.subs.forEach(sub => {
+                const container = document.createElement('div');
+                container.style.display = 'inline-flex';
+                container.style.alignItems = 'center';
+                container.style.marginRight = '15px';
+    
                 const sb = document.createElement('button');
                 sb.className = 'btn';
                 sb.innerText = sub.label;
@@ -254,36 +487,96 @@
                     sb.classList.add('active');
                     loadView(sub);
                 };
-                subNav.appendChild(sb);
+    
+                const info = document.createElement('span');
+                info.className = 'info-trigger';
+                info.innerHTML = 'ℹ️';
+                info.onclick = (e) => { e.stopPropagation(); showDesc(sub.desc || "Sin descripción disponible."); };
+    
+                container.appendChild(sb);
+                container.appendChild(info);
+                subNav.appendChild(container);
             });
         } else { subNav.style.display = 'none'; }
+    }
+    
+    function showDesc(text) {
+        document.getElementById('desc-content').innerText = text;
+        document.getElementById('desc-modal').style.display = 'flex';
     }
 
     function loadView(config) {
         currentConfig = config;
         const container = document.getElementById('iframe-container');
         const authScreen = document.getElementById('auth-screen');
+        const errorScreen = document.getElementById('error-screen');
+        const blockedScreen = document.getElementById('blocked-screen');
         const indicator = document.getElementById('access-indicator');
+        const buttonLang = document.getElementById('lang-select');
+        const buttonTZone = document.getElementById('tz-select');
         
         document.getElementById('current-title').innerText = config.label.toUpperCase();
+        
+        // Reset pantallas
+        authScreen.style.display = 'none';
+        errorScreen.style.display = 'none';
+        blockedScreen.style.display = 'none';
+        container.innerHTML = '';
 
+        // Definir indicador visual
         if (!config.private) {
             indicator.innerText = "PÚBLICO";
             indicator.className = "status-pill public";
         } else if (config.allowed.includes("register")) {
             indicator.innerText = "REGISTRO";
             indicator.className = "status-pill register";
+        } else if (config.allowed.includes("blocked")) {
+            indicator.innerText = "BLOCKED";
+            indicator.className = "status-pill blocked";
         } else {
             indicator.innerText = "PRIVADO";
             indicator.className = "status-pill private";
         }
 
-        if (config.private && !userSession) {
-            authScreen.style.display = 'flex';
-            container.innerHTML = '';
-        } else {
-            authScreen.style.display = 'none';
+        // 1. PRIMERO: ¿Está bloqueado? (Máxima prioridad)
+        if (config.allowed.includes("blocked")) {
+            blockedScreen.style.display = 'flex';
+            buttonLang.disabled = true;
+            buttonTZone.disabled = true;
+            return;
+        }
+        
+        // 2. SEGUNDO: Si es público, mostrar sin autenticación
+        if (!config.private) {
             updateIframeParams();
+            buttonLang.disabled = false;
+            buttonTZone.disabled = false;
+            return;
+        }
+    
+        // 3. TERCERO: Si es privado, requiere autenticación
+        if (!userSession) {
+            authScreen.style.display = 'flex';
+            buttonLang.disabled = false;
+            buttonTZone.disabled = false;
+            return;
+        }
+    
+        // 4. CUARTO: Validación de correos específicos o registro
+        const userEmail = userSession.email;
+        const isRegisteredOnly = config.allowed.includes("register");
+        const hasSpecificEmails = config.allowed.some(item => item.includes("@"));
+    
+        if (isRegisteredOnly) {
+            updateIframeParams();
+        } else if (hasSpecificEmails) {
+            if (config.allowed.includes(userEmail)) {
+                updateIframeParams();
+            } else {
+                errorScreen.style.display = 'flex';
+            }
+        } else {
+            errorScreen.style.display = 'flex';
         }
     }
 
@@ -296,12 +589,11 @@
         container.innerHTML = `<iframe src="${finalUrl}"></iframe>`;
     }
 
-    // --- AUTH ---
     window.loginGoogle = () => auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
     window.loginEmail = () => auth.signInWithEmailAndPassword(document.getElementById('email').value, document.getElementById('pass').value).catch(e => alert(e.message));
     function handleLogout() { auth.signOut().then(() => location.reload()); }
 
-    // --- DRAGÓN (TU CÓDIGO ORIGINAL MEJORADO) ---
+    // --- DRAGÓN ---
     const numSegments = 13;
     const segments = [];
     const coords = { x: 0, y: 0 };

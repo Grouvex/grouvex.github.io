@@ -12,107 +12,142 @@
     <style>
         :root {
             --accent: #00f2ff;
+            --accent-bright: #ffffff;
             --bg: #030508;
+            --head-color: #0a0e14;
             --danger: #ff5f57;
             --warning: #febc2e;
             --staff: #ff4a4a;
+            --margin: 0.5rem;
             --glass: rgba(255, 255, 255, 0.05);
         }
 
-        body, html { margin: 0; padding: 0; height: 100%; background: var(--bg); overflow: hidden; font-family: 'Segoe UI', monospace; color: white; cursor: crosshair; }
+        body, html { margin: 0; padding: 0; height: 100%; background: var(--bg); overflow: hidden; font-family: 'Segoe UI', monospace; color: white; cursor: none; }
 
-        .holographic-workspace { position: relative; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; }
-        
-        .neo-shell { 
-            width: 95%; max-width: 1300px; height: 92%; 
-            background: rgba(10, 14, 20, 0.98); 
-            backdrop-filter: blur(20px); border: 1px solid rgba(0, 242, 255, 0.15); 
-            border-radius: 20px; display: flex; flex-direction: column; 
-            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+        /* --- ESPACIO DE TRABAJO --- */
+        .holographic-workspace { 
+            position: relative; width: calc(100vw - (var(--margin) * 2)); height: calc(100vh - (var(--margin) * 2)); 
+            margin: var(--margin); display: flex; justify-content: center; align-items: center; border-radius: 15px; overflow: hidden; perspective: 1000px; 
         }
 
-        .system-header { padding: 15px 25px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; }
+        /* --- DRAGÓN GEOMÉTRICO --- */
+        .dragon-head-shell { position: fixed; width: 60px; height: 60px; z-index: 1000; pointer-events: none; transform: translate(-50%, -50%); display: flex; justify-content: center; align-items: center; }
+        .dragon-head-geometry { position: relative; width: 30px; height: 45px; background: var(--head-color); clip-path: polygon(50% 0%, 90% 20%, 100% 50%, 80% 90%, 50% 100%, 20% 90%, 0% 50%, 10% 20%); border: 1px solid rgba(255,255,255,0.1); }
+        .dragon-horn { position: absolute; width: 8px; height: 25px; background: linear-gradient(to bottom, var(--accent) 0%, var(--head-color) 100%); top: -15px; clip-path: polygon(50% 0%, 100% 100%, 0% 100%); }
+        .dragon-horn.left { left: 0; transform: rotate(-20deg); }
+        .dragon-horn.right { right: 0; transform: rotate(20deg); }
+        .dragon-eye { position: absolute; width: 6px; height: 8px; background: var(--accent-bright); top: 18px; clip-path: polygon(0% 20%, 100% 0%, 80% 100%, 20% 80%); box-shadow: 0 0 10px var(--accent-bright); animation: eye-blink 4s infinite; }
+        .dragon-eye.left { left: 5px; } .dragon-eye.right { right: 5px; transform: scaleX(-1); }
+        .dragon-segment { position: fixed; pointer-events: none; z-index: 999; border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 15px var(--accent); will-change: transform; }
+        @keyframes eye-blink { 0%, 90%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+
+        /* --- INTERFAZ NEO-SHELL --- */
+        .neo-shell { 
+            position: relative; width: 100%; max-width: 1250px; height: 95%; 
+            background: rgba(8, 12, 20, 0.95); backdrop-filter: blur(25px); 
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; 
+            display: flex; flex-direction: column; box-shadow: 0 40px 100px rgba(0,0,0,0.8); z-index: 10; 
+        }
+
+        .system-header { padding: 15px 25px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; }
+        .header-left { display: flex; align-items: center; gap: 15px; }
         
-        /* Estilos de los indicadores */
-        .status-pill { font-size: 10px; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; font-weight: bold; border: 1px solid; transition: all 0.3s ease; }
+        .status-pill { font-size: 10px; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; font-weight: bold; border: 1px solid; }
         .status-pill.public { color: var(--accent); border-color: var(--accent); }
         .status-pill.register { color: var(--warning); border-color: var(--warning); }
         .status-pill.private { color: var(--staff); border-color: var(--staff); box-shadow: 0 0 10px rgba(255, 74, 74, 0.2); }
 
+        .iframe-controls { display: flex; gap: 15px; background: rgba(0,0,0,0.3); padding: 10px 20px; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .control-group { display: flex; align-items: center; gap: 8px; font-size: 10px; color: #555; font-weight: bold; }
+        .select-mini { background: #000; color: var(--accent); border: 1px solid #333; font-size: 10px; padding: 3px 6px; border-radius: 4px; outline: none; cursor: pointer; }
+
         .main-content { flex: 1; display: flex; flex-direction: column; padding: 15px; gap: 10px; overflow: hidden; }
         
-        #viewport { flex: 1; background: #000; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); position: relative; overflow: hidden; }
-        #iframe-container { width: 100%; height: 100%; }
+        #viewport { flex: 1; background: #05070a; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); position: relative; overflow: hidden; }
         iframe { width: 100%; height: 100%; border: none; }
 
-        .nav-zone { display: flex; flex-direction: column; gap: 8px; width: 100%; }
-        
-        .row-wrapper {
-            width: 100%;
-            overflow-x: auto;
-            white-space: nowrap;
-            padding-bottom: 8px;
-            display: flex;
-            gap: 10px;
-        }
-
-        /* Scrollbar Estilizada */
+        /* --- NAVEGACIÓN --- */
+        .nav-zone { display: flex; flex-direction: column; gap: 8px; margin-top: 5px; }
+        .row-wrapper { width: 100%; overflow-x: auto; white-space: nowrap; padding-bottom: 8px; display: flex; gap: 10px; }
         .row-wrapper::-webkit-scrollbar { height: 4px; }
         .row-wrapper::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
-        .row-wrapper::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
 
         .btn {
-            display: inline-block;
-            background: var(--glass); border: 1px solid rgba(0, 242, 255, 0.3);
-            color: var(--accent); padding: 10px 20px; border-radius: 6px;
-            font-size: 11px; font-weight: bold; cursor: pointer; transition: all 0.3s;
+            background: var(--glass); border: 1px solid rgba(0, 242, 255, 0.2);
+            color: var(--accent); padding: 8px 18px; border-radius: 30px;
+            font-size: 9px; font-weight: bold; cursor: pointer; transition: all 0.3s ease;
             text-transform: uppercase; letter-spacing: 1px; flex-shrink: 0;
         }
-        
-        .btn:hover { background: rgba(0, 242, 255, 0.15); border-color: var(--accent); }
+        .btn:hover { background: rgba(0, 242, 255, 0.1); border-color: var(--accent); transform: translateY(-1px); }
         .btn.active { background: var(--accent); color: #000; box-shadow: 0 0 15px var(--accent); }
 
+        /* --- AUTH --- */
         .auth-overlay { position: absolute; inset: 0; background: #05070a; display: flex; align-items: center; justify-content: center; z-index: 100; }
         .login-box { padding: 30px; border: 1px solid var(--accent); border-radius: 20px; background: rgba(0,0,0,0.8); text-align: center; width: 320px; }
-        
         .auth-methods { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
-        .auth-methods input { 
-            background: rgba(255,255,255,0.05); border: 1px solid #333; 
-            padding: 12px; color: white; border-radius: 5px; font-family: monospace; outline: none;
-        }
-        .auth-methods input:focus { border-color: var(--accent); }
+        .auth-methods input { background: rgba(255,255,255,0.05); border: 1px solid #333; padding: 12px; color: white; border-radius: 5px; outline: none; }
 
-        .btn-logout { background: rgba(255, 95, 87, 0.1); border: 1px solid var(--danger); color: var(--danger); font-size: 10px; padding: 6px 15px; border-radius: 0 0 10px 10px; cursor: pointer; font-weight: bold; align-self: center; transition: 0.3s; }
-        .btn-logout:hover { background: var(--danger); color: white; }
+        .btn-logout { background: rgba(255, 95, 87, 0.1); border: 1px solid var(--danger); color: var(--danger); font-size: 9px; padding: 6px 15px; border-radius: 0 0 10px 10px; cursor: pointer; align-self: center; }
 
-        .dragon-segment { position: fixed; pointer-events: none; z-index: 9999; border-radius: 50%; transform: translate(-50%, -50%); }
+        @media (max-width: 768px) { .dragon-head-shell, .dragon-segment { display: none; } body { cursor: auto; } }
     </style>
 </head>
 <body>
 
 <div class="holographic-workspace">
+    <div class="dragon-head-shell">
+        <div class="dragon-head-geometry">
+            <div class="dragon-horn left"></div>
+            <div class="dragon-horn right"></div>
+            <div class="dragon-eye left"></div>
+            <div class="dragon-eye right"></div>
+        </div>
+    </div>
+
     <div class="neo-shell">
         <header class="system-header">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png" height="35">
-                <div>
-                    <div style="font-size: 14px; font-weight: bold; color: var(--accent);">DRAKO_OS v7.8</div>
-                    <div id="current-title" style="font-size: 10px; color: #666;">READY</div>
+            <div class="header-left">
+                <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png" height="30">
+                <div style="line-height: 1.1;">
+                    <div style="font-size: 12px; font-weight: bold; color: var(--accent);">DRAKO_OS v8.2</div>
+                    <div id="current-title" style="font-size: 9px; color: #555;">READY_SYSTEM</div>
                 </div>
             </div>
             <div class="status-pill public" id="access-indicator">PÚBLICO</div>
         </header>
 
+        <div class="iframe-controls">
+            <div class="control-group">
+                <span>TIMEZONE:</span>
+                <select id="tz-select" class="select-mini" onchange="updateIframeParams()">
+                    <option value="UTC">UTC / GMT</option>
+                    <option value="Europe/Madrid" selected>Madrid / España</option>
+                    <option value="America/New_York">Nueva York</option>
+                    <option value="America/Mexico_City">México DF</option>
+                    <option value="America/Bogota">Bogotá</option>
+                    <option value="America/Argentina/Buenos_Aires">Buenos Aires</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <span>LANG:</span>
+                <select id="lang-select" class="select-mini" onchange="updateIframeParams()">
+                    <option value="es" selected>Español</option>
+                    <option value="en">English</option>
+                    <option value="fr">Français</option>
+                    <option value="de">Deutsch</option>
+                </select>
+            </div>
+        </div>
+
         <main class="main-content">
             <div id="viewport">
-                <div id="iframe-container"></div>
+                <div id="iframe-container" style="height: 100%;"></div>
                 
                 <div id="auth-screen" class="auth-overlay" style="display: none;">
                     <div class="login-box">
-                        <h3 style="color: var(--accent); margin: 0;">ACCESO RESTRINGIDO</h3>
+                        <h3 style="color: var(--accent); margin: 0; letter-spacing: 2px;">RESTRICCIÓN</h3>
                         <div class="auth-methods">
-                            <button onclick="loginGoogle()" class="btn" style="background:white; color:black; border:none; width:100%">Google Login</button>
-                            <div style="font-size: 10px; color: #444; margin: 5px 0;">O CREDENCIALES DIRECTAS</div>
+                            <button onclick="loginGoogle()" class="btn" style="background:white; color:black; width:100%">Google Login</button>
                             <input type="email" id="email" placeholder="Terminal ID">
                             <input type="password" id="pass" placeholder="Passcode">
                             <button onclick="loginEmail()" class="btn" style="width:100%">Iniciar Sesión</button>
@@ -127,7 +162,7 @@
                         <button class="btn" style="border-color: #fff; color: #fff;">Website_External</button>
                     </a>
                 </div>
-                <div class="row-wrapper" id="sub-nav" style="display: none; background: rgba(0, 242, 255, 0.05); padding: 10px; border-radius: 8px;"></div>
+                <div class="row-wrapper" id="sub-nav" style="display: none; background: rgba(0, 242, 255, 0.03); padding: 8px; border-radius: 8px;"></div>
             </nav>
 
             <div id="logout-zone" style="display: none; display: flex; justify-content: center;">
@@ -138,7 +173,7 @@
 </div>
 
 <script>
-    // --- FIREBASE CONFIG ---
+    // --- FIREBASE ---
     const firebaseConfig = {
         apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
         authDomain: "grouvex-studios.firebaseapp.com",
@@ -148,17 +183,17 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    // --- ESTRUCTURA DE DATOS ---
+    // --- DATA ---
     const DATA = [
         {
             label: "1. Calendario Principal",
-            url: "https://calendar.google.com/calendar/embed?src=249e7ac6e1075e491ac32995d932d1d84b9ddf5bf7e3c73431b668dec90b09e4%40group.calendar.google.com&ctz=UTC",
+            url: "https://calendar.google.com/calendar/embed?src=249e7ac6e1075e491ac32995d932d1d84b9ddf5bf7e3c73431b668dec90b09e4%40group.calendar.google.com",
             private: false,
             allowed: [],
             subs: [
                 {
                     label: "1.2 Calendario Social",
-                    url: "https://calendar.google.com/calendar/embed?src=es.spain%23holiday%40group.v.calendar.google.com&ctz=UTC",
+                    url: "https://calendar.google.com/calendar/embed?src=es.spain%23holiday%40group.v.calendar.google.com",
                     private: true,
                     allowed: ["register"] 
                 }
@@ -166,19 +201,20 @@
         },
         {
             label: "2. GS Records",
-            url: "https://calendar.google.com/calendar/embed?src=435839cc43a9b9209f4bec91144ed82501770ba555249e87c60707f60d8051ee%40group.calendar.google.com&ctz=UTC",
+            url: "https://calendar.google.com/calendar/embed?src=435839cc43a9b9209f4bec91144ed82501770ba555249e87c60707f60d8051ee%40group.calendar.google.com",
             private: true,
             allowed: ["register"], 
             subs: [
-                { label: "Grouvex - Artista", url: "URL_A", private: true, allowed: ['tarlightetherall@gmail.com'] },
-                { label: "Maiki Dran - Artista", url: "URL_B", private: true, allowed: ['tarlightetherall@gmail.com'] }
+                { label: "Grouvex - Artista", url: "https://calendar.google.com/calendar/embed?src=example1", private: true, allowed: ['tarlightetherall@gmail.com'] },
+                { label: "Maiki Dran - Artista", url: "https://calendar.google.com/calendar/embed?src=example2", private: true, allowed: ['tarlightetherall@gmail.com'] }
             ]
         }
     ];
 
     let userSession = null;
-    let pendingConfig = null;
+    let currentConfig = null;
 
+    // --- LÓGICA DE INTERFAZ ---
     function init() {
         const mainNav = document.getElementById('main-nav');
         DATA.forEach((cat, index) => {
@@ -193,18 +229,15 @@
         auth.onAuthStateChanged(user => {
             userSession = user;
             document.getElementById('logout-zone').style.display = user ? 'flex' : 'none';
-            if (user && pendingConfig) { 
-                loadView(pendingConfig); 
-                pendingConfig = null; 
-            }
+            if (currentConfig) loadView(currentConfig);
         });
     }
 
     function selectMain(cat, element) {
         document.querySelectorAll('#main-nav .btn').forEach(b => b.classList.remove('active'));
         element.classList.add('active');
-        loadView(cat);
         renderSubs(cat);
+        loadView(cat);
     }
 
     function renderSubs(cat) {
@@ -223,20 +256,17 @@
                 };
                 subNav.appendChild(sb);
             });
-        } else {
-            subNav.style.display = 'none';
-        }
+        } else { subNav.style.display = 'none'; }
     }
 
     function loadView(config) {
+        currentConfig = config;
         const container = document.getElementById('iframe-container');
         const authScreen = document.getElementById('auth-screen');
-        const title = document.getElementById('current-title');
         const indicator = document.getElementById('access-indicator');
         
-        title.innerText = config.label;
+        document.getElementById('current-title').innerText = config.label.toUpperCase();
 
-        // --- LÓGICA DE INDICADOR ---
         if (!config.private) {
             indicator.innerText = "PÚBLICO";
             indicator.className = "status-pill public";
@@ -248,72 +278,71 @@
             indicator.className = "status-pill private";
         }
 
-        // --- LÓGICA DE ACCESO ---
-        if (config.private) {
-            if (!userSession) {
-                pendingConfig = config;
-                authScreen.style.display = 'flex';
-                container.innerHTML = '';
-                return;
-            }
-            
-            const isAllowedAll = config.allowed.includes("register");
-            const isAllowedSpecific = config.allowed.includes(userSession.email);
-
-            if (!isAllowedAll && !isAllowedSpecific) {
-                alert("ACCESO DENEGADO: Tu cuenta no tiene permisos para este nivel.");
-                return;
-            }
+        if (config.private && !userSession) {
+            authScreen.style.display = 'flex';
+            container.innerHTML = '';
+        } else {
+            authScreen.style.display = 'none';
+            updateIframeParams();
         }
-        
-        authScreen.style.display = 'none';
-        container.innerHTML = `<iframe src="${config.url}"></iframe>`;
     }
 
-    // --- AUTH ACTIONS ---
-    window.loginGoogle = () => {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        auth.signInWithPopup(provider).catch(e => alert(e.message));
-    };
-
-    window.loginEmail = () => {
-        const email = document.getElementById('email').value;
-        const pass = document.getElementById('pass').value;
-        auth.signInWithEmailAndPassword(email, pass).catch(e => alert("Error: " + e.message));
-    };
-
-    function handleLogout() { 
-        auth.signOut().then(() => location.reload()); 
+    function updateIframeParams() {
+        if (!currentConfig) return;
+        const tz = document.getElementById('tz-select').value;
+        const lang = document.getElementById('lang-select').value;
+        const container = document.getElementById('iframe-container');
+        const finalUrl = `${currentConfig.url}&ctz=${tz}&hl=${lang}&bgcolor=%23030508`;
+        container.innerHTML = `<iframe src="${finalUrl}"></iframe>`;
     }
 
-    // --- DRAGON ANIMATION ---
+    // --- AUTH ---
+    window.loginGoogle = () => auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    window.loginEmail = () => auth.signInWithEmailAndPassword(document.getElementById('email').value, document.getElementById('pass').value).catch(e => alert(e.message));
+    function handleLogout() { auth.signOut().then(() => location.reload()); }
+
+    // --- DRAGÓN (TU CÓDIGO ORIGINAL MEJORADO) ---
+    const numSegments = 13;
     const segments = [];
-    const mouse = { x: 0, y: 0 };
-    for (let i = 0; i < 8; i++) {
-        const d = document.createElement('div');
-        d.className = 'dragon-segment';
-        d.style.width = (10 - i) + 'px';
-        d.style.height = (10 - i) + 'px';
-        d.style.background = 'var(--accent)';
-        d.style.opacity = (1 - i/8);
-        document.body.appendChild(d);
-        segments.push({ x: 0, y: 0, el: d });
+    const coords = { x: 0, y: 0 };
+
+    for (let i = 0; i < numSegments; i++) {
+        const div = document.createElement('div');
+        div.className = 'dragon-segment';
+        const size = 20 - (i * 1.3);
+        div.style.width = size + 'px';
+        div.style.height = size + 'px';
+        div.style.opacity = 1 - (i / numSegments);
+        div.style.background = `radial-gradient(circle, hsl(${180 + (i*5)}, 100%, 50%) 0%, transparent 80%)`;
+        document.body.appendChild(div);
+        segments.push({ x: 0, y: 0, element: div });
     }
-    window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
-    function drag() {
-        let x = mouse.x; let y = mouse.y;
-        segments.forEach(s => {
-            s.x += (x - s.x) * 0.3;
-            s.y += (y - s.y) * 0.3;
-            s.el.style.left = s.x + 'px';
-            s.el.style.top = s.y + 'px';
-            x = s.x; y = s.y;
+
+    window.addEventListener('mousemove', e => {
+        coords.x = e.clientX;
+        coords.y = e.clientY;
+    });
+
+    function updateDragon() {
+        let x = coords.x;
+        let y = coords.y;
+        const head = document.querySelector('.dragon-head-shell');
+        if (head) {
+            head.style.left = x + 'px';
+            head.style.top = y + 'px';
+        }
+        segments.forEach((seg) => {
+            seg.x += (x - seg.x) * 0.22;
+            seg.y += (y - seg.y) * 0.22;
+            seg.element.style.left = seg.x + 'px';
+            seg.element.style.top = seg.y + 'px';
+            x = seg.x; y = seg.y;
         });
-        requestAnimationFrame(drag);
+        requestAnimationFrame(updateDragon);
     }
 
     init();
-    drag();
+    updateDragon();
 </script>
 </body>
 </html>

@@ -2,8 +2,9 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <title>Calendarios Oficiales - Grouvex Studios</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grouvex Studios - Dragon Calendar</title>
+    <link rel="icon" href="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png" type="image/x-icon">
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
@@ -14,227 +15,585 @@
             --accent-bright: #ffffff;
             --bg: #030508;
             --head-color: #0a0e14;
+            --danger: #ff5f57;
+            --warning: #febc2e;
+            --staff: #ff4a4a;
             --margin: 0.5rem;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+        /* Select deshabilitado */
+        select:disabled,
+        select.disabled {
+            opacity: 0.5;
+            background: rgba(255, 0, 0, 0.2);
+            border-color: var(--danger);
+            color: #ff8888;
+            cursor: not-allowed;
+        }
+        
+        /* Para las opciones dentro de un select deshabilitado */
+        select:disabled option {
+            background: #1a1a1a;
+            color: #666;
+        }
+        body, html { margin: 0; padding: 0; height: 100%; background: var(--bg); overflow: hidden; font-family: 'Segoe UI', monospace; color: white; cursor: none; }
+
+        /* --- ESPACIO DE TRABAJO --- */
+        .holographic-workspace { 
+            position: relative; width: calc(100vw - (var(--margin) * 2)); height: calc(100vh - (var(--margin) * 2)); 
+            margin: var(--margin); display: flex; justify-content: center; align-items: center; border-radius: 15px; overflow: hidden; perspective: 1000px; 
         }
 
-        body, html { margin: 0; padding: 0; height: 100%; background: var(--bg); overflow: hidden; font-family: 'Segoe UI', monospace; cursor: none; }
-
-        .holographic-workspace { position: relative; width: calc(100vw - (var(--margin) * 2)); height: calc(100vh - (var(--margin) * 2)); margin: var(--margin); display: flex; justify-content: center; align-items: center; border-radius: 15px; overflow: hidden;perspective: 1000px;
-        }
-
-        /* --- FONDO --- */
-        .space-background { position: absolute; inset: 0; z-index: -1; }
-        .nebula-1 { position: absolute; width: 60%; height: 60%; background: radial-gradient(circle, #1e3a8a 0%, transparent 70%); top: -10%; left: -10%; opacity: 0.3; filter: blur(60px); }
-        .nebula-2 { position: absolute; width: 50%; height: 50%; background: radial-gradient(circle, #581c87 0%, transparent 70%); bottom: -10%; right: -5%; opacity: 0.2; filter: blur(60px); }
-
-        /* --- DRAGÓN --- */
+        /* --- DRAGÓN GEOMÉTRICO --- */
         .dragon-head-shell { position: fixed; width: 60px; height: 60px; z-index: 1000; pointer-events: none; transform: translate(-50%, -50%); display: flex; justify-content: center; align-items: center; }
-        .dragon-head-geometry { position: relative; width: 30px; height: 45px; background: var(--head-color); clip-path: polygon(50% 0%, 90% 20%, 100% 50%, 80% 90%, 50% 100%, 20% 90%, 0% 50%, 10% 20%); border: 1px solid rgba(255,255,255,0.1);
-        }
+        .dragon-head-geometry { position: relative; width: 30px; height: 45px; background: var(--head-color); clip-path: polygon(50% 0%, 90% 20%, 100% 50%, 80% 90%, 50% 100%, 20% 90%, 0% 50%, 10% 20%); border: 1px solid rgba(255,255,255,0.1); }
         .dragon-horn { position: absolute; width: 8px; height: 25px; background: linear-gradient(to bottom, var(--accent) 0%, var(--head-color) 100%); top: -15px; clip-path: polygon(50% 0%, 100% 100%, 0% 100%); }
         .dragon-horn.left { left: 0; transform: rotate(-20deg); }
         .dragon-horn.right { right: 0; transform: rotate(20deg); }
         .dragon-eye { position: absolute; width: 6px; height: 8px; background: var(--accent-bright); top: 18px; clip-path: polygon(0% 20%, 100% 0%, 80% 100%, 20% 80%); box-shadow: 0 0 10px var(--accent-bright); animation: eye-blink 4s infinite; }
         .dragon-eye.left { left: 5px; } .dragon-eye.right { right: 5px; transform: scaleX(-1); }
         .dragon-segment { position: fixed; pointer-events: none; z-index: 999; border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 15px var(--accent); will-change: transform; }
-
         @keyframes eye-blink { 0%, 90%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
 
-        /* --- INTERFAZ --- */
-        .neo-shell { position: relative; width: 100%; max-width: 1250px; height: 95%; background: rgba(8, 12, 20, 0.92); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; display: flex; flex-direction: column;box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+        /* --- INTERFAZ NEO-SHELL --- */
+        .neo-shell { 
+            position: relative; width: 100%; max-width: 1250px; height: 95%; 
+            background: rgba(8, 12, 20, 0.95); backdrop-filter: blur(25px); 
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; 
+            display: flex; flex-direction: column; box-shadow: 0 40px 100px rgba(0,0,0,0.8); z-index: 10; 
         }
 
-        .system-header { padding: 0.8rem 1.2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.2); }
-        .header-left-block { display: flex; align-items: center; gap: 15px; }
-        .window-controls { display: flex; gap: 7px; }
-        .dot { width: 11px; height: 11px; border-radius: 50%; }
-        .close { background: #ff5f57; } .min { background: #febc2e; } .max { background: #28c840; }
-        .divider { width: 1px; height: 20px; background: rgba(255,255,255,0.1); }
-        .system-logo-img { height: 26px; filter: drop-shadow(0 0 8px var(--accent)); }
-        .system-title { display: flex; flex-direction: column; line-height: 1.1; }
-        .title-text { font-size: 9px; letter-spacing: 2px; color: #555; font-weight: 800; }
-        .live-indicator { display: flex; align-items: center; gap: 5px; color: var(--accent); font-size: 10px; font-weight: bold; }
-        .pulse { width: 5px; height: 5px; background: var(--accent); border-radius: 50%; animation: p 1.5s infinite; }
-        @keyframes p { 0% { box-shadow: 0 0 0 0 rgba(0,242,255,0.7); } 100% { box-shadow: 0 0 0 8px transparent; } }
-
-        /* --- CONTENEDOR PRINCIPAL --- */
-        .main-content { padding: 1rem; flex: 1; display: flex; flex-direction: column; overflow: hidden; gap: 1rem; }
-        .calendar-wrapper {
-            position: relative; flex: 1; border-radius: 12px;
-            background: #05070a; border: 1px solid rgba(255, 255, 255, 0.05); overflow: auto;  display: flex; flex-direction: column;
-        }
-
-        /* Personalización del scrollbar para que no rompa la estética Dark */
-        .calendar-wrapper::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-
-        .calendar-wrapper::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.2);
-        }
-
-        .calendar-wrapper::-webkit-scrollbar-thumb {
-            background: var(--accent);
-            border-radius: 10px;
-            box-shadow: 0 0 10px var(--accent);
-        }
-
-        /* Forzar que el iframe ocupe todo el espacio y gestione su propio scroll si es necesario */
-        .google-iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            flex: 1;
-            /* Algunos navegadores necesitan esto para respetar el border-radius del padre */
-            mask-image: radial-gradient(white, black); 
-            -webkit-mask-image: -webkit-radial-gradient(white, black);
-        }
-
-        /* 1. Tamaño de la barra (Vertical y Horizontal) */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px; 
-        }
-
-        /* 2. El fondo de la barra (Track) */
-        ::-webkit-scrollbar-track {
-            background: rgba(8, 12, 20, 0.5); 
-            border-radius: 10px;
-        }
-
-        /* 3. La parte que se mueve (Thumb/Pestaña) */
-        ::-webkit-scrollbar-thumb {
-            background: rgba(0, 242, 255, 0.3);
-            border-radius: 10px;
-            border: 1px solid rgba(0, 242, 255, 0.1);
-            box-shadow: inset 0 0 5px rgba(0, 242, 255, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        /* 4. Efecto cuando pasas el ratón por encima */
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent);
-            box-shadow: 0 0 15px var(--accent); 
-        }
-
-        /* 5. Esquina donde se juntan ambas barras */
-        ::-webkit-scrollbar-corner {
-            background: transparent;
-        }
-
-        /* Firefox (Soporte limitado para personalización) */
-        * {
-            scrollbar-width: thin;
-            scrollbar-color: var(--accent) transparent;
-        }
-                .glass-reflection { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 40%); pointer-events: none; z-index: 2; }
-
-                /* --- BOTONES --- */
-                .system-shortcuts { display: flex; gap: 10px; padding: 10px 15px; justify-content: flex-start;
-            overflow-x: auto; overflow-y: hidden; white-space: nowrap; -webkit-overflow-scrolling: touch;
-        }
-
-        .btn-shortcut {
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(0, 242, 255, 0.2);
-            color: var(--accent); padding: 10px 20px; border-radius: 30px;
-            text-decoration: none; font-size: 8px;font-weight: bold; letter-spacing: 1px;
-            transition: all 0.3s ease; text-transform: uppercase; backdrop-filter: blur(10px);
-            display: flex; align-items: center; gap: 8px;
-        }
-
-        .btn-shortcut:hover {
-            background: rgba(0, 242, 255, 0.1); border-color: var(--accent);
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.3); transform: translateY(-2px); color: white;
-        }
-
-        .btn-shortcut::before { content: '>'; font-family: monospace; opacity: 0.5; }
-
-        /* --- AUTH CARD --- */
-        .auth-card { max-width: 400px; margin: auto; padding: 40px; background: rgba(255,255,255,0.03); border: 1px solid var(--accent); border-radius: 15px; text-align: center; color: white; z-index: 5; }
-        .auth-card h3 { letter-spacing: 5px; color: var(--accent); }
-        .auth-methods { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
-        .auth-methods input { background: rgba(0,0,0,0.5); border: 1px solid #333; padding: 12px; color: white; border-radius: 5px; font-family: monospace; }
-        .btn-auth { padding: 12px; border: none; border-radius: 5px; cursor: pointer; font-family: monospace; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; }
-        .btn-auth.google { background: white; color: #333; }
-        .btn-auth.primary { background: var(--accent); color: #000; box-shadow: 0 0 15px var(--accent); }
-        .divider-text { margin: 15px 0; border-bottom: 1px solid #333; height: 10px; text-align: center; }
-        .divider-text span { background: #080c14; padding: 0 10px; font-size: 10px; color: #555; }
+        .system-header { padding: 15px 25px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; }
+        .header-left { display: flex; align-items: center; gap: 15px; }
         
-        .logout-mini { position: block;background: rgba(255, 95, 87, 0.2); border: 1px solid #ff5f57; color: #ff5f57; font-size: 9px; padding: 6px 12px; cursor: pointer; border-radius: 0px 0px 15px 15px; transition: 0.3s; }
-        .logout-mini:hover { background: #ff5f57; color: white; }
+        .status-pill { font-size: 10px; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; font-weight: bold; border: 1px solid; }
+        .status-pill.public { color: var(--accent); border-color: var(--accent); }
+        .status-pill.register { color: var(--warning); border-color: var(--warning); }
+        .status-pill.blocked { color: red; border-color: red }
+        .status-pill.private { color: var(--staff); border-color: var(--staff); box-shadow: 0 0 10px rgba(255, 74, 74, 0.2); }
 
-        .system-footer { padding: 0.8rem 1.5rem; display: flex; justify-content: space-between; font-size: 8px; color: #374151; letter-spacing: 1px; }
+        .iframe-controls { display: flex; gap: 15px; background: rgba(0,0,0,0.3); padding: 10px 20px; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .control-group { display: flex; align-items: center; gap: 8px; font-size: 10px; color: #555; font-weight: bold; }
+        .select-mini { background: #000; color: var(--accent); border: 1px solid #333; font-size: 10px; padding: 3px 6px; border-radius: 4px; outline: none; cursor: pointer; }
 
-        @media (max-width: 768px) {
-            .dragon-segment, .dragon-head-shell { display: none !important; }
-            body { cursor: auto; }
+        .main-content { flex: 1; display: flex; flex-direction: column; padding: 15px; gap: 10px; overflow: hidden; }
+        
+        #viewport { flex: 1; background: #05070a; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); position: relative; overflow: hidden; }
+        iframe { width: 100%; height: 100%; border: none; }
+
+        /* --- NAVEGACIÓN --- */
+        .nav-zone { display: flex; flex-direction: column; gap: 8px; margin-top: 5px; }
+        .row-wrapper { width: 100%; overflow-x: auto; white-space: nowrap; padding-bottom: 8px; display: flex; gap: 10px; }
+        .row-wrapper::-webkit-scrollbar { height: 4px; }
+        .row-wrapper::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+
+        .btn {
+            background: var(--glass); border: 1px solid rgba(0, 242, 255, 0.2);
+            color: var(--accent); padding: 8px 18px; border-radius: 30px;
+            font-size: 9px; font-weight: bold; cursor: pointer; transition: all 0.3s ease;
+            text-transform: uppercase; letter-spacing: 1px; flex-shrink: 0;
         }
+        .btn:hover { background: rgba(0, 242, 255, 0.1); border-color: var(--accent); transform: translateY(-1px); }
+        .btn.active { background: var(--accent); color: #000; box-shadow: 0 0 15px var(--accent); }
+
+        /* --- AUTH --- */
+        .auth-overlay { position: absolute; inset: 0; background: #05070a; display: flex; align-items: center; justify-content: center; z-index: 100; }
+        .login-box { padding: 30px; border: 1px solid var(--accent); border-radius: 20px; background: rgba(0,0,0,0.8); text-align: center; width: 320px; }
+        .auth-methods { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        .auth-methods input { background: rgba(255,255,255,0.05); border: 1px solid #333; padding: 12px; color: white; border-radius: 5px; outline: none; }
+        .error-box {  padding: 30px;  border: 1px solid var(--danger);  border-radius: 20px;  background: rgba(0,0,0,0.8);   text-align: center;  width: 320px; }
+        .btn-logout { background: rgba(255, 95, 87, 0.1); border: 1px solid var(--danger); color: var(--danger); font-size: 9px; padding: 6px 15px; border-radius: 0 0 10px 10px; cursor: pointer; align-self: center; }
+
+        @media (max-width: 768px) { .dragon-head-shell, .dragon-segment { display: none; } body { cursor: auto; } }
+        /* --- BOTÓN INFO Y MODAL --- */
+        .info-trigger {
+            margin-left: 8px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: 0.3s;
+            font-size: 1.1em;
+        }
+        .info-trigger:hover { opacity: 1; color: var(--accent); }
+        
+        .desc-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(3, 5, 8, 0.9);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .desc-card {
+            background: var(--head-color);  border: 1px solid var(--accent);  padding: 25px; border-radius: 15px; max-width: 400px; text-align: center; box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
+        }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
 <div class="holographic-workspace">
-    <div class="space-background">
-        <div class="nebula-1"></div>
-        <div class="nebula-2"></div>
-    </div>
-
-    <div class="dragon-container" id="dragon">
-        <div class="dragon-head-shell">
-            <div class="dragon-head-geometry">
-                <div class="dragon-horn left"></div>
-                <div class="dragon-horn right"></div>
-                <div class="dragon-eye left"></div>
-                <div class="dragon-eye right"></div>
-            </div>
+    <div class="dragon-head-shell">
+        <div class="dragon-head-geometry">
+            <div class="dragon-horn left"></div>
+            <div class="dragon-horn right"></div>
+            <div class="dragon-eye left"></div>
+            <div class="dragon-eye right"></div>
         </div>
     </div>
 
     <div class="neo-shell">
-        <nav class="system-header">
-            <div class="header-left-block">
-                <div class="window-controls">
-                    <span class="dot close"></span>
-                    <span class="dot min"></span>
-                    <span class="dot max"></span>
-                </div>
-                <div class="divider"></div>
-                <a href="https://grouvex.github.io/" class="system-logo-link">
-                    <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png" alt="Logo" class="system-logo-img">
-                </a>
-                <div class="system-title">
-                    <div class="live-indicator">
-                        <span class="pulse"></span>
-                        DRAKO_v7
-                    </div>
-                    <span class="title-text">Calendario Oficial de GStudios</span>
+        <header class="system-header">
+            <div class="header-left">
+                <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png" height="30">
+                <div style="line-height: 1.1;">
+                    <div style="font-size: 12px; font-weight: bold; color: var(--accent);">DRAKO_OS v8.2</div>
+                    <div id="current-title" style="font-size: 9px; color: #555;">READY_SYSTEM</div>
                 </div>
             </div>
-            <div class="system-stats">
-                <span class="stat" style="color: var(--accent); font-size: 9px;">Version: V.1</span>
-            </div>
-        </nav>
+            <div class="status-pill public" id="access-indicator">PÚBLICO</div>
+        </header>
 
-        <div class="main-content">
-            <div class="calendar-wrapper" id="auth-container">
-                </div>
-            <div id="extra-links" class="system-shortcuts" style="display: none;">
-                <a href="https://grouvex.github.io/" class="btn-shortcut">WebSite</a>
-                <a href="https://grouvex.github.io/calendario-staff" class="btn-shortcut">Calendario Staff</a>
-                <a href="https://grouvex.github.io/calendario-records" class="btn-shortcut">Calendario GSRecords</a>
+          <div class="iframe-controls row-wrapper">
+            <div class="control-group">
+                <span>TIMEZONE:</span>
+                <select id="tz-select" class="select-mini" onchange="updateIframeParams()">
+                    <option value="UTC">UTC / GMT (Universal)</option>
+                    
+                    <optgroup label="Europa">
+                        <option value="Europe/Andorra">Andorra</option>
+                        <option value="Europe/Athens">Atenas / Grecia</option>
+                        <option value="Europe/Belgrade">Belgrado</option>
+                        <option value="Europe/Berlin">Berlín / Alemania</option>
+                        <option value="Europe/Brussels">Bruselas / Bélgica</option>
+                        <option value="Europe/Bucharest">Bucarest</option>
+                        <option value="Europe/Budapest">Budapest</option>
+                        <option value="Europe/Copenhagen">Copenhague</option>
+                        <option value="Europe/Dublin">Dublín / Irlanda</option>
+                        <option value="Europe/Helsinki">Helsinki</option>
+                        <option value="Europe/Istanbul">Estambul / Turquía</option>
+                        <option value="Europe/Lisbon">Lisboa / Portugal</option>
+                        <option value="Europe/London">Londres / UK</option>
+                        <option value="Europe/Luxembourg">Luxemburgo</option>
+                        <option value="Europe/Madrid" selected>Madrid / España</option>
+                        <option value="Europe/Monaco">Mónaco</option>
+                        <option value="Europe/Moscow">Moscú / Rusia</option>
+                        <option value="Europe/Oslo">Oslo / Noruega</option>
+                        <option value="Europe/Paris">París / Francia</option>
+                        <option value="Europe/Prague">Praga</option>
+                        <option value="Europe/Rome">Roma / Italia</option>
+                        <option value="Europe/Stockholm">Estocolmo</option>
+                        <option value="Europe/Vienna">Viena</option>
+                        <option value="Europe/Warsaw">Varsovia</option>
+                        <option value="Europe/Zurich">Zúrich / Suiza</option>
+                    </optgroup>
+                
+                    <optgroup label="Norteamérica">
+                        <option value="America/Anchorage">Alaska (AST)</option>
+                        <option value="America/Chicago">Chicago (CST)</option>
+                        <option value="America/Denver">Denver (MST)</option>
+                        <option value="America/Los_Angeles">Los Ángeles (PST)</option>
+                        <option value="America/Mexico_City">México DF (CST)</option>
+                        <option value="America/Monterrey">Monterrey</option>
+                        <option value="America/New_York">Nueva York (EST)</option>
+                        <option value="America/Phoenix">Phoenix (MST)</option>
+                        <option value="America/Tijuana">Tijuana</option>
+                        <option value="America/Toronto">Toronto</option>
+                        <option value="America/Vancouver">Vancouver</option>
+                    </optgroup>
+                
+                    <optgroup label="Centroamérica / Caribe">
+                        <option value="America/Costa_Rica">Costa Rica</option>
+                        <option value="America/El_Salvador">El Salvador</option>
+                        <option value="America/Guatemala">Guatemala</option>
+                        <option value="America/Havana">La Habana / Cuba</option>
+                        <option value="America/Managua">Managua / Nicaragua</option>
+                        <option value="America/Panama">Panamá</option>
+                        <option value="America/Puerto_Rico">Puerto Rico</option>
+                        <option value="America/Santo_Domingo">Santo Domingo</option>
+                        <option value="America/Tegucigalpa">Tegucigalpa</option>
+                    </optgroup>
+                
+                    <optgroup label="Sudamérica">
+                        <option value="America/Asuncion">Asunción / Paraguay</option>
+                        <option value="America/Bogota">Bogotá / Colombia</option>
+                        <option value="America/Buenos_Aires">Buenos Aires / Argentina</option>
+                        <option value="America/Caracas">Caracas / Venezuela</option>
+                        <option value="America/Guayaquil">Guayaquil / Ecuador</option>
+                        <option value="America/La_Paz">La Paz / Bolivia</option>
+                        <option value="America/Lima">Lima / Perú</option>
+                        <option value="America/Montevideo">Montevideo / Uruguay</option>
+                        <option value="America/Paramaribo">Surinam</option>
+                        <option value="America/Santiago">Santiago / Chile</option>
+                        <option value="America/Sao_Paulo">São Paulo / Brasil</option>
+                    </optgroup>
+                
+                    <optgroup label="Asia">
+                        <option value="Asia/Bangkok">Bangkok</option>
+                        <option value="Asia/Dubai">Dubai</option>
+                        <option value="Asia/Hong_Kong">Hong Kong</option>
+                        <option value="Asia/Jakarta">Jakarta</option>
+                        <option value="Asia/Jerusalem">Jerusalén</option>
+                        <option value="Asia/Kabul">Kabul</option>
+                        <option value="Asia/Karachi">Karachi</option>
+                        <option value="Asia/Kathmandu">Katmandú</option>
+                        <option value="Asia/Kolkata">Calcuta / India</option>
+                        <option value="Asia/Manila">Manila</option>
+                        <option value="Asia/Qatar">Qatar</option>
+                        <option value="Asia/Riyadh">Riad / Arabia Saudí</option>
+                        <option value="Asia/Seoul">Seúl / Corea</option>
+                        <option value="Asia/Shanghai">Shanghai / China</option>
+                        <option value="Asia/Singapore">Singapur</option>
+                        <option value="Asia/Taipei">Taipei</option>
+                        <option value="Asia/Tokyo">Tokio / Japón</option>
+                    </optgroup>
+                
+                    <optgroup label="Oceanía">
+                        <option value="Australia/Adelaide">Adelaida</option>
+                        <option value="Australia/Brisbane">Brisbane</option>
+                        <option value="Australia/Darwin">Darwin</option>
+                        <option value="Australia/Melbourne">Melbourne</option>
+                        <option value="Australia/Perth">Perth</option>
+                        <option value="Australia/Sydney">Sydney</option>
+                        <option value="Pacific/Auckland">Auckland / NZ</option>
+                        <option value="Pacific/Fiji">Fiji</option>
+                        <option value="Pacific/Guadalcanal">Islas Salomón</option>
+                        <option value="Pacific/Honolulu">Honolulu / Hawaii</option>
+                    </optgroup>
+                
+                    <optgroup label="África">
+                        <option value="Africa/Algiers">Argel</option>
+                        <option value="Africa/Cairo">El Cairo</option>
+                        <option value="Africa/Casablanca">Casablanca / Marruecos</option>
+                        <option value="Africa/Johannesburg">Johannesburgo</option>
+                        <option value="Africa/Lagos">Lagos / Nigeria</option>
+                        <option value="Africa/Nairobi">Nairobi / Kenia</option>
+                        <option value="Africa/Tunis">Túnez</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div class="control-group">
+                <span>LANG:</span>
+                    <select id="lang-select" class="select-mini" onchange="updateIframeParams()">
+                        <optgroup label="Europa">
+                            <option value="es" selected>Español</option>
+                            <option value="en_GB">English (UK)</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="it">Italiano</option>
+                            <option value="pt_PT">Português (Portugal)</option>
+                            <option value="nl">Nederlands (Holandés)</option>
+                            <option value="ru">Русский (Ruso)</option>
+                            <option value="pl">Polski (Polaco)</option>
+                            <option value="uk">Українська (Ucraniano)</option>
+                        </optgroup>
+                        
+                        <optgroup label="América">
+                            <option value="en">English (US)</option>
+                            <option value="es_419">Español (Latinoamérica)</option>
+                            <option value="pt_BR">Português (Brasil)</option>
+                            <option value="fr_CA">Français (Canadá)</option>
+                        </optgroup>
+                    
+                        <optgroup label="Asia / Oceanía">
+                            <option value="ja">日本語 (Japonés)</option>
+                            <option value="ko">한국어 (Coreano)</option>
+                            <option value="zh_CN">简体中文 (Chino Simplificado)</option>
+                            <option value="zh_TW">繁體中文 (Chino Tradicional)</option>
+                            <option value="hi">हिन्दी (Hindi)</option>
+                            <option value="th">ไทย (Tailandés)</option>
+                            <option value="vi">Tiếng Việt (Vietnamita)</option>
+                            <option value="id">Bahasa Indonesia</option>
+                        </optgroup>
+                    
+                        <optgroup label="Medio Oriente / África">
+                            <option value="ar">العربية (Árabe)</option>
+                            <option value="iw">עברית (Hebreo)</option>
+                            <option value="tr">Türkçe (Turco)</option>
+                            <option value="sw">Kiswahili (Suajili)</option>
+                        </optgroup>
+                    </select>
             </div>
         </div>
 
-        <footer class="system-footer">
-            <div>STATUS: STABLE_CONNECTION</div>
-            <div class="text-right">©2026 GROUVEX STUDIOS</div>
-        </footer>
+        <main class="main-content">
+            <div id="viewport">
+                <div id="iframe-container" style="height: 100%;"></div>
+                
+                <div id="auth-screen" class="auth-overlay" style="display: none;">
+                    <div class="login-box">
+                        <h3 style="color: var(--accent); margin: 0; letter-spacing: 2px;">AUTENTICACIÓN</h3>
+                        <div class="auth-methods">
+                            <button onclick="loginGoogle()" class="btn" style="background:white; color:black; width:100%">Google Login</button>
+                            <input type="email" id="email" placeholder="Terminal ID">
+                            <input type="password" id="pass" placeholder="Passcode">
+                            <button onclick="loginEmail()" class="btn" style="width:100%">Acceder</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="error-screen" class="auth-overlay" style="display: none;">
+                    <div class="error-box">
+                        <h3 style="margin: 0; letter-spacing: 2px;">ACCESO DENEGADO</h3>
+                        <p style="font-size: 11px; margin: 15px 0;">Tu identidad actual no tiene privilegios para este sector.</p>
+                        <button onclick="handleLogout()" class="btn" style="border-color: var(--danger); color: var(--danger);">Cambiar Cuenta</button>
+                    </div>
+                </div>
+                
+                <div id="blocked-screen" class="auth-overlay" style="display: none;">
+                    <div class="error-box">
+                        <h3 style="margin: 0; letter-spacing: 2px;">CALENDARIO CERRADO</h3>
+                        <p style="font-size: 11px; margin: 15px 0;">Este calendario se ha cerrado temporalmente.</p>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="nav-zone">
+                <div class="row-wrapper" id="main-nav">
+                    <a href="https://grouvex.github.io/" target="_blank" style="text-decoration: none;">
+                        <button class="btn" style="border-color: #fff; color: #fff;">Website_External</button>
+                    </a>
+                </div>
+                <div class="row-wrapper" id="sub-nav" style="display: none; background: rgba(0, 242, 255, 0.03); padding: 8px; border-radius: 8px;"></div>
+            </nav>
+
+            <div id="logout-zone" style="display: none; justify-content: center;">
+                <button class="btn-logout" onclick="handleLogout()">TERMINATE_SESSION</button>
+            </div>
+        </main>
+        
+        <div id="desc-modal" class="desc-overlay" onclick="this.style.display='none'">
+            <div class="desc-card">
+                <div style="color: var(--accent); font-size: 10px; margin-bottom: 10px; letter-spacing: 2px;">FILE_DESCRIPTION</div>
+                <p id="desc-content" style="font-size: 13px; line-height: 1.5; color: #ccc;"></p>
+                <div style="font-size: 9px; margin-top: 15px; color: #555;">CLICK_ANYWHERE_TO_CLOSE</div>
+            </div>
+        </div>
+
     </div>
 </div>
 
 <script>
-    // --- LÓGICA DEL DRAGÓN ---
+    const firebaseConfig = {
+        apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
+        authDomain: "grouvex-studios.firebaseapp.com",
+        projectId: "grouvex-studios",
+        appId: "1:1070842606062:web:5d887863048fd100b49eff"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    const DATA = [
+        {
+            label: "1. Calendario Principal",
+            desc: "Eventos globales de la comunidad y lanzamientos generales de Grouvex Studios.",
+            url: "https://calendar.google.com/calendar/embed?src=249e7ac6e1075e491ac32995d932d1d84b9ddf5bf7e3c73431b668dec90b09e4%40group.calendar.google.com",
+            private: false,
+            allowed: [],
+            subs: [
+                {
+                    label: "1.2 Calendario Social",
+                    desc: "Festividades, reuniones y eventos sociales para miembros registrados.",
+                    url: "https://calendar.google.com/calendar/embed?src=435839cc43a9b9209f4bec91144ed82501770ba555249e87c60707f60d8051ee%40group.calendar.google.com",
+                    private: true,
+                    allowed: ["register"] 
+                }
+            ]
+        },
+        {
+            label: "2. GSRecords",
+            desc: "Cronograma de grabaciones, producción musical, gestión de talentos, eventos y mucho más.",
+            url: "https://calendar.google.com/calendar/embed?src=435839cc43a9b9209f4bec91144ed82501770ba555249e87c60707f60d8051ee%40group.calendar.google.com",
+            private: true,
+            allowed: ["register"], 
+            subs: [
+                { label: "Grouvex - Artista", desc: "Discografía, conciertos, eventos y mucho más de Grouvex.", url: "https://calendar.google.com/calendar/embed?src=435839cc43a9b9209f4bec91144ed82501770ba555249e87c60707f60d8051ee%40group.calendar.google.com", private: true, allowed: ["register"] },
+                { label: "Maiki Dran - Artista", desc: "Discografía, conciertos, eventos y mucho más de Maiki Dran.", url: "https://calendar.google.com/calendar/embed?src=435839cc43a9b9209f4bec91144ed82501770ba555249e87c60707f60d8051ee%40group.calendar.google.com", private: true, allowed: ["register"] }
+            ]
+        },
+        {
+            label: "2. GSDesigns",
+            desc: "Diseños, gestión de talentos, eventos y mucho más.",
+            url: "https://calendar.google.com/calendar/embed?src=435839cc43a9b9209f4bec91144ed82501770ba555249e87c60707f60d8051ee%40group.calendar.google.com",
+            private: true,
+            allowed: ["blocked"], 
+            subs: [  ]
+        },
+    ];
+
+    let userSession = null;
+    let currentConfig = null;
+
+    function init() {
+        const mainNav = document.getElementById('main-nav');
+        DATA.forEach((cat, index) => {
+            const container = document.createElement('div');
+            container.style.display = 'inline-flex';
+            container.style.alignItems = 'center';
+    
+            const b = document.createElement('button');
+            b.className = 'btn';
+            b.innerText = cat.label;
+            b.onclick = () => selectMain(cat, b);
+            
+            // Icono de información
+            const info = document.createElement('span');
+            info.className = 'info-trigger';
+            info.innerHTML = 'ℹ️'; // Emoji común
+            info.onclick = (e) => { e.stopPropagation(); showDesc(cat.desc || "Sin descripción disponible."); };
+    
+            container.appendChild(b);
+            container.appendChild(info);
+            mainNav.appendChild(container);
+            
+            if(index === 0) selectMain(cat, b);
+        });
+    
+        auth.onAuthStateChanged(user => {
+            userSession = user;
+            document.getElementById('logout-zone').style.display = user ? 'flex' : 'none';
+            if (currentConfig) loadView(currentConfig);
+        });
+    }
+
+    function selectMain(cat, element) {
+        document.querySelectorAll('#main-nav .btn').forEach(b => b.classList.remove('active'));
+        element.classList.add('active');
+        renderSubs(cat);
+        loadView(cat);
+    }
+
+    function renderSubs(cat) {
+        const subNav = document.getElementById('sub-nav');
+        if (cat.subs && cat.subs.length > 0) {
+            subNav.style.display = 'flex';
+            subNav.innerHTML = '';
+            cat.subs.forEach(sub => {
+                const container = document.createElement('div');
+                container.style.display = 'inline-flex';
+                container.style.alignItems = 'center';
+                container.style.marginRight = '15px';
+    
+                const sb = document.createElement('button');
+                sb.className = 'btn';
+                sb.innerText = sub.label;
+                sb.onclick = () => {
+                    document.querySelectorAll('#sub-nav .btn').forEach(b => b.classList.remove('active'));
+                    sb.classList.add('active');
+                    loadView(sub);
+                };
+    
+                const info = document.createElement('span');
+                info.className = 'info-trigger';
+                info.innerHTML = 'ℹ️';
+                info.onclick = (e) => { e.stopPropagation(); showDesc(sub.desc || "Sin descripción disponible."); };
+    
+                container.appendChild(sb);
+                container.appendChild(info);
+                subNav.appendChild(container);
+            });
+        } else { subNav.style.display = 'none'; }
+    }
+    
+    function showDesc(text) {
+        document.getElementById('desc-content').innerText = text;
+        document.getElementById('desc-modal').style.display = 'flex';
+    }
+
+    function loadView(config) {
+        currentConfig = config;
+        const container = document.getElementById('iframe-container');
+        const authScreen = document.getElementById('auth-screen');
+        const errorScreen = document.getElementById('error-screen');
+        const blockedScreen = document.getElementById('blocked-screen');
+        const indicator = document.getElementById('access-indicator');
+        const buttonLang = document.getElementById('lang-select');
+        const buttonTZone = document.getElementById('tz-select');
+        
+        document.getElementById('current-title').innerText = config.label.toUpperCase();
+        
+        // Reset pantallas
+        authScreen.style.display = 'none';
+        errorScreen.style.display = 'none';
+        blockedScreen.style.display = 'none';
+        container.innerHTML = '';
+
+        // Definir indicador visual
+        if (!config.private) {
+            indicator.innerText = "PÚBLICO";
+            indicator.className = "status-pill public";
+        } else if (config.allowed.includes("register")) {
+            indicator.innerText = "REGISTRO";
+            indicator.className = "status-pill register";
+        } else if (config.allowed.includes("blocked")) {
+            indicator.innerText = "BLOCKED";
+            indicator.className = "status-pill blocked";
+        } else {
+            indicator.innerText = "PRIVADO";
+            indicator.className = "status-pill private";
+        }
+
+        // 1. PRIMERO: ¿Está bloqueado? (Máxima prioridad)
+        if (config.allowed.includes("blocked")) {
+            blockedScreen.style.display = 'flex';
+            buttonLang.disabled = true;
+            buttonTZone.disabled = true;
+            return;
+        }
+        
+        // 2. SEGUNDO: Si es público, mostrar sin autenticación
+        if (!config.private) {
+            updateIframeParams();
+            buttonLang.disabled = false;
+            buttonTZone.disabled = false;
+            return;
+        }
+    
+        // 3. TERCERO: Si es privado, requiere autenticación
+        if (!userSession) {
+            authScreen.style.display = 'flex';
+            buttonLang.disabled = false;
+            buttonTZone.disabled = false;
+            return;
+        }
+    
+        // 4. CUARTO: Validación de correos específicos o registro
+        const userEmail = userSession.email;
+        const isRegisteredOnly = config.allowed.includes("register");
+        const hasSpecificEmails = config.allowed.some(item => item.includes("@"));
+    
+        if (isRegisteredOnly) {
+            updateIframeParams();
+        } else if (hasSpecificEmails) {
+            if (config.allowed.includes(userEmail)) {
+                updateIframeParams();
+            } else {
+                errorScreen.style.display = 'flex';
+            }
+        } else {
+            errorScreen.style.display = 'flex';
+        }
+    }
+
+    function updateIframeParams() {
+        if (!currentConfig) return;
+        const tz = document.getElementById('tz-select').value;
+        const lang = document.getElementById('lang-select').value;
+        const container = document.getElementById('iframe-container');
+        const finalUrl = `${currentConfig.url}&ctz=${tz}&hl=${lang}&bgcolor=%23030508`;
+        container.innerHTML = `<iframe src="${finalUrl}"></iframe>`;
+    }
+
+    window.loginGoogle = () => auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    window.loginEmail = () => auth.signInWithEmailAndPassword(document.getElementById('email').value, document.getElementById('pass').value).catch(e => alert(e.message));
+    function handleLogout() { auth.signOut().then(() => location.reload()); }
+
+    // --- DRAGÓN ---
     const numSegments = 13;
     const segments = [];
     const coords = { x: 0, y: 0 };
@@ -273,105 +632,9 @@
         });
         requestAnimationFrame(updateDragon);
     }
+
+    init();
     updateDragon();
-
-    // --- LÓGICA DE FIREBASE Y SEGURIDAD ---
-    const checkAuth = false;
-    const authorizedEmails = [
-    'tarlightetherall@gmail.com','tarlight.etherall@grouvex.com',
-    'grouvex.phoenix@grouvex.com','grouvex@gmail.com',
-    'grouvex.studio@gmail.com', 'grouvex.studios@grouvex.com',
-    'gco.gstudios@gmail.com'
-    ];
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
-        authDomain: "grouvex-studios.firebaseapp.com",
-        databaseURL: "https://grouvex-studios-default-rtdb.firebaseio.com",
-        projectId: "grouvex-studios",
-        storageBucket: "grouvex-studios.appspot.com",
-        messagingSenderId: "1070842606062",
-        appId: "1:1070842606062:web:5d887863048fd100b49eff",
-        measurementId: "G-75BR8D2CR3"
-    };
-
-    // Inicializar Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const container = document.getElementById('auth-container');
-    const extraLinks = document.getElementById('extra-links');
-
-    function showLoginUI() {
-        extraLinks.style.display = 'none';
-        container.innerHTML = `
-            <div class="auth-card">
-                <h3>ACCESS_REQUIRED</h3>
-                <p>Identifícate para acceder al núcleo del calendario.</p>
-                <div class="auth-methods">
-                    <button onclick="loginGoogle()" class="btn-auth google">
-                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18"> Google Login
-                    </button>
-                    <div class="divider-text"><span>OR EMAIL</span></div>
-                    <input type="email" id="email" placeholder="Terminal ID">
-                    <input type="password" id="pass" placeholder="Passcode">
-                    <button onclick="loginEmail()" class="btn-auth primary">INITIATE_SESSION</button>
-                </div>
-            </div>`;
-    }
-
-    function showCalendar() {
-        extraLinks.style.display = 'flex';
-        container.innerHTML = `
-            <div class="glass-reflection"></div>
-            <iframe 
-                src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=UTC&title=Calendario%20Oficial%20de%20Grouvex%20Studios&hl=en&showPrint=0&src=MjQ5ZTdhYzZlMTA3NWU0OTFhYzMyOTk1ZDkzMmQxZDg0YjlkZGY1YmY3ZTNjNzM0MzFiNjY4ZGVjOTBiMDllNEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=ZXMuc3BhaW4jaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23d50000&color=gold" 
-                class="google-iframe"
-                frameborder="0" 
-                scrolling="no">
-            </iframe>
-            <button class="logout-mini" onclick="auth.signOut()">TERMINATE_SESSION</button>`;
-    }
-
-    // Funciones de Login
-    window.loginGoogle = () => {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        auth.signInWithPopup(provider).catch(err => alert(err.message));
-    };
-
-    window.loginEmail = () => {
-        const email = document.getElementById('email').value;
-        const pass = document.getElementById('pass').value;
-        auth.signInWithEmailAndPassword(email, pass).catch(err => alert("Fallo: " + err.message));
-    };
-
-    // Inicialización de Acceso
-    function initializeAccess() {
-        if (!checkAuth) {
-            showCalendar();
-            return;
-        }
-
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                if (authorizedEmails.includes(user.email)) {
-                    showCalendar();
-                } else {
-                    extraLinks.style.display = 'none';
-                    container.innerHTML = `
-                        <div class="auth-card">
-                            <h3 style="color:#ff5f57">UNAUTHORIZED</h3>
-                            <p>El usuario <b>${user.email}</b> no tiene permisos.</p>
-                            <button onclick="auth.signOut()" class="btn-auth primary">SWITCH_ACCOUNT</button>
-                        </div>`;
-                }
-            } else {
-                showLoginUI();
-            }
-        });
-    }
-
-    // Arrancar sistema
-    initializeAccess();
 </script>
 </body>
 </html>

@@ -104,7 +104,7 @@
         .error-box {  padding: 30px;  border: 1px solid var(--danger);  border-radius: 20px;  background: rgba(0,0,0,0.8);   text-align: center;  width: 320px; }
         .btn-logout { background: rgba(255, 95, 87, 0.1); border: 1px solid var(--danger); color: var(--danger); font-size: 9px; padding: 6px 15px; border-radius: 0 0 10px 10px; cursor: pointer; align-self: center; }
 
-        @media (max-width: 768px) { .dragon-head-shell, .dragon-segment { display: none; } body { cursor: auto; } }
+        @media (max-width: 768px) { body { cursor: auto; } }
         /* --- BOTÓN INFO Y MODAL --- */
         .info-trigger {
             margin-left: 8px;
@@ -581,12 +581,20 @@
     }
 
     function updateIframeParams() {
-        if (!currentConfig) return;
-        const tz = document.getElementById('tz-select').value;
-        const lang = document.getElementById('lang-select').value;
-        const container = document.getElementById('iframe-container');
-        const finalUrl = `${currentConfig.url}&ctz=${tz}&hl=${lang}&bgcolor=%23030508`;
-        container.innerHTML = `<iframe src="${finalUrl}"></iframe>`;
+      if (!currentConfig) return;
+      let baseUrl = currentConfig.url;
+      // Eliminar cualquier parámetro ctz existente
+      baseUrl = baseUrl.replace(/[?&]ctz=[^&]*/, '');
+      baseUrl = baseUrl.replace(/[?&]hl=[^&]*/, ''); // También limpia hl si existe
+    
+      const tz = document.getElementById('tz-select').value;
+      const lang = document.getElementById('lang-select').value;
+      const separator = baseUrl.includes('?') ? '&' : '?';
+      const finalUrl = `${baseUrl}${separator}ctz=${encodeURIComponent(tz)}&hl=${lang}&bgcolor=%23030508`;
+    
+      // Forzar recarga no cachead
+      const container = document.getElementById('iframe-container');
+      container.innerHTML = `<iframe src="${finalUrl}" loading="lazy"></iframe>`;
     }
 
     window.loginGoogle = () => auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());

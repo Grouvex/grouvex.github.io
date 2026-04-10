@@ -1,183 +1,94 @@
 {
+  "_comentarios": {
+    "plantilla_general": {
+      "descripcion": "Plantilla para generar nuevas actualizaciones en el historial de versiones",
+      "formato": {
+        "type": "Tipo de versión: 'website', 'panel' o 'api'",
+        "version": "Número de versión en formato semántico (ej: '1.0.0')",
+        "title": "Título descriptivo de la actualización",
+        "date": "Timestamp UNIX en UTC (segundos desde 1970)",
+        "changes": [
+          {
+            "type": "Tipo de cambio: 'added', 'updated', 'fixed' o 'removed'",
+            "detail": "Descripción breve del cambio",
+            "description": "Descripción detallada (opcional)"
+          }
+        ],
+        "resources": [
+          {
+            "type": "Tipo de recurso: 'document', 'image', 'video', 'link', 'code'",
+            "url": "URL del recurso",
+            "label": "Etiqueta descriptiva",
+            "icon": "Emoji o texto para el icono (opcional, se asigna automáticamente si no se proporciona)"
+          }
+        ]
+      },
+      "ejemplo": {
+        "type": "website",
+        "version": "1.0.0",
+        "title": "Nueva funcionalidad increíble",
+        "date": 1738429200,
+        "changes": [
+          {
+            "type": "added",
+            "detail": "Nueva característica principal",
+            "description": "Descripción más detallada de la característica añadida"
+          }
+        ],
+        "resources": [
+          {
+            "type": "document",
+            "url": "/docs/nueva-funcion.pdf",
+            "label": "Documentación de la nueva función"
+          }
+        ]
+      }
+    },
+    "instrucciones": "Para añadir una nueva versión, copia la plantilla de ejemplo y completa los campos. Asegúrate de que el timestamp 'date' sea un número entero en UTC. Los cambios de tipo 'added', 'updated', 'fixed' y 'removed' son soportados. Los recursos pueden ser de tipo: document, image, video, link, code."
+  },
   "versions": [
     {
       "type": "website",
-      "version": "2.1.0",
-      "title": "Mejoras en el sistema de notificaciones",
-      "date": 1690848000,
-      "changes": [
-        {
-          "type": "added",
-          "detail": "Nuevo sistema de notificaciones en tiempo real"
-        },
-        {
-          "type": "updated",
-          "detail": "Mejorado el rendimiento de la página principal"
-        },
-        {
-          "type": "fixed",
-          "detail": "Corregido error en el formulario de contacto"
-        }
-      ],
-      "resources": [
-        {
-          "type": "image",
-          "url": "https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
-          "label": "Captura del nuevo sistema"
-        },
-        {
-          "type": "link",
-          "url": "https://grouvexstudios.com/notificaciones",
-          "label": "Documentación"
-        }
-      ]
-    },
-    {
-      "type": "panel",
-      "version": "1.5.2",
-      "title": "Actualización de seguridad y nuevas funciones",
-      "date": 1688169600,
-      "changes": [
-        {
-          "type": "added",
-          "detail": "Autenticación de dos factores para administradores"
-        },
-        {
-          "type": "updated",
-          "detail": "Panel de estadísticas con nuevos gráficos"
-        },
-        {
-          "type": "fixed",
-          "detail": "Vulnerabilidad en la gestión de sesiones"
-        },
-        {
-          "type": "removed",
-          "detail": "Función obsoleta de exportación en CSV"
-        }
-      ],
-      "resources": [
-        {
-          "type": "video",
-          "url": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-          "label": "Video tutorial"
-        },
-        {
-          "type": "image",
-          "url": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
-          "label": "Nuevo panel de gráficos"
-        }
-      ]
-    },
-    {
-      "type": "website",
-      "version": "2.0.5",
-      "title": "Optimización para móviles y correcciones",
-      "date": 1685577600,
+      "version": "8.0.0",
+      "title": "Nueva Version - Calendario Oficial",
+      "date": 1784066400,
       "changes": [
         {
           "type": "updated",
-          "detail": "Diseño completamente responsivo para dispositivos móviles"
+          "detail": "Calendario Oficial de Grouvex Studios",
+          "description": "Implementación completa del sistema de calendario unificado"
+        },
+        {
+          "type": "added",
+          "detail": "Calendario para GSRecords y GSStaff",
+          "description": "Calendarios específicos por departamento con eventos personalizados"
         },
         {
           "type": "fixed",
-          "detail": "Problemas de visualización en navegadores Safari"
-        },
-        {
-          "type": "added",
-          "detail": "Nuevas animaciones de carga"
-        }
-      ],
-      "resources": [
-        {
-          "type": "image",
-          "url": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
-          "label": "Vista móvil mejorada"
-        }
-      ]
-    },
-    {
-      "type": "panel",
-      "version": "1.4.0",
-      "title": "Rediseño del dashboard principal",
-      "date": 1682899200,
-      "changes": [
-        {
-          "type": "added",
-          "detail": "Nuevo diseño de interfaz con modo oscuro"
-        },
-        {
-          "type": "updated",
-          "detail": "Reestructuración del menú de navegación"
-        },
-        {
-          "type": "fixed",
-          "detail": "Errores en la visualización de reportes"
-        },
-        {
-          "type": "added",
-          "detail": "Soporte para múltiples idiomas"
-        }
-      ],
-      "resources": [
-        {
-          "type": "image",
-          "url": "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
-          "label": "Nuevo dashboard"
-        },
-        {
-          "type": "link",
-          "url": "https://grouvexstudios.com/panel-guide",
-          "label": "Guía de usuario"
-        }
-      ]
-    },
-    {
-      "type": "website",
-      "version": "1.9.3",
-      "title": "Actualización de contenido y SEO",
-      "date": 1680307200,
-      "changes": [
-        {
-          "type": "updated",
-          "detail": "Contenido optimizado para motores de búsqueda"
-        },
-        {
-          "type": "added",
-          "detail": "Mapa del sitio actualizado"
-        },
-        {
-          "type": "fixed",
-          "detail": "Enlaces rotos en la sección de blog"
+          "detail": "Corrección completa de sistemas de actualizaciones",
+          "description": "Se ha solucionado el bug que impedía la correcta visualización de versiones anteriores"
         }
       ],
       "resources": [
         {
           "type": "link",
-          "url": "https://grouvexstudios.com/sitemap.xml",
-          "label": "Mapa del sitio"
+          "url": "https://grouvex.com/calendario",
+          "label": "Calendario Oficial de Grouvex Studios",
+          "icon": "📅"
+        },
+        {
+          "type": "link",
+          "url": "https://grouvex.com/calendario-records",
+          "label": "Calendario Oficial de Grouvex Studios Records",
+          "icon": "🎵"
+        },
+        {
+          "type": "link",
+          "url": "https://grouvex.com/calendario-staff",
+          "label": "Calendario Oficial de Grouvex Studios Staff",
+          "icon": "👥"
         }
       ]
-    },
-    {
-      "type": "panel",
-      "version": "1.3.1",
-      "title": "Correcciones menores y mejoras de rendimiento",
-      "date": 1677628800,
-      "changes": [
-        {
-          "type": "fixed",
-          "detail": "Error en la subida de archivos grandes"
-        },
-        {
-          "type": "updated",
-          "detail": "Tiempos de respuesta del servidor optimizados"
-        },
-        {
-          "type": "fixed",
-          "detail": "Problema con la sincronización de usuarios"
-        }
-      ],
-      "resources": []
     }
   ]
 }

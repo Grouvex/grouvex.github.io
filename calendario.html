@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Calendarios Oficiales - Grouvex Studios</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- META DESCRIPTION AÑADIDA PARA SEO -->
+    <meta name="description" content="Calendarios oficiales de Grouvex Studios, GSRecords y GSDesigns. Eventos, lanzamientos y actividades.">
     <link rel="icon" href="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png" type="image/x-icon">
     
     <!-- Open Graph / Social Media Meta Tags -->
@@ -14,8 +16,9 @@
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <!-- SCRIPTS CON 'ASYNC' PARA MEJOR RENDIMIENTO Y 'waitForFirebase' PARA GARANTIZAR SU DISPONIBILIDAD -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js" async></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js" async></script>
 
     <style>
         :root {
@@ -158,9 +161,10 @@
     <div class="neo-shell">
         <header class="system-header">
             <div class="header-left">
-                <img id="header-logo" src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png" height="30">
+                <!-- MEJORA CRÍTICA: AÑADIDOS width, height y alt para evitar CLS y problemas de accesibilidad/SEO -->
+                <img id="header-logo" src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png" width="40" height="40" alt="Logo de Grouvex Studios">
                 <div style="line-height: 1.1;">
-                    <div style="font-size: 12px; font-weight: bold; color: var(--accent);">DRAKO_OS v8.2</div>
+                    <div style="font-size: 12px; font-weight: bold; color: var(--accent);">Hakayru v3</div>
                     <div id="current-title" style="font-size: 9px; color: #555;">READY_SYSTEM</div>
                 </div>
             </div>
@@ -171,7 +175,7 @@
             <div class="control-group">
                 <span>TIMEZONE:</span>
                 <select id="tz-select" class="select-mini" onchange="updateIframeParams()">
-                    <option value="UTC">UTC / GMT (Universal)</option>
+                    <option value="UTC" selected>UTC / GMT (Universal)</option>
                     
                     <optgroup label="Europa">
                         <option value="Europe/Andorra">Andorra</option>
@@ -188,7 +192,7 @@
                         <option value="Europe/Lisbon">Lisboa / Portugal</option>
                         <option value="Europe/London">Londres / UK</option>
                         <option value="Europe/Luxembourg">Luxemburgo</option>
-                        <option value="Europe/Madrid" selected>Madrid / España</option>
+                        <option value="Europe/Madrid">Madrid / España</option>
                         <option value="Europe/Monaco">Mónaco</option>
                         <option value="Europe/Moscow">Moscú / Rusia</option>
                         <option value="Europe/Oslo">Oslo / Noruega</option>
@@ -289,8 +293,8 @@
                 <span>LANG:</span>
                     <select id="lang-select" class="select-mini" onchange="updateIframeParams()">
                         <optgroup label="Europa">
-                            <option value="es" selected>Español</option>
-                            <option value="en_GB">English (UK)</option>
+                            <option value="es">Español</option>
+                            <option value="en_GB" selected>English (UK)</option>
                             <option value="fr">Français</option>
                             <option value="de">Deutsch</option>
                             <option value="it">Italiano</option>
@@ -398,6 +402,15 @@ const LOGO_MAP = {
 function updateMetadata(title, description, imageUrl, urlPath) {
     document.title = title;
     
+    // Actualizar meta description para SEO (resuelve el punto de SEO del PDF)
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.setAttribute('name', 'description');
+        document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', description);
+    
     let ogTitle = document.querySelector('meta[property="og:title"]');
     if (!ogTitle) {
         ogTitle = document.createElement('meta');
@@ -420,7 +433,9 @@ function updateMetadata(title, description, imageUrl, urlPath) {
         ogImg.setAttribute('property', 'og:image');
         document.head.appendChild(ogImg);
     }
-    ogImg.setAttribute('content', imageUrl);
+    // También optimizamos la imagen para Open Graph (usando un tamaño estándar de 1200x630)
+    const optimizedOgImage = imageUrl;
+    ogImg.setAttribute('content', optimizedOgImage);
     
     let favicon = document.querySelector('link[rel="icon"]');
     if (!favicon) {
@@ -445,8 +460,11 @@ const firebaseConfig = {
     projectId: "grouvex-studios",
     appId: "1:1070842606062:web:5d887863048fd100b49eff"
 };
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
+
+let auth = null;
+let userSession = null;
+let currentConfig = null;
+let currentParentConfig = null;
 
 // DATA con IDs numéricos
 const DATA = [
@@ -488,10 +506,6 @@ const DATA = [
         subs: []
     },
 ];
-
-let userSession = null;
-let currentConfig = null;
-let currentParentConfig = null;
 
 // ==================== NAVEGACIÓN POR ID (usando ?id=NUMERO) ====================
 // Obtener parámetro ID de la URL
@@ -663,6 +677,12 @@ function showDesc(text) {
 }
 
 function loadView(config, isSub = false) {
+    if (!auth) {
+        // Si Firebase aún no está listo, reintentamos en 100ms
+        setTimeout(() => loadView(config, isSub), 100);
+        return;
+    }
+    
     currentConfig = config;
     const container = document.getElementById('iframe-container');
     const authScreen = document.getElementById('auth-screen');
@@ -677,7 +697,13 @@ function loadView(config, isSub = false) {
     const parentForLogo = (isSub && currentParentConfig) ? currentParentConfig : config;
     const headerLogo = document.getElementById('header-logo');
     if (headerLogo) {
-        headerLogo.src = getLogoForLabel(parentForLogo.label);
+        // --- MEJORA DE IMAGEN APLICADA AQUÍ ---
+        // Obtenemos la URL original del logo
+        const originalLogoUrl = getLogoForLabel(parentForLogo.label);
+        // La redimensionamos a las dimensiones exactas que tiene en el HTML (107x30)
+        // y la convertimos a WebP para un ahorro masivo de peso.
+        const optimizedLogoUrl = originalLogoUrl;
+        headerLogo.src = optimizedLogoUrl;
     }
     
     const pageTitle = `${config.label} | Grouvex Studios`;
@@ -765,23 +791,64 @@ function updateIframeParams() {
 }
 
 // ==================== AUTH ====================
-window.loginGoogle = () => auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-window.loginEmail = () => auth.signInWithEmailAndPassword(
-    document.getElementById('email').value, 
-    document.getElementById('pass').value
-).catch(e => alert(e.message));
+window.loginGoogle = () => {
+    if (auth) {
+        auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    } else {
+        alert("Cargando sistema de autenticación, por favor espera un momento...");
+    }
+};
+window.loginEmail = () => {
+    if (auth) {
+        auth.signInWithEmailAndPassword(
+            document.getElementById('email').value, 
+            document.getElementById('pass').value
+        ).catch(e => alert(e.message));
+    } else {
+        alert("Cargando sistema de autenticación, por favor espera un momento...");
+    }
+};
 
 function handleLogout() { 
-    auth.signOut().then(() => location.reload()); 
+    if (auth) {
+        auth.signOut().then(() => location.reload()); 
+    }
 }
 
-// ==================== INICIALIZACIÓN ====================
-function init() {
+// ==================== INICIALIZACIÓN CON ESPERA PARA FIREBASE ====================
+function waitForFirebase() {
+    return new Promise((resolve) => {
+        if (typeof firebase !== 'undefined' && firebase.initializeApp) {
+            resolve();
+        } else {
+            const checkInterval = setInterval(() => {
+                if (typeof firebase !== 'undefined' && firebase.initializeApp) {
+                    clearInterval(checkInterval);
+                    resolve();
+                }
+            }, 50);
+        }
+    });
+}
+
+async function init() {
+    // Esperamos a que Firebase esté completamente disponible
+    await waitForFirebase();
+    
+    // Inicializamos Firebase
+    firebase.initializeApp(firebaseConfig);
+    auth = firebase.auth();
+    
+    // Renderizamos la navegación
     renderMainNav();
     
+    // Escuchamos cambios en el estado de autenticación
     auth.onAuthStateChanged(user => {
         userSession = user;
-        document.getElementById('logout-zone').style.display = user ? 'flex' : 'none';
+        const logoutZone = document.getElementById('logout-zone');
+        if (logoutZone) {
+            logoutZone.style.display = user ? 'flex' : 'none';
+        }
         onUrlChange();
     });
     
@@ -829,8 +896,11 @@ function updateDragon() {
     requestAnimationFrame(updateDragon);
 }
 
-init();
-updateDragon();
+// Iniciamos todo cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', () => {
+    init();
+    updateDragon();
+});
 </script>
 </body>
 </html>

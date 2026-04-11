@@ -453,19 +453,14 @@ const DATA = [
     {
         id: 1,
         label: "1. Calendario Principal",
-        desc: "Eventos globales de la comunidad y lanzamientos generales de Grouvex Studios.",
+        desc: "Eventos globales de la comunidad, sistema GCO, mantenimientos, festivos de Grouvex Studios.",
         url: "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Europe%2FMadrid&showPrint=0&title=Calendario%20Principal%20y%20Grouvex%20Studios&src=Z3JvdXZleC5zdHVkaW9AZ21haWwuY29t&src=NDMwZmJjNmIzMzNhODI1MGY0ZGEzMDMzZjMyYjU1Mzc3NmQ4MTBiMjg1YWU1MTI4NjA5ODA1YjE3MmRkMmFiMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=NWUzNDMxM2UxNDcxN2M3YThlMWE5YTA1ODUyNTNjNmVhNzlkODcyOTBhZmM0MjMyNTY1YTQ4MmQ2Yjg0MTgxNEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=ZXMuc3BhaW4jaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&src=NDM1ODM5Y2M0M2E5YjkyMDlmNGJlYzkxMTQ0ZWQ4MjUwMTc3MGJhNTU1MjQ5ZTg3YzYwNzA3ZjYwZDgwNTFlZUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23039be5&color=%23a79b8e&color=%23ef6c00&color=%230b8043&color=%23f4511e",
         private: false,
         allowed: [],
         subs: [
-            {
-                id: 11,
-                label: "1.2 Calendario Social",
-                desc: "Festividades, reuniones y eventos sociales para miembros registrados.",
-                url: "https://calendar.google.com/calendar/embed?src=435839cc43a9b9209f4bec91144ed82501770ba555249e87c60707f60d8051ee%40group.calendar.google.com",
-                private: true,
-                allowed: ["register"] 
-            }
+            { id: 11, label: "1.1 Calendario Social General",desc: "Festividades, reuniones y eventos sociales para usuarios registrados.", url: "https://calendar.google.com/calendar/embed?src=435839cc43a9b9209f4bec91144ed82501770ba555249e87c60707f60d8051ee%40group.calendar.google.com", private: true, allowed: ["blocked"] },
+            { id: 12, label: "1.2 Calendario de Socios",desc: "Festividades, reuniones y eventos del sistema Partner/Socios.", url: "https://calendar.google.com/calendar/embed?src=435839cc43a9b9209f4bec91144ed82501770ba555249e87c60707f60d8051ee%40group.calendar.google.com", private: true, allowed: ["blocked"] },
+            { id: 13, label: "1.3 Calendario de Colaboradores",desc: "Festividades, reuniones y eventos del sistema Colaborators/Colaboradores.", url: "https://calendar.google.com/calendar/embed?src=435839cc43a9b9209f4bec91144ed82501770ba555249e87c60707f60d8051ee%40group.calendar.google.com", private: true, allowed: ["blocked"] },
         ]
     },
     {
@@ -479,7 +474,8 @@ const DATA = [
             { id: 21, label: "Grouvex - Artista", desc: "Discografía, conciertos, eventos y mucho más de Grouvex.", url: "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Europe%2FMadrid&showPrint=0&title=Grouvex%20-%20Artista%20de%20GSRecords&src=YTIwZGI4MmQ1ODZiOWQ1Y2MwZTAzMzk4NzQyZTkyZTM1MWRmMGZkZTg2MjM2Zjk1YTMwODExMDY3NzQxM2Y0ZkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=ZDk2MzczNTAzMDk3ZTQ1Y2EyM2IxYWZhOWY0NjcyODgyZTE4ODdhNWFlNGVlOTg4MjBkZDg4NWJlY2ZkZGQxY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=ZWJiZTE0ZmJhN2RkY2RmOTZiOGZlN2ViMjVlODRhNzI1YjFkZjI2MDY2ODU3ZmM2MmQ0MGJlYjVmMDA0MzFiYUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23ad1457&color=%23ad1457&color=%23ad1457", private: true, allowed: ["register"] },
             { id: 22, label: "Maiki Dran - Artista", desc: "Discografía, conciertos, eventos y mucho más de Maiki Dran.", url: "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Europe%2FMadrid&showPrint=0&title=Maiki%20Dran%20-%20Artista%20de%20GSRecords&src=M2U1NzI4ODBhMDI1M2E5NTIxNmYwYTVmZTNjOTA2N2RhYWQ0YzBjNGJhZjQ3NDliZGFmYjlmYmQ5NTM4MTI4YkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=YjJjYmIzMGZkY2JjZTI2NjUwMWNiYzUyZTIxMDhkNzA1MmQ4YTYwZjkyYTM2MDE1ODk2ZjdjYjEyOGJjYzJhZUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=YzY1ZGY4ZjRhYzMzMmQ0YmY2YmFlODc3NWFhNGFjMDk3NjFmYWEzMTczNmFhM2FhZmUxZmQ4MzU3ODk5ZjZhMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23f4511e&color=%23f4511e&color=%23f4511e", private: true, allowed: ["register"] },
             { id: 23, label: "Tarlight Etherall - Artista", desc: "Discografía, conciertos, eventos y mucho más de Tarlight Etherall.", url: "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Europe%2FMadrid&showPrint=0&title=Tarlight%20Etherall%20-%20Artista%20de%20GSRecords&src=MTc4NjYxM2NlYTc3N2QzMDI4ZGUyNDkxYWI2YzQzZDMxMzMxMGNmZWJlNjBkYWMxZDQ4ODg0MmMxMzI1ZmFkNUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=MjcyMDQ5OTU1YWZjOTM1ODYzYzA4Njk4YzQ5MDRmOTE1NjhkYmJlN2I3NTIwYjc2ODU4ODk3OWIzZDczZjA0Y0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=NDI5MzVlOTNhNjdjMTc3N2E0MTFmMDkyOTgyOTY4MjM2ZTkzMjg5OWU1ZDE3MmJlYjBmZjEyZWRiZjA0YjExZkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23e4c441&color=%23e4c441&color=%23e4c441", private: true, allowed: ["blocked"] },
-            { id: 24, label: "Clara Langa - Artista", desc: "Discografía, conciertos, eventos y mucho más de Clara Langa.", url: "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Europe%2FMadrid&showPrint=0&title=Clara%20Langa%20-%20Artista%20de%20GSRecords&src=Y2xhcmFsYW5nYWFydGlzdEBnbWFpbC5jb20&color=%23e4c441", private: true, allowed: ["blocked"] }
+            { id: 24, label: "Clara Langa - Artista", desc: "Discografía, conciertos, eventos y mucho más de Clara Langa.", url: "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Europe%2FMadrid&showPrint=0&title=Clara%20Langa%20-%20Artista%20de%20GSRecords&src=Y2xhcmFsYW5nYWFydGlzdEBnbWFpbC5jb20&color=%23e4c441", private: true, allowed: ["blocked"] },
+            { id: 24, label: "Ángela HD - Artista", desc: "Discografía, conciertos, eventos y mucho más de Ángela HD.", url: "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Europe%2FMadrid&showPrint=0&title=Clara%20Langa%20-%20Artista%20de%20GSRecords&src=Y2xhcmFsYW5nYWFydGlzdEBnbWFpbC5jb20&color=%23e4c441", private: true, allowed: ["blocked"] }
         ]
     },
     {

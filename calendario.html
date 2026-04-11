@@ -390,10 +390,10 @@
     // ==================== METADATA CONFIGURATION ====================
     // Mapa de logos por categoría (puedes agregar más)
     const LOGO_MAP = {
-        default: "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png",
-        "GSRecords": "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GSRecords.png",
-        "GSDesigns": "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GSDesigns.png",
-        "Grouvex": "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex.png"
+        default: "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png",
+        "GSRecords": "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX Studios Records.png.png",
+        "GSDesigns": "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX Studios Designs.png",
+        "Grouvex": "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX Studio.png"
     };
     
     // Función genérica para actualizar metadatos (title, favicon, OG tags)
@@ -432,7 +432,7 @@
             ogUrl.setAttribute('property', 'og:url');
             document.head.appendChild(ogUrl);
         }
-        ogUrl.setAttribute('content', `https://grouvex.github.io${urlPath || '/calendars'}`);
+        ogUrl.setAttribute('content', `https://grouvex.github.io${urlPath || '/calendario'}`);
         
         // Actualizar Twitter Card
         let twitterTitle = document.querySelector('meta[name="twitter:title"]');
@@ -546,6 +546,89 @@
     let userSession = null;
     let currentConfig = null;
 
+    // ==================== NAVEGACIÓN POR HASH ====================
+    // Convierte un texto a formato de hash (minúsculas, sin caracteres especiales)
+    function textToHash(text) {
+        return text.toLowerCase()
+            .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // elimina acentos
+            .replace(/[^a-z0-9]+/g, '-') // reemplaza caracteres no alfanuméricos por guiones
+            .replace(/^-|-$/g, ''); // elimina guiones al inicio/final
+    }
+    
+    // Busca un calendario (principal o sub) por su hash
+    function findCalendarByHash(hash) {
+        if (!hash) return null;
+        
+        // Buscar en calendarios principales
+        for (let cat of DATA) {
+            if (textToHash(cat.label) === hash) {
+                return { calendar: cat, isSub: false, parent: null };
+            }
+            
+            // Buscar en sub-calendarios
+            if (cat.subs) {
+                for (let sub of cat.subs) {
+                    if (textToHash(sub.label) === hash) {
+                        return { calendar: sub, isSub: true, parent: cat };
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
+    // Navega al calendario indicado por el hash de la URL
+    function navigateByHash() {
+        let hash = window.location.hash.substring(1); // quita el #
+        
+        // Si no hay hash o es vacío, mostrar el primer calendario por defecto
+        if (!hash) {
+            if (DATA.length > 0) {
+                selectMain(DATA[0], document.querySelector('#main-nav .btn'));
+            }
+            return;
+        }
+        
+        const result = findCalendarByHash(hash);
+        
+        if (result) {
+            if (result.isSub) {
+                // Primero activar el padre
+                const parentBtn = Array.from(document.querySelectorAll('#main-nav .btn'))
+                    .find(btn => btn.innerText === result.parent.label);
+                if (parentBtn) {
+                    parentBtn.click();
+                    // Luego activar el sub-calendario
+                    setTimeout(() => {
+                        const subBtn = Array.from(document.querySelectorAll('#sub-nav .btn'))
+                            .find(btn => btn.innerText === result.calendar.label);
+                        if (subBtn) {
+                            subBtn.click();
+                        }
+                    }, 150);
+                }
+            } else {
+                // Activar calendario principal
+                const btn = Array.from(document.querySelectorAll('#main-nav .btn'))
+                    .find(btn => btn.innerText === result.calendar.label);
+                if (btn) {
+                    btn.click();
+                }
+            }
+        }
+    }
+    
+    // Actualiza el hash en la URL basado en el calendario actual
+    function updateHashFromCalendar(calendar) {
+        if (calendar && calendar.label) {
+            const newHash = textToHash(calendar.label);
+            // Evitar bucles infinitos
+            if (window.location.hash.substring(1) !== newHash) {
+                window.location.hash = newHash;
+            }
+        }
+    }
+
     function init() {
         const mainNav = document.getElementById('main-nav');
         DATA.forEach((cat, index) => {
@@ -567,15 +650,21 @@
             container.appendChild(b);
             container.appendChild(info);
             mainNav.appendChild(container);
-            
-            if(index === 0) selectMain(cat, b);
         });
     
         auth.onAuthStateChanged(user => {
             userSession = user;
             document.getElementById('logout-zone').style.display = user ? 'flex' : 'none';
-            if (currentConfig) loadView(currentConfig);
+            if (currentConfig) {
+                loadView(currentConfig);
+            } else {
+                // Navegar según el hash después de cargar la autenticación
+                navigateByHash();
+            }
         });
+        
+        // Escuchar cambios en el hash (cuando el usuario usa adelante/atrás)
+        window.addEventListener('hashchange', navigateByHash);
     }
 
     function selectMain(cat, element) {
@@ -583,6 +672,7 @@
         element.classList.add('active');
         renderSubs(cat);
         loadView(cat);
+        updateHashFromCalendar(cat);
     }
 
     function renderSubs(cat) {
@@ -603,6 +693,7 @@
                     document.querySelectorAll('#sub-nav .btn').forEach(b => b.classList.remove('active'));
                     sb.classList.add('active');
                     loadView(sub);
+                    updateHashFromCalendar(sub);
                 };
     
                 const info = document.createElement('span');
@@ -644,7 +735,7 @@
         const pageTitle = `${config.label} | Grouvex Studios`;
         const pageDesc = config.desc || "Calendario oficial de Grouvex Studios";
         const pageImage = getLogoForLabel(config.label);
-        const pageUrl = `/calendar/${encodeURIComponent(config.label.replace(/[^a-zA-Z0-9]/g, '_'))}`;
+        const pageUrl = `/calendar/${textToHash(config.label)}`;
         updateMetadata(pageTitle, pageDesc, pageImage, pageUrl);
         
         // Reset pantallas

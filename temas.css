@@ -423,7 +423,7 @@ footer {
 .disabled-link {
   color: gray;
   pointer-events: none;
-  cursor: default;
+  cursor: not-allowed;
   opacity: 0.6;
 }
 

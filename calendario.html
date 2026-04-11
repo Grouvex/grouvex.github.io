@@ -387,481 +387,445 @@
 </div>
 
 <script>
-    // ==================== METADATA CONFIGURATION ====================
-    // Mapa de logos por categoría (puedes agregar más)
-    const LOGO_MAP = {
-        default: "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png",
-        "GSRecords": "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX Studios Records.png.png",
-        "GSDesigns": "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX Studios Designs.png",
-        "Grouvex": "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX Studio.png"
-    };
+// ==================== METADATA CONFIGURATION ====================
+const LOGO_MAP = {
+    default: "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX Studio.png",
+    "GSRecords": "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX Studios Records.png",
+    "GSDesigns": "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX Studios Designs.png",
+    "Grouvex": "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX Studio.png"
+};
+
+function updateMetadata(title, description, imageUrl, urlPath) {
+    document.title = title;
     
-    // Función genérica para actualizar metadatos (title, favicon, OG tags)
-    function updateMetadata(title, description, imageUrl, urlPath) {
-        // Actualizar título de la página
-        document.title = title;
-        
-        // Actualizar meta tags Open Graph
-        let ogTitle = document.querySelector('meta[property="og:title"]');
-        if (!ogTitle) {
-            ogTitle = document.createElement('meta');
-            ogTitle.setAttribute('property', 'og:title');
-            document.head.appendChild(ogTitle);
-        }
-        ogTitle.setAttribute('content', title);
-        
-        let ogDesc = document.querySelector('meta[property="og:description"]');
-        if (!ogDesc) {
-            ogDesc = document.createElement('meta');
-            ogDesc.setAttribute('property', 'og:description');
-            document.head.appendChild(ogDesc);
-        }
-        ogDesc.setAttribute('content', description);
-        
-        let ogImg = document.querySelector('meta[property="og:image"]');
-        if (!ogImg) {
-            ogImg = document.createElement('meta');
-            ogImg.setAttribute('property', 'og:image');
-            document.head.appendChild(ogImg);
-        }
-        ogImg.setAttribute('content', imageUrl);
-        
-        let ogUrl = document.querySelector('meta[property="og:url"]');
-        if (!ogUrl) {
-            ogUrl = document.createElement('meta');
-            ogUrl.setAttribute('property', 'og:url');
-            document.head.appendChild(ogUrl);
-        }
-        ogUrl.setAttribute('content', `https://grouvex.github.io${urlPath || '/calendario'}`);
-        
-        // Actualizar Twitter Card
-        let twitterTitle = document.querySelector('meta[name="twitter:title"]');
-        if (!twitterTitle) {
-            twitterTitle = document.createElement('meta');
-            twitterTitle.setAttribute('name', 'twitter:title');
-            document.head.appendChild(twitterTitle);
-        }
-        twitterTitle.setAttribute('content', title);
-        
-        let twitterDesc = document.querySelector('meta[name="twitter:description"]');
-        if (!twitterDesc) {
-            twitterDesc = document.createElement('meta');
-            twitterDesc.setAttribute('name', 'twitter:description');
-            document.head.appendChild(twitterDesc);
-        }
-        twitterDesc.setAttribute('content', description);
-        
-        let twitterImg = document.querySelector('meta[name="twitter:image"]');
-        if (!twitterImg) {
-            twitterImg = document.createElement('meta');
-            twitterImg.setAttribute('name', 'twitter:image');
-            document.head.appendChild(twitterImg);
-        }
-        twitterImg.setAttribute('content', imageUrl);
-        
-        // Actualizar favicon (link rel="icon")
-        let favicon = document.querySelector('link[rel="icon"]');
-        if (!favicon) {
-            favicon = document.createElement('link');
-            favicon.setAttribute('rel', 'icon');
-            document.head.appendChild(favicon);
-        }
-        favicon.setAttribute('href', imageUrl);
-        
-        // Opcional: Actualizar también apple-touch-icon
-        let appleIcon = document.querySelector('link[rel="apple-touch-icon"]');
-        if (!appleIcon) {
-            appleIcon = document.createElement('link');
-            appleIcon.setAttribute('rel', 'apple-touch-icon');
-            document.head.appendChild(appleIcon);
-        }
-        appleIcon.setAttribute('href', imageUrl);
+    let ogTitle = document.querySelector('meta[property="og:title"]');
+    if (!ogTitle) {
+        ogTitle = document.createElement('meta');
+        ogTitle.setAttribute('property', 'og:title');
+        document.head.appendChild(ogTitle);
     }
+    ogTitle.setAttribute('content', title);
     
-    // Función para extraer el logo basado en el label
-    function getLogoForLabel(label) {
-        // Buscar coincidencia exacta primero
-        for (let [key, logo] of Object.entries(LOGO_MAP)) {
-            if (label.includes(key)) {
-                return logo;
+    let ogDesc = document.querySelector('meta[property="og:description"]');
+    if (!ogDesc) {
+        ogDesc = document.createElement('meta');
+        ogDesc.setAttribute('property', 'og:description');
+        document.head.appendChild(ogDesc);
+    }
+    ogDesc.setAttribute('content', description);
+    
+    let ogImg = document.querySelector('meta[property="og:image"]');
+    if (!ogImg) {
+        ogImg = document.createElement('meta');
+        ogImg.setAttribute('property', 'og:image');
+        document.head.appendChild(ogImg);
+    }
+    ogImg.setAttribute('content', imageUrl);
+    
+    let favicon = document.querySelector('link[rel="icon"]');
+    if (!favicon) {
+        favicon = document.createElement('link');
+        favicon.setAttribute('rel', 'icon');
+        document.head.appendChild(favicon);
+    }
+    favicon.setAttribute('href', imageUrl);
+}
+
+function getLogoForLabel(label) {
+    for (let [key, logo] of Object.entries(LOGO_MAP)) {
+        if (label.includes(key)) return logo;
+    }
+    return LOGO_MAP.default;
+}
+
+// ==================== FIREBASE CONFIG ====================
+const firebaseConfig = {
+    apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
+    authDomain: "grouvex-studios.firebaseapp.com",
+    projectId: "grouvex-studios",
+    appId: "1:1070842606062:web:5d887863048fd100b49eff"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+const DATA = [
+    {
+        label: "1. Calendario Principal",
+        desc: "Eventos globales de la comunidad y lanzamientos generales de Grouvex Studios.",
+        url: "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Europe%2FMadrid&showPrint=0&title=Calendario%20Principal%20y%20Grouvex%20Studios&src=Z3JvdXZleC5zdHVkaW9AZ21haWwuY29t&src=NDMwZmJjNmIzMzNhODI1MGY0ZGEzMDMzZjMyYjU1Mzc3NmQ4MTBiMjg1YWU1MTI4NjA5ODA1YjE3MmRkMmFiMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=NWUzNDMxM2UxNDcxN2M3YThlMWE5YTA1ODUyNTNjNmVhNzlkODcyOTBhZmM0MjMyNTY1YTQ4MmQ2Yjg0MTgxNEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=ZXMuc3BhaW4jaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&src=NDM1ODM5Y2M0M2E5YjkyMDlmNGJlYzkxMTQ0ZWQ4MjUwMTc3MGJhNTU1MjQ5ZTg3YzYwNzA3ZjYwZDgwNTFlZUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23039be5&color=%23a79b8e&color=%23ef6c00&color=%230b8043&color=%23f4511e",
+        private: false,
+        allowed: [],
+        subs: [
+            {
+                label: "1.2 Calendario Social",
+                desc: "Festividades, reuniones y eventos sociales para miembros registrados.",
+                url: "https://calendar.google.com/calendar/embed?src=435839cc43a9b9209f4bec91144ed82501770ba555249e87c60707f60d8051ee%40group.calendar.google.com",
+                private: true,
+                allowed: ["register"] 
             }
-        }
-        // Si hay logo personalizado en la configuración
-        if (currentConfig && currentConfig.logo) {
-            return currentConfig.logo;
-        }
-        return LOGO_MAP.default;
-    }
+        ]
+    },
+    {
+        label: "2. GSRecords",
+        desc: "Cronograma de grabaciones, producción musical, gestión de talentos, eventos y mucho más.",
+        url: "https://calendar.google.com/calendar/embed?src=435839cc43a9b9209f4bec91144ed82501770ba555249e87c60707f60d8051ee%40group.calendar.google.com",
+        private: true,
+        allowed: ["register"], 
+        subs: [
+            { label: "Grouvex - Artista", desc: "Discografía, conciertos, eventos y mucho más de Grouvex.", url: "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Europe%2FMadrid&showPrint=0&title=Grouvex%20-%20Artista%20de%20GSRecords&src=YTIwZGI4MmQ1ODZiOWQ1Y2MwZTAzMzk4NzQyZTkyZTM1MWRmMGZkZTg2MjM2Zjk1YTMwODExMDY3NzQxM2Y0ZkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=ZDk2MzczNTAzMDk3ZTQ1Y2EyM2IxYWZhOWY0NjcyODgyZTE4ODdhNWFlNGVlOTg4MjBkZDg4NWJlY2ZkZGQxY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=ZWJiZTE0ZmJhN2RkY2RmOTZiOGZlN2ViMjVlODRhNzI1YjFkZjI2MDY2ODU3ZmM2MmQ0MGJlYjVmMDA0MzFiYUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23ad1457&color=%23ad1457&color=%23ad1457", private: true, allowed: ["register"] },
+            { label: "Maiki Dran - Artista", desc: "Discografía, conciertos, eventos y mucho más de Maiki Dran.", url: "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Europe%2FMadrid&showPrint=0&title=Maiki%20Dran%20-%20Artista%20de%20GSRecords&src=M2U1NzI4ODBhMDI1M2E5NTIxNmYwYTVmZTNjOTA2N2RhYWQ0YzBjNGJhZjQ3NDliZGFmYjlmYmQ5NTM4MTI4YkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=YjJjYmIzMGZkY2JjZTI2NjUwMWNiYzUyZTIxMDhkNzA1MmQ4YTYwZjkyYTM2MDE1ODk2ZjdjYjEyOGJjYzJhZUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=YzY1ZGY4ZjRhYzMzMmQ0YmY2YmFlODc3NWFhNGFjMDk3NjFmYWEzMTczNmFhM2FhZmUxZmQ4MzU3ODk5ZjZhMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23f4511e&color=%23f4511e&color=%23f4511e", private: true, allowed: ["register"] },
+            { label: "Tarlight Etherall - Artista", desc: "Discografía, conciertos, eventos y mucho más de Tarlight Etherall.", url: "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Europe%2FMadrid&showPrint=0&title=Tarlight%20Etherall%20-%20Artista%20de%20GSRecords&src=MTc4NjYxM2NlYTc3N2QzMDI4ZGUyNDkxYWI2YzQzZDMxMzMxMGNmZWJlNjBkYWMxZDQ4ODg0MmMxMzI1ZmFkNUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=MjcyMDQ5OTU1YWZjOTM1ODYzYzA4Njk4YzQ5MDRmOTE1NjhkYmJlN2I3NTIwYjc2ODU4ODk3OWIzZDczZjA0Y0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=NDI5MzVlOTNhNjdjMTc3N2E0MTFmMDkyOTgyOTY4MjM2ZTkzMjg5OWU1ZDE3MmJlYjBmZjEyZWRiZjA0YjExZkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23e4c441&color=%23e4c441&color=%23e4c441", private: true, allowed: ["blocked"] },
+            { label: "Clara Langa - Artista", desc: "Discografía, conciertos, eventos y mucho más de Clara Langa.", url: "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Europe%2FMadrid&showPrint=0&title=Clara%20Langa%20-%20Artista%20de%20GSRecords&src=Y2xhcmFsYW5nYWFydGlzdEBnbWFpbC5jb20&color=%23e4c441", private: true, allowed: ["blocked"] }
+        ]
+    },
+    {
+        label: "3. GSDesigns",
+        desc: "Diseños, gestión de talentos, eventos y mucho más.",
+        url: "https://calendar.google.com/calendar/embed?src=435839cc43a9b9209f4bec91144ed82501770ba555249e87c60707f60d8051ee%40group.calendar.google.com",
+        private: true,
+        allowed: ["blocked"], 
+        subs: []
+    },
+];
+
+let userSession = null;
+let currentConfig = null;
+let currentParentConfig = null; // Para saber qué padre tiene el sub-calendario actual
+
+// ==================== NAVEGACIÓN POR HASH (MÉTODO MEJORADO) ====================
+function textToHash(text) {
+    return text.toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '');
+}
+
+// Buscar calendario por hash (devuelve el objeto completo)
+function findCalendarByHash(hash) {
+    if (!hash) return null;
     
-    // ==================== FIREBASE CONFIG ====================
-    const firebaseConfig = {
-        apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
-        authDomain: "grouvex-studios.firebaseapp.com",
-        projectId: "grouvex-studios",
-        appId: "1:1070842606062:web:5d887863048fd100b49eff"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    const DATA = [
-        {
-            label: "1. Calendario Principal",
-            desc: "Eventos globales de la comunidad y lanzamientos generales de Grouvex Studios.",
-            url: "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Europe%2FMadrid&showPrint=0&title=Calendario%20Principal%20y%20Grouvex%20Studios&src=Z3JvdXZleC5zdHVkaW9AZ21haWwuY29t&src=NDMwZmJjNmIzMzNhODI1MGY0ZGEzMDMzZjMyYjU1Mzc3NmQ4MTBiMjg1YWU1MTI4NjA5ODA1YjE3MmRkMmFiMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=NWUzNDMxM2UxNDcxN2M3YThlMWE5YTA1ODUyNTNjNmVhNzlkODcyOTBhZmM0MjMyNTY1YTQ4MmQ2Yjg0MTgxNEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=ZXMuc3BhaW4jaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&src=NDM1ODM5Y2M0M2E5YjkyMDlmNGJlYzkxMTQ0ZWQ4MjUwMTc3MGJhNTU1MjQ5ZTg3YzYwNzA3ZjYwZDgwNTFlZUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23039be5&color=%23a79b8e&color=%23ef6c00&color=%230b8043&color=%23f4511e",
-            private: false,
-            allowed: [],
-            subs: [
-                {
-                    label: "1.2 Calendario Social",
-                    desc: "Festividades, reuniones y eventos sociales para miembros registrados.",
-                    url: "https://calendar.google.com/calendar/embed?src=435839cc43a9b9209f4bec91144ed82501770ba555249e87c60707f60d8051ee%40group.calendar.google.com",
-                    private: true,
-                    allowed: ["register"] 
-                }
-            ]
-        },
-        {
-            label: "2. GSRecords",
-            desc: "Cronograma de grabaciones, producción musical, gestión de talentos, eventos y mucho más.",
-            url: "https://calendar.google.com/calendar/embed?src=435839cc43a9b9209f4bec91144ed82501770ba555249e87c60707f60d8051ee%40group.calendar.google.com",
-            private: true,
-            allowed: ["register"], 
-            subs: [
-                { label: "Grouvex - Artista", desc: "Discografía, conciertos, eventos y mucho más de Grouvex.", url: "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Europe%2FMadrid&showPrint=0&title=Grouvex%20-%20Artista%20de%20GSRecords&src=YTIwZGI4MmQ1ODZiOWQ1Y2MwZTAzMzk4NzQyZTkyZTM1MWRmMGZkZTg2MjM2Zjk1YTMwODExMDY3NzQxM2Y0ZkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=ZDk2MzczNTAzMDk3ZTQ1Y2EyM2IxYWZhOWY0NjcyODgyZTE4ODdhNWFlNGVlOTg4MjBkZDg4NWJlY2ZkZGQxY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=ZWJiZTE0ZmJhN2RkY2RmOTZiOGZlN2ViMjVlODRhNzI1YjFkZjI2MDY2ODU3ZmM2MmQ0MGJlYjVmMDA0MzFiYUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23ad1457&color=%23ad1457&color=%23ad1457", private: true, allowed: ["register"] },
-                { label: "Maiki Dran - Artista", desc: "Discografía, conciertos, eventos y mucho más de Maiki Dran.", url: "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Europe%2FMadrid&showPrint=0&title=Maiki%20Dran%20-%20Artista%20de%20GSRecords&src=M2U1NzI4ODBhMDI1M2E5NTIxNmYwYTVmZTNjOTA2N2RhYWQ0YzBjNGJhZjQ3NDliZGFmYjlmYmQ5NTM4MTI4YkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=YjJjYmIzMGZkY2JjZTI2NjUwMWNiYzUyZTIxMDhkNzA1MmQ4YTYwZjkyYTM2MDE1ODk2ZjdjYjEyOGJjYzJhZUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=YzY1ZGY4ZjRhYzMzMmQ0YmY2YmFlODc3NWFhNGFjMDk3NjFmYWEzMTczNmFhM2FhZmUxZmQ4MzU3ODk5ZjZhMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23f4511e&color=%23f4511e&color=%23f4511e", private: true, allowed: ["register"] },
-                { label: "Tarlight Etherall - Artista", desc: "Discografía, conciertos, eventos y mucho más de Tarlight Etherall.", url: "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Europe%2FMadrid&showPrint=0&title=Tarlight%20Etherall%20-%20Artista%20de%20GSRecords&src=MTc4NjYxM2NlYTc3N2QzMDI4ZGUyNDkxYWI2YzQzZDMxMzMxMGNmZWJlNjBkYWMxZDQ4ODg0MmMxMzI1ZmFkNUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=MjcyMDQ5OTU1YWZjOTM1ODYzYzA4Njk4YzQ5MDRmOTE1NjhkYmJlN2I3NTIwYjc2ODU4ODk3OWIzZDczZjA0Y0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=NDI5MzVlOTNhNjdjMTc3N2E0MTFmMDkyOTgyOTY4MjM2ZTkzMjg5OWU1ZDE3MmJlYjBmZjEyZWRiZjA0YjExZkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23e4c441&color=%23e4c441&color=%23e4c441", private: true, allowed: ["blocked"] },
-                { label: "Clara Langa - Artista", desc: "Discografía, conciertos, eventos y mucho más de Clara Langa.", url: "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Europe%2FMadrid&showPrint=0&title=Clara%20Langa%20-%20Artista%20de%20GSRecords&src=Y2xhcmFsYW5nYWFydGlzdEBnbWFpbC5jb20&color=%23e4c441", private: true, allowed: ["blocked"] }
-            ]
-        },
-        {
-            label: "3. GSDesigns",
-            desc: "Diseños, gestión de talentos, eventos y mucho más.",
-            url: "https://calendar.google.com/calendar/embed?src=435839cc43a9b9209f4bec91144ed82501770ba555249e87c60707f60d8051ee%40group.calendar.google.com",
-            private: true,
-            allowed: ["blocked"], 
-            subs: [  ]
-        },
-    ];
-
-    let userSession = null;
-    let currentConfig = null;
-
-    // ==================== NAVEGACIÓN POR HASH ====================
-    // Convierte un texto a formato de hash (minúsculas, sin caracteres especiales)
-    function textToHash(text) {
-        return text.toLowerCase()
-            .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // elimina acentos
-            .replace(/[^a-z0-9]+/g, '-') // reemplaza caracteres no alfanuméricos por guiones
-            .replace(/^-|-$/g, ''); // elimina guiones al inicio/final
-    }
-    
-    // Busca un calendario (principal o sub) por su hash
-    function findCalendarByHash(hash) {
-        if (!hash) return null;
-        
-        // Buscar en calendarios principales
-        for (let cat of DATA) {
-            if (textToHash(cat.label) === hash) {
-                return { calendar: cat, isSub: false, parent: null };
-            }
-            
-            // Buscar en sub-calendarios
-            if (cat.subs) {
-                for (let sub of cat.subs) {
-                    if (textToHash(sub.label) === hash) {
-                        return { calendar: sub, isSub: true, parent: cat };
-                    }
+    for (let cat of DATA) {
+        if (textToHash(cat.label) === hash) {
+            return { calendar: cat, isSub: false, parent: null };
+        }
+        if (cat.subs) {
+            for (let sub of cat.subs) {
+                if (textToHash(sub.label) === hash) {
+                    return { calendar: sub, isSub: true, parent: cat };
                 }
             }
         }
-        return null;
     }
+    return null;
+}
+
+// Navegación principal - usa eventos personalizados
+function navigateToCalendar(target) {
+    if (!target) return;
     
-    // Navega al calendario indicado por el hash de la URL
-    function navigateByHash() {
-        let hash = window.location.hash.substring(1); // quita el #
-        
-        // Si no hay hash o es vacío, mostrar el primer calendario por defecto
-        if (!hash) {
-            if (DATA.length > 0) {
-                selectMain(DATA[0], document.querySelector('#main-nav .btn'));
-            }
-            return;
-        }
-        
-        const result = findCalendarByHash(hash);
-        
-        if (result) {
-            if (result.isSub) {
-                // Primero activar el padre
-                const parentBtn = Array.from(document.querySelectorAll('#main-nav .btn'))
-                    .find(btn => btn.innerText === result.parent.label);
-                if (parentBtn) {
-                    parentBtn.click();
-                    // Luego activar el sub-calendario
-                    setTimeout(() => {
-                        const subBtn = Array.from(document.querySelectorAll('#sub-nav .btn'))
-                            .find(btn => btn.innerText === result.calendar.label);
-                        if (subBtn) {
-                            subBtn.click();
-                        }
-                    }, 150);
+    if (target.isSub) {
+        // Primero cargar el padre
+        currentParentConfig = target.parent;
+        loadView(target.parent, false);
+        // Luego cargar el hijo después de que el padre se renderice
+        setTimeout(() => {
+            loadView(target.calendar, true);
+            // Actualizar clase activa en sub-nav
+            document.querySelectorAll('#sub-nav .btn').forEach(btn => {
+                if (btn.innerText === target.calendar.label) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
                 }
+            });
+        }, 150);
+    } else {
+        currentParentConfig = null;
+        loadView(target.calendar, false);
+        // Actualizar clase activa en main-nav
+        document.querySelectorAll('#main-nav .btn').forEach(btn => {
+            if (btn.innerText === target.calendar.label) {
+                btn.classList.add('active');
             } else {
-                // Activar calendario principal
-                const btn = Array.from(document.querySelectorAll('#main-nav .btn'))
-                    .find(btn => btn.innerText === result.calendar.label);
-                if (btn) {
-                    btn.click();
-                }
+                btn.classList.remove('active');
             }
+        });
+    }
+}
+
+// Manejar cambios de hash
+function onHashChange() {
+    let hash = window.location.hash.substring(1);
+    if (!hash) {
+        // Si no hay hash, mostrar el primer calendario por defecto
+        if (DATA.length > 0) {
+            navigateToCalendar({ calendar: DATA[0], isSub: false, parent: null });
         }
+        return;
     }
     
-    // Actualiza el hash en la URL basado en el calendario actual
-    function updateHashFromCalendar(calendar) {
-        if (calendar && calendar.label) {
-            const newHash = textToHash(calendar.label);
-            // Evitar bucles infinitos
-            if (window.location.hash.substring(1) !== newHash) {
-                window.location.hash = newHash;
-            }
+    const target = findCalendarByHash(hash);
+    if (target) {
+        navigateToCalendar(target);
+    }
+}
+
+// Actualizar hash en URL
+function updateHash(calendar) {
+    if (calendar && calendar.label) {
+        const newHash = textToHash(calendar.label);
+        if (window.location.hash.substring(1) !== newHash) {
+            window.location.hash = newHash;
         }
     }
+}
 
-    function init() {
-        const mainNav = document.getElementById('main-nav');
-        DATA.forEach((cat, index) => {
+// ==================== FUNCIONES DE UI ====================
+function renderMainNav() {
+    const mainNav = document.getElementById('main-nav');
+    DATA.forEach((cat) => {
+        const container = document.createElement('div');
+        container.style.display = 'inline-flex';
+        container.style.alignItems = 'center';
+
+        const b = document.createElement('button');
+        b.className = 'btn';
+        b.innerText = cat.label;
+        b.onclick = () => {
+            navigateToCalendar({ calendar: cat, isSub: false, parent: null });
+            updateHash(cat);
+        };
+
+        const info = document.createElement('span');
+        info.className = 'info-trigger';
+        info.innerHTML = 'ℹ️';
+        info.onclick = (e) => { 
+            e.stopPropagation(); 
+            showDesc(cat.desc || "Sin descripción disponible."); 
+        };
+
+        container.appendChild(b);
+        container.appendChild(info);
+        mainNav.appendChild(container);
+    });
+}
+
+function renderSubNav(parentCat) {
+    const subNav = document.getElementById('sub-nav');
+    if (parentCat && parentCat.subs && parentCat.subs.length > 0) {
+        subNav.style.display = 'flex';
+        subNav.innerHTML = '';
+        parentCat.subs.forEach(sub => {
             const container = document.createElement('div');
             container.style.display = 'inline-flex';
             container.style.alignItems = 'center';
-    
-            const b = document.createElement('button');
-            b.className = 'btn';
-            b.innerText = cat.label;
-            b.onclick = () => selectMain(cat, b);
-            
-            // Icono de información
+            container.style.marginRight = '15px';
+
+            const sb = document.createElement('button');
+            sb.className = 'btn';
+            sb.innerText = sub.label;
+            sb.onclick = () => {
+                navigateToCalendar({ calendar: sub, isSub: true, parent: parentCat });
+                updateHash(sub);
+            };
+
             const info = document.createElement('span');
             info.className = 'info-trigger';
             info.innerHTML = 'ℹ️';
-            info.onclick = (e) => { e.stopPropagation(); showDesc(cat.desc || "Sin descripción disponible."); };
-    
-            container.appendChild(b);
+            info.onclick = (e) => { 
+                e.stopPropagation(); 
+                showDesc(sub.desc || "Sin descripción disponible."); 
+            };
+
+            container.appendChild(sb);
             container.appendChild(info);
-            mainNav.appendChild(container);
+            subNav.appendChild(container);
         });
-    
-        auth.onAuthStateChanged(user => {
-            userSession = user;
-            document.getElementById('logout-zone').style.display = user ? 'flex' : 'none';
-            if (currentConfig) {
-                loadView(currentConfig);
-            } else {
-                // Navegar según el hash después de cargar la autenticación
-                navigateByHash();
-            }
-        });
-        
-        // Escuchar cambios en el hash (cuando el usuario usa adelante/atrás)
-        window.addEventListener('hashchange', navigateByHash);
+    } else {
+        subNav.style.display = 'none';
     }
+}
 
-    function selectMain(cat, element) {
-        document.querySelectorAll('#main-nav .btn').forEach(b => b.classList.remove('active'));
-        element.classList.add('active');
-        renderSubs(cat);
-        loadView(cat);
-        updateHashFromCalendar(cat);
-    }
+function showDesc(text) {
+    document.getElementById('desc-content').innerText = text;
+    document.getElementById('desc-modal').style.display = 'flex';
+}
 
-    function renderSubs(cat) {
-        const subNav = document.getElementById('sub-nav');
-        if (cat.subs && cat.subs.length > 0) {
-            subNav.style.display = 'flex';
-            subNav.innerHTML = '';
-            cat.subs.forEach(sub => {
-                const container = document.createElement('div');
-                container.style.display = 'inline-flex';
-                container.style.alignItems = 'center';
-                container.style.marginRight = '15px';
+function loadView(config, isSub = false) {
+    currentConfig = config;
+    const container = document.getElementById('iframe-container');
+    const authScreen = document.getElementById('auth-screen');
+    const errorScreen = document.getElementById('error-screen');
+    const blockedScreen = document.getElementById('blocked-screen');
+    const indicator = document.getElementById('access-indicator');
+    const buttonLang = document.getElementById('lang-select');
+    const buttonTZone = document.getElementById('tz-select');
     
-                const sb = document.createElement('button');
-                sb.className = 'btn';
-                sb.innerText = sub.label;
-                sb.onclick = () => {
-                    document.querySelectorAll('#sub-nav .btn').forEach(b => b.classList.remove('active'));
-                    sb.classList.add('active');
-                    loadView(sub);
-                    updateHashFromCalendar(sub);
-                };
+    document.getElementById('current-title').innerText = config.label.toUpperCase();
     
-                const info = document.createElement('span');
-                info.className = 'info-trigger';
-                info.innerHTML = 'ℹ️';
-                info.onclick = (e) => { e.stopPropagation(); showDesc(sub.desc || "Sin descripción disponible."); };
-    
-                container.appendChild(sb);
-                container.appendChild(info);
-                subNav.appendChild(container);
-            });
-        } else { subNav.style.display = 'none'; }
+    // Actualizar logo del header (para sub-calendarios usar logo del padre)
+    const parentForLogo = (isSub && currentParentConfig) ? currentParentConfig : config;
+    const headerLogo = document.getElementById('header-logo');
+    if (headerLogo) {
+        headerLogo.src = getLogoForLabel(parentForLogo.label);
     }
     
-    function showDesc(text) {
-        document.getElementById('desc-content').innerText = text;
-        document.getElementById('desc-modal').style.display = 'flex';
+    // Actualizar metadatos
+    const pageTitle = `${config.label} | Grouvex Studios`;
+    const pageDesc = config.desc || "Calendario oficial de Grouvex Studios";
+    const pageImage = getLogoForLabel(parentForLogo.label);
+    const pageUrl = `/calendar/${textToHash(config.label)}`;
+    updateMetadata(pageTitle, pageDesc, pageImage, pageUrl);
+    
+    // Renderizar sub-nav si es necesario
+    if (!isSub && config.subs && config.subs.length > 0) {
+        renderSubNav(config);
+    } else if (!isSub) {
+        renderSubNav(null);
+    }
+    
+    // Reset pantallas
+    authScreen.style.display = 'none';
+    errorScreen.style.display = 'none';
+    blockedScreen.style.display = 'none';
+    container.innerHTML = '';
+
+    // Indicador visual
+    if (!config.private) {
+        indicator.innerText = "PÚBLICO";
+        indicator.className = "status-pill public";
+    } else if (config.allowed.includes("register")) {
+        indicator.innerText = "REGISTRO";
+        indicator.className = "status-pill register";
+    } else if (config.allowed.includes("blocked")) {
+        indicator.innerText = "BLOCKED";
+        indicator.className = "status-pill blocked";
+    } else {
+        indicator.innerText = "PRIVADO";
+        indicator.className = "status-pill private";
     }
 
-    function loadView(config) {
-        currentConfig = config;
-        const container = document.getElementById('iframe-container');
-        const authScreen = document.getElementById('auth-screen');
-        const errorScreen = document.getElementById('error-screen');
-        const blockedScreen = document.getElementById('blocked-screen');
-        const indicator = document.getElementById('access-indicator');
-        const buttonLang = document.getElementById('lang-select');
-        const buttonTZone = document.getElementById('tz-select');
-        
-        document.getElementById('current-title').innerText = config.label.toUpperCase();
-        
-        // Actualizar logo del header
-        const headerLogo = document.getElementById('header-logo');
-        if (headerLogo) {
-            headerLogo.src = getLogoForLabel(config.label);
-        }
-        
-        // Actualizar metadatos de la página
-        const pageTitle = `${config.label} | Grouvex Studios`;
-        const pageDesc = config.desc || "Calendario oficial de Grouvex Studios";
-        const pageImage = getLogoForLabel(config.label);
-        const pageUrl = `/calendar/${textToHash(config.label)}`;
-        updateMetadata(pageTitle, pageDesc, pageImage, pageUrl);
-        
-        // Reset pantallas
-        authScreen.style.display = 'none';
-        errorScreen.style.display = 'none';
-        blockedScreen.style.display = 'none';
-        container.innerHTML = '';
-
-        // Definir indicador visual
-        if (!config.private) {
-            indicator.innerText = "PÚBLICO";
-            indicator.className = "status-pill public";
-        } else if (config.allowed.includes("register")) {
-            indicator.innerText = "REGISTRO";
-            indicator.className = "status-pill register";
-        } else if (config.allowed.includes("blocked")) {
-            indicator.innerText = "BLOCKED";
-            indicator.className = "status-pill blocked";
-        } else {
-            indicator.innerText = "PRIVADO";
-            indicator.className = "status-pill private";
-        }
-
-        // 1. PRIMERO: ¿Está bloqueado? (Máxima prioridad)
-        if (config.allowed.includes("blocked")) {
-            blockedScreen.style.display = 'flex';
-            buttonLang.disabled = true;
-            buttonTZone.disabled = true;
-            return;
-        }
-        
-        // 2. SEGUNDO: Si es público, mostrar sin autenticación
-        if (!config.private) {
+    // Verificar acceso
+    if (config.allowed.includes("blocked")) {
+        blockedScreen.style.display = 'flex';
+        buttonLang.disabled = true;
+        buttonTZone.disabled = true;
+        return;
+    }
+    
+    if (!config.private) {
+        updateIframeParams();
+        buttonLang.disabled = false;
+        buttonTZone.disabled = false;
+        return;
+    }
+    
+    if (!userSession) {
+        authScreen.style.display = 'flex';
+        buttonLang.disabled = false;
+        buttonTZone.disabled = false;
+        return;
+    }
+    
+    const userEmail = userSession.email;
+    const isRegisteredOnly = config.allowed.includes("register");
+    const hasSpecificEmails = config.allowed.some(item => item.includes("@"));
+    
+    if (isRegisteredOnly) {
+        updateIframeParams();
+    } else if (hasSpecificEmails) {
+        if (config.allowed.includes(userEmail)) {
             updateIframeParams();
-            buttonLang.disabled = false;
-            buttonTZone.disabled = false;
-            return;
-        }
-    
-        // 3. TERCERO: Si es privado, requiere autenticación
-        if (!userSession) {
-            authScreen.style.display = 'flex';
-            buttonLang.disabled = false;
-            buttonTZone.disabled = false;
-            return;
-        }
-    
-        // 4. CUARTO: Validación de correos específicos o registro
-        const userEmail = userSession.email;
-        const isRegisteredOnly = config.allowed.includes("register");
-        const hasSpecificEmails = config.allowed.some(item => item.includes("@"));
-    
-        if (isRegisteredOnly) {
-            updateIframeParams();
-        } else if (hasSpecificEmails) {
-            if (config.allowed.includes(userEmail)) {
-                updateIframeParams();
-            } else {
-                errorScreen.style.display = 'flex';
-            }
         } else {
             errorScreen.style.display = 'flex';
         }
+    } else {
+        errorScreen.style.display = 'flex';
     }
+}
 
-    function updateIframeParams() {
-      if (!currentConfig) return;
-      let baseUrl = currentConfig.url;
-      baseUrl = baseUrl.replace(/[?&]ctz=[^&]*/, '');
-      baseUrl = baseUrl.replace(/[?&]hl=[^&]*/, '');
+function updateIframeParams() {
+    if (!currentConfig) return;
+    let baseUrl = currentConfig.url;
+    baseUrl = baseUrl.replace(/[?&]ctz=[^&]*/, '');
+    baseUrl = baseUrl.replace(/[?&]hl=[^&]*/, '');
     
-      const tz = document.getElementById('tz-select').value;
-      const lang = document.getElementById('lang-select').value;
-      const separator = baseUrl.includes('?') ? '&' : '?';
-      const finalUrl = `${baseUrl}${separator}ctz=${encodeURIComponent(tz)}&hl=${lang}&bgcolor=%23030508`;
+    const tz = document.getElementById('tz-select').value;
+    const lang = document.getElementById('lang-select').value;
+    const separator = baseUrl.includes('?') ? '&' : '?';
+    const finalUrl = `${baseUrl}${separator}ctz=${encodeURIComponent(tz)}&hl=${lang}&bgcolor=%23030508`;
     
-      const container = document.getElementById('iframe-container');
-      container.innerHTML = `<iframe src="${finalUrl}" loading="lazy"></iframe>`;
-    }
+    const container = document.getElementById('iframe-container');
+    container.innerHTML = `<iframe src="${finalUrl}" loading="lazy"></iframe>`;
+}
 
-    window.loginGoogle = () => auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-    window.loginEmail = () => auth.signInWithEmailAndPassword(document.getElementById('email').value, document.getElementById('pass').value).catch(e => alert(e.message));
-    function handleLogout() { auth.signOut().then(() => location.reload()); }
+// ==================== AUTH ====================
+window.loginGoogle = () => auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+window.loginEmail = () => auth.signInWithEmailAndPassword(
+    document.getElementById('email').value, 
+    document.getElementById('pass').value
+).catch(e => alert(e.message));
 
-    // --- DRAGÓN ---
-    const numSegments = 13;
-    const segments = [];
-    const coords = { x: 0, y: 0 };
+function handleLogout() { 
+    auth.signOut().then(() => location.reload()); 
+}
 
-    for (let i = 0; i < numSegments; i++) {
-        const div = document.createElement('div');
-        div.className = 'dragon-segment';
-        const size = 20 - (i * 1.3);
-        div.style.width = size + 'px';
-        div.style.height = size + 'px';
-        div.style.opacity = 1 - (i / numSegments);
-        div.style.background = `radial-gradient(circle, hsl(${180 + (i*5)}, 100%, 50%) 0%, transparent 80%)`;
-        document.body.appendChild(div);
-        segments.push({ x: 0, y: 0, element: div });
-    }
-
-    window.addEventListener('mousemove', e => {
-        coords.x = e.clientX;
-        coords.y = e.clientY;
+// ==================== INICIALIZACIÓN ====================
+function init() {
+    renderMainNav();
+    
+    auth.onAuthStateChanged(user => {
+        userSession = user;
+        document.getElementById('logout-zone').style.display = user ? 'flex' : 'none';
+        // Procesar hash después de autenticación
+        onHashChange();
     });
+    
+    window.addEventListener('hashchange', onHashChange);
+}
 
-    function updateDragon() {
-        let x = coords.x;
-        let y = coords.y;
-        const head = document.querySelector('.dragon-head-shell');
-        if (head) {
-            head.style.left = x + 'px';
-            head.style.top = y + 'px';
-        }
-        segments.forEach((seg) => {
-            seg.x += (x - seg.x) * 0.22;
-            seg.y += (y - seg.y) * 0.22;
-            seg.element.style.left = seg.x + 'px';
-            seg.element.style.top = seg.y + 'px';
-            x = seg.x; y = seg.y;
-        });
-        requestAnimationFrame(updateDragon);
+// ==================== DRAGÓN ====================
+const numSegments = 13;
+const segments = [];
+const coords = { x: 0, y: 0 };
+
+for (let i = 0; i < numSegments; i++) {
+    const div = document.createElement('div');
+    div.className = 'dragon-segment';
+    const size = 20 - (i * 1.3);
+    div.style.width = size + 'px';
+    div.style.height = size + 'px';
+    div.style.opacity = 1 - (i / numSegments);
+    div.style.background = `radial-gradient(circle, hsl(${180 + (i*5)}, 100%, 50%) 0%, transparent 80%)`;
+    document.body.appendChild(div);
+    segments.push({ x: 0, y: 0, element: div });
+}
+
+window.addEventListener('mousemove', e => {
+    coords.x = e.clientX;
+    coords.y = e.clientY;
+});
+
+function updateDragon() {
+    let x = coords.x;
+    let y = coords.y;
+    const head = document.querySelector('.dragon-head-shell');
+    if (head) {
+        head.style.left = x + 'px';
+        head.style.top = y + 'px';
     }
+    segments.forEach((seg) => {
+        seg.x += (x - seg.x) * 0.22;
+        seg.y += (y - seg.y) * 0.22;
+        seg.element.style.left = seg.x + 'px';
+        seg.element.style.top = seg.y + 'px';
+        x = seg.x; y = seg.y;
+    });
+    requestAnimationFrame(updateDragon);
+}
 
-    init();
-    updateDragon();
+init();
+updateDragon();
 </script>
 </body>
 </html>

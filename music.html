@@ -402,9 +402,6 @@
             <audio id="audioPlayer" controls></audio>
         </div>
     </main>
-    <!-- Footer -->
-    <div id="footer"></div>
-
     <!-- JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -1799,5 +1796,1547 @@ function handleEnded() {
             }
         });
     </script>
+<!-- En cualquier parte de tu HTML -->
+
+<head>
+  <style>
+    /* Variables CSS */
+    :root {
+      --primary-color: #667eea;
+      --secondary-color: #764ba2;
+      --accent-color: #ff6b6b;
+      --bg-dark: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      --bg-light: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --text-light: #ffffff;
+      --text-dark: #2d3748;
+      --glass-bg: rgba(255, 255, 255, 0.1);
+      --glass-border: rgba(255, 255, 255, 0.2);
+      --card-bg: rgba(255, 255, 255, 0.08);
+      --shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .grouvex-music-player {
+      background: var(--bg-dark);
+      color: var(--text-light);
+      border-radius: 24px;
+      padding: 0;
+      box-shadow: var(--shadow);
+      max-width: 80%;
+      margin: 10px auto;
+      overflow: hidden;
+      position: relative;
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+    }
+
+    .grouvex-music-player.light-theme {
+      background: var(--bg-light);
+      color: var(--text-dark);
+    }
+
+    .gmx-player-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 24px 20px;
+      position: relative;
+    }
+
+    .gmx-player-header h2 {
+      margin: 0;
+      font-size: 1.5em;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .gmx-player-header h2::before {
+      content: "🎵";
+      font-size: 1.2em;
+    }
+
+    .gmx-theme-toggle {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      color: inherit;
+      padding: 10px 16px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .gmx-theme-toggle:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .gmx-playlist-container {
+      padding: 0 20px;
+    }
+
+    .gmx-playlist {
+      max-height: 220px;
+      overflow-y: auto;
+      margin-bottom: 20px;
+      border-radius: 16px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(15px);
+      border: 1px solid var(--glass-border);
+    }
+
+    .gmx-playlist::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .gmx-playlist::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 3px;
+    }
+
+    .gmx-playlist-item {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .gmx-playlist-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateX(8px);
+    }
+
+    .gmx-playlist-item.active {
+      background: rgba(255, 255, 255, 0.2);
+      border-left: 4px solid var(--primary-color);
+    }
+
+    .gmx-playlist-item.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .gmx-playlist-item.disabled:hover {
+      transform: none;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .gmx-song-title {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      position: relative;
+    }
+
+    .gmx-song-title:hover::after {
+      content: attr(data-full-title);
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      white-space: nowrap;
+      z-index: 10;
+      font-size: 0.9em;
+    }
+
+    .gmx-song-duration {
+      font-size: 0.75em;
+      opacity: 0.7;
+      margin-left: 10px;
+    }
+
+    .gmx-player-controls {
+      background: var(--glass-bg);
+      padding: 24px;
+      margin: 0 20px 20px;
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      border: 1px solid var(--glass-border);
+    }
+
+    .gmx-song-info {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .gmx-song-title-large {
+      font-size: 1.3em;
+      font-weight: 700;
+      margin-bottom: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .gmx-song-artist {
+      opacity: 0.8;
+      font-size: 0.9em;
+    }
+
+    .gmx-progress-container {
+      margin: 20px 0;
+    }
+
+    .gmx-progress-bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gmx-progress {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      border-radius: 10px;
+      width: 0%;
+      transition: width 0.1s ease;
+    }
+
+    .gmx-time-display {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8em;
+      opacity: 0.8;
+      margin-top: 8px;
+    }
+
+    .gmx-control-buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin: 24px 0;
+    }
+
+    .gmx-control-btn {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      color: inherit;
+      font-size: 1.4em;
+      cursor: pointer;
+      padding: 14px;
+      border-radius: 50%;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+    }
+
+    .gmx-control-btn:hover {
+      transform: translateY(-3px) scale(1.1);
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .gmx-play-pause {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      width: 60px;
+      height: 60px;
+      font-size: 1.8em;
+      border: none;
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    .gmx-play-pause:hover {
+      transform: translateY(-3px) scale(1.1);
+      box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+    }
+
+    .gmx-volume-control {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 50px;
+    }
+
+    .gmx-volume-slider {
+      flex: 1;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .gmx-volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--primary-color);
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      transition: var(--transition);
+    }
+
+    .gmx-volume-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+      background: var(--secondary-color);
+    }
+
+    .gmx-volume-value {
+      font-size: 0.8em;
+      font-weight: 600;
+      min-width: 40px;
+      text-align: center;
+    }
+
+    .gmx-additional-controls {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .gmx-additional-btn {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      color: inherit;
+      padding: 10px 20px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .gmx-additional-btn.active {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      border-color: transparent;
+    }
+
+    .gmx-additional-btn.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .gmx-additional-btn.disabled:hover {
+      transform: none;
+      background: var(--glass-bg);
+    }
+
+    .gmx-config-panel {
+      background: var(--glass-bg);
+      margin: 0 20px 20px;
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      border: 1px solid var(--glass-border);
+      overflow: hidden;
+    }
+
+    .gmx-config-toggle {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      color: inherit;
+      padding: 12px 20px;
+      border-radius: 50px;
+      cursor: pointer;
+      width: calc(100% - 40px);
+      text-align: center;
+      margin: 0 20px 20px;
+      transition: var(--transition);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .gmx-config-toggle::before {
+      content: "⚙️";
+    }
+
+    .gmx-config-toggle:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .gmx-config-content {
+      display: none;
+      padding: 20px;
+    }
+
+    .gmx-config-content.show {
+      display: block;
+    }
+
+    .gmx-config-item {
+      margin: 16px 0;
+    }
+
+    .gmx-config-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .gmx-visualizer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 3px;
+      height: 40px;
+      margin: 15px 0;
+      padding: 0 20px;
+    }
+
+    .gmx-bar {
+      width: 4px;
+      height: 20px;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      border-radius: 2px;
+      animation: equalizer 1.5s ease-in-out infinite;
+      animation-play-state: paused;
+    }
+
+    .gmx-bar:nth-child(1) { animation-delay: 0.1s; }
+    .gmx-bar:nth-child(2) { animation-delay: 0.2s; }
+    .gmx-bar:nth-child(3) { animation-delay: 0.3s; }
+    .gmx-bar:nth-child(4) { animation-delay: 0.4s; }
+    .gmx-bar:nth-child(5) { animation-delay: 0.5s; }
+
+    @keyframes equalizer {
+      0%, 100% { height: 10px; }
+      50% { height: 30px; }
+    }
+
+    .gmx-help-section {
+      margin: 0 20px 20px;
+    }
+
+    .gmx-help-toggle {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      color: inherit;
+      padding: 12px 20px;
+      border-radius: 50px;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+      transition: var(--transition);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .gmx-help-toggle::before {
+      content: "❓";
+    }
+
+    .gmx-help-toggle:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .gmx-help-content {
+      display: none;
+      padding: 20px;
+      background: var(--card-bg);
+      border-radius: 16px;
+      margin-top: 10px;
+    }
+
+    .gmx-help-content.show {
+      display: block;
+    }
+
+    .gmx-help-item {
+      margin-bottom: 16px;
+    }
+
+    .gmx-help-item h4 {
+      margin-bottom: 8px;
+      color: var(--primary-color);
+    }
+
+    .gmx-help-item p {
+      font-size: 0.9em;
+      line-height: 1.5;
+    }
+
+    .gmx-loop-indicator {
+      font-size: 0.7em;
+      margin-left: 5px;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 2px 6px;
+      border-radius: 10px;
+    }
+
+/* NUEVOS ESTILOS PARA LA INFORMACIÓN DE LA CANCIÓN */
+.song-info-container {
+  background: var(--glass-bg);
+  margin: 0 20px 20px;
+  padding: 0;
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+  border: 1px solid var(--glass-border);
+  overflow: hidden;
+  display: none;
+}
+
+.song-info-container.show {
+  display: block;
+}
+
+.song-illustration {
+  width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  border-radius: 20px 20px 0 0;
+}
+
+.song-illustration.placeholder {
+  height: 150px;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3em;
+  border-radius: 20px 20px 0 0;
+}
+
+.song-details-content {
+  padding: 20px;
+}
+
+.song-album-title {
+  font-size: 1.2em;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--primary-color);
+}
+
+.song-artist-info {
+  font-size: 1em;
+  margin-bottom: 5px;
+  opacity: 0.9;
+}
+
+.song-other-artists {
+  font-size: 0.9em;
+  margin-bottom: 10px;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+.song-genres {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.genre-tag {
+  background: rgba(76, 129, 222, 0.8);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8em;
+  border: 1px solid var(--glass-border);
+}
+
+.song-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.detail-item {
+  font-size: 0.8em;
+  opacity: 0.8;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 2px;
+}
+
+.song-platforms {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid var(--glass-border);
+}
+
+.platforms-label {
+  font-size: 0.9em;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: var(--primary-color);
+}
+
+.song-info-loading {
+  text-align: center;
+  padding: 40px 20px;
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.song-info-error {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--accent-color);
+}
+  </style>
+</head>
+
+<div class="song-info-container" id="songInfoContainer">
+  <!-- La información se cargará dinámicamente aquí -->
+</div>
+<div class="grouvex-music-player" id="grouvexMusicPlayer">
+  <details style="background: black">
+  <summary>Términos de Servicio y Políticas de Privacidad</summary>
+  <details>
+      <summary>Términos de Servicio</summary>
+      <p>Este reproductor de música es exclusivo para canciones que se han concedido a <a href="https://grouvex.github.io/gsrecords">Grouvex Studios Records</a> y por lo tanto han cedido parte de sus derechos a dicho sello discográfico. Cualquier acto ilegal (hacer plagio de la canción, modificar la información, etc) está penalizado según los términos de servicio de DDOO.</p>
+  </details>
+  <details>
+      <summary>Políticas de Privacidad</summary>
+      <p>Puesto que las canciones pertenecen a los respectivos artistas y la información está administrada por <a href="https://grouvex.github.io/gsrecords">Grouvex Studios Records</a>, éste mantendrá la información artista (aquella información que no se nos ha concedido permiso para compartir), en privado. También, los usuarios que usen estas funciones, deberán usarlo según el proposito de este reproductor, el cúal es poder disfurtar de las canciones SIN ANUNCIOS y algunas veces, antes de su lanzamiento.</p>
+  </details>
+  </details>
+  <div class="gmx-player-header">
+    <h2>Grouvex Player</h2>
+    <button class="gmx-theme-toggle" onclick="gmxToggleTheme()">Tema</button>
+  </div>
+
+  <!-- NUEVO: Contenedor para la información de la canción -->
+  <div class="song-info-container" id="songInfoContainer">
+    <div class="song-illustration placeholder" id="songIllustration">🎵</div>
+    <div class="song-details-content">
+      <div class="song-album-title" id="songAlbumTitle">Cargando información...</div>
+      <div class="song-artist-info" id="songArtistInfo"></div>
+      <div class="song-other-artists" id="songOtherArtists"></div>
+      
+      <div class="song-genres" id="songGenres"></div>
+      
+      <div class="song-details-grid">
+        <div class="detail-item">
+          <div class="detail-label">Lanzamiento Original</div>
+          <div id="songReleaseOriginal"></div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Inicio de Ventas</div>
+          <div id="songSalesStart"></div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Sello Discográfico</div>
+          <div id="songRecordLabel"></div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Derechos Composición</div>
+          <div id="songCompositionRights"></div>
+        </div>
+      </div>
+      
+      <div class="song-platforms">
+        <div class="platforms-label">Plataformas de Lanzamiento</div>
+        <div id="songPlatforms"></div>
+      </div>
+    </div>
+  </div>
+
+  <button class="gmx-playlist-toggle" onclick="gmxTogglePlaylist()">Playlist</button>
+  <div class="gmx-playlist-container" id="gmxPlaylistContent">
+    <div class="gmx-playlist" id="gmxPlaylist">
+      <div class="gmx-playlist-item">Cargando canciones...</div>
+    </div>
+  </div>
+
+    <div class="gmx-visualizer" id="gmxVisualizer">
+      <div class="gmx-bar"></div>
+      <div class="gmx-bar"></div>
+      <div class="gmx-bar"></div>
+      <div class="gmx-bar"></div>
+      <div class="gmx-bar"></div>
+    </div>
+
+    <div class="gmx-player-controls">
+      <div class="gmx-song-info">
+        <div class="gmx-song-title-large" id="gmxCurrentSongTitle">Selecciona una canción</div>
+        <div class="gmx-song-artist" id="gmxCurrentSongArtist">Grouvex</div>
+      </div>
+
+      <div class="gmx-progress-container">
+        <div class="gmx-progress-bar" id="gmxProgressBar">
+          <div class="gmx-progress" id="gmxProgress"></div>
+        </div>
+        <div class="gmx-time-display">
+          <span id="gmxCurrentTime">0:00</span>
+          <span id="gmxDuration">0:00</span>
+        </div>
+      </div>
+
+      <div class="gmx-control-buttons">
+        <button class="gmx-control-btn" onclick="gmxPreviousSong()">⏮</button>
+        <button class="gmx-control-btn gmx-play-pause" onclick="gmxTogglePlay()">▶</button>
+        <button class="gmx-control-btn" onclick="gmxNextSong()">⏭</button>
+      </div>
+
+      <div class="gmx-volume-control">
+        <span>🔊</span>
+        <input type="range" class="gmx-volume-slider" id="gmxVolumeSlider" min="0" max="1" step="0.01" value="0.8" oninput="gmxSetVolume(this.value)">
+        <span class="gmx-volume-value" id="gmxVolumeValue">80%</span>
+      </div>
+
+      <div class="gmx-additional-controls">
+        <button class="gmx-additional-btn" id="gmxShuffleBtn" onclick="gmxToggleShuffle()">🔀 Shuffle</button>
+        <button class="gmx-additional-btn" id="gmxLoopBtn" onclick="gmxToggleLoop()">🔁 Loop</button>
+      </div>
+    </div>
+
+    <div class="gmx-config-panel" id="gmxConfigPanel">
+      <button class="gmx-config-toggle" onclick="gmxToggleConfig()">Configuración</button>
+      <div class="gmx-config-content" id="gmxConfigContent">
+        <div class="gmx-config-item">
+          <label class="gmx-config-label">
+            <input type="checkbox" id="gmxAutoPlay" onchange="gmxUpdateConfig('autoPlay', this.checked)">
+            Reproducción automática
+          </label>
+        </div>
+        <div class="gmx-config-item">
+          <label class="gmx-config-label">
+            <input type="checkbox" id="gmxVisualizer" checked onchange="gmxToggleVisualizer(this.checked)">
+            Visualizador de audio
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="gmx-help-section">
+      <button class="gmx-help-toggle" onclick="gmxToggleHelp()">Cómo funciona</button>
+      <div class="gmx-help-content" id="gmxHelpContent">
+        <div class="gmx-help-item">
+          <h4>🎵 Reproducción de canciones</h4>
+          <p>Haz clic en cualquier canción de la lista para reproducirla. Usa los botones de reproducción/pausa, anterior y siguiente para controlar la música.</p>
+        </div>
+        <div class="gmx-help-item">
+          <h4>🔀 Modo Shuffle</h4>
+          <p>Activa el modo shuffle para reproducir las canciones en orden aleatorio.</p>
+        </div>
+        <div class="gmx-help-item">
+          <h4>🔁 Modo Loop</h4>
+          <p>Pulsa una vez para repetir la canción actual, dos veces para repetir toda la lista, y una tercera para desactivar el loop.</p>
+        </div>
+        <div class="gmx-help-item">
+          <h4>⚙️ Configuración</h4>
+          <p>Activa la reproducción automática para que pase a la siguiente canción al terminar la actual, o desactívala para mantener el control manual.</p>
+        </div>
+      </div>
+    </div>
+
+    <audio id="gmxAudioPlayer" preload="metadata"></audio>
+</div>
+<script>
+// ============================================
+// CONFIGURACIÓN DE LA API (usa GET directo)
+// ============================================
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec';
+
+// ============================================
+// SIMULADOR DEFINITIVO (JSON-SAFE)
+// ============================================
+(function(global) {
+    // Definimos la URL de tu Web App de Google
+
+    global.google = global.google || {};
+    global.google.script = (function() {
+        let _h = { s: null, f: null, obj: null };
+        const reset = () => { _h = { s: null, f: null, obj: null }; };
+
+        const execute = (name, args) => {
+            // Recogemos los handlers actuales
+            const success = _h.s;
+            const failure = _h.f;
+            const userObj = _h.obj;
+            reset(); // Limpiamos para la siguiente llamada
+
+            // Enviamos siempre como Array de Strings para evitar errores de tipo
+            const payloadData = args.map(arg => String(arg || "").trim());
+
+            fetch(GAS_API_URL, {
+                method: 'POST',
+                mode: 'cors',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({
+                    endpoint: name,
+                    payload: payloadData
+                })
+            })
+            .then(resp => resp.json())
+            .then(data => {
+                if (data.success) {
+                    if (success) success(data.data, userObj);
+                } else {
+                    if (failure) failure(data.error, userObj);
+                }
+            })
+            .catch(err => {
+                if (failure) failure(err.message, userObj);
+            });
+        };
+
+        // El Proxy hace la magia: intercepta cualquier nombre de función
+        const proxy = new Proxy({}, {
+            get: (target, prop) => {
+                if (prop === 'withSuccessHandler') return (h) => { _h.s = h; return proxy; };
+                if (prop === 'withFailureHandler') return (h) => { _h.f = h; return proxy; };
+                if (prop === 'withUserObject') return (o) => { _h.obj = o; return proxy; };
+                
+                // Si no es un handler, es el nombre de la función (ej: getRelatedArtistIds)
+                return (...args) => execute(prop, args);
+            }
+        });
+
+        return { run: proxy };
+    })();
+})(window);
+    // Variables globales
+    let gmxCurrentPlaylist = [];
+    let gmxCurrentIndex = 0;
+    let gmxIsPlaying = false;
+    let gmxIsShuffled = false;
+    let gmxIsLooping = 0; // 0: desactivado, 1: canción, 2: lista
+    let gmxVisualizerEnabled = true;
+    let gmxAllMusicFiles = [];
+
+    // Configuración
+    const MUSIC = {
+      enabled: true,
+      allowedFiles: [],
+      disabledFiles: ["Forbidden Friendship.mp3", "Yo Quiero - A New World - Versión Karaoke.mp3", "Yo Quiero - A New World (Piano Version).mp3", ""],
+      autoPlay: true,
+      volume: 1,
+      theme: 'dark'
+    };
+
+    // URL base para las imágenes del portafolio
+    const PORTFOLIO_IMAGE_BASE_URL = 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/main/port/';
+
+    // Función para obtener lista de archivos del repositorio
+    async function gmxFetchMusicFiles() {
+      try {
+        console.log('🎵 Buscando archivos de música en el repositorio...');
+        
+        // URL base del repositorio
+        const repoUrl = 'https://api.github.com/repos/Grouvex/grouvex.github.io/contents/music';
+        
+        // Hacer la petición a la API de GitHub
+        const response = await fetch(repoUrl);
+        
+        if (!response.ok) {
+          throw new Error(`Error al cargar archivos: ${response.status}`);
+        }
+        
+        const files = await response.json();
+        
+        // Filtrar solo archivos MP3
+        const mp3Files = files
+          .filter(file => file.name.toLowerCase().endsWith('.mp3'))
+          .map(file => file.name);
+        
+        console.log(`🎵 Se encontraron ${mp3Files.length} archivos MP3:`, mp3Files);
+        return mp3Files;
+      } catch (error) {
+        console.error('Error al cargar archivos:', error);
+        
+        // Fallback: intentar obtener la lista de otra manera
+        return gmxFallbackMusicList();
+      }
+    }
+
+    // Fallback en caso de que falle la API de GitHub
+    async function gmxFallbackMusicList() {
+      console.log('🔄 Usando método alternativo para cargar archivos...');
+      
+      // Lista de archivos conocidos (puedes mantener esta como respaldo)
+      const knownFiles = [
+        'A Parallel Universe.mp3',
+        'Acuario.mp3', 
+        'Advanced Music.mp3',
+        'Amor Fatuo.mp3',
+        'Aries.mp3',
+        'Balance Sphere.mp3',
+        'Cancer.mp3',
+        'Capricornio.mp3',
+        'Conversation.mp3',
+        'Diamonds (Grouvex\'s Version).mp3',
+        'El Diamante Renaciente.mp3',
+        'El Diamante.mp3'
+      ];
+      
+      // Verificar qué archivos existen realmente
+      const existingFiles = [];
+      
+      for (const file of knownFiles) {
+        try {
+          const url = getMusicUrl(file);
+          const response = await fetch(url, { method: 'HEAD' });
+          if (response.ok) {
+            existingFiles.push(file);
+          }
+        } catch (e) {
+          console.log(`Archivo no encontrado: ${file}`);
+        }
+      }
+      
+      console.log(`🎵 Se verificaron ${existingFiles.length} archivos:`, existingFiles);
+      return existingFiles;
+    }
+
+    // Función para obtener URL de música
+    function getMusicUrl(filename) {
+      const baseUrl = 'https://github.com/Grouvex/grouvex.github.io/raw/main/music/';
+      return baseUrl + encodeURIComponent(filename);
+    }
+
+    // Función para obtener URL de imagen del portafolio
+function getPortfolioImageUrl(songTitle, albumTitle = null) {
+  // Lista de posibles nombres de archivo a probar
+  const possibleFilenames = [];
+  
+  // 1. Primera opción: título de la canción limpio
+  const cleanSongTitle = songTitle
+    .replace(/[^\w\s]/gi, '') // Remover caracteres especiales
+    .replace(/\s+/g, ' ')     // Reemplazar múltiples espacios por uno solo
+    .trim();
+  
+  if (cleanSongTitle) {
+    possibleFilenames.push(cleanSongTitle + '.jpg');
+  }
+  
+  // 2. Segunda opción: título del álbum limpio (si está disponible)
+  if (albumTitle) {
+    const cleanAlbumTitle = albumTitle
+      .replace(/[^\w\s]/gi, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+    
+    if (cleanAlbumTitle && cleanAlbumTitle !== cleanSongTitle) {
+      possibleFilenames.push(cleanAlbumTitle + '.jpg');
+    }
+  }
+  
+  // 3. Tercera opción: título de la canción sin caracteres especiales pero manteniendo espacios
+  const spacedTitle = songTitle
+    .replace(/[^\w\s]/gi, '')
+    .replace(/\s+/g, '_') // Reemplazar espacios con guiones bajos
+    .trim();
+  
+  if (spacedTitle && !possibleFilenames.includes(spacedTitle + '.jpg')) {
+    possibleFilenames.push(spacedTitle + '.jpg');
+  }
+  
+  // 4. Cuarta opción: título del álbum con guiones bajos (si está disponible)
+  if (albumTitle) {
+    const spacedAlbumTitle = albumTitle
+      .replace(/[^\w\s]/gi, '')
+      .replace(/\s+/g, '_')
+      .trim();
+    
+    if (spacedAlbumTitle && spacedAlbumTitle !== spacedTitle && 
+        !possibleFilenames.includes(spacedAlbumTitle + '.jpg')) {
+      possibleFilenames.push(spacedAlbumTitle + '.jpg');
+    }
+  }
+  
+  console.log('🔍 Buscando imágenes con nombres:', possibleFilenames);
+  
+  // Devolver un objeto con todas las URLs posibles para probar
+  return {
+    urls: possibleFilenames.map(filename => PORTFOLIO_IMAGE_BASE_URL + encodeURIComponent(filename)),
+    filenames: possibleFilenames
+  };
+}
+
+    // Función para verificar si existe una imagen
+    async function checkImageExists(imageUrl) {
+      try {
+        const response = await fetch(imageUrl, { method: 'HEAD' });
+        return response.ok;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    // Inicializar el reproductor
+    async function gmxInitializePlayer() {
+      console.log('🎵 Inicializando reproductor Grouvex...');
+      
+      // Cargar lista de archivos disponibles
+      gmxAllMusicFiles = await gmxFetchMusicFiles();
+      
+      if (gmxAllMusicFiles.length === 0) {
+        console.error('❌ No se encontraron archivos de música');
+        document.getElementById('gmxCurrentSongTitle').textContent = 'No hay canciones disponibles';
+        return;
+      }
+      
+      gmxLoadPlaylist();
+      gmxSetupEventListeners();
+      gmxUpdateVisualizer();
+      
+      console.log('✅ Reproductor inicializado correctamente');
+    }
+
+    // Función para obtener lista filtrada de música
+    function getFilteredMusicList() {
+      return gmxAllMusicFiles.filter(song => {
+        // Excluir archivos deshabilitados
+        if (MUSIC.disabledFiles.includes(song)) return false;
+        
+        // Si hay archivos permitidos específicos, solo incluir esos
+        if (MUSIC.allowedFiles.length > 0 && !MUSIC.allowedFiles.includes(song)) return false;
+        
+        return true;
+      });
+    }
+
+    // Cargar lista de reproducción
+    function gmxLoadPlaylist() {
+      gmxCurrentPlaylist = getFilteredMusicList();
+      gmxRenderPlaylist();
+      
+      if (gmxCurrentPlaylist.length > 0) {
+        document.getElementById('gmxCurrentSongTitle').textContent = 'Selecciona una canción';
+      } else {
+        document.getElementById('gmxCurrentSongTitle').textContent = 'No hay canciones disponibles';
+      }
+    }
+
+    // Cargar duraciones de las canciones
+    function gmxLoadDurations() {
+      gmxCurrentPlaylist.forEach((song, index) => {
+        const audio = new Audio();
+        const songUrl = getMusicUrl(song);
+        
+        audio.addEventListener('loadedmetadata', function() {
+          const duration = gmxFormatTime(audio.duration);
+          const playlistItems = document.querySelectorAll('.gmx-playlist-item');
+          if (playlistItems[index]) {
+            const durationSpan = playlistItems[index].querySelector('.gmx-song-duration');
+            if (durationSpan) {
+              durationSpan.textContent = duration;
+            }
+          }
+        });
+        
+        audio.addEventListener('error', function() {
+          console.error(`Error al cargar duración: ${song}`);
+          const playlistItems = document.querySelectorAll('.gmx-playlist-item');
+          if (playlistItems[index]) {
+            const durationSpan = playlistItems[index].querySelector('.gmx-song-duration');
+            if (durationSpan) {
+              durationSpan.textContent = '--:--';
+            }
+          }
+        });
+        
+        audio.src = songUrl;
+      });
+    }
+
+    // Renderizar lista de reproducción
+    function gmxRenderPlaylist() {
+      const playlistElement = document.getElementById('gmxPlaylist');
+      playlistElement.innerHTML = '';
+
+      if (gmxCurrentPlaylist.length === 0) {
+        playlistElement.innerHTML = '<div class="gmx-playlist-item">No hay canciones disponibles</div>';
+        return;
+      }
+
+      gmxCurrentPlaylist.forEach((song, index) => {
+        const item = document.createElement('div');
+        item.className = `gmx-playlist-item ${index === gmxCurrentIndex ? 'active' : ''}`;
+        item.innerHTML = `
+          <span class="gmx-song-title" data-full-title="${song.replace('.mp3', '')}">${gmxFormatSongName(song)}</span>
+          <span class="gmx-song-duration">Cargando...</span>
+        `;
+        item.onclick = () => gmxPlaySong(index);
+        playlistElement.appendChild(item);
+      });
+      
+      // Cargar las duraciones después de renderizar
+      setTimeout(() => gmxLoadDurations(), 100);
+    }
+
+    // Formatear nombre de canción
+    function gmxFormatSongName(filename) {
+      const name = filename.replace('.mp3', '');
+      return name.length > 50 ? name.substring(0, 50) + '...' : name;
+    }
+
+    // Reproducir canción
+    function gmxPlaySong(index) {
+      if (index < 0 || index >= gmxCurrentPlaylist.length) return;
+
+      gmxCurrentIndex = index;
+      const audio = document.getElementById('gmxAudioPlayer');
+      const song = gmxCurrentPlaylist[index];
+
+      const url = getMusicUrl(song);
+      audio.src = url;
+      audio.load();
+      
+      document.getElementById('gmxCurrentSongTitle').textContent = gmxFormatSongName(song);
+      gmxRenderPlaylist();
+      
+      // Cargar información detallada de la canción
+      loadSongDetails(song);
+      
+      // Reproducir si autoplay está activado
+      const autoPlay = document.getElementById('gmxAutoPlay')?.checked || MUSIC.autoPlay;
+      if (autoPlay) {
+        audio.play().catch(e => console.log('Autoplay bloqueado:', e));
+      }
+    }
+
+    // Función para cargar información detallada de la canción
+    function loadSongDetails(songFilename) {
+      const songTitle = songFilename.replace('.mp3', '');
+      const container = document.getElementById('songInfoContainer');
+      // Mostrar contenedor y estado de carga
+      if (container) {
+        container.classList.add('show');
+        container.innerHTML = '<div class="song-info-loading">Cargando información de la canción...</div>';
+      }
+      
+      // Llamar directamente a Google Apps Script
+      google.script.run
+        .withSuccessHandler(function(songInfo) {
+          if (songInfo.found) {
+            // Buscar la imagen en el portafolio de GitHub
+            loadPortfolioImage(songTitle, songInfo);
+          } else {
+            showSongInfoError('Información no disponible para esta canción');
+          }
+        })
+        .withFailureHandler(function(error) {
+          console.error('Error al cargar información:', error);
+          showSongInfoError('Error al cargar la información: ' + error);
+        })
+        .getCurrentSongInfo(songTitle);
+    }
+
+    // Función para cargar imagen del portafolio
+async function loadPortfolioImage(songTitle, songInfo) {
+  // Obtener todas las URLs posibles
+  const imageData = getPortfolioImageUrl(songTitle, songInfo.tituloAlbum);
+  
+  console.log('🖼️ Buscando imagen para:', songTitle);
+  console.log('📀 Álbum:', songInfo.tituloAlbum || 'No especificado');
+  console.log('🔗 URLs a probar:', imageData.urls);
+  
+  let foundImageUrl = null;
+  
+  // Probar todas las URLs posibles en orden
+  for (let i = 0; i < imageData.urls.length; i++) {
+    const url = imageData.urls[i];
+    const filename = imageData.filenames[i];
+    
+    console.log(`🔍 Probando imagen ${i + 1}/${imageData.urls.length}: ${filename}`);
+    
+    try {
+      const imageExists = await checkImageExists(url);
+      
+      if (imageExists) {
+        console.log('✅ Imagen encontrada:', filename);
+        foundImageUrl = url;
+        
+        break; // Salir del bucle cuando encontremos una imagen válida
+      } else {
+        console.log('❌ Imagen no encontrada:', filename);
+      }
+    } catch (error) {
+      console.error(`Error verificando imagen ${filename}:`, error);
+    }
+  }
+  
+  if (foundImageUrl) {
+    songInfo.ilustracion = foundImageUrl;
+    console.log('🎉 Imagen cargada exitosamente:', foundImageUrl);
+    const background = document.getElementById('grouvexMusicPlayer');
+    background.style.backgroundImage = `url('${foundImageUrl}')`;
+    background.style.backgroundPosition = 'center';
+    background.style.backgroundRepeat = 'no-repeat';
+    background.style.backgroundSize = 'cover';
+  } else {
+    console.log('💡 Ninguna imagen encontrada, usando placeholder');
+    songInfo.ilustracion = null;
+  }
+  
+  renderSongInfo(songInfo);
+}
+
+    // Función para renderizar la información de la canción
+    function renderSongInfo(songInfo) {
+      const container = document.getElementById('songInfoContainer');
+      if (!container) return;
+      
+      container.innerHTML = `
+        ${renderIllustration(songInfo.ilustracion, songInfo.title)}
+        <div class="song-details-content">
+          ${renderAlbumInfo(songInfo)}
+          ${renderArtistInfo(songInfo)}
+          ${renderGenres(songInfo)}
+          ${renderDetailsGrid(songInfo)}
+          ${renderPlatforms(songInfo)}
+        </div>
+      `;
+      
+      // Actualizar también el artista en la información principal
+      if (songInfo.artista && songInfo.artista !== 'No encontrado') {
+        document.getElementById('gmxCurrentSongArtist').textContent = songInfo.artista;
+      }
+    }
+
+    // Función para renderizar la ilustración
+    function renderIllustration(ilustracion, songTitle) {
+      if (ilustracion) {
+        return `<img src="${ilustracion}" alt="Portada de ${songTitle}" class="song-illustration" onerror="this.classList.add('placeholder'); this.innerHTML='🎵'">`;
+        
+      } else {
+        return `<div class="song-illustration placeholder" title="${songTitle}">🎵</div>`;
+      }
+    }
+
+    // Función para renderizar información del álbum
+    function renderAlbumInfo(songInfo) {
+      return `
+        <div class="song-album-title">${songInfo.tituloAlbum || 'Sin álbum especificado'}</div>
+      `;
+    }
+
+    // Función para renderizar información del artista
+    function renderArtistInfo(songInfo) {
+      let html = `<div class="song-artist-info">${songInfo.artista || 'Artista desconocido'}</div>`;
+      
+      if (songInfo.otrosArtistas) {
+        html += `<div class="song-other-artists">Con: ${songInfo.otrosArtistas}</div>`;
+      }
+      
+      return html;
+    }
+
+    // Función para renderizar géneros
+    function renderGenres(songInfo) {
+      const genres = [];
+      if (songInfo.generoPrimario) genres.push(songInfo.generoPrimario);
+      if (songInfo.generoSecundario) genres.push(songInfo.generoSecundario);
+      
+      if (genres.length > 0) {
+        return `
+          <div class="song-genres">
+            ${genres.map(genre => `<span class="genre-tag">${genre}</span>`).join('')}
+          </div>
+        `;
+      }
+      return '';
+    }
+
+    // Función para renderizar la cuadrícula de detalles
+    function renderDetailsGrid(songInfo) {
+      return `
+        <div class="song-details-grid">
+          <div class="detail-item">
+            <div class="detail-label">Lanzamiento Original</div>
+            <div style="color: white">${songInfo.lanzamientoOriginal || 'No especificado'}</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Inicio de Ventas</div>
+            <div style="color: white">${songInfo.fechaInicioVentas || 'No especificado'}</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Sello Discográfico</div>
+            <div style="color: white">${songInfo.selloDiscografico || 'No especificado'}</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Derechos Composición</div>
+            <div style="color: white">${songInfo.derechosComposicion || 'No especificado'}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Función para renderizar plataformas
+    function renderPlatforms(songInfo) {
+      if (songInfo.plataformas) {
+        return `
+          <div class="song-platforms">
+            <div class="platforms-label">Plataformas de Lanzamiento</div>
+            <div>${songInfo.plataformas}</div>
+          </div>
+        `;
+      }
+      return '';
+    }
+
+    // Función para mostrar error
+    function showSongInfoError(message) {
+      const container = document.getElementById('songInfoContainer');
+      if (container) {
+        container.innerHTML = `<div class="song-info-error">${message}</div>`;
+      }
+    }
+
+    // Alternar reproducción/pausa
+    function gmxTogglePlay() {
+      const audio = document.getElementById('gmxAudioPlayer');
+      
+      if (audio.src === '' || !audio.src) {
+        if (gmxCurrentPlaylist.length > 0) {
+          gmxPlaySong(0);
+        }
+        return;
+      }
+
+      if (gmxIsPlaying) {
+        audio.pause();
+      } else {
+        audio.play().catch(e => console.log('Error al reproducir:', e));
+      }
+    }
+
+    // Siguiente canción
+    function gmxNextSong() {
+      // Solo pasar a la siguiente canción si autoPlay está activado
+      const autoPlay = document.getElementById('gmxAutoPlay')?.checked || MUSIC.autoPlay;
+      if (!autoPlay) return;
+      
+      let nextIndex = gmxCurrentIndex + 1;
+      if (nextIndex >= gmxCurrentPlaylist.length) {
+        nextIndex = 0;
+      }
+      gmxPlaySong(nextIndex);
+    }
+
+    // Canción anterior
+    function gmxPreviousSong() {
+      let prevIndex = gmxCurrentIndex - 1;
+      if (prevIndex < 0) {
+        prevIndex = gmxCurrentPlaylist.length - 1;
+      }
+      gmxPlaySong(prevIndex);
+    }
+
+    // Configurar volumen
+    function gmxSetVolume(volume) {
+      const audio = document.getElementById('gmxAudioPlayer');
+      audio.volume = volume;
+      document.getElementById('gmxVolumeValue').textContent = Math.round(volume * 100) + '%';
+      document.getElementById('gmxVolumeSlider').value = volume;
+    }
+
+    // Alternar shuffle
+    function gmxToggleShuffle() {
+      gmxIsShuffled = !gmxIsShuffled;
+      const btn = document.getElementById('gmxShuffleBtn');
+      btn.classList.toggle('active', gmxIsShuffled);
+      
+      if (gmxIsShuffled) {
+        gmxShufflePlaylist();
+      } else {
+        gmxLoadPlaylist();
+      }
+    }
+
+    // Mezclar lista de reproducción
+    function gmxShufflePlaylist() {
+      const shuffled = [...gmxCurrentPlaylist];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      gmxCurrentPlaylist = shuffled;
+      gmxCurrentIndex = 0;
+      gmxRenderPlaylist();
+    }
+
+    // Alternar loop
+    function gmxToggleLoop() {
+      gmxIsLooping = (gmxIsLooping + 1) % 3;
+      const btn = document.getElementById('gmxLoopBtn');
+      const audio = document.getElementById('gmxAudioPlayer');
+      
+      // Actualizar texto del botón
+      if (gmxIsLooping === 0) {
+        btn.innerHTML = '🔁 Loop';
+        btn.classList.remove('active');
+        audio.loop = false;
+      } else if (gmxIsLooping === 1) {
+        btn.innerHTML = '🔂 Loop <span class="gmx-loop-indicator">1</span>';
+        btn.classList.add('active');
+        audio.loop = true;
+      } else if (gmxIsLooping === 2) {
+        btn.innerHTML = '🔁 Loop <span class="gmx-loop-indicator">∞</span>';
+        btn.classList.add('active');
+        audio.loop = false;
+      }
+    }
+
+    // Alternar tema
+    function gmxToggleTheme() {
+      const player = document.getElementById('grouvexMusicPlayer');
+      const themeBtn = document.querySelector('.gmx-theme-toggle');
+      player.classList.toggle('light-theme');
+      
+      if (player.classList.contains('light-theme')) {
+        themeBtn.innerHTML = '☀️ Tema';
+      } else {
+        themeBtn.innerHTML = '🌙 Tema';
+      }
+    }
+
+    // Alternar visualizador
+    function gmxToggleVisualizer(enabled) {
+      gmxVisualizerEnabled = enabled;
+      gmxUpdateVisualizer();
+    }
+
+    // Actualizar visualizador
+    function gmxUpdateVisualizer() {
+      const visualizer = document.getElementById('gmxVisualizer');
+      if (!visualizer) return;
+      
+      const bars = visualizer.querySelectorAll('.gmx-bar');
+      
+      if (gmxIsPlaying && gmxVisualizerEnabled) {
+        bars.forEach(bar => {
+          bar.style.animationPlayState = 'running';
+        });
+      } else {
+        bars.forEach(bar => {
+          bar.style.animationPlayState = 'paused';
+        });
+      }
+    }
+
+    // Alternar configuración
+    function gmxToggleConfig() {
+      document.getElementById('gmxConfigContent').classList.toggle('show');
+    }
+
+    // Alternar ayuda
+    function gmxToggleHelp() {
+      document.getElementById('gmxHelpContent').classList.toggle('show');
+    }
+
+    function gmxTogglePlaylist() {
+      document.getElementById('gmxPlaylistContent').classList.toggle('show');
+    }
+
+    // Actualizar configuración
+    function gmxUpdateConfig(key, value) {
+      MUSIC[key] = value;
+      console.log('Configuración actualizada:', key, value);
+      
+      // Si se actualizan las listas de archivos, recargar la playlist
+      if (key === 'allowedFiles' || key === 'disabledFiles') {
+        gmxLoadPlaylist();
+      }
+    }
+
+    // Configurar event listeners
+    function gmxSetupEventListeners() {
+      const audio = document.getElementById('gmxAudioPlayer');
+      const progressBar = document.getElementById('gmxProgressBar');
+
+      if (!audio || !progressBar) {
+        console.error('Elementos del reproductor no encontrados');
+        return;
+      }
+
+      audio.addEventListener('loadedmetadata', function() {
+        document.getElementById('gmxDuration').textContent = gmxFormatTime(audio.duration);
+      });
+
+      audio.addEventListener('timeupdate', function() {
+        const progress = (audio.currentTime / audio.duration) * 100;
+        document.getElementById('gmxProgress').style.width = progress + '%';
+        document.getElementById('gmxCurrentTime').textContent = gmxFormatTime(audio.currentTime);
+      });
+
+      audio.addEventListener('play', function() {
+        gmxIsPlaying = true;
+        document.querySelector('.gmx-play-pause').textContent = '⏸';
+        gmxUpdateVisualizer();
+      });
+
+      audio.addEventListener('pause', function() {
+        gmxIsPlaying = false;
+        document.querySelector('.gmx-play-pause').textContent = '▶';
+        gmxUpdateVisualizer();
+      });
+
+      audio.addEventListener('ended', function() {
+        // Solo pasar a la siguiente canción si autoPlay está activado
+        const autoPlay = document.getElementById('gmxAutoPlay')?.checked || MUSIC.autoPlay;
+        
+        if (gmxIsLooping === 1) {
+          // Loop de canción individual
+          audio.play();
+        } else if (gmxIsLooping === 2 || autoPlay) {
+          // Loop de lista o autoplay activado
+          gmxNextSong();
+        }
+      });
+
+      progressBar.addEventListener('click', function(e) {
+        const rect = progressBar.getBoundingClientRect();
+        const percent = (e.clientX - rect.left) / rect.width;
+        audio.currentTime = percent * audio.duration;
+      });
+    }
+
+    // Formatear tiempo
+    function gmxFormatTime(seconds) {
+      if (isNaN(seconds)) return '0:00';
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    // Función para actualizar manualmente la lista de música
+    async function gmxRefreshMusicList() {
+      console.log('🔄 Actualizando lista de música...');
+      gmxAllMusicFiles = await gmxFetchMusicFiles();
+      gmxLoadPlaylist();
+    }
+
+    // Inicializar cuando se carga la página
+    window.addEventListener('load', gmxInitializePlayer);
+</script>
 </body>
+<!-- Footer -->
+<div id="footer"></div>
 </html>

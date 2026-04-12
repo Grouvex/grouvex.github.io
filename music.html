@@ -3048,7 +3048,7 @@ function showUpcomingMessage(songFilename) {
   
   setTimeout(() => {
     if (messageDiv.parentElement) messageDiv.remove();
-  }, 4000);
+  }, 10000);
 }
 
 // Función para mostrar mensaje de fin de preview
@@ -3389,7 +3389,7 @@ function gmxRenderPlaylist() {
     
     if (isUpcomingSong(song)) {
       additionalClasses = ' upcoming-song';
-      badge = '<span class="gmx-badge upcoming-badge">🎵 Próximamente (info disponible)</span>';
+      badge = '<span class="gmx-badge upcoming-badge">🎵 Próximamente</span>';
     } else if (getPreviewInfo(song)) {
       const previewInfo = getPreviewInfo(song);
       additionalClasses = ' preview-song';

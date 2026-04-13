@@ -169,6 +169,7 @@
                 </div>
             </div>
             <div class="status-pill public" id="access-indicator">PÚBLICO</div>
+            <div class="status-pill" id="access-email"></div>
         </header>
 
           <div class="iframe-controls row-wrapper">
@@ -845,6 +846,10 @@ async function init() {
     // Escuchamos cambios en el estado de autenticación
     auth.onAuthStateChanged(user => {
         userSession = user;
+        const emailInput = document.getElementById('access-email');
+        if (emailInput) {
+            emailInput.value = user ? user.email : '';
+        }
         const logoutZone = document.getElementById('logout-zone');
         if (logoutZone) {
             logoutZone.style.display = user ? 'flex' : 'none';

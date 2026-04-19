@@ -1274,7 +1274,8 @@
               <!-- SECCIÓN DE PLATAFORMAS MUSICALES -->
               <div class="gmx-platforms-section" id="gmxPlatformsSection" style="display: none;">
                 <div class="gmx-platforms-title">
-                  <i class="fas fa-music"></i> Escucha también en:
+                  <div>Se puede escuchar en: <span id="gmxPlatforms"></span></div>
+                  <i class="fas fa-music"></i> Enlaces disponibles:
                 </div>
                 <div class="gmx-platforms-links" id="gmxPlatformsLinks">
                   <!-- Los enlaces se generarán dinámicamente -->
@@ -1597,7 +1598,7 @@
               let allSongs = [...gmxAllMusicFiles, ...allSpecialSongs];
               allSongs = [...new Set(allSongs)];
               
-              // Filtrar: eliminar canciones no disponibles y las deshabilitadas manualmente
+              // Filtrar: eliminar canciones no disponibles y las deshabilitadas
               return allSongs.filter(song => {
                 if (isUnavailableSong(song)) return false;  // NO aparecen en la lista
                 if (MUSIC.disabledFiles.includes(song)) return false;
@@ -1740,14 +1741,18 @@
                   <div class="song-album-title">${songInfo.tituloAlbum || 'Sin álbum'}</div>
                   <div class="song-artist-info">${songInfo.artista || 'Artista desconocido'}</div>
                   ${songInfo.otrosArtistas ? `<div class="song-other-artists">Con: ${songInfo.otrosArtistas}</div>` : ''}
+                  ${songInfo.compositores ? `<div class="song-other-artists">Compositores: ${songInfo.compositores}</div>` : ''}
                   ${renderGenres(songInfo)}
                   <div class="song-details-grid">
+                    <div class="detail-item"><div class="detail-label">Letristas</div><div>${songInfo.letristas || 'No especificado'}</div></div>
+                    <div class="detail-item"><div class="detail-label">Información para colaboradores</div><div>${songInfo.infoColaboradores || 'No especificado'}</div></div>
                     <div class="detail-item"><div class="detail-label">Contenido Explícito</div><div>${songInfo.explicit || 'No especificado'}</div></div>
                     <div class="detail-item"><div class="detail-label">Lanzamiento Original</div><div>${songInfo.lanzamientoOriginal || 'No especificado'}</div></div>
                     <div class="detail-item"><div class="detail-label">Lanzamiento de Preventa</div><div>${songInfo.fechaPedidoAnticipado || 'No especificado'}</div></div>
                     <div class="detail-item"><div class="detail-label">Inicio de Ventas</div><div>${songInfo.fechaInicioVentas || 'No especificado'}</div></div>
-                    <div class="detail-item"><div class="detail-label">Sello Discográfico</div><div>${songInfo.selloDiscografico || 'No especificado'}</div></div>
                     <div class="detail-item"><div class="detail-label">Derechos Composición</div><div>${songInfo.derechosComposicion || 'No especificado'}</div></div>
+                    <div class="detail-item"><div class="detail-label">Derechos Grabación</div><div>${songInfo.derechosGrabacion || 'No especificado'}</div></div>
+                    <div class="detail-item"><div class="detail-label">Sello Discográfico</div><div>${songInfo.selloDiscografico || 'No especificado'}</div></div>
                   </div>
                   ${songInfo.plataformas ? `<div class="song-platforms"><div class="platforms-label">Plataformas</div><div>${songInfo.plataformas}</div></div>` : ''}
                 </div>
@@ -1775,9 +1780,10 @@
             
             function renderPlatformLinks(songInfo) {
               const section = document.getElementById('gmxPlatformsSection');
+                const containerN = document.getElementById('gmxPlatforms');
               const container = document.getElementById('gmxPlatformsLinks');
               if (!section || !container) return;
-              
+              containerN.innerHTML = songInfo.plataformas || 'No Especificado';
               container.innerHTML = '';
               const links = [];
               

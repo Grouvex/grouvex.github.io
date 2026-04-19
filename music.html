@@ -411,2069 +411,1924 @@
             <audio id="audioPlayer" controls></audio>
         </div>
         </details>
-        <!-- Reproductor de Msuica -->
+        <div>
+          <!-- Reproductor de Musica -->
           <style>
-              /* Variables CSS */
-              :root {
-                --primary-color: #667eea;
-                --secondary-color: #764ba2;
-                --accent-color: #ff6b6b;
-                --bg-dark: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-                --bg-light: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                --text-light: #ffffff;
-                --text-dark: #2d3748;
-                --glass-bg: rgba(255, 255, 255, 0.1);
-                --glass-border: rgba(255, 255, 255, 0.2);
-                --card-bg: rgba(255, 255, 255, 0.08);
-                --shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-                --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-              }
-          
-              .grouvex-music-player {
-                background: var(--bg-dark);
-                color: var(--text-light);
-                border-radius: 24px;
-                padding: 0;
-                box-shadow: var(--shadow);
-                max-width: 80%;
-                margin: 10px auto;
-                overflow: hidden;
-                position: relative;
-                backdrop-filter: blur(20px);
-                border: 1px solid var(--glass-border);
-              }
-          
-              .grouvex-music-player.light-theme {
-                background: var(--bg-light);
-                color: var(--text-dark);
-              }
-          
-              .gmx-player-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 24px 24px 20px;
-                position: relative;
-              }
-          
-              .gmx-player-header h2 {
-                margin: 0;
-                font-size: 1.5em;
-                font-weight: 700;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-              }
-          
-              .gmx-player-header h2::before {
-                content: "🎵";
-                font-size: 1.2em;
-              }
-          
-              .gmx-theme-toggle {
-                background: var(--glass-bg);
-                border: 1px solid var(--glass-border);
-                color: inherit;
-                padding: 10px 16px;
-                border-radius: 50px;
-                cursor: pointer;
-                transition: var(--transition);
-                font-weight: 600;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-              }
-          
-              .gmx-theme-toggle:hover {
-                transform: translateY(-2px);
-                background: rgba(255, 255, 255, 0.2);
-              }
-          
-              .gmx-playlist-container {
-                padding: 0 20px;
-              }
-          
-              .gmx-playlist {
-                max-height: 220px;
-                overflow-y: auto;
-                margin-bottom: 20px;
-                border-radius: 16px;
-                background: var(--glass-bg);
-                backdrop-filter: blur(15px);
-                border: 1px solid var(--glass-border);
-              }
-          
-              .gmx-playlist::-webkit-scrollbar {
-                width: 6px;
-              }
-          
-              .gmx-playlist::-webkit-scrollbar-thumb {
-                background: rgba(255, 255, 255, 0.3);
-                border-radius: 3px;
-              }
-          
-              .gmx-playlist-item {
-                padding: 16px 20px;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                cursor: pointer;
-                transition: var(--transition);
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                position: relative;
-              }
-          
-              .gmx-playlist-item:hover {
-                background: rgba(255, 255, 255, 0.1);
-                transform: translateX(8px);
-              }
-          
-              .gmx-playlist-item.active {
-                background: rgba(255, 255, 255, 0.2);
-                border-left: 4px solid var(--primary-color);
-              }
-          
-              .gmx-playlist-item.disabled {
-                opacity: 0.5;
-                cursor: not-allowed;
-                background: rgba(255, 255, 255, 0.05);
-              }
-          
-              .gmx-playlist-item.disabled:hover {
-                transform: none;
-                background: rgba(255, 255, 255, 0.05);
-              }
-          
-              .gmx-song-title {
-                flex: 1;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                position: relative;
-              }
-          
-              .gmx-song-title:hover::after {
-                content: attr(data-full-title);
-                position: absolute;
-                top: -40px;
-                left: 0;
-                background: rgba(0, 0, 0, 0.8);
-                color: white;
-                padding: 8px 12px;
-                border-radius: 8px;
-                white-space: nowrap;
-                z-index: 10;
-                font-size: 0.9em;
-              }
-          
-              .gmx-song-duration {
-                font-size: 0.75em;
-                opacity: 0.7;
-                margin-left: 10px;
-              }
-          
-              .gmx-player-controls {
-                background: var(--glass-bg);
-                padding: 24px;
-                margin: 0 20px 20px;
-                border-radius: 20px;
-                backdrop-filter: blur(15px);
-                border: 1px solid var(--glass-border);
-              }
-          
-              .gmx-song-info {
-                text-align: center;
-                margin-bottom: 20px;
-              }
-          
-              .gmx-song-title-large {
-                font-size: 1.3em;
-                font-weight: 700;
-                margin-bottom: 8px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-              }
-          
-              .gmx-song-artist {
-                opacity: 0.8;
-                font-size: 0.9em;
-              }
-          
-              .gmx-progress-container {
-                margin: 20px 0;
-              }
-          
-              .gmx-progress-bar {
-                width: 100%;
-                height: 8px;
-                background: rgba(255, 255, 255, 0.2);
-                border-radius: 10px;
-                cursor: pointer;
-                position: relative;
-                overflow: hidden;
-              }
-          
-              .gmx-progress {
-                height: 100%;
-                background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-                border-radius: 10px;
-                width: 0%;
-                transition: width 0.1s ease;
-              }
-          
-              .gmx-time-display {
-                display: flex;
-                justify-content: space-between;
-                font-size: 0.8em;
-                opacity: 0.8;
-                margin-top: 8px;
-              }
-          
-              .gmx-control-buttons {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 20px;
-                margin: 24px 0;
-              }
-          
-              .gmx-control-btn {
-                background: var(--glass-bg);
-                border: 1px solid var(--glass-border);
-                color: inherit;
-                font-size: 1.4em;
-                cursor: pointer;
-                padding: 14px;
-                border-radius: 50%;
-                transition: var(--transition);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 50px;
-                height: 50px;
-              }
-          
-              .gmx-control-btn:hover {
-                transform: translateY(-3px) scale(1.1);
-                background: rgba(255, 255, 255, 0.2);
-              }
-          
-              .gmx-play-pause {
-                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-                width: 60px;
-                height: 60px;
-                font-size: 1.8em;
-                border: none;
-                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-              }
-          
-              .gmx-play-pause:hover {
-                transform: translateY(-3px) scale(1.1);
-                box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
-              }
-          
-              .gmx-volume-control {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                margin-top: 16px;
-                padding: 12px 16px;
-                background: rgba(255, 255, 255, 0.05);
-                border-radius: 50px;
-              }
-          
-              .gmx-volume-slider {
-                flex: 1;
-                height: 6px;
-                background: rgba(255, 255, 255, 0.2);
-                border-radius: 10px;
-                outline: none;
-                -webkit-appearance: none;
-                appearance: none;
-              }
-          
-              .gmx-volume-slider::-webkit-slider-thumb {
-                -webkit-appearance: none;
-                appearance: none;
-                width: 18px;
-                height: 18px;
-                border-radius: 50%;
-                background: var(--primary-color);
-                cursor: pointer;
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-                transition: var(--transition);
-              }
-          
-              .gmx-volume-slider::-webkit-slider-thumb:hover {
-                transform: scale(1.2);
-                background: var(--secondary-color);
-              }
-          
-              .gmx-volume-value {
-                font-size: 0.8em;
-                font-weight: 600;
-                min-width: 40px;
-                text-align: center;
-              }
-          
-              .gmx-additional-controls {
-                display: flex;
-                justify-content: center;
-                gap: 15px;
-                margin-top: 20px;
-              }
-          
-              .gmx-additional-btn {
-                background: var(--glass-bg);
-                border: 1px solid var(--glass-border);
-                color: inherit;
-                padding: 10px 20px;
-                border-radius: 50px;
-                cursor: pointer;
-                transition: var(--transition);
-                font-weight: 600;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-              }
-          
-              .gmx-additional-btn.active {
-                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-                border-color: transparent;
-              }
-          
-              .gmx-additional-btn.disabled {
-                opacity: 0.5;
-                cursor: not-allowed;
-              }
-          
-              .gmx-additional-btn.disabled:hover {
-                transform: none;
-                background: var(--glass-bg);
-              }
-          
-              .gmx-config-panel {
-                background: var(--glass-bg);
-                margin: 0 20px 20px;
-                border-radius: 20px;
-                backdrop-filter: blur(15px);
-                border: 1px solid var(--glass-border);
-                overflow: hidden;
-              }
-          
-              .gmx-config-toggle {
-                background: var(--glass-bg);
-                border: 1px solid var(--glass-border);
-                color: inherit;
-                padding: 12px 20px;
-                border-radius: 50px;
-                cursor: pointer;
-                width: calc(100% - 40px);
-                text-align: center;
-                margin: 0 20px 20px;
-                transition: var(--transition);
-                font-weight: 600;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 8px;
-              }
-          
-              .gmx-config-toggle::before {
-                content: "⚙️";
-              }
-          
-              .gmx-config-toggle:hover {
-                transform: translateY(-2px);
-                background: rgba(255, 255, 255, 0.2);
-              }
-          
-              .gmx-config-content {
-                display: none;
-                padding: 20px;
-              }
-          
-              .gmx-config-content.show {
-                display: block;
-              }
-          
-              .gmx-config-item {
-                margin: 16px 0;
-              }
-          
-              .gmx-config-label {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                font-weight: 600;
-                cursor: pointer;
-              }
-          
-              .gmx-visualizer {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 3px;
-                height: 40px;
-                margin: 15px 0;
-                padding: 0 20px;
-              }
-          
-              .gmx-bar {
-                width: 4px;
-                height: 20px;
-                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-                border-radius: 2px;
-                animation: equalizer 1.5s ease-in-out infinite;
-                animation-play-state: paused;
-              }
-          
-              .gmx-bar:nth-child(1) { animation-delay: 0.1s; }
-              .gmx-bar:nth-child(2) { animation-delay: 0.2s; }
-              .gmx-bar:nth-child(3) { animation-delay: 0.3s; }
-              .gmx-bar:nth-child(4) { animation-delay: 0.4s; }
-              .gmx-bar:nth-child(5) { animation-delay: 0.5s; }
-          
-              @keyframes equalizer {
-                0%, 100% { height: 10px; }
-                50% { height: 30px; }
-              }
-          
-              .gmx-help-section {
-                margin: 0 20px 20px;
-              }
-          
-              .gmx-help-toggle {
-                background: var(--glass-bg);
-                border: 1px solid var(--glass-border);
-                color: inherit;
-                padding: 12px 20px;
-                border-radius: 50px;
-                cursor: pointer;
-                width: 100%;
-                text-align: center;
-                transition: var(--transition);
-                font-weight: 600;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 8px;
-              }
-          
-              .gmx-help-toggle::before {
-                content: "❓";
-              }
-          
-              .gmx-help-toggle:hover {
-                transform: translateY(-2px);
-                background: rgba(255, 255, 255, 0.2);
-              }
-          
-              .gmx-help-content {
-                display: none;
-                padding: 20px;
-                background: var(--card-bg);
-                border-radius: 16px;
-                margin-top: 10px;
-              }
-          
-              .gmx-help-content.show {
-                display: block;
-              }
-          
-              .gmx-help-item {
-                margin-bottom: 16px;
-              }
-          
-              .gmx-help-item h4 {
-                margin-bottom: 8px;
-                color: var(--primary-color);
-              }
-          
-              .gmx-help-item p {
-                font-size: 0.9em;
-                line-height: 1.5;
-              }
-          
-              .gmx-loop-indicator {
-                font-size: 0.7em;
-                margin-left: 5px;
-                background: rgba(255, 255, 255, 0.2);
-                padding: 2px 6px;
-                border-radius: 10px;
-              }
-          
-          /* NUEVOS ESTILOS PARA LA INFORMACIÓN DE LA CANCIÓN */
-          .song-info-container {
-            background: var(--glass-bg);
-            margin: 0 20px 20px;
-            padding: 0;
-            border-radius: 20px;
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            overflow: hidden;
-            display: none;
-          }
-          
-          .song-info-container.show {
-            display: block;
-          }
-          
-          .song-illustration {
-            width: 100%;
-            max-height: 100%;
-            object-fit: cover;
-            border-radius: 20px 20px 0 0;
-          }
-          
-          .song-illustration.placeholder {
-            height: 150px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3em;
-            border-radius: 20px 20px 0 0;
-          }
-          
-          .song-details-content {
-            padding: 20px;
-          }
-          
-          .song-album-title {
-            font-size: 1.2em;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: var(--primary-color);
-          }
-          
-          .song-artist-info {
-            font-size: 1em;
-            margin-bottom: 5px;
-            opacity: 0.9;
-          }
-          
-          .song-other-artists {
-            font-size: 0.9em;
-            margin-bottom: 10px;
-            opacity: 0.8;
-            font-style: italic;
-          }
-          
-          .song-genres {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-          }
-          
-          .genre-tag {
-            background: rgba(76, 129, 222, 0.8);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8em;
-            border: 1px solid var(--glass-border);
-          }
-          
-          .song-details-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 15px;
-          }
-          
-          .detail-item {
-            font-size: 0.8em;
-            opacity: 0.8;
-          }
-          
-          .detail-label {
-            font-weight: 600;
-            color: var(--primary-color);
-            margin-bottom: 2px;
-          }
-          
-          .song-platforms {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid var(--glass-border);
-          }
-          
-          .platforms-label {
-            font-size: 0.9em;
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: var(--primary-color);
-          }
-          
-          .song-info-loading {
-            text-align: center;
-            padding: 40px 20px;
-            font-style: italic;
-            opacity: 0.7;
-          }
-          
-          .song-info-error {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--accent-color);
-          }
-            </style>
+            /* Variables CSS */
+            :root {
+              --primary-color: #667eea;
+              --secondary-color: #764ba2;
+              --accent-color: #ff6b6b;
+              --bg-dark: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+              --bg-light: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              --text-light: #ffffff;
+              --text-dark: #2d3748;
+              --glass-bg: rgba(255, 255, 255, 0.1);
+              --glass-border: rgba(255, 255, 255, 0.2);
+              --card-bg: rgba(255, 255, 255, 0.08);
+              --shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+              --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            }
+        
+            .grouvex-music-player {
+              background: var(--bg-dark);
+              color: var(--text-light);
+              border-radius: 24px;
+              padding: 0;
+              box-shadow: var(--shadow);
+              max-width: 80%;
+              margin: 10px auto;
+              overflow: hidden;
+              position: relative;
+              backdrop-filter: blur(20px);
+              border: 1px solid var(--glass-border);
+            }
+        
+            .grouvex-music-player.light-theme {
+              background: var(--bg-light);
+              color: var(--text-dark);
+            }
+        
+            .gmx-player-header {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              padding: 24px 24px 20px;
+              position: relative;
+            }
+        
+            .gmx-player-header h2 {
+              margin: 0;
+              font-size: 1.5em;
+              font-weight: 700;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+            }
+        
+            .gmx-player-header h2::before {
+              content: "🎵";
+              font-size: 1.2em;
+            }
+        
+            .gmx-theme-toggle {
+              background: var(--glass-bg);
+              border: 1px solid var(--glass-border);
+              color: inherit;
+              padding: 10px 16px;
+              border-radius: 50px;
+              cursor: pointer;
+              transition: var(--transition);
+              font-weight: 600;
+              display: flex;
+              align-items: center;
+              gap: 8px;
+            }
+        
+            .gmx-theme-toggle:hover {
+              transform: translateY(-2px);
+              background: rgba(255, 255, 255, 0.2);
+            }
+        
+            .gmx-playlist-container {
+              padding: 0 20px;
+            }
+        
+            .gmx-playlist {
+              max-height: 220px;
+              overflow-y: auto;
+              margin-bottom: 20px;
+              border-radius: 16px;
+              background: var(--glass-bg);
+              backdrop-filter: blur(15px);
+              border: 1px solid var(--glass-border);
+            }
+        
+            .gmx-playlist::-webkit-scrollbar {
+              width: 6px;
+            }
+        
+            .gmx-playlist::-webkit-scrollbar-thumb {
+              background: rgba(255, 255, 255, 0.3);
+              border-radius: 3px;
+            }
+        
+            .gmx-playlist-item {
+              padding: 16px 20px;
+              border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+              cursor: pointer;
+              transition: var(--transition);
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              position: relative;
+            }
+        
+            .gmx-playlist-item:hover {
+              background: rgba(255, 255, 255, 0.1);
+              transform: translateX(8px);
+            }
+        
+            .gmx-playlist-item.active {
+              background: rgba(255, 255, 255, 0.2);
+              border-left: 4px solid var(--primary-color);
+            }
+        
+            .gmx-playlist-item.disabled {
+              opacity: 0.5;
+              cursor: not-allowed;
+              background: rgba(255, 255, 255, 0.05);
+            }
+        
+            .gmx-playlist-item.disabled:hover {
+              transform: none;
+              background: rgba(255, 255, 255, 0.05);
+            }
+        
+            .gmx-song-title {
+              flex: 1;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              position: relative;
+            }
+        
+            .gmx-song-title:hover::after {
+              content: attr(data-full-title);
+              position: absolute;
+              top: -40px;
+              left: 0;
+              background: rgba(0, 0, 0, 0.8);
+              color: white;
+              padding: 8px 12px;
+              border-radius: 8px;
+              white-space: nowrap;
+              z-index: 10;
+              font-size: 0.9em;
+            }
+        
+            .gmx-song-duration {
+              font-size: 0.75em;
+              opacity: 0.7;
+              margin-left: 10px;
+            }
+        
+            .gmx-player-controls {
+              background: var(--glass-bg);
+              padding: 24px;
+              margin: 0 20px 20px;
+              border-radius: 20px;
+              backdrop-filter: blur(15px);
+              border: 1px solid var(--glass-border);
+            }
+        
+            .gmx-song-info {
+              text-align: center;
+              margin-bottom: 20px;
+            }
+        
+            .gmx-song-title-large {
+              font-size: 1.3em;
+              font-weight: 700;
+              margin-bottom: 8px;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+        
+            .gmx-song-artist {
+              opacity: 0.8;
+              font-size: 0.9em;
+            }
+        
+            .gmx-progress-container {
+              margin: 20px 0;
+            }
+        
+            .gmx-progress-bar {
+              width: 100%;
+              height: 8px;
+              background: rgba(255, 255, 255, 0.2);
+              border-radius: 10px;
+              cursor: pointer;
+              position: relative;
+              overflow: hidden;
+            }
+        
+            .gmx-progress {
+              height: 100%;
+              background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+              border-radius: 10px;
+              width: 0%;
+              transition: width 0.1s ease;
+            }
+        
+            .gmx-time-display {
+              display: flex;
+              justify-content: space-between;
+              font-size: 0.8em;
+              opacity: 0.8;
+              margin-top: 8px;
+            }
+        
+            .gmx-control-buttons {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              gap: 20px;
+              margin: 24px 0;
+            }
+        
+            .gmx-control-btn {
+              background: var(--glass-bg);
+              border: 1px solid var(--glass-border);
+              color: inherit;
+              font-size: 1.4em;
+              cursor: pointer;
+              padding: 14px;
+              border-radius: 50%;
+              transition: var(--transition);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 50px;
+              height: 50px;
+            }
+        
+            .gmx-control-btn:hover {
+              transform: translateY(-3px) scale(1.1);
+              background: rgba(255, 255, 255, 0.2);
+            }
+        
+            .gmx-play-pause {
+              background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+              width: 60px;
+              height: 60px;
+              font-size: 1.8em;
+              border: none;
+              box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            }
+        
+            .gmx-play-pause:hover {
+              transform: translateY(-3px) scale(1.1);
+              box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+            }
+        
+            .gmx-volume-control {
+              display: flex;
+              align-items: center;
+              gap: 12px;
+              margin-top: 16px;
+              padding: 12px 16px;
+              background: rgba(255, 255, 255, 0.05);
+              border-radius: 50px;
+            }
+        
+            .gmx-volume-slider {
+              flex: 1;
+              height: 6px;
+              background: rgba(255, 255, 255, 0.2);
+              border-radius: 10px;
+              outline: none;
+              -webkit-appearance: none;
+              appearance: none;
+            }
+        
+            .gmx-volume-slider::-webkit-slider-thumb {
+              -webkit-appearance: none;
+              appearance: none;
+              width: 18px;
+              height: 18px;
+              border-radius: 50%;
+              background: var(--primary-color);
+              cursor: pointer;
+              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+              transition: var(--transition);
+            }
+        
+            .gmx-volume-slider::-webkit-slider-thumb:hover {
+              transform: scale(1.2);
+              background: var(--secondary-color);
+            }
+        
+            .gmx-volume-value {
+              font-size: 0.8em;
+              font-weight: 600;
+              min-width: 40px;
+              text-align: center;
+            }
+        
+            .gmx-additional-controls {
+              display: flex;
+              justify-content: center;
+              gap: 15px;
+              margin-top: 20px;
+            }
+        
+            .gmx-additional-btn {
+              background: var(--glass-bg);
+              border: 1px solid var(--glass-border);
+              color: inherit;
+              padding: 10px 20px;
+              border-radius: 50px;
+              cursor: pointer;
+              transition: var(--transition);
+              font-weight: 600;
+              display: flex;
+              align-items: center;
+              gap: 8px;
+            }
+        
+            .gmx-additional-btn.active {
+              background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+              border-color: transparent;
+            }
+        
+            .gmx-additional-btn.disabled {
+              opacity: 0.5;
+              cursor: not-allowed;
+            }
+        
+            .gmx-additional-btn.disabled:hover {
+              transform: none;
+              background: var(--glass-bg);
+            }
+        
+            .gmx-config-panel {
+              background: var(--glass-bg);
+              margin: 0 20px 20px;
+              border-radius: 20px;
+              backdrop-filter: blur(15px);
+              border: 1px solid var(--glass-border);
+              overflow: hidden;
+            }
+        
+            .gmx-config-toggle {
+              background: var(--glass-bg);
+              border: 1px solid var(--glass-border);
+              color: inherit;
+              padding: 12px 20px;
+              border-radius: 50px;
+              cursor: pointer;
+              width: calc(100% - 40px);
+              text-align: center;
+              margin: 0 20px 20px;
+              transition: var(--transition);
+              font-weight: 600;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 8px;
+            }
+        
+            .gmx-config-toggle::before {
+              content: "⚙️";
+            }
+        
+            .gmx-config-toggle:hover {
+              transform: translateY(-2px);
+              background: rgba(255, 255, 255, 0.2);
+            }
+        
+            .gmx-config-content {
+              display: none;
+              padding: 20px;
+            }
+        
+            .gmx-config-content.show {
+              display: block;
+            }
+        
+            .gmx-config-item {
+              margin: 16px 0;
+            }
+        
+            .gmx-config-label {
+              display: flex;
+              align-items: center;
+              gap: 12px;
+              font-weight: 600;
+              cursor: pointer;
+            }
+        
+            .gmx-visualizer {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              gap: 3px;
+              height: 40px;
+              margin: 15px 0;
+              padding: 0 20px;
+            }
+        
+            .gmx-bar {
+              width: 4px;
+              height: 20px;
+              background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+              border-radius: 2px;
+              animation: equalizer 1.5s ease-in-out infinite;
+              animation-play-state: paused;
+            }
+        
+            .gmx-bar:nth-child(1) { animation-delay: 0.1s; }
+            .gmx-bar:nth-child(2) { animation-delay: 0.2s; }
+            .gmx-bar:nth-child(3) { animation-delay: 0.3s; }
+            .gmx-bar:nth-child(4) { animation-delay: 0.4s; }
+            .gmx-bar:nth-child(5) { animation-delay: 0.5s; }
+        
+            @keyframes equalizer {
+              0%, 100% { height: 10px; }
+              50% { height: 30px; }
+            }
+        
+            .gmx-help-section {
+              margin: 0 20px 20px;
+            }
+        
+            .gmx-help-toggle {
+              background: var(--glass-bg);
+              border: 1px solid var(--glass-border);
+              color: inherit;
+              padding: 12px 20px;
+              border-radius: 50px;
+              cursor: pointer;
+              width: 100%;
+              text-align: center;
+              transition: var(--transition);
+              font-weight: 600;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 8px;
+            }
+        
+            .gmx-help-toggle::before {
+              content: "❓";
+            }
+        
+            .gmx-help-toggle:hover {
+              transform: translateY(-2px);
+              background: rgba(255, 255, 255, 0.2);
+            }
+        
+            .gmx-help-content {
+              display: none;
+              padding: 20px;
+              background: var(--card-bg);
+              border-radius: 16px;
+              margin-top: 10px;
+            }
+        
+            .gmx-help-content.show {
+              display: block;
+            }
+        
+            .gmx-help-item {
+              margin-bottom: 16px;
+            }
+        
+            .gmx-help-item h4 {
+              margin-bottom: 8px;
+              color: var(--primary-color);
+            }
+        
+            .gmx-help-item p {
+              font-size: 0.9em;
+              line-height: 1.5;
+            }
+        
+            .gmx-loop-indicator {
+              font-size: 0.7em;
+              margin-left: 5px;
+              background: rgba(255, 255, 255, 0.2);
+              padding: 2px 6px;
+              border-radius: 10px;
+            }
+        
+            /* ESTILOS PARA LA INFORMACIÓN DE LA CANCIÓN */
+            .song-info-container {
+              background: var(--glass-bg);
+              margin: 0 20px 20px;
+              padding: 0;
+              border-radius: 20px;
+              backdrop-filter: blur(15px);
+              border: 1px solid var(--glass-border);
+              overflow: hidden;
+              display: none;
+            }
+        
+            .song-info-container.show {
+              display: block;
+            }
+        
+            .song-illustration {
+              width: 100%;
+              max-height: 200px;
+              object-fit: cover;
+              border-radius: 20px 20px 0 0;
+            }
+        
+            .song-illustration.placeholder {
+              height: 150px;
+              background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 3em;
+              border-radius: 20px 20px 0 0;
+            }
+        
+            .song-details-content {
+              padding: 20px;
+            }
+        
+            .song-album-title {
+              font-size: 1.2em;
+              font-weight: 700;
+              margin-bottom: 8px;
+              color: var(--primary-color);
+            }
+        
+            .song-artist-info {
+              font-size: 1em;
+              margin-bottom: 5px;
+              opacity: 0.9;
+            }
+        
+            .song-other-artists {
+              font-size: 0.9em;
+              margin-bottom: 10px;
+              opacity: 0.8;
+              font-style: italic;
+            }
+        
+            .song-genres {
+              display: flex;
+              gap: 10px;
+              margin-bottom: 10px;
+              flex-wrap: wrap;
+            }
+        
+            .genre-tag {
+              background: rgba(76, 129, 222, 0.8);
+              padding: 4px 12px;
+              border-radius: 20px;
+              font-size: 0.8em;
+              border: 1px solid var(--glass-border);
+            }
+        
+            .song-details-grid {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 10px;
+              margin-top: 15px;
+              background: rgba(0, 0, 0, 0.3);
+              border-radius: 12px;
+              padding: 10px;
+            }
+        
+            .detail-item {
+              font-size: 0.8em;
+              opacity: 0.9;
+            }
+        
+            .detail-label {
+              font-weight: 600;
+              color: var(--primary-color);
+              margin-bottom: 2px;
+            }
+        
+            .song-platforms {
+              margin-top: 15px;
+              padding-top: 15px;
+              border-top: 1px solid var(--glass-border);
+            }
+        
+            .platforms-label {
+              font-size: 0.9em;
+              font-weight: 600;
+              margin-bottom: 5px;
+              color: var(--primary-color);
+            }
+        
+            .song-info-loading {
+              text-align: center;
+              padding: 40px 20px;
+              font-style: italic;
+              opacity: 0.7;
+            }
+        
+            .song-info-error {
+              text-align: center;
+              padding: 40px 20px;
+              color: var(--accent-color);
+            }
+        
+            /* ESTILOS PARA PLATAFORMAS MUSICALES */
+            .gmx-platforms-section {
+              margin-top: 20px;
+              padding: 15px;
+              background: rgba(255, 255, 255, 0.08);
+              border-radius: 16px;
+              border: 1px solid var(--glass-border);
+            }
+        
+            .gmx-platforms-title {
+              font-size: 0.9em;
+              font-weight: 600;
+              margin-bottom: 12px;
+              color: var(--primary-color);
+              display: flex;
+              align-items: center;
+              gap: 8px;
+            }
+        
+            .gmx-platforms-links {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 12px;
+            }
+        
+            .gmx-platform-link {
+              display: inline-flex;
+              align-items: center;
+              gap: 8px;
+              padding: 8px 16px;
+              background: rgba(255, 255, 255, 0.1);
+              border-radius: 50px;
+              text-decoration: none;
+              color: inherit;
+              font-size: 0.85em;
+              transition: var(--transition);
+              border: 1px solid var(--glass-border);
+            }
+        
+            .gmx-platform-link:hover {
+              transform: translateY(-2px);
+              background: rgba(255, 255, 255, 0.2);
+            }
+        
+            .gmx-platform-link.spotify {
+              background: #1DB954;
+              color: white;
+              border-color: #1DB954;
+            }
+        
+            .gmx-platform-link.youtube {
+              background: #FF0000;
+              color: white;
+              border-color: #FF0000;
+            }
+        
+            .gmx-platform-link.apple {
+              background: #000;
+              color: white;
+              border-color: #333;
+            }
+        
+            .gmx-platform-link.amazon {
+              background: #FF9900;
+              color: white;
+              border-color: #FF9900;
+            }
+        
+            .gmx-platform-link.deezer {
+              background: #A238FF;
+              color: white;
+              border-color: #A238FF;
+            }
+        
+            .gmx-platform-link.tidal {
+              background: #000000;
+              color: white;
+              border-color: #333;
+            }
+        
+            .gmx-platform-link.soundcloud {
+              background: #FF5500;
+              color: white;
+              border-color: #FF5500;
+            }
+        
+            .gmx-platform-link.tiktok {
+              background: linear-gradient(45deg, black, blue);
+              color: white;
+              border-color: black;
+            }
+        
+            .gmx-platform-link.instagram {
+              background: linear-gradient(45deg, pink, magenta, cyan);
+              color: white;
+              border-color: magenta;
+            }
+            .gmx-platform-link i {
+              font-size: 1.1em;
+            }
+        
+            /* ESTILOS PARA BOTÓN PLAYLIST */
+            .gmx-playlist-toggle {
+              background: var(--glass-bg);
+              border: 1px solid var(--glass-border);
+              color: inherit;
+              padding: 10px 20px;
+              border-radius: 50px;
+              cursor: pointer;
+              margin: 0 20px 15px;
+              width: calc(50% - 45px);
+              font-weight: 600;
+              transition: var(--transition);
+              display: inline-block;
+            }
+        
+            .gmx-playlist-toggle:hover {
+              transform: translateY(-2px);
+              background: rgba(255, 255, 255, 0.2);
+            }
+        
+            .gmx-playlist-container {
+              transition: all 0.3s ease;
+              overflow: hidden;
+            }
+        
+            .gmx-playlist-container:not(.show) {
+              display: none;
+            }
+        
+            .gmx-playlist-container.show {
+              display: block;
+            }
+            
+            /* Reproductor de Embed */
+            .gmx-embed-player {
+              margin-top: 20px;
+              padding: 15px;
+              background: rgba(0, 0, 0, 0.3);
+              border-radius: 16px;
+              border: 1px solid var(--glass-border);
+            }
+            
+            .gmx-embed-header {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 12px;
+              font-size: 0.85em;
+              color: var(--primary-color);
+            }
+            
+            .gmx-embed-close-btn {
+              background: none;
+              border: none;
+              color: inherit;
+              cursor: pointer;
+              font-size: 1.2em;
+              padding: 4px 8px;
+              border-radius: 8px;
+              transition: var(--transition);
+            }
+            
+            .gmx-embed-close-btn:hover {
+              background: rgba(255, 255, 255, 0.2);
+            }
+          </style>
+        
           <div class="song-info-container" id="songInfoContainer">
             <!-- La información se cargará dinámicamente aquí -->
           </div>
+        
           <div class="grouvex-music-player" id="grouvexMusicPlayer">
             <details style="background: black">
-            <summary>Términos de Servicio y Políticas de Privacidad</summary>
-            <details>
+              <summary>Términos de Servicio y Políticas de Privacidad</summary>
+              <details>
                 <summary>Términos de Servicio</summary>
                 <p>Este reproductor de música es exclusivo para canciones que se han concedido a <a href="https://grouvex.github.io/gsrecords">Grouvex Studios Records</a> y por lo tanto han cedido parte de sus derechos a dicho sello discográfico. Cualquier acto ilegal (hacer plagio de la canción, modificar la información, etc) está penalizado según los términos de servicio de DDOO.</p>
-            </details>
-            <details>
+              </details>
+              <details>
                 <summary>Políticas de Privacidad</summary>
                 <p>Puesto que las canciones pertenecen a los respectivos artistas y la información está administrada por <a href="https://grouvex.github.io/gsrecords">Grouvex Studios Records</a>, éste mantendrá la información artista (aquella información que no se nos ha concedido permiso para compartir), en privado. También, los usuarios que usen estas funciones, deberán usarlo según el proposito de este reproductor, el cúal es poder disfurtar de las canciones SIN ANUNCIOS y algunas veces, antes de su lanzamiento.</p>
+              </details>
             </details>
-            </details>
+        
             <div class="gmx-player-header">
-              <h1><a href="https://grouvex.github.io"><img src="https://grouvex.github.io/img/Grouvex1.png" alt="Logo" loading="lazy" style="width:50%"><p></a>Reproductor de Música</p></h1>
+              <h1><a href="https://grouvex.github.io"><img src="https://grouvex.github.io/img/Grouvex1.png" alt="Logo" loading="lazy" style="width:50%"></a>Reproductor de Música</h1>
+              <button class="gmx-theme-toggle" onclick="gmxToggleTheme()">🌙 Tema</button>
             </div>
-          
-            <!-- NUEVO: Contenedor para la información de la canción -->
-            <div class="song-info-container" id="songInfoContainer">
-              <div class="song-illustration placeholder" id="songIllustration">🎵</div>
-              <div class="song-details-content">
-                <div class="song-album-title" id="songAlbumTitle">Cargando información...</div>
-                <div class="song-artist-info" id="songArtistInfo"></div>
-                <div class="song-other-artists" id="songOtherArtists"></div>
-                
-                <div class="song-genres" id="songGenres"></div>
-                
-                <div class="song-details-grid">
-                  <div class="detail-item">
-                    <div class="detail-label">Lanzamiento Original</div>
-                    <div id="songReleaseOriginal"></div>
-                  </div>
-                  <div class="detail-item">
-                    <div class="detail-label">Inicio de Ventas</div>
-                    <div id="songSalesStart"></div>
-                  </div>
-                  <div class="detail-item">
-                    <div class="detail-label">Sello Discográfico</div>
-                    <div id="songRecordLabel"></div>
-                  </div>
-                  <div class="detail-item">
-                    <div class="detail-label">Derechos Composición</div>
-                    <div id="songCompositionRights"></div>
-                  </div>
-                </div>
-                
-                <div class="song-platforms">
-                  <div class="platforms-label">Plataformas de Lanzamiento</div>
-                  <div id="songPlatforms"></div>
-                </div>
-              </div>
-            </div>
-          
-            <button class="gmx-playlist-toggle" onclick="gmxTogglePlaylist()">Playlist</button><button class="gmx-theme-toggle" onclick="gmxToggleTheme()">Tema</button>
+        
+            <button class="gmx-playlist-toggle" onclick="gmxTogglePlaylist()">📋 Playlist</button>
+            
             <div class="gmx-playlist-container" id="gmxPlaylistContent">
               <div class="gmx-playlist" id="gmxPlaylist">
                 <div class="gmx-playlist-item">Cargando canciones...</div>
               </div>
             </div>
-          
-              <div class="gmx-visualizer" id="gmxVisualizer">
-                <div class="gmx-bar"></div>
-                <div class="gmx-bar"></div>
-                <div class="gmx-bar"></div>
-                <div class="gmx-bar"></div>
-                <div class="gmx-bar"></div>
+        
+            <div class="gmx-visualizer" id="gmxVisualizer">
+              <div class="gmx-bar"></div>
+              <div class="gmx-bar"></div>
+              <div class="gmx-bar"></div>
+              <div class="gmx-bar"></div>
+              <div class="gmx-bar"></div>
+            </div>
+        
+            <div class="gmx-player-controls">
+              <div class="gmx-song-info">
+                <div class="gmx-song-title-large" id="gmxCurrentSongTitle">Selecciona una canción</div>
+                <div class="gmx-song-artist" id="gmxCurrentSongArtist">Grouvex</div>
               </div>
-          
-              <div class="gmx-player-controls">
-                <div class="gmx-song-info">
-                  <div class="gmx-song-title-large" id="gmxCurrentSongTitle">Selecciona una canción</div>
-                  <div class="gmx-song-artist" id="gmxCurrentSongArtist">Grouvex</div>
+        
+              <div class="gmx-progress-container">
+                <div class="gmx-progress-bar" id="gmxProgressBar">
+                  <div class="gmx-progress" id="gmxProgress"></div>
                 </div>
-          
-                <div class="gmx-progress-container">
-                  <div class="gmx-progress-bar" id="gmxProgressBar">
-                    <div class="gmx-progress" id="gmxProgress"></div>
-                  </div>
-                  <div class="gmx-time-display">
-                    <span id="gmxCurrentTime">0:00</span>
-                    <span id="gmxDuration">0:00</span>
-                  </div>
-                </div>
-          
-                <div class="gmx-control-buttons">
-                  <button class="gmx-control-btn" onclick="gmxPreviousSong()">⏮</button>
-                  <button class="gmx-control-btn gmx-play-pause" onclick="gmxTogglePlay()">▶</button>
-                  <button class="gmx-control-btn" onclick="gmxNextSong()">⏭</button>
-                </div>
-          
-                <div class="gmx-volume-control">
-                  <span>🔊</span>
-                  <input type="range" class="gmx-volume-slider" id="gmxVolumeSlider" min="0" max="1" step="0.01" value="0.8" oninput="gmxSetVolume(this.value)">
-                  <span class="gmx-volume-value" id="gmxVolumeValue">80%</span>
-                </div>
-          
-                <div class="gmx-additional-controls">
-                  <button class="gmx-additional-btn" id="gmxShuffleBtn" onclick="gmxToggleShuffle()">🔀 Shuffle</button>
-                  <button class="gmx-additional-btn" id="gmxLoopBtn" onclick="gmxToggleLoop()">🔁 Loop</button>
+                <div class="gmx-time-display">
+                  <span id="gmxCurrentTime">0:00</span>
+                  <span id="gmxDuration">0:00</span>
                 </div>
               </div>
-          
-              <div class="gmx-config-panel" id="gmxConfigPanel">
-                <button class="gmx-config-toggle" onclick="gmxToggleConfig()">Configuración</button>
-                <div class="gmx-config-content" id="gmxConfigContent">
-                  <div class="gmx-config-item">
-                    <label class="gmx-config-label">
-                      <input type="checkbox" id="gmxAutoPlay" onchange="gmxUpdateConfig('autoPlay', this.checked)">
-                      Reproducción automática
-                    </label>
-                  </div>
-                  <div class="gmx-config-item">
-                    <label class="gmx-config-label">
-                      <input type="checkbox" id="gmxVisualizer" checked onchange="gmxToggleVisualizer(this.checked)">
-                      Visualizador de audio
-                    </label>
-                  </div>
+        
+              <div class="gmx-control-buttons">
+                <button class="gmx-control-btn" onclick="gmxPreviousSong()">⏮</button>
+                <button class="gmx-control-btn gmx-play-pause" onclick="gmxTogglePlay()">▶</button>
+                <button class="gmx-control-btn" onclick="gmxNextSong()">⏭</button>
+              </div>
+        
+              <div class="gmx-volume-control">
+                <span>🔊</span>
+                <input type="range" class="gmx-volume-slider" id="gmxVolumeSlider" min="0" max="1" step="0.01" value="0.8" oninput="gmxSetVolume(this.value)">
+                <span class="gmx-volume-value" id="gmxVolumeValue">80%</span>
+              </div>
+        
+              <div class="gmx-additional-controls">
+                <button class="gmx-additional-btn" id="gmxShuffleBtn" onclick="gmxToggleShuffle()">🔀 Shuffle</button>
+                <button class="gmx-additional-btn" id="gmxLoopBtn" onclick="gmxToggleLoop()">🔁 Loop</button>
+              </div>
+        
+              <!-- SECCIÓN DE PLATAFORMAS MUSICALES -->
+              <div class="gmx-platforms-section" id="gmxPlatformsSection" style="display: none;">
+                <div class="gmx-platforms-title">
+                  <i class="fas fa-music"></i> Escucha también en:
+                </div>
+                <div class="gmx-platforms-links" id="gmxPlatformsLinks">
+                  <!-- Los enlaces se generarán dinámicamente -->
                 </div>
               </div>
-          
-              <div class="gmx-help-section">
-                <button class="gmx-help-toggle" onclick="gmxToggleHelp()">Cómo funciona</button>
-                <div class="gmx-help-content" id="gmxHelpContent">
-                  <div class="gmx-help-item">
-                    <h4>🎵 Reproducción de canciones</h4>
-                    <p>Haz clic en cualquier canción de la lista para reproducirla. Usa los botones de reproducción/pausa, anterior y siguiente para controlar la música.</p>
-                  </div>
-                  <div class="gmx-help-item">
-                    <h4>🔀 Modo Shuffle</h4>
-                    <p>Activa el modo shuffle para reproducir las canciones en orden aleatorio.</p>
-                  </div>
-                  <div class="gmx-help-item">
-                    <h4>🔁 Modo Loop</h4>
-                    <p>Pulsa una vez para repetir la canción actual, dos veces para repetir toda la lista, y una tercera para desactivar el loop.</p>
-                  </div>
-                  <div class="gmx-help-item">
-                    <h4>⚙️ Configuración</h4>
-                    <p>Activa la reproducción automática para que pase a la siguiente canción al terminar la actual, o desactívala para mantener el control manual.</p>
-                  </div>
+            </div>
+            
+            <!-- REPRODUCTOR DE EMBED (Spotify/YouTube) -->
+            <div class="gmx-embed-player" id="gmxEmbedPlayer" style="display: none;">
+              <div class="gmx-embed-header">
+                <span>Reproduciendo en Spotify/YouTube</span>
+                <button class="gmx-embed-close-btn" onclick="gmxCloseEmbed()">✕</button>
+              </div>
+              <iframe id="gmxEmbedIframe" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture" loading="lazy"></iframe>
+            </div>
+        
+            <div class="gmx-config-panel" id="gmxConfigPanel">
+              <button class="gmx-config-toggle" onclick="gmxToggleConfig()">⚙️ Configuración</button>
+              <div class="gmx-config-content" id="gmxConfigContent">
+                <div class="gmx-config-item">
+                  <label class="gmx-config-label">
+                    <input type="checkbox" id="gmxAutoPlay" onchange="gmxUpdateConfig('autoPlay', this.checked)">
+                    Reproducción automática
+                  </label>
+                </div>
+                <div class="gmx-config-item">
+                  <label class="gmx-config-label">
+                    <input type="checkbox" id="gmxVisualizer" checked onchange="gmxToggleVisualizer(this.checked)">
+                    Visualizador de audio
+                  </label>
                 </div>
               </div>
-          
-              <audio id="gmxAudioPlayer" preload="metadata"></audio>
+            </div>
+        
+            <div class="gmx-help-section">
+              <button class="gmx-help-toggle" onclick="gmxToggleHelp()">❓ Cómo funciona</button>
+              <div class="gmx-help-content" id="gmxHelpContent">
+                <div class="gmx-help-item">
+                  <h4>🎵 Reproducción de canciones</h4>
+                  <p>Haz clic en cualquier canción de la lista para reproducirla. Usa los botones de reproducción/pausa, anterior y siguiente para controlar la música.</p>
+                </div>
+                <div class="gmx-help-item">
+                  <h4>🔀 Modo Shuffle</h4>
+                  <p>Activa el modo shuffle para reproducir las canciones en orden aleatorio.</p>
+                </div>
+                <div class="gmx-help-item">
+                  <h4>🔁 Modo Loop</h4>
+                  <p>Pulsa una vez para repetir la canción actual, dos veces para repetir toda la lista, y una tercera para desactivar el loop.</p>
+                </div>
+                <div class="gmx-help-item">
+                  <h4>⚙️ Configuración</h4>
+                  <p>Activa la reproducción automática para que pase a la siguiente canción al terminar la actual, o desactívala para mantener el control manual.</p>
+                </div>
+                <div class="gmx-help-item">
+                  <h4>📱 Plataformas</h4>
+                  <p>Haz clic en los iconos de Spotify, YouTube u otras plataformas para escuchar la canción en tu servicio favorito.</p>
+                </div>
+              </div>
+            </div>
+        
+            <audio id="gmxAudioPlayer" preload="metadata"></audio>
           </div>
+        
           <script>
-          // ============================================
-          // CONFIGURACIÓN DE LA API (usa GET directo)
-          // ============================================
-          const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec';
-          
-          // ============================================
-          // VARIABLES GLOBALES DE CONTROL
-          // ============================================
-          // Controles de UI habilitados/deshabilitados
-          window.UI_CONTROLS = {
-            // Controles principales
-            progressBarEnabled: true,     // Habilita/deshabilita la barra de progreso
-            volumeControlEnabled: true,    // Habilita/deshabilita el control de volumen
-            shuffleButtonEnabled: true,    // Habilita/deshabilita el botón shuffle
-            loopButtonEnabled: true,       // Habilita/deshabilita el botón loop
-            themeButtonEnabled: true,      // Habilita/deshabilita el botón de tema
-            playlistButtonsEnabled: true,  // Habilita/deshabilita los botones de playlist (anterior/siguiente)
+            // ============================================
+            // CONFIGURACIÓN DE LA API
+            // ============================================
+            const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec';
             
-            // Controles específicos para preview
-            previewMode: false,            // Indica si está en modo preview
-            previewProgressLocked: true,   // Bloquea la barra de progreso en preview
-            previewSeekingDisabled: true,  // Deshabilita buscar en la canción durante preview
-          };
-          
-          // Estado de los botones (habilitado/deshabilitado visualmente)
-          window.BUTTON_STATES = {
-            playPause: { enabled: true, element: null },
-            previous: { enabled: true, element: null },
-            next: { enabled: true, element: null },
-            shuffle: { enabled: true, element: null },
-            loop: { enabled: true, element: null },
-            theme: { enabled: true, element: null },
-            volume: { enabled: true, element: null },
-            progressBar: { enabled: true, element: null }
-          };
-          
-          // Variables globales para control de preview
-          let gmxCurrentPreviewInfo = null;
-          let gmxPreviewEndTime = null;
-          let gmxIsPreviewMode = false;
-          
-          // Funciones globales para controlar UI
-          window.enableControl = function(controlName) {
-            if (UI_CONTROLS.hasOwnProperty(controlName)) {
-              UI_CONTROLS[controlName] = true;
-              updateControlUI(controlName, true);
-              console.log(`✅ Control ${controlName} habilitado`);
-            }
-          };
-          
-          window.disableControl = function(controlName) {
-            if (UI_CONTROLS.hasOwnProperty(controlName)) {
-              UI_CONTROLS[controlName] = false;
-              updateControlUI(controlName, false);
-              console.log(`❌ Control ${controlName} deshabilitado`);
-            }
-          };
-          
-          window.toggleControl = function(controlName) {
-            if (UI_CONTROLS.hasOwnProperty(controlName)) {
-              UI_CONTROLS[controlName] = !UI_CONTROLS[controlName];
-              updateControlUI(controlName, UI_CONTROLS[controlName]);
-              console.log(`🔄 Control ${controlName} ahora: ${UI_CONTROLS[controlName] ? 'habilitado' : 'deshabilitado'}`);
-            }
-          };
-          
-          window.getControlState = function(controlName) {
-            return UI_CONTROLS[controlName] || false;
-          };
-          
-          window.setPreviewMode = function(enabled, previewInfo = null) {
-            gmxIsPreviewMode = enabled;
-            gmxCurrentPreviewInfo = previewInfo;
+            // ============================================
+            // VARIABLES GLOBALES
+            // ============================================
+            window.UI_CONTROLS = {
+              progressBarEnabled: true,
+              volumeControlEnabled: true,
+              shuffleButtonEnabled: true,
+              loopButtonEnabled: true,
+              themeButtonEnabled: true,
+              playlistButtonsEnabled: true,
+              previewMode: false,
+              previewProgressLocked: true,
+              previewSeekingDisabled: true,
+            };
             
-            if (enabled) {
-              // Modo preview activado - bloquear barra de progreso
-              UI_CONTROLS.progressBarEnabled = false;
-              UI_CONTROLS.previewProgressLocked = true;
-              UI_CONTROLS.previewSeekingDisabled = true;
-              updateControlUI('progressBarEnabled', false);
-              console.log('🔒 Modo preview activado - Barra de progreso bloqueada');
-            } else {
-              // Restaurar controles
-              UI_CONTROLS.progressBarEnabled = true;
-              UI_CONTROLS.previewProgressLocked = false;
-              UI_CONTROLS.previewSeekingDisabled = false;
-              updateControlUI('progressBarEnabled', true);
-              console.log('🔓 Modo preview desactivado - Controles restaurados');
+            let gmxCurrentPlaylist = [];
+            let gmxCurrentIndex = 0;
+            let gmxIsPlaying = false;
+            let gmxIsShuffled = false;
+            let gmxIsLooping = 0;
+            let gmxVisualizerEnabled = true;
+            let gmxAllMusicFiles = [];
+            let gmxPreviewTimeout = null;
+            let gmxPreviewTimeUpdateHandler = null;
+            let gmxCurrentPreviewInfo = null;
+            let gmxPreviewEndTime = null;
+            let gmxIsPreviewMode = false;
+            
+            const MUSIC = {
+              enabled: true,
+              allowedFiles: [],
+              disabledFiles: [""],
+              autoPlay: true,
+              volume: 1,
+              theme: 'dark'
+            };
+            
+            // ============================================
+            // LISTAS ESPECIALES (SOLO CÓDIGO - EL USUARIO NO PUEDE MODIFICAR)
+            // ============================================
+            
+            // Canciones "Próximamente" - Aparecen en la lista pero NO se pueden reproducir
+            const SPECIAL_SONGS = {
+              upcoming: [
+                "A New World - Short Composition.mp3",
+                "Dorado - Golden.mp3"
+              ],
+              
+              // Previews de 30 segundos - Aparecen en la lista y se reproduce solo una parte
+              preview30: [
+                { file: "A New World - Orquesta.mp3", startTime: 207, runToTime: 61},
+                { file: "Cancion Preview 2.mp3", startTime: 45, runToTime: 0},
+                { file: "Cancion Preview 3.mp3", startTime: 15, runToTime: 0}
+              ],
+              
+              // CANCIONES NO DISPONIBLES
+              unavailable: [
+                "Aries.mp3"
+              ]
+            };
+            
+            // ============================================
+            // FUNCIONES DE LISTAS ESPECIALES
+            // ============================================
+            
+            function isUpcomingSong(songFilename) {
+              return SPECIAL_SONGS.upcoming.includes(songFilename);
             }
-          };
-          
-          function updateControlUI(controlName, enabled) {
-            switch(controlName) {
-              case 'progressBarEnabled':
-                const progressBar = document.getElementById('gmxProgressBar');
-                if (progressBar) {
-                  if (enabled) {
-                    progressBar.style.cursor = 'pointer';
-                    progressBar.style.opacity = '1';
-                  } else {
-                    progressBar.style.cursor = 'not-allowed';
-                    progressBar.style.opacity = '0.5';
-                  }
-                }
-                break;
-                
-              case 'volumeControlEnabled':
-                const volumeSlider = document.getElementById('gmxVolumeSlider');
-                if (volumeSlider) {
-                  volumeSlider.disabled = !enabled;
-                  volumeSlider.style.opacity = enabled ? '1' : '0.5';
-                  volumeSlider.style.cursor = enabled ? 'pointer' : 'not-allowed';
-                }
-                break;
-                
-              case 'shuffleButtonEnabled':
-                const shuffleBtn = document.getElementById('gmxShuffleBtn');
-                if (shuffleBtn) {
-                  if (enabled) {
-                    shuffleBtn.classList.remove('disabled');
-                    shuffleBtn.style.opacity = '1';
-                    shuffleBtn.style.cursor = 'pointer';
-                  } else {
-                    shuffleBtn.classList.add('disabled');
-                    shuffleBtn.style.opacity = '0.5';
-                    shuffleBtn.style.cursor = 'not-allowed';
-                  }
-                }
-                break;
-                
-              case 'loopButtonEnabled':
-                const loopBtn = document.getElementById('gmxLoopBtn');
-                if (loopBtn) {
-                  if (enabled) {
-                    loopBtn.classList.remove('disabled');
-                    loopBtn.style.opacity = '1';
-                    loopBtn.style.cursor = 'pointer';
-                  } else {
-                    loopBtn.classList.add('disabled');
-                    loopBtn.style.opacity = '0.5';
-                    loopBtn.style.cursor = 'not-allowed';
-                  }
-                }
-                break;
-                
-              case 'playlistButtonsEnabled':
-                const prevBtn = document.querySelector('.gmx-control-btn[onclick="gmxPreviousSong()"]');
-                const nextBtn = document.querySelector('.gmx-control-btn[onclick="gmxNextSong()"]');
-                if (prevBtn) {
-                  prevBtn.style.opacity = enabled ? '1' : '0.5';
-                  prevBtn.style.cursor = enabled ? 'pointer' : 'not-allowed';
-                }
-                if (nextBtn) {
-                  nextBtn.style.opacity = enabled ? '1' : '0.5';
-                  nextBtn.style.cursor = enabled ? 'pointer' : 'not-allowed';
-                }
-                break;
+            
+            function getPreviewInfo(songFilename) {
+              const preview = SPECIAL_SONGS.preview30.find(p => p.file === songFilename);
+              return preview || null;
             }
-          }
-          
-          // ============================================
-          // SIMULADOR DEFINITIVO (JSON-SAFE)
-          // ============================================
-          (function(global) {
+            
+            // Verificar si una canción NO está disponible (no aparece en la lista)
+            function isUnavailableSong(songFilename) {
+              return SPECIAL_SONGS.unavailable.includes(songFilename);
+            }
+            
+            const PORTFOLIO_IMAGE_BASE_URL = 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/main/port/';
+            
+            // ============================================
+            // FUNCIONES DE UTILIDAD
+            // ============================================
+            function getMusicUrl(filename) {
+              const baseUrl = 'https://github.com/Grouvex/grouvex.github.io/raw/main/music/';
+              return baseUrl + encodeURIComponent(filename);
+            }
+            
+            function gmxFormatSongName(filename) {
+              const name = filename.replace('.mp3', '');
+              return name.length > 50 ? name.substring(0, 50) + '...' : name;
+            }
+            
+            function gmxFormatTime(seconds) {
+              if (isNaN(seconds)) return '0:00';
+              const mins = Math.floor(seconds / 60);
+              const secs = Math.floor(seconds % 60);
+              return `${mins}:${secs.toString().padStart(2, '0')}`;
+            }
+            
+            function updateControlUI(controlName, enabled) {
+              switch(controlName) {
+                case 'progressBarEnabled':
+                  const progressBar = document.getElementById('gmxProgressBar');
+                  if (progressBar) {
+                    progressBar.style.cursor = enabled ? 'pointer' : 'not-allowed';
+                    progressBar.style.opacity = enabled ? '1' : '0.5';
+                  }
+                  break;
+                case 'volumeControlEnabled':
+                  const volumeSlider = document.getElementById('gmxVolumeSlider');
+                  if (volumeSlider) {
+                    volumeSlider.disabled = !enabled;
+                    volumeSlider.style.opacity = enabled ? '1' : '0.5';
+                  }
+                  break;
+                case 'shuffleButtonEnabled':
+                  const shuffleBtn = document.getElementById('gmxShuffleBtn');
+                  if (shuffleBtn) {
+                    if (enabled) {
+                      shuffleBtn.classList.remove('disabled');
+                      shuffleBtn.style.opacity = '1';
+                    } else {
+                      shuffleBtn.classList.add('disabled');
+                      shuffleBtn.style.opacity = '0.5';
+                    }
+                  }
+                  break;
+                case 'loopButtonEnabled':
+                  const loopBtn = document.getElementById('gmxLoopBtn');
+                  if (loopBtn) {
+                    if (enabled) {
+                      loopBtn.classList.remove('disabled');
+                      loopBtn.style.opacity = '1';
+                    } else {
+                      loopBtn.classList.add('disabled');
+                      loopBtn.style.opacity = '0.5';
+                    }
+                  }
+                  break;
+              }
+            }
+            
+            window.setPreviewMode = function(enabled, previewInfo = null) {
+              gmxIsPreviewMode = enabled;
+              gmxCurrentPreviewInfo = previewInfo;
+              if (enabled) {
+                UI_CONTROLS.progressBarEnabled = false;
+                UI_CONTROLS.previewProgressLocked = true;
+                updateControlUI('progressBarEnabled', false);
+              } else {
+                UI_CONTROLS.progressBarEnabled = true;
+                UI_CONTROLS.previewProgressLocked = false;
+                updateControlUI('progressBarEnabled', true);
+              }
+            };
+            
+            // ============================================
+            // FUNCIONES DE LA API
+            // ============================================
+            (function(global) {
               global.google = global.google || {};
               global.google.script = (function() {
-                  let _h = { s: null, f: null, obj: null };
-                  const reset = () => { _h = { s: null, f: null, obj: null }; };
-          
-                  const execute = (name, args) => {
-                      const success = _h.s;
-                      const failure = _h.f;
-                      const userObj = _h.obj;
-                      reset();
-          
-                      const payloadData = args.map(arg => String(arg || "").trim());
-          
-                      fetch(GAS_API_URL, {
-                          method: 'POST',
-                          mode: 'cors',
-                          headers: { 'Content-Type': 'text/plain' },
-                          body: JSON.stringify({
-                              endpoint: name,
-                              payload: payloadData
-                          })
-                      })
-                      .then(resp => resp.json())
-                      .then(data => {
-                          if (data.success) {
-                              if (success) success(data.data, userObj);
-                          } else {
-                              if (failure) failure(data.error, userObj);
-                          }
-                      })
-                      .catch(err => {
-                          if (failure) failure(err.message, userObj);
-                      });
-                  };
-          
-                  const proxy = new Proxy({}, {
-                      get: (target, prop) => {
-                          if (prop === 'withSuccessHandler') return (h) => { _h.s = h; return proxy; };
-                          if (prop === 'withFailureHandler') return (h) => { _h.f = h; return proxy; };
-                          if (prop === 'withUserObject') return (o) => { _h.obj = o; return proxy; };
-                          return (...args) => execute(prop, args);
-                      }
+                let _h = { s: null, f: null, obj: null };
+                const reset = () => { _h = { s: null, f: null, obj: null }; };
+                
+                const execute = (name, args) => {
+                  const success = _h.s;
+                  const failure = _h.f;
+                  const userObj = _h.obj;
+                  reset();
+                  
+                  const payloadData = args.map(arg => String(arg || "").trim());
+                  
+                  fetch(GAS_API_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({ endpoint: name, payload: payloadData })
+                  })
+                  .then(resp => resp.json())
+                  .then(data => {
+                    if (data.success) {
+                      if (success) success(data.data, userObj);
+                    } else {
+                      if (failure) failure(data.error, userObj);
+                    }
+                  })
+                  .catch(err => {
+                    if (failure) failure(err.message, userObj);
                   });
-          
-                  return { run: proxy };
-              })();
-          })(window);
-          
-          // Variables globales
-          let gmxCurrentPlaylist = [];
-          let gmxCurrentIndex = 0;
-          let gmxIsPlaying = false;
-          let gmxIsShuffled = false;
-          let gmxIsLooping = 0;
-          let gmxVisualizerEnabled = true;
-          let gmxAllMusicFiles = [];
-          let gmxPreviewTimeout = null;
-          let gmxPreviewTimeUpdateHandler = null;
-          
-          // Configuración
-          const MUSIC = {
-            enabled: true,
-            allowedFiles: [],
-            disabledFiles: [""],
-            autoPlay: true,
-            volume: 1,
-            theme: 'dark'
-          };
-          
-          // ============================================
-          // NUEVAS FUNCIONES PARA LISTAS ESPECIALES
-          // ============================================
-          
-          // Configuración de listas especiales
-          const SPECIAL_SONGS = {
-            upcoming: [
-              "A New World - Short Composition.mp3",
-              "Dorado - Golden.mp3"
-            ],
-            preview30: [
-              { file: "A New World - Orquesta.mp3", startTime: 207, runToTime: 61},
-              { file: "Cancion Preview 2.mp3", startTime: 45, runToTime: 0},
-              { file: "Cancion Preview 3.mp3", startTime: 15, runToTime: 0}
-            ]
-          };
-          
-          // Función para verificar si una canción es "próximamente"
-          function isUpcomingSong(songFilename) {
-            return SPECIAL_SONGS.upcoming.includes(songFilename);
-          }
-          
-          // Función para obtener información de preview
-          function getPreviewInfo(songFilename) {
-            const preview = SPECIAL_SONGS.preview30.find(p => p.file === songFilename);
-            return preview || null;
-          }
-          
-          // Función modificada para reproducir canción con soporte especial
-          function gmxPlaySong(index) {
-            if (index < 0 || index >= gmxCurrentPlaylist.length) return;
-          
-            // Limpiar timeout anterior si existe
-            if (gmxPreviewTimeout) {
-              clearTimeout(gmxPreviewTimeout);
-              gmxPreviewTimeout = null;
-            }
-            
-            // Remover event listener de preview anterior
-            if (gmxPreviewTimeUpdateHandler && window.gmxAudioPlayer) {
-              window.gmxAudioPlayer.removeEventListener('timeupdate', gmxPreviewTimeUpdateHandler);
-              gmxPreviewTimeUpdateHandler = null;
-            }
-            
-            // Salir del modo preview
-            if (window.setPreviewMode) {
-              window.setPreviewMode(false);
-            }
-          
-            gmxCurrentIndex = index;
-            const audio = document.getElementById('gmxAudioPlayer');
-            const song = gmxCurrentPlaylist[index];
-            
-            // Verificar si es una canción "próximamente" - NO se puede reproducir, solo ver info
-            if (isUpcomingSong(song)) {
-              // Cargar información pero no reproducir
-              loadSongDetails(song);
-              showUpcomingMessage(song);
-              return;
-            }
-          
-            const url = getMusicUrl(song);
-            audio.src = url;
-            audio.load();
-            
-            // Verificar si es una canción con preview de 30 segundos
-            const previewInfo = getPreviewInfo(song);
-            if (previewInfo) {
-              // Activar modo preview y bloquear controles
-              window.setPreviewMode(true, previewInfo);
-              
-              audio.addEventListener('loadedmetadata', function onMetadata() {
-                audio.removeEventListener('loadedmetadata', onMetadata);
-                // Configurar tiempo de inicio
-                audio.currentTime = previewInfo.startTime;
-                
-                // Configurar límite de 30 segundos desde el inicio
-                  let endTime;
-                  if (previewInfo.runToTime) {
-                    endTime = previewInfo.startTime + previewInfo.runToTime;
-                  } else {
-                    endTime = previewInfo.startTime + 30;
-                  }
-                gmxPreviewEndTime = endTime;
-                
-                gmxPreviewTimeUpdateHandler = function onTimeUpdate() {
-                  if (audio.currentTime >= endTime) {
-                    audio.pause();
-                    audio.removeEventListener('timeupdate', gmxPreviewTimeUpdateHandler);
-                    showPreviewEndMessage(song);
-                    // Salir del modo preview
-                    window.setPreviewMode(false);
-                    // Pasar automáticamente a la siguiente canción después del preview
-                    setTimeout(() => {
-                      gmxNextSong();
-                    }, 1000);
-                  }
                 };
                 
-                audio.addEventListener('timeupdate', gmxPreviewTimeUpdateHandler);
-              });
-            }
-            
-            document.getElementById('gmxCurrentSongTitle').textContent = gmxFormatSongName(song);
-            gmxRenderPlaylist();
-            
-            // Cargar información detallada de la canción SIEMPRE
-            loadSongDetails(song);
-            
-            // Reproducir si autoplay está activado y NO es upcoming
-            const autoPlay = document.getElementById('gmxAutoPlay')?.checked || MUSIC.autoPlay;
-            if (autoPlay && !isUpcomingSong(song)) {
-              audio.play().catch(e => console.log('Autoplay bloqueado:', e));
-            }
-          }
-          
-          // Función para mostrar mensaje de "próximamente"
-          function showUpcomingMessage(songFilename) {
-            const songName = songFilename.replace('.mp3', '');
-            
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'gmx-upcoming-message';
-            messageDiv.innerHTML = `
-              <div class="gmx-upcoming-content">
-                <span class="gmx-upcoming-icon">🎵</span>
-                <h3>Próximamente</h3>
-                <p>"${songName}" estará disponible próximamente en Grouvex Studios Records</p>
-                <p class="gmx-upcoming-note">⚠️ Puedes ver la información de la canción, pero aún no está disponible para reproducción.</p>
-                <button class="gmx-upcoming-close" onclick="this.parentElement.parentElement.remove()">Cerrar</button>
-              </div>
-            `;
-            
-            if (!document.querySelector('#gmx-upcoming-styles')) {
-              const styles = document.createElement('style');
-              styles.id = 'gmx-upcoming-styles';
-              styles.textContent = `
-                .gmx-upcoming-message {
-                  position: fixed;
-                  top: 0;
-                  left: 0;
-                  width: 100%;
-                  height: 100%;
-                  background: rgba(0, 0, 0, 0.8);
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  z-index: 10000;
-                  animation: gmxFadeIn 0.3s ease;
-                }
-                
-                .gmx-upcoming-content {
-                  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-                  padding: 30px;
-                  border-radius: 20px;
-                  text-align: center;
-                  max-width: 400px;
-                  color: white;
-                  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-                  animation: gmxSlideUp 0.3s ease;
-                }
-                
-                .gmx-upcoming-icon {
-                  font-size: 4em;
-                  display: block;
-                  margin-bottom: 20px;
-                  animation: gmxPulse 1s infinite;
-                }
-                
-                .gmx-upcoming-content h3 {
-                  margin: 0 0 15px 0;
-                  font-size: 1.5em;
-                }
-                
-                .gmx-upcoming-content p {
-                  margin: 0 0 20px 0;
-                  line-height: 1.5;
-                }
-                
-                .gmx-upcoming-note {
-                  font-size: 0.9em;
-                  opacity: 0.9;
-                  background: rgba(0, 0, 0, 0.3);
-                  padding: 10px;
-                  border-radius: 10px;
-                }
-                
-                .gmx-upcoming-close {
-                  background: rgba(255, 255, 255, 0.2);
-                  border: 1px solid rgba(255, 255, 255, 0.3);
-                  color: white;
-                  padding: 10px 20px;
-                  border-radius: 50px;
-                  cursor: pointer;
-                  font-size: 1em;
-                  transition: all 0.3s ease;
-                }
-                
-                .gmx-upcoming-close:hover {
-                  background: rgba(255, 255, 255, 0.3);
-                  transform: translateY(-2px);
-                }
-                
-                .gmx-preview-message {
-                  position: fixed;
-                  bottom: 20px;
-                  right: 20px;
-                  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-                  padding: 15px 25px;
-                  border-radius: 10px;
-                  color: white;
-                  z-index: 9999;
-                  animation: gmxSlideInRight 0.3s ease;
-                  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-                }
-                
-                .gmx-preview-message button {
-                  background: rgba(255, 255, 255, 0.2);
-                  border: none;
-                  color: white;
-                  margin-left: 15px;
-                  padding: 5px 10px;
-                  border-radius: 5px;
-                  cursor: pointer;
-                }
-                
-                @keyframes gmxFadeIn {
-                  from { opacity: 0; }
-                  to { opacity: 1; }
-                }
-                
-                @keyframes gmxSlideUp {
-                  from {
-                    transform: translateY(50px);
-                    opacity: 0;
+                const proxy = new Proxy({}, {
+                  get: (target, prop) => {
+                    if (prop === 'withSuccessHandler') return (h) => { _h.s = h; return proxy; };
+                    if (prop === 'withFailureHandler') return (h) => { _h.f = h; return proxy; };
+                    if (prop === 'withUserObject') return (o) => { _h.obj = o; return proxy; };
+                    return (...args) => execute(prop, args);
                   }
-                  to {
-                    transform: translateY(0);
-                    opacity: 1;
-                  }
-                }
+                });
                 
-                @keyframes gmxSlideInRight {
-                  from {
-                    transform: translateX(100%);
-                    opacity: 0;
-                  }
-                  to {
-                    transform: translateX(0);
-                    opacity: 1;
-                  }
-                }
-                
-                @keyframes gmxPulse {
-                  0%, 100% { transform: scale(1); }
-                  50% { transform: scale(1.1); }
-                }
-              `;
-              document.head.appendChild(styles);
-            }
+                return { run: proxy };
+              })();
+            })(window);
             
-            document.body.appendChild(messageDiv);
-            
-            setTimeout(() => {
-              if (messageDiv.parentElement) messageDiv.remove();
-            }, 10000);
-          }
-          
-          // Función para mostrar mensaje de fin de preview
-          function showPreviewEndMessage(songFilename) {
-            const songName = songFilename.replace('.mp3', '');
-            
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'gmx-preview-message';
-            messageDiv.innerHTML = `
-              <span>🎧 Vista previa de "${songName}" finalizada. En algun futuro podrás escucharla completa.</span>
-              <button onclick="this.parentElement.remove()">Cerrar</button>
-            `;
-            
-            document.body.appendChild(messageDiv);
-            
-            setTimeout(() => {
-              if (messageDiv.parentElement) messageDiv.remove();
-            }, 10000);
-          }
-          
-          // Agregar estilos adicionales para los badges
-          const additionalStyles = document.createElement('style');
-          additionalStyles.textContent = `
-            .gmx-song-info-wrapper {
-              flex: 1;
-              display: flex;
-              align-items: center;
-              gap: 10px;
-              flex-wrap: wrap;
-            }
-            
-            .gmx-badge {
-              font-size: 0.7em;
-              padding: 3px 8px;
-              border-radius: 20px;
-              font-weight: 600;
-              white-space: nowrap;
-            }
-            
-            .upcoming-badge {
-              background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-              color: white;
-              animation: gmxBadgePulse 2s infinite;
-            }
-            
-            .preview-badge {
-              background: linear-gradient(135deg, #f093fb, #f5576c);
-              color: white;
-            }
-            
-            .upcoming-song {
-              opacity: 0.8;
-              cursor: pointer;
-            }
-            
-            .preview-song {
-              cursor: pointer;
-            }
-            
-            @keyframes gmxBadgePulse {
-              0%, 100% { opacity: 1; }
-              50% { opacity: 0.7; }
-            }
-            
-            .light-theme .upcoming-badge,
-            .light-theme .preview-badge {
-              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
-          `;
-          
-          document.head.appendChild(additionalStyles);
-          
-          // Función para agregar canciones a la lista de "próximamente"
-          function addUpcomingSong(songFilename) {
-            if (!SPECIAL_SONGS.upcoming.includes(songFilename)) {
-              SPECIAL_SONGS.upcoming.push(songFilename);
-              gmxLoadPlaylist();
-              console.log(`✅ Canción agregada a "Próximamente": ${songFilename}`);
-            }
-          }
-          
-          // Función para agregar canciones a la lista de preview
-          function addPreviewSong(songFilename, startTime = 30) {
-            const existing = SPECIAL_SONGS.preview30.find(p => p.file === songFilename);
-            if (!existing) {
-              SPECIAL_SONGS.preview30.push({ file: songFilename, startTime: startTime });
-              gmxLoadPlaylist();
-              console.log(`✅ Canción agregada a "Preview 30s": ${songFilename} (inicia en ${startTime}s)`);
-            }
-          }
-          
-          // Función para eliminar canciones de listas especiales
-          function removeSpecialSong(songFilename) {
-            SPECIAL_SONGS.upcoming = SPECIAL_SONGS.upcoming.filter(s => s !== songFilename);
-            SPECIAL_SONGS.preview30 = SPECIAL_SONGS.preview30.filter(p => p.file !== songFilename);
-            gmxLoadPlaylist();
-            console.log(`✅ Canción eliminada de listas especiales: ${songFilename}`);
-          }
-          
-          // URL base para las imágenes del portafolio
-          const PORTFOLIO_IMAGE_BASE_URL = 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/main/port/';
-          
-          // Función para obtener lista de archivos del repositorio
-          async function gmxFetchMusicFiles() {
-            try {
-              console.log('🎵 Buscando archivos de música en el repositorio...');
-              const repoUrl = 'https://api.github.com/repos/Grouvex/grouvex.github.io/contents/music';
-              const response = await fetch(repoUrl);
-              
-              if (!response.ok) {
-                throw new Error(`Error al cargar archivos: ${response.status}`);
-              }
-              
-              const files = await response.json();
-              const mp3Files = files
-                .filter(file => file.name.toLowerCase().endsWith('.mp3'))
-                .map(file => file.name);
-              
-              console.log(`🎵 Se encontraron ${mp3Files.length} archivos MP3:`, mp3Files);
-              return mp3Files;
-            } catch (error) {
-              console.error('Error al cargar archivos:', error);
-              return gmxFallbackMusicList();
-            }
-          }
-          
-          // Fallback en caso de que falle la API de GitHub
-          async function gmxFallbackMusicList() {
-            console.log('🔄 Usando método alternativo para cargar archivos...');
-            const knownFiles = [
-              'A Parallel Universe.mp3',
-              'Acuario.mp3', 
-              'Advanced Music.mp3',
-              'Amor Fatuo.mp3',
-              'Aries.mp3',
-              'Balance Sphere.mp3',
-              'Cancer.mp3',
-              'Capricornio.mp3',
-              'Conversation.mp3',
-              'Diamonds (Grouvex\'s Version).mp3',
-              'El Diamante Renaciente.mp3',
-              'El Diamante.mp3'
-            ];
-            
-            const existingFiles = [];
-            for (const file of knownFiles) {
+            // ============================================
+            // FUNCIONES DE CARGA DE MÚSICA
+            // ============================================
+            async function gmxFetchMusicFiles() {
               try {
-                const url = getMusicUrl(file);
-                const response = await fetch(url, { method: 'HEAD' });
-                if (response.ok) {
-                  existingFiles.push(file);
-                }
-              } catch (e) {
-                console.log(`Archivo no encontrado: ${file}`);
-              }
-            }
-            
-            console.log(`🎵 Se verificaron ${existingFiles.length} archivos:`, existingFiles);
-            return existingFiles;
-          }
-          
-          // Función para obtener URL de música
-          function getMusicUrl(filename) {
-            const baseUrl = 'https://github.com/Grouvex/grouvex.github.io/raw/main/music/';
-            return baseUrl + encodeURIComponent(filename);
-          }
-          
-          // Función para obtener URL de imagen del portafolio
-          function getPortfolioImageUrl(songTitle, albumTitle = null) {
-            const possibleFilenames = [];
-            
-            const cleanSongTitle = songTitle
-              .replace(/[^\w\s]/gi, '')
-              .replace(/\s+/g, ' ')
-              .trim();
-            
-            if (cleanSongTitle) {
-              possibleFilenames.push(cleanSongTitle + '.jpg');
-            }
-            
-            if (albumTitle) {
-              const cleanAlbumTitle = albumTitle
-                .replace(/[^\w\s]/gi, '')
-                .replace(/\s+/g, ' ')
-                .trim();
-              
-              if (cleanAlbumTitle && cleanAlbumTitle !== cleanSongTitle) {
-                possibleFilenames.push(cleanAlbumTitle + '.jpg');
-              }
-            }
-            
-            const spacedTitle = songTitle
-              .replace(/[^\w\s]/gi, '')
-              .replace(/\s+/g, '_')
-              .trim();
-            
-            if (spacedTitle && !possibleFilenames.includes(spacedTitle + '.jpg')) {
-              possibleFilenames.push(spacedTitle + '.jpg');
-            }
-            
-            if (albumTitle) {
-              const spacedAlbumTitle = albumTitle
-                .replace(/[^\w\s]/gi, '')
-                .replace(/\s+/g, '_')
-                .trim();
-              
-              if (spacedAlbumTitle && spacedAlbumTitle !== spacedTitle && 
-                  !possibleFilenames.includes(spacedAlbumTitle + '.jpg')) {
-                possibleFilenames.push(spacedAlbumTitle + '.jpg');
-              }
-            }
-            
-            console.log('🔍 Buscando imágenes con nombres:', possibleFilenames);
-            
-            return {
-              urls: possibleFilenames.map(filename => PORTFOLIO_IMAGE_BASE_URL + encodeURIComponent(filename)),
-              filenames: possibleFilenames
-            };
-          }
-          
-          // Función para verificar si existe una imagen
-          async function checkImageExists(imageUrl) {
-            try {
-              const response = await fetch(imageUrl, { method: 'HEAD' });
-              return response.ok;
-            } catch (error) {
-              return false;
-            }
-          }
-          
-          // Inicializar el reproductor
-          async function gmxInitializePlayer() {
-            console.log('🎵 Inicializando reproductor Grouvex...');
-            gmxAllMusicFiles = await gmxFetchMusicFiles();
-            
-            if (gmxAllMusicFiles.length === 0) {
-              console.error('❌ No se encontraron archivos de música');
-              document.getElementById('gmxCurrentSongTitle').textContent = 'No hay canciones disponibles';
-              return;
-            }
-            
-            gmxLoadPlaylist();
-            gmxSetupEventListeners();
-            gmxUpdateVisualizer();
-            
-            // Inicializar estados de UI
-            initializeUIStates();
-            
-            console.log('✅ Reproductor inicializado correctamente');
-          }
-          
-          function initializeUIStates() {
-            // Aplicar estados iniciales a los controles
-            updateControlUI('progressBarEnabled', UI_CONTROLS.progressBarEnabled);
-            updateControlUI('volumeControlEnabled', UI_CONTROLS.volumeControlEnabled);
-            updateControlUI('shuffleButtonEnabled', UI_CONTROLS.shuffleButtonEnabled);
-            updateControlUI('loopButtonEnabled', UI_CONTROLS.loopButtonEnabled);
-            updateControlUI('playlistButtonsEnabled', UI_CONTROLS.playlistButtonsEnabled);
-          }
-          
-          // Función para obtener lista filtrada de música
-          function getFilteredMusicList() {
-            const allSpecialSongs = [
-              ...SPECIAL_SONGS.upcoming,
-              ...SPECIAL_SONGS.preview30.map(p => p.file)
-            ];
-            
-            let allSongs = [...gmxAllMusicFiles, ...allSpecialSongs];
-            allSongs = [...new Set(allSongs)];
-            
-            return allSongs.filter(song => {
-              if (MUSIC.disabledFiles.includes(song)) return false;
-              if (MUSIC.allowedFiles.length > 0 && !MUSIC.allowedFiles.includes(song)) return false;
-              return true;
-            });
-          }
-          
-          // Cargar lista de reproducción
-          function gmxLoadPlaylist() {
-            gmxCurrentPlaylist = getFilteredMusicList();
-            gmxRenderPlaylist();
-            
-            if (gmxCurrentPlaylist.length > 0) {
-              document.getElementById('gmxCurrentSongTitle').textContent = 'Selecciona una canción';
-            } else {
-              document.getElementById('gmxCurrentSongTitle').textContent = 'No hay canciones disponibles';
-            }
-          }
-          
-          // Cargar duraciones de las canciones
-          function gmxLoadDurations() {
-            gmxCurrentPlaylist.forEach((song, index) => {
-              if (isUpcomingSong(song)) return;
-              
-              const audio = new Audio();
-              const songUrl = getMusicUrl(song);
-              
-              audio.addEventListener('loadedmetadata', function() {
-                const duration = gmxFormatTime(audio.duration);
-                const playlistItems = document.querySelectorAll('.gmx-playlist-item');
-                if (playlistItems[index]) {
-                  const durationSpan = playlistItems[index].querySelector('.gmx-song-duration');
-                  if (durationSpan) {
-                    durationSpan.textContent = duration;
-                  }
-                }
-              });
-              
-              audio.addEventListener('error', function() {
-                console.error(`Error al cargar duración: ${song}`);
-                const playlistItems = document.querySelectorAll('.gmx-playlist-item');
-                if (playlistItems[index]) {
-                  const durationSpan = playlistItems[index].querySelector('.gmx-song-duration');
-                  if (durationSpan) {
-                    durationSpan.textContent = '--:--';
-                  }
-                }
-              });
-              
-              audio.src = songUrl;
-            });
-          }
-          
-          // Renderizar lista de reproducción
-          function gmxRenderPlaylist() {
-            const playlistElement = document.getElementById('gmxPlaylist');
-            playlistElement.innerHTML = '';
-          
-            if (gmxCurrentPlaylist.length === 0) {
-              playlistElement.innerHTML = '<div class="gmx-playlist-item">No hay canciones disponibles</div>';
-              return;
-            }
-          
-            gmxCurrentPlaylist.forEach((song, index) => {
-              const item = document.createElement('div');
-              let additionalClasses = '';
-              let badge = '';
-              
-              if (isUpcomingSong(song)) {
-                additionalClasses = ' upcoming-song';
-                badge = '<span class="gmx-badge upcoming-badge">🎵 Próximamente</span>';
-              } else if (getPreviewInfo(song)) {
-                const previewInfo = getPreviewInfo(song);
-                additionalClasses = ' preview-song';
-                badge = `<span class="gmx-badge preview-badge">🎧 Preview ${Math.floor(previewInfo.runToTime / 60)}:${(previewInfo.runToTime % 60).toString().padStart(2, '0')}s (desde ${Math.floor(previewInfo.startTime / 60)}:${(previewInfo.startTime % 60).toString().padStart(2, '0')})</span>`;
-              }
-              
-              item.className = `gmx-playlist-item ${index === gmxCurrentIndex ? 'active' : ''}${additionalClasses}`;
-              item.innerHTML = `
-                <div class="gmx-song-info-wrapper">
-                  <span class="gmx-song-title" data-full-title="${song.replace('.mp3', '')}">${gmxFormatSongName(song)}</span>
-                  ${badge}
-                </div>
-                <span class="gmx-song-duration">${getPreviewInfo(song) ? '0:30' : (isUpcomingSong(song) ? '--:--' : 'Cargando...')}</span>
-              `;
-              item.onclick = () => gmxPlaySong(index);
-              playlistElement.appendChild(item);
-            });
-            
-            setTimeout(() => gmxLoadDurations(), 100);
-          }
-          
-          // Formatear nombre de canción
-          function gmxFormatSongName(filename) {
-            const name = filename.replace('.mp3', '');
-            return name.length > 50 ? name.substring(0, 50) + '...' : name;
-          }
-          
-          // Función para cargar información detallada de la canción
-          function loadSongDetails(songFilename) {
-            const songTitle = songFilename.replace('.mp3', '');
-            const container = document.getElementById('songInfoContainer');
-            if (container) {
-              container.classList.add('show');
-              container.innerHTML = '<div class="song-info-loading">Cargando información de la canción...</div>';
-            }
-            
-            google.script.run
-              .withSuccessHandler(function(songInfo) {
-                if (songInfo.found) {
-                  loadPortfolioImage(songTitle, songInfo);
-                } else {
-                  showSongInfoError('Información no disponible para esta canción');
-                }
-              })
-              .withFailureHandler(function(error) {
-                console.error('Error al cargar información:', error);
-                showSongInfoError('Error al cargar la información: ' + error);
-              })
-              .getCurrentSongInfo(songTitle);
-          }
-          
-          // Función para cargar imagen del portafolio
-          async function loadPortfolioImage(songTitle, songInfo) {
-            const imageData = getPortfolioImageUrl(songTitle, songInfo.tituloAlbum);
-            
-            console.log('🖼️ Buscando imagen para:', songTitle);
-            let foundImageUrl = null;
-            
-            for (let i = 0; i < imageData.urls.length; i++) {
-              const url = imageData.urls[i];
-              const filename = imageData.filenames[i];
-              
-              try {
-                const imageExists = await checkImageExists(url);
-                if (imageExists) {
-                  foundImageUrl = url;
-                  break;
-                }
+                console.log('🎵 Buscando archivos de música...');
+                const repoUrl = 'https://api.github.com/repos/Grouvex/grouvex.github.io/contents/music';
+                const response = await fetch(repoUrl);
+                if (!response.ok) throw new Error(`Error: ${response.status}`);
+                const files = await response.json();
+                const mp3Files = files.filter(file => file.name.toLowerCase().endsWith('.mp3')).map(file => file.name);
+                console.log(`🎵 Encontrados ${mp3Files.length} archivos MP3`);
+                return mp3Files;
               } catch (error) {
-                console.error(`Error verificando imagen ${filename}:`, error);
+                console.error('Error:', error);
+                return gmxFallbackMusicList();
               }
             }
             
-            if (foundImageUrl) {
-              songInfo.ilustracion = foundImageUrl;
-              const background = document.getElementById('grouvexMusicPlayer');
-              background.style.backgroundImage = `url('${foundImageUrl}')`;
-              background.style.backgroundPosition = 'center';
-              background.style.backgroundRepeat = 'no-repeat';
-              background.style.backgroundSize = 'cover';
-            } else {
-              const background = document.getElementById('grouvexMusicPlayer');
-              songInfo.ilustracion = null;
-              background.style.backgroundImage = null;
-            }
-            
-            renderSongInfo(songInfo);
-          }
-          
-          // Función para renderizar la información de la canción
-          function renderSongInfo(songInfo) {
-            const container = document.getElementById('songInfoContainer');
-            if (!container) return;
-            
-            container.innerHTML = `
-              ${renderIllustration(songInfo.ilustracion, songInfo.title)}
-              <div class="song-details-content">
-                ${renderAlbumInfo(songInfo)}
-                ${renderArtistInfo(songInfo)}
-                ${renderGenres(songInfo)}
-                ${renderDetailsGrid(songInfo)}
-                ${renderPlatforms(songInfo)}
-              </div>
-            `;
-            
-            if (songInfo.artista && songInfo.artista !== 'No encontrado') {
-              document.getElementById('gmxCurrentSongArtist').textContent = songInfo.artista;
-            }
-          }
-          
-          // Función para renderizar la ilustración
-          function renderIllustration(ilustracion, songTitle) {
-            if (ilustracion) {
-              return `<img src="${ilustracion}" alt="Portada de ${songTitle}" class="song-illustration" onerror="this.classList.add('placeholder'); this.innerHTML='🎵'">`;
-            } else {
-              return `<div class="song-illustration placeholder" title="${songTitle}">🎵</div>`;
-            }
-          }
-          
-          // Función para renderizar información del álbum
-          function renderAlbumInfo(songInfo) {
-            return `<div class="song-album-title">${songInfo.tituloAlbum || 'Sin álbum especificado'}</div>`;
-          }
-          
-          // Función para renderizar información del artista
-          function renderArtistInfo(songInfo) {
-            let html = `<div class="song-artist-info">${songInfo.artista || 'Artista desconocido'}</div>`;
-            if (songInfo.otrosArtistas) {
-              html += `<div class="song-other-artists">Con: ${songInfo.otrosArtistas}</div>`;
-            }
-            return html;
-          }
-          
-          // Función para renderizar géneros
-          function renderGenres(songInfo) {
-            const genres = [];
-            if (songInfo.generoPrimario) genres.push(songInfo.generoPrimario);
-            if (songInfo.generoSecundario) genres.push(songInfo.generoSecundario);
-            
-            if (genres.length > 0) {
-              return `<div class="song-genres">${genres.map(genre => `<span class="genre-tag">${genre}</span>`).join('')}</div>`;
-            }
-            return '';
-          }
-          
-          // Función para renderizar la cuadrícula de detalles
-          function renderDetailsGrid(songInfo) {
-            return `
-              <div class="song-details-grid">
-                <div class="detail-item">
-                  <div class="detail-label">Lanzamiento Original</div>
-                  <div style="color: black">${songInfo.lanzamientoOriginal || 'No especificado'}</div>
-                </div>
-                <div class="detail-item">
-                  <div class="detail-label">Inicio de Ventas</div>
-                  <div style="color: black">${songInfo.fechaInicioVentas || 'No especificado'}</div>
-                </div>
-                <div class="detail-item">
-                  <div class="detail-label">Sello Discográfico</div>
-                  <div style="color: black">${songInfo.selloDiscografico || 'No especificado'}</div>
-                </div>
-                <div class="detail-item">
-                  <div class="detail-label">Derechos Composición</div>
-                  <div style="color: black">${songInfo.derechosComposicion || 'No especificado'}</div>
-                </div>
-              </div>
-            `;
-          }
-          
-          // Función para renderizar plataformas
-          function renderPlatforms(songInfo) {
-            if (songInfo.plataformas) {
-              return `
-                <div class="song-platforms">
-                  <div class="platforms-label">Plataformas de Lanzamiento</div>
-                  <div>${songInfo.plataformas}</div>
-                </div>
-              `;
-            }
-            return '';
-          }
-          
-          // Función para mostrar error
-          function showSongInfoError(message) {
-            const container = document.getElementById('songInfoContainer');
-            if (container) {
-              container.innerHTML = `<div class="song-info-error">${message}</div>`;
-            }
-          }
-          
-          // Alternar reproducción/pausa
-          function gmxTogglePlay() {
-            const audio = document.getElementById('gmxAudioPlayer');
-            const currentSong = gmxCurrentPlaylist[gmxCurrentIndex];
-            
-            // No permitir reproducir si es upcoming
-            if (currentSong && isUpcomingSong(currentSong)) {
-              showUpcomingMessage(currentSong);
-              return;
-            }
-            
-            if (audio.src === '' || !audio.src) {
-              if (gmxCurrentPlaylist.length > 0) {
-                gmxPlaySong(0);
+            async function gmxFallbackMusicList() {
+              const knownFiles = [
+                'A Parallel Universe.mp3', 'Acuario.mp3', 'Advanced Music.mp3',
+                'Amor Fatuo.mp3', 'Aries.mp3', 'Balance Sphere.mp3', 'Cancer.mp3',
+                'Capricornio.mp3', 'Conversation.mp3', 'Diamonds (Grouvex\'s Version).mp3',
+                'El Diamante Renaciente.mp3', 'El Diamante.mp3'
+              ];
+              const existingFiles = [];
+              for (const file of knownFiles) {
+                try {
+                  const response = await fetch(getMusicUrl(file), { method: 'HEAD' });
+                  if (response.ok) existingFiles.push(file);
+                } catch(e) {}
               }
-              return;
-            }
-          
-            if (gmxIsPlaying) {
-              audio.pause();
-            } else {
-              audio.play().catch(e => console.log('Error al reproducir:', e));
-            }
-          }
-          
-          // Siguiente canción
-          function gmxNextSong() {
-            // Verificar si los botones de playlist están habilitados
-            if (!UI_CONTROLS.playlistButtonsEnabled) {
-              console.log('Botones de playlist deshabilitados');
-              return;
+              return existingFiles;
             }
             
-            const autoPlay = document.getElementById('gmxAutoPlay')?.checked || MUSIC.autoPlay;
-            if (!autoPlay) return;
-            
-            let nextIndex = gmxCurrentIndex + 1;
-            if (nextIndex >= gmxCurrentPlaylist.length) {
-              nextIndex = 0;
-            }
-            gmxPlaySong(nextIndex);
-          }
-          
-          // Canción anterior
-          function gmxPreviousSong() {
-            // Verificar si los botones de playlist están habilitados
-            if (!UI_CONTROLS.playlistButtonsEnabled) {
-              console.log('Botones de playlist deshabilitados');
-              return;
-            }
-            
-            let prevIndex = gmxCurrentIndex - 1;
-            if (prevIndex < 0) {
-              prevIndex = gmxCurrentPlaylist.length - 1;
-            }
-            gmxPlaySong(prevIndex);
-          }
-          
-          // Configurar volumen
-          function gmxSetVolume(volume) {
-            if (!UI_CONTROLS.volumeControlEnabled) {
-              console.log('Control de volumen deshabilitado');
-              return;
-            }
-            
-            const audio = document.getElementById('gmxAudioPlayer');
-            audio.volume = volume;
-            document.getElementById('gmxVolumeValue').textContent = Math.round(volume * 100) + '%';
-            document.getElementById('gmxVolumeSlider').value = volume;
-          }
-          
-          // Alternar shuffle
-          function gmxToggleShuffle() {
-            if (!UI_CONTROLS.shuffleButtonEnabled) {
-              console.log('Botón shuffle deshabilitado');
-              return;
-            }
-            
-            gmxIsShuffled = !gmxIsShuffled;
-            const btn = document.getElementById('gmxShuffleBtn');
-            btn.classList.toggle('active', gmxIsShuffled);
-            
-            if (gmxIsShuffled) {
-              gmxShufflePlaylist();
-            } else {
-              gmxLoadPlaylist();
-            }
-          }
-          
-          // Mezclar lista de reproducción
-          function gmxShufflePlaylist() {
-            const shuffled = [...gmxCurrentPlaylist];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-              const j = Math.floor(Math.random() * (i + 1));
-              [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-            gmxCurrentPlaylist = shuffled;
-            gmxCurrentIndex = 0;
-            gmxRenderPlaylist();
-          }
-          
-          // Alternar loop
-          function gmxToggleLoop() {
-            if (!UI_CONTROLS.loopButtonEnabled) {
-              console.log('Botón loop deshabilitado');
-              return;
-            }
-            
-            gmxIsLooping = (gmxIsLooping + 1) % 3;
-            const btn = document.getElementById('gmxLoopBtn');
-            const audio = document.getElementById('gmxAudioPlayer');
-            
-            if (gmxIsLooping === 0) {
-              btn.innerHTML = '🔁 Loop';
-              btn.classList.remove('active');
-              audio.loop = false;
-            } else if (gmxIsLooping === 1) {
-              btn.innerHTML = '🔂 Loop <span class="gmx-loop-indicator">1</span>';
-              btn.classList.add('active');
-              audio.loop = true;
-            } else if (gmxIsLooping === 2) {
-              btn.innerHTML = '🔁 Loop <span class="gmx-loop-indicator">∞</span>';
-              btn.classList.add('active');
-              audio.loop = false;
-            }
-          }
-          
-          // Alternar tema
-          function gmxToggleTheme() {
-            if (!UI_CONTROLS.themeButtonEnabled) {
-              console.log('Botón de tema deshabilitado');
-              return;
-            }
-            
-            const player = document.getElementById('grouvexMusicPlayer');
-            const themeBtn = document.querySelector('.gmx-theme-toggle');
-            player.classList.toggle('light-theme');
-            
-            if (player.classList.contains('light-theme')) {
-              themeBtn.innerHTML = '☀️ Tema';
-            } else {
-              themeBtn.innerHTML = '🌙 Tema';
-            }
-          }
-          
-          // Alternar visualizador
-          function gmxToggleVisualizer(enabled) {
-            gmxVisualizerEnabled = enabled;
-            gmxUpdateVisualizer();
-          }
-          
-          // Actualizar visualizador
-          function gmxUpdateVisualizer() {
-            const visualizer = document.getElementById('gmxVisualizer');
-            if (!visualizer) return;
-            
-            const bars = visualizer.querySelectorAll('.gmx-bar');
-            
-            if (gmxIsPlaying && gmxVisualizerEnabled) {
-              bars.forEach(bar => {
-                bar.style.animationPlayState = 'running';
-              });
-            } else {
-              bars.forEach(bar => {
-                bar.style.animationPlayState = 'paused';
-              });
-            }
-          }
-          
-          // Alternar configuración
-          function gmxToggleConfig() {
-            document.getElementById('gmxConfigContent').classList.toggle('show');
-          }
-          
-          // Alternar ayuda
-          function gmxToggleHelp() {
-            document.getElementById('gmxHelpContent').classList.toggle('show');
-          }
-          
-          function gmxTogglePlaylist() {
-            document.getElementById('gmxPlaylistContent').classList.toggle('show');
-          }
-          
-          // Actualizar configuración
-          function gmxUpdateConfig(key, value) {
-            MUSIC[key] = value;
-            console.log('Configuración actualizada:', key, value);
-            
-            if (key === 'allowedFiles' || key === 'disabledFiles') {
-              gmxLoadPlaylist();
-            }
-          }
-          
-          // Configurar event listeners
-          function gmxSetupEventListeners() {
-            const audio = document.getElementById('gmxAudioPlayer');
-            const progressBar = document.getElementById('gmxProgressBar');
-          
-            if (!audio || !progressBar) {
-              console.error('Elementos del reproductor no encontrados');
-              return;
-            }
-          
-            audio.addEventListener('loadedmetadata', function() {
-              document.getElementById('gmxDuration').textContent = gmxFormatTime(audio.duration);
-            });
-          
-            audio.addEventListener('timeupdate', function() {
-              const progress = (audio.currentTime / audio.duration) * 100;
-              document.getElementById('gmxProgress').style.width = progress + '%';
-              document.getElementById('gmxCurrentTime').textContent = gmxFormatTime(audio.currentTime);
-            });
-          
-            audio.addEventListener('play', function() {
-              gmxIsPlaying = true;
-              document.querySelector('.gmx-play-pause').textContent = '⏸';
-              gmxUpdateVisualizer();
-            });
-          
-            audio.addEventListener('pause', function() {
-              gmxIsPlaying = false;
-              document.querySelector('.gmx-play-pause').textContent = '▶';
-              gmxUpdateVisualizer();
-            });
-          
-            audio.addEventListener('ended', function() {
-              const autoPlay = document.getElementById('gmxAutoPlay')?.checked || MUSIC.autoPlay;
+            function getFilteredMusicList() {
+              // Incluir canciones especiales (upcoming y preview)
+              const allSpecialSongs = [
+                ...SPECIAL_SONGS.upcoming,
+                ...SPECIAL_SONGS.preview30.map(p => p.file)
+              ];
               
-              if (gmxIsLooping === 1) {
-                audio.play();
-              } else if (gmxIsLooping === 2 || autoPlay) {
-                gmxNextSong();
-              }
-            });
-          
-            progressBar.addEventListener('click', function(e) {
-              // Verificar si la barra de progreso está habilitada
-              if (!UI_CONTROLS.progressBarEnabled || UI_CONTROLS.previewProgressLocked) {
-                console.log('Barra de progreso bloqueada en modo preview');
+              let allSongs = [...gmxAllMusicFiles, ...allSpecialSongs];
+              allSongs = [...new Set(allSongs)];
+              
+              // Filtrar: eliminar canciones no disponibles y las deshabilitadas manualmente
+              return allSongs.filter(song => {
+                if (isUnavailableSong(song)) return false;  // NO aparecen en la lista
+                if (MUSIC.disabledFiles.includes(song)) return false;
+                if (MUSIC.allowedFiles.length > 0 && !MUSIC.allowedFiles.includes(song)) return false;
+                return true;
+              });
+            }
+            
+            function gmxLoadPlaylist() {
+              gmxCurrentPlaylist = getFilteredMusicList();
+              gmxRenderPlaylist();
+              document.getElementById('gmxCurrentSongTitle').textContent = gmxCurrentPlaylist.length > 0 ? 'Selecciona una canción' : 'No hay canciones disponibles';
+            }
+            
+            function gmxRenderPlaylist() {
+              const playlistElement = document.getElementById('gmxPlaylist');
+              playlistElement.innerHTML = '';
+              if (gmxCurrentPlaylist.length === 0) {
+                playlistElement.innerHTML = '<div class="gmx-playlist-item">No hay canciones disponibles</div>';
                 return;
               }
               
-              const rect = progressBar.getBoundingClientRect();
-              const percent = (e.clientX - rect.left) / rect.width;
-              audio.currentTime = percent * audio.duration;
-            });
-          }
-          
-          // Formatear tiempo
-          function gmxFormatTime(seconds) {
-            if (isNaN(seconds)) return '0:00';
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins}:${secs.toString().padStart(2, '0')}`;
-          }
-          
-          // Función para actualizar manualmente la lista de música
-          async function gmxRefreshMusicList() {
-            console.log('🔄 Actualizando lista de música...');
-            gmxAllMusicFiles = await gmxFetchMusicFiles();
-            gmxLoadPlaylist();
-          }
-          
-          // Inicializar cuando se carga la página
-          window.addEventListener('load', gmxInitializePlayer);
-          
-          // Exportar funciones para uso global
-          window.addUpcomingSong = addUpcomingSong;
-          window.addPreviewSong = addPreviewSong;
-          window.removeSpecialSong = removeSpecialSong;
-          window.isUpcomingSong = isUpcomingSong;
-          window.getPreviewInfo = getPreviewInfo;
-          window.enableControl = enableControl;
-          window.disableControl = disableControl;
-          window.toggleControl = toggleControl;
-          window.getControlState = getControlState;
-          window.setPreviewMode = setPreviewMode;
+              gmxCurrentPlaylist.forEach((song, index) => {
+                const item = document.createElement('div');
+                let badge = '';
+                if (isUpcomingSong(song)) {
+                  badge = '<span class="gmx-badge upcoming-badge">🎵 Próximamente</span>';
+                } else if (getPreviewInfo(song)) {
+                  const previewInfo = getPreviewInfo(song);
+                  badge = `<span class="gmx-badge preview-badge">🎧 Preview ${Math.floor(previewInfo.runToTime / 60)}:${(previewInfo.runToTime % 60).toString().padStart(2, '0')}s (desde ${Math.floor(previewInfo.startTime / 60)}:${(previewInfo.startTime % 60).toString().padStart(2, '0')}s)</span>`;
+                }
+                
+                item.className = `gmx-playlist-item ${index === gmxCurrentIndex ? 'active' : ''}`;
+                item.innerHTML = `
+                  <div class="gmx-song-info-wrapper">
+                    <span class="gmx-song-title" data-full-title="${song.replace('.mp3', '')}">${gmxFormatSongName(song)}</span>
+                    ${badge}
+                  </div>
+                  <span class="gmx-song-duration">${getPreviewInfo(song) ? '0:30' : (isUpcomingSong(song) ? '--:--' : 'Cargando...')}</span>
+                `;
+                item.onclick = () => gmxPlaySong(index);
+                playlistElement.appendChild(item);
+              });
+              setTimeout(() => gmxLoadDurations(), 100);
+            }
+            
+            function gmxLoadDurations() {
+              gmxCurrentPlaylist.forEach((song, index) => {
+                if (isUpcomingSong(song)) return;
+                const audio = new Audio();
+                audio.addEventListener('loadedmetadata', function() {
+                  const duration = gmxFormatTime(audio.duration);
+                  const items = document.querySelectorAll('.gmx-playlist-item');
+                  if (items[index]) {
+                    const span = items[index].querySelector('.gmx-song-duration');
+                    if (span) span.textContent = duration;
+                  }
+                });
+                audio.src = getMusicUrl(song);
+              });
+            }
+            
+            // ============================================
+            // FUNCIONES DE INFORMACIÓN DE CANCIÓN
+            // ============================================
+            function loadSongDetails(songFilename) {
+              const songTitle = songFilename.replace('.mp3', '');
+              const container = document.getElementById('songInfoContainer');
+              if (container) {
+                container.classList.add('show');
+                container.innerHTML = '<div class="song-info-loading">Cargando información de la canción...</div>';
+              }
+              
+              google.script.run
+                .withSuccessHandler(function(songInfo) {
+                  if (songInfo.found) {
+                    loadPortfolioImage(songTitle, songInfo);
+                  } else {
+                    showSongInfoError('Información no disponible para esta canción');
+                  }
+                })
+                .withFailureHandler(function(error) {
+                  console.error('Error:', error);
+                  showSongInfoError('Error al cargar la información');
+                })
+                .getCurrentSongInfo(songTitle);
+            }
+            
+            async function loadPortfolioImage(songTitle, songInfo) {
+              const imageData = getPortfolioImageUrl(songTitle, songInfo.tituloAlbum);
+              let foundImageUrl = null;
+              
+              for (const url of imageData.urls) {
+                try {
+                  const exists = await checkImageExists(url);
+                  if (exists) {
+                    foundImageUrl = url;
+                    break;
+                  }
+                } catch(e) {}
+              }
+              
+              if (foundImageUrl) {
+                songInfo.ilustracion = foundImageUrl;
+                const player = document.getElementById('grouvexMusicPlayer');
+                player.style.backgroundImage = `url('${foundImageUrl}')`;
+                player.style.backgroundPosition = 'center';
+                player.style.backgroundRepeat = 'no-repeat';
+                player.style.backgroundSize = 'cover';
+              }
+              
+              renderSongInfo(songInfo);
+              renderPlatformLinks(songInfo);
+            }
+            
+            function getPortfolioImageUrl(songTitle, albumTitle = null) {
+              const cleanTitle = songTitle.replace(/[^\w\s]/gi, ' ').trim();
+              const filenames = [cleanTitle + '.jpg'];
+              if (albumTitle) {
+                const cleanAlbum = albumTitle.replace(/[^\w\s]/gi, ' ').trim();
+                if (cleanAlbum !== cleanTitle) filenames.push(cleanAlbum + '.jpg');
+              }
+              return { urls: filenames.map(f => PORTFOLIO_IMAGE_BASE_URL + encodeURIComponent(f)) };
+            }
+            
+            async function checkImageExists(url) {
+              try {
+                const response = await fetch(url, { method: 'HEAD' });
+                return response.ok;
+              } catch { return false; }
+            }
+            
+            function renderSongInfo(songInfo) {
+              const container = document.getElementById('songInfoContainer');
+              if (!container) return;
+              
+              container.innerHTML = `
+                ${renderIllustration(songInfo.ilustracion, songInfo.title)}
+                <div class="song-details-content">
+                  <div class="song-album-title">${songInfo.tituloAlbum || 'Sin álbum'}</div>
+                  <div class="song-artist-info">${songInfo.artista || 'Artista desconocido'}</div>
+                  ${songInfo.otrosArtistas ? `<div class="song-other-artists">Con: ${songInfo.otrosArtistas}</div>` : ''}
+                  ${renderGenres(songInfo)}
+                  <div class="song-details-grid">
+                    <div class="detail-item"><div class="detail-label">Lanzamiento Original</div><div>${songInfo.lanzamientoOriginal || 'No especificado'}</div></div>
+                    <div class="detail-item"><div class="detail-label">Inicio de Ventas</div><div>${songInfo.fechaInicioVentas || 'No especificado'}</div></div>
+                    <div class="detail-item"><div class="detail-label">Sello Discográfico</div><div>${songInfo.selloDiscografico || 'No especificado'}</div></div>
+                    <div class="detail-item"><div class="detail-label">Derechos Composición</div><div>${songInfo.derechosComposicion || 'No especificado'}</div></div>
+                  </div>
+                  ${songInfo.plataformas ? `<div class="song-platforms"><div class="platforms-label">Plataformas</div><div>${songInfo.plataformas}</div></div>` : ''}
+                </div>
+              `;
+              
+              if (songInfo.artista && songInfo.artista !== 'No encontrado') {
+                document.getElementById('gmxCurrentSongArtist').textContent = songInfo.artista;
+              }
+            }
+            
+            function renderGenres(songInfo) {
+              const genres = [];
+              if (songInfo.generoPrimario) genres.push(songInfo.generoPrimario);
+              if (songInfo.generoSecundario) genres.push(songInfo.generoSecundario);
+              if (genres.length === 0) return '';
+              return `<div class="song-genres">${genres.map(g => `<span class="genre-tag">${g}</span>`).join('')}</div>`;
+            }
+            
+            function renderIllustration(ilustracion, songTitle) {
+              if (ilustracion) {
+                return `<img src="${ilustracion}" alt="${songTitle}" class="song-illustration" onerror="this.outerHTML='<div class=\\'song-illustration placeholder\\'>🎵</div>'">`;
+              }
+              return `<div class="song-illustration placeholder" title="${songTitle}">🎵</div>`;
+            }
+            
+            function renderPlatformLinks(songInfo) {
+              const section = document.getElementById('gmxPlatformsSection');
+              const container = document.getElementById('gmxPlatformsLinks');
+              if (!section || !container) return;
+              
+              container.innerHTML = '';
+              const links = [];
+              
+              // Enlace para abrir en nueva ventana
+              if (songInfo.spotifyLink) links.push({ url: songInfo.spotifyLink, name: 'Spotify', icon: 'fa-brands fa-spotify', class: 'spotify', embed: songInfo.spotifyEmbed });
+              if (songInfo.youtubeLink) links.push({ url: songInfo.youtubeLink, name: 'YouTube', icon: 'fa-brands fa-youtube', class: 'youtube', embed: songInfo.youtubeEmbed });
+              if (songInfo.appleMusicLink) links.push({ url: songInfo.appleMusicLink, name: 'Apple Music', icon: 'fa-brands fa-apple', class: 'apple', embed: null });
+              if (songInfo.amazonMusicLink) links.push({ url: songInfo.amazonMusicLink, name: 'Amazon Music', icon: 'fa-brands fa-amazon', class: 'amazon', embed: null });
+              if (songInfo.instagramLink) links.push({ url: songInfo.instagramLink, name: 'Instagram (Meta)', icon: 'fa-brands fa-instagram', class: 'instagram', embed: null });
+              if (songInfo.tiktokLink) links.push({ url: songInfo.tiktokLink, name: 'TikTok Music', icon: 'fa-brands fa-tiktok', class: 'tiktok', embed: null });
+              console.log('🔍 [DEPURADOR] Total de enlaces a mostrar:', links.length);
+              if (links.length === 0) {
+                section.style.display = 'none';
+                return;
+              }
+              
+              section.style.display = 'block';
+              links.forEach(link => {
+                const a = document.createElement('a');
+                a.href = link.url;
+                a.target = '_blank';
+                a.className = `gmx-platform-link ${link.class}`;
+                a.innerHTML = `<i class="${link.icon}"></i> ${link.name}`;
+                
+                // Si tiene embed, agregar evento para reproducir directamente
+                if (link.embed) {
+                  a.style.cursor = 'pointer';
+                  a.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    gmxPlayEmbed(link.embed);
+                  });
+                }
+                
+                container.appendChild(a);
+              });
+            }
+            
+            // Función para reproducir embed
+            function gmxPlayEmbed(embedUrl) {
+              const embedPlayer = document.getElementById('gmxEmbedPlayer');
+              const iframe = document.getElementById('gmxEmbedIframe');
+              
+              if (embedPlayer && iframe && embedUrl) {
+                iframe.src = embedUrl;
+                embedPlayer.style.display = 'block';
+                
+                // Scroll suave hasta el reproductor
+                embedPlayer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+              }
+            }
+            
+            // Función para cerrar el embed
+            function gmxCloseEmbed() {
+              const embedPlayer = document.getElementById('gmxEmbedPlayer');
+              const iframe = document.getElementById('gmxEmbedIframe');
+              
+              if (embedPlayer && iframe) {
+                iframe.src = '';
+                embedPlayer.style.display = 'none';
+              }
+            }
+            
+            function showSongInfoError(message) {
+              const container = document.getElementById('songInfoContainer');
+              if (container) {
+                container.innerHTML = `<div class="song-info-error">${message}</div>`;
+              }
+            }
+            
+            // ============================================
+            // FUNCIONES DE REPRODUCCIÓN
+            // ============================================
+                  function showUpcomingMessage(songFilename) {
+                    const songName = songFilename.replace('.mp3', '');
+                    
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'gmx-upcoming-message';
+                    messageDiv.innerHTML = `
+                      <div class="gmx-upcoming-content">
+                        <span class="gmx-upcoming-icon">🎵</span>
+                        <h3>Próximamente</h3>
+                        <p>"${songName}" estará disponible próximamente en Grouvex Studios Records</p>
+                        <p class="gmx-upcoming-note">⚠️ Puedes ver la información de la canción, pero aún no está disponible para reproducción.</p>
+                        <button class="gmx-upcoming-close" onclick="this.parentElement.parentElement.remove()">Cerrar</button>
+                      </div>
+                    `;
+                    
+                    if (!document.querySelector('#gmx-upcoming-styles')) {
+                      const styles = document.createElement('style');
+                      styles.id = 'gmx-upcoming-styles';
+                      styles.textContent = `
+                        .gmx-upcoming-message {
+                          position: fixed;
+                          top: 0;
+                          left: 0;
+                          width: 100%;
+                          height: 100%;
+                          background: rgba(0, 0, 0, 0.8);
+                          display: flex;
+                          justify-content: center;
+                          align-items: center;
+                          z-index: 10000;
+                          animation: gmxFadeIn 0.3s ease;
+                        }
+                        
+                        .gmx-upcoming-content {
+                          background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                          padding: 30px;
+                          border-radius: 20px;
+                          text-align: center;
+                          max-width: 400px;
+                          color: white;
+                          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+                          animation: gmxSlideUp 0.3s ease;
+                        }
+                        
+                        .gmx-upcoming-icon {
+                          font-size: 4em;
+                          display: block;
+                          margin-bottom: 20px;
+                          animation: gmxPulse 1s infinite;
+                        }
+                        
+                        .gmx-upcoming-content h3 {
+                          margin: 0 0 15px 0;
+                          font-size: 1.5em;
+                        }
+                        
+                        .gmx-upcoming-content p {
+                          margin: 0 0 20px 0;
+                          line-height: 1.5;
+                        }
+                        
+                        .gmx-upcoming-note {
+                          font-size: 0.9em;
+                          opacity: 0.9;
+                          background: rgba(0, 0, 0, 0.3);
+                          padding: 10px;
+                          border-radius: 10px;
+                        }
+                        
+                        .gmx-upcoming-close {
+                          background: rgba(255, 255, 255, 0.2);
+                          border: 1px solid rgba(255, 255, 255, 0.3);
+                          color: white;
+                          padding: 10px 20px;
+                          border-radius: 50px;
+                          cursor: pointer;
+                          font-size: 1em;
+                          transition: all 0.3s ease;
+                        }
+                        
+                        .gmx-upcoming-close:hover {
+                          background: rgba(255, 255, 255, 0.3);
+                          transform: translateY(-2px);
+                        }
+                        
+                        .gmx-preview-message {
+                          position: fixed;
+                          bottom: 20px;
+                          right: 20px;
+                          background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                          padding: 15px 25px;
+                          border-radius: 10px;
+                          color: white;
+                          z-index: 9999;
+                          animation: gmxSlideInRight 0.3s ease;
+                          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                        }
+                        
+                        .gmx-preview-message button {
+                          background: rgba(255, 255, 255, 0.2);
+                          border: none;
+                          color: white;
+                          margin-left: 15px;
+                          padding: 5px 10px;
+                          border-radius: 5px;
+                          cursor: pointer;
+                        }
+                        
+                        @keyframes gmxFadeIn {
+                          from { opacity: 0; }
+                          to { opacity: 1; }
+                        }
+                        
+                        @keyframes gmxSlideUp {
+                          from {
+                            transform: translateY(50px);
+                            opacity: 0;
+                          }
+                          to {
+                            transform: translateY(0);
+                            opacity: 1;
+                          }
+                        }
+                        
+                        @keyframes gmxSlideInRight {
+                          from {
+                            transform: translateX(100%);
+                            opacity: 0;
+                          }
+                          to {
+                            transform: translateX(0);
+                            opacity: 1;
+                          }
+                        }
+                        
+                        @keyframes gmxPulse {
+                          0%, 100% { transform: scale(1); }
+                          50% { transform: scale(1.1); }
+                        }
+                      `;
+                      document.head.appendChild(styles);
+                    }
+                    
+                    document.body.appendChild(messageDiv);
+                    
+                    setTimeout(() => {
+                      if (messageDiv.parentElement) messageDiv.remove();
+                    }, 10000);
+                  }
+            
+                  function showPreviewEndMessage(songFilename) {
+                    const songName = songFilename.replace('.mp3', '');
+                    
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'gmx-preview-message';
+                    messageDiv.innerHTML = `
+                      <span>🎧 Vista previa de "${songName}" finalizada. En algun futuro podrás escucharla completa.</span>
+                      <button onclick="this.parentElement.remove()">Cerrar</button>
+                    `;
+                    
+                    document.body.appendChild(messageDiv);
+                    
+                    setTimeout(() => {
+                      if (messageDiv.parentElement) messageDiv.remove();
+                    }, 10000);
+                  }
+                  
+                  // Agregar estilos adicionales para los badges
+                  const additionalStyles = document.createElement('style');
+                  additionalStyles.textContent = `
+                    .gmx-song-info-wrapper {
+                      flex: 1;
+                      display: flex;
+                      align-items: center;
+                      gap: 10px;
+                      flex-wrap: wrap;
+                    }
+                    
+                    .gmx-badge {
+                      font-size: 0.7em;
+                      padding: 3px 8px;
+                      border-radius: 20px;
+                      font-weight: 600;
+                      white-space: nowrap;
+                    }
+                    
+                    .upcoming-badge {
+                      background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+                      color: white;
+                      animation: gmxBadgePulse 2s infinite;
+                    }
+                    
+                    .preview-badge {
+                      background: linear-gradient(135deg, #f093fb, #f5576c);
+                      color: white;
+                    }
+                    
+                    .upcoming-song {
+                      opacity: 0.8;
+                      cursor: pointer;
+                    }
+                    
+                    .preview-song {
+                      cursor: pointer;
+                    }
+                    
+                    @keyframes gmxBadgePulse {
+                      0%, 100% { opacity: 1; }
+                      50% { opacity: 0.7; }
+                    }
+                    
+                    .light-theme .upcoming-badge,
+                    .light-theme .preview-badge {
+                      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                    }
+                  `;
+                  
+                  document.head.appendChild(additionalStyles);
+                  
+                  // Función para agregar canciones a la lista de "próximamente"
+                  function addUpcomingSong(songFilename) {
+                    if (!SPECIAL_SONGS.upcoming.includes(songFilename)) {
+                      SPECIAL_SONGS.upcoming.push(songFilename);
+                      gmxLoadPlaylist();
+                      console.log(`✅ Canción agregada a "Próximamente": ${songFilename}`);
+                    }
+                  }
+                  
+                  // Función para agregar canciones a la lista de preview
+                  function addPreviewSong(songFilename, startTime = 30) {
+                    const existing = SPECIAL_SONGS.preview30.find(p => p.file === songFilename);
+                    if (!existing) {
+                      SPECIAL_SONGS.preview30.push({ file: songFilename, startTime: startTime });
+                      gmxLoadPlaylist();
+                      console.log(`✅ Canción agregada a "Preview 30s": ${songFilename} (inicia en ${startTime}s)`);
+                    }
+                  }
+                  
+                  // Función para eliminar canciones de listas especiales
+                  function removeSpecialSong(songFilename) {
+                    SPECIAL_SONGS.upcoming = SPECIAL_SONGS.upcoming.filter(s => s !== songFilename);
+                    SPECIAL_SONGS.preview30 = SPECIAL_SONGS.preview30.filter(p => p.file !== songFilename);
+                    gmxLoadPlaylist();
+                    console.log(`✅ Canción eliminada de listas especiales: ${songFilename}`);
+                  }
+            
+            function gmxPlaySong(index) {
+              if (index < 0 || index >= gmxCurrentPlaylist.length) return;
+              if (gmxPreviewTimeout) clearTimeout(gmxPreviewTimeout);
+              if (gmxPreviewTimeUpdateHandler && window.gmxAudioPlayer) {
+                window.gmxAudioPlayer.removeEventListener('timeupdate', gmxPreviewTimeUpdateHandler);
+              }
+              window.setPreviewMode(false);
+              
+              gmxCurrentIndex = index;
+              const audio = document.getElementById('gmxAudioPlayer');
+              const song = gmxCurrentPlaylist[index];
+              
+              if (isUpcomingSong(song)) {
+                loadSongDetails(song);
+                showUpcomingMessage(song);
+                return;
+              }
+              
+              audio.src = getMusicUrl(song);
+              audio.load();
+              
+              const previewInfo = getPreviewInfo(song);
+              if (previewInfo) {
+                window.setPreviewMode(true, previewInfo);
+                audio.addEventListener('loadedmetadata', function onMetadata() {
+                  audio.removeEventListener('loadedmetadata', onMetadata);
+                  audio.currentTime = previewInfo.startTime;
+                  let endTime = previewInfo.runToTime ? previewInfo.startTime + previewInfo.runToTime : previewInfo.startTime + 30;
+                  gmxPreviewEndTime = endTime;
+                  
+                  gmxPreviewTimeUpdateHandler = function onTimeUpdate() {
+                    if (audio.currentTime >= endTime) {
+                      audio.pause();
+                      audio.removeEventListener('timeupdate', gmxPreviewTimeUpdateHandler);
+                      showPreviewEndMessage(song);
+                      window.setPreviewMode(false);
+                      setTimeout(() => gmxNextSong(), 1000);
+                    }
+                  };
+                  audio.addEventListener('timeupdate', gmxPreviewTimeUpdateHandler);
+                });
+              }
+              
+              document.getElementById('gmxCurrentSongTitle').textContent = gmxFormatSongName(song);
+              gmxRenderPlaylist();
+              loadSongDetails(song);
+              
+              const autoPlay = document.getElementById('gmxAutoPlay')?.checked || MUSIC.autoPlay;
+              if (autoPlay && !isUpcomingSong(song)) {
+                audio.play().catch(e => console.log('Autoplay bloqueado:', e));
+              }
+            }
+            
+            function gmxTogglePlay() {
+              const audio = document.getElementById('gmxAudioPlayer');
+              const currentSong = gmxCurrentPlaylist[gmxCurrentIndex];
+              if (currentSong && isUpcomingSong(currentSong)) {
+                showUpcomingMessage(currentSong);
+                return;
+              }
+              if (!audio.src) {
+                if (gmxCurrentPlaylist.length > 0) gmxPlaySong(0);
+                return;
+              }
+              if (gmxIsPlaying) audio.pause();
+              else audio.play().catch(e => console.log('Error:', e));
+            }
+            
+            function gmxNextSong() {
+              if (!UI_CONTROLS.playlistButtonsEnabled) return;
+              const autoPlay = document.getElementById('gmxAutoPlay')?.checked || MUSIC.autoPlay;
+              if (!autoPlay) return;
+              let nextIndex = gmxCurrentIndex + 1;
+              if (nextIndex >= gmxCurrentPlaylist.length) nextIndex = 0;
+              gmxPlaySong(nextIndex);
+            }
+            
+            function gmxPreviousSong() {
+              if (!UI_CONTROLS.playlistButtonsEnabled) return;
+              let prevIndex = gmxCurrentIndex - 1;
+              if (prevIndex < 0) prevIndex = gmxCurrentPlaylist.length - 1;
+              gmxPlaySong(prevIndex);
+            }
+            
+            function gmxSetVolume(volume) {
+              if (!UI_CONTROLS.volumeControlEnabled) return;
+              const audio = document.getElementById('gmxAudioPlayer');
+              audio.volume = volume;
+              document.getElementById('gmxVolumeValue').textContent = Math.round(volume * 100) + '%';
+            }
+            
+            function gmxToggleShuffle() {
+              if (!UI_CONTROLS.shuffleButtonEnabled) return;
+              gmxIsShuffled = !gmxIsShuffled;
+              const btn = document.getElementById('gmxShuffleBtn');
+              btn.classList.toggle('active', gmxIsShuffled);
+              if (gmxIsShuffled) {
+                const shuffled = [...gmxCurrentPlaylist];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                  const j = Math.floor(Math.random() * (i + 1));
+                  [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                gmxCurrentPlaylist = shuffled;
+                gmxCurrentIndex = 0;
+                gmxRenderPlaylist();
+              } else {
+                gmxLoadPlaylist();
+              }
+            }
+            
+            function gmxToggleLoop() {
+              if (!UI_CONTROLS.loopButtonEnabled) return;
+              gmxIsLooping = (gmxIsLooping + 1) % 3;
+              const btn = document.getElementById('gmxLoopBtn');
+              const audio = document.getElementById('gmxAudioPlayer');
+              if (gmxIsLooping === 0) {
+                btn.innerHTML = '🔁 Loop';
+                btn.classList.remove('active');
+                audio.loop = false;
+              } else if (gmxIsLooping === 1) {
+                btn.innerHTML = '🔂 Loop 1';
+                btn.classList.add('active');
+                audio.loop = true;
+              } else {
+                btn.innerHTML = '🔁 Loop ∞';
+                btn.classList.add('active');
+                audio.loop = false;
+              }
+            }
+            
+            function gmxToggleTheme() {
+              if (!UI_CONTROLS.themeButtonEnabled) return;
+              const player = document.getElementById('grouvexMusicPlayer');
+              const btn = document.querySelector('.gmx-theme-toggle');
+              player.classList.toggle('light-theme');
+              btn.innerHTML = player.classList.contains('light-theme') ? '☀️ Tema' : '🌙 Tema';
+            }
+            
+            function gmxToggleVisualizer(enabled) {
+              gmxVisualizerEnabled = enabled;
+              gmxUpdateVisualizer();
+            }
+            
+            function gmxUpdateVisualizer() {
+              const visualizer = document.getElementById('gmxVisualizer');
+              if (!visualizer) return;
+              const bars = visualizer.querySelectorAll('.gmx-bar');
+              if (gmxIsPlaying && gmxVisualizerEnabled) {
+                bars.forEach(bar => bar.style.animationPlayState = 'running');
+              } else {
+                bars.forEach(bar => bar.style.animationPlayState = 'paused');
+              }
+            }
+            
+            function gmxToggleConfig() {
+              document.getElementById('gmxConfigContent').classList.toggle('show');
+            }
+            
+            function gmxToggleHelp() {
+              document.getElementById('gmxHelpContent').classList.toggle('show');
+            }
+            
+            function gmxTogglePlaylist() {
+              document.getElementById('gmxPlaylistContent').classList.toggle('show');
+            }
+            
+            function gmxUpdateConfig(key, value) {
+              MUSIC[key] = value;
+              if (key === 'allowedFiles' || key === 'disabledFiles') gmxLoadPlaylist();
+            }
+            
+            function gmxSetupEventListeners() {
+              const audio = document.getElementById('gmxAudioPlayer');
+              const progressBar = document.getElementById('gmxProgressBar');
+              if (!audio || !progressBar) return;
+              
+              audio.addEventListener('loadedmetadata', () => {
+                document.getElementById('gmxDuration').textContent = gmxFormatTime(audio.duration);
+              });
+              
+              audio.addEventListener('timeupdate', () => {
+                const progress = (audio.currentTime / audio.duration) * 100;
+                document.getElementById('gmxProgress').style.width = progress + '%';
+                document.getElementById('gmxCurrentTime').textContent = gmxFormatTime(audio.currentTime);
+              });
+              
+              audio.addEventListener('play', () => {
+                gmxIsPlaying = true;
+                document.querySelector('.gmx-play-pause').textContent = '⏸';
+                gmxUpdateVisualizer();
+              });
+              
+              audio.addEventListener('pause', () => {
+                gmxIsPlaying = false;
+                document.querySelector('.gmx-play-pause').textContent = '▶';
+                gmxUpdateVisualizer();
+              });
+              
+              audio.addEventListener('ended', () => {
+                const autoPlay = document.getElementById('gmxAutoPlay')?.checked || MUSIC.autoPlay;
+                if (gmxIsLooping === 1) audio.play();
+                else if (gmxIsLooping === 2 || autoPlay) gmxNextSong();
+              });
+              
+              progressBar.addEventListener('click', (e) => {
+                if (!UI_CONTROLS.progressBarEnabled || UI_CONTROLS.previewProgressLocked) return;
+                const rect = progressBar.getBoundingClientRect();
+                const percent = (e.clientX - rect.left) / rect.width;
+                audio.currentTime = percent * audio.duration;
+              });
+            }
+            
+            async function gmxInitializePlayer() {
+              console.log('🎵 Inicializando...');
+              gmxAllMusicFiles = await gmxFetchMusicFiles();
+              if (gmxAllMusicFiles.length === 0) {
+                document.getElementById('gmxCurrentSongTitle').textContent = 'No hay canciones disponibles';
+                return;
+              }
+              gmxLoadPlaylist();
+              gmxSetupEventListeners();
+              gmxUpdateVisualizer();
+              console.log('✅ Listo');
+              console.log('📋 Canciones no disponibles (ocultas):', SPECIAL_SONGS.unavailable);
+            }
+            
+            window.addEventListener('load', gmxInitializePlayer);
+            
+            // Exportar funciones globales
+            window.gmxTogglePlaylist = gmxTogglePlaylist;
+            window.gmxToggleTheme = gmxToggleTheme;
+            window.gmxPreviousSong = gmxPreviousSong;
+            window.gmxTogglePlay = gmxTogglePlay;
+            window.gmxNextSong = gmxNextSong;
+            window.gmxSetVolume = gmxSetVolume;
+            window.gmxToggleShuffle = gmxToggleShuffle;
+            window.gmxToggleLoop = gmxToggleLoop;
+            window.gmxToggleConfig = gmxToggleConfig;
+            window.gmxToggleHelp = gmxToggleHelp;
+            window.gmxUpdateConfig = gmxUpdateConfig;
+            window.gmxToggleVisualizer = gmxToggleVisualizer;
           </script>
+        </div>
     </main>
     <!-- JavaScript -->
     <script>

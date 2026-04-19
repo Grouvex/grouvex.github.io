@@ -335,7 +335,7 @@
                     <p>Puesto que las canciones pertenecen a los respectivos artistas y la información está administrada por <a href="https://grouvex.github.io/gsrecords">Grouvex Studios Records</a>, éste mantendrá la información artista (aquella información que no se nos ha concedido permiso para compartir), en privado. También, los usuarios que usen estas funciones, deberán usarlo según el proposito de este reproductor, el cúal es poder disfurtar de las canciones SIN ANUNCIOS y algunas veces, antes de su lanzamiento.</p>
                 </details>
             </details>
-            <h1><a href="https://grouvex.github.io"><img src="https://grouvex.github.io/img/Grouvex1.png" alt="Logo" loading="lazy" style="width:50%"><p></a>Reproductor de Música</p></h1>
+            <h1><a href="https://grouvex.github.io"><img src="https://grouvex.github.io/img/Grouvex1.png" alt="Logo" loading="lazy"><p></a>Reproductor de Música</p></h1>
             <div id="currentTrackInfo">
                 <h2 id="trackName"  src=""></h2>
                 <img id="trackImagen"></h2>
@@ -449,27 +449,36 @@
               color: var(--text-dark);
             }
         
-            .gmx-player-header {
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              padding: 24px 24px 20px;
-              position: relative;
-            }
+        .gmx-player-header {
+            display: flex;
+            flex-direction: column;  /* Cambia de row a column */
+            align-items: center;
+            justify-content: center;
+            padding: 24px 24px 20px;
+            text-align: center;
+            gap: 20px;
+        }
         
-            .gmx-player-header h2 {
-              margin: 0;
-              font-size: 1.5em;
-              font-weight: 700;
-              display: flex;
-              align-items: center;
-              gap: 10px;
-            }
+        .gmx-player-header a {
+            display: inline-block;
+            line-height: 0;
+            width: auto;
+            max-width: 200px;        /* Controla el tamaño máximo del contenedor */
+        }
         
-            .gmx-player-header h2::before {
-              content: "🎵";
-              font-size: 1.2em;
-            }
+        .gmx-player-header img {
+            width: 100%;             /* Ocupa el ancho del contenedor */
+            max-width: 180px;        /* Tamaño máximo fijo */
+            height: auto;
+            display: block;
+            margin: 0 auto;          /* Centra la imagen */
+        }
+        
+        .gmx-player-header h1 {
+            margin: 0;
+            font-size: clamp(1rem, 5vw, 1.5rem);
+            word-break: keep-all;
+        }
         
             .gmx-theme-toggle {
               background: var(--glass-bg);
@@ -1127,17 +1136,16 @@
         
             /* ESTILOS PARA BOTÓN PLAYLIST */
             .gmx-playlist-toggle {
-              background: var(--glass-bg);
-              border: 1px solid var(--glass-border);
-              color: inherit;
-              padding: 10px 20px;
-              border-radius: 50px;
-              cursor: pointer;
-              margin: 0 20px 15px;
-              width: calc(50% - 45px);
-              font-weight: 600;
-              transition: var(--transition);
-              display: inline-block;
+                background: var(--glass-bg);
+                border: 1px solid var(--glass-border);
+                color: inherit;
+                padding: 10px 16px;
+                border-radius: 50px;
+                cursor: pointer;
+                font-weight: 600;
+                transition: var(--transition);
+                display: flex;
+                gap: 8px;
             }
         
             .gmx-playlist-toggle:hover {
@@ -1210,12 +1218,12 @@
             </details>
         
             <div class="gmx-player-header">
-              <h1><a href="https://grouvex.github.io"><img src="https://grouvex.github.io/img/Grouvex1.png" alt="Logo" loading="lazy" style="width:50%"></a>Reproductor de Música</h1>
-              <button class="gmx-theme-toggle" onclick="gmxToggleTheme()">🌙 Tema</button>
+              <a href="https://grouvex.github.io"><img src="https://grouvex.github.io/img/Grouvex1.png" alt="Logo" loading="lazy"></a>
+              <h1>Reproductor de Música</h1>
             </div>
-        
-            <button class="gmx-playlist-toggle" onclick="gmxTogglePlaylist()">📋 Playlist</button>
-            
+            <div style="display: flex">
+            <button class="gmx-playlist-toggle" onclick="gmxTogglePlaylist()">📋 Playlist</button> <button class="gmx-theme-toggle" onclick="gmxToggleTheme()">🌙 Tema</button>
+            </div>
             <div class="gmx-playlist-container" id="gmxPlaylistContent">
               <div class="gmx-playlist" id="gmxPlaylist">
                 <div class="gmx-playlist-item">Cargando canciones...</div>
@@ -1386,7 +1394,7 @@
               
               // Previews de 30 segundos - Aparecen en la lista y se reproduce solo una parte
               preview30: [
-                { file: "A New World - Orquesta.mp3", startTime: 207, runToTime: 61},
+                { file: "A New World - Orquesta.mp3", startTime: 207, runToTime: 55},
                 { file: "Cancion Preview 2.mp3", startTime: 45, runToTime: 0},
                 { file: "Cancion Preview 3.mp3", startTime: 15, runToTime: 0}
               ],
@@ -1734,7 +1742,9 @@
                   ${songInfo.otrosArtistas ? `<div class="song-other-artists">Con: ${songInfo.otrosArtistas}</div>` : ''}
                   ${renderGenres(songInfo)}
                   <div class="song-details-grid">
+                    <div class="detail-item"><div class="detail-label">Contenido Explícito</div><div>${songInfo.explicit || 'No especificado'}</div></div>
                     <div class="detail-item"><div class="detail-label">Lanzamiento Original</div><div>${songInfo.lanzamientoOriginal || 'No especificado'}</div></div>
+                    <div class="detail-item"><div class="detail-label">Lanzamiento de Preventa</div><div>${songInfo.fechaPedidoAnticipado || 'No especificado'}</div></div>
                     <div class="detail-item"><div class="detail-label">Inicio de Ventas</div><div>${songInfo.fechaInicioVentas || 'No especificado'}</div></div>
                     <div class="detail-item"><div class="detail-label">Sello Discográfico</div><div>${songInfo.selloDiscografico || 'No especificado'}</div></div>
                     <div class="detail-item"><div class="detail-label">Derechos Composición</div><div>${songInfo.derechosComposicion || 'No especificado'}</div></div>

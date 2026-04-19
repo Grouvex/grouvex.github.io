@@ -3475,7 +3475,9 @@ async function loadPortfolioImage(songTitle, songInfo) {
     background.style.backgroundRepeat = 'no-repeat';
     background.style.backgroundSize = 'cover';
   } else {
+    const background = document.getElementById('grouvexMusicPlayer');
     songInfo.ilustracion = null;
+    background.style.backgroundImage = null;
   }
   
   renderSongInfo(songInfo);

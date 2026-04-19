@@ -2795,13 +2795,13 @@ const MUSIC = {
 // Configuración de listas especiales
 const SPECIAL_SONGS = {
   upcoming: [
-    "A New World - Orquesta.mp3",
+    "A New World - Short Composition.mp3",
     "Dorado - Golden.mp3"
   ],
   preview30: [
-    { file: "Cancer.mp3", startTime: 30 },
-    { file: "Cancion Preview 2.mp3", startTime: 45 },
-    { file: "Cancion Preview 3.mp3", startTime: 15 }
+    { file: "A New World - Orquesta.mp3", startTime: 207, runToTime: 61},
+    { file: "Cancion Preview 2.mp3", startTime: 45, runToTime: 0},
+    { file: "Cancion Preview 3.mp3", startTime: 15, runToTime: 0}
   ]
 };
 
@@ -2865,7 +2865,12 @@ function gmxPlaySong(index) {
       audio.currentTime = previewInfo.startTime;
       
       // Configurar límite de 30 segundos desde el inicio
-      const endTime = previewInfo.startTime + 30;
+        let endTime;
+        if (previewInfo.runToTime) {
+          endTime = previewInfo.startTime + previewInfo.runToTime;
+        } else {
+          endTime = previewInfo.startTime + 30;
+        }
       gmxPreviewEndTime = endTime;
       
       gmxPreviewTimeUpdateHandler = function onTimeUpdate() {
@@ -3057,7 +3062,7 @@ function showPreviewEndMessage(songFilename) {
   const messageDiv = document.createElement('div');
   messageDiv.className = 'gmx-preview-message';
   messageDiv.innerHTML = `
-    <span>🎧 Vista previa de 30 segundos de "${songName}" finalizada</span>
+    <span>🎧 Vista previa de "${songName}" finalizada. En algun futuro podrás escucharla completa.</span>
     <button onclick="this.parentElement.remove()">Cerrar</button>
   `;
   
@@ -3065,7 +3070,7 @@ function showPreviewEndMessage(songFilename) {
   
   setTimeout(() => {
     if (messageDiv.parentElement) messageDiv.remove();
-  }, 5000);
+  }, 10000);
 }
 
 // Agregar estilos adicionales para los badges
@@ -3392,7 +3397,7 @@ function gmxRenderPlaylist() {
     } else if (getPreviewInfo(song)) {
       const previewInfo = getPreviewInfo(song);
       additionalClasses = ' preview-song';
-      badge = `<span class="gmx-badge preview-badge">🎧 Preview 30s (desde ${Math.floor(previewInfo.startTime / 60)}:${(previewInfo.startTime % 60).toString().padStart(2, '0')})</span>`;
+      badge = `<span class="gmx-badge preview-badge">🎧 Preview ${Math.floor(previewInfo.runToTime / 60)}:${(previewInfo.runToTime % 60).toString().padStart(2, '0')}s (desde ${Math.floor(previewInfo.startTime / 60)}:${(previewInfo.startTime % 60).toString().padStart(2, '0')})</span>`;
     }
     
     item.className = `gmx-playlist-item ${index === gmxCurrentIndex ? 'active' : ''}${additionalClasses}`;
@@ -3538,19 +3543,19 @@ function renderDetailsGrid(songInfo) {
     <div class="song-details-grid">
       <div class="detail-item">
         <div class="detail-label">Lanzamiento Original</div>
-        <div style="color: white">${songInfo.lanzamientoOriginal || 'No especificado'}</div>
+        <div style="color: black">${songInfo.lanzamientoOriginal || 'No especificado'}</div>
       </div>
       <div class="detail-item">
         <div class="detail-label">Inicio de Ventas</div>
-        <div style="color: white">${songInfo.fechaInicioVentas || 'No especificado'}</div>
+        <div style="color: black">${songInfo.fechaInicioVentas || 'No especificado'}</div>
       </div>
       <div class="detail-item">
         <div class="detail-label">Sello Discográfico</div>
-        <div style="color: white">${songInfo.selloDiscografico || 'No especificado'}</div>
+        <div style="color: black">${songInfo.selloDiscografico || 'No especificado'}</div>
       </div>
       <div class="detail-item">
         <div class="detail-label">Derechos Composición</div>
-        <div style="color: white">${songInfo.derechosComposicion || 'No especificado'}</div>
+        <div style="color: black">${songInfo.derechosComposicion || 'No especificado'}</div>
       </div>
     </div>
   `;

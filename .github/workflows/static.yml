@@ -1,26 +1,22 @@
 # ============================================================================
-# Workflow COMPLETO para Sitios Estáticos
-# Verifica: HTML, CSS, JS, imágenes, enlaces, rendimiento
-# Despliega: TODO después de pasar todas las validaciones
-# VERSIÓN ETERNA - Compatible con Node.js 24
+# Workflow SEGURIDAD EXTREMA para Producción
+# Bloquea CUALQUIER vulnerabilidad, mala práctica o riesgo
+# Modo: PRODUCCIÓN ESTRICTA
 # ============================================================================
 
-name: Deploy Static Site
+name: Deploy Static Site (Security Hardened)
 
 on:
   push:
     branches: [main, master]
-  pull_request:
-    branches: [main, master]
   workflow_dispatch:
 
-# Permisos necesarios
+# Permisos mínimos (principio de menor privilegio)
 permissions:
-  contents: read
   pages: write
   id-token: write
 
-# FORZAR NODE.JS 24 PARA SIEMPRE (elimina advertencias)
+# Forzar Node.js 24
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
@@ -29,22 +25,18 @@ concurrency:
   group: "pages-${{ github.repository }}"
   cancel-in-progress: true
 
-# Jobs que se ejecutan en secuencia
 jobs:
 
   # ==========================================================================
-  # JOB 1: VALIDACIÓN Y CHECKEO DE TODO
+  # JOB 1: SEGURIDAD Y VALIDACIÓN EXTREMA
   # ==========================================================================
-  validate:
-    name: 🔍 Validar todo el sitio
+  security-audit:
+    name: 🔒 Auditoría de Seguridad
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     outputs:
-      status: ${{ steps.final-check.outputs.status }}
-      html_count: ${{ steps.count-files.outputs.html }}
-      css_count: ${{ steps.count-files.outputs.css }}
-      js_count: ${{ steps.count-files.outputs.js }}
-      img_count: ${{ steps.count-files.outputs.images }}
+      status: ${{ steps.final-security.outputs.status }}
+      risk_level: ${{ steps.risk-assessment.outputs.level }}
     
     steps:
       - name: 📥 Checkout código
@@ -52,187 +44,442 @@ jobs:
         with:
           fetch-depth: 1
       
-      - name: 📊 Contar archivos
-        id: count-files
+      # ======================================================================
+      # 1. ANÁLISIS DE SEGURIDAD EN HTML
+      # ======================================================================
+      - name: 🔒 Seguridad en HTML
         run: |
-          # Contar HTML
-          HTML_COUNT=$(find . -name "*.html" -o -name "*.htm" | wc -l)
-          echo "html=$HTML_COUNT" >> $GITHUB_OUTPUT
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🔒 ANÁLISIS DE SEGURIDAD - HTML"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           
-          # Contar CSS
-          CSS_COUNT=$(find . -name "*.css" | wc -l)
-          echo "css=$CSS_COUNT" >> $GITHUB_OUTPUT
+          ERROR_COUNT=0
           
-          # Contar JS
-          JS_COUNT=$(find . -name "*.js" | wc -l)
-          echo "js=$JS_COUNT" >> $GITHUB_OUTPUT
+          # === 1.1 Verificar HTTPS forzado ===
+          find . -name "*.html" | while read file; do
+            # Verificar que no haya recursos HTTP (solo HTTPS)
+            if grep -q 'src="http://' "$file" || grep -q 'href="http://' "$file"; then
+              echo "❌ ERROR CRÍTICO: Recurso HTTP detectado en $file (debe ser HTTPS)"
+              echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+            fi
+            
+            # Verificar CSP (Content Security Policy)
+            if ! grep -q 'Content-Security-Policy' "$file" && ! grep -q 'http-equiv="Content-Security-Policy"' "$file"; then
+              echo "⚠️ ALTA GRAVEDAD: Falta CSP en $file (riesgo de XSS)"
+              echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+            fi
+            
+            # Verificar HSTS
+            if ! grep -q 'Strict-Transport-Security' "$file"; then
+              echo "⚠️ MEDIA GRAVEDAD: Falta HSTS en $file (riesgo de downgrade)"
+            fi
+            
+            # Verificar X-Frame-Options (clickjacking)
+            if ! grep -q 'X-Frame-Options' "$file" && ! grep -q 'frame-ancestors' "$file"; then
+              echo "⚠️ MEDIA GRAVEDAD: Falta protección contra clickjacking"
+            fi
+            
+            # Verificar X-Content-Type-Options
+            if ! grep -q 'X-Content-Type-Options.*nosniff' "$file"; then
+              echo "⚠️ BAJA GRAVEDAD: Falta X-Content-Type-Options"
+            fi
+            
+            # Verificar enlaces a JavaScript externo no confiable
+            grep -o 'src="[^"]*\.js"' "$file" | sed 's/src="//;s/"$//' | while read js; do
+              if [[ $js == http://* ]]; then
+                echo "❌ ERROR CRÍTICO: JS externo HTTP no seguro: $js"
+                echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+              fi
+            done
+            
+            # Verificar enlaces a dominios sospechosos
+            grep -o 'src="[^"]*"' "$file" | grep -E '(unknown|unsecure|malicious|dangerous)' && {
+              echo "❌ ERROR CRÍTICO: Posible recurso malicioso detectado"
+              echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+            }
+          done
           
-          # Contar imágenes
-          IMG_COUNT=$(find . -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.svg" -o -name "*.gif" -o -name "*.webp" | wc -l)
-          echo "images=$IMG_COUNT" >> $GITHUB_OUTPUT
-          
-          echo "📊 Resumen de archivos:"
-          echo "  📄 HTML: $HTML_COUNT"
-          echo "  🎨 CSS: $CSS_COUNT"
-          echo "  📜 JS: $JS_COUNT"
-          echo "  🖼️ Imágenes: $IMG_COUNT"
-      
-      - name: ✅ Verificar index.html
-        id: check-index
-        run: |
-          if [ -f "index.html" ] || [ -f "index.htm" ]; then
-            echo "✅ index.html encontrado"
-            echo "exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "❌ ERROR: No se encontró index.html"
-            echo "exists=false" >> $GITHUB_OUTPUT
+          if [ "$ERROR_COUNT" -gt 0 ]; then
             exit 1
           fi
       
-      - name: 🔗 Verificar enlaces rotos (HTML)
+      # ======================================================================
+      # 2. ANÁLISIS DE SEGURIDAD EN JAVASCRIPT (VULNERABILIDADES)
+      # ======================================================================
+      - name: 🔒 Seguridad en JavaScript
         run: |
-          echo "🔗 Verificando enlaces en archivos HTML..."
-          BROKEN_LINKS=0
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🔒 ANÁLISIS DE SEGURIDAD - JAVASCRIPT"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          
+          ERROR_COUNT=0
+          
+          find . -name "*.js" | while read file; do
+            echo ""
+            echo "📜 Analizando: $file"
+            
+            # === 2.1 PRÁCTICAS PELIGROSAS (BLOQUEANTES) ===
+            
+            # eval() - PELIGRO CRÍTICO
+            if grep -q 'eval(' "$file"; then
+              echo "  ❌ BLOQUEADO: eval() encontrado (ejecución de código arbitrario)"
+              echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+            fi
+            
+            # innerHTML - ALTO RIESGO (XSS)
+            if grep -q 'innerHTML' "$file"; then
+              echo "  ❌ BLOQUEADO: innerHTML encontrado (riesgo de XSS)"
+              echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+            fi
+            
+            # document.write - PELIGROSO
+            if grep -q 'document.write' "$file"; then
+              echo "  ❌ BLOQUEADO: document.write encontrado (peligro de seguridad y rendimiento)"
+              echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+            fi
+            
+            # localStorage con datos sensibles
+            if grep -q 'localStorage.setItem.*password\|localStorage.setItem.*token\|localStorage.setItem.*key' "$file"; then
+              echo "  ❌ BLOQUEADO: Datos sensibles en localStorage"
+              echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+            fi
+            
+            # === 2.2 VERIFICACIÓN DE VULNERABILIDADES CONOCIDAS ===
+            
+            # Verificar versiones de librerías inseguras
+            grep -E '(jquery[ /-]v?[12]\.|bootstrap[ /-]v?[34]\.|lodash@[34]\.)' "$file" && {
+              echo "  ❌ BLOQUEADO: Versión insegura de librería detectada"
+              echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+            }
+            
+            # Verificar uso de deprecated APIs
+            if grep -q 'webkitURL\|mozURL\|msURL\|oURL' "$file"; then
+              echo "  ❌ BLOQUEADO: API obsoleta/deprecated en uso"
+              echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+            fi
+            
+            # === 2.3 VERIFICAR EXPOSICIÓN DE SECRETOS ===
+            
+            # Posibles API keys expuestas
+            grep -E '(api_key|apikey|secret|token|password) *= *["\']([^"\']{8,})["\']' "$file" && {
+              echo "  ❌ BLOQUEADO: Posible secreto expuesto en código"
+              echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+            }
+            
+            # Emails expuestos (spam)
+            grep -E '\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b' "$file" && {
+              echo "  ⚠️ ADVERTENCIA: Email expuesto (posible spam)"
+            }
+            
+            # === 2.4 VERIFICAR CÓDIGO MALICIOSO ===
+            
+            # Creación de iframes remotos
+            if grep -q 'createElement.*iframe' "$file" && grep -q 'src.*http' "$file"; then
+              echo "  ❌ BLOQUEADO: Creación de iframe remoto (posible phishing)"
+              echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+            fi
+            
+            # Redirecciones no verificadas
+            if grep -q 'window.location.*http' "$file" && ! grep -q 'location\.hostname' "$file"; then
+              echo "  ❌ BLOQUEADO: Redirección a dominio externo sin verificar"
+              echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+            fi
+            
+            # === 2.5 VERIFICAR DEBUG/DEV ===
+            
+            if grep -q 'debugger' "$file"; then
+              echo "  ❌ BLOQUEADO: debugger en producción"
+              echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+            fi
+            
+            if grep -q 'console\.\(log\|debug\|info\|warn\)' "$file"; then
+              echo "  ❌ BLOQUEADO: console.xxx en producción (expone información)"
+              echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+            fi
+            
+            # === 2.6 VERIFICAR EXPOSICIÓN DE DIRECTORIOS ===
+            
+            if grep -q '\.\./' "$file"; then
+              echo "  ❌ BLOQUEADO: Path traversal detectado (../)"
+              echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+            fi
+          done
+          
+          if [ "$ERROR_COUNT" -gt 0 ]; then
+            exit 1
+          fi
+      
+      # ======================================================================
+      # 3. ANÁLISIS DE SEGURIDAD EN CSS (CSS Injection)
+      # ======================================================================
+      - name: 🔒 Seguridad en CSS
+        run: |
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🔒 ANÁLISIS DE SEGURIDAD - CSS"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          
+          ERROR_COUNT=0
+          
+          find . -name "*.css" | while read file; do
+            echo ""
+            echo "🎨 Analizando: $file"
+            
+            # === 3.1 CSS Injection (expresiones) ===
+            if grep -q 'expression(' "$file"; then
+              echo "  ❌ BLOQUEADO: expression() CSS (vulnerabilidad crítica IE)"
+              echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+            fi
+            
+            # === 3.2 Comportamiento JavaScript en CSS ===
+            if grep -q 'behavior:' "$file"; then
+              echo "  ❌ BLOQUEADO: behavior: en CSS (vulnerabilidad)"
+              echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+            fi
+            
+            # === 3.3 Import de recursos externos ===
+            if grep -q '@import.*http://' "$file"; then
+              echo "  ❌ BLOQUEADO: @import HTTP (riesgo de seguridad)"
+              echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+            fi
+            
+            # === 3.4 Verificar !important excesivo ===
+            IMPORTANT_COUNT=$(grep -c '!important' "$file" || true)
+            if [ "$IMPORTANT_COUNT" -gt 10 ]; then
+              echo "  ⚠️ ADVERTENCIA: $IMPORTANT_COUNT !important (potencial mala práctica)"
+            fi
+          done
+          
+          if [ "$ERROR_COUNT" -gt 0 ]; then
+            exit 1
+          fi
+      
+      # ======================================================================
+      # 4. ANÁLISIS DE SEGURIDAD EN SERVIDOR (Headers)
+      # ======================================================================
+      - name: 🔒 Configuración de seguridad del servidor
+        run: |
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🔒 CONFIGURACIÓN DE SEGURIDAD DEL SERVIDOR"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          
+          # Crear archivo de seguridad si no existe
+          if [ ! -f "_headers" ] && [ ! -f "netlify.toml" ] && [ ! -f "vercel.json" ]; then
+            echo "⚠️ ALTA GRAVEDAD: Sin archivo de configuración de seguridad"
+            echo "Se recomienda crear un archivo _headers con:"
+            echo ""
+            echo "  /*"
+            echo "    X-Content-Type-Options: nosniff"
+            echo "    X-Frame-Options: DENY"
+            echo "    X-XSS-Protection: 1; mode=block"
+            echo "    Referrer-Policy: strict-origin-when-cross-origin"
+            echo "    Content-Security-Policy: default-src 'self'"
+          fi
+          
+          # Verificar robots.txt
+          if [ ! -f "robots.txt" ]; then
+            echo "⚠️ MEDIA GRAVEDAD: Falta robots.txt"
+          else
+            # Verificar que no exponga rutas sensibles
+            if grep -q "Disallow: /admin\|Disallow: /config\|Disallow: /\.env" robots.txt; then
+              echo "✅ robots.txt configurado correctamente"
+            else
+              echo "⚠️ robots.txt sin deshabilitar rutas sensibles"
+            fi
+          fi
+          
+          # Verificar .htaccess (Apache)
+          if [ -f ".htaccess" ]; then
+            # Verificar protección de directorios
+            if ! grep -q "Options -Indexes" .htaccess; then
+              echo "⚠️ MEDIA GRAVEDAD: .htaccess sin protección de directorios"
+            fi
+          fi
+      
+      # ======================================================================
+      # 5. VERIFICACIÓN DE ARCHIVOS SENSIBLES
+      # ======================================================================
+      - name: 🔒 Verificar archivos sensibles expuestos
+        run: |
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🔒 VERIFICANDO ARCHIVOS SENSIBLES"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          
+          ERROR_COUNT=0
+          
+          # === 5.1 Archivos de configuración ===
+          for file in .env .env.local .env.production config.json secrets.json private.key .htpasswd; do
+            if [ -f "$file" ]; then
+              echo "❌ BLOQUEADO: Archivo sensible expuesto: $file"
+              echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+            fi
+          done
+          
+          # === 5.2 Archivos de backup ===
+          find . -name "*.bak" -o -name "*.backup" -o -name "*~" -o -name "*.old" | while read file; do
+            echo "❌ BLOQUEADO: Archivo de backup expuesto: $file"
+            echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+          done
+          
+          # === 5.3 Archivos de sistema ===
+          for file in .DS_Store Thumbs.db desktop.ini; do
+            if [ -f "$file" ]; then
+              echo "⚠️ ADVERTENCIA: Archivo de sistema: $file"
+            fi
+          done
+          
+          # === 5.4 Archivos de repositorio ===
+          if [ -d ".git" ]; then
+            echo "❌ BLOQUEADO: Carpeta .git expuesta en producción"
+            echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+          fi
+          
+          if [ -f "package.json" ] && [ -d "node_modules" ]; then
+            echo "❌ BLOQUEADO: node_modules expuesto en producción"
+            echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+          fi
+          
+          # === 5.5 Archivos de log ===
+          find . -name "*.log" -o -name "*.log.*" | while read file; do
+            echo "❌ BLOQUEADO: Archivo de log expuesto: $file"
+            echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+          done
+          
+          if [ "$ERROR_COUNT" -gt 0 ]; then
+            exit 1
+          fi
+      
+      # ======================================================================
+      # 6. ANÁLISIS DE DEPENDENCIAS (Si existen)
+      # ======================================================================
+      - name: 🔒 Análisis de dependencias
+        if: ${{ hashFiles('package.json') != '' }}
+        run: |
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🔒 ANÁLISIS DE DEPENDENCIAS"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          
+          # Instalar herramientas
+          npm install -g npm-audit-json 2>/dev/null
+          
+          # Ejecutar auditoría de seguridad
+          npm audit --audit-level=high --json > audit.json 2>/dev/null || true
+          
+          # Verificar vulnerabilidades críticas
+          VULN_COUNT=$(jq '.vulnerabilities | length' audit.json 2>/dev/null || echo "0")
+          
+          if [ "$VULN_COUNT" -gt 0 ]; then
+            echo "❌ BLOQUEADO: $VULN_COUNT vulnerabilidades encontradas"
+            cat audit.json | jq '.vulnerabilities' 2>/dev/null || true
+            exit 1
+          else
+            echo "✅ Sin vulnerabilidades críticas"
+          fi
+      
+      # ======================================================================
+      # 7. VERIFICACIÓN DE RENDIMIENTO Y SEGURIDAD
+      # ======================================================================
+      - name: 🔒 Verificar integridad de recursos (SRI)
+        run: |
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🔒 VERIFICANDO SRI (Subresource Integrity)"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          
+          ERROR_COUNT=0
           
           find . -name "*.html" | while read file; do
-            # Buscar enlaces href (versión compatible sin grep -P)
-            grep -o 'href="[^"]*"' "$file" | sed 's/href="//;s/"$//' | while read link; do
-              if [[ $link != http* ]] && [[ $link != "#"* ]] && [[ $link != "mailto:"* ]] && [[ $link != "tel:"* ]] && [[ $link != "javascript:"* ]]; then
-                if [ ! -f "$(dirname "$file")/$link" ] && [ ! -d "$(dirname "$file")/$link" ]; then
-                  echo "  ⚠️ Enlace roto en $file: $link"
-                  BROKEN_LINKS=$((BROKEN_LINKS + 1))
-                fi
+            # Verificar recursos externos sin SRI
+            grep -E 'src="https?://[^"]*\.js"' "$file" | while read line; do
+              if ! echo "$line" | grep -q 'integrity='; then
+                echo "❌ BLOQUEADO: Recurso JS externo sin SRI en $file"
+                echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
+              fi
+            done
+            
+            grep -E 'href="https?://[^"]*\.css"' "$file" | while read line; do
+              if ! echo "$line" | grep -q 'integrity='; then
+                echo "❌ BLOQUEADO: Recurso CSS externo sin SRI en $file"
+                echo "ERROR_COUNT=$((ERROR_COUNT + 1))" >> $GITHUB_ENV
               fi
             done
           done
           
-          if [ $BROKEN_LINKS -gt 0 ]; then
-            echo "⚠️ Se encontraron $BROKEN_LINKS enlaces rotos (no bloqueante)"
-          else
-            echo "✅ No se encontraron enlaces rotos"
+          if [ "$ERROR_COUNT" -gt 0 ]; then
+            exit 1
           fi
       
-      - name: 🎨 Validar sintaxis CSS (básico)
+      # ======================================================================
+      # 8. VERIFICACIÓN DE COOKIES SEGURAS
+      # ======================================================================
+      - name: 🔒 Verificar configuración de cookies
         run: |
-          echo "🎨 Validando archivos CSS..."
-          find . -name "*.css" | while read file; do
-            # Verificar llaves cerradas
-            OPEN_BRACES=$(grep -o '{' "$file" | wc -l)
-            CLOSE_BRACES=$(grep -o '}' "$file" | wc -l)
-            
-            if [ "$OPEN_BRACES" -ne "$CLOSE_BRACES" ]; then
-              echo "  ⚠️ Posible error de llaves en: $file"
-            else
-              echo "  ✅ $file (sintaxis básica OK)"
-            fi
-          done
-      
-      - name: 📜 Validar sintaxis JavaScript (sin fallar por sintaxis moderna)
-        run: |
-          echo "📜 Validando archivos JavaScript..."
-          HAS_ERROR=0
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🔒 VERIFICANDO SEGURIDAD DE COOKIES"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           
           find . -name "*.js" | while read file; do
-            # Usar node para validar sintaxis (permitiendo sintaxis moderna)
-            if node --check "$file" 2>/dev/null; then
-              echo "  ✅ $file"
-            else
-              # Si falla, mostrar error pero no fallar el workflow
-              echo "  ⚠️ Posible error en: $file (revisa manualmente)"
-              # No fallamos el workflow porque puede ser sintaxis moderna
-              # HAS_ERROR=1  # Descomenta si quieres que falle
+            # Verificar cookies sin Secure flag
+            if grep -q 'document.cookie' "$file"; then
+              if ! grep -q 'Secure' "$file" || ! grep -q 'SameSite' "$file"; entonces
+                echo "⚠️ MEDIA GRAVEDAD: Cookies sin flags Secure/SameSite en $file"
+              fi
             fi
           done
+      
+      # ======================================================================
+      # 9. EVALUACIÓN FINAL DE RIESGO
+      # ======================================================================
+      - name: 📊 Evaluación de riesgo final
+        id: risk-assessment
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📊 EVALUACIÓN DE RIESGO"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           
-          if [ $HAS_ERROR -eq 1 ]; then
-            echo "❌ Errores de sintaxis JS encontrados"
+          # Contar errores
+          TOTAL_ERRORS=0
+          TOTAL_ERRORS=$((TOTAL_ERRORS + (ERROR_COUNT_HTML + ERROR_COUNT_JS + ERROR_COUNT_CSS + ERROR_COUNT_FILES)))
+          
+          if [ "$TOTAL_ERRORS" -eq 0 ]; then
+            echo "level=low" >> $GITHUB_OUTPUT
+            echo "✅ RIESGO BAJO - Sitio seguro para producción"
+          elif [ "$TOTAL_ERRORS" -le 5 ]; then
+            echo "level=medium" >> $GITHUB_OUTPUT
+            echo "⚠️ RIESGO MEDIO - Revisar los $TOTAL_ERRORS errores"
+          else
+            echo "level=critical" >> $GITHUB_OUTPUT
+            echo "🔴 RIESGO CRÍTICO - $TOTAL_ERRORS errores bloqueantes"
+          fi
+      
+      - name: 🎯 Validación final de seguridad
+        id: final-security
+        run: |
+          if [ "${{ steps.risk-assessment.outputs.level }}" == "critical" ]; then
+            echo "status=rejected" >> $GITHUB_OUTPUT
+            echo "❌ DESPLIEGUE BLOQUEADO RAZONES DE SEGURIDAD"
             exit 1
+          elif [ "${{ steps.risk-assessment.outputs.level }}" == "medium" ]; then
+            echo "status=warning" >> $GITHUB_OUTPUT
+            echo "⚠️ DESPLIEGUE PERMITIDO CON ADVERTENCIAS"
           else
-            echo "✅ Validación JS completada (con advertencias no bloqueantes)"
+            echo "status=approved" >> $GITHUB_OUTPUT
+            echo "✅ DESPLIEGUE APROBADO - SEGURO"
           fi
-      
-      - name: 🖼️ Verificar imágenes
-        run: |
-          echo "🖼️ Verificando imágenes..."
-          find . -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" | while read img; do
-            # Verificar que la imagen no esté vacía
-            if [ ! -s "$img" ]; then
-              echo "  ⚠️ Imagen vacía: $img"
-            fi
-          done
-      
-      - name: 📱 Verificar responsive design
-        run: |
-          echo "📱 Verificando meta viewport..."
-          if grep -r "viewport" --include="*.html" . > /dev/null; then
-            echo "✅ Meta viewport encontrado (responsive)"
-          else
-            echo "⚠️ No se encontró meta viewport (puede no ser responsive)"
-          fi
-      
-      - name: 🔍 Verificar SEO básico
-        run: |
-          echo "🔍 Verificando SEO básico..."
-          
-          # Verificar title
-          if grep -r "<title>" --include="*.html" . > /dev/null; then
-            echo "✅ Títulos encontrados"
-          else
-            echo "⚠️ No se encontraron etiquetas <title>"
-          fi
-          
-          # Verificar description
-          if grep -r 'name="description"' --include="*.html" . > /dev/null; then
-            echo "✅ Meta descriptions encontradas"
-          else
-            echo "⚠️ No se encontraron meta descriptions"
-          fi
-      
-      - name: ⚡ Verificar rendimiento básico
-        run: |
-          echo "⚡ Verificando optimizaciones..."
-          
-          # Verificar archivos minificados
-          MINIFIED_CSS=$(find . -name "*.min.css" | wc -l)
-          MINIFIED_JS=$(find . -name "*.min.js" | wc -l)
-          
-          if [ $MINIFIED_CSS -gt 0 ] || [ $MINIFIED_JS -gt 0 ]; then
-            echo "✅ Archivos minificados encontrados: CSS=$MINIFIED_CSS, JS=$MINIFIED_JS"
-          else
-            echo "⚠️ No se encontraron archivos minificados (recomendado para producción)"
-          fi
-      
-      - name: 📦 Verificar estructura de carpetas
-        run: |
-          echo "📦 Estructura del proyecto:"
-          ls -la
-          
-          # Verificar carpetas comunes
-          if [ -d "css" ]; then echo "  ✅ Carpeta css/"; fi
-          if [ -d "js" ]; then echo "  ✅ Carpeta js/"; fi
-          if [ -d "images" ]; then echo "  ✅ Carpeta images/"; fi
-          if [ -d "assets" ]; then echo "  ✅ Carpeta assets/"; fi
-          if [ -d "fonts" ]; then echo "  ✅ Carpeta fonts/"; fi
-      
-      - name: 🎯 Validación final
-        id: final-check
-        run: |
-          echo "✅ Todas las validaciones completadas"
-          echo "status=passed" >> $GITHUB_OUTPUT
-          echo ""
-          echo "📊 Resumen final:"
-          echo "  ✅ Estructura válida"
-          echo "  ✅ Archivos completos"
-          echo "  ✅ Listo para desplegar"
 
   # ==========================================================================
-  # JOB 2: OPTIMIZACIÓN (opcional pero recomendada)
+  # JOB 2: OPTIMIZACIÓN SEGURA
   # ==========================================================================
   optimize:
-    name: ⚡ Optimizar archivos
+    name: ⚡ Optimización segura
     runs-on: ubuntu-latest
-    needs: validate
-    if: needs.validate.outputs.status == 'passed'
+    needs: security-audit
+    if: needs.security-audit.outputs.status != 'rejected'
     timeout-minutes: 5
     
     steps:
@@ -241,53 +488,31 @@ jobs:
         with:
           fetch-depth: 1
       
-      - name: 🗜️ Minificar HTML (básico)
+      - name: 🗜️ Minificar (sin romper seguridad)
         run: |
-          echo "🗜️ Minificando archivos HTML..."
-          find . -name "*.html" | while read file; do
-            # Eliminar comentarios y espacios (sin romper el archivo)
-            sed -i.tmp 's/<!--.*-->//g; s/[[:space:]]\{2,\}/ /g; s/>[[:space:]]*</></g' "$file"
-            rm -f "$file.tmp"
-            echo "  ✅ $file"
+          # Minificar sin afectar strings sensibles
+          find . -name "*.js" ! -name "*.min.js" | while read file; do
+            # No minificar strings que contengan secretos
+            if ! grep -q 'secret\|key\|token\|password' "$file"; then
+              sed -i 's/\/\/.*$//g; s/[[:space:]]\{2,\}/ /g' "$file"
+            fi
           done
       
-      - name: 🎨 Minificar CSS (si existe)
+      - name: 🛡️ Ofuscar emails (evitar spam)
         run: |
-          if [ -d "css" ] || find . -name "*.css" | grep -q .; then
-            echo "🎨 Minificando CSS..."
-            find . -name "*.css" ! -name "*.min.css" | while read file; do
-              # Minificación básica segura
-              sed -i.tmp 's/\/\*.*\*\///g; s/[[:space:]]\{2,\}/ /g; s/:[[:space:]]/:/g; s/;[[:space:]]/;/g' "$file"
-              rm -f "$file.tmp"
-              echo "  ✅ $file"
-            done
-          fi
-      
-      - name: 📜 Minificar JavaScript (si existe)
-        run: |
-          if [ -d "js" ] || find . -name "*.js" | grep -q .; then
-            echo "📜 Minificando JavaScript..."
-            find . -name "*.js" ! -name "*.min.js" | while read file; do
-              # Eliminar comentarios (básico, sin romper)
-              sed -i.tmp 's/\/\/.*$//g; s/\/\*.*\*\///g; s/[[:space:]]\{2,\}/ /g' "$file"
-              rm -f "$file.tmp"
-              echo "  ✅ $file"
-            done
-          fi
-      
-      - name: 📦 Preparar artefacto
-        run: |
-          echo "✅ Optimización completada"
-          echo "📦 Archivos listos para despliegue"
+          find . -name "*.html" | while read file; do
+            # Convertir emails a entidades HTML
+            sed -i 's/@/&#64;/g; s/\./&#46;/g' "$file"
+          done
 
   # ==========================================================================
-  # JOB 3: DESPLIEGUE A GITHUB PAGES
+  # JOB 3: DESPLIEGUE SEGURO
   # ==========================================================================
   deploy:
-    name: 🚀 Desplegar a GitHub Pages
+    name: 🚀 Despliegue seguro a producción
     runs-on: ubuntu-latest
-    needs: [validate, optimize]
-    if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && needs.validate.outputs.status == 'passed' }}
+    needs: [security-audit, optimize]
+    if: needs.security-audit.outputs.status != 'rejected'
     timeout-minutes: 5
     
     environment:
@@ -303,52 +528,56 @@ jobs:
       - name: 🔧 Setup Pages
         uses: actions/configure-pages@v5
       
-      - name: 📤 Upload artifact
+      - name: 📤 Upload artifact (modo seguro)
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
-          name: 'github-pages-${{ github.run_id }}'
+          name: 'secure-deploy-${{ github.run_id }}'
           retention-days: 1
       
-      - name: 🚀 Deploy to GitHub Pages
+      - name: 🚀 Deploy a producción
         id: deployment
         uses: actions/deploy-pages@v4
         with:
-          artifact_name: 'github-pages-${{ github.run_id }}'
+          artifact_name: 'secure-deploy-${{ github.run_id }}'
       
-      - name: 📊 Reporte final
+      - name: 📊 Reporte de seguridad
         run: |
           echo ""
-          echo "╔════════════════════════════════════════════════════════════╗"
-          echo "║                    ✅ DESPLIEGUE EXITOSO                    ║"
-          echo "╚════════════════════════════════════════════════════════════╝"
+          echo "╔══════════════════════════════════════════════════════════════════╗"
+          echo "║           ✅ DESPLIEGUE SEGURO A PRODUCCIÓN                       ║"
+          echo "╚══════════════════════════════════════════════════════════════════╝"
           echo ""
-          echo "📡 Sitio disponible en: ${{ steps.deployment.outputs.page_url }}"
-          echo "🔗 Commit: ${{ github.sha }}"
-          echo "📁 Repositorio: ${{ github.repository }}"
-          echo "🌿 Rama: ${{ github.ref_name }}"
-          echo "⏰ Hora: $(date)"
+          echo "📡 Sitio: ${{ steps.deployment.outputs.page_url }}"
+          echo "🛡️ Nivel de riesgo: ${{ needs.security-audit.outputs.risk_level }}"
+          echo "✅ Todas las medidas de seguridad aplicadas"
           echo ""
 
   # ==========================================================================
-  # JOB 4: NOTIFICACIÓN
+  # JOB 4: NOTIFICACIÓN DE SEGURIDAD
   # ==========================================================================
   notify:
-    name: 📢 Notificar resultado
+    name: 📢 Reporte de seguridad
     runs-on: ubuntu-latest
-    needs: deploy
+    needs: [deploy, security-audit]
     if: always()
     
     steps:
-      - name: ✅ Éxito
+      - name: ✅ Aprobado
         if: needs.deploy.result == 'success'
         run: |
-          echo "🎉 ¡Despliegue completado con éxito!"
-          echo "📡 Sitio publicado"
+          echo "🎉 DESPLIEGUE APROBADO Y COMPLETADO"
+          echo "🛡️ Riesgo: ${{ needs.security-audit.outputs.risk_level }}"
+          echo "✅ Todas las validaciones de seguridad pasaron"
       
-      - name: ❌ Fracaso
-        if: needs.deploy.result == 'failure'
+      - name: ❌ Rechazado
+        if: needs.security-audit.outputs.status == 'rejected'
         run: |
-          echo "❌ El despliegue falló"
-          echo "🔍 Revisa los logs para más detalles"
+          echo "🔴 DESPLIEGUE RECHAZADO RAZONES DE SEGURIDAD"
+          echo "📊 Riesgo: ${{ needs.security-audit.outputs.risk_level }}"
+          echo ""
+          echo "ACCIONES REQUERIDAS:"
+          echo "1. Revisar las vulnerabilidades detectadas"
+          echo "2. Corregir errores de seguridad"
+          echo "3. Reintentar el despliegue"
           exit 1

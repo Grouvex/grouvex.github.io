@@ -49,7 +49,7 @@ jobs:
           CRITICAL_ERROR=0
           WARNINGS=0
           
-          find . -name "*.html" | while read file; do
+          while IFS= read -r file; do
             # === BLOQUEANTE: Recursos HTTP (inseguro) ===
             if grep -q 'src="http://' "$file" || grep -q 'href="http://' "$file"; then
               echo "❌ BLOQUEADO: Recurso HTTP en $file (use HTTPS)"
@@ -66,7 +66,7 @@ jobs:
             if ! grep -q 'X-Frame-Options' "$file"; then
               echo "⚠️ ADVERTENCIA: Falta protección clickjacking en $file"
             fi
-          done
+          done < <(find . -name "*.html")
           
           echo ""
           echo "📊 Resumen HTML: $WARNINGS advertencias"
@@ -75,7 +75,7 @@ jobs:
           fi
       
       # ======================================================================
-      # 2. SEGURIDAD JS - SOLO CRÍTICO BLOQUEA
+      # 2. SEGURIDAD JS - SOLO CRÍTICO BLOQUEA (CORREGIDO)
       # ======================================================================
       - name: 🔒 Seguridad en JavaScript
         run: |
@@ -87,43 +87,56 @@ jobs:
           CRITICAL_ERROR=0
           WARNINGS=0
           
-          find . -name "*.js" | while read file; do
+          while IFS= read -r file; do
+            echo ""
+            echo "📜 Analizando: $file"
+            
             # === BLOQUEANTE: eval() ===
-            if grep -q 'eval(' "$file"; then
-              echo "❌ BLOQUEADO: eval() en $file (ejecución arbitraria)"
+            if grep -q "eval(" "$file"; then
+              echo "  ❌ BLOQUEADO: eval() encontrado (ejecución arbitraria)"
               CRITICAL_ERROR=1
             fi
             
             # === BLOQUEANTE: document.write ===
-            if grep -q 'document.write' "$file"; then
-              echo "❌ BLOQUEADO: document.write en $file (peligroso)"
+            if grep -q "document.write" "$file"; then
+              echo "  ❌ BLOQUEADO: document.write encontrado (peligroso)"
               CRITICAL_ERROR=1
             fi
             
-            # === BLOQUEANTE: Secretos expuestos ===
-            if grep -qE '(api_key|apikey|secret|token|password) *= *["\']([^"\']{8,})["\']' "$file"; then
-              echo "❌ BLOQUEADO: Posible secreto expuesto en $file"
-              CRITICAL_ERROR=1
+            # === BLOQUEANTE: Secretos expuestos (CORREGIDO - sin comillas problemáticas) ===
+            if grep -q "api_key" "$file" || grep -q "apikey" "$file" || \
+               grep -q "secret" "$file" || grep -q "token" "$file" || \
+               grep -q "password" "$file"; then
+              if grep -q "=" "$file"; then
+                echo "  ❌ BLOQUEADO: Posible secreto expuesto en $file"
+                CRITICAL_ERROR=1
+              fi
             fi
             
             # === SOLO ADVERTENCIA: innerHTML (XSS potencial) ===
-            if grep -q 'innerHTML' "$file"; then
-              echo "⚠️ ADVERTENCIA: innerHTML en $file (riesgo XSS)"
+            if grep -q "innerHTML" "$file"; then
+              echo "  ⚠️ ADVERTENCIA: innerHTML (riesgo XSS)"
               WARNINGS=$((WARNINGS + 1))
             fi
             
             # === SOLO ADVERTENCIA: console.log ===
-            if grep -q 'console\.log' "$file"; then
-              echo "⚠️ ADVERTENCIA: console.log en $file (producción)"
+            if grep -q "console.log" "$file"; then
+              echo "  ⚠️ ADVERTENCIA: console.log en producción"
+              WARNINGS=$((WARNINGS + 1))
+            fi
+            
+            # === SOLO ADVERTENCIA: console.error ===
+            if grep -q "console.error" "$file"; then
+              echo "  ⚠️ ADVERTENCIA: console.error en producción"
               WARNINGS=$((WARNINGS + 1))
             fi
             
             # === SOLO ADVERTENCIA: debugger ===
-            if grep -q 'debugger' "$file"; then
-              echo "⚠️ ADVERTENCIA: debugger en $file"
+            if grep -q "debugger" "$file"; then
+              echo "  ⚠️ ADVERTENCIA: debugger encontrado"
               WARNINGS=$((WARNINGS + 1))
             fi
-          done
+          done < <(find . -name "*.js")
           
           echo ""
           echo "📊 Resumen JS: $WARNINGS advertencias"
@@ -143,15 +156,15 @@ jobs:
           
           CRITICAL_ERROR=0
           
-          find . -name "*.css" | while read file; do
+          while IFS= read -r file; do
             # === BLOQUEANTE: expression() ===
-            if grep -q 'expression(' "$file"; then
+            if grep -q "expression(" "$file"; then
               echo "❌ BLOQUEADO: expression() CSS en $file (vulnerabilidad IE)"
               CRITICAL_ERROR=1
             fi
             
             # === BLOQUEANTE: behavior ===
-            if grep -q 'behavior:' "$file"; then
+            if grep -q "behavior:" "$file"; then
               echo "❌ BLOQUEADO: behavior: en $file (vulnerabilidad)"
               CRITICAL_ERROR=1
             fi
@@ -161,7 +174,7 @@ jobs:
               echo "❌ BLOQUEADO: @import HTTP en $file"
               CRITICAL_ERROR=1
             fi
-          done
+          done < <(find . -name "*.css")
           
           if [ "$CRITICAL_ERROR" -eq 1 ]; then
             exit 1
@@ -195,9 +208,9 @@ jobs:
           fi
           
           # Archivos de backup (advertencia)
-          find . -name "*.bak" -o -name "*.backup" -o -name "*~" | while read file; do
+          while IFS= read -r file; do
             echo "⚠️ ADVERTENCIA: Archivo backup: $file"
-          done
+          done < <(find . -name "*.bak" -o -name "*.backup" -o -name "*~" 2>/dev/null || true)
       
       # ======================================================================
       # 5. ESTRUCTURA HTML - SOLO ADVERTENCIA (NO BLOQUEA)
@@ -209,35 +222,35 @@ jobs:
           echo "📄 VALIDACIÓN DE ESTRUCTURA (Solo advertencia)"
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           
-          find . -name "*.html" | while read file; do
+          while IFS= read -r file; do
             # Detectar si es fragment o página completa
             if grep -q "<!DOCTYPE html" "$file" 2>/dev/null; then
               # Es página completa, verificar estructura
               if ! grep -q "<body" "$file"; then
                 echo "⚠️ ADVERTENCIA: Falta <body> en página completa $file (no bloquea)"
+              else
+                echo "✅ Página completa válida: $file"
               fi
             else
               # Es fragment, no validamos estructura
               echo "🧩 Fragment detectado: $file (estructura flexible)"
             fi
-          done
+          done < <(find . -name "*.html")
       
       # ======================================================================
       # 6. EVALUACIÓN FINAL
       # ======================================================================
       - name: 📊 Evaluación final
-        id: risk-assessment
+        id: final-security
         run: |
+          echo ""
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           echo "📊 EVALUACIÓN FINAL"
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           echo ""
           echo "✅ No se encontraron errores críticos de seguridad"
           echo "⚠️ Las advertencias no bloquean el despliegue"
-      
-      - name: 🎯 Validación final
-        id: final-security
-        run: |
+          echo ""
           echo "status=approved" >> $GITHUB_OUTPUT
           echo "✅ DESPLIEGUE APROBADO"
 
@@ -259,11 +272,18 @@ jobs:
       
       - name: 🗜️ Minificar (sin romper)
         run: |
-          find . -name "*.js" ! -name "*.min.js" | while read file; do
-            if ! grep -q 'secret\|key\|token' "$file"; then
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "⚡ OPTIMIZANDO ARCHIVOS"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          
+          while IFS= read -r file; do
+            if ! grep -q "secret\|key\|token" "$file"; then
               sed -i 's/\/\/.*$//g; s/[[:space:]]\{2,\}/ /g' "$file" 2>/dev/null || true
+              echo "✅ Minificado: $file"
             fi
-          done
+          done < <(find . -name "*.js" ! -name "*.min.js")
+          
+          echo ""
           echo "✅ Optimización completada"
 
   # ==========================================================================
@@ -299,7 +319,7 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
       
-      - name: 📊 Reporte
+      - name: 📊 Reporte final
         run: |
           echo ""
           echo "╔════════════════════════════════════════════════════════════╗"
@@ -307,4 +327,8 @@ jobs:
           echo "╚════════════════════════════════════════════════════════════╝"
           echo ""
           echo "📡 Sitio: ${{ steps.deployment.outputs.page_url }}"
+          echo "🔗 Commit: ${{ github.sha }}"
+          echo "📁 Repositorio: ${{ github.repository }}"
+          echo "🌿 Rama: ${{ github.ref_name }}"
+          echo ""
           echo "⚠️ Nota: Las advertencias de seguridad no bloquearon el deploy"

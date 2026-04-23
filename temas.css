@@ -433,7 +433,8 @@ footer {
 
 /* Default Theme */
 html, body { 
-  background: linear-gradient(120deg, magenta, cyan); 
+  background-image: radial-gradient(circle at 20% 30%, rgba(108, 92, 231, 0.85) 0%, rgba(6, 176, 93, 0.7) 40%, transparent 70%), radial-gradient(circle at 85% 20%, rgba(255, 20, 147, 0.8) 0%, rgba(0, 255, 255, 0.6) 45%, transparent 75%), radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.75) 0%, rgba(255, 105, 180, 0.5) 50%, transparent 80%), radial-gradient(circle at 10% 85%, rgba(59, 130, 246, 0.8) 0%, rgba(139, 92, 246, 0.6) 50%, transparent 75%);
+  background-blend-mode: color-dodge, screen, overlay, normal;
 }
 
 .img-container { 

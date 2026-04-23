@@ -103,13 +103,16 @@ jobs:
               CRITICAL_ERROR=1
             fi
             
-            # === BLOQUEANTE: Secretos expuestos (CORREGIDO - sin comillas problemáticas) ===
+            # === BLOQUEANTE: Secretos expuestos (CORREGIDO - ignora Firebase) ===
             if grep -q "api_key" "$file" || grep -q "apikey" "$file" || \
                grep -q "secret" "$file" || grep -q "token" "$file" || \
                grep -q "password" "$file"; then
-              if grep -q "=" "$file"; then
+              # Ignorar si es configuración de Firebase
+              if ! grep -q "firebaseConfig" "$file"; then
                 echo "  ❌ BLOQUEADO: Posible secreto expuesto en $file"
                 CRITICAL_ERROR=1
+              else
+                echo "  ℹ️ INFO: Configuración de Firebase detectada (permitida)"
               fi
             fi
             

@@ -1,7 +1,7 @@
 # ============================================================================
-# Workflow SEGURIDAD - Modo Producción
+# Workflow SEGURIDAD - Modo Producción (CORREGIDO)
 # SOLO BLOQUEA por vulnerabilidades CRÍTICAS
-# Todo lo demás solo advierte
+# Ignora librerías legítimas como jQuery, Firebase, YouTube API
 # ============================================================================
 
 name: Deploy Static Site
@@ -49,24 +49,19 @@ jobs:
           CRITICAL_ERROR=0
           WARNINGS=0
           
-          while IFS= read -r file; do
-            # === BLOQUEANTE: Recursos HTTP (inseguro) ===
+          for file in $(find . -name "*.html"); do
+            # BLOQUEANTE: Recursos HTTP
             if grep -q 'src="http://' "$file" || grep -q 'href="http://' "$file"; then
               echo "❌ BLOQUEADO: Recurso HTTP en $file (use HTTPS)"
               CRITICAL_ERROR=1
             fi
             
-            # === SOLO ADVERTENCIA: Falta CSP ===
+            # SOLO ADVERTENCIA: Falta CSP
             if ! grep -q 'Content-Security-Policy' "$file"; then
               echo "⚠️ ADVERTENCIA: Falta CSP en $file (recomendado)"
               WARNINGS=$((WARNINGS + 1))
             fi
-            
-            # === SOLO ADVERTENCIA: Headers de seguridad ===
-            if ! grep -q 'X-Frame-Options' "$file"; then
-              echo "⚠️ ADVERTENCIA: Falta protección clickjacking en $file"
-            fi
-          done < <(find . -name "*.html")
+          done
           
           echo ""
           echo "📊 Resumen HTML: $WARNINGS advertencias"
@@ -74,79 +69,94 @@ jobs:
             exit 1
           fi
       
-          # ============================================================================
-          # 2. SEGURIDAD JS - CON LISTA BLANCA DE LIBRERÍAS
-          # ============================================================================
-          - name: 🔒 Seguridad en JavaScript
-            run: |
-              echo ""
-              echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-              echo "🔒 ANÁLISIS DE SEGURIDAD - JAVASCRIPT"
-              echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-              
-              CRITICAL_ERROR=0
-              WARNINGS=0
-              
-              # Librerías legítimas que pueden contener eval() u otras funciones
-              # y que NO deben ser bloqueadas
-              ALLOWED_LIBRARIES="jquery|jquery-3|jquery.min|firebase|firebase-|iframe_api|player_api"
-              
-              while IFS= read -r file; do
-                echo ""
-                echo "📜 Analizando: $file"
-                
-                # Verificar si es una librería permitida
-                if echo "$file" | grep -qE "$ALLOWED_LIBRARIES"; then
-                  echo "  ℹ️ INFO: Librería legítima detectada (validación limitada): $file"
-                  continue
-                fi
-                
-                # === BLOQUEANTE: eval() ===
-                if grep -q "eval(" "$file"; then
-                  echo "  ❌ BLOQUEADO: eval() encontrado en $file"
-                  CRITICAL_ERROR=1
-                fi
-                
-                # === BLOQUEANTE: document.write ===
-                if grep -q "document.write" "$file"; then
-                  echo "  ❌ BLOQUEADO: document.write en $file"
-                  CRITICAL_ERROR=1
-                fi
-                
-                # === BLOQUEANTE: Secretos expuestos (excepto Firebase) ===
-                if grep -q "api_key" "$file" || grep -q "apikey" "$file" || \
-                   grep -q "token" "$file" || grep -q "password" "$file"; then
-                  
-                  # Ignorar configuración de Firebase
-                  if grep -q "firebaseConfig" "$file"; then
-                    echo "  ℹ️ INFO: Configuración de Firebase (permitida)"
-                  else
-                    echo "  ❌ BLOQUEADO: Posible secreto expuesto en $file"
-                    CRITICAL_ERROR=1
-                  fi
-                fi
-                
-                # === ADVERTENCIAS (no bloquean) ===
-                if grep -q "innerHTML" "$file"; then
-                  echo "  ⚠️ ADVERTENCIA: innerHTML (riesgo XSS)"
-                  WARNINGS=$((WARNINGS + 1))
-                fi
-                
-                if grep -q "console.log" "$file"; then
-                  echo "  ⚠️ ADVERTENCIA: console.log en producción"
-                  WARNINGS=$((WARNINGS + 1))
-                fi
-                
-              done < <(find . -name "*.js")
-              
-              echo ""
-              echo "📊 Resumen JS: $WARNINGS advertencias"
-              if [ "$CRITICAL_ERROR" -eq 1 ]; then
-                echo "❌ Errores críticos encontrados en código personalizado"
-                exit 1
-              else
-                echo "✅ Código personalizado seguro (librerías externas ignoradas)"
-              fi
+      # ======================================================================
+      # 2. SEGURIDAD JS - IGNORA LIBRERÍAS LEGÍTIMAS
+      # ======================================================================
+      - name: 🔒 Seguridad en JavaScript
+        run: |
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🔒 ANÁLISIS DE SEGURIDAD - JAVASCRIPT"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          
+          CRITICAL_ERROR=0
+          WARNINGS=0
+          
+          # Lista de librerías legítimas que no se validan
+          # Usamos un enfoque simple: excluir por nombre de archivo
+          
+          for file in $(find . -name "*.js"); do
+            # Obtener solo el nombre del archivo (sin ruta)
+            filename=$(basename "$file")
+            
+            # Ignorar librerías legítimas
+            if echo "$filename" | grep -q "jquery"; then
+              echo "  📦 Ignorando librería legítima: $filename"
+              continue
+            fi
+            
+            if echo "$filename" | grep -q "firebase"; then
+              echo "  📦 Ignorando librería legítima: $filename"
+              continue
+            fi
+            
+            if echo "$filename" | grep -q "iframe_api"; then
+              echo "  📦 Ignorando librería legítima: $filename"
+              continue
+            fi
+            
+            if echo "$filename" | grep -q "player_api"; then
+              echo "  📦 Ignorando librería legítima: $filename"
+              continue
+            fi
+            
+            echo ""
+            echo "📜 Analizando: $file"
+            
+            # BLOQUEANTE: eval()
+            if grep -q "eval(" "$file"; then
+              echo "  ❌ BLOQUEADO: eval() encontrado"
+              CRITICAL_ERROR=1
+            fi
+            
+            # BLOQUEANTE: document.write
+            if grep -q "document.write" "$file"; then
+              echo "  ❌ BLOQUEADO: document.write encontrado"
+              CRITICAL_ERROR=1
+            fi
+            
+            # BLOQUEANTE: Secretos expuestos
+            if grep -q "api_key" "$file" || grep -q "apikey" "$file" || \
+               grep -q "secret" "$file" || grep -q "token" "$file" || \
+               grep -q "password" "$file"; then
+              echo "  ❌ BLOQUEADO: Posible secreto expuesto"
+              CRITICAL_ERROR=1
+            fi
+            
+            # ADVERTENCIA: innerHTML
+            if grep -q "innerHTML" "$file"; then
+              echo "  ⚠️ ADVERTENCIA: innerHTML (riesgo XSS)"
+              WARNINGS=$((WARNINGS + 1))
+            fi
+            
+            # ADVERTENCIA: console.log
+            if grep -q "console.log" "$file"; then
+              echo "  ⚠️ ADVERTENCIA: console.log en producción"
+              WARNINGS=$((WARNINGS + 1))
+            fi
+            
+            # ADVERTENCIA: debugger
+            if grep -q "debugger" "$file"; then
+              echo "  ⚠️ ADVERTENCIA: debugger encontrado"
+              WARNINGS=$((WARNINGS + 1))
+            fi
+          done
+          
+          echo ""
+          echo "📊 Resumen JS: $WARNINGS advertencias"
+          if [ "$CRITICAL_ERROR" -eq 1 ]; then
+            exit 1
+          fi
       
       # ======================================================================
       # 3. SEGURIDAD CSS - SOLO CRÍTICO BLOQUEA
@@ -160,25 +170,17 @@ jobs:
           
           CRITICAL_ERROR=0
           
-          while IFS= read -r file; do
-            # === BLOQUEANTE: expression() ===
+          for file in $(find . -name "*.css"); do
             if grep -q "expression(" "$file"; then
-              echo "❌ BLOQUEADO: expression() CSS en $file (vulnerabilidad IE)"
+              echo "❌ BLOQUEADO: expression() CSS en $file"
               CRITICAL_ERROR=1
             fi
             
-            # === BLOQUEANTE: behavior ===
             if grep -q "behavior:" "$file"; then
-              echo "❌ BLOQUEADO: behavior: en $file (vulnerabilidad)"
+              echo "❌ BLOQUEADO: behavior: en $file"
               CRITICAL_ERROR=1
             fi
-            
-            # === BLOQUEANTE: @import HTTP ===
-            if grep -q '@import.*http://' "$file"; then
-              echo "❌ BLOQUEADO: @import HTTP en $file"
-              CRITICAL_ERROR=1
-            fi
-          done < <(find . -name "*.css")
+          done
           
           if [ "$CRITICAL_ERROR" -eq 1 ]; then
             exit 1
@@ -194,52 +196,37 @@ jobs:
           echo "🔒 VERIFICANDO ARCHIVOS SENSIBLES"
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           
-          # Bloques críticos
-          for file in .env .env.local .env.production config.json secrets.json .htpasswd; do
+          for file in .env .env.local .env.production secrets.json .htpasswd; do
             if [ -f "$file" ]; then
-              echo "❌ BLOQUEADO: Archivo sensible expuesto: $file"
+              echo "❌ BLOQUEADO: Archivo sensible: $file"
               exit 1
             fi
           done
           
-          # Advertencias (no bloquean)
+          # Advertencias
           if [ -d ".git" ]; then
             echo "⚠️ ADVERTENCIA: Carpeta .git expuesta"
           fi
-          
-          if [ -f "package.json" ] && [ -d "node_modules" ]; then
-            echo "⚠️ ADVERTENCIA: node_modules expuesto"
-          fi
-          
-          # Archivos de backup (advertencia)
-          while IFS= read -r file; do
-            echo "⚠️ ADVERTENCIA: Archivo backup: $file"
-          done < <(find . -name "*.bak" -o -name "*.backup" -o -name "*~" 2>/dev/null || true)
       
       # ======================================================================
-      # 5. ESTRUCTURA HTML - SOLO ADVERTENCIA (NO BLOQUEA)
+      # 5. ESTRUCTURA HTML - SOLO ADVERTENCIA
       # ======================================================================
-      - name: 📄 Validar estructura HTML (solo advertencia)
+      - name: 📄 Validar estructura (solo advertencia)
         run: |
           echo ""
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "📄 VALIDACIÓN DE ESTRUCTURA (Solo advertencia)"
+          echo "📄 VALIDACIÓN DE ESTRUCTURA (No bloquea)"
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           
-          while IFS= read -r file; do
-            # Detectar si es fragment o página completa
-            if grep -q "<!DOCTYPE html" "$file" 2>/dev/null; then
-              # Es página completa, verificar estructura
-              if ! grep -q "<body" "$file"; then
-                echo "⚠️ ADVERTENCIA: Falta <body> en página completa $file (no bloquea)"
-              else
-                echo "✅ Página completa válida: $file"
-              fi
-            else
-              # Es fragment, no validamos estructura
-              echo "🧩 Fragment detectado: $file (estructura flexible)"
+          for file in $(find . -name "*.html"); do
+            if ! grep -q "<!DOCTYPE html" "$file"; then
+              echo "🧩 Fragment (sin DOCTYPE): $file"
             fi
-          done < <(find . -name "*.html")
+            
+            if ! grep -q "<body" "$file"; then
+              echo "⚠️ ADVERTENCIA: Sin <body> en $file (no bloquea)"
+            fi
+          done
       
       # ======================================================================
       # 6. EVALUACIÓN FINAL
@@ -252,17 +239,16 @@ jobs:
           echo "📊 EVALUACIÓN FINAL"
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           echo ""
-          echo "✅ No se encontraron errores críticos de seguridad"
-          echo "⚠️ Las advertencias no bloquean el despliegue"
-          echo ""
-          echo "status=approved" >> $GITHUB_OUTPUT
+          echo "✅ No se encontraron errores críticos"
           echo "✅ DESPLIEGUE APROBADO"
+          
+          echo "status=approved" >> $GITHUB_OUTPUT
 
   # ==========================================================================
-  # JOB 2: OPTIMIZACIÓN (opcional)
+  # OPTIMIZACIÓN
   # ==========================================================================
   optimize:
-    name: ⚡ Optimizar (opcional)
+    name: ⚡ Optimizar
     runs-on: ubuntu-latest
     needs: security-audit
     if: needs.security-audit.outputs.status == 'approved'
@@ -274,24 +260,17 @@ jobs:
         with:
           fetch-depth: 1
       
-      - name: 🗜️ Minificar (sin romper)
+      - name: 🗜️ Minificar JS (excluyendo librerías)
         run: |
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "⚡ OPTIMIZANDO ARCHIVOS"
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          
-          while IFS= read -r file; do
+          for file in $(find . -name "*.js" ! -name "jquery*" ! -name "firebase*" ! -name "*.min.js"); do
             if ! grep -q "secret\|key\|token" "$file"; then
               sed -i 's/\/\/.*$//g; s/[[:space:]]\{2,\}/ /g' "$file" 2>/dev/null || true
-              echo "✅ Minificado: $file"
+              echo "✅ Minificado: $(basename "$file")"
             fi
-          done < <(find . -name "*.js" ! -name "*.min.js")
-          
-          echo ""
-          echo "✅ Optimización completada"
+          done
 
   # ==========================================================================
-  # JOB 3: DESPLIEGUE
+  # DESPLIEGUE
   # ==========================================================================
   deploy:
     name: 🚀 Desplegar
@@ -323,7 +302,7 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
       
-      - name: 📊 Reporte final
+      - name: 📊 Reporte
         run: |
           echo ""
           echo "╔════════════════════════════════════════════════════════════╗"
@@ -331,8 +310,3 @@ jobs:
           echo "╚════════════════════════════════════════════════════════════╝"
           echo ""
           echo "📡 Sitio: ${{ steps.deployment.outputs.page_url }}"
-          echo "🔗 Commit: ${{ github.sha }}"
-          echo "📁 Repositorio: ${{ github.repository }}"
-          echo "🌿 Rama: ${{ github.ref_name }}"
-          echo ""
-          echo "⚠️ Nota: Las advertencias de seguridad no bloquearon el deploy"

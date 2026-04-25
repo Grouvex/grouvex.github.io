@@ -1167,7 +1167,8 @@
   </div>
   <div class="gmx-embed-player" id="gmxEmbedPlayer" style="display: none;">
     <div class="gmx-embed-header"><span>Reproduciendo en Spotify/YouTube</span><button class="gmx-embed-close-btn" onclick="gmxCloseEmbed()">✕</button></div>
-    <iframe id="gmxEmbedIframe" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture" loading="lazy"></iframe>
+    <iframe  id="gmxEmbedIframeSpotify" data-testid="embed-iframe" style="border-radius:12px; display:none" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    <iframe id="gmxEmbedIframeYouTube" style="display:none" type="text/html" width="100%" height="360" frameborder="0"></iframe>
   </div>
 <details style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal; max-width: 100%; background: rgba(0, 0, 0, 0.7); border-radius: 12px; padding: 12px 16px; margin: 15px 0; border-left: 3px solid var(--primary-color, #667eea);">
     <summary style="text-align: left; direction: ltr; font-weight: bold; cursor: pointer; color: var(--primary-color):">¿Cómo funciona este reproductor?</summary>
@@ -1444,7 +1445,7 @@ async function gmxUpdateAuthUI() {
             // Deshabilitar botón de like
             const likeBtn = document.getElementById('gmxLikeBtn');
             if (likeBtn) {
-                likeBtn.innerHTML = '🚫Sin Cuenta';
+                likeBtn.innerHTML = '🚫';
                 likeBtn.style.opacity = '0.7';
                 likeBtn.style.display = 'flex';
             }
@@ -2145,7 +2146,7 @@ async function gmxUpdateLikeButtonWithCount(songFilename) {
     if (!likeBtn) return;
     
     if (!gmxIsLoggedIn) {
-        likeBtn.innerHTML = '🔐 Inicia sesión';
+        likeBtn.innerHTML = '🚫';
         likeBtn.style.opacity = '0.7';
         likeBtn.style.background = 'rgba(128, 128, 128, 0.2)';
         likeBtn.style.display = 'flex';
@@ -2437,27 +2438,47 @@ function gmxToggleCurrentLike() {
   }
   
   function renderPlatformLinks(songInfo) {
-    const section = document.getElementById('gmxPlatformsSection');
-    const container = document.getElementById('gmxPlatformsLinks');
-    const titleSpan = document.getElementById('gmxPlatforms');
-    if (!section || !container) return;
-    titleSpan.innerHTML = songInfo.plataformas || 'No especificado';
-    container.innerHTML = '';
-    const links = [];
-    if (songInfo.spotifyLink) links.push({ url: songInfo.spotifyLink, name: 'Spotify', icon: 'fa-brands fa-spotify', class: 'spotify', embed: songInfo.spotifyEmbed });
-    if (songInfo.youtubeLink) links.push({ url: songInfo.youtubeLink, name: 'YouTube', icon: 'fa-brands fa-youtube', class: 'youtube', embed: songInfo.youtubeEmbed });
-    if (links.length === 0) { section.style.display = 'none'; return; }
-    section.style.display = 'block';
-    links.forEach(link => {
-      const a = document.createElement('a'); a.href = link.url; a.target = '_blank'; a.className = `gmx-platform-link ${link.class}`;
-      a.innerHTML = `<i class="${link.icon}"></i> ${link.name}`;
-      if (link.embed) a.addEventListener('click', (e) => { e.preventDefault(); gmxPlayEmbed(link.embed); });
-      container.appendChild(a);
-    });
+      const section = document.getElementById('gmxPlatformsSection');
+      const container = document.getElementById('gmxPlatformsLinks');
+      const titleSpan = document.getElementById('gmxPlatforms');
+      const embedPlayer = document.getElementById('gmxEmbedPlayer');
+      const spotifyIframe = document.getElementById('gmxEmbedIframeSpotify');
+      const youtubeIframe = document.getElementById('gmxEmbedIframeYouTube');
+      if (!section || !container) return;
+      titleSpan.innerHTML = songInfo.plataformas || 'No especificado';
+      container.innerHTML = '';
+      if (embedPlayer) embedPlayer.style.display = 'none';
+      if (spotifyIframe) { spotifyIframe.src = ''; spotifyIframe.classList.remove('active'); }
+      if (youtubeIframe) { youtubeIframe.src = ''; youtubeIframe.classList.remove('active'); }
+      const links = [];
+      if (songInfo.spotifyLink) links.push({ url: songInfo.spotifyLink, name: 'Spotify', icon: 'fa-brands fa-spotify', class: 'spotify' });
+      if (songInfo.spotifyEmbed) gmxPlayEmbed(songInfo.spotifyEmbed, 'spotify');
+      if (songInfo.youtubeLink)links.push({ url: songInfo.youtubeLink, name: 'YouTube', icon: 'fa-brands fa-youtube', class: 'youtube' });
+      if (songInfo.youtubeEmbed) gmxPlayEmbed(songInfo.youtubeEmbed, 'youtube');
+      if (songInfo.appleMusicLink) links.push({ url: songInfo.appleMusicLink, name: 'Apple Music', icon: 'fa-brands fa-apple', class: 'apple' });
+      if (songInfo.amazonMusicLink) links.push({ url: songInfo.amazonMusicLink, name: 'Amazon Music', icon: 'fa-brands fa-amazon', class: 'amazon' });
+      if (songInfo.instagramLink) links.push({ url: songInfo.instagramLink, name: 'Instagram (Meta)', icon: 'fa-brands fa-instagram', class: 'instagram' });
+      if (songInfo.tiktokLink) links.push({ url: songInfo.tiktokLink, name: 'TikTok Music', icon: 'fa-brands fa-tiktok', class: 'tiktok' });
+      
+      if (links.length === 0) { section.style.display = 'none'; return; }
+      section.style.display = 'block';
+      links.forEach(link => {
+        const a = document.createElement('a'); 
+        a.href = link.url;
+        a.title = link.name;
+        a.rel = "noopener noreferrer";
+        a.referrerpolicy = "strict-origin-when-cross-origin";
+        a.target = '_blank'; 
+        a.className = `gmx-platform-link ${link.class}`;
+        a.innerHTML = `<i class="${link.icon}"></i> ${link.name}`;
+        a.setAttribute('aria-label', `Abrir en ${link.name}`);
+        a.setAttribute('data-platform', link.class);
+        container.appendChild(a);
+      });
   }
   
-  function gmxPlayEmbed(embedUrl) { const ep = document.getElementById('gmxEmbedPlayer'); const ifr = document.getElementById('gmxEmbedIframe'); if (ep && ifr && embedUrl) { ifr.src = embedUrl; ep.style.display = 'block'; ep.scrollIntoView({ behavior: 'smooth' }); } }
-  function gmxCloseEmbed() { const ep = document.getElementById('gmxEmbedPlayer'); const ifr = document.getElementById('gmxEmbedIframe'); if (ep && ifr) { ifr.src = ''; ep.style.display = 'none'; } }
+  function gmxPlayEmbed(embedUrl,type){const ep=document.getElementById('gmxEmbedPlayer');const ifrSpot=document.getElementById('gmxEmbedIframeSpotify');const ifrYou=document.getElementById('gmxEmbedIframeYouTube');if(type==='spotify'&&ifrSpot&&embedUrl){ifrSpot.src='';ifrSpot.src=embedUrl;ifrSpot.style.display='block';}else if(type==='youtube'&&ifrYou&&embedUrl){ifrYou.src='';ifrYou.src=embedUrl;ifrYou.style.display='block';}if(ep)ep.style.display='block';}
+  function gmxCloseEmbed(){const ep=document.getElementById('gmxEmbedPlayer');const ifrSpot=document.getElementById('gmxEmbedIframeSpotify');const ifrYou=document.getElementById('gmxEmbedIframeYouTube');if(ep)ep.style.display='none';if(ifrSpot){ifrSpot.src='';ifrSpot.style.display='none';}if(ifrYou){ifrYou.src='';ifrYou.style.display='none';}}
   function showSongInfoError(msg) { const c = document.getElementById('songInfoContainer'); if (c) { c.innerHTML = `<div class="song-info-error"><div class="error-icon">⚠️</div><div class="error-message">${msg}</div><div class="error-detail">Verifica tu conexión o intenta más tarde</div><button class="retry-button" onclick="gmxRetryLoadSong()">🔄 Reintentar</button></div>`; c.classList.add('show'); } }
   function gmxRetryLoadSong() {
     if (gmxCurrentPlaylist && gmxCurrentPlaylist[gmxCurrentIndex]) {

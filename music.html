@@ -958,6 +958,7 @@
   let gmxCurrentPlaylist = [];
   let gmxCurrentIndex = 0;
   let gmxIsPlaying = false;
+  let gmxCanSeek = true;
   let gmxIsShuffled = false;
   let gmxIsLooping = 0;
   let gmxVisualizerEnabled = true;
@@ -1018,7 +1019,7 @@
   
   async function updatePlaylistWithDynamicState() {
     gmxCurrentPlaylist = [...gmxAllMusicFiles];
-    gmxRenderPlaylist();
+    await gmxRenderPlaylist();
   }
   
   async function gmxFetchMusicFiles() {
@@ -1040,8 +1041,15 @@
   
   async function gmxRenderPlaylist() {
     const playlistElement = document.getElementById('gmxPlaylist');
+    if (!playlistElement) return;
+    
+    // Limpiar antes de renderizar
     playlistElement.innerHTML = '';
-    if (gmxCurrentPlaylist.length === 0) { playlistElement.innerHTML = '<div class="gmx-playlist-item">No hay canciones disponibles</div>'; return; }
+    
+    if (gmxCurrentPlaylist.length === 0) { 
+      playlistElement.innerHTML = '<div class="gmx-playlist-item">No hay canciones disponibles</div>'; 
+      return; 
+    }
     
     for (let i = 0; i < gmxCurrentPlaylist.length; i++) {
       const song = gmxCurrentPlaylist[i];
@@ -1072,40 +1080,127 @@
   
   async function gmxTryPlaySong(index) {
     if (index < 0 || index >= gmxCurrentPlaylist.length) return;
+    
+    // Limpiar reproducción anterior ANTES de cambiar de canción
+    gmxCleanupPlayer();
+    
     const song = gmxCurrentPlaylist[index];
     const { info, state } = await getSongState(song);
     gmxCurrentIndex = index;
+    
+    // Actualizar el título de la canción actual ANTES de cargar
+    document.getElementById('gmxCurrentSongTitle').textContent = gmxFormatSongName(song);
+    
     loadSongDetails(song);
-    if (state.isUpcoming) { document.getElementById('gmxCurrentSongTitle').textContent = gmxFormatSongName(song) + ' (Próximamente)'; return; }
-    if (state.isPreview) { gmxPlayPreview(song, state.previewStart || 30, state.previewDuration || 30); return; }
+    gmxRenderPlaylist();
+    
+    if (state.isUpcoming) { 
+      gmxCanSeek = false;
+      document.getElementById('gmxCurrentSongTitle').textContent = gmxFormatSongName(song) + ' (Próximamente)'; 
+      document.getElementById('gmxCurrentSongArtist').textContent = 'No disponible';
+      return; 
+    }
+    
+    if (state.isPreview) { 
+      gmxPlayPreview(song, state.previewStart || 30, state.previewDuration || 30); 
+      return; 
+    }
+    
     gmxPlayFull(song);
   }
-  
-  function gmxPlayFull(song) {
+
+  function gmxCleanupPlayer() {
     const audio = document.getElementById('gmxAudioPlayer');
+    
+    // Limpiar timeouts y event handlers
+    if (gmxPreviewTimeout) {
+      clearTimeout(gmxPreviewTimeout);
+      gmxPreviewTimeout = null;
+    }
+    
+    if (gmxPreviewTimeUpdateHandler) {
+      audio.removeEventListener('timeupdate', gmxPreviewTimeUpdateHandler);
+      gmxPreviewTimeUpdateHandler = null;
+    }
+    
+    // Detener la reproducción actual
+    audio.pause();
+    audio.src = '';
+    
+    // Resetear variables de estado
+    gmxIsPlaying = false;
+    gmxIsPreviewMode = false;
+    gmxCanSeek = true;
+    gmxPreviewEndTime = null;
+    gmxCurrentPreviewInfo = null;
+    
+    // Actualizar UI
+    document.querySelector('.gmx-play-pause').innerHTML = '▶';
+  }
+
+  function gmxPlayFull(song) {
+    gmxCanSeek = true;
+    gmxIsPreviewMode = false;
+    const audio = document.getElementById('gmxAudioPlayer');
+    
     audio.src = getMusicUrl(song);
     audio.load();
+    
+    // Asegurar que el audio no esté en loop infinito por accidente
+    audio.loop = (gmxIsLooping === 1);
+    
     document.getElementById('gmxCurrentSongTitle').textContent = gmxFormatSongName(song);
-    if (document.getElementById('gmxAutoPlay')?.checked !== false) audio.play().catch(e => console.log('Autoplay bloqueado:', e));
+    
+    if (document.getElementById('gmxAutoPlay')?.checked !== false) {
+      audio.play().catch(e => console.log('Autoplay bloqueado:', e));
+    }
+    
     gmxRenderPlaylist();
   }
+
   
   function gmxPlayPreview(song, startSec = 30, durationSec = 30) {
-    const audio = document.getElementById('gmxAudioPlayer');
-    if (gmxPreviewTimeout) clearTimeout(gmxPreviewTimeout);
-    if (gmxPreviewTimeUpdateHandler) audio.removeEventListener('timeupdate', gmxPreviewTimeUpdateHandler);
+    gmxCanSeek = false;
     gmxIsPreviewMode = true;
+    
+    const audio = document.getElementById('gmxAudioPlayer');
+    
+    // Limpiar handlers anteriores
+    if (gmxPreviewTimeUpdateHandler) {
+      audio.removeEventListener('timeupdate', gmxPreviewTimeUpdateHandler);
+      gmxPreviewTimeUpdateHandler = null;
+    }
+    
     audio.src = getMusicUrl(song);
     audio.load();
+    
     audio.addEventListener('loadedmetadata', function onMeta() {
       audio.removeEventListener('loadedmetadata', onMeta);
       audio.currentTime = startSec;
       const endTime = startSec + durationSec;
       gmxPreviewEndTime = endTime;
-      gmxPreviewTimeUpdateHandler = function() { if (audio.currentTime >= endTime) { audio.pause(); audio.removeEventListener('timeupdate', gmxPreviewTimeUpdateHandler); gmxIsPreviewMode = false; gmxNextSong(); } };
+      
+      // Crear nuevo handler
+      gmxPreviewTimeUpdateHandler = function() { 
+        if (audio.currentTime >= endTime) { 
+          audio.pause(); 
+          audio.removeEventListener('timeupdate', gmxPreviewTimeUpdateHandler); 
+          gmxIsPreviewMode = false; 
+          gmxCanSeek = true;
+          gmxPreviewTimeUpdateHandler = null;
+          // Avanzar a la siguiente canción
+          if (gmxCurrentIndex + 1 < gmxCurrentPlaylist.length) {
+            gmxTryPlaySong(gmxCurrentIndex + 1);
+          } else if (gmxCurrentPlaylist.length) {
+            gmxTryPlaySong(0);
+          }
+        } 
+      };
+      
       audio.addEventListener('timeupdate', gmxPreviewTimeUpdateHandler);
       audio.play().catch(e => console.log('Preview autoplay error:', e));
     });
+    
     document.getElementById('gmxCurrentSongTitle').textContent = gmxFormatSongName(song) + ' (Preview)';
     gmxRenderPlaylist();
   }
@@ -1186,11 +1281,30 @@
   function gmxCloseEmbed() { const ep = document.getElementById('gmxEmbedPlayer'); const ifr = document.getElementById('gmxEmbedIframe'); if (ep && ifr) { ifr.src = ''; ep.style.display = 'none'; } }
   function showSongInfoError(msg) { const c = document.getElementById('songInfoContainer'); if (c) c.innerHTML = `<div class="song-info-error">${msg}</div>`; }
   
-  function gmxTogglePlay() { const audio = document.getElementById('gmxAudioPlayer'); if (!audio.src && gmxCurrentPlaylist.length) gmxTryPlaySong(0); else if (gmxIsPlaying) audio.pause(); else audio.play(); }
-  function gmxNextSong() { if (gmxCurrentIndex + 1 < gmxCurrentPlaylist.length) gmxTryPlaySong(gmxCurrentIndex + 1); else if (gmxCurrentPlaylist.length) gmxTryPlaySong(0); }
-  function gmxPreviousSong() { if (gmxCurrentIndex - 1 >= 0) gmxTryPlaySong(gmxCurrentIndex - 1); else if (gmxCurrentPlaylist.length) gmxTryPlaySong(gmxCurrentPlaylist.length - 1); }
+  function gmxTogglePlay(){const a=document.getElementById('gmxAudioPlayer'),s=gmxCurrentPlaylist[gmxCurrentIndex];if(!s){if(gmxCurrentPlaylist.length)gmxTryPlaySong(0);return;}getSongState(s).then(({state})=>{if(state.isUpcoming){document.getElementById('gmxCurrentSongTitle').textContent=gmxFormatSongName(s)+' (Próximamente - No disponible)';return;}if(!a.src)gmxTryPlaySong(gmxCurrentIndex);else if(gmxIsPlaying)a.pause();else a.play().catch(e=>console.log('Error:',e));});}
+  function gmxNextSong() {if (gmxCurrentIndex + 1 < gmxCurrentPlaylist.length) {gmxTryPlaySong(gmxCurrentIndex + 1);} else if (gmxCurrentPlaylist.length) {gmxTryPlaySong(0);}}
+  function gmxPreviousSong() {if (gmxCurrentIndex - 1 >= 0) {gmxTryPlaySong(gmxCurrentIndex - 1);} else if (gmxCurrentPlaylist.length) {gmxTryPlaySong(gmxCurrentPlaylist.length - 1);}}
   function gmxSetVolume(v) { document.getElementById('gmxAudioPlayer').volume = v; document.getElementById('gmxVolumeValue').innerText = Math.round(v * 100) + '%'; }
-  function gmxToggleShuffle() { gmxIsShuffled = !gmxIsShuffled; const btn = document.getElementById('gmxShuffleBtn'); btn.classList.toggle('active', gmxIsShuffled); if (gmxIsShuffled) { const shuffled = [...gmxCurrentPlaylist]; for (let i = shuffled.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; } gmxCurrentPlaylist = shuffled; gmxCurrentIndex = 0; gmxRenderPlaylist(); } else updatePlaylistWithDynamicState(); }
+  function gmxToggleShuffle() { 
+  gmxIsShuffled = !gmxIsShuffled; 
+  const btn = document.getElementById('gmxShuffleBtn'); 
+  btn.classList.toggle('active', gmxIsShuffled); 
+  if (gmxIsShuffled) { 
+    const shuffled = [...gmxCurrentPlaylist]; 
+    for (let i = shuffled.length - 1; i > 0; i--) { 
+      const j = Math.floor(Math.random() * (i + 1)); 
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; 
+    } 
+    gmxCurrentPlaylist = shuffled; 
+    gmxCurrentIndex = 0; 
+    gmxRenderPlaylist(); 
+  } else { 
+    // Volver a la lista original SIN duplicar
+    gmxCurrentPlaylist = [...gmxAllMusicFiles];
+    gmxCurrentIndex = 0;
+    gmxRenderPlaylist();
+  } 
+}
   function gmxToggleLoop() { gmxIsLooping = (gmxIsLooping + 1) % 3; const btn = document.getElementById('gmxLoopBtn'); const audio = document.getElementById('gmxAudioPlayer'); if (gmxIsLooping === 0) { btn.innerHTML = '🔁 Loop'; audio.loop = false; } else if (gmxIsLooping === 1) { btn.innerHTML = '🔂 Loop 1'; audio.loop = true; } else { btn.innerHTML = '🔁 Loop ∞'; audio.loop = false; } }
   function gmxToggleTheme() { document.getElementById('grouvexMusicPlayer').classList.toggle('light-theme'); document.querySelector('.gmx-theme-toggle').innerHTML = document.getElementById('grouvexMusicPlayer').classList.contains('light-theme') ? '☀️ Tema' : '🌙 Tema'; }
   function gmxTogglePlaylist() { document.getElementById('gmxPlaylistContent').classList.toggle('show'); }
@@ -1200,18 +1314,46 @@
   function setupEvents() {
     const audio = document.getElementById('gmxAudioPlayer');
     const progBar = document.getElementById('gmxProgressBar');
+    
     audio.addEventListener('loadedmetadata', () => document.getElementById('gmxDuration').innerText = gmxFormatTime(audio.duration));
-    audio.addEventListener('timeupdate', () => { const pct = (audio.currentTime / audio.duration) * 100; document.getElementById('gmxProgress').style.width = pct + '%'; document.getElementById('gmxCurrentTime').innerText = gmxFormatTime(audio.currentTime); });
-    audio.addEventListener('play', () => { gmxIsPlaying = true; document.querySelector('.gmx-play-pause').innerHTML = '⏸'; gmxUpdateVisualizer(); });
-    audio.addEventListener('pause', () => { gmxIsPlaying = false; document.querySelector('.gmx-play-pause').innerHTML = '▶'; gmxUpdateVisualizer(); });
-    audio.addEventListener('ended', () => { if (gmxIsLooping === 1) audio.play(); else if (gmxIsLooping === 2 || document.getElementById('gmxAutoPlay')?.checked !== false) gmxNextSong(); });
-    progBar.addEventListener('click', (e) => { if (!gmxIsPreviewMode) { const rect = progBar.getBoundingClientRect(); const percent = (e.clientX - rect.left) / rect.width; audio.currentTime = percent * audio.duration; } });
+    audio.addEventListener('timeupdate', () => { 
+      const pct = (audio.currentTime / audio.duration) * 100; 
+      document.getElementById('gmxProgress').style.width = pct + '%'; 
+      document.getElementById('gmxCurrentTime').innerText = gmxFormatTime(audio.currentTime); 
+    });
+    audio.addEventListener('play', () => { 
+      gmxIsPlaying = true; 
+      document.querySelector('.gmx-play-pause').innerHTML = '⏸'; 
+      gmxUpdateVisualizer(); 
+    });
+    audio.addEventListener('pause', () => { 
+      gmxIsPlaying = false; 
+      document.querySelector('.gmx-play-pause').innerHTML = '▶'; 
+      gmxUpdateVisualizer(); 
+    });
+    audio.addEventListener('ended', () => { 
+      if (gmxIsLooping === 1) audio.play(); 
+      else if (gmxIsLooping === 2 || document.getElementById('gmxAutoPlay')?.checked !== false) gmxNextSong(); 
+    });
+    
+    // Barra de progreso - solo movible si gmxCanSeek es true
+    progBar.addEventListener('click', (e) => { 
+      if (!gmxCanSeek) return;  // No permitir mover en preview o upcoming
+      const rect = progBar.getBoundingClientRect(); 
+      const percent = (e.clientX - rect.left) / rect.width; 
+      audio.currentTime = percent * audio.duration; 
+    });
   }
   
   async function init() {
     gmxAllMusicFiles = await gmxFetchMusicFiles();
-    if (gmxAllMusicFiles.length) { await updatePlaylistWithDynamicState(); setupEvents(); }
-    else document.getElementById('gmxCurrentSongTitle').innerText = 'No hay canciones disponibles';
+    if (gmxAllMusicFiles.length) { 
+      gmxCurrentPlaylist = [...gmxAllMusicFiles]; // Asignar una sola vez
+      await gmxRenderPlaylist(); 
+      setupEvents(); 
+    } else {
+      document.getElementById('gmxCurrentSongTitle').innerText = 'No hay canciones disponibles';
+    }
   }
   init();
   

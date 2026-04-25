@@ -1169,6 +1169,7 @@
     <div class="gmx-embed-header"><span>Reproduciendo en Spotify/YouTube</span><button class="gmx-embed-close-btn" onclick="gmxCloseEmbed()">✕</button></div>
     <iframe  id="gmxEmbedIframeSpotify" data-testid="embed-iframe" style="border-radius:12px; display:none" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     <iframe id="gmxEmbedIframeYouTube" style="display:none" type="text/html" width="100%" height="360" frameborder="0"></iframe>
+    <iframe id="gmxEmbedIframeAppleMusic" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" frameborder="0" height="450" style="width:100%;max-width:660px;overflow:hidden;border-radius:10px;display:none" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"></iframe>
   </div>
 <details style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal; max-width: 100%; background: rgba(0, 0, 0, 0.7); border-radius: 12px; padding: 12px 16px; margin: 15px 0; border-left: 3px solid var(--primary-color, #667eea);">
     <summary style="text-align: left; direction: ltr; font-weight: bold; cursor: pointer; color: var(--primary-color):">¿Cómo funciona este reproductor?</summary>
@@ -2444,18 +2445,21 @@ function gmxToggleCurrentLike() {
       const embedPlayer = document.getElementById('gmxEmbedPlayer');
       const spotifyIframe = document.getElementById('gmxEmbedIframeSpotify');
       const youtubeIframe = document.getElementById('gmxEmbedIframeYouTube');
+      const appleMusisIframe = document.getElementById('gmxEmbedIframeAppleMusic')
       if (!section || !container) return;
       titleSpan.innerHTML = songInfo.plataformas || 'No especificado';
       container.innerHTML = '';
       if (embedPlayer) embedPlayer.style.display = 'none';
       if (spotifyIframe) { spotifyIframe.src = ''; spotifyIframe.classList.remove('active'); }
       if (youtubeIframe) { youtubeIframe.src = ''; youtubeIframe.classList.remove('active'); }
+      if (appleMusisIframe) { appleMusisIframe.src = ''; appleMusisIframe.classList.remove('active'); }
       const links = [];
       if (songInfo.spotifyLink) links.push({ url: songInfo.spotifyLink, name: 'Spotify', icon: 'fa-brands fa-spotify', class: 'spotify' });
       if (songInfo.spotifyEmbed) gmxPlayEmbed(songInfo.spotifyEmbed, 'spotify');
       if (songInfo.youtubeLink)links.push({ url: songInfo.youtubeLink, name: 'YouTube', icon: 'fa-brands fa-youtube', class: 'youtube' });
       if (songInfo.youtubeEmbed) gmxPlayEmbed(songInfo.youtubeEmbed, 'youtube');
       if (songInfo.appleMusicLink) links.push({ url: songInfo.appleMusicLink, name: 'Apple Music', icon: 'fa-brands fa-apple', class: 'apple' });
+      if (songInfo.appleMusisIframe) gmxPlayEmbed(songInfo.appleMusisIframe, 'appleMusis');
       if (songInfo.amazonMusicLink) links.push({ url: songInfo.amazonMusicLink, name: 'Amazon Music', icon: 'fa-brands fa-amazon', class: 'amazon' });
       if (songInfo.instagramLink) links.push({ url: songInfo.instagramLink, name: 'Instagram (Meta)', icon: 'fa-brands fa-instagram', class: 'instagram' });
       if (songInfo.tiktokLink) links.push({ url: songInfo.tiktokLink, name: 'TikTok Music', icon: 'fa-brands fa-tiktok', class: 'tiktok' });
@@ -2477,7 +2481,7 @@ function gmxToggleCurrentLike() {
       });
   }
   
-  function gmxPlayEmbed(embedUrl,type){const ep=document.getElementById('gmxEmbedPlayer');const ifrSpot=document.getElementById('gmxEmbedIframeSpotify');const ifrYou=document.getElementById('gmxEmbedIframeYouTube');if(type==='spotify'&&ifrSpot&&embedUrl){ifrSpot.src='';ifrSpot.src=embedUrl;ifrSpot.style.display='block';}else if(type==='youtube'&&ifrYou&&embedUrl){ifrYou.src='';ifrYou.src=embedUrl;ifrYou.style.display='block';}if(ep)ep.style.display='block';}
+  function gmxPlayEmbed(embedUrl,type){const ep=document.getElementById('gmxEmbedPlayer');const ifrSpot=document.getElementById('gmxEmbedIframeSpotify');const ifrYou=document.getElementById('gmxEmbedIframeYouTube');const ifrApple=document.getElementById('gmxEmbedIframeAppleMusic');if(type==='spotify'&&ifrSpot&&embedUrl){ifrSpot.src='';ifrSpot.src=embedUrl;ifrSpot.style.display='block';}if(type==='youtube'&&ifrYou&&embedUrl){ifrYou.src='';ifrYou.src=embedUrl;ifrYou.style.display='block';}if(type==='appleMusis'&&ifrApple&&embedUrl){ifrApple.src='';ifrApple.src=embedUrl;ifrApple.style.display='block';}if(ep)ep.style.display='block';}
   function gmxCloseEmbed(){const ep=document.getElementById('gmxEmbedPlayer');const ifrSpot=document.getElementById('gmxEmbedIframeSpotify');const ifrYou=document.getElementById('gmxEmbedIframeYouTube');if(ep)ep.style.display='none';if(ifrSpot){ifrSpot.src='';ifrSpot.style.display='none';}if(ifrYou){ifrYou.src='';ifrYou.style.display='none';}}
   function showSongInfoError(msg) { const c = document.getElementById('songInfoContainer'); if (c) { c.innerHTML = `<div class="song-info-error"><div class="error-icon">⚠️</div><div class="error-message">${msg}</div><div class="error-detail">Verifica tu conexión o intenta más tarde</div><button class="retry-button" onclick="gmxRetryLoadSong()">🔄 Reintentar</button></div>`; c.classList.add('show'); } }
   function gmxRetryLoadSong() {

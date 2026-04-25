@@ -788,7 +788,49 @@
       .gmx-embed-close-btn:hover {
         background: rgba(255, 255, 255, 0.2);
       }
-  
+        
+      /* Añade este CSS para que el contenido dentro de details se vea igual */
+      .song-details-grid details {
+        grid-column: 1 / -1;
+        margin-bottom: 10px;
+      }
+      
+      .song-details-grid details[open] {
+        margin-bottom: 10px;
+      }
+      
+      .song-details-grid details summary {
+        cursor: pointer;
+        font-weight: 600;
+        color: cyan;
+        padding: 8px 0;
+        user-select: none;
+      }
+      
+      .light-theme .song-details-grid details summary {
+        color: magenta;
+      }
+      .song-details-grid details summary:hover {
+        opacity: 1;
+      }
+      
+      /* El contenido dentro de details debe mantener el grid layout */
+      .song-details-grid details .detail-item {
+        display: block;
+        margin-bottom: 8px;
+        padding-left: 0;
+      }
+      
+      /* También puedes mantener la estructura de grid dentro del details */
+      .song-details-grid details > div {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
       .gmx-badge {
         font-size: 0.7em;
         padding: 3px 8px;
@@ -804,6 +846,146 @@
         align-items: center;
         gap: 10px;
         flex-wrap: wrap;
+      }
+      
+      /* Clase para mensajes de error en la información de la canción */
+      .song-info-error {
+          background: linear-gradient(135deg, rgba(255, 107, 107, 0.95), rgba(238, 90, 36, 0.95));
+          backdrop-filter: blur(10px);
+          border-radius: 20px;
+          padding: 24px 20px;
+          margin: 15px 20px;
+          text-align: center;
+          color: white;
+          font-weight: 500;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+          animation: errorShake 0.5s ease-in-out;
+          position: relative;
+          overflow: hidden;
+      }
+      
+      /* Efecto de fondo animado */
+      .song-info-error::before {
+          content: "⚠️";
+          position: absolute;
+          left: 20px;
+          top: 50%;
+          transform: translateY(-50%);
+          font-size: 2em;
+          opacity: 0.3;
+          animation: errorPulse 2s infinite;
+      }
+      
+      /* Texto del error */
+      .song-info-error .error-message {
+          font-size: 1rem;
+          margin-bottom: 8px;
+          letter-spacing: 0.5px;
+      }
+      
+      /* Subtítulo o detalle adicional */
+      .song-info-error .error-detail {
+          font-size: 0.85rem;
+          opacity: 0.9;
+          margin-top: 8px;
+          font-style: italic;
+      }
+      
+      /* Icono de error decorativo */
+      .song-info-error .error-icon {
+          font-size: 2.5em;
+          margin-bottom: 12px;
+          display: inline-block;
+          animation: errorBounce 1s infinite;
+      }
+      
+      /* Botón de reintento opcional */
+      .song-info-error .retry-button {
+          background: rgba(255, 255, 255, 0.2);
+          border: 1px solid rgba(255, 255, 255, 0.4);
+          color: white;
+          padding: 8px 20px;
+          border-radius: 50px;
+          margin-top: 15px;
+          cursor: pointer;
+          font-size: 0.9em;
+          font-weight: 600;
+          transition: all 0.3s ease;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+      }
+      
+      .song-info-error .retry-button:hover {
+          background: rgba(255, 255, 255, 0.3);
+          transform: translateY(-2px);
+      }
+      
+      /* Animaciones */
+      @keyframes errorShake {
+          0%, 100% { transform: translateX(0); }
+          10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+          20%, 40%, 60%, 80% { transform: translateX(5px); }
+      }
+      
+      @keyframes errorPulse {
+          0%, 100% { opacity: 0.3; transform: translateY(-50%) scale(1); }
+          50% { opacity: 0.6; transform: translateY(-50%) scale(1.1); }
+      }
+      
+      @keyframes errorBounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+      }
+      
+      /* Variante para tema claro */
+      .light-theme .song-info-error {
+          background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+          color: white;
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      }
+      
+      /* Variante compacta (para espacios pequeños) */
+      .song-info-error.compact {
+          padding: 16px;
+          margin: 10px;
+          font-size: 0.9em;
+      }
+      
+      .song-info-error.compact::before {
+          font-size: 1.5em;
+      }
+      
+      .song-info-error.compact .error-icon {
+          font-size: 1.8em;
+          margin-bottom: 8px;
+      }
+      .song-info-loading { background: linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95)); backdrop-filter: blur(10px); border-radius: 20px; padding: 30px 20px; margin: 15px 20px; text-align: center; color: white; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); position: relative; overflow: hidden; }
+      
+      .song-info-loading::before { content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent); animation: loadingShine 1.5s infinite; }
+      
+      .song-info-loading .loading-spinner { width: 50px; height: 50px; margin: 0 auto 15px; border: 4px solid rgba(255, 255, 255, 0.3); border-top-color: white; border-radius: 50%; animation: loadingSpin 0.8s linear infinite; }
+      
+      .song-info-loading .loading-text { font-size: 1rem; font-weight: 500; letter-spacing: 0.5px; }
+      
+      .song-info-loading .loading-dots { display: inline-block; animation: loadingDots 1.4s infinite; }
+      
+      @keyframes loadingShine { 100% { left: 100%; } }
+      
+      @keyframes loadingSpin { to { transform: rotate(360deg); } }
+      
+      @keyframes loadingDots { 0%, 20% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0; } }
+      
+      .light-theme .song-info-loading { background: linear-gradient(135deg, #667eea, #764ba2); }
+      @keyframes randomMove {
+        0% { background-position: 0% 0%; }
+        17% { background-position: 80% 20%; }
+        34% { background-position: 20% 90%; }
+        51% { background-position: 100% 50%; }
+        68% { background-position: 0% 80%; }
+        85% { background-position: 60% 0%; }
+        100% { background-position: 0% 0%; }
       }
     </style>
 </head>
@@ -844,23 +1026,70 @@
 <div class="grouvex-music-player" id="grouvexMusicPlayer">
   <div class="gmx-player-header">
     <a href="https://grouvex.github.io"><img src="https://grouvex.github.io/img/Grouvex1.png" alt="Logo"></a>
-    <style>
-@keyframes randomMove {
-  0% { background-position: 0% 0%; }
-  17% { background-position: 80% 20%; }
-  34% { background-position: 20% 90%; }
-  51% { background-position: 100% 50%; }
-  68% { background-position: 0% 80%; }
-  85% { background-position: 60% 0%; }
-  100% { background-position: 0% 0%; }
-}
-</style>
+<details style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal; max-width: 100%; background: rgba(0, 0, 0, 0.3); border-radius: 12px; padding: 12px 16px; margin: 15px 0; border-left: 3px solid var(--primary-color, #667eea);">
+    <summary style="text-align: left; direction: ltr; font-weight: bold; cursor: pointer;">📋 Términos de Servicio y Políticas de Privacidad</summary>
+    
+    <details style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal; max-width: 100%; background: rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 10px 14px; margin-top: 10px;">
+        <summary style="text-align: left; direction: ltr; cursor: pointer; color: var(--primary-color, #667eea);">📜 Términos de Servicio</summary>
+        <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5;">
+            <strong>1. Uso del Reproductor</strong><br>
+            Este reproductor de música es de uso exclusivo para las canciones distribuidas bajo licencia de <a href="https://grouvex.github.io/gsrecords" style="color: var(--primary-color, #667eea); text-decoration: none;">Grouvex Studios Records</a>. El acceso y reproducción de las obras implica la aceptación de las presentes condiciones.
+        </p>
+        <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5;">
+            <strong>2. Propiedad Intelectual</strong><br>
+            Todas las obras musicales están protegidas por derechos de autor. Queda prohibido realizar copias, descargas, modificaciones, plagio o cualquier acto que vulnere los derechos de propiedad intelectual de los artistas y del sello discográfico.
+        </p>
+        <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5;">
+            <strong>3. Uso Permitido</strong><br>
+            El reproductor está destinado exclusivamente para la reproducción de música. Cualquier intento de extracción, ingeniería inversa o uso no autorizado del contenido será considerado una violación de los términos.
+        </p>
+        <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5;">
+            <strong>4. Disponibilidad de Canciones</strong><br>
+            Las canciones marcadas como "Próximamente" no están disponibles para reproducción hasta su fecha de lanzamiento oficial. Las canciones en "Preview" ofrecen un fragmento limitado (30 segundos) antes del lanzamiento completo.
+        </p>
+        <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5;">
+            <strong>5. Modificaciones</strong><br>
+            Grouvex Studios Records se reserva el derecho de modificar estos términos, notificando los cambios a través del Boletín Oficial.
+        </p>
+    </details>
+    
+    <details style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal; max-width: 100%; background: rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 10px 14px; margin-top: 10px;">
+        <summary style="text-align: left; direction: ltr; cursor: pointer; color: var(--primary-color, #667eea);">🔒 Políticas de Privacidad</summary>
+        <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5;">
+            <strong>1. Datos Recopilados</strong><br>
+            Este reproductor no recopila datos personales de los usuarios. La única información almacenada localmente es la caché de la lista de reproducción para mejorar el rendimiento.
+        </p>
+        <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5;">
+            <strong>2. Información de Artistas</strong><br>
+            Los datos personales de los artistas (información de contacto, documentación contractual, etc.) son tratados con estricta confidencialidad conforme al RGPD y la LOPDGDD, y no son compartidos con terceros sin consentimiento.
+        </p>
+        <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5;">
+            <strong>3. Cookies y Tecnologías</strong><br>
+            El reproductor utiliza almacenamiento local (localStorage) únicamente para guardar la caché de la playlist y preferencias de usuario. No se utilizan cookies de seguimiento ni se comparten datos con terceros.
+        </p>
+        <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5;">
+            <strong>4. Derechos ARCO</strong><br>
+            Los artistas pueden ejercer sus derechos de Acceso, Rectificación, Cancelación y Oposición enviando un correo a <a href="mailto:legal@grouvex.com" style="color: var(--primary-color, #667eea); text-decoration: none;">legal@grouvex.com</a>.
+        </p>
+        <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5;">
+            <strong>5. Contacto</strong><br>
+            Para consultas legales: <a href="mailto:legal@grouvex.com" style="color: var(--primary-color, #667eea); text-decoration: none;">legal@grouvex.com</a><br>
+            Otras consultas: <a href="mailto:oficina@grouvex.com" style="color: var(--primary-color, #667eea); text-decoration: none;">oficina@grouvex.com</a>
+        </p>
+    </details>
+  <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5; font-size: 0.85em; opacity: 0.8;">
+      © 2021 - 2026, Grouvex Studios Records. Publicado conforme al Boletín Oficial BOGS/2025/002.
+  </p>
+</details>
 <h1 style="padding: 12px 24px; background: linear-gradient(135deg, #2dd4bf, #818cf8, #c084fc, #f472b6, #fb923c, #facc15, #4ade80, #2dd4bf); background-size: 600% 600%; border-radius: 80px; text-align: center; font-size: clamp(1.2rem, 5vw, 1.8rem); font-weight: 600; color: white; text-shadow: 0 1px 4px rgba(0,0,0,0.2); box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: none; animation: randomMove 20s ease-in-out infinite; transition: all 0.3s ease; cursor: pointer; letter-spacing: 0.5px;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';">Reproductor de Música</h1>
   </div>
   <div style="display: flex; gap: 10px; justify-content: center;">
     <button class="gmx-playlist-toggle" onclick="gmxTogglePlaylist()">📋 Playlist</button>
     <button class="gmx-theme-toggle" onclick="gmxToggleTheme()">🌙 Tema</button>
   </div>
+<p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5; font-size: 0.75em; opacity: 0.6;">
+  La lista de canciones tarda unos segundos en cargar. Para verla, presione "Playlist".
+</p>
   <div class="gmx-playlist-container" id="gmxPlaylistContent">
     <div class="gmx-playlist" id="gmxPlaylist"></div>
   </div>
@@ -900,6 +1129,52 @@
     <div class="gmx-embed-header"><span>Reproduciendo en Spotify/YouTube</span><button class="gmx-embed-close-btn" onclick="gmxCloseEmbed()">✕</button></div>
     <iframe id="gmxEmbedIframe" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture" loading="lazy"></iframe>
   </div>
+<details style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal; max-width: 100%; background: rgba(0, 0, 0, 0.3); border-radius: 12px; padding: 12px 16px; margin: 15px 0; border-left: 3px solid var(--primary-color, #667eea);">
+    <summary style="text-align: left; direction: ltr; font-weight: bold; cursor: pointer;">¿Cómo funciona este reproductor?</summary>
+    
+    <p style="text-align: left; margin: 10px 0 8px 0; line-height: 1.5;">
+        <strong>▶️ Controles básicos</strong><br>
+        • <strong>Play/Pausa</strong>: Inicia o detiene la canción actual.<br>
+        • <strong>⏮ / ⏭</strong>: Cambia a la canción anterior o siguiente.<br>
+        • <strong>Barra de progreso</strong>: Haz clic para saltar a cualquier punto de la canción (no disponible en Previews).<br>
+        • <strong>Volumen</strong>: Ajusta el volumen con el deslizador.
+    </p>
+    
+    <p style="text-align: left; margin: 10px 0 8px 0; line-height: 1.5;">
+        <strong>Funciones adicionales</strong><br>
+        • <strong>Shuffle</strong>: Mezcla aleatoriamente todas las canciones de la playlist pulsando 🔀.<br>
+        • <strong>Loop</strong>: Pulsa una vez para repetir la canción actual 🔂, dos veces para repetir toda la lista 🔁, tres veces para desactivar.<br>
+        • <strong>Tema</strong>: Alterna entre modo oscuro 🌙 y claro ☀️.<br>
+        • <strong>📋 Playlist</strong>: Muestra u oculta la lista de canciones.
+    </p>
+    
+    <p style="text-align: left; margin: 10px 0 8px 0; line-height: 1.5;">
+        <strong>🏷️ Estado de las canciones</strong><br>
+        En todos los casos, podrá ver la información de la canción debajo de la playlist, si está disponible en la base de datos.
+        • <span style="background: linear-gradient(135deg, #ff6b6b, #ee5a24); padding: 2px 8px; border-radius: 20px; font-size: 0.75em; color: white;">🎵 Próximamente</span> → Canción aún no disponible. No se puede reproducir.<br>
+        • <span style="background: linear-gradient(135deg, #f093fb, #f5576c); padding: 2px 8px; border-radius: 20px; font-size: 0.75em; color: white;">🎧 Preview</span> → Vista previa de 30 segundos. No se puede mover la barra de progreso.<br>
+        • <strong>Sin etiqueta</strong> → Canción disponible para reproducción completa.
+    </p>
+    
+    <p style="text-align: left; margin: 10px 0 8px 0; line-height: 1.5;">
+        <strong>ℹ️ Información de la canción</strong><br>
+        Al seleccionar una canción, se mostrará automáticamente información detallada: álbum, artista, géneros, fecha de lanzamiento, derechos y enlaces a plataformas como Spotify o YouTube.
+    </p>
+    
+    <p style="text-align: left; margin: 10px 0 5px 0; line-height: 1.5;">
+        <strong>💡 Consejos</strong><br>
+        • Las canciones se cargan desde la base de datos de GSRecords, puede haber una pequeña espera la primera vez.<br>
+        • La playlist se guarda en caché para cargar más rápido la próxima vez.<br>
+        • Si una canción no se reproduce, comprueba tu conexión a internet.
+    </p>
+    
+    <p style="text-align: left; margin: 10px 0 5px 0; line-height: 1.5; font-size: 0.85em; opacity: 0.8;">
+        🎧 Disfruta de la música sin anuncios. © Grouvex Studios
+    </p>
+</details>
+<p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5; font-size: 0.85em; opacity: 0.8;">
+    © 2021 - 2026, Grouvex Studios Records. Reproductor de música.
+</p>
   <audio id="gmxAudioPlayer" preload="metadata"></audio>
 </div>
 </main>
@@ -983,23 +1258,31 @@
   }
   
   function getSongDynamicState(songFilename, songInfo) {
-    if (!songInfo || !songInfo.found) return { state: 'upcoming', isUpcoming: true, isPreview: false, previewStart: 0, previewDuration: 30 };
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const preorderDate = parseDateDDMMYYYY(songInfo.fechaPedidoAnticipado);
-    const originalDate = parseDateDDMMYYYY(songInfo.lanzamientoOriginal);
-    const saleDate = parseDateDDMMYYYY(songInfo.fechaInicioVentas);
-    
-    if (saleDate && today >= saleDate) return { state: 'normal', isUpcoming: false, isPreview: false };
-    if (originalDate && today >= originalDate) return { state: 'normal', isUpcoming: false, isPreview: false };
-    if (preorderDate) {
-      const oneDayBefore = new Date(preorderDate);
-      oneDayBefore.setDate(preorderDate.getDate() - 1);
-      if (today < oneDayBefore) return { state: 'upcoming', isUpcoming: true, isPreview: false };
-      if (today >= oneDayBefore && (!originalDate || today < originalDate)) return { state: 'preview', isUpcoming: false, isPreview: true, previewStart: 30, previewDuration: 30 };
-    }
-    if (originalDate && today < originalDate) return { state: 'preview', isUpcoming: false, isPreview: true, previewStart: 30, previewDuration: 30 };
-    return { state: 'upcoming', isUpcoming: true, isPreview: false };
+      if (!songInfo || !songInfo.found) {
+          return { state: 'upcoming', isUpcoming: true, isPreview: false, previewStart: 0, previewDuration: 30 };
+      }
+      
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      const preorderDate = parseDateDDMMYYYY(songInfo.fechaPedidoAnticipado);
+      const saleDate = parseDateDDMMYYYY(songInfo.fechaInicioVentas);
+      
+      // 1. ¿Ya está a la venta (lanzado oficialmente)?
+      if (saleDate && today >= saleDate) {
+          return { state: 'normal', isUpcoming: false, isPreview: false };
+      }
+      
+      // 2. ¿Hay preventa Y hoy es igual o posterior a la preventa?
+      if (preorderDate && today >= preorderDate) {
+          // Solo preview si además la fecha de venta es futura (o no existe)
+          if (!saleDate || today < saleDate) {
+              return { state: 'preview', isUpcoming: false, isPreview: true, previewStart: 30, previewDuration: 30 };
+          }
+      }
+      
+      // 3. Cualquier otro caso: próximamente
+      return { state: 'upcoming', isUpcoming: true, isPreview: false };
   }
   
   async function fetchSongInfo(filename) {
@@ -1023,16 +1306,33 @@
   }
   
   async function gmxFetchMusicFiles() {
-    try {
-      const repoUrl = 'https://api.github.com/repos/Grouvex/grouvex.github.io/contents/music';
-      const response = await fetch(repoUrl);
-      if (!response.ok) throw new Error(`Error: ${response.status}`);
-      const files = await response.json();
-      return files.filter(file => file.name.toLowerCase().endsWith('.mp3')).map(file => file.name);
-    } catch (error) {
-      console.error('Error:', error);
-      return [];
-    }
+      // Intentar obtener del caché primero
+      const cached = localStorage.getItem('gmx_playlist_cache');
+      const cacheTime = localStorage.getItem('gmx_playlist_cache_time');
+      const ONE_HOUR = 60 * 60 * 1000;
+      
+      if (cached && cacheTime && (Date.now() - parseInt(cacheTime)) < ONE_HOUR) {
+          return JSON.parse(cached);
+      }
+      
+      try {
+          const repoUrl = 'https://api.github.com/repos/Grouvex/grouvex.github.io/contents/music';
+          const response = await fetch(repoUrl);
+          if (!response.ok) throw new Error(`Error: ${response.status}`);
+          const files = await response.json();
+          const mp3Files = files.filter(file => file.name.toLowerCase().endsWith('.mp3')).map(file => file.name);
+          
+          // Guardar en caché
+          localStorage.setItem('gmx_playlist_cache', JSON.stringify(mp3Files));
+          localStorage.setItem('gmx_playlist_cache_time', Date.now().toString());
+          
+          return mp3Files;
+      } catch (error) {
+          console.error('Error:', error);
+          // Si falla, intentar usar caché antiguo
+          if (cached) return JSON.parse(cached);
+          return [];
+      }
   }
   
   function gmxFormatSongName(filename) { return filename.replace('.mp3', ''); }
@@ -1040,30 +1340,45 @@
   function getMusicUrl(filename) { return `https://github.com/Grouvex/grouvex.github.io/raw/main/music/${encodeURIComponent(filename)}`; }
   
   async function gmxRenderPlaylist() {
-    const playlistElement = document.getElementById('gmxPlaylist');
-    if (!playlistElement) return;
-    
-    // Limpiar antes de renderizar
-    playlistElement.innerHTML = '';
-    
-    if (gmxCurrentPlaylist.length === 0) { 
-      playlistElement.innerHTML = '<div class="gmx-playlist-item">No hay canciones disponibles</div>'; 
-      return; 
-    }
-    
-    for (let i = 0; i < gmxCurrentPlaylist.length; i++) {
-      const song = gmxCurrentPlaylist[i];
-      const { state } = await getSongState(song);
-      const item = document.createElement('div');
-      item.className = `gmx-playlist-item ${i === gmxCurrentIndex ? 'active' : ''}`;
-      let badge = '';
-      if (state.isUpcoming) badge = '<span class="gmx-badge upcoming-badge">🎵 Próximamente</span>';
-      else if (state.isPreview) badge = '<span class="gmx-badge preview-badge">🎧 Preview</span>';
-      item.innerHTML = `<div class="gmx-song-info-wrapper"><span class="gmx-song-title" data-full-title="${song}">${gmxFormatSongName(song)}</span>${badge}</div><span class="gmx-song-duration">--:--</span>`;
-      item.onclick = () => gmxTryPlaySong(i);
-      playlistElement.appendChild(item);
-    }
-    setTimeout(() => gmxLoadDurations(), 100);
+      const playlistElement = document.getElementById('gmxPlaylist');
+      if (!playlistElement) return;
+      
+        playlistElement.innerHTML = '';
+
+      
+      if (gmxCurrentPlaylist.length === 0) { 
+          playlistElement.innerHTML = '<div class="gmx-playlist-item">No hay canciones disponibles</div>'; 
+          return; 
+      }
+      
+      let html = '';
+      for (let i = 0; i < gmxCurrentPlaylist.length; i++) {
+          const song = gmxCurrentPlaylist[i];
+          const cached = songInfoCache.get(song);
+          const state = cached ? cached.state : { isUpcoming: true, isPreview: false };
+          
+          let badge = '';
+          if (state.isUpcoming) badge = '<span class="gmx-badge upcoming-badge">🎵 Próximamente</span>';
+          else if (state.isPreview) badge = '<span class="gmx-badge preview-badge">🎧 Preview</span>';
+          
+          html += `
+              <div class="gmx-playlist-item ${i === gmxCurrentIndex ? 'active' : ''}" data-index="${i}">
+                  <div class="gmx-song-info-wrapper">
+                      <span class="gmx-song-title" data-full-title="${song.replace(/"/g, '&quot;')}">${gmxFormatSongName(song)}</span>
+                      ${badge}
+                  </div>
+                  <span class="gmx-song-duration">--:--</span>
+              </div>`;
+      }
+      
+      playlistElement.innerHTML = html;
+      
+      document.querySelectorAll('.gmx-playlist-item').forEach(item => {
+          const idx = parseInt(item.dataset.index);
+          item.onclick = () => gmxTryPlaySong(idx);
+      });
+      
+      setTimeout(() => gmxLoadDurations(), 50);
   }
   
   function gmxLoadDurations() {
@@ -1245,13 +1560,21 @@
           <div class="detail-item"><div class="detail-label">Letristas</div><div>${songInfo.letristas || 'No especificado'}</div></div>
           <div class="detail-item"><div class="detail-label">Contenido Explícito</div><div>${songInfo.explicit || 'No especificado'}</div></div>
           <br><hr>
-          <div class="detail-item"><div class="detail-label">Lanzamiento Original</div><div>${songInfo.lanzamientoOriginal || 'No especificado'}</div></div>
-          <div class="detail-item"><div class="detail-label">Lanzamiento de Preventa</div><div>${songInfo.fechaPedidoAnticipado || 'No especificado'}</div></div>
-          <div class="detail-item"><div class="detail-label">Inicio de Ventas</div><div>${songInfo.fechaInicioVentas || 'No especificado'}</div></div>
+          <details><summary>Fechas</summary>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
+            <div class="detail-item"><div class="detail-label">Lanzamiento Original</div><div>${songInfo.lanzamientoOriginal || 'No especificado'}</div></div>
+            <div class="detail-item"><div class="detail-label">Lanzamiento de Preventa</div><div>${songInfo.fechaPedidoAnticipado || 'No especificado'}</div></div>
+            <div class="detail-item"><div class="detail-label">Inicio de Ventas</div><div>${songInfo.fechaInicioVentas || 'No especificado'}</div></div>
+          </div>
+          </details>
           <br><hr>
+          <details><summary>Derechos y Fuentes</summary>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
           <div class="detail-item"><div class="detail-label">Derechos Composición</div><div>${songInfo.derechosComposicion || 'No especificado'}</div></div>
           <div class="detail-item"><div class="detail-label">Derechos Grabación</div><div>${songInfo.derechosGrabacion || 'No especificado'}</div></div>
           <div class="detail-item"><div class="detail-label">Sello Discográfico</div><div>${songInfo.selloDiscografico || 'No especificado'}</div></div>
+          </div>
+          </details>
         </div>
       </div>`;
     if (songInfo.artista) document.getElementById('gmxCurrentSongArtist').textContent = songInfo.artista;
@@ -1279,8 +1602,8 @@
   
   function gmxPlayEmbed(embedUrl) { const ep = document.getElementById('gmxEmbedPlayer'); const ifr = document.getElementById('gmxEmbedIframe'); if (ep && ifr && embedUrl) { ifr.src = embedUrl; ep.style.display = 'block'; ep.scrollIntoView({ behavior: 'smooth' }); } }
   function gmxCloseEmbed() { const ep = document.getElementById('gmxEmbedPlayer'); const ifr = document.getElementById('gmxEmbedIframe'); if (ep && ifr) { ifr.src = ''; ep.style.display = 'none'; } }
-  function showSongInfoError(msg) { const c = document.getElementById('songInfoContainer'); if (c) c.innerHTML = `<div class="song-info-error">${msg}</div>`; }
-  
+  function showSongInfoError(msg) { const c = document.getElementById('songInfoContainer'); if (c) { c.innerHTML = `<div class="song-info-error"><div class="error-icon">⚠️</div><div class="error-message">${msg}</div><div class="error-detail">Verifica tu conexión o intenta más tarde</div><button class="retry-button" onclick="gmxRetryLoadSong()">🔄 Reintentar</button></div>`; c.classList.add('show'); } }
+  function gmxRetryLoadSong() { if (gmxCurrentPlaylist[gmxCurrentIndex]) { loadSongDetails(gmxCurrentPlaylist[gmxCurrentIndex]); } }
   function gmxTogglePlay(){const a=document.getElementById('gmxAudioPlayer'),s=gmxCurrentPlaylist[gmxCurrentIndex];if(!s){if(gmxCurrentPlaylist.length)gmxTryPlaySong(0);return;}getSongState(s).then(({state})=>{if(state.isUpcoming){document.getElementById('gmxCurrentSongTitle').textContent=gmxFormatSongName(s)+' (Próximamente - No disponible)';return;}if(!a.src)gmxTryPlaySong(gmxCurrentIndex);else if(gmxIsPlaying)a.pause();else a.play().catch(e=>console.log('Error:',e));});}
   function gmxNextSong() {if (gmxCurrentIndex + 1 < gmxCurrentPlaylist.length) {gmxTryPlaySong(gmxCurrentIndex + 1);} else if (gmxCurrentPlaylist.length) {gmxTryPlaySong(0);}}
   function gmxPreviousSong() {if (gmxCurrentIndex - 1 >= 0) {gmxTryPlaySong(gmxCurrentIndex - 1);} else if (gmxCurrentPlaylist.length) {gmxTryPlaySong(gmxCurrentPlaylist.length - 1);}}
@@ -1346,14 +1669,23 @@
   }
   
   async function init() {
-    gmxAllMusicFiles = await gmxFetchMusicFiles();
-    if (gmxAllMusicFiles.length) { 
-      gmxCurrentPlaylist = [...gmxAllMusicFiles]; // Asignar una sola vez
-      await gmxRenderPlaylist(); 
-      setupEvents(); 
-    } else {
-      document.getElementById('gmxCurrentSongTitle').innerText = 'No hay canciones disponibles';
-    }
+      gmxAllMusicFiles = await gmxFetchMusicFiles();
+      if (gmxAllMusicFiles.length) { 
+          // Cargar información de TODAS las canciones en PARALELO
+          const songStatesPromises = gmxAllMusicFiles.map(song => getSongState(song));
+          const allSongStates = await Promise.all(songStatesPromises);
+          
+          // Guardar en caché
+          gmxAllMusicFiles.forEach((song, idx) => {
+              songInfoCache.set(song, allSongStates[idx]);
+          });
+          
+          gmxCurrentPlaylist = [...gmxAllMusicFiles];
+          await gmxRenderPlaylist(); 
+          setupEvents(); 
+      } else {
+          document.getElementById('gmxCurrentSongTitle').innerText = 'No hay canciones disponibles';
+      }
   }
   init();
   

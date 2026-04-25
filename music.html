@@ -1222,6 +1222,24 @@
 </main>
 
 <script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
+    authDomain: "grouvex-studios.firebaseapp.com",
+    databaseURL: "https://grouvex-studios-default-rtdb.firebaseio.com",
+    projectId: "grouvex-studios",
+    storageBucket: "grouvex-studios.appspot.com",
+    messagingSenderId: "1070842606062",
+    appId: "1:1070842606062:web:5d887863048fd100b49eff",
+    measurementId: "G-75BR8D2CR3"
+  };
+
+  // ✅ Inicialización correcta para Firebase 8.x
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const database = firebase.database();
+  
+  // Verificar si Firebase se inicializó correctamente
+  console.log('Firebase inicializado:', firebase.apps.length > 0 ? '✅' : '❌');
   const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec';
   const PORTFOLIO_IMAGE_BASE_URL = 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/main/port/';
             // ============================================

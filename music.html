@@ -80,7 +80,7 @@
         max-width: 80%;
         margin: 10px auto;
         overflow: hidden;
-        background: center;
+        background-position: center;
         position: relative;
         backdrop-filter: blur(20px);
         border: 1px solid var(--glass-border);
@@ -988,7 +988,45 @@
         85% { background-position: 60% 0%; }
         100% { background-position: 0% 0%; }
       }
-    </style>
+/* Estilo para el botón de like en los controles */
+#gmxLikeBtn {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+#gmxLikeBtn:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+}
+
+#gmxLikeBtn:active {
+  transform: scale(0.95);
+}
+
+/* Animaciones para el botón de like */
+@keyframes likeAdd {
+    0% { transform: scale(1); background: var(--glass-bg); }
+    50% { transform: scale(1.2); background: linear-gradient(135deg, #ff6b6b, #ee5a24); box-shadow: 0 0 20px rgba(255,107,107,0.8); }
+    100% { transform: scale(1); background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+}
+
+@keyframes likeRemove {
+    0% { transform: scale(1); background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+    50% { transform: scale(0.9); background: var(--glass-bg); }
+    100% { transform: scale(1); background: var(--glass-bg); }
+}
+
+/* Efecto hover mejorado para el botón de like */
+#gmxLikeBtn:hover {
+    transform: translateY(-2px) scale(1.05);
+    transition: all 0.3s ease;
+}
+
+#gmxLikeBtn:active {
+    transform: scale(0.95);
+}
+</style>
 </head>
 <body>
   <header>
@@ -1120,6 +1158,7 @@
     <div class="gmx-additional-controls">
       <button class="gmx-additional-btn" id="gmxShuffleBtn" onclick="gmxToggleShuffle()">🔀 Shuffle</button>
       <button class="gmx-additional-btn" id="gmxLoopBtn" onclick="gmxToggleLoop()">🔁 Loop</button>
+      <button class="gmx-additional-btn" id="gmxLikeBtn" onclick="gmxToggleCurrentLike()" style="display: none;">❤️ Like</button>
     </div>
     <div class="gmx-platforms-section" id="gmxPlatformsSection" style="display: none;">
       <div class="gmx-platforms-title">Se puede escuchar en: <span id="gmxPlatforms"></span></div>
@@ -1146,8 +1185,10 @@
         • <strong>Shuffle</strong>: Mezcla aleatoriamente todas las canciones de la playlist pulsando 🔀.<br>
         • <strong>Loop</strong>: Pulsa una vez para repetir la canción actual 🔂, dos veces para repetir toda la lista 🔁, tres veces para desactivar.<br>
         • <strong>Tema</strong>: Alterna entre modo oscuro 🌙 y claro ☀️.<br>
-        • <strong>📋 Playlist</strong>: Muestra u oculta la lista de canciones.
-    </p>
+        • <strong>📋 Playlist</strong>: Muestra u oculta la lista de canciones.<br>
+        • <strong>Likes</strong>: Puedes darle like y ver cuantas personas le han dado. Solo necesitas tener una cuenta en Grouvex Studios.<br>
+        • <strong>🔍 Buscador</strong>: Puedes buscar una canción. Si tiene corazón, es que ya le han dado like.<br>
+        • <strong>⏰ Timer</strong>: Puedes poner un temporizador para que en ese timpo que has dicho, se  pare la musica.</p>
     
     <p style="text-align: left; margin: 10px 0 8px 0; line-height: 1.5;">
         <strong>🏷️ Estado de las canciones</strong><br>
@@ -1247,7 +1288,319 @@
   
   // Cache de información de canciones para saber su estado dinámico (upcoming/preview/normal)
   let songInfoCache = new Map();
+// Estado del usuario
+let gmxCurrentUser = null;
+let gmxIsLoggedIn = false;
+
+// Escuchar cambios en la autenticación
+auth.onAuthStateChanged((user) => {
+  gmxCurrentUser = user;
+  gmxIsLoggedIn = !!user;
+  gmxUpdateAuthUI();
   
+  if (user) {
+    // Usuario logueado, cargar sus likes
+    gmxLoadUserLikeStatus().then(() => {
+      gmxRenderPlaylist();
+      gmxShowToast(`✅ Bienvenido, ${user.email || user.displayName || 'Usuario'}!`);
+    });
+  } else {
+    // Usuario no logueado, limpiar likes locales
+    gmxUserLikedStatus.clear();
+    gmxRenderPlaylist();
+  }
+});
+
+// Función para iniciar sesión (solo login, no registro)
+function gmxLogin() {
+  // Mostrar diálogo de login
+  const email = prompt('Ingresa tu correo electrónico autorizado:');
+  if (!email) return;
+  
+  const password = prompt('Ingresa tu contraseña:');
+  if (!password) return;
+  
+  auth.signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      gmxShowToast(`✅ Sesión iniciada como ${userCredential.user.email}`);
+    })
+    .catch((error) => {
+      let errorMsg = 'Error al iniciar sesión. ';
+      switch (error.code) {
+        case 'auth/user-not-found':
+          errorMsg += 'Usuario no encontrado. Solo usuarios autorizados pueden acceder.';
+          break;
+        case 'auth/wrong-password':
+          errorMsg += 'Contraseña incorrecta.';
+          break;
+        case 'auth/invalid-email':
+          errorMsg += 'Correo inválido.';
+          break;
+        default:
+          errorMsg += error.message;
+      }
+      gmxShowToast(`❌ ${errorMsg}`, 4000);
+    });
+}
+
+// Cerrar sesión
+function gmxLogout() {
+  auth.signOut().then(() => {
+    gmxShowToast('✅ Sesión cerrada');
+    gmxRenderPlaylist();
+  }).catch((error) => {
+    gmxShowToast('❌ Error al cerrar sesión');
+  });
+}
+
+// Actualizar UI de autenticación
+async function gmxUpdateAuthUI() {
+    let authContainer = document.getElementById('gmxAuthContainer');
+    if (!authContainer) {
+        const controlsDiv = document.querySelector('.gmx-additional-controls');
+        if (controlsDiv) {
+            authContainer = document.createElement('div');
+            authContainer.id = 'gmxAuthContainer';
+            authContainer.style.marginLeft = 'auto';
+            controlsDiv.appendChild(authContainer);
+        }
+    }
+    
+    if (authContainer) {
+        if (gmxIsLoggedIn && gmxCurrentUser) {
+            const displayName = gmxCurrentUser.email?.split('@')[0] || 'Usuario';
+            authContainer.innerHTML = `
+                <button class="gmx-additional-btn" onclick="gmxLogout()" style="background: rgba(255,107,107,0.2);">${displayName} | 🚪 Salir</button>
+            `;
+            // Actualizar el botón de like si hay una canción reproduciéndose
+            if (gmxCurrentPlaylist && gmxCurrentPlaylist[gmxCurrentIndex]) {
+                gmxUpdateLikeButtonWithCount(gmxCurrentPlaylist[gmxCurrentIndex]);
+            }
+        } else {
+            authContainer.innerHTML = `
+                <button class="gmx-additional-btn" onclick="gmxLogin()" style="background: linear-gradient(135deg, #667eea, #764ba2);">🔐 Iniciar Sesión</button>
+            `;
+            // Deshabilitar botón de like
+            const likeBtn = document.getElementById('gmxLikeBtn');
+            if (likeBtn) {
+                likeBtn.innerHTML = '🔐 Inicia sesión';
+                likeBtn.style.opacity = '0.7';
+                likeBtn.style.display = 'flex';
+            }
+        }
+    }
+}
+let gmxGlobalLikes = new Map();
+let gmxUserLikedStatus = new Map();
+let gmxSongUPCs = new Map();
+
+
+// Cargar todos los likes globales
+function gmxLoadAllGlobalLikes() {
+  return new Promise((resolve) => {
+    google.script.run
+      .withSuccessHandler((response) => {
+        console.log('Likes por canción:', response);
+        if (response.success && response.likes) {
+          gmxGlobalLikes.clear();
+          for (const [upc, count] of Object.entries(response.likes)) {
+            gmxGlobalLikes.set(upc, count);
+            console.log(`Canción UPC: ${upc} → ${count} likes`);
+          }
+        }
+        resolve();
+      })
+      .withFailureHandler((error) => {
+        console.error('Error:', error);
+        resolve();
+      })
+      .getAllLikesFromSheet();
+  });
+}
+
+// Cargar likes del usuario actual (solo si está logueado)
+async function gmxLoadUserLikeStatus() {
+  if (!gmxIsLoggedIn || !gmxCurrentUser) {
+    gmxUserLikedStatus.clear();
+    return;
+  }
+  
+  const userId = gmxCurrentUser.uid;
+  const promises = gmxAllMusicFiles.map(async (song) => {
+    const upc = await gmxLoadSongUPC(song);
+    if (!upc) return;
+    
+    return new Promise((resolve) => {
+      google.script.run
+        .withSuccessHandler((response) => {
+          if (response.success) {
+            gmxUserLikedStatus.set(song, response.liked);
+          }
+          resolve();
+        })
+        .withFailureHandler(() => resolve())
+        .getUserLikeStatus(upc, userId);
+    });
+  });
+  return Promise.all(promises);
+}
+
+async function gmxLoadSongUPC(songFilename) {
+    if (gmxSongUPCs.has(songFilename)) return gmxSongUPCs.get(songFilename);
+    const songTitle = songFilename.replace('.mp3', '');
+    return new Promise((resolve) => {
+        google.script.run
+            .withSuccessHandler((songInfo) => {
+                const upc = songInfo.upcean || null;
+                if (upc) gmxSongUPCs.set(songFilename, upc);
+                resolve(upc);
+            })
+            .withFailureHandler(() => resolve(null))
+            .getCurrentSongInfo(songTitle);
+    });
+}
+
+// Verificar si al usuario le gusta una canción
+function gmxHasLike(songFilename) {
+  if (!gmxIsLoggedIn) return false;
+  const hasLike = gmxUserLikedStatus.get(songFilename) === true;
+  return hasLike;
+}
+
+// Obtener número de likes
+async function gmxGetLikeCount(songFilename) {
+  const upc = await gmxLoadSongUPC(songFilename);
+  if (!upc) return 0;
+  return gmxGlobalLikes.get(upc) || 0;
+}
+
+// Dar o quitar like (solo si está logueado)
+function gmxToggleLike(songFilename, event) {
+    if (event) event.stopPropagation();
+    
+    if (!gmxIsLoggedIn) {
+        gmxShowToast('🔐 Debes iniciar sesión para dar like', 3000);
+        return;
+    }
+    
+    const currentlyLiked = gmxHasLike(songFilename);
+    
+    gmxLoadSongUPC(songFilename).then(upc => {
+        if (!upc) {
+            gmxShowToast(`❌ No se pudo identificar la canción`, 3000);
+            return;
+        }
+        
+        const userId = gmxCurrentUser.uid;
+        const userEmail = gmxCurrentUser.email;
+        
+        if (currentlyLiked) {
+            google.script.run
+                .withSuccessHandler((response) => {
+                    if (response.success) {
+                        gmxUserLikedStatus.set(songFilename, false);
+                        gmxGlobalLikes.set(upc, response.likes);
+                        // ✅ SOLO actualizar el like en la playlist, NO recargar todo
+                        gmxUpdateLikeInPlaylist(songFilename);
+                        gmxShowToast(`💔 Like eliminado`);
+                    } else {
+                        gmxShowToast(`❌ ${response.error || 'Error al quitar like'}`, 3000);
+                    }
+                })
+                .withFailureHandler(() => {
+                    gmxShowToast(`❌ Error al quitar like`, 3000);
+                })
+                .removeLike(upc, userId);
+        } else {
+            google.script.run
+                .withSuccessHandler((response) => {
+                    if (response.success) {
+                        gmxUserLikedStatus.set(songFilename, true);
+                        gmxGlobalLikes.set(upc, response.likes);
+                        // ✅ SOLO actualizar el like en la playlist, NO recargar todo
+                        gmxUpdateLikeInPlaylist(songFilename);
+                        gmxShowToast(`❤️ Like guardado (${response.likes} ${response.likes === 1 ? 'persona' : 'personas'})`);
+                    } else if (response.error === 'Ya has dado like a esta canción') {
+                        gmxShowToast(`⚠️ Ya te gusta esta canción`, 2000);
+                    } else {
+                        gmxShowToast(`❌ ${response.error || 'Error al dar like'}`, 3000);
+                    }
+                })
+                .withFailureHandler(() => {
+                    gmxShowToast(`❌ Error al dar like`, 3000);
+                })
+                .addLike(upc, userId, userEmail);
+        }
+    });
+}
+
+
+// Contar total de likes
+function gmxGetTotalLikes() {
+  let total = 0;
+  for (const count of gmxGlobalLikes.values()) {
+    total += count;
+  }
+  return total;
+}
+
+
+async function init() {
+  const playlistElement = document.getElementById('gmxPlaylist');
+  if (playlistElement) {
+    playlistElement.innerHTML = '<div class="gmx-playlist-item">⏳ Cargando playlist...</div>';
+  }
+  
+  // Cargar archivos de música
+  gmxAllMusicFiles = await gmxFetchMusicFiles();
+  
+  if (gmxAllMusicFiles.length) { 
+    // Cargar estados y likes en PARALELO (no secuencial)
+    const [songStates, globalLikes] = await Promise.all([
+      Promise.all(gmxAllMusicFiles.map(song => getSongState(song))),
+      gmxLoadAllGlobalLikes()
+    ]);
+    
+    // Guardar estados en caché
+    songStates.forEach((state, idx) => {
+      songInfoCache.set(gmxAllMusicFiles[idx], state);
+    });
+    
+    gmxCurrentPlaylist = [...gmxAllMusicFiles];
+    
+    // Si hay usuario logueado, cargar sus likes
+    if (gmxIsLoggedIn && gmxCurrentUser) {
+      await gmxLoadUserLikeStatus();
+    }
+    
+    // Renderizar playlist (ahora con todos los datos)
+    await gmxRenderPlaylist(); 
+    setupEvents();
+    gmxUpdateAuthUI();
+    gmxInitNewFeatures();
+    setupPlaylistLazyLoad();
+  }
+}
+
+// Solo cargar duraciones cuando la playlist es visible
+function setupPlaylistLazyLoad() {
+  const playlistContainer = document.getElementById('gmxPlaylistContent');
+  if (!playlistContainer) return;
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !gmxDurationCache.size) {
+        gmxLoadDurationsBatch();
+        observer.disconnect();
+      }
+    });
+  });
+  
+  observer.observe(playlistContainer);
+}
+
+// Llamar en init() después de renderizar
+
   function parseDateDDMMYYYY(dateStr) {
     if (!dateStr || typeof dateStr !== 'string') return null;
     const parts = dateStr.split('/');
@@ -1293,13 +1646,32 @@
     });
   }
   
-  async function getSongState(filename) {
-    if (songInfoCache.has(filename)) return songInfoCache.get(filename);
-    const info = await fetchSongInfo(filename);
-    const stateObj = getSongDynamicState(filename, info);
-    songInfoCache.set(filename, { info, state: stateObj });
-    return { info, state: stateObj };
+// Guardar estados en localStorage
+async function getSongState(filename) {
+  // Intentar caché en memoria primero
+  if (songInfoCache.has(filename)) return songInfoCache.get(filename);
+  
+  // Intentar localStorage
+  const cachedState = localStorage.getItem(`gmx_song_state_${filename}`);
+  const cachedTime = localStorage.getItem(`gmx_song_state_time_${filename}`);
+  const ONE_DAY = 24 * 60 * 60 * 1000;
+  
+  if (cachedState && cachedTime && (Date.now() - parseInt(cachedTime)) < ONE_DAY) {
+    const state = JSON.parse(cachedState);
+    songInfoCache.set(filename, state);
+    return state;
   }
+  
+  const info = await fetchSongInfo(filename);
+  const stateObj = getSongDynamicState(filename, info);
+  songInfoCache.set(filename, { info, state: stateObj });
+  
+  // Guardar en localStorage
+  localStorage.setItem(`gmx_song_state_${filename}`, JSON.stringify({ info, state: stateObj }));
+  localStorage.setItem(`gmx_song_state_time_${filename}`, Date.now().toString());
+  
+  return { info, state: stateObj };
+}
   
   async function updatePlaylistWithDynamicState() {
     gmxCurrentPlaylist = [...gmxAllMusicFiles];
@@ -1340,90 +1712,512 @@
   function gmxFormatTime(seconds) { if (isNaN(seconds)) return '0:00'; const mins = Math.floor(seconds / 60); const secs = Math.floor(seconds % 60); return `${mins}:${secs.toString().padStart(2, '0')}`; }
   function getMusicUrl(filename) { return `https://github.com/Grouvex/grouvex.github.io/raw/main/music/${encodeURIComponent(filename)}`; }
   
-  async function gmxRenderPlaylist() {
-      const playlistElement = document.getElementById('gmxPlaylist');
-      if (!playlistElement) return;
-      
-        playlistElement.innerHTML = '';
+// Cache de duraciones (persistente)
+let gmxDurationCache = new Map();
 
-      
-      if (gmxCurrentPlaylist.length === 0) { 
-          playlistElement.innerHTML = '<div class="gmx-playlist-item">No hay canciones disponibles</div>'; 
-          return; 
-      }
-      
-      let html = '';
-      for (let i = 0; i < gmxCurrentPlaylist.length; i++) {
-          const song = gmxCurrentPlaylist[i];
-          const cached = songInfoCache.get(song);
-          const state = cached ? cached.state : { isUpcoming: true, isPreview: false };
-          
-          let badge = '';
-          if (state.isUpcoming) badge = '<span class="gmx-badge upcoming-badge">🎵 Próximamente</span>';
-          else if (state.isPreview) badge = '<span class="gmx-badge preview-badge">🎧 Preview</span>';
-          
-          html += `
-              <div class="gmx-playlist-item ${i === gmxCurrentIndex ? 'active' : ''}" data-index="${i}">
-                  <div class="gmx-song-info-wrapper">
-                      <span class="gmx-song-title" data-full-title="${song.replace(/"/g, '&quot;')}">${gmxFormatSongName(song)}</span>
-                      ${badge}
-                  </div>
-                  <span class="gmx-song-duration">--:--</span>
-              </div>`;
-      }
-      
-      playlistElement.innerHTML = html;
-      
-      document.querySelectorAll('.gmx-playlist-item').forEach(item => {
-          const idx = parseInt(item.dataset.index);
-          item.onclick = () => gmxTryPlaySong(idx);
-      });
-      
-      setTimeout(() => gmxLoadDurations(), 50);
+// Añadir esta función para obtener el like count y renderizarlo
+async function gmxRenderPlaylist() {
+  const playlistElement = document.getElementById('gmxPlaylist');
+  if (!playlistElement) return;
+  
+  playlistElement.innerHTML = '';
+  
+  if (gmxCurrentPlaylist.length === 0) { 
+    playlistElement.innerHTML = '<div class="gmx-playlist-item">No hay canciones disponibles</div>'; 
+    return; 
   }
   
-  function gmxLoadDurations() {
-    gmxCurrentPlaylist.forEach((song, idx) => {
-      const audio = new Audio();
-      audio.addEventListener('loadedmetadata', function() {
-        const duration = gmxFormatTime(audio.duration);
-        const items = document.querySelectorAll('.gmx-playlist-item');
-        if (items[idx]) { const span = items[idx].querySelector('.gmx-song-duration'); if (span) span.textContent = duration; }
-      });
-      audio.src = getMusicUrl(song);
+  // Mostrar loading state solo la primera vez
+  if (gmxDurationCache.size === 0) {
+    playlistElement.innerHTML = '<div class="gmx-playlist-item">⏳ Cargando playlist...</div>';
+  }
+  
+  // Crear array de promesas para obtener todos los likes en paralelo
+  const likePromises = gmxCurrentPlaylist.map(async (song) => {
+    const likeCount = await gmxGetLikeCount(song);
+    const hasLike = gmxHasLike(song);
+    return { song, likeCount, hasLike };
+  });
+  
+  const likesData = await Promise.all(likePromises);
+  const likesMap = new Map(likesData.map(data => [data.song, data]));
+  
+  // Construir HTML completo
+  let html = '';
+  for (let i = 0; i < gmxCurrentPlaylist.length; i++) {
+    const song = gmxCurrentPlaylist[i];
+    const cached = songInfoCache.get(song);
+    const state = cached ? cached.state : { isUpcoming: true, isPreview: false };
+    const { likeCount = 0, hasLike = false } = likesMap.get(song) || {};
+    const duration = gmxDurationCache.get(song) || '--:--';
+    
+    let badge = '';
+    if (state.isUpcoming) badge = '<span class="gmx-badge upcoming-badge">🎵 Próximamente</span>';
+    else if (state.isPreview) badge = '<span class="gmx-badge preview-badge">🎧 Preview</span>';
+    
+    const likeIcon = hasLike ? '❤️' : '🤍';
+    const likeDisplay = likeCount > 0 ? `${likeIcon} ${likeCount}` : '';
+    
+    html += `
+      <div class="gmx-playlist-item ${i === gmxCurrentIndex ? 'active' : ''}" data-index="${i}">
+        <div style="display: flex; gap: 8px; align-items: center; flex: 1;">
+          ${likeDisplay ? `<span class="gmx-like-count" style="font-size: 0.75em; opacity: 0.8; cursor: pointer;">${likeDisplay}</span>` : ''}
+          <div class="gmx-song-info-wrapper" style="flex: 1;">
+            <span class="gmx-song-title" data-full-title="${song.replace(/"/g, '&quot;')}">${gmxFormatSongName(song)}</span>
+            ${badge}
+          </div>
+          <span class="gmx-song-duration">${duration}</span>
+        </div>
+      </div>`;
+  }
+  
+  playlistElement.innerHTML = html;
+  
+  // AGREGAR EVENT LISTENERS
+  attachPlaylistEvents();
+  
+  // Cargar duraciones en background solo la primera vez
+  if (gmxDurationCache.size === 0) {
+    gmxLoadDurationsBatch();
+  }
+}
+
+function gmxUpdateActiveSong() {
+  const items = document.querySelectorAll('.gmx-playlist-item');
+  items.forEach((item, idx) => {
+    if (idx === gmxCurrentIndex) {
+      item.classList.add('active');
+    } else {
+      item.classList.remove('active');
+    }
+  });
+}
+
+async function gmxUpdateLikeInPlaylist(songFilename) {
+  const items = document.querySelectorAll('.gmx-playlist-item');
+  const index = gmxCurrentPlaylist.indexOf(songFilename);
+  
+  if (items[index]) {
+    const likeCount = await gmxGetLikeCount(songFilename);
+    const hasLike = gmxHasLike(songFilename);
+    const likeIcon = hasLike ? '❤️' : '🤍';
+    const likeDisplay = likeCount > 0 ? `${likeIcon} ${likeCount}` : '';
+    
+    // Buscar o crear el span de like
+    let likeSpan = items[index].querySelector('.gmx-like-count');
+    const firstDiv = items[index].querySelector('div:first-child');
+    
+    if (likeDisplay) {
+      if (likeSpan) {
+        likeSpan.textContent = likeDisplay;
+      } else {
+        // Crear el span si no existe y hay likes que mostrar
+        const newLikeSpan = document.createElement('span');
+        newLikeSpan.className = 'gmx-like-count';
+        newLikeSpan.style.cssText = 'font-size: 0.75em; opacity: 0.8; cursor: pointer;';
+        newLikeSpan.textContent = likeDisplay;
+        newLikeSpan.addEventListener('click', (e) => {
+          e.stopPropagation();
+          gmxToggleLike(songFilename, e);
+        });
+        firstDiv.insertBefore(newLikeSpan, firstDiv.firstChild);
+      }
+    } else if (likeSpan) {
+      // Eliminar el span si no hay likes
+      likeSpan.remove();
+    }
+    
+    // Actualizar el botón principal de like
+    gmxUpdateLikeButtonWithCount(songFilename);
+  }
+}
+
+function gmxUpdateDurationInPlaylist(songFilename, duration) {
+  const items = document.querySelectorAll('.gmx-playlist-item');
+  const index = gmxCurrentPlaylist.indexOf(songFilename);
+  
+  if (items[index]) {
+    const durationSpan = items[index].querySelector('.gmx-song-duration');
+    if (durationSpan) {
+      durationSpan.textContent = duration;
+    }
+  }
+}
+function gmxToggleLike(songFilename, event) {
+    if (event) event.stopPropagation();
+    
+    if (!gmxIsLoggedIn) {
+        gmxShowToast('🔐 Debes iniciar sesión para dar like', 3000);
+        return;
+    }
+    
+    const currentlyLiked = gmxHasLike(songFilename);
+    
+    gmxLoadSongUPC(songFilename).then(upc => {
+        if (!upc) {
+            gmxShowToast(`❌ No se pudo identificar la canción`, 3000);
+            return;
+        }
+        
+        const userId = gmxCurrentUser.uid;
+        const userEmail = gmxCurrentUser.email;
+        
+        if (currentlyLiked) {
+            google.script.run
+                .withSuccessHandler((response) => {
+                    if (response.success) {
+                        gmxUserLikedStatus.set(songFilename, false);
+                        gmxGlobalLikes.set(upc, response.likes);
+                        // ✅ SOLO actualizar el like en la playlist, NO recargar todo
+                        gmxUpdateLikeInPlaylist(songFilename);
+                        gmxShowToast(`💔 Like eliminado`);
+                    } else {
+                        gmxShowToast(`❌ ${response.error || 'Error al quitar like'}`, 3000);
+                    }
+                })
+                .withFailureHandler(() => {
+                    gmxShowToast(`❌ Error al quitar like`, 3000);
+                })
+                .removeLike(upc, userId);
+        } else {
+            google.script.run
+                .withSuccessHandler((response) => {
+                    if (response.success) {
+                        gmxUserLikedStatus.set(songFilename, true);
+                        gmxGlobalLikes.set(upc, response.likes);
+                        // ✅ SOLO actualizar el like en la playlist, NO recargar todo
+                        gmxUpdateLikeInPlaylist(songFilename);
+                        gmxShowToast(`❤️ Like guardado (${response.likes} ${response.likes === 1 ? 'persona' : 'personas'})`);
+                    } else if (response.error === 'Ya has dado like a esta canción') {
+                        gmxShowToast(`⚠️ Ya te gusta esta canción`, 2000);
+                    } else {
+                        gmxShowToast(`❌ ${response.error || 'Error al dar like'}`, 3000);
+                    }
+                })
+                .withFailureHandler(() => {
+                    gmxShowToast(`❌ Error al dar like`, 3000);
+                })
+                .addLike(upc, userId, userEmail);
+        }
     });
+}
+
+// Cargar duraciones en lotes de 5 para no saturar
+// 1. Mejorar la función de carga de duraciones
+async function gmxLoadDurationsBatch() {
+  const batchSize = 5;
+  const pendingSongs = gmxCurrentPlaylist.filter(song => !gmxDurationCache.has(song));
+  
+  // Añadir indicador visual
+  const loadingIndicator = document.createElement('div');
+  loadingIndicator.className = 'duration-loading';
+  loadingIndicator.textContent = '⏳ Cargando duraciones...';
+  
+  for (let i = 0; i < pendingSongs.length; i += batchSize) {
+    const batch = pendingSongs.slice(i, i + batchSize);
+    await Promise.all(batch.map(song => loadSingleDuration(song)));
+    
+    // Mostrar progreso
+    const loaded = gmxDurationCache.size;
+    const total = gmxCurrentPlaylist.length;
+    if (loadingIndicator.parentNode) {
+      loadingIndicator.textContent = `⏳ Cargando duraciones: ${loaded}/${total}`;
+    }
   }
   
-  async function gmxTryPlaySong(index) {
-    if (index < 0 || index >= gmxCurrentPlaylist.length) return;
-    
-    // Limpiar reproducción anterior ANTES de cambiar de canción
-    gmxCleanupPlayer();
-    
-    const song = gmxCurrentPlaylist[index];
-    const { info, state } = await getSongState(song);
-    gmxCurrentIndex = index;
-    
-    // Actualizar el título de la canción actual ANTES de cargar
-    document.getElementById('gmxCurrentSongTitle').textContent = gmxFormatSongName(song);
-    
-    loadSongDetails(song);
-    gmxRenderPlaylist();
-    
-    if (state.isUpcoming) { 
-      gmxCanSeek = false;
-      document.getElementById('gmxCurrentSongTitle').textContent = gmxFormatSongName(song) + ' (Próximamente)'; 
-      document.getElementById('gmxCurrentSongArtist').textContent = 'No disponible';
-      return; 
-    }
-    
-    if (state.isPreview) { 
-      gmxPlayPreview(song, state.previewStart || 30, state.previewDuration || 30); 
-      return; 
-    }
-    
-    gmxPlayFull(song);
+  loadingIndicator.remove();
+}
+
+// 2. Guardar duraciones en localStorage persistente
+function loadSingleDuration(song) {
+  const cachedDuration = localStorage.getItem(`gmx_duration_${song}`);
+  if (cachedDuration && cachedDuration !== '--:--') {
+    gmxDurationCache.set(song, cachedDuration);
+    gmxUpdateDurationInPlaylist(song, cachedDuration);
+    return Promise.resolve(cachedDuration);
   }
+  
+  return new Promise((resolve) => {
+    const audio = new Audio();
+    const timeout = setTimeout(() => {
+      audio.src = '';
+      resolve('--:--');
+    }, 5000);
+    
+    audio.addEventListener('loadedmetadata', function() {
+      clearTimeout(timeout);
+      const duration = gmxFormatTime(audio.duration);
+      gmxDurationCache.set(song, duration);
+      localStorage.setItem(`gmx_duration_${song}`, duration);
+      audio.src = '';
+      // ✅ Actualizar solo esta canción
+      gmxUpdateDurationInPlaylist(song, duration);
+      resolve(duration);
+    });
+    
+    audio.addEventListener('error', () => {
+      clearTimeout(timeout);
+      const fallback = localStorage.getItem(`gmx_duration_${song}`) || '--:--';
+      gmxDurationCache.set(song, fallback);
+      resolve(fallback);
+    });
+    
+    audio.src = getMusicUrl(song);
+  });
+}
+
+function updateDurationInUI(song, duration) {
+  const items = document.querySelectorAll('.gmx-playlist-item');
+  const index = gmxCurrentPlaylist.indexOf(song);
+  if (items[index]) {
+    const span = items[index].querySelector('.gmx-song-duration');
+    if (span) span.textContent = duration;
+  }
+}
+
+async function getSongState(filename) {
+  // Intentar caché en memoria primero
+  if (songInfoCache.has(filename)) return songInfoCache.get(filename);
+  
+  // Intentar localStorage
+  const cachedState = localStorage.getItem(`gmx_song_state_${filename}`);
+  const cachedTime = localStorage.getItem(`gmx_song_state_time_${filename}`);
+  const ONE_DAY = 24 * 60 * 60 * 1000;
+  
+  if (cachedState && cachedTime && (Date.now() - parseInt(cachedTime)) < ONE_DAY) {
+    const state = JSON.parse(cachedState);
+    songInfoCache.set(filename, state);
+    return state;
+  }
+  
+  const info = await fetchSongInfo(filename);
+  const stateObj = getSongDynamicState(filename, info);
+  songInfoCache.set(filename, { info, state: stateObj });
+  
+  // Guardar en localStorage
+  localStorage.setItem(`gmx_song_state_${filename}`, JSON.stringify({ info, state: stateObj }));
+  localStorage.setItem(`gmx_song_state_time_${filename}`, Date.now().toString());
+  
+  return { info, state: stateObj };
+}
+  
+async function gmxTryPlaySong(index) {
+  if (index < 0 || index >= gmxCurrentPlaylist.length) return;
+  
+  gmxCleanupPlayer();
+  
+  const song = gmxCurrentPlaylist[index];
+  const { info, state } = await getSongState(song);
+  gmxCurrentIndex = index;
+  
+  // Actualizar el título de la canción actual
+  let displayTitle = gmxFormatSongName(song);
+  let displayArtist = 'Grouvex';
+  
+  if (info && info.found) {
+    displayTitle = info.tituloAlbum || displayTitle;
+    displayArtist = info.artista || displayArtist;
+  }
+  
+  document.getElementById('gmxCurrentSongTitle').textContent = displayTitle;
+  document.getElementById('gmxCurrentSongArtist').textContent = displayArtist;
+  
+  // Mostrar el botón de like con el contador de esta canción
+  await gmxUpdateLikeButtonWithCount(song);
+  
+  loadSongDetails(song);
+  
+  // ✅ SOLO actualizar la clase active, NO recargar toda la playlist
+  gmxUpdateActiveSong();
+  
+  if (state.isUpcoming) { 
+    gmxCanSeek = false;
+    document.getElementById('gmxCurrentSongTitle').textContent = displayTitle + ' (Próximamente)'; 
+    document.getElementById('gmxCurrentSongArtist').textContent = 'No disponible';
+    const likeBtn = document.getElementById('gmxLikeBtn');
+    if (likeBtn) likeBtn.style.display = 'none';
+    return; 
+  }
+  
+  if (state.isPreview) { 
+    gmxPlayPreview(song, state.previewStart || 30, state.previewDuration || 30); 
+    return; 
+  }
+  
+  gmxPlayFull(song);
+}
+
+function attachPlaylistEvents() {
+  document.querySelectorAll('.gmx-playlist-item').forEach(item => {
+    // Evitar agregar eventos duplicados
+    if (item.hasAttribute('data-events-attached')) return;
+    
+    const index = parseInt(item.dataset.index);
+    const song = gmxCurrentPlaylist[index];
+    
+    // Evento principal para reproducir
+    item.addEventListener('click', (e) => {
+      if (e.target.classList && e.target.classList.contains('gmx-like-count')) {
+        return;
+      }
+      console.log(`Reproduciendo: ${song}`);
+      gmxTryPlaySong(index);
+    });
+    
+    // Evento para el like
+    const likeSpan = item.querySelector('.gmx-like-count');
+    if (likeSpan) {
+      likeSpan.addEventListener('click', (e) => {
+        e.stopPropagation();
+        gmxToggleLike(song, e);
+      });
+    }
+    
+    item.setAttribute('data-events-attached', 'true');
+  });
+}
+
+
+// Mostrar contador de likes en el botón
+async function gmxUpdateLikeButtonWithCount(songFilename) {
+    const likeBtn = document.getElementById('gmxLikeBtn');
+    if (!likeBtn) return;
+    
+    if (!gmxIsLoggedIn) {
+        likeBtn.innerHTML = '🔐 Inicia sesión';
+        likeBtn.style.opacity = '0.7';
+        likeBtn.style.background = 'rgba(128, 128, 128, 0.2)';
+        likeBtn.style.display = 'flex';
+        return;
+    }
+    
+    const upc = await gmxLoadSongUPC(songFilename);
+    // Obtener SOLO los likes de ESTA canción
+    const likeCount = upc ? (gmxGlobalLikes.get(upc) || 0) : 0;
+    const hasLike = gmxHasLike(songFilename);
+    
+    if (hasLike) {
+        likeBtn.innerHTML = `❤️ ${likeCount}`;
+        likeBtn.style.opacity = '1';
+        likeBtn.style.background = 'linear-gradient(135deg, #ff6b6b, #ee5a24)';
+        likeBtn.style.borderColor = 'transparent';
+    } else {
+        likeBtn.innerHTML = `🤍 ${likeCount}`;
+        likeBtn.style.opacity = '1';
+        likeBtn.style.background = 'var(--glass-bg)';
+        likeBtn.style.borderColor = 'var(--glass-border)';
+    }
+    
+    likeBtn.style.display = 'flex';
+}
+
+// Dar like a la canción actualmente reproduciéndose
+function gmxToggleCurrentLike() {
+  if (!gmxIsLoggedIn) {
+    gmxShowToast('🔐 Debes iniciar sesión para dar like', 3000);
+    return;
+  }
+  
+  const currentSong = gmxCurrentPlaylist[gmxCurrentIndex];
+  if (!currentSong) {
+    gmxShowToast('❌ No hay una canción reproduciéndose', 3000);
+    return;
+  }
+  
+  const likeBtn = document.getElementById('gmxLikeBtn');
+  
+  if (likeBtn) {
+    likeBtn.style.opacity = '0.6';
+    likeBtn.style.pointerEvents = 'none';
+    likeBtn.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+      if (likeBtn) likeBtn.style.transform = '';
+    }, 150);
+  }
+  
+  gmxLoadSongUPC(currentSong).then(upc => {
+    if (!upc) {
+      gmxShowToast(`❌ Esta canción no tiene UPC/EAN`, 3000);
+      if (likeBtn) {
+        likeBtn.style.opacity = '';
+        likeBtn.style.pointerEvents = '';
+      }
+      return;
+    }
+    
+    const currentlyLiked = gmxHasLike(currentSong);
+    const userId = gmxCurrentUser.uid;
+    const userEmail = gmxCurrentUser.email;
+    
+    if (currentlyLiked) {
+      google.script.run
+        .withSuccessHandler((response) => {
+          if (response.success) {
+            gmxUserLikedStatus.set(currentSong, false);
+            gmxGlobalLikes.set(upc, response.likes);
+            gmxUpdateLikeButtonWithCount(currentSong); // Actualizar UI
+            gmxRenderPlaylist();
+            gmxShowToast(`💔 Like eliminado`, 2500);
+            
+            if (likeBtn) {
+              likeBtn.style.animation = 'likeRemove 0.3s ease';
+              setTimeout(() => {
+                if (likeBtn) likeBtn.style.animation = '';
+              }, 300);
+            }
+          } else {
+            gmxShowToast(`❌ ${response.error || 'Error al quitar like'}`, 3000);
+          }
+          if (likeBtn) {
+            likeBtn.style.opacity = '';
+            likeBtn.style.pointerEvents = '';
+          }
+        })
+        .withFailureHandler(() => {
+          gmxShowToast(`❌ Error al quitar like`, 3000);
+          if (likeBtn) {
+            likeBtn.style.opacity = '';
+            likeBtn.style.pointerEvents = '';
+          }
+        })
+        .removeLike(upc, userId);
+    } else {
+      google.script.run
+        .withSuccessHandler((response) => {
+          if (response.success) {
+            gmxUserLikedStatus.set(currentSong, true);
+            gmxGlobalLikes.set(upc, response.likes);
+            gmxUpdateLikeButtonWithCount(currentSong); // Actualizar UI
+            gmxRenderPlaylist();
+            gmxShowToast(`❤️ Like guardado (${response.likes} total)`, 2500);
+            
+            if (likeBtn) {
+              likeBtn.style.animation = 'likeAdd 0.4s ease';
+              setTimeout(() => {
+                if (likeBtn) likeBtn.style.animation = '';
+              }, 400);
+            }
+          } else if (response.error === 'Ya has dado like a esta canción') {
+            gmxShowToast(`⚠️ Ya te gusta esta canción`, 2000);
+          } else {
+            gmxShowToast(`❌ ${response.error || 'Error al dar like'}`, 3000);
+          }
+          if (likeBtn) {
+            likeBtn.style.opacity = '';
+            likeBtn.style.pointerEvents = '';
+          }
+        })
+        .withFailureHandler(() => {
+          gmxShowToast(`❌ Error al dar like`, 3000);
+          if (likeBtn) {
+            likeBtn.style.opacity = '';
+            likeBtn.style.pointerEvents = '';
+          }
+        })
+        .addLike(upc, userId, userEmail);
+    }
+  });
+}
 
   function gmxCleanupPlayer() {
     const audio = document.getElementById('gmxAudioPlayer');
@@ -1604,31 +2398,17 @@
   function gmxPlayEmbed(embedUrl) { const ep = document.getElementById('gmxEmbedPlayer'); const ifr = document.getElementById('gmxEmbedIframe'); if (ep && ifr && embedUrl) { ifr.src = embedUrl; ep.style.display = 'block'; ep.scrollIntoView({ behavior: 'smooth' }); } }
   function gmxCloseEmbed() { const ep = document.getElementById('gmxEmbedPlayer'); const ifr = document.getElementById('gmxEmbedIframe'); if (ep && ifr) { ifr.src = ''; ep.style.display = 'none'; } }
   function showSongInfoError(msg) { const c = document.getElementById('songInfoContainer'); if (c) { c.innerHTML = `<div class="song-info-error"><div class="error-icon">⚠️</div><div class="error-message">${msg}</div><div class="error-detail">Verifica tu conexión o intenta más tarde</div><button class="retry-button" onclick="gmxRetryLoadSong()">🔄 Reintentar</button></div>`; c.classList.add('show'); } }
-  function gmxRetryLoadSong() { if (gmxCurrentPlaylist[gmxCurrentIndex]) { loadSongDetails(gmxCurrentPlaylist[gmxCurrentIndex]); } }
+  function gmxRetryLoadSong() {
+    if (gmxCurrentPlaylist && gmxCurrentPlaylist[gmxCurrentIndex]) {
+        loadSongDetails(gmxCurrentPlaylist[gmxCurrentIndex]);
+        gmxShowToast('🔄 Reintentando cargar información...', 2000);
+    }
+}
   function gmxTogglePlay(){const a=document.getElementById('gmxAudioPlayer'),s=gmxCurrentPlaylist[gmxCurrentIndex];if(!s){if(gmxCurrentPlaylist.length)gmxTryPlaySong(0);return;}getSongState(s).then(({state})=>{if(state.isUpcoming){document.getElementById('gmxCurrentSongTitle').textContent=gmxFormatSongName(s)+' (Próximamente - No disponible)';return;}if(!a.src)gmxTryPlaySong(gmxCurrentIndex);else if(gmxIsPlaying)a.pause();else a.play().catch(e=>console.log('Error:',e));});}
   function gmxNextSong() {if (gmxCurrentIndex + 1 < gmxCurrentPlaylist.length) {gmxTryPlaySong(gmxCurrentIndex + 1);} else if (gmxCurrentPlaylist.length) {gmxTryPlaySong(0);}}
   function gmxPreviousSong() {if (gmxCurrentIndex - 1 >= 0) {gmxTryPlaySong(gmxCurrentIndex - 1);} else if (gmxCurrentPlaylist.length) {gmxTryPlaySong(gmxCurrentPlaylist.length - 1);}}
   function gmxSetVolume(v) { document.getElementById('gmxAudioPlayer').volume = v; document.getElementById('gmxVolumeValue').innerText = Math.round(v * 100) + '%'; }
-  function gmxToggleShuffle() { 
-  gmxIsShuffled = !gmxIsShuffled; 
-  const btn = document.getElementById('gmxShuffleBtn'); 
-  btn.classList.toggle('active', gmxIsShuffled); 
-  if (gmxIsShuffled) { 
-    const shuffled = [...gmxCurrentPlaylist]; 
-    for (let i = shuffled.length - 1; i > 0; i--) { 
-      const j = Math.floor(Math.random() * (i + 1)); 
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; 
-    } 
-    gmxCurrentPlaylist = shuffled; 
-    gmxCurrentIndex = 0; 
-    gmxRenderPlaylist(); 
-  } else { 
-    // Volver a la lista original SIN duplicar
-    gmxCurrentPlaylist = [...gmxAllMusicFiles];
-    gmxCurrentIndex = 0;
-    gmxRenderPlaylist();
-  } 
-}
+
   function gmxToggleLoop() { gmxIsLooping = (gmxIsLooping + 1) % 3; const btn = document.getElementById('gmxLoopBtn'); const audio = document.getElementById('gmxAudioPlayer'); if (gmxIsLooping === 0) { btn.innerHTML = '🔁 Loop'; audio.loop = false; } else if (gmxIsLooping === 1) { btn.innerHTML = '🔂 Loop 1'; audio.loop = true; } else { btn.innerHTML = '🔁 Loop ∞'; audio.loop = false; } }
   function gmxToggleTheme() { document.getElementById('grouvexMusicPlayer').classList.toggle('light-theme'); document.querySelector('.gmx-theme-toggle').innerHTML = document.getElementById('grouvexMusicPlayer').classList.contains('light-theme') ? '☀️ Tema' : '🌙 Tema'; }
   function gmxTogglePlaylist() { document.getElementById('gmxPlaylistContent').classList.toggle('show'); }
@@ -1668,26 +2448,570 @@
       audio.currentTime = percent * audio.duration; 
     });
   }
-  
-  async function init() {
-      gmxAllMusicFiles = await gmxFetchMusicFiles();
-      if (gmxAllMusicFiles.length) { 
-          // Cargar información de TODAS las canciones en PARALELO
-          const songStatesPromises = gmxAllMusicFiles.map(song => getSongState(song));
-          const allSongStates = await Promise.all(songStatesPromises);
-          
-          // Guardar en caché
-          gmxAllMusicFiles.forEach((song, idx) => {
-              songInfoCache.set(song, allSongStates[idx]);
-          });
-          
-          gmxCurrentPlaylist = [...gmxAllMusicFiles];
-          await gmxRenderPlaylist(); 
-          setupEvents(); 
-      } else {
-          document.getElementById('gmxCurrentSongTitle').innerText = 'No hay canciones disponibles';
-      }
-  }
+
+// ============================================
+// 1. SISTEMA DE LIKES CON LOCALSTORAGE
+// ============================================
+let gmxUserLikes = new Map(); // Cache en memoria
+
+// Cargar likes guardados al inicio
+function gmxLoadLikes() {
+    const savedLikes = localStorage.getItem('gmx_user_likes');
+    if (savedLikes) {
+        try {
+            const likesArray = JSON.parse(savedLikes);
+            gmxUserLikes = new Map(likesArray);
+        } catch(e) {
+            gmxUserLikes = new Map();
+        }
+    }
+}
+
+// Toast notification (pequeña notificación temporal)
+function gmxShowToast(message, duration = 2000) {
+    // Eliminar toast existente
+    const existingToast = document.getElementById('gmxToast');
+    if (existingToast) existingToast.remove();
+    
+    // Crear nuevo toast
+    const toast = document.createElement('div');
+    toast.id = 'gmxToast';
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0,0,0,0.8);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-size: 14px;
+        z-index: 10000;
+        animation: fadeInOut 2s ease;
+        pointer-events: none;
+        backdrop-filter: blur(10px);
+        white-space: nowrap;
+        font-family: system-ui, -apple-system, sans-serif;
+    `;
+    
+    // Añadir animación si no existe
+    if (!document.querySelector('#gmxToastStyle')) {
+        const style = document.createElement('style');
+        style.id = 'gmxToastStyle';
+        style.textContent = `
+            @keyframes fadeInOut {
+                0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+                15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+                85% { opacity: 1; transform: translateX(-50%) translateY(0); }
+                100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), duration);
+}
+
+// ============================================
+// 2. TECLAS MULTIMEDIA DEL TECLADO
+// ============================================
+function gmxInitMediaKeys() {
+    // Soporte para teclas multimedia (Play/Pause, Next, Previous)
+    if ('mediaSession' in navigator) {
+        // Actualizar metadata para el sistema operativo
+        function gmxUpdateMediaSession() {
+            const currentSong = gmxCurrentPlaylist[gmxCurrentIndex];
+            if (!currentSong) return;
+            
+            const songName = gmxFormatSongName(currentSong);
+            
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: songName,
+                artist: document.getElementById('gmxCurrentSongArtist')?.textContent || 'Grouvex Studios',
+                album: 'Grouvex Records',
+                artwork: [
+                    { src: 'https://grouvex.github.io/img/GROUVEX.png', sizes: '96x96', type: 'image/png' },
+                    { src: 'https://grouvex.github.io/img/Grouvex1.png', sizes: '128x128', type: 'image/png' },
+                    { src: 'https://grouvex.github.io/img/GROUVEX.png', sizes: '192x192', type: 'image/png' },
+                    { src: 'https://grouvex.github.io/img/Grouvex1.png', sizes: '256x256', type: 'image/png' },
+                    { src: 'https://grouvex.github.io/img/GROUVEX.png', sizes: '384x384', type: 'image/png' },
+                    { src: 'https://grouvex.github.io/img/Grouvex1.png', sizes: '512x512', type: 'image/png' },
+                ]
+            });
+        }
+        
+        // Configurar manejadores de eventos multimedia
+        navigator.mediaSession.setActionHandler('play', () => {
+            gmxTogglePlay();
+        });
+        
+        navigator.mediaSession.setActionHandler('pause', () => {
+            gmxTogglePlay();
+        });
+        
+        navigator.mediaSession.setActionHandler('previoustrack', () => {
+            gmxPreviousSong();
+        });
+        
+        navigator.mediaSession.setActionHandler('nexttrack', () => {
+            gmxNextSong();
+        });
+        
+        navigator.mediaSession.setActionHandler('stop', () => {
+            const audio = document.getElementById('gmxAudioPlayer');
+            audio.pause();
+            gmxIsPlaying = false;
+            document.querySelector('.gmx-play-pause').innerHTML = '▶';
+        });
+        
+        // Actualizar metadata cuando cambie la canción
+        const originalTryPlaySong = window.gmxTryPlaySong;
+        window.gmxTryPlaySong = async function(index) {
+            await originalTryPlaySong(index);
+            gmxUpdateMediaSession();
+        };
+        
+        // Actualizar también en next/previous
+        const originalNextSong = window.gmxNextSong;
+        window.gmxNextSong = function() {
+            originalNextSong();
+            setTimeout(gmxUpdateMediaSession, 100);
+        };
+        
+        const originalPreviousSong = window.gmxPreviousSong;
+        window.gmxPreviousSong = function() {
+            originalPreviousSong();
+            setTimeout(gmxUpdateMediaSession, 100);
+        };
+        
+        gmxUpdateMediaSession();
+    }
+    
+    // Teclas de teclado estándar (como respaldo/adicional)
+    document.addEventListener('keydown', (e) => {
+        // Prevenir si hay un input activo
+        const activeElement = document.activeElement;
+        if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA')) {
+            return;
+        }
+        
+        switch(e.key) {
+            case ' ':
+            case 'Space':
+                e.preventDefault();
+                gmxTogglePlay();
+                break;
+            case 'ArrowLeft':
+                e.preventDefault();
+                // Retroceder 5 segundos
+                const audio = document.getElementById('gmxAudioPlayer');
+                if (audio.src && !gmxIsPreviewMode) {
+                    audio.currentTime = Math.max(0, audio.currentTime - 5);
+                    gmxShowToast(`◀ Retroceder 5 segundos`, 800);
+                }
+                break;
+            case 'ArrowRight':
+                e.preventDefault();
+                // Adelantar 5 segundos
+                const audio2 = document.getElementById('gmxAudioPlayer');
+                if (audio2.src && !gmxIsPreviewMode && audio2.duration) {
+                    audio2.currentTime = Math.min(audio2.duration, audio2.currentTime + 5);
+                    gmxShowToast(`Adelantar 5 segundos ▶`, 800);
+                }
+                break;
+            case 'ArrowUp':
+                e.preventDefault();
+                const volumeUp = document.getElementById('gmxAudioPlayer').volume;
+                gmxSetVolume(Math.min(1, volumeUp + 0.05));
+                gmxShowToast(`🔊 Volumen: ${Math.round((volumeUp + 0.05) * 100)}%`, 800);
+                break;
+            case 'ArrowDown':
+                e.preventDefault();
+                const volumeDown = document.getElementById('gmxAudioPlayer').volume;
+                gmxSetVolume(Math.max(0, volumeDown - 0.05));
+                gmxShowToast(`🔈 Volumen: ${Math.round((volumeDown - 0.05) * 100)}%`, 800);
+                break;
+            case 'l':
+            case 'L':
+                e.preventDefault();
+                if (gmxCurrentPlaylist[gmxCurrentIndex]) {
+                    gmxToggleLike(gmxCurrentPlaylist[gmxCurrentIndex]);
+                }
+                break;
+            case 's':
+            case 'S':
+                e.preventDefault();
+                gmxToggleShuffle();
+                break;
+            case 'r':
+            case 'R':
+                e.preventDefault();
+                gmxToggleLoop();
+                break;
+        }
+    });
+}
+
+// ============================================
+// 3. BÚSQUEDA PREDICTIVA
+// ============================================
+let gmxSearchTimeout = null;
+let gmxCurrentSearchResults = [];
+
+// Crear barra de búsqueda
+function gmxCreateSearchBar() {
+    const playlistContainer = document.querySelector('.gmx-playlist-container');
+    if (!playlistContainer) return;
+    
+    // Verificar si ya existe
+    if (document.getElementById('gmxSearchBar')) return;
+    
+    const searchDiv = document.createElement('div');
+    searchDiv.style.cssText = 'padding: 10px 20px; position: relative;';
+    searchDiv.innerHTML = `
+      <div style="padding: 8px; position: relative; width: 100%;">
+          <div style="position: relative; width: 100%;">
+              <input type="text" 
+                     id="gmxSearchInput" 
+                     placeholder="🔍 Buscar canciones..." 
+                     autocomplete="off" 
+                     style="width: 100%; 
+                            padding: 10px 35px 10px 15px; 
+                            border-radius: 50px; 
+                            border: 1px solid var(--glass-border); 
+                            background: var(--glass-bg); 
+                            color: inherit;
+                            font-size: 14px;
+                            outline: none;
+                            transition: all 0.3s ease;
+                            box-sizing: border-box;">
+              <span id="gmxSearchClear" 
+                    style="position: absolute; 
+                           right: 15px; 
+                           top: 50%; 
+                           transform: translateY(-50%); 
+                           cursor: pointer; 
+                           opacity: 0.6;
+                           display: none;
+                           z-index: 10;">✕</span>
+          </div>
+          <div id="gmxSearchSuggestions" 
+               style="position: absolute; 
+                      top: 100%;
+                      left: 8px;
+                      right: 8px;
+                      background: var(--card-bg); 
+                      backdrop-filter: blur(20px);
+                      border-radius: 12px; 
+                      border: 1px solid var(--glass-border);
+                      margin-top: 5px;
+                      max-height: 200px;
+                      overflow-y: auto;
+                      display: none;
+                      z-index: 1000;
+                      box-shadow: 0 8px 20px rgba(0,0,0,0.2);">
+          </div>
+      </div>
+    `;
+    
+    playlistContainer.insertBefore(searchDiv, playlistContainer.firstChild);
+    
+    const searchInput = document.getElementById('gmxSearchInput');
+    const searchSuggestions = document.getElementById('gmxSearchSuggestions');
+    const searchClear = document.getElementById('gmxSearchClear');
+    
+    // Evento de búsqueda con debounce
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        
+        if (query === '') {
+            searchSuggestions.style.display = 'none';
+            searchClear.style.display = 'none';
+            gmxResetSearch();
+            return;
+        }
+        
+        searchClear.style.display = 'block';
+        
+        clearTimeout(gmxSearchTimeout);
+        gmxSearchTimeout = setTimeout(() => {
+            gmxPerformSearch(query);
+        }, 300);
+    });
+    
+    // Limpiar búsqueda
+    searchClear.addEventListener('click', () => {
+        searchInput.value = '';
+        searchSuggestions.style.display = 'none';
+        searchClear.style.display = 'none';
+        gmxResetSearch();
+        searchInput.focus();
+    });
+    
+    // Cerrar sugerencias al hacer clic fuera
+    document.addEventListener('click', (e) => {
+        if (!searchDiv.contains(e.target)) {
+            searchSuggestions.style.display = 'none';
+        }
+    });
+    
+    searchInput.addEventListener('focus', () => {
+        if (searchInput.value.trim() !== '') {
+            gmxPerformSearch(searchInput.value.toLowerCase().trim());
+        }
+    });
+}
+
+function gmxPerformSearch(query) {
+    if (!query) {
+        gmxResetSearch();
+        return;
+    }
+    
+    // Buscar en todas las canciones
+    const results = gmxAllMusicFiles.filter(song => {
+        const songName = gmxFormatSongName(song).toLowerCase();
+        return songName.includes(query);
+    });
+    
+    gmxCurrentSearchResults = results;
+    
+    // Mostrar sugerencias
+    const suggestionsDiv = document.getElementById('gmxSearchSuggestions');
+    if (!suggestionsDiv) return;
+    
+    if (results.length === 0) {
+        suggestionsDiv.innerHTML = '<div style="padding: 12px; text-align: center; opacity: 0.7;">🎵 No se encontraron canciones</div>';
+        suggestionsDiv.style.display = 'block';
+        return;
+    }
+    
+    // Mostrar hasta 10 sugerencias
+    const limitedResults = results.slice(0, 10);
+    suggestionsDiv.innerHTML = limitedResults.map(song => `
+        <div class="gmx-search-suggestion" 
+             data-song="${song}"
+             style="padding: 10px 15px; 
+                    cursor: pointer; 
+                    transition: background 0.2s;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    border-bottom: 1px solid var(--glass-border);">
+            <span>🎵</span>
+            <span style="flex: 1;">${gmxFormatSongName(song)}</span>
+            ${gmxHasLike(song) ? '<span style="color: #ff6b6b;">❤️</span>' : ''}
+        </div>
+    `).join('');
+    
+    // Añadir hover effects
+    suggestionsDiv.querySelectorAll('.gmx-search-suggestion').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            el.style.background = 'rgba(255,255,255,0.1)';
+        });
+        el.addEventListener('mouseleave', () => {
+            el.style.background = '';
+        });
+        el.addEventListener('click', () => {
+            const song = el.dataset.song;
+            const index = gmxAllMusicFiles.indexOf(song);
+            if (index !== -1) {
+                gmxTryPlaySong(index);
+                document.getElementById('gmxSearchInput').value = '';
+                suggestionsDiv.style.display = 'none';
+                document.getElementById('gmxSearchClear').style.display = 'none';
+                gmxResetSearch();
+            }
+        });
+    });
+    
+    suggestionsDiv.style.display = 'block';
+}
+
+function gmxResetSearch() {
+    if (gmxCurrentSearchResults.length > 0) {
+        gmxCurrentPlaylist = [...gmxAllMusicFiles];
+        gmxRenderPlaylist();
+        gmxCurrentSearchResults = [];
+    }
+}
+
+// ============================================
+// 4. TEMPORIZADOR DE APAGADO (SLEEP TIMER)
+// ============================================
+let gmxSleepTimerInterval = null;
+let gmxSleepTimerEndTime = null;
+let gmxSleepTimerMinutes = 0;
+
+function gmxCreateSleepTimerButton() {
+    const controlsDiv = document.querySelector('.gmx-additional-controls');
+    if (!controlsDiv) return;
+    
+    // Verificar si ya existe
+    if (document.getElementById('gmxSleepTimerBtn')) return;
+    
+    const sleepBtn = document.createElement('button');
+    sleepBtn.id = 'gmxSleepTimerBtn';
+    sleepBtn.className = 'gmx-additional-btn';
+    sleepBtn.innerHTML = '⏰ Timer';
+    sleepBtn.title = 'Temporizador de apagado';
+    sleepBtn.onclick = gmxShowSleepTimerDialog;
+    
+    controlsDiv.appendChild(sleepBtn);
+}
+
+function gmxShowSleepTimerDialog() {
+    // Crear modal/dialog personalizado
+    const existingDialog = document.getElementById('gmxSleepDialog');
+    if (existingDialog) existingDialog.remove();
+    
+    const dialog = document.createElement('div');
+    dialog.id = 'gmxSleepDialog';
+    dialog.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10001;
+        backdrop-filter: blur(5px);
+    `;
+    
+    dialog.innerHTML = `
+        <div style="background: var(--card-bg); 
+                    backdrop-filter: blur(20px);
+                    border-radius: 24px; 
+                    padding: 24px;
+                    min-width: 280px;
+                    border: 1px solid var(--glass-border);
+                    box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
+            <h3 style="margin: 0 0 16px 0; text-align: center;">⏰ Temporizador de apagado</h3>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <button class="gmx-timer-option" data-minutes="5" style="padding: 12px; border-radius: 50px; background: var(--glass-bg); border: 1px solid var(--glass-border); cursor: pointer; transition: all 0.2s;">5 minutos</button>
+                <button class="gmx-timer-option" data-minutes="10" style="padding: 12px; border-radius: 50px; background: var(--glass-bg); border: 1px solid var(--glass-border); cursor: pointer; transition: all 0.2s;">10 minutos</button>
+                <button class="gmx-timer-option" data-minutes="15" style="padding: 12px; border-radius: 50px; background: var(--glass-bg); border: 1px solid var(--glass-border); cursor: pointer; transition: all 0.2s;">15 minutos</button>
+                <button class="gmx-timer-option" data-minutes="30" style="padding: 12px; border-radius: 50px; background: var(--glass-bg); border: 1px solid var(--glass-border); cursor: pointer; transition: all 0.2s;">30 minutos</button>
+                <button class="gmx-timer-option" data-minutes="60" style="padding: 12px; border-radius: 50px; background: var(--glass-bg); border: 1px solid var(--glass-border); cursor: pointer; transition: all 0.2s;">60 minutos</button>
+                <hr style="margin: 8px 0; border-color: var(--glass-border);">
+                <button id="gmxTimerCancel" style="padding: 12px; border-radius: 50px; background: rgba(255,107,107,0.2); border: 1px solid #ff6b6b; cursor: pointer; transition: all 0.2s;">❌ Cancelar timer</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(dialog);
+    
+    // Hover effects para los botones
+    dialog.querySelectorAll('.gmx-timer-option').forEach(btn => {
+        btn.addEventListener('mouseenter', () => {
+            btn.style.transform = 'translateY(-2px)';
+            btn.style.background = 'rgba(255,255,255,0.2)';
+        });
+        btn.addEventListener('mouseleave', () => {
+            btn.style.transform = 'translateY(0)';
+            btn.style.background = 'var(--glass-bg)';
+        });
+        btn.addEventListener('click', () => {
+            const minutes = parseInt(btn.dataset.minutes);
+            gmxStartSleepTimer(minutes);
+            dialog.remove();
+        });
+    });
+    
+    const cancelBtn = document.getElementById('gmxTimerCancel');
+    if (cancelBtn) {
+        cancelBtn.addEventListener('mouseenter', () => {
+            cancelBtn.style.transform = 'translateY(-2px)';
+            cancelBtn.style.background = 'rgba(255,107,107,0.3)';
+        });
+        cancelBtn.addEventListener('mouseleave', () => {
+            cancelBtn.style.transform = 'translateY(0)';
+            cancelBtn.style.background = 'rgba(255,107,107,0.2)';
+        });
+        cancelBtn.addEventListener('click', () => {
+            gmxCancelSleepTimer();
+            dialog.remove();
+        });
+    }
+    
+    // Cerrar al hacer clic fuera
+    dialog.addEventListener('click', (e) => {
+        if (e.target === dialog) {
+            dialog.remove();
+        }
+    });
+}
+
+function gmxStartSleepTimer(minutes) {
+    // Cancelar timer existente
+    gmxCancelSleepTimer();
+    
+    gmxSleepTimerMinutes = minutes;
+    gmxSleepTimerEndTime = Date.now() + (minutes * 60 * 1000);
+    
+    // Actualizar UI del botón
+    const sleepBtn = document.getElementById('gmxSleepTimerBtn');
+    if (sleepBtn) {
+        sleepBtn.innerHTML = `⏰ ${minutes}min`;
+        sleepBtn.style.background = 'linear-gradient(135deg, #ff6b6b, #ee5a24)';
+        sleepBtn.style.borderColor = 'transparent';
+    }
+    
+    // Crear intervalo
+    gmxSleepTimerInterval = setInterval(() => {
+        const remaining = gmxSleepTimerEndTime - Date.now();
+        
+        if (remaining <= 0) {
+            // Apagar reproducción
+            const audio = document.getElementById('gmxAudioPlayer');
+            audio.pause();
+            gmxIsPlaying = false;
+            document.querySelector('.gmx-play-pause').innerHTML = '▶';
+            
+            gmxShowToast(`⏰ Temporizador finalizado. Reproducción detenida.`, 3000);
+            gmxCancelSleepTimer();
+        } else {
+            // Actualizar tooltip o mostrar tiempo restante en hover
+            const minutesLeft = Math.floor(remaining / 60000);
+            const secondsLeft = Math.floor((remaining % 60000) / 1000);
+            if (sleepBtn) {
+                sleepBtn.title = `Tiempo restante: ${minutesLeft}:${secondsLeft.toString().padStart(2, '0')}`;
+            }
+        }
+    }, 1000);
+    
+    gmxShowToast(`⏰ Temporizador: La música se detendrá en ${minutes} minutos`, 3000);
+}
+
+function gmxCancelSleepTimer() {
+    if (gmxSleepTimerInterval) {
+        clearInterval(gmxSleepTimerInterval);
+        gmxSleepTimerInterval = null;
+    }
+    
+    gmxSleepTimerEndTime = null;
+    gmxSleepTimerMinutes = 0;
+    
+    const sleepBtn = document.getElementById('gmxSleepTimerBtn');
+    if (sleepBtn) {
+        sleepBtn.innerHTML = '⏰ Timer';
+        sleepBtn.style.background = '';
+        sleepBtn.style.borderColor = '';
+        sleepBtn.title = 'Temporizador de apagado';
+    }
+}
+
+function gmxInitNewFeatures() {
+    gmxLoadLikes();
+    gmxCreateSearchBar();
+    gmxCreateSleepTimerButton();
+    gmxInitMediaKeys();
+}
   init();
   
   window.gmxTogglePlaylist = gmxTogglePlaylist; window.gmxToggleTheme = gmxToggleTheme; window.gmxPreviousSong = gmxPreviousSong;

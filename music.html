@@ -2828,6 +2828,7 @@ async function init() {
     gmxUpdateAuthUI();
     gmxInitNewFeatures();
     setupPlaylistLazyLoad();
+    gmxSetupMobileMediaControls();
   }
 }
 // Cache de duraciones (persistente)
@@ -4031,26 +4032,63 @@ function gmxShowToast(message, duration = 4000) {
 function gmxInitMediaKeys() {
     // Soporte para teclas multimedia (Play/Pause, Next, Previous)
     if ('mediaSession' in navigator) {
-        // Actualizar metadata para el sistema operativo
-        function gmxUpdateMediaSession() {
+        // Función para actualizar metadata con imagen incluida
+        async function gmxUpdateMediaSession() {
             const currentSong = gmxCurrentPlaylist[gmxCurrentIndex];
             if (!currentSong) return;
             
             const songName = gmxFormatSongName(currentSong);
+            const artist = document.getElementById('gmxCurrentSongArtist')?.textContent || 'Grouvex Studios';
             
+            // Obtener información detallada de la canción para la imagen
+            let artworkUrl = 'https://grouvex.github.io/img/GROUVEX.png';
+            let albumTitle = 'Grouvex Records';
+            
+            try {
+                const songTitle = currentSong.replace('.mp3', '');
+                const songInfo = await new Promise((resolve) => {
+                    google.script.run
+                        .withSuccessHandler(resolve)
+                        .withFailureHandler(() => resolve({ found: false }))
+                        .getCurrentSongInfo(songTitle);
+                });
+                
+                if (songInfo.found && songInfo.tituloAlbum) {
+                    albumTitle = songInfo.tituloAlbum;
+                    // Intentar encontrar imagen del portfolio
+                    const imageUrl = await findPortfolioImage(songTitle, songInfo.tituloAlbum);
+                    if (imageUrl) artworkUrl = imageUrl;
+                }
+            } catch(e) {
+                console.log('Error obteniendo info para Media Session:', e);
+            }
+            
+            // Configurar metadata con múltiples tamaños de imagen
             navigator.mediaSession.metadata = new MediaMetadata({
                 title: songName,
-                artist: document.getElementById('gmxCurrentSongArtist')?.textContent || 'Grouvex Studios',
-                album: 'Grouvex Records',
+                artist: artist,
+                album: albumTitle,
                 artwork: [
-                    { src: 'https://grouvex.github.io/img/GROUVEX.png', sizes: '96x96', type: 'image/png' },
-                    { src: 'https://grouvex.github.io/img/Grouvex1.png', sizes: '128x128', type: 'image/png' },
-                    { src: 'https://grouvex.github.io/img/GROUVEX.png', sizes: '192x192', type: 'image/png' },
-                    { src: 'https://grouvex.github.io/img/Grouvex1.png', sizes: '256x256', type: 'image/png' },
-                    { src: 'https://grouvex.github.io/img/GROUVEX.png', sizes: '384x384', type: 'image/png' },
-                    { src: 'https://grouvex.github.io/img/Grouvex1.png', sizes: '512x512', type: 'image/png' },
+                    { src: artworkUrl, sizes: '96x96', type: 'image/png' },
+                    { src: artworkUrl, sizes: '128x128', type: 'image/png' },
+                    { src: artworkUrl, sizes: '192x192', type: 'image/png' },
+                    { src: artworkUrl, sizes: '256x256', type: 'image/png' },
+                    { src: artworkUrl, sizes: '384x384', type: 'image/png' },
+                    { src: artworkUrl, sizes: '512x512', type: 'image/png' },
+                    // Imagen de respaldo con logo
+                    { src: 'https://grouvex.github.io/img/GROUVEX.png', sizes: '512x512', type: 'image/png' }
                 ]
             });
+            
+            // Configurar posición actual (para mostrar en algunos dispositivos)
+            const audio = document.getElementById('gmxAudioPlayer');
+            if (audio && audio.duration && !isNaN(audio.duration)) {
+                navigator.mediaSession.setPositionState({
+                    duration: audio.duration,
+                    position: audio.currentTime,
+                    playbackRate: audio.playbackRate
+                });
+            }
         }
         
         // Configurar manejadores de eventos multimedia
@@ -4081,23 +4119,41 @@ function gmxInitMediaKeys() {
         const originalTryPlaySong = window.gmxTryPlaySong;
         window.gmxTryPlaySong = async function(index) {
             await originalTryPlaySong(index);
-            gmxUpdateMediaSession();
+            await gmxUpdateMediaSession();
         };
         
         // Actualizar también en next/previous
         const originalNextSong = window.gmxNextSong;
         window.gmxNextSong = function() {
             originalNextSong();
-            setTimeout(gmxUpdateMediaSession, 100);
+            setTimeout(() => gmxUpdateMediaSession(), 100);
         };
         
         const originalPreviousSong = window.gmxPreviousSong;
         window.gmxPreviousSong = function() {
             originalPreviousSong();
-            setTimeout(gmxUpdateMediaSession, 100);
+            setTimeout(() => gmxUpdateMediaSession(), 100);
         };
         
-        gmxUpdateMediaSession();
+        // Actualizar posición cuando cambie el tiempo
+        const audio = document.getElementById('gmxAudioPlayer');
+        audio.addEventListener('timeupdate', () => {
+            if ('setPositionState' in navigator.mediaSession && audio.duration && !isNaN(audio.duration)) {
+                navigator.mediaSession.setPositionState({
+                    duration: audio.duration,
+                    position: audio.currentTime,
+                    playbackRate: audio.playbackRate
+                });
+            }
+        });
+        
+        // Actualizar al cargar nueva canción
+        audio.addEventListener('loadedmetadata', () => {
+            setTimeout(() => gmxUpdateMediaSession(), 100);
+        });
+        
+        // Llamar inicial
+        setTimeout(() => gmxUpdateMediaSession(), 500);
     }
     
     // Teclas de teclado estándar (como respaldo/adicional)
@@ -4230,6 +4286,38 @@ function gmxInitMediaKeys() {
     });
 }
 
+// Función para asegurar que el audio capture los eventos multimedia en móviles
+function gmxSetupMobileMediaControls() {
+    const audio = document.getElementById('gmxAudioPlayer');
+    
+    // En móviles, asegurar que el audio está listo para recibir comandos
+    const handleVisibilityChange = () => {
+        if (document.visibilityState === 'visible' && gmxIsPlaying) {
+            // Al volver a la pestaña, mantener la sincronización
+            audio.play().catch(e => console.log('Play resumed:', e));
+        }
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    // Para iOS, necesitamos un toque del usuario para activar el audio
+    const activateAudio = () => {
+        if (audio.paused && gmxIsPlaying) {
+            audio.play().catch(e => console.log('Auto-play on interaction:', e));
+        }
+        // Remover después del primer toque
+        document.removeEventListener('touchstart', activateAudio);
+        document.removeEventListener('click', activateAudio);
+    };
+    
+    // Solo en iOS que necesita interacción
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    if (isIOS) {
+        document.addEventListener('touchstart', activateAudio);
+        document.addEventListener('click', activateAudio);
+    }
+}
+    
 // 🆕 Función para mostrar ayuda de atajos de teclado
 function gmxShowKeyboardHelp() {
     // Eliminar ayuda existente

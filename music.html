@@ -1273,130 +1273,7 @@
     background: #ec8a00;
     transform: translateY(-2px);
 }
-// Función RENDERIZADORA de plataformas con carrusel - CORREGIDA
-function renderPlatformLinks(songInfo) {
-    const section = document.getElementById('gmxPlatformsSection');
-    const container = document.getElementById('gmxPlatformsLinks');
-    const titleSpan = document.getElementById('gmxPlatforms');
-    const embedPlayer = document.getElementById('gmxEmbedPlayer');
-    const spotifyIframe = document.getElementById('gmxEmbedIframeSpotify');
-    const youtubeIframe = document.getElementById('gmxEmbedIframeYouTube');
-    const appleMusicIframe = document.getElementById('gmxEmbedIframeAppleMusic');
-    const amazonMusicIframe = document.getElementById('gmxEmbedIframeAmazonMusic');
     
-    if (!section || !container) return;
-    
-    titleSpan.innerHTML = songInfo.plataformas || 'Plataformas digitales';
-    container.innerHTML = '';
-    
-    // Ocultar reproductor individual antiguo
-    if (embedPlayer) embedPlayer.style.display = 'none';
-    if (spotifyIframe) { spotifyIframe.src = ''; spotifyIframe.style.display = 'none'; }
-    if (youtubeIframe) { youtubeIframe.src = ''; youtubeIframe.style.display = 'none'; }
-    if (appleMusicIframe) { appleMusicIframe.src = ''; appleMusicIframe.style.display = 'none'; }
-    if (amazonMusicIframe) { amazonMusicIframe.src = ''; amazonMusicIframe.style.display = 'none'; }
-    // NOTA: Eliminé la referencia a deezerIframe que no existe
-    
-    // Recopilar todos los embeds disponibles
-    const embedsList = [];
-    
-    // Spotify Embed
-    if (songInfo.spotifyEmbed) {
-        embedsList.push({
-            src: songInfo.spotifyEmbed,
-            title: 'Escuchar en Spotify',
-            platform: 'Spotify',
-            height: 152
-        });
-    }
-    
-    // YouTube Embed
-    if (songInfo.youtubeEmbed) {
-        embedsList.push({
-            src: songInfo.youtubeEmbed,
-            title: 'Ver en YouTube',
-            platform: 'YouTube',
-            height: 360
-        });
-    }
-    
-    // Apple Music Embed
-    if (songInfo.appleMusicEmbed) {
-        embedsList.push({
-            src: songInfo.appleMusicEmbed,
-            title: 'Escuchar en Apple Music',
-            platform: 'Apple Music',
-            height: 450
-        });
-    }
-    
-    // Amazon Music Embed - CORREGIDO
-    if (songInfo.amazonMusicEmbed) {
-        embedsList.push({
-            src: songInfo.amazonMusicEmbed,
-            title: 'Escuchar en Amazon Music',
-            platform: 'Amazon Music',
-            height: 352 
-        });
-    }
-    
-    // Enlaces externos (botones)
-    const externalLinks = [];
-    if (songInfo.spotifyLink) externalLinks.push({ url: songInfo.spotifyLink, name: 'Spotify', icon: 'fa-brands fa-spotify', class: 'spotify' });
-    if (songInfo.youtubeLink) externalLinks.push({ url: songInfo.youtubeLink, name: 'YouTube', icon: 'fa-brands fa-youtube', class: 'youtube' });
-    if (songInfo.appleMusicLink) externalLinks.push({ url: songInfo.appleMusicLink, name: 'Apple Music', icon: 'fa-brands fa-apple', class: 'apple' });
-    if (songInfo.amazonMusicLink) externalLinks.push({ url: songInfo.amazonMusicLink, name: 'Amazon Music', icon: 'fa-brands fa-amazon', class: 'amazon' });
-    if (songInfo.deezerLink) externalLinks.push({ url: songInfo.deezerLink, name: 'Deezer', icon: 'fa-brands fa-deezer', class: 'deezer' });
-    if (songInfo.tidalLink) externalLinks.push({ url: songInfo.tidalLink, name: 'Tidal', icon: 'fa-brands fa-tidal', class: 'tidal' });
-    if (songInfo.soundcloudLink) externalLinks.push({ url: songInfo.soundcloudLink, name: 'SoundCloud', icon: 'fa-brands fa-soundcloud', class: 'soundcloud' });
-    if (songInfo.instagramLink) externalLinks.push({ url: songInfo.instagramLink, name: 'Instagram', icon: 'fa-brands fa-instagram', class: 'instagram' });
-    if (songInfo.tiktokLink) externalLinks.push({ url: songInfo.tiktokLink, name: 'TikTok', icon: 'fa-brands fa-tiktok', class: 'tiktok' });
-    
-    // Construir el HTML final
-    let html = '';
-    
-    // Sección de reproducción (carrusel de embeds)
-    if (embedsList.length > 0) {
-        html += `
-            <div style="margin-bottom: 20px;">
-                <div class="gmx-platforms-title" style="margin-bottom: 12px;">
-                    <i class="fas fa-play-circle"></i> Reproducir ahora:
-                </div>
-                ${createIframeCarousel(embedsList)}
-            </div>
-        `;
-    }
-    
-    // Sección de enlaces externos
-    if (externalLinks.length > 0) {
-        html += `
-            <div>
-                <div class="gmx-platforms-title" style="margin-bottom: 12px;">
-                    <i class="fas fa-external-link-alt"></i> Abrir en:
-                </div>
-                <div class="gmx-platforms-links" style="display: flex; flex-wrap: wrap; gap: 10px;">
-                    ${externalLinks.map(link => `
-                        <a href="${link.url}" 
-                           target="_blank" 
-                           rel="noopener noreferrer"
-                           class="gmx-platform-link ${link.class}"
-                           style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 50px; text-decoration: none; color: white; transition: all 0.2s;">
-                            <i class="${link.icon}"></i> ${link.name}
-                        </a>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-    }
-    
-    if (html === '') {
-        section.style.display = 'none';
-        return;
-    }
-    
-    container.innerHTML = html;
-    section.style.display = 'block';
-}
 /* Spotify tiene altura estándar */
 .carousel-item iframe[src*="spotify"] {
     height: 152px;
@@ -2701,7 +2578,8 @@ async function init() {
     setupPlaylistLazyLoad();
   }
 }
-
+// Cache de duraciones (persistente)
+let gmxDurationCache = new Map();
 // Solo cargar duraciones cuando la playlist es visible
 function setupPlaylistLazyLoad() {
   const playlistContainer = document.getElementById('gmxPlaylistContent');
@@ -2832,9 +2710,6 @@ async function getSongState(filename) {
   function gmxFormatTime(seconds) { if (isNaN(seconds)) return '0:00'; const mins = Math.floor(seconds / 60); const secs = Math.floor(seconds % 60); return `${mins}:${secs.toString().padStart(2, '0')}`; }
   function getMusicUrl(filename) { return `https://github.com/Grouvex/grouvex.github.io/raw/main/music/${encodeURIComponent(filename)}`; }
   
-// Cache de duraciones (persistente)
-let gmxDurationCache = new Map();
-
 // Añadir esta función para obtener el like count y renderizarlo
 async function gmxRenderPlaylist() {
   const playlistElement = document.getElementById('gmxPlaylist');
@@ -3646,7 +3521,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.createIframeCarousel = createIframeCarousel;
 });
 
-// Función RENDERIZADORA de plataformas con carrusel (REEMPLAZAR la existente)
 // Función RENDERIZADORA de plataformas con carrusel - CORREGIDA
 function renderPlatformLinks(songInfo) {
     const section = document.getElementById('gmxPlatformsSection');
@@ -3710,7 +3584,7 @@ function renderPlatformLinks(songInfo) {
             src: songInfo.amazonMusicEmbed,
             title: 'Escuchar en Amazon Music',
             platform: 'Amazon Music',
-            height: 352  // Altura estándar para Amazon Music
+            height: 352 
         });
     }
     
@@ -3772,7 +3646,7 @@ function renderPlatformLinks(songInfo) {
     section.style.display = 'block';
 }
   
-  function gmxPlayEmbed(embedUrl,type){const ep=document.getElementById('gmxEmbedPlayer');const ifrSpot=document.getElementById('gmxEmbedIframeSpotify');const ifrYou=document.getElementById('gmxEmbedIframeYouTube');const ifrApple=document.getElementById('gmxEmbedIframeAppleMusic');const ifrAmaz=document.getElementById('gmxEmbedIframeAmazonMusic');if(type==='spotify'&&ifrSpot&&embedUrl){ifrSpot.src='';ifrSpot.src=embedUrl;ifrSpot.style.display='block';}if(type==='youtube'&&ifrYou&&embedUrl){ifrYou.src='';ifrYou.src=embedUrl;ifrYou.style.display='block';}if(type==='appleMusis'&&ifrApple&&embedUrl){ifrApple.src='';ifrApple.src=embedUrl;ifrApple.style.display='block';}if(type==='amazonMusic'&&ifrAmaz&&embedUrl){ifrAmaz.src='';ifrAmaz.src=embedUrl;ifrAmaz.style.display='block';}if(ep)ep.style.display='block';}
+  function gmxPlayEmbed(embedUrl,type){const ep=document.getElementById('gmxEmbedPlayer');const ifrSpot=document.getElementById('gmxEmbedIframeSpotify');const ifrYou=document.getElementById('gmxEmbedIframeYouTube');const ifrApple=document.getElementById('gmxEmbedIframeAppleMusic');const ifrAmaz=document.getElementById('gmxEmbedIframeAmazonMusic');if(type==='spotify'&&ifrSpot&&embedUrl){ifrSpot.src='';ifrSpot.src=embedUrl;ifrSpot.style.display='block';}if(type==='youtube'&&ifrYou&&embedUrl){ifrYou.src='';ifrYou.src=embedUrl;ifrYou.style.display='block';}if(type==='appleMusic'&&ifrApple&&embedUrl){ifrApple.src='';ifrApple.src=embedUrl;ifrApple.style.display='block';}if(type==='amazonMusic'&&ifrAmaz&&embedUrl){ifrAmaz.src='';ifrAmaz.src=embedUrl;ifrAmaz.style.display='block';}if(ep)ep.style.display='block';}
   function gmxCloseEmbed(){const ep=document.getElementById('gmxEmbedPlayer');const ifrSpot=document.getElementById('gmxEmbedIframeSpotify');const ifrYou=document.getElementById('gmxEmbedIframeYouTube');if(ep)ep.style.display='none';if(ifrSpot){ifrSpot.src='';ifrSpot.style.display='none';}if(ifrYou){ifrYou.src='';ifrYou.style.display='none';}}
   function showSongInfoError(msg) { const c = document.getElementById('songInfoContainer'); if (c) { c.innerHTML = `<div class="song-info-error"><div class="error-icon">⚠️</div><div class="error-message">${msg}</div><div class="error-detail">Verifica tu conexión o intenta más tarde</div><button class="retry-button" onclick="gmxRetryLoadSong()">🔄 Reintentar</button></div>`; c.classList.add('show'); } }
   function gmxRetryLoadSong() {

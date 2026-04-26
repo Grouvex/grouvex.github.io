@@ -937,7 +937,7 @@
 }
 
 .gmx-additional-btn {
-    background: var(--glass-bg);
+    background: var(--primary-color);
     border: 1px solid var(--glass-border);
     color: inherit;
     padding: 8px 12px;
@@ -1959,6 +1959,162 @@ details summary {
     85% { background-position: 60% 0%; }
     100% { background-position: 0% 0%; }
 }
+/* ============================================
+   FULLSCREEN MEJORADO
+   ============================================ */
+
+/* Estilos cuando el reproductor está en pantalla completa */
+.grouvex-music-player:fullscreen {
+    max-width: 100%;
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    border-radius: 0;
+    overflow-y: auto;
+    background: var(--bg-dark);
+}
+
+.grouvex-music-player:fullscreen .gmx-playlist {
+    max-height: 40vh;
+}
+
+.grouvex-music-player:fullscreen .song-illustration {
+    max-height: 35vh;
+    object-fit: contain;
+}
+
+.grouvex-music-player:fullscreen .gmx-player-controls {
+    margin-bottom: 20px;
+}
+
+/* Para móviles en fullscreen */
+@media (max-width: 768px) {
+    .grouvex-music-player:fullscreen {
+        padding: 10px;
+        height: 100vh;
+        overflow-y: auto;
+    }
+    
+    .grouvex-music-player:fullscreen .gmx-playlist {
+        max-height: 35vh;
+    }
+    
+    .grouvex-music-player:fullscreen .gmx-control-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.4em;
+    }
+    
+    .grouvex-music-player:fullscreen .gmx-play-pause {
+        width: 65px;
+        height: 65px;
+        font-size: 1.8em;
+    }
+}
+
+/* Safari específico */
+.grouvex-music-player:-webkit-full-screen {
+    max-width: 100%;
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    border-radius: 0;
+    overflow-y: auto;
+}
+/* Asegurar que los toasts y modales aparezcan encima del fullscreen */
+#gmxToast,
+#gmxKeyboardHelp,
+#gmxSleepDialog {
+    position: fixed;
+    z-index: 10000;
+}
+
+/* En fullscreen, asegurar que los elementos flotantes sigan visibles */
+.grouvex-music-player:fullscreen ~ #gmxToast,
+.grouvex-music-player:fullscreen ~ #gmxKeyboardHelp,
+.grouvex-music-player:fullscreen ~ #gmxSleepDialog,
+:fullscreen ~ #gmxToast,
+:fullscreen ~ #gmxKeyboardHelp,
+:fullscreen ~ #gmxSleepDialog {
+    display: block !important;
+    z-index: 99999 !important;
+}
+
+/* Asegurar que el help aparezca correctamente en fullscreen */
+:fullscreen #gmxKeyboardHelp,
+:-webkit-full-screen #gmxKeyboardHelp {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 99999 !important;
+    background: rgba(0, 0, 0, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+}
+
+/* Toast en fullscreen */
+:fullscreen #gmxToast,
+:-webkit-full-screen #gmxToast {
+    position: fixed !important;
+    bottom: 30px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 99999 !important;
+    font-size: 16px !important;
+    padding: 12px 24px !important;
+}function gmxShowToast(message, duration = 2000) {
+    // Eliminar toast existente
+    const existingToast = document.getElementById('gmxToast');
+    if (existingToast) existingToast.remove();
+    
+    // Crear nuevo toast
+    const toast = document.createElement('div');
+    toast.id = 'gmxToast';
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0,0,0,0.9);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 50px;
+        font-size: 14px;
+        z-index: 100000;
+        animation: fadeInOut 2s ease;
+        pointer-events: none;
+        backdrop-filter: blur(10px);
+        font-family: system-ui, -apple-system, sans-serif;
+        font-weight: 500;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        white-space: nowrap;
+    `;
+    
+    // En fullscreen, asegurar que se vea
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+        toast.style.zIndex = '999999';
+        toast.style.fontSize = '16px';
+    }
+    
+    // Añadir animación si no existe
+    if (!document.querySelector('#gmxToastStyle')) {
+        const style = document.createElement('style');
+        style.id = 'gmxToastStyle';
+        style.textContent = `
+            @keyframes fadeInOut {
+                0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+                15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+                85% { opacity: 1; transform: translateX(-50%) translateY(0); }
+                100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), duration);
+}
 </style>
 </head>
 <body>
@@ -1998,74 +2154,11 @@ details summary {
 <div class="grouvex-music-player" id="grouvexMusicPlayer">
   <div class="gmx-player-header">
     <a href="https://grouvex.github.io"><img src="https://grouvex.github.io/img/Grouvex1.png" alt="Logo"></a>
-<details style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal; max-width: 100%; background: rgba(0, 0, 0, 0.7); border-radius: 12px; padding: 12px 16px; margin: 15px 0; border-left: 3px solid var(--primary-color, #667eea);">
-    <summary style="text-align: left; direction: ltr; font-weight: bold; cursor: pointer; color: var(--primary-color)">📋 Términos de Servicio y Políticas de Privacidad</summary>
-    
-    <details style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal; max-width: 100%; background: rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 10px 14px; margin-top: 10px;">
-        <summary style="text-align: left; direction: ltr; cursor: pointer; color: var(--primary-color, #667eea);">📜 Términos de Servicio</summary>
-        <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5;">
-            <strong>1. Uso del Reproductor</strong><br>
-            Este reproductor de música es de uso exclusivo para las canciones distribuidas bajo licencia de <a href="https://grouvex.github.io/gsrecords" style="color: var(--primary-color, #667eea); text-decoration: none;">Grouvex Studios Records</a>. El acceso y reproducción de las obras implica la aceptación de las presentes condiciones.
-        </p>
-        <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5;">
-            <strong>2. Propiedad Intelectual</strong><br>
-            Todas las obras musicales están protegidas por derechos de autor. Queda prohibido realizar copias, descargas, modificaciones, plagio o cualquier acto que vulnere los derechos de propiedad intelectual de los artistas y del sello discográfico.
-        </p>
-        <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5;">
-            <strong>3. Uso Permitido</strong><br>
-            El reproductor está destinado exclusivamente para la reproducción de música. Cualquier intento de extracción, ingeniería inversa o uso no autorizado del contenido será considerado una violación de los términos.
-        </p>
-        <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5;">
-            <strong>4. Disponibilidad de Canciones</strong><br>
-            Las canciones marcadas como "Próximamente" no están disponibles para reproducción hasta su fecha de lanzamiento oficial. Las canciones en "Preview" ofrecen un fragmento limitado (30 segundos) antes del lanzamiento completo.
-        </p>
-        <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5;">
-            <strong>5. Modificaciones</strong><br>
-            Grouvex Studios Records se reserva el derecho de modificar estos términos, notificando los cambios a través del Boletín Oficial.
-        </p>
-    </details>
-    
-    <details style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal; max-width: 100%; background: rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 10px 14px; margin-top: 10px;">
-        <summary style="text-align: left; direction: ltr; cursor: pointer; color: var(--primary-color, #667eea);">🔒 Políticas de Privacidad</summary>
-        <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5;">
-            <strong>1. Datos Recopilados</strong><br>
-            Este reproductor no recopila datos personales de los usuarios. La única información almacenada localmente es la caché de la lista de reproducción para mejorar el rendimiento.
-        </p>
-        <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5;">
-            <strong>2. Información de Artistas</strong><br>
-            Los datos personales de los artistas (información de contacto, documentación contractual, etc.) son tratados con estricta confidencialidad conforme al RGPD y la LOPDGDD, y no son compartidos con terceros sin consentimiento.
-        </p>
-        <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5;">
-            <strong>3. Cookies y Tecnologías</strong><br>
-            El reproductor utiliza almacenamiento local (localStorage) únicamente para guardar la caché de la playlist y preferencias de usuario. No se utilizan cookies de seguimiento ni se comparten datos con terceros.
-        </p>
-        <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5;">
-            <strong>4. Derechos ARCO</strong><br>
-            Los artistas pueden ejercer sus derechos de Acceso, Rectificación, Cancelación y Oposición enviando un correo a <a href="mailto:legal@grouvex.com" style="color: var(--primary-color, #667eea); text-decoration: none;">legal@grouvex.com</a>.
-        </p>
-        <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5;">
-            <strong>5. Contacto</strong><br>
-            Para consultas legales: <a href="mailto:legal@grouvex.com" style="color: var(--primary-color, #667eea); text-decoration: none;">legal@grouvex.com</a><br>
-            Otras consultas: <a href="mailto:oficina@grouvex.com" style="color: var(--primary-color, #667eea); text-decoration: none;">oficina@grouvex.com</a>
-        </p>
-    </details>
-  <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5; font-size: 0.85em; opacity: 0.8;">
-      © 2021 - 2026, Grouvex Studios Records. Publicado conforme al Boletín Oficial BOGS/2025/002.
-  </p>
-</details>
 <h1 style="padding: 12px 24px; background: linear-gradient(135deg, #2dd4bf, #818cf8, #c084fc, #f472b6, #fb923c, #facc15, #4ade80, #2dd4bf); background-size: 600% 600%; border-radius: 80px; text-align: center; font-size: clamp(1.2rem, 5vw, 1.8rem); font-weight: 600; color: white; text-shadow: 0 1px 4px rgba(0,0,0,0.2); box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: none; animation: randomMove 20s ease-in-out infinite; transition: all 0.3s ease; cursor: pointer; letter-spacing: 0.5px;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';">Reproductor de Música</h1>
   </div>
-  <div style="display: flex; gap: 10px; justify-content: center;">
-    <button class="gmx-playlist-toggle" onclick="gmxTogglePlaylist()">📋 Playlist</button>
-    <button class="gmx-theme-toggle" onclick="gmxToggleTheme()">🌙 Tema</button>
-  </div>
-<p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5; font-size: 0.75em; opacity: 0.6;">
-  La lista de canciones tarda unos segundos en cargar. Para verla, presione "Playlist". Si está en un ordenador, pulse 'h' o 'H' para entrar en el panel de comandos para manejarte mejor en nuestra reproductora.
-</p>
   <div class="gmx-playlist-container" id="gmxPlaylistContent">
     <div class="gmx-playlist" id="gmxPlaylist"></div>
   </div>
-  <div class="song-info-container" id="songInfoContainer"></div>
   <div class="gmx-visualizer" id="gmxVisualizer">
     <div class="gmx-bar"></div><div class="gmx-bar"></div><div class="gmx-bar"></div><div class="gmx-bar"></div><div class="gmx-bar"></div>
   </div>
@@ -2089,15 +2182,23 @@ details summary {
       <span class="gmx-volume-value" id="gmxVolumeValue">80%</span>
     </div>
     <div class="gmx-additional-controls">
-      <button class="gmx-additional-btn" id="gmxShuffleBtn" onclick="gmxToggleShuffle()">🔀 Shuffle</button>
-      <button class="gmx-additional-btn" id="gmxLoopBtn" onclick="gmxToggleLoop()">🔁 Loop</button>
+      <button class="gmx-additional-btn" id="gmxShuffleBtn" onclick="gmxToggleShuffle()">🔀 </button>
+      <button class="gmx-additional-btn" id="gmxLoopBtn" onclick="gmxToggleLoop()">🔁 </button>
       <button class="gmx-additional-btn" id="gmxLikeBtn" onclick="gmxToggleCurrentLike()" style="display: none;">❤️ Like</button>
+      <button class="gmx-additional-btn" onclick="gmxToggleFullscreen()">🖥️</button>
+      <button class="gmx-playlist-toggle" onclick="gmxTogglePlaylist()">📋</button>
+      <button class="gmx-theme-toggle" onclick="gmxToggleTheme()">🌙 </button>
+      <button class="gmx-additional-btn" onclick="gmxShowKeyboardHelp()">❓</button>
     </div>
     <div class="gmx-platforms-section" id="gmxPlatformsSection" style="display: none;">
       <div class="gmx-platforms-title">Se puede escuchar en: <span id="gmxPlatforms"></span></div>
       <div class="gmx-platforms-links" id="gmxPlatformsLinks"></div>
     </div>
+    <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5; font-size: 0.75em; opacity: 0.6;">
+      El ❓, avisos de teclado y otros no se pueden ver o usar en Full Screen (🖥/'f')
+    </p>
   </div>
+  <div class="song-info-container" id="songInfoContainer"></div>
   <div class="gmx-embed-player" id="gmxEmbedPlayer" style="display: none;">
     <div class="gmx-embed-header"><span>Reproduciendo en Spotify/YouTube</span><button class="gmx-embed-close-btn" onclick="gmxCloseEmbed()">✕</button></div>
     <iframe  id="gmxEmbedIframeSpotify" data-testid="embed-iframe" style="border-radius:12px; display:none" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
@@ -2122,9 +2223,11 @@ details summary {
         • <strong>Loop</strong>: Pulsa una vez para repetir la canción actual 🔂, dos veces para repetir toda la lista 🔁, tres veces para desactivar.<br>
         • <strong>Tema</strong>: Alterna entre modo oscuro 🌙 y claro ☀️.<br>
         • <strong>📋 Playlist</strong>: Muestra u oculta la lista de canciones.<br>
-        • <strong>Likes</strong>: Puedes darle like y ver cuantas personas le han dado. Solo necesitas tener una cuenta en Grouvex Studios.<br>
+        • <strong>Likes</strong>: Puedes darle like y ver cuantas personas le han dado. Solo un like por usuario y upc. Solo necesitas tener una cuenta en Grouvex Studios.<br>
         • <strong>🔍 Buscador</strong>: Puedes buscar una canción. Si tiene corazón, es que ya le han dado like.<br>
-        • <strong>⏰ Timer</strong>: Puedes poner un temporizador para que en ese timpo que has dicho, se  pare la musica.</p>
+        • <strong>⏰ Timer</strong>: Puedes poner un temporizador para que en ese timpo que has dicho, se  pare la musica.<br>
+        • <strong>❓ Ayuda</strong>: Mira los atajos que tiene este reproductor<br>
+        • <strong>🖥️ Pantalla Completa</strong>: Que menos que ver este reproductor a lo grande.</p>
     
     <p style="text-align: left; margin: 10px 0 8px 0; line-height: 1.5;">
         <strong>🏷️ Estado de las canciones</strong><br>
@@ -2148,6 +2251,105 @@ details summary {
     
     <p style="text-align: left; margin: 10px 0 5px 0; line-height: 1.5; font-size: 0.85em; opacity: 0.8;">
         🎧 Disfruta de la música sin anuncios. © Grouvex Studios
+    </p>
+</details>
+<details style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal; max-width: 100%; background: rgba(0, 0, 0, 0.7); border-radius: 12px; padding: 12px 16px; margin: 15px 0; border-left: 3px solid var(--primary-color, #667eea);">
+    <summary style="text-align: left; direction: ltr; font-weight: bold; cursor: pointer; color: var(--primary-color);">📋 Términos de Servicio y Políticas de Privacidad</summary>
+    
+    <!-- TÉRMINOS DE SERVICIO -->
+    <details style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal; max-width: 100%; background: rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 10px 14px; margin-top: 10px;">
+        <summary style="text-align: left; direction: ltr; cursor: pointer; color: var(--primary-color);">📜 Términos de Servicio</summary>
+        
+        <p style="text-align: left; margin: 10px 0 5px 0; line-height: 1.5;">
+            <strong>1. Uso del Reproductor</strong><br>
+            Este reproductor es de uso exclusivo para canciones distribuidas bajo licencia de <a href="https://grouvex.github.io/gsrecords" style="color: var(--primary-color); text-decoration: none;">Grouvex Studios Records</a>. El acceso implica la aceptación de estas condiciones.
+        </p>
+        
+        <p style="text-align: left; margin: 10px 0 5px 0; line-height: 1.5;">
+            <strong>2. Propiedad Intelectual</strong><br>
+            Todas las obras están protegidas por derechos de autor. Queda prohibido copiar, descargar, modificar o realizar cualquier acto que vulnere los derechos de los artistas y del sello.
+        </p>
+        
+        <p style="text-align: left; margin: 10px 0 5px 0; line-height: 1.5;">
+            <strong>3. Uso Permitido</strong><br>
+            El reproductor está destinado exclusivamente para reproducción musical. Cualquier intento de extracción o uso no autorizado viola estos términos.
+        </p>
+        
+        <p style="text-align: left; margin: 10px 0 5px 0; line-height: 1.5;">
+            <strong>4. Disponibilidad de Canciones</strong><br>
+            • <strong>Próximamente</strong>: No disponible para reproducción hasta su fecha de lanzamiento.<br>
+            • <strong>Preview</strong>: Fragmento limitado de 30 segundos antes del lanzamiento oficial.<br>
+            • <strong>Sin etiqueta</strong>: Disponible para reproducción completa.
+        </p>
+        
+        <p style="text-align: left; margin: 10px 0 5px 0; line-height: 1.5;">
+            <strong>5. Modificaciones</strong><br>
+            Grouvex Studios Records se reserva el derecho de modificar estos términos, notificando cambios a través del Boletín Oficial.
+        </p>
+    </details>
+    
+    <!-- POLÍTICAS DE PRIVACIDAD - VERSIÓN CORREGIDA -->
+    <details style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal; max-width: 100%; background: rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 10px 14px; margin-top: 10px;">
+        <summary style="text-align: left; direction: ltr; cursor: pointer; color: var(--primary-color);">🔒 Políticas de Privacidad</summary>
+        
+        <p style="text-align: left; margin: 10px 0 5px 0; line-height: 1.5;">
+            <strong>1. Datos que Recopilamos</strong><br>
+            • <strong>Autenticación (Firebase)</strong>: Al iniciar sesión, almacenamos tu <code>uid</code> (identificador único), <code>email</code> y datos de autenticación.<br>
+            • <strong>Sistema de Likes</strong>: Guardamos tu <code>userId</code>, <code>userEmail</code> y el <code>UPC/EAN</code> de las canciones que te gustan.<br>
+            • <strong>Almacenamiento Local</strong>: Guardamos caché de playlist, duraciones y preferencias para mejorar el rendimiento.<br>
+            • <strong>Google Sheets</strong>: Los likes se almacenan en una hoja de cálculo externa para contar likes globales.
+        </p>
+        
+        <p style="text-align: left; margin: 10px 0 5px 0; line-height: 1.5;">
+            <strong>2. Finalidad del Tratamiento</strong><br>
+            Los datos se utilizan EXCLUSIVAMENTE para:<br>
+            • Permitir el sistema de "Me gusta" por usuario<br>
+            • Mostrar el contador global de likes por canción<br>
+            • Mejorar la experiencia de usuario (caché local)<br>
+            • Autenticar usuarios autorizados
+        </p>
+        
+        <p style="text-align: left; margin: 10px 0 5px 0; line-height: 1.5;">
+            <strong>3. Bases Legales</strong><br>
+            El tratamiento de tus datos se basa en:<br>
+            • Tu consentimiento al crear una cuenta e iniciar sesión<br>
+            • La ejecución del servicio de likes que solicitas voluntariamente<br>
+            • Interés legítimo en mejorar nuestro servicio
+        </p>
+        
+        <p style="text-align: left; margin: 10px 0 5px 0; line-height: 1.5;">
+            <strong>4. Cesión de Datos a Terceros</strong><br>
+            <strong>NO vendemos, alquilamos ni compartimos</strong> tus datos personales con terceros. Los únicos servicios externos utilizados son:<br>
+            • <strong>Firebase (Google)</strong>: Para autenticación y base de datos (cumple RGPD)<br>
+            • <strong>Google Sheets</strong>: Para almacenar likes anónimos (solo IDs y emails)<br>
+            • <strong>GitHub</strong>: Para alojar los archivos de música
+        </p>
+        
+        <p style="text-align: left; margin: 10px 0 5px 0; line-height: 1.5;">
+            <strong>5. Conservación de Datos</strong><br>
+            Tus datos se conservan mientras mantengas tu cuenta activa. Puedes solicitar su eliminación en cualquier momento.
+        </p>
+        
+        <p style="text-align: left; margin: 10px 0 5px 0; line-height: 1.5;">
+            <strong>6. Tus Derechos (RGPD/LOPDGDD)</strong><br>
+            Puedes ejercer tus derechos de <strong>Acceso, Rectificación, Cancelación, Oposición, Portabilidad y Limitación</strong> enviando un correo a <a href="mailto:legal@grouvex.com" style="color: var(--primary-color); text-decoration: none;">legal@grouvex.com</a>.
+        </p>
+        
+        <p style="text-align: left; margin: 10px 0 5px 0; line-height: 1.5;">
+            <strong>7. Seguridad</strong><br>
+            Implementamos medidas de seguridad técnicas y organizativas para proteger tus datos contra accesos no autorizados, pérdida o alteración.
+        </p>
+        
+        <p style="text-align: left; margin: 10px 0 5px 0; line-height: 1.5;">
+            <strong>8. Contacto</strong><br>
+            📧 Consultas legales: <a href="mailto:legal@grouvex.com" style="color: var(--primary-color); text-decoration: none;">legal@grouvex.com</a><br>
+            📧 Otras consultas: <a href="mailto:oficina@grouvex.com" style="color: var(--primary-color); text-decoration: none;">oficina@grouvex.com</a>
+        </p>
+    </details>
+    
+    <!-- Aviso de derechos -->
+    <p style="text-align: left; margin: 10px 0 5px 0; line-height: 1.5; font-size: 0.85em; opacity: 0.8; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+        © 2021 - 2026, Grouvex Studios Records. Publicado conforme al Boletín Oficial BOGS/2025/002.
     </p>
 </details>
 <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5; font-size: 0.85em; opacity: 0.8;">
@@ -2541,6 +2743,56 @@ function gmxGetTotalLikes() {
   return total;
 }
 
+// Función mejorada para pantalla completa
+function gmxToggleFullscreen() {
+    const player = document.getElementById('grouvexMusicPlayer');
+    
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        // Entrar a fullscreen
+        const requestFullscreen = player.requestFullscreen || 
+                                  player.webkitRequestFullscreen || 
+                                  player.msRequestFullscreen;
+        
+        if (requestFullscreen) {
+            requestFullscreen.call(player);
+            // Scroll suave al inicio en móvil
+            setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 100);
+            gmxShowToast('🖥️ Pantalla completa - Pulsa ESC para salir', 2000);
+        }
+    } else {
+        // Salir de fullscreen
+        const exitFullscreen = document.exitFullscreen || 
+                               document.webkitExitFullscreen || 
+                               document.msExitFullscreen;
+        if (exitFullscreen) {
+            exitFullscreen.call(document);
+            gmxShowToast('🖥️ Saliendo de pantalla completa', 800);
+        }
+    }
+}
+
+// Detectar cambios en fullscreen para ajustar UI
+document.addEventListener('fullscreenchange', gmxOnFullscreenChange);
+document.addEventListener('webkitfullscreenchange', gmxOnFullscreenChange);
+
+function gmxOnFullscreenChange() {
+    const isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
+    const player = document.getElementById('grouvexMusicPlayer');
+    
+    if (player) {
+        if (isFullscreen) {
+            player.classList.add('is-fullscreen');
+            // Forzar reflow para móviles
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+            }, 50);
+        } else {
+            player.classList.remove('is-fullscreen');
+        }
+    }
+}
 
 async function init() {
   const playlistElement = document.getElementById('gmxPlaylist');
@@ -3660,8 +3912,8 @@ function renderPlatformLinks(songInfo) {
   function gmxPreviousSong() {if (gmxCurrentIndex - 1 >= 0) {gmxTryPlaySong(gmxCurrentIndex - 1);} else if (gmxCurrentPlaylist.length) {gmxTryPlaySong(gmxCurrentPlaylist.length - 1);}}
   function gmxSetVolume(v) { document.getElementById('gmxAudioPlayer').volume = v; document.getElementById('gmxVolumeValue').innerText = Math.round(v * 100) + '%'; }
   function gmxToggleShuffle() { gmxIsShuffled = !gmxIsShuffled; const btn = document.getElementById('gmxShuffleBtn'); btn.classList.toggle('active', gmxIsShuffled); if (gmxIsShuffled) { const shuffled = [...gmxCurrentPlaylist]; for (let i = shuffled.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; } gmxCurrentPlaylist = shuffled; gmxCurrentIndex = 0; gmxRenderPlaylist(); } else updatePlaylistWithDynamicState(); }
-  function gmxToggleLoop() { gmxIsLooping = (gmxIsLooping + 1) % 3; const btn = document.getElementById('gmxLoopBtn'); const audio = document.getElementById('gmxAudioPlayer'); if (gmxIsLooping === 0) { btn.innerHTML = '🔁 Loop'; audio.loop = false; } else if (gmxIsLooping === 1) { btn.innerHTML = '🔂 Loop 1'; audio.loop = true; } else { btn.innerHTML = '🔁 Loop ∞'; audio.loop = false; } }
-  function gmxToggleTheme() { document.getElementById('grouvexMusicPlayer').classList.toggle('light-theme'); document.querySelector('.gmx-theme-toggle').innerHTML = document.getElementById('grouvexMusicPlayer').classList.contains('light-theme') ? '☀️ Tema' : '🌙 Tema'; }
+  function gmxToggleLoop() { gmxIsLooping = (gmxIsLooping + 1) % 3; const btn = document.getElementById('gmxLoopBtn'); const audio = document.getElementById('gmxAudioPlayer'); if (gmxIsLooping === 0) { btn.innerHTML = '🔁'; audio.loop = false; } else if (gmxIsLooping === 1) { btn.innerHTML = '🔂'; audio.loop = true; } else { btn.innerHTML = '🔁 | ∞'; audio.loop = false; } }
+  function gmxToggleTheme() { document.getElementById('grouvexMusicPlayer').classList.toggle('light-theme'); document.querySelector('.gmx-theme-toggle').innerHTML = document.getElementById('grouvexMusicPlayer').classList.contains('light-theme') ? '☀️' : '🌙 '; }
   function gmxTogglePlaylist() { document.getElementById('gmxPlaylistContent').classList.toggle('show'); }
   function gmxToggleVisualizer(enabled) { gmxVisualizerEnabled = enabled; const bars = document.querySelectorAll('.gmx-bar'); if (gmxIsPlaying && enabled) bars.forEach(b => b.style.animationPlayState = 'running'); else bars.forEach(b => b.style.animationPlayState = 'paused'); }
   function gmxUpdateVisualizer() { const bars = document.querySelectorAll('.gmx-bar'); if (gmxIsPlaying && gmxVisualizerEnabled) bars.forEach(b => b.style.animationPlayState = 'running'); else bars.forEach(b => b.style.animationPlayState = 'paused'); }
@@ -3719,7 +3971,7 @@ function gmxLoadLikes() {
 }
 
 // Toast notification (pequeña notificación temporal)
-function gmxShowToast(message, duration = 2000) {
+function gmxShowToast(message, duration = 4000) {
     // Eliminar toast existente
     const existingToast = document.getElementById('gmxToast');
     if (existingToast) existingToast.remove();
@@ -3730,21 +3982,29 @@ function gmxShowToast(message, duration = 2000) {
     toast.textContent = message;
     toast.style.cssText = `
         position: fixed;
-        bottom: 20px;
+        bottom: 30px;
         left: 50%;
         transform: translateX(-50%);
-        background: rgba(0,0,0,0.8);
+        background: rgba(0,0,0,0.9);
         color: white;
-        padding: 10px 20px;
+        padding: 12px 24px;
         border-radius: 50px;
         font-size: 14px;
-        z-index: 10000;
+        z-index: 100000;
         animation: fadeInOut 2s ease;
         pointer-events: none;
         backdrop-filter: blur(10px);
-        white-space: nowrap;
         font-family: system-ui, -apple-system, sans-serif;
+        font-weight: 500;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        white-space: nowrap;
     `;
+    
+    // En fullscreen, asegurar que se vea
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+        toast.style.zIndex = '999999';
+        toast.style.fontSize = '16px';
+    }
     
     // Añadir animación si no existe
     if (!document.querySelector('#gmxToastStyle')) {
@@ -3931,30 +4191,8 @@ function gmxInitMediaKeys() {
                 }
             },
             
-            'f': () => {
-                const player = document.getElementById('grouvexMusicPlayer');
-                if (player) {
-                    if (!document.fullscreenElement) {
-                        player.requestFullscreen().catch(() => {});
-                        gmxShowToast(`🖥️ Pantalla completa`, 800);
-                    } else {
-                        document.exitFullscreen();
-                        gmxShowToast(`🖥️ Salir`, 800);
-                    }
-                }
-            },
-            'F': () => {
-                const player = document.getElementById('grouvexMusicPlayer');
-                if (player) {
-                    if (!document.fullscreenElement) {
-                        player.requestFullscreen().catch(() => {});
-                        gmxShowToast(`🖥️ Pantalla completa`, 800);
-                    } else {
-                        document.exitFullscreen();
-                        gmxShowToast(`🖥️ Salir`, 800);
-                    }
-                }
-            },
+            'f': () => gmxToggleFullscreen(),
+            'F': () => gmxToggleFullscreen(),
             
             'n': () => gmxNextSong(),
             'N': () => gmxNextSong(),
@@ -4003,50 +4241,56 @@ function gmxShowKeyboardHelp() {
     
     const helpDiv = document.createElement('div');
     helpDiv.id = 'gmxKeyboardHelp';
+    
+    // Detectar si está en fullscreen para ajustar estilos
+    const isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
+    
     helpDiv.style.cssText = `
         position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background: var(--card-bg);
+        background: rgba(0, 0, 0, 0.95);
         backdrop-filter: blur(20px);
         border-radius: 24px;
         padding: 24px;
         max-width: 90%;
         width: 420px;
-        z-index: 10002;
-        border: 1px solid var(--glass-border);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        z-index: 100000;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
         font-size: 14px;
+        color: white;
+        max-height: 80vh;
+        overflow-y: auto;
     `;
     
     helpDiv.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h3 style="margin: 0;">⌨️ Atajos de Teclado</h3>
+            <h3 style="margin: 0; color: white;">⌨️ Atajos de Teclado</h3>
             <button onclick="this.closest('#gmxKeyboardHelp').remove()" 
-                    style="background: none; border: none; font-size: 24px; cursor: pointer; color: inherit;">✕</button>
+                    style="background: rgba(255,255,255,0.2); border: none; font-size: 20px; cursor: pointer; color: white; width: 32px; height: 32px; border-radius: 50%;">✕</button>
         </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 12px;">
             <div><kbd style="background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 6px;">␣</kbd></div><div>Play / Pausa</div>
-            <div><kbd>◀</kbd> / <kbd>B</kbd></div><div>Canción anterior</div>
-            <div><kbd>▶</kbd> / <kbd>N</kbd></div><div>Siguiente canción</div>
-            <div><kbd>←</kbd></div><div>-5 segundos</div>
-            <div><kbd>→</kbd></div><div>+5 segundos</div>
+            <div><kbd>b/kbd> / <kbd>B</kbd></div><div>Canción anterior</div>
+            <div><kbd>n</kbd> / <kbd>N</kbd></div><div>Siguiente canción</div>
+            <div><kbd>←</kbd> / <kbd>→</kbd></div><div>-5/+5 segundos</div>
             <div><kbd>↑</kbd> / <kbd>↓</kbd></div><div>Subir/Bajar volumen</div>
-            <div><kbd>M</kbd></div><div>Silenciar/Activar</div>
-            <div><kbd>L</kbd></div><div>Dar/Quitar Like</div>
-            <div><kbd>S</kbd></div><div>Aleatorio (Shuffle)</div>
-            <div><kbd>R</kbd></div><div>Repetir (Loop)</div>
-            <div><kbd>P</kbd></div><div>Mostrar/ocultar Playlist</div>
-            <div><kbd>T</kbd></div><div>Cambiar Tema</div>
-            <div><kbd>V</kbd></div><div>Mostrar/ocultar Visualizador</div>
-            <div><kbd>F</kbd></div><div>Pantalla completa</div>
-            <div><kbd>?</kbd> / <kbd>/</kbd></div><div>Mostrar esta ayuda</div>
+            <div><kbd>m</kbd></div><div>Silenciar/Activar</div>
+            <div><kbd>l</kbd></div><div>Dar/Quitar Like</div>
+            <div><kbd>s</kbd></div><div>Aleatorio (Shuffle)</div>
+            <div><kbd>r</kbd></div><div>Repetir (Loop)</div>
+            <div><kbd>p</kbd></div><div>Mostrar/ocultar Playlist</div>
+            <div><kbd>t</kbd></div><div>Cambiar Tema</div>
+            <div><kbd>v</kbd></div><div>Mostrar/ocultar Visualizador</div>
+            <div><kbd>f</kbd></div><div>Pantalla completa</div>
+            <div><kbd>h</kbd></div><div>Mostrar esta ayuda</div>
         </div>
-        <hr style="margin: 16px 0; border-color: var(--glass-border);">
-        <p style="margin: 0; font-size: 12px; opacity: 0.7; text-align: center;">
+        <hr style="margin: 15px 0; border-color: rgba(255,255,255,0.2);">
+        <p style="margin: 0; font-size: 10px; opacity: 0.8; text-align: center;">
             💡 Los atajos funcionan sin presionar Ctrl/Alt/Cmd<br>
-            No funcionan si hay un input o textarea activo
+            No funcionan si hay un input activo
         </p>
     `;
     

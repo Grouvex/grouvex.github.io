@@ -2172,21 +2172,21 @@ details summary {
       <div class="gmx-time-display"><span id="gmxCurrentTime">0:00</span><span id="gmxDuration">0:00</span></div>
     </div>
     <div class="gmx-control-buttons">
+      <button class="gmx-playlist-toggle" onclick="gmxTogglePlaylist()">📋</button>
+      <button class="gmx-additional-btn" id="gmxShuffleBtn" onclick="gmxToggleShuffle()">🔀</button>
       <button class="gmx-control-btn" onclick="gmxPreviousSong()">⏮</button>
       <button class="gmx-control-btn gmx-play-pause" onclick="gmxTogglePlay()">▶</button>
       <button class="gmx-control-btn" onclick="gmxNextSong()">⏭</button>
+      <button class="gmx-additional-btn" id="gmxLoopBtn" onclick="gmxToggleLoop()">🔁</button>
+      <button class="gmx-additional-btn" id="gmxLikeBtn" onclick="gmxToggleCurrentLike()" style="display: none;">❤️ Like</button>
     </div>
     <div class="gmx-volume-control">
       <span>🔊</span>
-      <input type="range" class="gmx-volume-slider" id="gmxVolumeSlider" min="0" max="1" step="0.01" value="0.8" oninput="gmxSetVolume(this.value)">
-      <span class="gmx-volume-value" id="gmxVolumeValue">80%</span>
+      <input type="range" class="gmx-volume-slider" id="gmxVolumeSlider" min="0" max="1" step="0.01" value="1" oninput="gmxSetVolume(this.value)">
+      <span class="gmx-volume-value" id="gmxVolumeValue">100%</span>
     </div>
     <div class="gmx-additional-controls">
-      <button class="gmx-additional-btn" id="gmxShuffleBtn" onclick="gmxToggleShuffle()">🔀 </button>
-      <button class="gmx-additional-btn" id="gmxLoopBtn" onclick="gmxToggleLoop()">🔁 </button>
-      <button class="gmx-additional-btn" id="gmxLikeBtn" onclick="gmxToggleCurrentLike()" style="display: none;">❤️ Like</button>
       <button class="gmx-additional-btn" onclick="gmxToggleFullscreen()">🖥️</button>
-      <button class="gmx-playlist-toggle" onclick="gmxTogglePlaylist()">📋</button>
       <button class="gmx-theme-toggle" onclick="gmxToggleTheme()">🌙 </button>
       <button class="gmx-additional-btn" onclick="gmxShowKeyboardHelp()">❓</button>
     </div>

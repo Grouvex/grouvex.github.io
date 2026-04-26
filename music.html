@@ -54,960 +54,951 @@
     <script src="time.js"></script>
     <script src="index.js"></script>
     <script type="module" src="abc.js"></script>
-    <style>
-      /* Variables CSS */
-      :root {
-        --primary-color: #667eea;
-        --secondary-color: #764ba2;
-        --accent-color: #ff6b6b;
-        --bg-dark: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-        --bg-light: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        --text-light: #ffffff;
-        --text-dark: #2d3748;
-        --glass-bg: rgba(255, 255, 255, 0.1);
-        --glass-border: rgba(255, 255, 255, 0.2);
-        --card-bg: rgba(255, 255, 255, 0.08);
-        --shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-      }
-  
-      .grouvex-music-player {
-        background: var(--bg-dark);
-        color: var(--text-light);
-        border-radius: 24px;
-        padding: 0;
-        box-shadow: var(--shadow);
-        max-width: 80%;
-        margin: 10px auto;
-        overflow: hidden;
-        background-position: center;
-        position: relative;
-        backdrop-filter: blur(20px);
-        border: 1px solid var(--glass-border);
-      }
-  
-      .grouvex-music-player.light-theme {
-        background: var(--bg-light);
-        color: var(--text-dark);
-      }
-  
-      .gmx-player-header {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 24px 24px 20px;
-        text-align: center;
-        gap: 20px;
-      }
-  
-      .gmx-player-header a {
-        display: inline-block;
-        line-height: 0;
-        width: auto;
-        max-width: 200px;
-      }
-  
-      .gmx-player-header img {
-        width: 100%;
-        max-width: 180px;
-        height: auto;
-        display: block;
-        margin: 0 auto;
-      }
-  
-      .gmx-player-header h1 {
-        margin: 0;
-        font-size: clamp(1rem, 5vw, 1.5rem);
-        word-break: keep-all;
-      }
-  
-      .gmx-theme-toggle {
-        background: var(--glass-bg);
-        border: 1px solid var(--glass-border);
-        color: inherit;
-        padding: 10px 16px;
-        border-radius: 50px;
-        cursor: pointer;
-        transition: var(--transition);
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-  
-      .gmx-theme-toggle:hover {
-        transform: translateY(-2px);
-        background: rgba(255, 255, 255, 0.2);
-      }
-  
-      .gmx-playlist-container {
-        padding: 0 20px;
-      }
-  
-      .gmx-playlist {
-        max-height: 220px;
-        overflow-y: auto;
-        margin-bottom: 20px;
-        border-radius: 16px;
-        background: var(--glass-bg);
-        backdrop-filter: blur(15px);
-        border: 1px solid var(--glass-border);
-      }
-  
-      .gmx-playlist::-webkit-scrollbar {
-        width: 6px;
-      }
-  
-      .gmx-playlist::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.3);
-        border-radius: 3px;
-      }
-  
-      .gmx-playlist-item {
-        padding: 16px 20px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        cursor: pointer;
-        transition: var(--transition);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: relative;
-      }
-  
-      .gmx-playlist-item:hover {
-        background: rgba(255, 255, 255, 0.1);
-        transform: translateX(8px);
-      }
-  
-      .gmx-playlist-item.active {
-        background: rgba(255, 255, 255, 0.2);
-        border-left: 4px solid var(--primary-color);
-      }
-  
-      .gmx-playlist-item.disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        background: rgba(255, 255, 255, 0.05);
-      }
-  
-      .gmx-playlist-item.disabled:hover {
-        transform: none;
-        background: rgba(255, 255, 255, 0.05);
-      }
-  
-      .gmx-song-title {
-        flex: 1;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        position: relative;
-      }
-  
-      .gmx-song-title:hover::after {
-        content: attr(data-full-title);
-        position: absolute;
-        top: -40px;
-        left: 0;
-        background: rgba(0, 0, 0, 0.8);
-        color: white;
-        padding: 8px 12px;
-        border-radius: 8px;
-        white-space: nowrap;
-        z-index: 10;
-        font-size: 0.9em;
-      }
-  
-      .gmx-song-duration {
-        font-size: 0.75em;
-        opacity: 0.7;
-        margin-left: 10px;
-      }
-  
-      .gmx-player-controls {
-        background: var(--glass-bg);
-        padding: 24px;
-        margin: 0 20px 20px;
-        border-radius: 20px;
-        backdrop-filter: blur(15px);
-        border: 1px solid var(--glass-border);
-      }
-  
-      .gmx-song-info {
-        text-align: center;
-        margin-bottom: 20px;
-      }
-  
-      .gmx-song-title-large {
-        font-size: 1.3em;
-        font-weight: 700;
-        margin-bottom: 8px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-  
-      .gmx-song-artist {
-        opacity: 0.8;
-        font-size: 0.9em;
-      }
-  
-      .gmx-progress-container {
-        margin: 20px 0;
-      }
-  
-      .gmx-progress-bar {
-        width: 100%;
-        height: 8px;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 10px;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-      }
-  
-      .gmx-progress {
-        height: 100%;
-        background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-        border-radius: 10px;
-        width: 0%;
-        transition: width 0.1s ease;
-      }
-  
-      .gmx-time-display {
-        display: flex;
-        justify-content: space-between;
-        font-size: 0.8em;
-        opacity: 0.8;
-        margin-top: 8px;
-      }
-  
-      .gmx-control-buttons {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 20px;
-        margin: 24px 0;
-      }
-  
-      .gmx-control-btn {
-        background: var(--glass-bg);
-        border: 1px solid var(--glass-border);
-        color: inherit;
-        font-size: 1.4em;
-        cursor: pointer;
-        padding: 14px;
-        border-radius: 50%;
-        transition: var(--transition);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 50px;
-        height: 50px;
-      }
-  
-      .gmx-control-btn:hover {
-        transform: translateY(-3px) scale(1.1);
-        background: rgba(255, 255, 255, 0.2);
-      }
-  
-      .gmx-play-pause {
-        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-        width: 60px;
-        height: 60px;
-        font-size: 1.8em;
-        border: none;
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-      }
-  
-      .gmx-play-pause:hover {
-        transform: translateY(-3px) scale(1.1);
-        box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
-      }
-  
-      .gmx-volume-control {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-top: 16px;
-        padding: 12px 16px;
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 50px;
-      }
-  
-      .gmx-volume-slider {
-        flex: 1;
-        height: 6px;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 10px;
-        outline: none;
-        -webkit-appearance: none;
-        appearance: none;
-      }
-  
-      .gmx-volume-slider::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        background: var(--primary-color);
-        cursor: pointer;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-        transition: var(--transition);
-      }
-  
-      .gmx-volume-slider::-webkit-slider-thumb:hover {
-        transform: scale(1.2);
-        background: var(--secondary-color);
-      }
-  
-      .gmx-volume-value {
-        font-size: 0.8em;
-        font-weight: 600;
-        min-width: 40px;
-        text-align: center;
-      }
-  
-      .gmx-additional-controls {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        margin-top: 20px;
-      }
-  
-      .gmx-additional-btn {
-        background: var(--glass-bg);
-        border: 1px solid var(--glass-border);
-        color: inherit;
-        padding: 10px 20px;
-        border-radius: 50px;
-        cursor: pointer;
-        transition: var(--transition);
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-  
-      .gmx-additional-btn.active {
-        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-        border-color: transparent;
-      }
-  
-      .gmx-additional-btn.disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-  
-      .gmx-additional-btn.disabled:hover {
-        transform: none;
-        background: var(--glass-bg);
-      }
-  
-      .gmx-config-panel {
-        background: var(--glass-bg);
-        margin: 0 20px 20px;
-        border-radius: 20px;
-        backdrop-filter: blur(15px);
-        border: 1px solid var(--glass-border);
-        overflow: hidden;
-      }
-  
-      .gmx-config-toggle {
-        background: var(--glass-bg);
-        border: 1px solid var(--glass-border);
-        color: inherit;
-        padding: 12px 20px;
-        border-radius: 50px;
-        cursor: pointer;
-        width: calc(100% - 40px);
-        text-align: center;
-        margin: 0 20px 20px;
-        transition: var(--transition);
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-      }
-  
-      .gmx-config-toggle::before {
-        content: "⚙️";
-      }
-  
-      .gmx-config-toggle:hover {
-        transform: translateY(-2px);
-        background: rgba(255, 255, 255, 0.2);
-      }
-  
-      .gmx-config-content {
-        display: none;
-        padding: 20px;
-      }
-  
-      .gmx-config-content.show {
-        display: block;
-      }
-  
-      .gmx-config-item {
-        margin: 16px 0;
-      }
-  
-      .gmx-config-label {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-weight: 600;
-        cursor: pointer;
-      }
-  
-      .gmx-visualizer {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 3px;
-        height: 40px;
-        margin: 15px 0;
-        padding: 0 20px;
-      }
-  
-      .gmx-bar {
-        width: 4px;
-        height: 20px;
-        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-        border-radius: 2px;
-        animation: equalizer 1.5s ease-in-out infinite;
-        animation-play-state: paused;
-      }
-  
-      .gmx-bar:nth-child(1) { animation-delay: 0.1s; }
-      .gmx-bar:nth-child(2) { animation-delay: 0.2s; }
-      .gmx-bar:nth-child(3) { animation-delay: 0.3s; }
-      .gmx-bar:nth-child(4) { animation-delay: 0.4s; }
-      .gmx-bar:nth-child(5) { animation-delay: 0.5s; }
-  
-      @keyframes equalizer {
-        0%, 100% { height: 10px; }
-        50% { height: 30px; }
-      }
-  
-      .gmx-help-section {
-        margin: 0 20px 20px;
-      }
-  
-      .gmx-help-toggle {
-        background: var(--glass-bg);
-        border: 1px solid var(--glass-border);
-        color: inherit;
-        padding: 12px 20px;
-        border-radius: 50px;
-        cursor: pointer;
-        width: 100%;
-        text-align: center;
-        transition: var(--transition);
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-      }
-  
-      .gmx-help-toggle::before {
-        content: "❓";
-      }
-  
-      .gmx-help-toggle:hover {
-        transform: translateY(-2px);
-        background: rgba(255, 255, 255, 0.2);
-      }
-  
-      .gmx-help-content {
-        display: none;
-        padding: 20px;
-        background: var(--card-bg);
-        border-radius: 16px;
-        margin-top: 10px;
-      }
-  
-      .gmx-help-content.show {
-        display: block;
-      }
-  
-      .gmx-help-item {
-        margin-bottom: 16px;
-      }
-  
-      .gmx-help-item h4 {
-        margin-bottom: 8px;
-        color: var(--primary-color);
-      }
-  
-      .gmx-help-item p {
-        font-size: 0.9em;
-        line-height: 1.5;
-      }
-  
-      .gmx-loop-indicator {
-        font-size: 0.7em;
-        margin-left: 5px;
-        background: rgba(255, 255, 255, 0.2);
-        padding: 2px 6px;
-        border-radius: 10px;
-      }
-  
-      .song-info-container {
-        background: var(--glass-bg);
-        margin: 0 20px 20px;
-        padding: 0;
-        border-radius: 20px;
-        backdrop-filter: blur(15px);
-        border: 1px solid var(--glass-border);
-        overflow: hidden;
-        display: none;
-      }
-  
-      .song-info-container.show {
-        display: block;
-      }
-  
-      .song-illustration {
-        width: 100%;
-        max-height: 200px;
-        object-fit: cover;
-        border-radius: 20px 20px 0 0;
-      }
-  
-      .song-illustration.placeholder {
-        height: 150px;
-        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 3em;
-        border-radius: 20px 20px 0 0;
-      }
-  
-      .song-details-content {
-        padding: 20px;
-      }
-  
-      .song-album-title {
-        font-size: 1.2em;
-        font-weight: 700;
-        margin-bottom: 8px;
-        color: var(--primary-color);
-      }
-  
-      .song-artist-info {
-        font-size: 1em;
-        margin-bottom: 5px;
-        opacity: 0.9;
-      }
-  
-      .song-other-artists {
-        font-size: 0.9em;
-        margin-bottom: 10px;
-        opacity: 0.8;
-        font-style: italic;
-      }
-  
-      .song-genres {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 10px;
-        flex-wrap: wrap;
-      }
-  
-      .genre-tag {
-        background: rgba(76, 129, 222, 0.8);
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 0.8em;
-        border: 1px solid var(--glass-border);
-      }
-  
-      .song-details-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-top: 15px;
-        background: rgba(0, 0, 0, 0.3);
-        border-radius: 12px;
-        padding: 10px;
-      }
-      
-      .song-details-grid hr {
-        grid-column: 1 / -1;
-        margin: 5px 0;
-        border: none;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, var(--primary-color), var(--secondary-color), transparent);
-      }
-      
-      .song-details-grid br {
-        display: none;
-      }
-  
-      .detail-item {
-        font-size: 0.8em;
-        opacity: 0.9;
-      }
-  
-      .detail-label {
-        font-weight: 600;
-        color: var(--primary-color);
-        margin-bottom: 2px;
-      }
-  
-      .song-platforms {
-        margin-top: 15px;
-        padding-top: 15px;
-        border-top: 1px solid var(--glass-border);
-      }
-  
-      .platforms-label {
-        font-size: 0.9em;
-        font-weight: 600;
-        margin-bottom: 5px;
-        color: var(--primary-color);
-      }
-  
-      .gmx-platforms-section {
-        margin-top: 20px;
-        padding: 15px;
-        background: rgba(255, 255, 255, 0.08);
-        border-radius: 16px;
-        border: 1px solid var(--glass-border);
-      }
-  
-      .gmx-platforms-title {
-        font-size: 0.9em;
-        font-weight: 600;
-        margin-bottom: 12px;
-        color: var(--primary-color);
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-  
-      .gmx-platforms-links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-      }
-  
-      .gmx-platform-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 16px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 50px;
-        text-decoration: none;
-        color: inherit;
-        font-size: 0.85em;
-        transition: var(--transition);
-        border: 1px solid var(--glass-border);
-      }
-  
-      .gmx-platform-link:hover {
-        transform: translateY(-2px);
-        background: rgba(255, 255, 255, 0.2);
-      }
-  
-      .gmx-platform-link.spotify { background: #1DB954; color: white; border-color: #1DB954; }
-      .gmx-platform-link.youtube { background: #FF0000; color: white; border-color: #FF0000; }
-      .gmx-platform-link.apple { background: #000; color: white; border-color: #333; }
-      .gmx-platform-link.amazon { background: #FF9900; color: white; border-color: #FF9900; }
-      .gmx-platform-link.deezer { background: #A238FF; color: white; border-color: #A238FF; }
-      .gmx-platform-link.tidal { background: #000000; color: white; border-color: #333; }
-      .gmx-platform-link.soundcloud { background: #FF5500; color: white; border-color: #FF5500; }
-      .gmx-platform-link.tiktok { background: linear-gradient(45deg, black, blue); color: white; border-color: black; }
-      .gmx-platform-link.instagram { background: linear-gradient(45deg, pink, magenta, cyan); color: white; border-color: magenta; }
-      .gmx-platform-link i { font-size: 1.1em; }
-  
-      .gmx-playlist-toggle {
-          background: var(--glass-bg);
-          border: 1px solid var(--glass-border);
-          color: inherit;
-          padding: 10px 16px;
-          border-radius: 50px;
-          cursor: pointer;
-          font-weight: 600;
-          transition: var(--transition);
-          display: flex;
-          gap: 8px;
-      }
-  
-      .gmx-playlist-toggle:hover {
-        transform: translateY(-2px);
-        background: rgba(255, 255, 255, 0.2);
-      }
-  
-      .gmx-playlist-container {
-        transition: all 0.3s ease;
-        overflow: hidden;
-      }
-  
-      .gmx-playlist-container:not(.show) {
-        display: none;
-      }
-  
-      .gmx-playlist-container.show {
-        display: block;
-      }
-      
-      .gmx-embed-player {
-        margin-top: 20px;
-        padding: 15px;
-        background: rgba(0, 0, 0, 0.3);
-        border-radius: 16px;
-        border: 1px solid var(--glass-border);
-      }
-      
-      .gmx-embed-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 12px;
-        font-size: 0.85em;
-        color: var(--primary-color);
-      }
-      
-      .gmx-embed-close-btn {
-        background: none;
-        border: none;
-        color: inherit;
-        cursor: pointer;
-        font-size: 1.2em;
-        padding: 4px 8px;
-        border-radius: 8px;
-        transition: var(--transition);
-      }
-      
-      .gmx-embed-close-btn:hover {
-        background: rgba(255, 255, 255, 0.2);
-      }
-        
-      /* Añade este CSS para que el contenido dentro de details se vea igual */
-      .song-details-grid details {
-        grid-column: 1 / -1;
-        margin-bottom: 10px;
-      }
-      
-      .song-details-grid details[open] {
-        margin-bottom: 10px;
-      }
-      
-      .song-details-grid details summary {
-        cursor: pointer;
-        font-weight: 600;
-        color: cyan;
-        padding: 8px 0;
-        user-select: none;
-      }
-      
-      .light-theme .song-details-grid details summary {
-        color: magenta;
-      }
-      .song-details-grid details summary:hover {
-        opacity: 1;
-      }
-      
-      /* El contenido dentro de details debe mantener el grid layout */
-      .song-details-grid details .detail-item {
-        display: block;
-        margin-bottom: 8px;
-        padding-left: 0;
-      }
-      
-      /* También puedes mantener la estructura de grid dentro del details */
-      .song-details-grid details > div {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-top: 8px;
-        padding-top: 8px;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-      }
+<style>
+/* ============================================
+   ROOT VARIABLES
+   ============================================ */
+:root {
+    --primary-color: #667eea;
+    --secondary-color: #764ba2;
+    --accent-color: #ff6b6b;
+    --bg-dark: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    --bg-light: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --text-light: #ffffff;
+    --text-dark: #2d3748;
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --card-bg: rgba(255, 255, 255, 0.08);
+    --shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --mobile-padding: 16px;
+    --tablet-padding: 24px;
+    --desktop-padding: 32px;
+}
 
-      .gmx-badge {
+/* ============================================
+   BASE & MAIN CONTAINER
+   ============================================ */
+.grouvex-music-player {
+    background: var(--bg-dark);
+    color: var(--text-light);
+    border-radius: 24px;
+    padding: 0;
+    box-shadow: var(--shadow);
+    max-width: 95%;
+    margin: 10px auto;
+    overflow: hidden;
+    background-position: center;
+    position: relative;
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+}
+
+.grouvex-music-player.light-theme {
+    background: var(--bg-light);
+    color: var(--text-dark);
+}
+
+@media (min-width: 768px) {
+    .grouvex-music-player {
+        max-width: 85%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .grouvex-music-player {
+        max-width: 75%;
+    }
+}
+
+@media (min-width: 1440px) {
+    .grouvex-music-player {
+        max-width: 70%;
+    }
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+.gmx-player-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 16px;
+    text-align: center;
+    gap: 15px;
+}
+
+@media (min-width: 768px) {
+    .gmx-player-header {
+        padding: 24px 24px 20px;
+        gap: 20px;
+    }
+}
+
+.gmx-player-header a {
+    display: inline-block;
+    line-height: 0;
+    width: auto;
+    max-width: 200px;
+}
+
+.gmx-player-header img {
+    width: 100%;
+    max-width: 140px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+@media (min-width: 480px) {
+    .gmx-player-header img {
+        max-width: 160px;
+    }
+}
+
+@media (min-width: 768px) {
+    .gmx-player-header img {
+        max-width: 180px;
+    }
+}
+
+.gmx-player-header h1 {
+    margin: 0;
+    font-size: clamp(1rem, 5vw, 1.5rem);
+    word-break: keep-all;
+}
+
+/* ============================================
+   BUTTONS (Theme & Playlist Toggle)
+   ============================================ */
+.gmx-theme-toggle,
+.gmx-playlist-toggle {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: inherit;
+    padding: 8px 14px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+@media (min-width: 480px) {
+    .gmx-theme-toggle,
+    .gmx-playlist-toggle {
+        padding: 10px 18px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .gmx-theme-toggle,
+    .gmx-playlist-toggle {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+}
+
+.gmx-theme-toggle:hover,
+.gmx-playlist-toggle:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================
+   PLAYLIST CONTAINER
+   ============================================ */
+.gmx-playlist-container {
+    padding: 0 20px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.gmx-playlist-container:not(.show) {
+    display: none;
+}
+
+.gmx-playlist-container.show {
+    display: block;
+}
+
+.gmx-playlist {
+    max-height: 220px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    border-radius: 16px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+}
+
+@media (min-width: 768px) {
+    .gmx-playlist {
+        max-height: 260px;
+    }
+}
+
+.gmx-playlist::-webkit-scrollbar {
+    width: 6px;
+}
+
+.gmx-playlist::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+/* Playlist Items */
+.gmx-playlist-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    flex-wrap: wrap;
+}
+
+@media (min-width: 480px) {
+    .gmx-playlist-item {
+        padding: 14px 18px;
+    }
+}
+
+@media (min-width: 768px) {
+    .gmx-playlist-item {
+        padding: 16px 20px;
+    }
+}
+
+.gmx-playlist-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(8px);
+}
+
+.gmx-playlist-item.active {
+    background: rgba(255, 255, 255, 0.2);
+    border-left: 4px solid var(--primary-color);
+}
+
+.gmx-playlist-item.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.gmx-playlist-item.disabled:hover {
+    transform: none;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.gmx-song-title {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    font-size: 0.85rem;
+    max-width: 180px;
+}
+
+@media (min-width: 480px) {
+    .gmx-song-title {
+        font-size: 0.9rem;
+        max-width: 250px;
+    }
+}
+
+@media (min-width: 768px) {
+    .gmx-song-title {
+        font-size: 1rem;
+        max-width: 350px;
+    }
+}
+
+.gmx-song-title:hover::after {
+    content: attr(data-full-title);
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+    z-index: 10;
+    font-size: 0.9em;
+}
+
+.gmx-song-duration {
+    font-size: 0.75em;
+    opacity: 0.7;
+    margin-left: 10px;
+}
+
+.gmx-song-info-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+/* Badges */
+.gmx-badge {
+    font-size: 0.65em;
+    padding: 2px 6px;
+    border-radius: 20px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+@media (min-width: 480px) {
+    .gmx-badge {
         font-size: 0.7em;
         padding: 3px 8px;
-        border-radius: 20px;
-        font-weight: 600;
-        white-space: nowrap;
-      }
-      .upcoming-badge { background: linear-gradient(135deg, #ff6b6b, #ee5a24); color: white; }
-      .preview-badge { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; }
-      .gmx-song-info-wrapper {
-        flex: 1;
-        display: flex;
-        align-items: center;
+    }
+}
+
+.upcoming-badge {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    color: white;
+}
+
+.preview-badge {
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    color: white;
+}
+
+/* ============================================
+   SONG INFO CONTAINER
+   ============================================ */
+.song-info-container {
+    background: var(--glass-bg);
+    margin: 0 16px 20px;
+    padding: 0;
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+    overflow: hidden;
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .song-info-container {
+        margin: 0 20px 20px;
+    }
+}
+
+.song-info-container.show {
+    display: block;
+}
+
+/* Song Illustration */
+.song-illustration {
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 20px 20px 0 0;
+}
+
+@media (min-width: 480px) {
+    .song-illustration {
+        max-height: 350px;
+    }
+}
+
+@media (min-width: 768px) {
+    .song-illustration {
+        max-height: 400px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .song-illustration {
+        max-height: 450px;
+    }
+}
+
+.song-illustration.placeholder {
+    height: auto;
+    min-height: 150px;
+    max-height: 250px;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3em;
+    border-radius: 20px 20px 0 0;
+}
+
+@media (min-width: 480px) {
+    .song-illustration.placeholder {
+        aspect-ratio: 16 / 9;
+        font-size: 3.5em;
+    }
+}
+
+@media (min-width: 768px) {
+    .song-illustration.placeholder {
+        aspect-ratio: 16 / 9;
+        font-size: 4em;
+    }
+}
+
+/* Song Details Content */
+.song-details-content {
+    padding: 16px;
+}
+
+@media (min-width: 768px) {
+    .song-details-content {
+        padding: 20px;
+    }
+}
+
+.song-album-title {
+    font-size: 1.2em;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--primary-color);
+}
+
+.song-artist-info {
+    font-size: 1em;
+    margin-bottom: 5px;
+    opacity: 0.9;
+}
+
+.song-other-artists {
+    font-size: 0.9em;
+    margin-bottom: 10px;
+    opacity: 0.8;
+    font-style: italic;
+}
+
+/* Genres */
+.song-genres {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.genre-tag {
+    background: rgba(76, 129, 222, 0.8);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.75em;
+    border: 1px solid var(--glass-border);
+}
+
+@media (min-width: 480px) {
+    .genre-tag {
+        font-size: 0.8em;
+        padding: 4px 12px;
+    }
+}
+
+/* Details Grid */
+.song-details-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    padding: 10px;
+}
+
+@media (min-width: 480px) {
+    .song-details-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.song-details-grid hr {
+    grid-column: 1 / -1;
+    margin: 5px 0;
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary-color), var(--secondary-color), transparent);
+}
+
+.song-details-grid br {
+    display: none;
+}
+
+.detail-item {
+    font-size: 0.8em;
+    opacity: 0.9;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 2px;
+}
+
+/* Details inside grid */
+.song-details-grid details {
+    grid-column: 1 / -1;
+    margin-bottom: 10px;
+}
+
+.song-details-grid details[open] {
+    margin-bottom: 10px;
+}
+
+.song-details-grid details summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: cyan;
+    padding: 8px 0;
+    user-select: none;
+}
+
+.light-theme .song-details-grid details summary {
+    color: magenta;
+}
+
+.song-details-grid details summary:hover {
+    opacity: 1;
+}
+
+.song-details-grid details .detail-item {
+    display: block;
+    margin-bottom: 8px;
+    padding-left: 0;
+}
+
+.song-details-grid details > div {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (min-width: 480px) {
+    .song-details-grid details > div {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* ============================================
+   VISUALIZER
+   ============================================ */
+.gmx-visualizer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    height: 35px;
+    margin: 15px 0;
+    padding: 0 20px;
+}
+
+@media (min-width: 480px) {
+    .gmx-visualizer {
+        gap: 3px;
+        height: 40px;
+    }
+}
+
+.gmx-bar {
+    width: 3px;
+    height: 20px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border-radius: 2px;
+    animation: equalizer 1.5s ease-in-out infinite;
+    animation-play-state: paused;
+}
+
+@media (min-width: 768px) {
+    .gmx-bar {
+        width: 5px;
+    }
+}
+
+.gmx-bar:nth-child(1) { animation-delay: 0.1s; }
+.gmx-bar:nth-child(2) { animation-delay: 0.2s; }
+.gmx-bar:nth-child(3) { animation-delay: 0.3s; }
+.gmx-bar:nth-child(4) { animation-delay: 0.4s; }
+.gmx-bar:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes equalizer {
+    0%, 100% { height: 10px; }
+    50% { height: 30px; }
+}
+
+/* ============================================
+   PLAYER CONTROLS
+   ============================================ */
+.gmx-player-controls {
+    background: var(--glass-bg);
+    padding: 24px;
+    margin: 0 20px 20px;
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+}
+
+/* Song Info */
+.gmx-song-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.gmx-song-title-large {
+    font-size: 1.3em;
+    font-weight: 700;
+    margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.gmx-song-artist {
+    opacity: 0.8;
+    font-size: 0.9em;
+}
+
+/* Progress Bar */
+.gmx-progress-container {
+    margin: 20px 0;
+}
+
+.gmx-progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .gmx-progress-bar {
+        height: 12px;
+    }
+}
+
+.gmx-progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    border-radius: 10px;
+    width: 0%;
+    transition: width 0.1s ease;
+}
+
+.gmx-time-display {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8em;
+    opacity: 0.8;
+    margin-top: 8px;
+}
+
+/* Control Buttons */
+.gmx-control-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 24px 0;
+    flex-wrap: wrap;
+}
+
+@media (min-width: 480px) {
+    .gmx-control-buttons {
+        gap: 16px;
+    }
+}
+
+@media (min-width: 768px) {
+    .gmx-control-buttons {
+        gap: 20px;
+    }
+}
+
+.gmx-control-btn {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: inherit;
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50%;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+}
+
+@media (min-width: 480px) {
+    .gmx-control-btn {
+        width: 48px;
+        height: 48px;
+        font-size: 1.3em;
+    }
+}
+
+@media (min-width: 768px) {
+    .gmx-control-btn {
+        width: 55px;
+        height: 55px;
+        font-size: 1.4em;
+    }
+}
+
+.gmx-control-btn:hover {
+    transform: translateY(-3px) scale(1.1);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.gmx-play-pause {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    width: 50px;
+    height: 50px;
+    font-size: 1.5em;
+    border: none;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+@media (min-width: 480px) {
+    .gmx-play-pause {
+        width: 56px;
+        height: 56px;
+        font-size: 1.6em;
+    }
+}
+
+@media (min-width: 768px) {
+    .gmx-play-pause {
+        width: 65px;
+        height: 65px;
+        font-size: 1.8em;
+    }
+}
+
+.gmx-play-pause:hover {
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+}
+
+/* Volume Control */
+.gmx-volume-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50px;
+    flex-wrap: nowrap;
+}
+
+@media (min-width: 480px) {
+    .gmx-volume-control {
         gap: 10px;
-        flex-wrap: wrap;
-      }
-      
-      /* Clase para mensajes de error en la información de la canción */
-      .song-info-error {
-          background: linear-gradient(135deg, rgba(255, 107, 107, 0.95), rgba(238, 90, 36, 0.95));
-          backdrop-filter: blur(10px);
-          border-radius: 20px;
-          padding: 24px 20px;
-          margin: 15px 20px;
-          text-align: center;
-          color: white;
-          font-weight: 500;
-          border: 1px solid rgba(255, 255, 255, 0.3);
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-          animation: errorShake 0.5s ease-in-out;
-          position: relative;
-          overflow: hidden;
-      }
-      
-      /* Efecto de fondo animado */
-      .song-info-error::before {
-          content: "⚠️";
-          position: absolute;
-          left: 20px;
-          top: 50%;
-          transform: translateY(-50%);
-          font-size: 2em;
-          opacity: 0.3;
-          animation: errorPulse 2s infinite;
-      }
-      
-      /* Texto del error */
-      .song-info-error .error-message {
-          font-size: 1rem;
-          margin-bottom: 8px;
-          letter-spacing: 0.5px;
-      }
-      
-      /* Subtítulo o detalle adicional */
-      .song-info-error .error-detail {
-          font-size: 0.85rem;
-          opacity: 0.9;
-          margin-top: 8px;
-          font-style: italic;
-      }
-      
-      /* Icono de error decorativo */
-      .song-info-error .error-icon {
-          font-size: 2.5em;
-          margin-bottom: 12px;
-          display: inline-block;
-          animation: errorBounce 1s infinite;
-      }
-      
-      /* Botón de reintento opcional */
-      .song-info-error .retry-button {
-          background: rgba(255, 255, 255, 0.2);
-          border: 1px solid rgba(255, 255, 255, 0.4);
-          color: white;
-          padding: 8px 20px;
-          border-radius: 50px;
-          margin-top: 15px;
-          cursor: pointer;
-          font-size: 0.9em;
-          font-weight: 600;
-          transition: all 0.3s ease;
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-      }
-      
-      .song-info-error .retry-button:hover {
-          background: rgba(255, 255, 255, 0.3);
-          transform: translateY(-2px);
-      }
-      
-      /* Animaciones */
-      @keyframes errorShake {
-          0%, 100% { transform: translateX(0); }
-          10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-          20%, 40%, 60%, 80% { transform: translateX(5px); }
-      }
-      
-      @keyframes errorPulse {
-          0%, 100% { opacity: 0.3; transform: translateY(-50%) scale(1); }
-          50% { opacity: 0.6; transform: translateY(-50%) scale(1.1); }
-      }
-      
-      @keyframes errorBounce {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-      }
-      
-      /* Variante para tema claro */
-      .light-theme .song-info-error {
-          background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-          color: white;
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-      }
-      
-      /* Variante compacta (para espacios pequeños) */
-      .song-info-error.compact {
-          padding: 16px;
-          margin: 10px;
-          font-size: 0.9em;
-      }
-      
-      .song-info-error.compact::before {
-          font-size: 1.5em;
-      }
-      
-      .song-info-error.compact .error-icon {
-          font-size: 1.8em;
-          margin-bottom: 8px;
-      }
-      .song-info-loading { background: linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95)); backdrop-filter: blur(10px); border-radius: 20px; padding: 30px 20px; margin: 15px 20px; text-align: center; color: white; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); position: relative; overflow: hidden; }
-      
-      .song-info-loading::before { content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent); animation: loadingShine 1.5s infinite; }
-      
-      .song-info-loading .loading-spinner { width: 50px; height: 50px; margin: 0 auto 15px; border: 4px solid rgba(255, 255, 255, 0.3); border-top-color: white; border-radius: 50%; animation: loadingSpin 0.8s linear infinite; }
-      
-      .song-info-loading .loading-text { font-size: 1rem; font-weight: 500; letter-spacing: 0.5px; }
-      
-      .song-info-loading .loading-dots { display: inline-block; animation: loadingDots 1.4s infinite; }
-      
-      @keyframes loadingShine { 100% { left: 100%; } }
-      
-      @keyframes loadingSpin { to { transform: rotate(360deg); } }
-      
-      @keyframes loadingDots { 0%, 20% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0; } }
-      
-      .light-theme .song-info-loading { background: linear-gradient(135deg, #667eea, #764ba2); }
-      @keyframes randomMove {
-        0% { background-position: 0% 0%; }
-        17% { background-position: 80% 20%; }
-        34% { background-position: 20% 90%; }
-        51% { background-position: 100% 50%; }
-        68% { background-position: 0% 80%; }
-        85% { background-position: 60% 0%; }
-        100% { background-position: 0% 0%; }
-      }
-/* Estilo para el botón de like en los controles */
+        padding: 8px 14px;
+    }
+}
+
+@media (min-width: 768px) {
+    .gmx-volume-control {
+        gap: 12px;
+        padding: 10px 16px;
+    }
+}
+
+.gmx-volume-control > span:first-child {
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+    .gmx-volume-control > span:first-child {
+        font-size: 1.1rem;
+    }
+}
+
+.gmx-volume-slider {
+    flex: 1;
+    min-width: 60px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+@media (min-width: 480px) {
+    .gmx-volume-slider {
+        min-width: 80px;
+    }
+}
+
+@media (min-width: 768px) {
+    .gmx-volume-slider {
+        min-width: 100px;
+        height: 6px;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .gmx-volume-slider {
+        height: 8px;
+    }
+}
+
+.gmx-volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    transition: var(--transition);
+}
+
+@media (min-width: 768px) {
+    .gmx-volume-slider::-webkit-slider-thumb {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .gmx-volume-slider::-webkit-slider-thumb {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.gmx-volume-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    background: var(--secondary-color);
+}
+
+.gmx-volume-value {
+    font-size: 0.7rem;
+    font-weight: 600;
+    min-width: 38px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+@media (min-width: 480px) {
+    .gmx-volume-value {
+        font-size: 0.75rem;
+        min-width: 40px;
+    }
+}
+
+@media (min-width: 768px) {
+    .gmx-volume-value {
+        font-size: 0.8rem;
+        min-width: 42px;
+    }
+}
+
+/* Additional Controls */
+.gmx-additional-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+@media (min-width: 480px) {
+    .gmx-additional-controls {
+        gap: 15px;
+    }
+}
+
+.gmx-additional-btn {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: inherit;
+    padding: 8px 12px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+}
+
+@media (min-width: 480px) {
+    .gmx-additional-btn {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .gmx-additional-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+.gmx-additional-btn.active {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border-color: transparent;
+}
+
+.gmx-additional-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.gmx-additional-btn.disabled:hover {
+    transform: none;
+    background: var(--glass-bg);
+}
+
+/* Like Button */
 #gmxLikeBtn {
-  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-  border: none;
-  transition: all 0.3s ease;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    border: none;
+    transition: all 0.3s ease;
 }
 
 #gmxLikeBtn:hover {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
 }
 
 #gmxLikeBtn:active {
-  transform: scale(0.95);
+    transform: scale(0.95);
 }
 
-/* Animaciones para el botón de like */
 @keyframes likeAdd {
     0% { transform: scale(1); background: var(--glass-bg); }
-    50% { transform: scale(1.2); background: linear-gradient(135deg, #ff6b6b, #ee5a24); box-shadow: 0 0 20px rgba(255,107,107,0.8); }
+    50% { transform: scale(1.2); background: linear-gradient(135deg, #ff6b6b, #ee5a24); box-shadow: 0 0 20px rgba(255, 107, 107, 0.8); }
     100% { transform: scale(1); background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
 }
 
@@ -1017,14 +1008,1079 @@
     100% { transform: scale(1); background: var(--glass-bg); }
 }
 
-/* Efecto hover mejorado para el botón de like */
-#gmxLikeBtn:hover {
-    transform: translateY(-2px) scale(1.05);
-    transition: all 0.3s ease;
+/* Auth Container */
+#gmxAuthContainer {
+    margin-left: auto;
 }
 
-#gmxLikeBtn:active {
+#gmxAuthContainer .gmx-additional-btn {
+    font-size: 0.75rem;
+    padding: 6px 10px;
+}
+
+@media (min-width: 480px) {
+    #gmxAuthContainer .gmx-additional-btn {
+        font-size: 0.8rem;
+        padding: 8px 14px;
+    }
+}
+
+/* ============================================
+   PLATFORMS SECTION
+   ============================================ */
+.gmx-platforms-section {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+}
+
+.gmx-platforms-title {
+    font-size: 0.9em;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.gmx-platforms-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.gmx-platform-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    text-decoration: none;
+    color: inherit;
+    font-size: 0.75rem;
+    transition: var(--transition);
+    border: 1px solid var(--glass-border);
+}
+
+@media (min-width: 480px) {
+    .gmx-platform-link {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .gmx-platform-link {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+}
+
+.gmx-platform-link:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.gmx-platform-link.spotify { background: #1DB954; color: white; border-color: #1DB954; }
+.gmx-platform-link.youtube { background: #FF0000; color: white; border-color: #FF0000; }
+.gmx-platform-link.apple { background: #000; color: white; border-color: #333; }
+.gmx-platform-link.amazon { background: #FF9900; color: white; border-color: #FF9900; }
+.gmx-platform-link.deezer { background: #A238FF; color: white; border-color: #A238FF; }
+.gmx-platform-link.tidal { background: #000000; color: white; border-color: #333; }
+.gmx-platform-link.soundcloud { background: #FF5500; color: white; border-color: #FF5500; }
+.gmx-platform-link.tiktok { background: linear-gradient(45deg, black, blue); color: white; border-color: black; }
+.gmx-platform-link.instagram { background: linear-gradient(45deg, pink, magenta, cyan); color: white; border-color: magenta; }
+.gmx-platform-link i { font-size: 1.1em; }
+
+/* ============================================
+   EMBED PLAYER & CAROUSEL
+   ============================================ */
+.gmx-embed-player {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+}
+
+.gmx-embed-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 0.85em;
+    color: var(--primary-color);
+}
+
+.gmx-embed-close-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-size: 1.2em;
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: var(--transition);
+}
+
+.gmx-embed-close-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Iframes responsivos */
+.gmx-embed-player iframe,
+.carousel-item iframe {
+    width: 100%;
+    border-radius: 12px;
+    background: transparent;
+}
+
+/* ============================================
+   CARRUSEL - 1 IFRAME A LA VEZ CON SCROLL EXACTO
+   ============================================ */
+
+/* Contenedor principal del carrusel */
+.iframe-carousel-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    margin: 10px 0;
+}
+
+/* Wrapper con scroll - muestra 1 item a la vez */
+.row-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 0;
+    padding: 8px 0 12px 0;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Ocultar scrollbar en Firefox */
+    scroll-snap-type: x mandatory;
+    scroll-snap-stop: always;
+}
+
+/* Ocultar scrollbar en Chrome/Safari/Edge */
+.row-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+/* Cada item ocupa EXACTAMENTE el 100% del ancho del contenedor */
+.carousel-item {
+    flex: 0 0 100%;
+    width: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    padding: 0 12px;
+    box-sizing: border-box;
+    transition: transform 0.2s ease;
+}
+
+/* Efecto hover solo en desktop */
+@media (min-width: 768px) {
+    .carousel-item:hover {
+        transform: scale(1.01);
+    }
+}
+
+/* Altura fija y consistente para todos los iframes del mismo tipo */
+.carousel-item iframe {
+    width: 100%;
+    height: 152px;
+    border-radius: 16px;
+    background: transparent;
+    border: none;
+    display: block;
+}
+
+/* YouTube necesita más altura */
+.carousel-item iframe[src*="youtube"],
+.carousel-item iframe[src*="youtu.be"] {
+    height: 360px;
+}
+
+/* Apple Music */
+.carousel-item iframe[src*="music.apple"],
+.carousel-item iframe[src*="apple.com/music"] {
+    height: 450px;
+}
+
+/* Ajustes responsivos para Apple Music */
+@media (max-width: 768px) {
+    .carousel-item iframe[src*="music.apple"],
+    .carousel-item iframe[src*="apple.com/music"] {
+        height: 380px;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-item iframe[src*="music.apple"],
+    .carousel-item iframe[src*="apple.com/music"] {
+        height: 320px;
+    }
+}
+
+/* Icono de Apple Music */
+.gmx-platform-link.apple {
+    background: #000;
+    color: white;
+    border-color: #333;
+}
+
+.gmx-platform-link.apple:hover {
+    background: #1a1a1a;
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   AMAZON MUSIC - ESTILOS ESPECÍFICOS
+   ============================================ */
+
+/* Altura específica para Amazon Music en el carrusel */
+.carousel-item iframe[src*="amazon"],
+.carousel-item iframe[src*="music.amazon"] {
+    height: 352px;
+}
+
+/* Ajustes responsivos para Amazon Music */
+@media (max-width: 768px) {
+    .carousel-item iframe[src*="amazon"],
+    .carousel-item iframe[src*="music.amazon"] {
+        height: 280px;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-item iframe[src*="amazon"],
+    .carousel-item iframe[src*="music.amazon"] {
+        height: 220px;
+    }
+}
+
+/* Icono y estilo para el enlace de Amazon Music */
+.gmx-platform-link.amazon {
+    background: #FF9900;
+    color: white;
+    border-color: #FF9900;
+}
+
+.gmx-platform-link.amazon:hover {
+    background: #ec8a00;
+    transform: translateY(-2px);
+}
+// Función RENDERIZADORA de plataformas con carrusel - CORREGIDA
+function renderPlatformLinks(songInfo) {
+    const section = document.getElementById('gmxPlatformsSection');
+    const container = document.getElementById('gmxPlatformsLinks');
+    const titleSpan = document.getElementById('gmxPlatforms');
+    const embedPlayer = document.getElementById('gmxEmbedPlayer');
+    const spotifyIframe = document.getElementById('gmxEmbedIframeSpotify');
+    const youtubeIframe = document.getElementById('gmxEmbedIframeYouTube');
+    const appleMusicIframe = document.getElementById('gmxEmbedIframeAppleMusic');
+    const amazonMusicIframe = document.getElementById('gmxEmbedIframeAmazonMusic');
+    
+    if (!section || !container) return;
+    
+    titleSpan.innerHTML = songInfo.plataformas || 'Plataformas digitales';
+    container.innerHTML = '';
+    
+    // Ocultar reproductor individual antiguo
+    if (embedPlayer) embedPlayer.style.display = 'none';
+    if (spotifyIframe) { spotifyIframe.src = ''; spotifyIframe.style.display = 'none'; }
+    if (youtubeIframe) { youtubeIframe.src = ''; youtubeIframe.style.display = 'none'; }
+    if (appleMusicIframe) { appleMusicIframe.src = ''; appleMusicIframe.style.display = 'none'; }
+    if (amazonMusicIframe) { amazonMusicIframe.src = ''; amazonMusicIframe.style.display = 'none'; }
+    // NOTA: Eliminé la referencia a deezerIframe que no existe
+    
+    // Recopilar todos los embeds disponibles
+    const embedsList = [];
+    
+    // Spotify Embed
+    if (songInfo.spotifyEmbed) {
+        embedsList.push({
+            src: songInfo.spotifyEmbed,
+            title: 'Escuchar en Spotify',
+            platform: 'Spotify',
+            height: 152
+        });
+    }
+    
+    // YouTube Embed
+    if (songInfo.youtubeEmbed) {
+        embedsList.push({
+            src: songInfo.youtubeEmbed,
+            title: 'Ver en YouTube',
+            platform: 'YouTube',
+            height: 360
+        });
+    }
+    
+    // Apple Music Embed
+    if (songInfo.appleMusicEmbed) {
+        embedsList.push({
+            src: songInfo.appleMusicEmbed,
+            title: 'Escuchar en Apple Music',
+            platform: 'Apple Music',
+            height: 450
+        });
+    }
+    
+    // Amazon Music Embed - CORREGIDO
+    if (songInfo.amazonMusicEmbed) {
+        embedsList.push({
+            src: songInfo.amazonMusicEmbed,
+            title: 'Escuchar en Amazon Music',
+            platform: 'Amazon Music',
+            height: 352 
+        });
+    }
+    
+    // Enlaces externos (botones)
+    const externalLinks = [];
+    if (songInfo.spotifyLink) externalLinks.push({ url: songInfo.spotifyLink, name: 'Spotify', icon: 'fa-brands fa-spotify', class: 'spotify' });
+    if (songInfo.youtubeLink) externalLinks.push({ url: songInfo.youtubeLink, name: 'YouTube', icon: 'fa-brands fa-youtube', class: 'youtube' });
+    if (songInfo.appleMusicLink) externalLinks.push({ url: songInfo.appleMusicLink, name: 'Apple Music', icon: 'fa-brands fa-apple', class: 'apple' });
+    if (songInfo.amazonMusicLink) externalLinks.push({ url: songInfo.amazonMusicLink, name: 'Amazon Music', icon: 'fa-brands fa-amazon', class: 'amazon' });
+    if (songInfo.deezerLink) externalLinks.push({ url: songInfo.deezerLink, name: 'Deezer', icon: 'fa-brands fa-deezer', class: 'deezer' });
+    if (songInfo.tidalLink) externalLinks.push({ url: songInfo.tidalLink, name: 'Tidal', icon: 'fa-brands fa-tidal', class: 'tidal' });
+    if (songInfo.soundcloudLink) externalLinks.push({ url: songInfo.soundcloudLink, name: 'SoundCloud', icon: 'fa-brands fa-soundcloud', class: 'soundcloud' });
+    if (songInfo.instagramLink) externalLinks.push({ url: songInfo.instagramLink, name: 'Instagram', icon: 'fa-brands fa-instagram', class: 'instagram' });
+    if (songInfo.tiktokLink) externalLinks.push({ url: songInfo.tiktokLink, name: 'TikTok', icon: 'fa-brands fa-tiktok', class: 'tiktok' });
+    
+    // Construir el HTML final
+    let html = '';
+    
+    // Sección de reproducción (carrusel de embeds)
+    if (embedsList.length > 0) {
+        html += `
+            <div style="margin-bottom: 20px;">
+                <div class="gmx-platforms-title" style="margin-bottom: 12px;">
+                    <i class="fas fa-play-circle"></i> Reproducir ahora:
+                </div>
+                ${createIframeCarousel(embedsList)}
+            </div>
+        `;
+    }
+    
+    // Sección de enlaces externos
+    if (externalLinks.length > 0) {
+        html += `
+            <div>
+                <div class="gmx-platforms-title" style="margin-bottom: 12px;">
+                    <i class="fas fa-external-link-alt"></i> Abrir en:
+                </div>
+                <div class="gmx-platforms-links" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                    ${externalLinks.map(link => `
+                        <a href="${link.url}" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="gmx-platform-link ${link.class}"
+                           style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 50px; text-decoration: none; color: white; transition: all 0.2s;">
+                            <i class="${link.icon}"></i> ${link.name}
+                        </a>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+    
+    if (html === '') {
+        section.style.display = 'none';
+        return;
+    }
+    
+    container.innerHTML = html;
+    section.style.display = 'block';
+}
+/* Spotify tiene altura estándar */
+.carousel-item iframe[src*="spotify"] {
+    height: 152px;
+}
+
+/* Etiqueta de plataforma debajo del iframe */
+.carousel-item > div:last-child {
+    text-align: center;
+    font-size: 0.7rem;
+    margin-top: 10px;
+    opacity: 0.8;
+}
+
+/* Navegación del carrusel */
+.carousel-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+/* Botones de navegación */
+.carousel-btn {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: inherit;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+}
+
+.carousel-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+.carousel-btn:active {
     transform: scale(0.95);
+}
+
+/* Indicador de posición (ej: "1 / 3") */
+.carousel-position {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 5px 14px;
+    border-radius: 30px;
+    min-width: 65px;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* ============================================
+   RESPONSIVE: AJUSTE DE ALTURAS
+   ============================================ */
+
+/* Tablets */
+@media (max-width: 768px) {
+    .carousel-item iframe {
+        height: 140px;
+    }
+    .carousel-item iframe[src*="youtube"],
+    .carousel-item iframe[src*="youtu.be"] {
+        height: 250px;
+    }
+    .carousel-item iframe[src*="music.apple"] {
+        height: 350px;
+    }
+}
+
+/* Móviles grandes */
+@media (max-width: 480px) {
+    .carousel-item iframe {
+        height: 120px;
+    }
+    .carousel-item iframe[src*="youtube"],
+    .carousel-item iframe[src*="youtu.be"] {
+        height: 200px;
+    }
+    .carousel-item iframe[src*="music.apple"] {
+        height: 300px;
+    }
+    
+    .carousel-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 1em;
+    }
+    
+    .carousel-position {
+        font-size: 0.7rem;
+        padding: 4px 10px;
+        min-width: 55px;
+    }
+}
+
+/* Móviles muy pequeños */
+@media (max-width: 360px) {
+    .carousel-item iframe {
+        height: 100px;
+    }
+    .carousel-item iframe[src*="youtube"],
+    .carousel-item iframe[src*="youtu.be"] {
+        height: 180px;
+    }
+    .carousel-item iframe[src*="music.apple"] {
+        height: 250px;
+    }
+}
+
+/* ============================================
+   TEMA CLARO
+   ============================================ */
+.light-theme .carousel-btn {
+    background: rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.light-theme .carousel-btn:hover {
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.light-theme .carousel-position {
+    background: rgba(0, 0, 0, 0.15);
+    color: var(--text-dark);
+}
+/* ============================================
+   CONFIG PANEL
+   ============================================ */
+.gmx-config-panel {
+    background: var(--glass-bg);
+    margin: 0 20px 20px;
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+    overflow: hidden;
+}
+
+.gmx-config-toggle {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: inherit;
+    padding: 12px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    width: calc(100% - 40px);
+    text-align: center;
+    margin: 0 20px 20px;
+    transition: var(--transition);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.gmx-config-toggle::before {
+    content: "⚙️";
+}
+
+.gmx-config-toggle:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.gmx-config-content {
+    display: none;
+    padding: 20px;
+}
+
+.gmx-config-content.show {
+    display: block;
+}
+
+.gmx-config-item {
+    margin: 16px 0;
+}
+
+.gmx-config-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* ============================================
+   HELP SECTION
+   ============================================ */
+.gmx-help-section {
+    margin: 0 20px 20px;
+}
+
+.gmx-help-toggle {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: inherit;
+    padding: 12px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    transition: var(--transition);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.gmx-help-toggle::before {
+    content: "❓";
+}
+
+.gmx-help-toggle:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.gmx-help-content {
+    display: none;
+    padding: 20px;
+    background: var(--card-bg);
+    border-radius: 16px;
+    margin-top: 10px;
+}
+
+.gmx-help-content.show {
+    display: block;
+}
+
+.gmx-help-item {
+    margin-bottom: 16px;
+}
+
+.gmx-help-item h4 {
+    margin-bottom: 8px;
+    color: var(--primary-color);
+}
+
+.gmx-help-item p {
+    font-size: 0.9em;
+    line-height: 1.5;
+}
+
+.gmx-loop-indicator {
+    font-size: 0.7em;
+    margin-left: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+
+/* ============================================
+   ERROR & LOADING STATES
+   ============================================ */
+.song-info-error {
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.95), rgba(238, 90, 36, 0.95));
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 20px 16px;
+    margin: 15px 16px;
+    text-align: center;
+    color: white;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    animation: errorShake 0.5s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+@media (min-width: 768px) {
+    .song-info-error {
+        padding: 24px 20px;
+        margin: 15px 20px;
+    }
+}
+
+.song-info-error::before {
+    content: "⚠️";
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2em;
+    opacity: 0.3;
+    animation: errorPulse 2s infinite;
+}
+
+.song-info-error .error-message {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+@media (min-width: 480px) {
+    .song-info-error .error-message {
+        font-size: 1rem;
+    }
+}
+
+.song-info-error .error-detail {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    margin-top: 8px;
+    font-style: italic;
+}
+
+.song-info-error .error-icon {
+    font-size: 2em;
+    margin-bottom: 12px;
+    display: inline-block;
+    animation: errorBounce 1s infinite;
+}
+
+@media (min-width: 480px) {
+    .song-info-error .error-icon {
+        font-size: 2.2em;
+    }
+}
+
+.song-info-error .retry-button {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 50px;
+    margin-top: 15px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.song-info-error .retry-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.light-theme .song-info-error {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    color: white;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.song-info-error.compact {
+    padding: 16px;
+    margin: 10px;
+    font-size: 0.9em;
+}
+
+.song-info-error.compact::before {
+    font-size: 1.5em;
+}
+
+.song-info-error.compact .error-icon {
+    font-size: 1.8em;
+    margin-bottom: 8px;
+}
+
+@keyframes errorShake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+@keyframes errorPulse {
+    0%, 100% { opacity: 0.3; transform: translateY(-50%) scale(1); }
+    50% { opacity: 0.6; transform: translateY(-50%) scale(1.1); }
+}
+
+@keyframes errorBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Loading State */
+.song-info-loading {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95));
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 20px 16px;
+    margin: 15px 16px;
+    text-align: center;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+@media (min-width: 768px) {
+    .song-info-loading {
+        padding: 24px 20px;
+        margin: 15px 20px;
+    }
+}
+
+.song-info-loading::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: loadingShine 1.5s infinite;
+}
+
+.song-info-loading .loading-spinner {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 15px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: loadingSpin 0.8s linear infinite;
+}
+
+.song-info-loading .loading-text {
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.song-info-loading .loading-dots {
+    display: inline-block;
+    animation: loadingDots 1.4s infinite;
+}
+
+.light-theme .song-info-loading {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+@keyframes loadingShine {
+    100% { left: 100%; }
+}
+
+@keyframes loadingSpin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes loadingDots {
+    0%, 20% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* ============================================
+   SEARCH BAR
+   ============================================ */
+#gmxSearchInput {
+    font-size: 13px;
+    padding: 8px 32px 8px 12px;
+}
+
+@media (min-width: 480px) {
+    #gmxSearchInput {
+        font-size: 14px;
+        padding: 10px 35px 10px 15px;
+    }
+}
+
+#gmxSearchSuggestions {
+    max-height: 180px;
+}
+
+@media (min-width: 480px) {
+    #gmxSearchSuggestions {
+        max-height: 220px;
+    }
+}
+
+.gmx-search-suggestion {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+}
+
+@media (min-width: 480px) {
+    .gmx-search-suggestion {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+}
+
+/* ============================================
+   SLEEP TIMER MODAL
+   ============================================ */
+#gmxSleepDialog > div {
+    min-width: 260px;
+    width: 85%;
+    max-width: 320px;
+    margin: 16px;
+}
+
+@media (min-width: 480px) {
+    #gmxSleepDialog > div {
+        min-width: 280px;
+        width: auto;
+        max-width: 350px;
+    }
+}
+
+/* ============================================
+   TOAST NOTIFICATION
+   ============================================ */
+#gmxToast {
+    font-size: 12px;
+    padding: 8px 16px;
+    white-space: normal;
+    max-width: 90%;
+    text-align: center;
+}
+
+@media (min-width: 480px) {
+    #gmxToast {
+        font-size: 14px;
+        padding: 10px 20px;
+        white-space: nowrap;
+        max-width: none;
+    }
+}
+
+/* ============================================
+   DETAILS & SUMMARY
+   ============================================ */
+details {
+    word-wrap: break-word;
+}
+
+details summary {
+    font-size: 0.9rem;
+}
+
+@media (min-width: 480px) {
+    details summary {
+        font-size: 1rem;
+    }
+}
+
+/* ============================================
+   LIGHT THEME SPECIFIC
+   ============================================ */
+.light-theme .gmx-volume-slider {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.light-theme .gmx-volume-control {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+/* ============================================
+   MEDIA QUERIES - SMALL SCREENS
+   ============================================ */
+@media (max-width: 380px) {
+    .gmx-control-buttons {
+        gap: 8px;
+    }
+    
+    .gmx-control-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 1.1em;
+    }
+    
+    .gmx-play-pause {
+        width: 46px;
+        height: 46px;
+        font-size: 1.4em;
+    }
+    
+    .gmx-additional-btn {
+        padding: 6px 10px;
+        font-size: 0.7rem;
+    }
+    
+    .gmx-song-title {
+        font-size: 0.8rem;
+        max-width: 140px;
+    }
+    
+    .gmx-badge {
+        font-size: 0.6em;
+        padding: 2px 5px;
+    }
+    
+    .gmx-volume-control {
+        gap: 6px;
+        padding: 6px 10px;
+    }
+    
+    .gmx-volume-control > span:first-child {
+        font-size: 0.85rem;
+    }
+    
+    .gmx-volume-slider {
+        min-width: 50px;
+        height: 4px;
+    }
+    
+    .gmx-volume-slider::-webkit-slider-thumb {
+        width: 12px;
+        height: 12px;
+    }
+    
+    .gmx-volume-value {
+        font-size: 0.65rem;
+        min-width: 34px;
+    }
+}
+
+@media (max-width: 320px) {
+    .gmx-volume-control {
+        gap: 5px;
+        padding: 5px 8px;
+    }
+    
+    .gmx-volume-control > span:first-child {
+        font-size: 0.75rem;
+    }
+    
+    .gmx-volume-slider {
+        min-width: 40px;
+    }
+    
+    .gmx-volume-value {
+        font-size: 0.6rem;
+        min-width: 30px;
+    }
+}
+
+/* ============================================
+   LANDSCAPE MODE
+   ============================================ */
+@media (max-width: 768px) and (orientation: landscape) {
+    .grouvex-music-player {
+        max-width: 95%;
+    }
+    
+    .gmx-playlist {
+        max-height: 180px;
+    }
+    
+    .song-illustration {
+        max-height: 200px;
+    }
+    
+    .gmx-visualizer {
+        height: 30px;
+    }
+    
+    .gmx-volume-control {
+        padding: 6px 10px;
+        gap: 8px;
+    }
+    
+    .gmx-volume-slider {
+        min-width: 80px;
+    }
+}
+
+/* ============================================
+   RANDOM MOVE ANIMATION FOR TITLE
+   ============================================ */
+@keyframes randomMove {
+    0% { background-position: 0% 0%; }
+    17% { background-position: 80% 20%; }
+    34% { background-position: 20% 90%; }
+    51% { background-position: 100% 50%; }
+    68% { background-position: 0% 80%; }
+    85% { background-position: 60% 0%; }
+    100% { background-position: 0% 0%; }
 }
 </style>
 </head>
@@ -1170,6 +2226,7 @@
     <iframe  id="gmxEmbedIframeSpotify" data-testid="embed-iframe" style="border-radius:12px; display:none" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     <iframe id="gmxEmbedIframeYouTube" style="display:none" type="text/html" width="100%" height="360" frameborder="0"></iframe>
     <iframe id="gmxEmbedIframeAppleMusic" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" frameborder="0" height="450" style="width:100%;max-width:660px;overflow:hidden;border-radius:10px;display:none" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"></iframe>
+    <iframe id='gmxEmbedIframeAmazonMusic' width='100%' height='352px' frameBorder='0' style='border-radius:20px;max-width:'></iframe>
   </div>
 <details style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal; max-width: 100%; background: rgba(0, 0, 0, 0.7); border-radius: 12px; padding: 12px 16px; margin: 15px 0; border-left: 3px solid var(--primary-color, #667eea);">
     <summary style="text-align: left; direction: ltr; font-weight: bold; cursor: pointer; color: var(--primary-color):">¿Cómo funciona este reproductor?</summary>
@@ -2438,50 +3495,284 @@ function gmxToggleCurrentLike() {
     if (songInfo.artista) document.getElementById('gmxCurrentSongArtist').textContent = songInfo.artista;
   }
   
-  function renderPlatformLinks(songInfo) {
-      const section = document.getElementById('gmxPlatformsSection');
-      const container = document.getElementById('gmxPlatformsLinks');
-      const titleSpan = document.getElementById('gmxPlatforms');
-      const embedPlayer = document.getElementById('gmxEmbedPlayer');
-      const spotifyIframe = document.getElementById('gmxEmbedIframeSpotify');
-      const youtubeIframe = document.getElementById('gmxEmbedIframeYouTube');
-      const appleMusisIframe = document.getElementById('gmxEmbedIframeAppleMusic')
-      if (!section || !container) return;
-      titleSpan.innerHTML = songInfo.plataformas || 'No especificado';
-      container.innerHTML = '';
-      if (embedPlayer) embedPlayer.style.display = 'none';
-      if (spotifyIframe) { spotifyIframe.src = ''; spotifyIframe.classList.remove('active'); }
-      if (youtubeIframe) { youtubeIframe.src = ''; youtubeIframe.classList.remove('active'); }
-      if (appleMusisIframe) { appleMusisIframe.src = ''; appleMusisIframe.classList.remove('active'); }
-      const links = [];
-      if (songInfo.spotifyLink) links.push({ url: songInfo.spotifyLink, name: 'Spotify', icon: 'fa-brands fa-spotify', class: 'spotify' });
-      if (songInfo.spotifyEmbed) gmxPlayEmbed(songInfo.spotifyEmbed, 'spotify');
-      if (songInfo.youtubeLink)links.push({ url: songInfo.youtubeLink, name: 'YouTube', icon: 'fa-brands fa-youtube', class: 'youtube' });
-      if (songInfo.youtubeEmbed) gmxPlayEmbed(songInfo.youtubeEmbed, 'youtube');
-      if (songInfo.appleMusicLink) links.push({ url: songInfo.appleMusicLink, name: 'Apple Music', icon: 'fa-brands fa-apple', class: 'apple' });
-      if (songInfo.appleMusisIframe) gmxPlayEmbed(songInfo.appleMusisIframe, 'appleMusis');
-      if (songInfo.amazonMusicLink) links.push({ url: songInfo.amazonMusicLink, name: 'Amazon Music', icon: 'fa-brands fa-amazon', class: 'amazon' });
-      if (songInfo.instagramLink) links.push({ url: songInfo.instagramLink, name: 'Instagram (Meta)', icon: 'fa-brands fa-instagram', class: 'instagram' });
-      if (songInfo.tiktokLink) links.push({ url: songInfo.tiktokLink, name: 'TikTok Music', icon: 'fa-brands fa-tiktok', class: 'tiktok' });
-      
-      if (links.length === 0) { section.style.display = 'none'; return; }
-      section.style.display = 'block';
-      links.forEach(link => {
-        const a = document.createElement('a'); 
-        a.href = link.url;
-        a.title = link.name;
-        a.rel = "noopener noreferrer";
-        a.referrerpolicy = "strict-origin-when-cross-origin";
-        a.target = '_blank'; 
-        a.className = `gmx-platform-link ${link.class}`;
-        a.innerHTML = `<i class="${link.icon}"></i> ${link.name}`;
-        a.setAttribute('aria-label', `Abrir en ${link.name}`);
-        a.setAttribute('data-platform', link.class);
-        container.appendChild(a);
-      });
-  }
+// ============================================
+// FUNCIONES DEL CARRUSEL EXACTO
+// ============================================
+
+// Almacenar estado de cada carrusel
+window.carouselStates = new Map();
+
+function initCarousel(carouselId, totalItems) {
+    window.carouselStates.set(carouselId, {
+        currentIndex: 0,
+        totalItems: totalItems,
+        wrapperId: `${carouselId}_wrapper`
+    });
+}
+
+function scrollToExactItem(carouselId, newIndex) {
+    const state = window.carouselStates.get(carouselId);
+    if (!state) return;
+    
+    const wrapper = document.getElementById(state.wrapperId);
+    if (!wrapper) return;
+    
+    const items = wrapper.querySelectorAll('.carousel-item');
+    if (newIndex < 0 || newIndex >= items.length) return;
+    
+    const targetItem = items[newIndex];
+    const scrollAmount = targetItem.offsetLeft - wrapper.offsetLeft;
+    
+    wrapper.scrollTo({
+        left: scrollAmount,
+        behavior: 'smooth'
+    });
+    
+    state.currentIndex = newIndex;
+    
+    // Actualizar indicador
+    const positionSpan = document.querySelector(`.carousel-position[data-carousel="${carouselId}"]`);
+    if (positionSpan) {
+        positionSpan.textContent = `${newIndex + 1} / ${state.totalItems}`;
+    }
+}
+
+function nextSlide(carouselId) {
+    const state = window.carouselStates.get(carouselId);
+    if (state && state.currentIndex < state.totalItems - 1) {
+        scrollToExactItem(carouselId, state.currentIndex + 1);
+    }
+}
+
+function prevSlide(carouselId) {
+    const state = window.carouselStates.get(carouselId);
+    if (state && state.currentIndex > 0) {
+        scrollToExactItem(carouselId, state.currentIndex - 1);
+    }
+}
+
+// Detectar scroll manual para actualizar el índice
+function setupCarouselScrollTracking() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const item = entry.target;
+                const wrapper = item.closest('.row-wrapper');
+                if (!wrapper) return;
+                
+                // Encontrar el carouselId
+                let carouselId = null;
+                for (const [id, state] of window.carouselStates.entries()) {
+                    if (state.wrapperId === wrapper.id) {
+                        carouselId = id;
+                        break;
+                    }
+                }
+                
+                if (carouselId) {
+                    const newIndex = parseInt(item.dataset.index);
+                    const state = window.carouselStates.get(carouselId);
+                    if (state && state.currentIndex !== newIndex) {
+                        state.currentIndex = newIndex;
+                        const positionSpan = document.querySelector(`.carousel-position[data-carousel="${carouselId}"]`);
+                        if (positionSpan) {
+                            positionSpan.textContent = `${newIndex + 1} / ${state.totalItems}`;
+                        }
+                    }
+                }
+            }
+        });
+    }, { threshold: 0.6 });
+    
+    // Observar items existentes y futuros
+    const observerItems = () => {
+        document.querySelectorAll('.carousel-item').forEach(item => observer.observe(item));
+    };
+    
+    observerItems();
+    
+    // Observar cambios en el DOM
+    const domObserver = new MutationObserver(() => observerItems());
+    domObserver.observe(document.body, { childList: true, subtree: true });
+}
+
+// Crear carrusel con 1 iframe visible
+function createIframeCarousel(iframesData) {
+    if (!iframesData || iframesData.length === 0) return '';
+    
+    const carouselId = 'carousel_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
+    
+    // Determinar altura óptima
+    let defaultHeight = 152;
+    if (iframesData.some(f => f.platform === 'YouTube')) defaultHeight = 360;
+    if (iframesData.some(f => f.platform === 'Apple Music')) defaultHeight = 450;
+    if (iframesData.some(f => f.platform === 'Amazon Music')) defaultHeight = 355;
+    const html = `
+        <div class="iframe-carousel-container">
+            <div class="row-wrapper" id="${carouselId}_wrapper">
+                ${iframesData.map((iframe, idx) => `
+                    <div class="carousel-item" data-index="${idx}" data-carousel="${carouselId}">
+                        <iframe 
+                            src="${iframe.src}"
+                            title="${iframe.title}"
+                            frameborder="0"
+                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                            loading="lazy"
+                            style="width:100%; height:${defaultHeight}px; border-radius:16px;">
+                        </iframe>
+                        <div>${iframe.platform}</div>
+                    </div>
+                `).join('')}
+            </div>
+            ${iframesData.length > 1 ? `
+            <div class="carousel-nav">
+                <button class="carousel-btn" onclick="prevSlide('${carouselId}')">◀</button>
+                <span class="carousel-position" data-carousel="${carouselId}">1 / ${iframesData.length}</span>
+                <button class="carousel-btn" onclick="nextSlide('${carouselId}')">▶</button>
+            </div>
+            ` : ''}
+        </div>
+    `;
+    
+    initCarousel(carouselId, iframesData.length);
+    return html;
+}
+
+// Inicializar todo al cargar la página
+document.addEventListener('DOMContentLoaded', () => {
+    setupCarouselScrollTracking();
+    window.nextSlide = nextSlide;
+    window.prevSlide = prevSlide;
+    window.createIframeCarousel = createIframeCarousel;
+});
+
+// Función RENDERIZADORA de plataformas con carrusel (REEMPLAZAR la existente)
+// Función RENDERIZADORA de plataformas con carrusel - CORREGIDA
+function renderPlatformLinks(songInfo) {
+    const section = document.getElementById('gmxPlatformsSection');
+    const container = document.getElementById('gmxPlatformsLinks');
+    const titleSpan = document.getElementById('gmxPlatforms');
+    const embedPlayer = document.getElementById('gmxEmbedPlayer');
+    const spotifyIframe = document.getElementById('gmxEmbedIframeSpotify');
+    const youtubeIframe = document.getElementById('gmxEmbedIframeYouTube');
+    const appleMusicIframe = document.getElementById('gmxEmbedIframeAppleMusic');
+    const amazonMusicIframe = document.getElementById('gmxEmbedIframeAmazonMusic');
+    
+    if (!section || !container) return;
+    
+    titleSpan.innerHTML = songInfo.plataformas || 'Plataformas digitales';
+    container.innerHTML = '';
+    
+    // Ocultar reproductor individual antiguo
+    if (embedPlayer) embedPlayer.style.display = 'none';
+    if (spotifyIframe) { spotifyIframe.src = ''; spotifyIframe.style.display = 'none'; }
+    if (youtubeIframe) { youtubeIframe.src = ''; youtubeIframe.style.display = 'none'; }
+    if (appleMusicIframe) { appleMusicIframe.src = ''; appleMusicIframe.style.display = 'none'; }
+    if (amazonMusicIframe) { amazonMusicIframe.src = ''; amazonMusicIframe.style.display = 'none'; }
+    // NOTA: Eliminé la referencia a deezerIframe que no existe
+    
+    // Recopilar todos los embeds disponibles
+    const embedsList = [];
+    
+    // Spotify Embed
+    if (songInfo.spotifyEmbed) {
+        embedsList.push({
+            src: songInfo.spotifyEmbed,
+            title: 'Escuchar en Spotify',
+            platform: 'Spotify',
+            height: 152
+        });
+    }
+    
+    // YouTube Embed
+    if (songInfo.youtubeEmbed) {
+        embedsList.push({
+            src: songInfo.youtubeEmbed,
+            title: 'Ver en YouTube',
+            platform: 'YouTube',
+            height: 360
+        });
+    }
+    
+    // Apple Music Embed
+    if (songInfo.appleMusicEmbed) {
+        embedsList.push({
+            src: songInfo.appleMusicEmbed,
+            title: 'Escuchar en Apple Music',
+            platform: 'Apple Music',
+            height: 450
+        });
+    }
+    
+    // Amazon Music Embed - CORREGIDO
+    if (songInfo.amazonMusicEmbed) {
+        embedsList.push({
+            src: songInfo.amazonMusicEmbed,
+            title: 'Escuchar en Amazon Music',
+            platform: 'Amazon Music',
+            height: 352  // Altura estándar para Amazon Music
+        });
+    }
+    
+    // Enlaces externos (botones)
+    const externalLinks = [];
+    if (songInfo.spotifyLink) externalLinks.push({ url: songInfo.spotifyLink, name: 'Spotify', icon: 'fa-brands fa-spotify', class: 'spotify' });
+    if (songInfo.youtubeLink) externalLinks.push({ url: songInfo.youtubeLink, name: 'YouTube', icon: 'fa-brands fa-youtube', class: 'youtube' });
+    if (songInfo.appleMusicLink) externalLinks.push({ url: songInfo.appleMusicLink, name: 'Apple Music', icon: 'fa-brands fa-apple', class: 'apple' });
+    if (songInfo.amazonMusicLink) externalLinks.push({ url: songInfo.amazonMusicLink, name: 'Amazon Music', icon: 'fa-brands fa-amazon', class: 'amazon' });
+    if (songInfo.deezerLink) externalLinks.push({ url: songInfo.deezerLink, name: 'Deezer', icon: 'fa-brands fa-deezer', class: 'deezer' });
+    if (songInfo.tidalLink) externalLinks.push({ url: songInfo.tidalLink, name: 'Tidal', icon: 'fa-brands fa-tidal', class: 'tidal' });
+    if (songInfo.soundcloudLink) externalLinks.push({ url: songInfo.soundcloudLink, name: 'SoundCloud', icon: 'fa-brands fa-soundcloud', class: 'soundcloud' });
+    if (songInfo.instagramLink) externalLinks.push({ url: songInfo.instagramLink, name: 'Instagram', icon: 'fa-brands fa-instagram', class: 'instagram' });
+    if (songInfo.tiktokLink) externalLinks.push({ url: songInfo.tiktokLink, name: 'TikTok', icon: 'fa-brands fa-tiktok', class: 'tiktok' });
+    
+    // Construir el HTML final
+    let html = '';
+    
+    // Sección de reproducción (carrusel de embeds)
+    if (embedsList.length > 0) {
+        html += `
+            <div style="margin-bottom: 20px;">
+                <div class="gmx-platforms-title" style="margin-bottom: 12px;">
+                    <i class="fas fa-play-circle"></i> Reproducir ahora:
+                </div>
+                ${createIframeCarousel(embedsList)}
+            </div>
+        `;
+    }
+    
+    // Sección de enlaces externos
+    if (externalLinks.length > 0) {
+        html += `
+            <div>
+                <div class="gmx-platforms-title" style="margin-bottom: 12px;">
+                    <i class="fas fa-external-link-alt"></i> Abrir en:
+                </div>
+                <div class="gmx-platforms-links" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                    ${externalLinks.map(link => `
+                        <a href="${link.url}" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="gmx-platform-link ${link.class}"
+                           style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 50px; text-decoration: none; color: white; transition: all 0.2s;">
+                            <i class="${link.icon}"></i> ${link.name}
+                        </a>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+    
+    if (html === '') {
+        section.style.display = 'none';
+        return;
+    }
+    
+    container.innerHTML = html;
+    section.style.display = 'block';
+}
   
-  function gmxPlayEmbed(embedUrl,type){const ep=document.getElementById('gmxEmbedPlayer');const ifrSpot=document.getElementById('gmxEmbedIframeSpotify');const ifrYou=document.getElementById('gmxEmbedIframeYouTube');const ifrApple=document.getElementById('gmxEmbedIframeAppleMusic');if(type==='spotify'&&ifrSpot&&embedUrl){ifrSpot.src='';ifrSpot.src=embedUrl;ifrSpot.style.display='block';}if(type==='youtube'&&ifrYou&&embedUrl){ifrYou.src='';ifrYou.src=embedUrl;ifrYou.style.display='block';}if(type==='appleMusis'&&ifrApple&&embedUrl){ifrApple.src='';ifrApple.src=embedUrl;ifrApple.style.display='block';}if(ep)ep.style.display='block';}
+  function gmxPlayEmbed(embedUrl,type){const ep=document.getElementById('gmxEmbedPlayer');const ifrSpot=document.getElementById('gmxEmbedIframeSpotify');const ifrYou=document.getElementById('gmxEmbedIframeYouTube');const ifrApple=document.getElementById('gmxEmbedIframeAppleMusic');const ifrAmaz=document.getElementById('gmxEmbedIframeAmazonMusic');if(type==='spotify'&&ifrSpot&&embedUrl){ifrSpot.src='';ifrSpot.src=embedUrl;ifrSpot.style.display='block';}if(type==='youtube'&&ifrYou&&embedUrl){ifrYou.src='';ifrYou.src=embedUrl;ifrYou.style.display='block';}if(type==='appleMusis'&&ifrApple&&embedUrl){ifrApple.src='';ifrApple.src=embedUrl;ifrApple.style.display='block';}if(type==='amazonMusic'&&ifrAmaz&&embedUrl){ifrAmaz.src='';ifrAmaz.src=embedUrl;ifrAmaz.style.display='block';}if(ep)ep.style.display='block';}
   function gmxCloseEmbed(){const ep=document.getElementById('gmxEmbedPlayer');const ifrSpot=document.getElementById('gmxEmbedIframeSpotify');const ifrYou=document.getElementById('gmxEmbedIframeYouTube');if(ep)ep.style.display='none';if(ifrSpot){ifrSpot.src='';ifrSpot.style.display='none';}if(ifrYou){ifrYou.src='';ifrYou.style.display='none';}}
   function showSongInfoError(msg) { const c = document.getElementById('songInfoContainer'); if (c) { c.innerHTML = `<div class="song-info-error"><div class="error-icon">⚠️</div><div class="error-message">${msg}</div><div class="error-detail">Verifica tu conexión o intenta más tarde</div><button class="retry-button" onclick="gmxRetryLoadSong()">🔄 Reintentar</button></div>`; c.classList.add('show'); } }
   function gmxRetryLoadSong() {

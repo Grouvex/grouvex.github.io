@@ -2060,7 +2060,7 @@ details summary {
     <button class="gmx-theme-toggle" onclick="gmxToggleTheme()">🌙 Tema</button>
   </div>
 <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5; font-size: 0.75em; opacity: 0.6;">
-  La lista de canciones tarda unos segundos en cargar. Para verla, presione "Playlist".
+  La lista de canciones tarda unos segundos en cargar. Para verla, presione "Playlist". Si está en un ordenador, pulse 'h' o 'H' para entrar en el panel de comandos para manejarte mejor en nuestra reproductora.
 </p>
   <div class="gmx-playlist-container" id="gmxPlaylistContent">
     <div class="gmx-playlist" id="gmxPlaylist"></div>
@@ -3842,65 +3842,220 @@ function gmxInitMediaKeys() {
     
     // Teclas de teclado estándar (como respaldo/adicional)
     document.addEventListener('keydown', (e) => {
+        // ✅ CRUCIAL: No interferir con atajos que usan Ctrl, Alt, Meta (Cmd)
+        if (e.ctrlKey || e.altKey || e.metaKey) {
+            return;  // Permitir que Ctrl+R, Ctrl+F, Ctrl+S, etc. funcionen normalmente
+        }
+        
         // Prevenir si hay un input activo
         const activeElement = document.activeElement;
-        if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA')) {
+        if (activeElement && (activeElement.tagName === 'INPUT' || 
+                              activeElement.tagName === 'TEXTAREA' || 
+                              activeElement.isContentEditable)) {
             return;
         }
         
-        switch(e.key) {
-            case ' ':
-            case 'Space':
-                e.preventDefault();
-                gmxTogglePlay();
-                break;
-            case 'ArrowLeft':
-                e.preventDefault();
-                // Retroceder 5 segundos
+        // Mapa de teclas a acciones
+        const keyActions = {
+            // Reproducción básica
+            ' ': () => gmxTogglePlay(),
+            'Space': () => gmxTogglePlay(),
+            
+            // Navegación por tiempo
+            'ArrowLeft': () => {
                 const audio = document.getElementById('gmxAudioPlayer');
-                if (audio.src && !gmxIsPreviewMode) {
+                if (audio.src && !gmxIsPreviewMode && audio.duration) {
                     audio.currentTime = Math.max(0, audio.currentTime - 5);
-                    gmxShowToast(`◀ Retroceder 5 segundos`, 800);
+                    gmxShowToast(`◀ -5s`, 600);
                 }
-                break;
-            case 'ArrowRight':
-                e.preventDefault();
-                // Adelantar 5 segundos
-                const audio2 = document.getElementById('gmxAudioPlayer');
-                if (audio2.src && !gmxIsPreviewMode && audio2.duration) {
-                    audio2.currentTime = Math.min(audio2.duration, audio2.currentTime + 5);
-                    gmxShowToast(`Adelantar 5 segundos ▶`, 800);
+            },
+            'ArrowRight': () => {
+                const audio = document.getElementById('gmxAudioPlayer');
+                if (audio.src && !gmxIsPreviewMode && audio.duration) {
+                    audio.currentTime = Math.min(audio.duration, audio.currentTime + 5);
+                    gmxShowToast(`+5s ▶`, 600);
                 }
-                break;
-            case 'ArrowUp':
-                e.preventDefault();
-                const volumeUp = document.getElementById('gmxAudioPlayer').volume;
-                gmxSetVolume(Math.min(1, volumeUp + 0.05));
-                gmxShowToast(`🔊 Volumen: ${Math.round((volumeUp + 0.05) * 100)}%`, 800);
-                break;
-            case 'ArrowDown':
-                e.preventDefault();
-                const volumeDown = document.getElementById('gmxAudioPlayer').volume;
-                gmxSetVolume(Math.max(0, volumeDown - 0.05));
-                gmxShowToast(`🔈 Volumen: ${Math.round((volumeDown - 0.05) * 100)}%`, 800);
-                break;
-            case 'l':
-            case 'L':
-                e.preventDefault();
-                if (gmxCurrentPlaylist[gmxCurrentIndex]) {
-                    gmxToggleLike(gmxCurrentPlaylist[gmxCurrentIndex]);
+            },
+            
+            // Navegación entre canciones
+            'ArrowUp': () => {
+                const audio = document.getElementById('gmxAudioPlayer');
+                const newVol = Math.min(1, audio.volume + 0.05);
+                gmxSetVolume(newVol);
+                gmxShowToast(`🔊 ${Math.round(newVol * 100)}%`, 600);
+            },
+            'ArrowDown': () => {
+                const audio = document.getElementById('gmxAudioPlayer');
+                const newVol = Math.max(0, audio.volume - 0.05);
+                gmxSetVolume(newVol);
+                gmxShowToast(`🔈 ${Math.round(newVol * 100)}%`, 600);
+            },
+            
+            // Letras (mayúsculas/minúsculas funcionan igual)
+            'l': () => { if (gmxCurrentPlaylist[gmxCurrentIndex]) gmxToggleLike(gmxCurrentPlaylist[gmxCurrentIndex]); },
+            'L': () => { if (gmxCurrentPlaylist[gmxCurrentIndex]) gmxToggleLike(gmxCurrentPlaylist[gmxCurrentIndex]); },
+            's': () => gmxToggleShuffle(),
+            'S': () => gmxToggleShuffle(),
+            'r': () => gmxToggleLoop(),
+            'R': () => gmxToggleLoop(),
+            
+            // 🆕 NUEVOS ATAJOS
+            'p': () => gmxTogglePlaylist(),
+            'P': () => gmxTogglePlaylist(),
+            
+            't': () => gmxToggleTheme(),
+            'T': () => gmxToggleTheme(),
+            
+            'm': () => {
+                const audio = document.getElementById('gmxAudioPlayer');
+                if (audio.volume > 0) {
+                    window._gmxLastVolume = audio.volume;
+                    gmxSetVolume(0);
+                    gmxShowToast(`🔇 Silenciado`, 600);
+                } else {
+                    const lastVol = window._gmxLastVolume || 0.8;
+                    gmxSetVolume(lastVol);
+                    gmxShowToast(`🔊 ${Math.round(lastVol * 100)}%`, 600);
                 }
-                break;
-            case 's':
-            case 'S':
-                e.preventDefault();
-                gmxToggleShuffle();
-                break;
-            case 'r':
-            case 'R':
-                e.preventDefault();
-                gmxToggleLoop();
-                break;
+            },
+            'M': () => {
+                const audio = document.getElementById('gmxAudioPlayer');
+                if (audio.volume > 0) {
+                    window._gmxLastVolume = audio.volume;
+                    gmxSetVolume(0);
+                    gmxShowToast(`🔇 Silenciado`, 600);
+                } else {
+                    const lastVol = window._gmxLastVolume || 0.8;
+                    gmxSetVolume(lastVol);
+                    gmxShowToast(`🔊 ${Math.round(lastVol * 100)}%`, 600);
+                }
+            },
+            
+            'f': () => {
+                const player = document.getElementById('grouvexMusicPlayer');
+                if (player) {
+                    if (!document.fullscreenElement) {
+                        player.requestFullscreen().catch(() => {});
+                        gmxShowToast(`🖥️ Pantalla completa`, 800);
+                    } else {
+                        document.exitFullscreen();
+                        gmxShowToast(`🖥️ Salir`, 800);
+                    }
+                }
+            },
+            'F': () => {
+                const player = document.getElementById('grouvexMusicPlayer');
+                if (player) {
+                    if (!document.fullscreenElement) {
+                        player.requestFullscreen().catch(() => {});
+                        gmxShowToast(`🖥️ Pantalla completa`, 800);
+                    } else {
+                        document.exitFullscreen();
+                        gmxShowToast(`🖥️ Salir`, 800);
+                    }
+                }
+            },
+            
+            'n': () => gmxNextSong(),
+            'N': () => gmxNextSong(),
+            
+            'b': () => gmxPreviousSong(),
+            'B': () => gmxPreviousSong(),
+            
+            'v': () => {
+                const visualizer = document.getElementById('gmxVisualizer');
+                if (visualizer) {
+                    const isHidden = visualizer.style.display === 'none';
+                    visualizer.style.display = isHidden ? 'flex' : 'none';
+                    gmxShowToast(isHidden ? '🎨 Visualizador ON' : '🎨 Visualizador OFF', 600);
+                }
+            },
+            'V': () => {
+                const visualizer = document.getElementById('gmxVisualizer');
+                if (visualizer) {
+                    const isHidden = visualizer.style.display === 'none';
+                    visualizer.style.display = isHidden ? 'flex' : 'none';
+                    gmxShowToast(isHidden ? '🎨 Visualizador ON' : '🎨 Visualizador OFF', 600);
+                }
+            },
+            
+            'h': () => gmxShowKeyboardHelp(),
+            'H': () => gmxShowKeyboardHelp(),
+        };
+        
+        // Ejecutar acción si existe
+        const action = keyActions[e.key];
+        if (action) {
+            e.preventDefault();
+            action();
+        }
+    });
+}
+
+// 🆕 Función para mostrar ayuda de atajos de teclado
+function gmxShowKeyboardHelp() {
+    // Eliminar ayuda existente
+    const existingHelp = document.getElementById('gmxKeyboardHelp');
+    if (existingHelp) {
+        existingHelp.remove();
+        return;
+    }
+    
+    const helpDiv = document.createElement('div');
+    helpDiv.id = 'gmxKeyboardHelp';
+    helpDiv.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--card-bg);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        padding: 24px;
+        max-width: 90%;
+        width: 420px;
+        z-index: 10002;
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        font-size: 14px;
+    `;
+    
+    helpDiv.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="margin: 0;">⌨️ Atajos de Teclado</h3>
+            <button onclick="this.closest('#gmxKeyboardHelp').remove()" 
+                    style="background: none; border: none; font-size: 24px; cursor: pointer; color: inherit;">✕</button>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div><kbd style="background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 6px;">␣</kbd></div><div>Play / Pausa</div>
+            <div><kbd>◀</kbd> / <kbd>B</kbd></div><div>Canción anterior</div>
+            <div><kbd>▶</kbd> / <kbd>N</kbd></div><div>Siguiente canción</div>
+            <div><kbd>←</kbd></div><div>-5 segundos</div>
+            <div><kbd>→</kbd></div><div>+5 segundos</div>
+            <div><kbd>↑</kbd> / <kbd>↓</kbd></div><div>Subir/Bajar volumen</div>
+            <div><kbd>M</kbd></div><div>Silenciar/Activar</div>
+            <div><kbd>L</kbd></div><div>Dar/Quitar Like</div>
+            <div><kbd>S</kbd></div><div>Aleatorio (Shuffle)</div>
+            <div><kbd>R</kbd></div><div>Repetir (Loop)</div>
+            <div><kbd>P</kbd></div><div>Mostrar/ocultar Playlist</div>
+            <div><kbd>T</kbd></div><div>Cambiar Tema</div>
+            <div><kbd>V</kbd></div><div>Mostrar/ocultar Visualizador</div>
+            <div><kbd>F</kbd></div><div>Pantalla completa</div>
+            <div><kbd>?</kbd> / <kbd>/</kbd></div><div>Mostrar esta ayuda</div>
+        </div>
+        <hr style="margin: 16px 0; border-color: var(--glass-border);">
+        <p style="margin: 0; font-size: 12px; opacity: 0.7; text-align: center;">
+            💡 Los atajos funcionan sin presionar Ctrl/Alt/Cmd<br>
+            No funcionan si hay un input o textarea activo
+        </p>
+    `;
+    
+    document.body.appendChild(helpDiv);
+    
+    // Cerrar al hacer clic fuera
+    helpDiv.addEventListener('click', (e) => {
+        if (e.target === helpDiv) {
+            helpDiv.remove();
         }
     });
 }

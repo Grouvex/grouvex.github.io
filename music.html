@@ -3599,7 +3599,6 @@ function gmxToggleCurrentLike() {
         <div class="song-genres">${[songInfo.generoPrimario, songInfo.generoSecundario].filter(g => g).map(g => `<span class="genre-tag">${g}</span>`).join('')}</div>
         <div class="song-details-grid">
           <div class="detail-item"><div class="detail-label">Categoría del Lanzamiento</div><div>${songInfo.categoria || 'No especificado'}</div></div>
-          <div class="detail-item"><div class="detail-label">UPC/EAN</div><div>${songInfo.upcean || 'No especificado'}</div></div>
           <div class="detail-item"><div class="detail-label">Información para colaboradores</div><div>${songInfo.infoColaboradores || 'No especificado'}</div></div>
           <div class="detail-item"><div class="detail-label">Letristas</div><div>${songInfo.letristas || 'No especificado'}</div></div>
           <div class="detail-item"><div class="detail-label">Contenido Explícito</div><div>${songInfo.explicit || 'No especificado'}</div></div>

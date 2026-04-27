@@ -2156,7 +2156,7 @@ details summary {
     <a href="https://records.grouvex.com"><img src="https://grouvex.github.io/img/Grouvex1.png" alt="Logo"></a>
 <h1 style="padding: 12px 24px; background: linear-gradient(135deg, #2dd4bf, #818cf8, #c084fc, #f472b6, #fb923c, #facc15, #4ade80, #2dd4bf); background-size: 600% 600%; border-radius: 80px; text-align: center; font-size: clamp(1.2rem, 5vw, 1.8rem); font-weight: 600; color: white; text-shadow: 0 1px 4px rgba(0,0,0,0.2); box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: none; animation: randomMove 20s ease-in-out infinite; transition: all 0.3s ease; cursor: pointer; letter-spacing: 0.5px;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';">Reproductor de Música</h1>
   </div>
-  <div class="gmx-playlist-container" id="gmxPlaylistContent">
+  <div class="gmx-playlist-container show" id="gmxPlaylistContent">
     <div class="gmx-playlist" id="gmxPlaylist"></div>
   </div>
   <div class="gmx-visualizer" id="gmxVisualizer">
@@ -2172,13 +2172,11 @@ details summary {
       <div class="gmx-time-display"><span id="gmxCurrentTime">0:00</span><span id="gmxDuration">0:00</span></div>
     </div>
     <div class="gmx-control-buttons">
-      <button class="gmx-playlist-toggle" onclick="gmxTogglePlaylist()">📋</button>
       <button class="gmx-additional-btn" id="gmxShuffleBtn" onclick="gmxToggleShuffle()">🔀</button>
       <button class="gmx-control-btn" onclick="gmxPreviousSong()">⏮</button>
       <button class="gmx-control-btn gmx-play-pause" onclick="gmxTogglePlay()">▶</button>
       <button class="gmx-control-btn" onclick="gmxNextSong()">⏭</button>
       <button class="gmx-additional-btn" id="gmxLoopBtn" onclick="gmxToggleLoop()">🔁</button>
-      <button class="gmx-additional-btn" id="gmxLikeBtn" onclick="gmxToggleCurrentLike()" style="display: none;">❤️ Like</button>
     </div>
     <div class="gmx-volume-control">
       <span>🔊</span>
@@ -2186,9 +2184,11 @@ details summary {
       <span class="gmx-volume-value" id="gmxVolumeValue">100%</span>
     </div>
     <div class="gmx-additional-controls">
+      <button class="gmx-playlist-toggle" onclick="gmxTogglePlaylist()">📋</button>
       <button class="gmx-additional-btn" onclick="gmxToggleFullscreen()">🖥️</button>
       <button class="gmx-theme-toggle" onclick="gmxToggleTheme()">🌙 </button>
       <button class="gmx-additional-btn" onclick="gmxShowKeyboardHelp()">❓</button>
+      <button class="gmx-additional-btn" id="gmxLikeBtn" onclick="gmxToggleCurrentLike()" style="display: none;">❤️ Like</button>
     </div>
     <div class="gmx-platforms-section" id="gmxPlatformsSection" style="display: none;">
       <div class="gmx-platforms-title">Se puede escuchar en: <span id="gmxPlatforms"></span></div>
@@ -3251,49 +3251,51 @@ async function getSongState(filename) {
 }
   
 async function gmxTryPlaySong(index) {
-  if (index < 0 || index >= gmxCurrentPlaylist.length) return;
-  
-  gmxCleanupPlayer();
-  
-  const song = gmxCurrentPlaylist[index];
-  const { info, state } = await getSongState(song);
-  gmxCurrentIndex = index;
-  
-  // Actualizar el título de la canción actual
-  let displayTitle = gmxFormatSongName(song);
-  let displayArtist = 'Grouvex';
-  
-  if (info && info.found) {
-    displayTitle = info.tituloAlbum || displayTitle;
-    displayArtist = info.artista || displayArtist;
-  }
-  
-  document.getElementById('gmxCurrentSongTitle').textContent = displayTitle;
-  document.getElementById('gmxCurrentSongArtist').textContent = displayArtist;
-  
-  // Mostrar el botón de like con el contador de esta canción
-  await gmxUpdateLikeButtonWithCount(song);
-  
-  loadSongDetails(song);
-  
-  // ✅ SOLO actualizar la clase active, NO recargar toda la playlist
-  gmxUpdateActiveSong();
-  
-  if (state.isUpcoming) { 
-    gmxCanSeek = false;
-    document.getElementById('gmxCurrentSongTitle').textContent = displayTitle + ' (Próximamente)'; 
-    document.getElementById('gmxCurrentSongArtist').textContent = 'No disponible';
-    const likeBtn = document.getElementById('gmxLikeBtn');
-    if (likeBtn) likeBtn.style.display = 'none';
-    return; 
-  }
-  
-  if (state.isPreview) { 
-    gmxPlayPreview(song, state.previewStart || 30, state.previewDuration || 30); 
-    return; 
-  }
-  
-  gmxPlayFull(song);
+    if (index < 0 || index >= gmxCurrentPlaylist.length) return;
+    
+    gmxCleanupPlayer();
+    
+    const song = gmxCurrentPlaylist[index];
+    const { info, state } = await getSongState(song);
+    gmxCurrentIndex = index;
+    
+    // Actualizar el título de la canción actual
+    let displayTitle = gmxFormatSongName(song);
+    let displayArtist = 'Grouvex';
+    
+    if (info && info.found) {
+        // Obtener el número de pista para mostrar el título correcto
+        const trackNumber = await getTrackNumberForSong(displayTitle, info);
+        const trackInfo = getTrackInfo(info, trackNumber);
+        displayTitle = trackInfo.titulo || displayTitle;
+        displayArtist = trackInfo.artistas || info.artista || displayArtist;
+    }
+    
+    document.getElementById('gmxCurrentSongTitle').textContent = displayTitle;
+    document.getElementById('gmxCurrentSongArtist').textContent = displayArtist;
+    
+    // Mostrar el botón de like con el contador de esta canción
+    await gmxUpdateLikeButtonWithCount(song);
+    
+    // 👇 USAR LA NUEVA FUNCIÓN EN VEZ DE loadSongDetails
+    loadDetailedSongInfo(song);
+    
+    gmxUpdateActiveSong();
+    
+    if (state.isUpcoming) { 
+        gmxCanSeek = false;
+        document.getElementById('gmxCurrentSongTitle').textContent = displayTitle + ' (Próximamente)'; 
+        const likeBtn = document.getElementById('gmxLikeBtn');
+        if (likeBtn) likeBtn.style.display = 'none';
+        return; 
+    }
+    
+    if (state.isPreview) { 
+        gmxPlayPreview(song, state.previewStart || 30, state.previewDuration || 30); 
+        return; 
+    }
+    
+    gmxPlayFull(song);
 }
 
 function attachPlaylistEvents() {
@@ -3564,19 +3566,188 @@ function gmxToggleCurrentLike() {
     gmxRenderPlaylist();
   }
   
-  async function loadSongDetails(songFilename) {
+// ============================================
+// FUNCIONES PARA MOSTRAR DATOS DE LA CANCIÓN
+// ============================================
+
+// Función mejorada para obtener información completa (álbum + canción específica)
+async function loadDetailedSongInfo(songFilename) {
     const container = document.getElementById('songInfoContainer');
-    if (container) { container.classList.add('show'); container.innerHTML = '<div class="song-info-loading">Cargando información de la canción...</div>'; }
+    if (container) { 
+        container.classList.add('show'); 
+        container.innerHTML = '<div class="song-info-loading">📀 Cargando información de la canción...</div>'; 
+    }
+    
     const songTitle = songFilename.replace('.mp3', '');
-    google.script.run.withSuccessHandler(async (songInfo) => {
-      if (songInfo.found) {
-        const imageUrl = await findPortfolioImage(songTitle, songInfo.tituloAlbum);
-        if (imageUrl) document.getElementById('grouvexMusicPlayer').style.backgroundImage = `url('${imageUrl}')`;
-        renderSongInfo(songInfo, imageUrl);
-        renderPlatformLinks(songInfo);
-      } else { showSongInfoError('Información no disponible'); }
-    }).withFailureHandler(() => showSongInfoError('Error al cargar información')).getCurrentSongInfo(songTitle);
-  }
+    
+    google.script.run
+        .withSuccessHandler(async (songInfo) => {
+            if (songInfo.found) {
+                // Obtener información de la canción específica
+                const trackNumber = await getTrackNumberForSong(songTitle, songInfo);
+                const trackInfo = getTrackInfo(songInfo, trackNumber);
+                
+                const imageUrl = await findPortfolioImage(songTitle, songInfo.tituloAlbum);
+                if (imageUrl) document.getElementById('grouvexMusicPlayer').style.backgroundImage = `url('${imageUrl}')`;
+                
+                renderDetailedSongInfo(songInfo, trackInfo, imageUrl, trackNumber);
+                renderPlatformLinks(songInfo);
+            } else { 
+                showSongInfoError('Información no disponible'); 
+            }
+        })
+        .withFailureHandler(() => showSongInfoError('Error al cargar información de la canción'))
+        .getCurrentSongInfo(songTitle);
+}
+
+// Obtener el número de pista basado en el título
+async function getTrackNumberForSong(songTitle, albumInfo) {
+    for (let i = 1; i <= 15; i++) {
+        const trackTitle = albumInfo[`titulo${i}`];
+        if (trackTitle && normalizeString(trackTitle) === normalizeString(songTitle)) {
+            return i;
+        }
+    }
+    return albumInfo.trackNumber || 1; // Usar trackNumber de la API si está disponible
+}
+
+// Normalizar strings para comparación
+function normalizeString(str) {
+    return str?.toLowerCase().trim().replace(/[^\w\s]/gi, '') || '';
+}
+
+// Obtener información específica de la pista
+function getTrackInfo(albumInfo, trackNumber) {
+    return {
+        titulo: albumInfo[`titulo${trackNumber}`] || 'No especificado',
+        artistas: albumInfo[`artistas${trackNumber}`] || albumInfo.artista || 'No especificado',
+        compositores: albumInfo[`compositores${trackNumber}`] || albumInfo.compositores || 'No especificado',
+        contieneLetras: albumInfo[`contieneLetras${trackNumber}`] || 'No',
+        letristas: albumInfo[`letristas${trackNumber}`] || albumInfo.letristas || 'No especificado',
+        audioUrl: albumInfo[`audio${trackNumber}`] || 'No disponible',
+        idioma: albumInfo[`idioma${trackNumber}`] || albumInfo.idioma || 'No especificado',
+        previewClip: albumInfo[`previewClip${trackNumber}`] || 'No disponible',
+        cover: albumInfo[`cover${trackNumber}`] || 'No disponible'
+    };
+}
+
+// Función de seguridad para evitar XSS
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+// Renderizar información detallada de la canción (VERSIÓN CORREGIDA)
+function renderDetailedSongInfo(songInfo, trackInfo, ilustracionUrl, trackNumber) {
+    const container = document.getElementById('songInfoContainer');
+    if (!container) return;
+    
+    const isPreviewMode = trackInfo.previewClip === 'Sí' || trackInfo.previewClip === 'Si' || trackInfo.previewClip === 'true';
+    
+    // Escapar todos los datos para seguridad
+    const albumTitle = escapeHtml(songInfo.tituloAlbum) || 'Sin álbum';
+    const artistName = escapeHtml(songInfo.artista) || 'Artista desconocido';
+    const otrosArtistas = songInfo.otrosArtistas ? escapeHtml(songInfo.otrosArtistas) : '';
+    const generoPrimario = escapeHtml(songInfo.generoPrimario) || '';
+    const generoSecundario = escapeHtml(songInfo.generoSecundario) || '';
+    const categoria = escapeHtml(songInfo.categoria) || 'No especificado';
+    const infoColaboradores = escapeHtml(songInfo.infoColaboradores) || 'No especificado';
+    const explicit = escapeHtml(songInfo.explicit) || 'No especificado';
+    const lanzamientoOriginal = escapeHtml(songInfo.lanzamientoOriginal) || 'No especificado';
+    const fechaPedido = escapeHtml(songInfo.fechaPedidoAnticipado) || 'No especificado';
+    const fechaVentas = escapeHtml(songInfo.fechaInicioVentas) || 'No especificado';
+    const derechosComp = escapeHtml(songInfo.derechosComposicion) || 'No especificado';
+    const derechosGrab = escapeHtml(songInfo.derechosGrabacion) || 'No especificado';
+    const sello = escapeHtml(songInfo.selloDiscografico) || 'No especificado';
+    
+    // Datos de la pista
+    const trackTitle = escapeHtml(trackInfo.titulo);
+    const trackArtists = escapeHtml(trackInfo.artistas);
+    const trackCompositores = escapeHtml(trackInfo.compositores);
+    const trackLetristas = escapeHtml(trackInfo.letristas);
+    const trackIdioma = escapeHtml(trackInfo.idioma);
+    
+    container.innerHTML = `
+        ${ilustracionUrl ? `<img src="${ilustracionUrl}" class="song-illustration" onerror="this.outerHTML='<div class=\\'song-illustration placeholder\\'>🎵</div>'">` : '<div class="song-illustration placeholder">🎵</div>'}
+        
+        <div class="song-details-content">
+            <!-- INFORMACIÓN DEL ÁLBUM -->
+            <div class="song-album-section" style="border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px; margin-bottom: 12px;">
+                <div class="song-album-title">📀 ${albumTitle}</div>
+                <div class="song-artist-info">🎤 ${artistName}</div>
+                ${otrosArtistas ? `<div class="song-other-artists">🎸 Con: ${otrosArtistas}</div>` : ''}
+                <div class="song-genres">${[generoPrimario, generoSecundario].filter(g => g).map(g => `<span class="genre-tag">${g}</span>`).join('')}</div>
+            </div>
+            
+            <!-- INFORMACIÓN DE LA CANCIÓN ACTUAL -->
+            <div class="song-track-section" style="background: rgba(102, 126, 234, 0.15); border-radius: 16px; padding: 12px; margin-bottom: 15px;">
+                <details>
+                    <summary style="cursor: pointer; font-weight: bold;">🎵 Datos de: ${trackTitle}</summary>
+                    <div style="margin-top: 12px;">
+                        <div style="font-size: 0.85em; color: var(--primary-color); margin-bottom: 8px;">
+                        Idioma: ${trackIdioma}
+                        </div>
+                        <div class="song-title-track" style="font-size: 1.3em; font-weight: 700; margin-bottom: 8px;">
+                            ${trackTitle}
+                        </div>
+                        <div class="song-artist-track" style="font-size: 1em; opacity: 0.9; margin-bottom: 5px;">
+                            🎤 ${trackArtists}
+                        </div>
+                        ${trackCompositores !== 'No especificado' ? `<div class="song-composers" style="font-size: 0.9em; opacity: 0.8;">✍️ Compositores: ${trackCompositores}</div>` : ''}
+                        ${trackLetristas !== 'No especificado' ? `<div class="song-lyricists" style="font-size: 0.9em; opacity: 0.8;">📝 Letristas: ${trackLetristas}</div>` : ''}
+                        ${isPreviewMode ? '<div style="margin-top: 8px;"><span style="background: linear-gradient(135deg, #ff6b6b, #ee5a24); padding: 2px 8px; border-radius: 20px; font-size: 0.7em;">🎧 Vista previa</span></div>' : ''}
+                    </div>
+                </details>
+            </div>
+            
+            <!-- DETALLES ADICIONALES DEL ÁLBUM -->
+            <div class="song-details-grid">
+                <details>
+                    <summary style="cursor: pointer; font-weight: bold;">📀 Álbum: ${albumTitle}</summary>
+                    <div style="margin-top: 12px;">
+                        <div class="detail-item"><div class="detail-label">🏷️ Categoría</div><div>${categoria}</div></div>
+                        <div class="detail-item"><div class="detail-label">ℹ️ Colaboradores</div><div>${infoColaboradores}</div></div>
+                        <div class="detail-item"><div class="detail-label">🔞 Explícito</div><div>${explicit}</div></div>
+                        <div class="detail-item"><div class="detail-label">🔡 Letristas</div><div>${songInfo.letristas || 'No especificado'}</div></div>
+                        <div class="detail-item"><div class="detail-label">🔢 Track Number</div><div>CANCIÓN ${trackNumber}</div></div>
+                        <hr>
+                        <details>
+                            <summary style="cursor: pointer; color: var(--primary-color);">📅 Fechas del Álbum</summary>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; padding-left: 16px;">
+                                <div class="detail-item"><div class="detail-label">Lanzamiento Original</div><div>${lanzamientoOriginal}</div></div>
+                                <div class="detail-item"><div class="detail-label">Preventa</div><div>${fechaPedido}</div></div>
+                                <div class="detail-item"><div class="detail-label">Ventas</div><div>${fechaVentas}</div></div>
+                            </div>
+                        </details>
+                        <details>
+                            <summary style="cursor: pointer; color: var(--primary-color);">⚖️ Derechos y Sello</summary>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; padding-left: 16px;">
+                                <div class="detail-item"><div class="detail-label">Derechos Composición</div><div>${derechosComp}</div></div>
+                                <div class="detail-item"><div class="detail-label">Derechos Grabación</div><div>${derechosGrab}</div></div>
+                                <div class="detail-item"><div class="detail-label">Sello</div><div>${sello}</div></div>
+                            </div>
+                        </details>
+                    </div>
+                </details>
+            </div>
+        </div>
+    `;
+    
+    // Actualizar el artista actual en el reproductor
+    if (trackInfo.artistas && trackInfo.artistas !== 'No especificado') {
+        document.getElementById('gmxCurrentSongArtist').textContent = trackInfo.artistas;
+    }
+    
+    // Actualizar Media Session
+    if (ilustracionUrl) {
+        actualizarMediaSessionConImagen(ilustracionUrl, trackInfo.titulo, trackInfo.artistas);
+    }
+}
   
   async function findPortfolioImage(songTitle, albumTitle) {
     const cleanTitle = songTitle.replace(/[^\w\s-]/gi, ' ').trim();
@@ -3586,7 +3757,7 @@ function gmxToggleCurrentLike() {
     return null;
   }
   
-  function renderSongInfo(songInfo, ilustracionUrl) {
+/*  function renderSongInfo(songInfo, ilustracionUrl) {
     const container = document.getElementById('songInfoContainer');
     if (!container) return;
     container.innerHTML = `
@@ -3624,7 +3795,7 @@ function gmxToggleCurrentLike() {
     if (ilustracionUrl) {
         actualizarMediaSessionConImagen(ilustracionUrl, songInfo.tituloAlbum, songInfo.artista);
     }
-  }
+  }*/
   
 // ============================================
 // FUNCIONES DEL CARRUSEL EXACTO

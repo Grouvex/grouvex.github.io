@@ -4078,7 +4078,7 @@ function renderPlatformLinks(songInfo) {
   function showSongInfoError(msg) { const c = document.getElementById('songInfoContainer'); if (c) { c.innerHTML = `<div class="song-info-error"><div class="error-icon">⚠️</div><div class="error-message">${msg}</div><div class="error-detail">Verifica tu conexión o intenta más tarde</div><button class="retry-button" onclick="gmxRetryLoadSong()">🔄 Reintentar</button></div>`; c.classList.add('show'); } }
   function gmxRetryLoadSong() {
     if (gmxCurrentPlaylist && gmxCurrentPlaylist[gmxCurrentIndex]) {
-        loadSongDetails(gmxCurrentPlaylist[gmxCurrentIndex]);
+        loadDetailedSongInfo(gmxCurrentPlaylist[gmxCurrentIndex]);
         gmxShowToast('🔄 Reintentando cargar información...', 2000);
     }
 }

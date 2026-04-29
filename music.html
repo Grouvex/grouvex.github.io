@@ -2062,6 +2062,58 @@ details summary {
     z-index: 99999 !important;
     font-size: 16px !important;
     padding: 12px 24px !important;
+}function gmxShowToast(message, duration = 2000) {
+    // Eliminar toast existente
+    const existingToast = document.getElementById('gmxToast');
+    if (existingToast) existingToast.remove();
+    
+    // Crear nuevo toast
+    const toast = document.createElement('div');
+    toast.id = 'gmxToast';
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0,0,0,0.9);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 50px;
+        font-size: 14px;
+        z-index: 100000;
+        animation: fadeInOut 2s ease;
+        pointer-events: none;
+        backdrop-filter: blur(10px);
+        font-family: system-ui, -apple-system, sans-serif;
+        font-weight: 500;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        white-space: nowrap;
+    `;
+    
+    // En fullscreen, asegurar que se vea
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+        toast.style.zIndex = '999999';
+        toast.style.fontSize = '16px';
+    }
+    
+    // Añadir animación si no existe
+    if (!document.querySelector('#gmxToastStyle')) {
+        const style = document.createElement('style');
+        style.id = 'gmxToastStyle';
+        style.textContent = `
+            @keyframes fadeInOut {
+                0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+                15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+                85% { opacity: 1; transform: translateX(-50%) translateY(0); }
+                100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), duration);
 }
 </style>
 </head>
@@ -2878,52 +2930,39 @@ async function getSongState(filename) {
     await gmxRenderPlaylist();
   }
   
-const WORKER_URL = 'https://grouvex-music-api.grouvex.workers.dev';
-
-async function gmxFetchMusicFiles() {
-    const cached = localStorage.getItem('gmx_playlist_cache');
-    const cacheTime = localStorage.getItem('gmx_playlist_cache_time');
-    const ONE_HOUR = 60 * 60 * 1000;
-    
-    if (cached && cacheTime && (Date.now() - parseInt(cacheTime)) < ONE_HOUR) {
-        return JSON.parse(cached);
-    }
-    
-    try {
-        const response = await fetch(`${WORKER_URL}/api/songs`);
-        if (!response.ok) throw new Error(`Error: ${response.status}`);
-        const data = await response.json();
-        
-        if (data.error) throw new Error(data.error);
-        
-        localStorage.setItem('gmx_playlist_cache', JSON.stringify(data.songs));
-        localStorage.setItem('gmx_playlist_cache_time', Date.now().toString());
-        
-        console.log(`✅ ${data.count} canciones cargadas desde R2 via Worker`);
-        return data.songs;
-    } catch (error) {
-        console.error('Error cargando playlist:', error);
-        if (cached) return JSON.parse(cached);
-        return [];
-    }
-}
+  async function gmxFetchMusicFiles() {
+      // Intentar obtener del caché primero
+      const cached = localStorage.getItem('gmx_playlist_cache');
+      const cacheTime = localStorage.getItem('gmx_playlist_cache_time');
+      const ONE_HOUR = 60 * 60 * 1000;
+      
+      if (cached && cacheTime && (Date.now() - parseInt(cacheTime)) < ONE_HOUR) {
+          return JSON.parse(cached);
+      }
+      
+      try {
+          const repoUrl = 'https://api.github.com/repos/Grouvex/grouvex.github.io/contents/music';
+          const response = await fetch(repoUrl);
+          if (!response.ok) throw new Error(`Error: ${response.status}`);
+          const files = await response.json();
+          const mp3Files = files.filter(file => file.name.toLowerCase().endsWith('.mp3')).map(file => file.name);
+          
+          // Guardar en caché
+          localStorage.setItem('gmx_playlist_cache', JSON.stringify(mp3Files));
+          localStorage.setItem('gmx_playlist_cache_time', Date.now().toString());
+          
+          return mp3Files;
+      } catch (error) {
+          console.error('Error:', error);
+          // Si falla, intentar usar caché antiguo
+          if (cached) return JSON.parse(cached);
+          return [];
+      }
+  }
   
   function gmxFormatSongName(filename) { return filename.replace('.mp3', ''); }
   function gmxFormatTime(seconds) { if (isNaN(seconds)) return '0:00'; const mins = Math.floor(seconds / 60); const secs = Math.floor(seconds % 60); return `${mins}:${secs.toString().padStart(2, '0')}`; }
-async function getMusicUrl(filename) {
-    try {
-        const response = await fetch(`${WORKER_URL}/api/sign?file=${encodeURIComponent(filename)}`);
-        if (!response.ok) throw new Error(`Error: ${response.status}`);
-        const data = await response.json();
-        
-        if (data.error) throw new Error(data.error);
-        
-        return data.url;
-    } catch (error) {
-        console.error('Error obteniendo URL firmada:', error);
-        return null;
-    }
-}
+  function getMusicUrl(filename) { return `https://github.com/Grouvex/grouvex.github.io/raw/main/music/${encodeURIComponent(filename)}`; }
   
 // Añadir esta función para obtener el like count y renderizarlo
 async function gmxRenderPlaylist() {
@@ -3139,48 +3178,41 @@ async function gmxLoadDurationsBatch() {
 }
 
 // 2. Guardar duraciones en localStorage persistente
-async function loadSingleDuration(song) {
-    const cachedDuration = localStorage.getItem(`gmx_duration_${song}`);
-    if (cachedDuration && cachedDuration !== '--:--') {
-        gmxDurationCache.set(song, cachedDuration);
-        gmxUpdateDurationInPlaylist(song, cachedDuration);
-        return cachedDuration;
-    }
+function loadSingleDuration(song) {
+  const cachedDuration = localStorage.getItem(`gmx_duration_${song}`);
+  if (cachedDuration && cachedDuration !== '--:--') {
+    gmxDurationCache.set(song, cachedDuration);
+    gmxUpdateDurationInPlaylist(song, cachedDuration);
+    return Promise.resolve(cachedDuration);
+  }
+  
+  return new Promise((resolve) => {
+    const audio = new Audio();
+    const timeout = setTimeout(() => {
+      audio.src = '';
+      resolve('--:--');
+    }, 5000);
     
-    // Crear una promesa que maneje el audio
-    return new Promise(async (resolve) => {
-        const audio = new Audio();
-        const timeout = setTimeout(() => {
-            audio.src = '';
-            resolve('--:--');
-        }, 5000);
-        
-        const musicUrl = await getMusicUrl(song);
-        if (!musicUrl) {
-            clearTimeout(timeout);
-            resolve('--:--');
-            return;
-        }
-        
-        audio.addEventListener('loadedmetadata', function() {
-            clearTimeout(timeout);
-            const duration = gmxFormatTime(audio.duration);
-            gmxDurationCache.set(song, duration);
-            localStorage.setItem(`gmx_duration_${song}`, duration);
-            audio.src = '';
-            gmxUpdateDurationInPlaylist(song, duration);
-            resolve(duration);
-        });
-        
-        audio.addEventListener('error', () => {
-            clearTimeout(timeout);
-            const fallback = localStorage.getItem(`gmx_duration_${song}`) || '--:--';
-            gmxDurationCache.set(song, fallback);
-            resolve(fallback);
-        });
-        
-        audio.src = musicUrl;
+    audio.addEventListener('loadedmetadata', function() {
+      clearTimeout(timeout);
+      const duration = gmxFormatTime(audio.duration);
+      gmxDurationCache.set(song, duration);
+      localStorage.setItem(`gmx_duration_${song}`, duration);
+      audio.src = '';
+      // ✅ Actualizar solo esta canción
+      gmxUpdateDurationInPlaylist(song, duration);
+      resolve(duration);
     });
+    
+    audio.addEventListener('error', () => {
+      clearTimeout(timeout);
+      const fallback = localStorage.getItem(`gmx_duration_${song}`) || '--:--';
+      gmxDurationCache.set(song, fallback);
+      resolve(fallback);
+    });
+    
+    audio.src = getMusicUrl(song);
+  });
 }
 
 function updateDurationInUI(song, duration) {
@@ -3467,33 +3499,28 @@ function gmxToggleCurrentLike() {
     document.querySelector('.gmx-play-pause').innerHTML = '▶';
   }
 
-async function gmxPlayFull(song) {
+  function gmxPlayFull(song) {
     gmxCanSeek = true;
     gmxIsPreviewMode = false;
     const audio = document.getElementById('gmxAudioPlayer');
     
-    const musicUrl = await getMusicUrl(song);
-    if (!musicUrl) {
-        gmxShowToast('❌ No se pudo acceder a la canción', 3000);
-        return;
-    }
-    
-    audio.src = musicUrl;
+    audio.src = getMusicUrl(song);
     audio.load();
     
+    // Asegurar que el audio no esté en loop infinito por accidente
     audio.loop = (gmxIsLooping === 1);
     
     document.getElementById('gmxCurrentSongTitle').textContent = gmxFormatSongName(song);
     
     if (document.getElementById('gmxAutoPlay')?.checked !== false) {
-        audio.play().catch(e => console.log('Autoplay bloqueado:', e));
+      audio.play().catch(e => console.log('Autoplay bloqueado:', e));
     }
     
     gmxRenderPlaylist();
-}
+  }
 
   
-  async function gmxPlayPreview(song, startSec = 30, durationSec = 30) {
+  function gmxPlayPreview(song, startSec = 30, durationSec = 30) {
     gmxCanSeek = false;
     gmxIsPreviewMode = true;
     
@@ -3505,12 +3532,7 @@ async function gmxPlayFull(song) {
       gmxPreviewTimeUpdateHandler = null;
     }
     
-    const musicUrl = await getMusicUrl(song);
-    if (!musicUrl) {
-        gmxShowToast('❌ No se pudo acceder a la vista previa', 3000);
-        return;
-    }
-    audio.src = musicUrl;
+    audio.src = getMusicUrl(song);
     audio.load();
     
     audio.addEventListener('loadedmetadata', function onMeta() {
@@ -4400,7 +4422,7 @@ function gmxShowKeyboardHelp() {
         </div>
         <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 12px;">
             <div><kbd style="background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 6px;">␣</kbd></div><div>Play / Pausa</div>
-            <div><kbd>b</kbd> / <kbd>B</kbd></div><div>Canción anterior</div>
+            <div><kbd>b/kbd> / <kbd>B</kbd></div><div>Canción anterior</div>
             <div><kbd>n</kbd> / <kbd>N</kbd></div><div>Siguiente canción</div>
             <div><kbd>←</kbd> / <kbd>→</kbd></div><div>-5/+5 segundos</div>
             <div><kbd>↑</kbd> / <kbd>↓</kbd></div><div>Subir/Bajar volumen</div>

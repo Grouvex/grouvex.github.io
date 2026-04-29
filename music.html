@@ -3140,46 +3140,47 @@ async function gmxLoadDurationsBatch() {
 
 // 2. Guardar duraciones en localStorage persistente
 async function loadSingleDuration(song) {
-  const cachedDuration = localStorage.getItem(`gmx_duration_${song}`);
-  if (cachedDuration && cachedDuration !== '--:--') {
-    gmxDurationCache.set(song, cachedDuration);
-    gmxUpdateDurationInPlaylist(song, cachedDuration);
-    return Promise.resolve(cachedDuration);
-  }
-  
-  return new Promise((resolve) => {
-    const audio = new Audio();
-    const timeout = setTimeout(() => {
-      audio.src = '';
-      resolve('--:--');
-    }, 5000);
-    
-    audio.addEventListener('loadedmetadata', function() {
-      clearTimeout(timeout);
-      const duration = gmxFormatTime(audio.duration);
-      gmxDurationCache.set(song, duration);
-      localStorage.setItem(`gmx_duration_${song}`, duration);
-      audio.src = '';
-      // ✅ Actualizar solo esta canción
-      gmxUpdateDurationInPlaylist(song, duration);
-      resolve(duration);
-    });
-    
-    audio.addEventListener('error', () => {
-      clearTimeout(timeout);
-      const fallback = localStorage.getItem(`gmx_duration_${song}`) || '--:--';
-      gmxDurationCache.set(song, fallback);
-      resolve(fallback);
-    });
-    
-    const musicUrl = await getMusicUrl(song);
-    if (!musicUrl) {
-        clearTimeout(timeout);
-        resolve('--:--');
-        return;
+    const cachedDuration = localStorage.getItem(`gmx_duration_${song}`);
+    if (cachedDuration && cachedDuration !== '--:--') {
+        gmxDurationCache.set(song, cachedDuration);
+        gmxUpdateDurationInPlaylist(song, cachedDuration);
+        return cachedDuration;
     }
-    audio.src = musicUrl;
-  });
+    
+    // Crear una promesa que maneje el audio
+    return new Promise(async (resolve) => {
+        const audio = new Audio();
+        const timeout = setTimeout(() => {
+            audio.src = '';
+            resolve('--:--');
+        }, 5000);
+        
+        const musicUrl = await getMusicUrl(song);
+        if (!musicUrl) {
+            clearTimeout(timeout);
+            resolve('--:--');
+            return;
+        }
+        
+        audio.addEventListener('loadedmetadata', function() {
+            clearTimeout(timeout);
+            const duration = gmxFormatTime(audio.duration);
+            gmxDurationCache.set(song, duration);
+            localStorage.setItem(`gmx_duration_${song}`, duration);
+            audio.src = '';
+            gmxUpdateDurationInPlaylist(song, duration);
+            resolve(duration);
+        });
+        
+        audio.addEventListener('error', () => {
+            clearTimeout(timeout);
+            const fallback = localStorage.getItem(`gmx_duration_${song}`) || '--:--';
+            gmxDurationCache.set(song, fallback);
+            resolve(fallback);
+        });
+        
+        audio.src = musicUrl;
+    });
 }
 
 function updateDurationInUI(song, duration) {

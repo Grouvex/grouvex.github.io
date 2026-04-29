@@ -2962,7 +2962,7 @@ async function getSongState(filename) {
   
   function gmxFormatSongName(filename) { return filename.replace('.mp3', ''); }
   function gmxFormatTime(seconds) { if (isNaN(seconds)) return '0:00'; const mins = Math.floor(seconds / 60); const secs = Math.floor(seconds % 60); return `${mins}:${secs.toString().padStart(2, '0')}`; }
-  function getMusicUrl(filename) { return `https://github.com/Grouvex/grouvex.github.io/raw/main/music/${encodeURIComponent(filename)}`; }
+  function getMusicUrl(filename) { return `https://files.grouvex.com/music/${encodeURIComponent(filename)}`; }
   
 // Añadir esta función para obtener el like count y renderizarlo
 async function gmxRenderPlaylist() {

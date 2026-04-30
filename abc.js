@@ -29,15 +29,13 @@ const database = firebase.database();
 // VARIABLES GLOBALES
 // ============================================
 let isLoginMode = true;
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQBy3U9WSBBYfo9C-etH3KYe3_b9B_W1i40-XE6vUgatP16slZDnXtokxs25l80VBWjg/exec';
 
 // ============================================
 // NOTIFICACIONES
 // ============================================
 function mostrarNotificacion(mensaje, esError = false) {
     const notificacion = document.createElement("div");
-    notificacion.className = `notificacion ${esError ? 'error' : 'exito'}`;
-    notificacion.innerHTML = mensaje;
+    notificacion.textContent = mensaje;
     notificacion.style.cssText = `
         position: fixed;
         top: 20px;
@@ -47,16 +45,13 @@ function mostrarNotificacion(mensaje, esError = false) {
         color: white;
         border-radius: 8px;
         z-index: 10000;
-        max-width: 90%;
-        width: 300px;
+        max-width: 300px;
         text-align: center;
         font-size: 14px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     `;
     document.body.appendChild(notificacion);
-    setTimeout(() => {
-        if (notificacion && notificacion.remove) notificacion.remove();
-    }, 5000);
+    setTimeout(() => notificacion.remove(), 4000);
 }
 
 // ============================================
@@ -76,7 +71,7 @@ async function handleEmailAuth(email, password, isLogin) {
         if (isLogin) {
             await auth.signInWithEmailAndPassword(email, password);
             mostrarNotificacion('✅ Inicio de sesión exitoso');
-            redirectUser();
+            window.location.href = '/';
         } else {
             const userCredential = await auth.createUserWithEmailAndPassword(email, password);
             const displayName = document.getElementById('authDisplayName')?.value.trim() || email.split('@')[0];
@@ -87,14 +82,12 @@ async function handleEmailAuth(email, password, isLogin) {
                 email: email,
                 displayName: displayName,
                 photoURL: "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png",
-                lastLogin: Date.now(),
-                provider: "email",
+                insignias: "", // Campo para insignias (ej: "https://.../verified-staff.png")
                 createdAt: Date.now()
             });
             
-            await userCredential.user.sendEmailVerification();
-            mostrarNotificacion('✅ Registro exitoso! Revisa tu email para verificar tu cuenta.');
-            redirectUser();
+            mostrarNotificacion('✅ Registro exitoso!');
+            window.location.href = '/';
         }
     } catch (error) {
         console.error('Error:', error);
@@ -102,7 +95,7 @@ async function handleEmailAuth(email, password, isLogin) {
         if (error.code === 'auth/user-not-found') mensaje = '❌ Usuario no encontrado';
         if (error.code === 'auth/wrong-password') mensaje = '❌ Contraseña incorrecta';
         if (error.code === 'auth/email-already-in-use') mensaje = '❌ Este correo ya está registrado';
-        if (error.code === 'auth/weak-password') mensaje = '❌ La contraseña debe tener al menos 6 caracteres';
+        if (error.code === 'auth/weak-password') mensaje = '❌ Contraseña débil (mínimo 6 caracteres)';
         if (error.code === 'auth/invalid-email') mensaje = '❌ Email inválido';
         mostrarNotificacion(mensaje, true);
     } finally {
@@ -124,25 +117,21 @@ async function handleGoogleLogin() {
         }
         
         const provider = new firebase.auth.GoogleAuthProvider();
-        provider.setCustomParameters({ prompt: 'select_account' });
-        
         const result = await auth.signInWithPopup(provider);
         
         await database.ref(`users/${result.user.uid}`).set({
             email: result.user.email,
             displayName: result.user.displayName || result.user.email.split('@')[0],
             photoURL: result.user.photoURL || "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png",
-            lastLogin: Date.now(),
-            provider: "google"
+            insignias: "",
+            createdAt: Date.now()
         });
         
-        mostrarNotificacion('✅ Inicio de sesión con Google exitoso');
-        redirectUser();
+        mostrarNotificacion('✅ Inicio con Google exitoso');
+        window.location.href = '/';
     } catch (error) {
-        console.error('Error Google:', error);
         let mensaje = error.message;
-        if (error.code === 'auth/popup-blocked') mensaje = '❌ Habilita las ventanas emergentes para este sitio';
-        if (error.code === 'auth/popup-closed-by-user') mensaje = '❌ Cerraste la ventana de Google';
+        if (error.code === 'auth/popup-blocked') mensaje = '❌ Habilita ventanas emergentes';
         mostrarNotificacion(mensaje, true);
     } finally {
         if (googleBtn) {
@@ -153,23 +142,11 @@ async function handleGoogleLogin() {
 }
 
 // ============================================
-// NAVEGACIÓN
-// ============================================
-function redirectUser() {
-    const returnUrl = localStorage.getItem('returnUrl') || '/';
-    localStorage.removeItem('returnUrl');
-    setTimeout(() => {
-        window.location.href = returnUrl;
-    }, 1500);
-}
-
-// ============================================
 // TOGGLE LOGIN/REGISTRO
 // ============================================
 function toggleAuthMode() {
     isLoginMode = !isLoginMode;
     const formTitle = document.getElementById('formTitle');
-    const authButton = document.getElementById('authButton');
     const authBtnText = document.getElementById('authBtnText');
     const toggleModeBtn = document.getElementById('toggleModeBtn');
     const displayNameGroup = document.getElementById('displayNameGroup');
@@ -177,12 +154,7 @@ function toggleAuthMode() {
     if (formTitle) formTitle.textContent = isLoginMode ? 'Iniciar Sesión' : 'Registrarse';
     if (authBtnText) authBtnText.textContent = isLoginMode ? 'Iniciar Sesión' : 'Registrarse';
     if (toggleModeBtn) toggleModeBtn.textContent = isLoginMode ? 'Registrarse' : 'Iniciar Sesión';
-    
-    if (displayNameGroup) {
-        displayNameGroup.style.display = isLoginMode ? 'none' : 'block';
-        const displayNameInput = document.getElementById('authDisplayName');
-        if (displayNameInput) displayNameInput.required = !isLoginMode;
-    }
+    if (displayNameGroup) displayNameGroup.style.display = isLoginMode ? 'none' : 'block';
 }
 
 // ============================================
@@ -199,24 +171,15 @@ async function updateProfileUI(user) {
     if (correoElement) correoElement.textContent = user.email || 'Sin email';
     if (userIDElement) userIDElement.textContent = `GS-${user.uid}`;
     if (usuarioElement) usuarioElement.textContent = user.displayName || 'Usuario';
-    
     if (fotoPerfil) {
-        try {
-            const snapshot = await database.ref(`users/${user.uid}/photoURL`).once('value');
-            fotoPerfil.src = snapshot.val() || "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png";
-        } catch (error) {
-            fotoPerfil.src = "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png";
-        }
+        const snapshot = await database.ref(`users/${user.uid}/photoURL`).once('value');
+        fotoPerfil.src = snapshot.val() || user.photoURL || "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png";
     }
 }
 
 // ============================================
 // ELIMINAR CUENTA
 // ============================================
-async function eliminarDatosUsuario(userId) {
-    return database.ref(`users/${userId}`).remove();
-}
-
 async function handleAccountDeletion() {
     const user = auth.currentUser;
     if (!user) {
@@ -224,23 +187,20 @@ async function handleAccountDeletion() {
         return;
     }
     
-    const confirmacion = confirm('¿Estás SEGURO? Esta acción es irreversible. Escribe "ELIMINAR" para confirmar.');
-    if (!confirmacion) return;
-    
     const input = prompt('Escribe "ELIMINAR" para confirmar:');
     if (input !== 'ELIMINAR') {
-        mostrarNotificacion('❌ Confirmación incorrecta', true);
+        mostrarNotificacion('❌ Cancelado', true);
         return;
     }
     
     try {
-        await eliminarDatosUsuario(user.uid);
+        await database.ref(`users/${user.uid}`).remove();
         await user.delete();
-        mostrarNotificacion('🔥 Cuenta eliminada permanentemente');
-        setTimeout(() => window.location.href = '/', 2000);
+        mostrarNotificacion('🔥 Cuenta eliminada');
+        window.location.href = '/';
     } catch (error) {
         if (error.code === 'auth/requires-recent-login') {
-            mostrarNotificacion('❌ Inicia sesión nuevamente para eliminar la cuenta', true);
+            mostrarNotificacion('❌ Inicia sesión nuevamente', true);
             auth.signOut();
         } else {
             mostrarNotificacion(`❌ Error: ${error.message}`, true);
@@ -249,64 +209,117 @@ async function handleAccountDeletion() {
 }
 
 // ============================================
-// INSIGNIAS Y DATOS DE USUARIO
+// INSIGNIAS Y ROLES (CORREGIDO - usa insignias)
+// ============================================
+async function obtenerInsigniasUsuario(userID) {
+    try {
+        const cleanID = userID.replace(/^GS-/i, '').trim();
+        const snapshot = await database.ref(`users/${cleanID}/insignias`).once('value');
+        const insigniasTexto = snapshot.val() || '';
+        
+        if (!insigniasTexto) return [];
+        
+        // Procesar insignias desde el texto (URLs separadas por comas)
+        return insigniasTexto.split(/[,;]+/).map(i => i.trim()).filter(i => i && i.includes('http'));
+    } catch (error) {
+        console.error('Error obteniendo insignias:', error);
+        return [];
+    }
+}
+
+function insigniaContiene(insigniaURL, textoBuscado) {
+    const urlLower = insigniaURL.toLowerCase();
+    const nombreArchivo = urlLower.split('/').pop().split('.')[0];
+    return nombreArchivo.includes(textoBuscado.toLowerCase()) || urlLower.includes(textoBuscado.toLowerCase());
+}
+
+async function usuarioTieneRol(rolBuscado) {
+    const user = auth.currentUser;
+    if (!user) return false;
+    
+    const userID = `GS-${user.uid}`;
+    const insignias = await obtenerInsigniasUsuario(userID);
+    
+    // Mapeo de roles a palabras clave en las insignias
+    const rolesMap = {
+        'admin': ['verified-staff', 'admin', 'administrator', 'owner', 'staff'],
+        'artista': ['verified-artist', 'artist', 'premium-artist', 'recording'],
+        'empleado': ['verified-employee', 'employee', 'staff'],
+        'equipo': ['verified-team', 'team', 'team-member'],
+        'partner': ['verified-partner', 'partner', 'vpartner'],
+        'premium': ['premium', 'premium-user', 'vip'],
+        'moderador': ['moderator', 'mod', 'verified-moderator'],
+        'developer': ['developer', 'dev', 'verified-developer']
+    };
+    
+    const palabrasClave = rolesMap[rolBuscado] || [];
+    
+    for (const insignia of insignias) {
+        for (const palabra of palabrasClave) {
+            if (insigniaContiene(insignia, palabra)) {
+                return true;
+            }
+        }
+    }
+    
+    return false;
+}
+
+async function obtenerNivelPermiso() {
+    const user = auth.currentUser;
+    if (!user) return 0;
+    
+    const niveles = {
+        'admin': 100,
+        'developer': 90,
+        'moderador': 80,
+        'equipo': 70,
+        'empleado': 60,
+        'partner': 50,
+        'artista': 40,
+        'premium': 30
+    };
+    
+    let nivelMaximo = 0;
+    
+    for (const [rol, nivel] of Object.entries(niveles)) {
+        if (await usuarioTieneRol(rol)) {
+            nivelMaximo = Math.max(nivelMaximo, nivel);
+        }
+    }
+    
+    return nivelMaximo;
+}
+
+// ============================================
+// OBTENER DATOS DE USUARIO
 // ============================================
 async function obtenerDatosUsuarioPorUserID(userID) {
     try {
-        if (!userID || userID.trim() === '') return null;
-        
+        if (!userID) return null;
         const cleanID = userID.replace(/^GS-/i, '').trim();
         const snapshot = await database.ref(`users/${cleanID}`).once('value');
-        
-        if (snapshot.exists()) {
-            return snapshot.val();
-        }
-        return null;
+        return snapshot.exists() ? snapshot.val() : null;
     } catch (error) {
-        console.error('Error obteniendo usuario:', error);
+        console.error('Error:', error);
         return null;
     }
 }
 
 async function obtenerFotoPerfilFirebase(userID) {
     try {
-        if (!userID) return 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png';
-        
-        const uid = userID.replace(/^GS-/i, '').trim();
-        if (!uid) return 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png';
-        
-        const snapshot = await database.ref(`users/${uid}/photoURL`).once('value');
-        return snapshot.val() || 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png';
+        if (!userID) return "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png";
+        const cleanID = userID.replace(/^GS-/i, '').trim();
+        const snapshot = await database.ref(`users/${cleanID}/photoURL`).once('value');
+        return snapshot.val() || "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png";
     } catch (error) {
-        return 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png';
+        return "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png";
     }
 }
 
-function procesarInsignias(textoInsignias) {
-    if (!textoInsignias || textoInsignias.trim() === '') return [];
-    
-    const texto = textoInsignias.trim();
-    if (['ninguna', 'sin insignias', 'n/a', 'no aplica'].includes(texto.toLowerCase())) {
-        return [];
-    }
-    
-    const insignias = [];
-    const partes = texto.split(/[,;]+/);
-    
-    partes.forEach(parte => {
-        const urlLimpia = parte.trim();
-        if (urlLimpia && urlLimpia.includes('githubusercontent.com') && /\.(png|gif|jpg|jpeg|webp|svg)/i.test(urlLimpia)) {
-            insignias.push({
-                nombre: extraerNombreInsignia(urlLimpia),
-                url: urlLimpia,
-                tipo: determinarTipoInsignia(urlLimpia)
-            });
-        }
-    });
-    
-    return insignias;
-}
-
+// ============================================
+// FUNCIONES PARA INSIGNIAS EN UI
+// ============================================
 function extraerNombreInsignia(url) {
     try {
         const nombreArchivo = decodeURIComponent(url).split('/').pop();
@@ -355,62 +368,107 @@ function crearElementoInsignia(insignia) {
     return container;
 }
 
-async function cargarDatosEInsigniasEnTodosLosElementos() {
-    const elementosConTigsID = document.querySelectorAll('[tigsID]');
+async function cargarInsigniasUsuario(container, userID) {
+    if (!container) return;
     
-    for (const elemento of elementosConTigsID) {
+    try {
+        const insigniasURLs = await obtenerInsigniasUsuario(userID);
+        container.innerHTML = '';
+        
+        if (!insigniasURLs.length) {
+            container.innerHTML = '<div class="no-insignias-message">🎯 Sin insignias</div>';
+            return;
+        }
+        
+        for (const url of insigniasURLs) {
+            const insignia = {
+                url: url,
+                nombre: extraerNombreInsignia(url),
+                tipo: determinarTipoInsignia(url)
+            };
+            container.appendChild(crearElementoInsignia(insignia));
+        }
+    } catch (error) {
+        console.error('Error cargando insignias:', error);
+        container.innerHTML = '<div class="no-insignias-message">❌ Error cargando insignias</div>';
+    }
+}
+
+async function cargarDatosEInsigniasEnTodosLosElementos() {
+    const elementos = document.querySelectorAll('[tigsID]');
+    for (const elemento of elementos) {
         const userID = elemento.getAttribute('tigsID');
         if (!userID) continue;
         
-        const datosUsuario = await obtenerDatosUsuarioPorUserID(userID);
-        if (datosUsuario && datosUsuario.displayName) {
-            elemento.textContent = datosUsuario.displayName;
+        const datos = await obtenerDatosUsuarioPorUserID(userID);
+        if (datos && datos.displayName) {
+            elemento.textContent = datos.displayName;
+        }
+    }
+    
+    // Cargar insignias en contenedores específicos
+    const insigniasContainer = document.querySelector('.insignias-container');
+    const userIDelement = document.getElementById('userID');
+    if (insigniasContainer && userIDelement) {
+        const userID = userIDelement.textContent.trim();
+        if (userID && userID !== 'Cargando...') {
+            await cargarInsigniasUsuario(insigniasContainer, userID);
         }
     }
 }
 
 // ============================================
-// SISTEMA DE PERMISOS Y ROLES
+// VERIFICAR ACCESO POR PÁGINA
 // ============================================
-async function usuarioTieneRol(rolBuscado) {
-    const user = auth.currentUser;
-    if (!user) return false;
-    
-    // Verificar por email para admin (ejemplo)
-    const adminEmails = ['admin@grouvex.com', 'administracion@grouvex.com'];
-    if (rolBuscado === 'admin' && adminEmails.includes(user.email)) {
-        return true;
-    }
-    
-    try {
-        const snapshot = await database.ref(`users/${user.uid}/rol`).once('value');
-        return snapshot.val() === rolBuscado;
-    } catch (error) {
-        return false;
-    }
-}
-
 async function verificarAcceso() {
     const user = auth.currentUser;
     const paginaActual = window.location.pathname.split("/").pop() || 'index';
     const paginasPublicas = ['login', 'login.html', 'register', 'index', '', 'home', 'contacto', 'about', 'tos', 'pp'];
     
-    if (paginasPublicas.includes(paginaActual) || paginaActual === 'login.html') {
+    if (paginasPublicas.includes(paginaActual)) {
         return true;
     }
     
-    if (!user) {
-        localStorage.setItem('returnUrl', window.location.href);
-        mostrarNotificacion('🔒 Necesitas iniciar sesión', true);
-        setTimeout(() => window.location.href = '/login', 2000);
-        return false;
+    // Páginas que requieren roles específicos
+    const paginasRestringidas = {
+        'admin-panel': ['admin'],
+        'developer-area': ['admin', 'developer'],
+        'team': ['admin', 'equipo', 'empleado'],
+        'planeta': ['partner'],
+        'grouvex-studios-recording': ['artista', 'empleado'],
+        'grouvex-studios-animation': ['artista', 'empleado']
+    };
+    
+    if (paginasRestringidas[paginaActual]) {
+        if (!user) {
+            localStorage.setItem('returnUrl', window.location.href);
+            mostrarNotificacion('🔒 Necesitas iniciar sesión', true);
+            setTimeout(() => window.location.href = '/login', 2000);
+            return false;
+        }
+        
+        const rolesRequeridos = paginasRestringidas[paginaActual];
+        let tieneAcceso = false;
+        
+        for (const rol of rolesRequeridos) {
+            if (await usuarioTieneRol(rol)) {
+                tieneAcceso = true;
+                break;
+            }
+        }
+        
+        if (!tieneAcceso) {
+            mostrarNotificacion('⛔ No tienes permiso para acceder a esta página', true);
+            setTimeout(() => window.location.href = '/', 2000);
+            return false;
+        }
     }
     
     return true;
 }
 
 // ============================================
-// OBSERVADOR DE AUTENTICACIÓN (CORREGIDO)
+// OBSERVADOR DE AUTENTICACIÓN
 // ============================================
 auth.onAuthStateChanged(async (user) => {
     const authContainer = document.getElementById('auth-container');
@@ -426,12 +484,18 @@ auth.onAuthStateChanged(async (user) => {
         
         await updateProfileUI(user);
         
-        // Mostrar paneles según rol
+        // Mostrar paneles según rol (basado en insignias)
         if (adminPanel) {
             adminPanel.style.display = (await usuarioTieneRol('admin')) ? 'block' : 'none';
         }
         if (artistTools) {
             artistTools.style.display = (await usuarioTieneRol('artista')) ? 'block' : 'none';
+        }
+        
+        // Cargar insignias del usuario logueado
+        const insigniasContainer = document.querySelector('.insignias-container');
+        if (insigniasContainer) {
+            await cargarInsigniasUsuario(insigniasContainer, `GS-${user.uid}`);
         }
         
         setTimeout(() => cargarDatosEInsigniasEnTodosLosElementos(), 500);
@@ -466,6 +530,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 padding: 10px;
                 background: rgba(255,255,255,0.02);
                 border-radius: 8px;
+                min-height: 60px;
             }
             .insignia-item {
                 position: relative;
@@ -484,21 +549,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 white-space: nowrap;
                 z-index: 100;
             }
+            .no-insignias-message {
+                color: #888;
+                font-size: 12px;
+                padding: 10px;
+                text-align: center;
+                width: 100%;
+            }
         `;
         document.head.appendChild(style);
     }
     
-    // Eventos del formulario
-    const authForm = document.getElementById('authForm');
+    // EVENTOS CORREGIDOS - usar CLICK en lugar de SUBMIT
+    const authButton = document.getElementById('authButton');
     const toggleModeBtn = document.getElementById('toggleModeBtn');
     const googleBtn = document.getElementById('googleLoginBtn');
     const logoutBtn = document.getElementById('logoutBtn');
     const deleteBtn = document.getElementById('deleteBtn');
     const resetPasswordBtn = document.getElementById('resetPasswordBtn');
     
-    if (authForm) {
-        authForm.addEventListener('submit', (e) => {
+    // Para el login/registro - usar CLICK en el botón
+    if (authButton) {
+        authButton.addEventListener('click', (e) => {
             e.preventDefault();
+            e.stopPropagation();
+            
             const email = document.getElementById('authEmail')?.value;
             const password = document.getElementById('authPassword')?.value;
             
@@ -525,19 +600,21 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (resetPasswordBtn) {
         resetPasswordBtn.addEventListener('click', () => {
-            const user = auth.currentUser;
-            if (user?.email) {
-                auth.sendPasswordResetEmail(user.email)
+            const email = prompt('Introduce tu correo:');
+            if (email) {
+                auth.sendPasswordResetEmail(email)
                     .then(() => mostrarNotificacion('📧 Revisa tu email'))
                     .catch(err => mostrarNotificacion(`❌ Error: ${err.message}`, true));
-            } else {
-                const email = prompt('Introduce tu correo:');
-                if (email) {
-                    auth.sendPasswordResetEmail(email)
-                        .then(() => mostrarNotificacion('📧 Email enviado'))
-                        .catch(err => mostrarNotificacion(`❌ Error: ${err.message}`, true));
-                }
             }
+        });
+    }
+    
+    // Prevenir submit de cualquier formulario
+    const anyForm = document.querySelector('form');
+    if (anyForm) {
+        anyForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            return false;
         });
     }
     
@@ -552,3 +629,8 @@ document.addEventListener('DOMContentLoaded', () => {
         verificarAcceso();
     }
 });
+
+// Exportar funciones útiles globalmente
+window.usuarioTieneRol = usuarioTieneRol;
+window.obtenerNivelPermiso = obtenerNivelPermiso;
+window.cargarInsigniasUsuario = cargarInsigniasUsuario;

@@ -2,10 +2,10 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Registrar - Grouvex Studios</title>
+    <title>Login - Grouvex Studios</title>
     <meta property="og:site_name" content="Grouvex Studios">
-    <meta property="og:title" content="Registrar - Grouvex Studios">
-    <meta property="og:description" content="Registrarse en ©Grouvex Studios">
+    <meta property="og:title" content="Login - Grouvex Studios">
+    <meta property="og:description" content="Inicia sesión en ©Grouvex Studios">
     <meta property="og:type" content="website">
     <meta property="og:image" href="img/GROUVEX.png">
     <meta property="og:url" content="https://grouvex.com/">
@@ -29,10 +29,13 @@
     <meta name="HandheldFriendly" content="true">
     <link rel="preconnect" href="https://example.com">
     <link rel="dns-prefetch" href="https://example.com">
-    <!-- Scripts sin nonce -->
-    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="time.js"></script><script type="module" src="abc.js"></script><script src="index.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="jquery-3.5.1.min.js"></script>
     <script> 
         document.addEventListener("DOMContentLoaded", function() { 
@@ -45,199 +48,426 @@
             $("#tosypp").load("tosypp.html");
         });
     </script>
-    <script src="//www.youtube.com/player_api"></script><script src="https://www.youtube.com/iframe_api"></script>
-    <script src="time.js"></script><script type="module" src="abc.js"></script><script src="index.js"></script>
+    <script src="time.js"></script>
+    <script src="login.js"></script>
+    
     <style>
         /* Estilos específicos para el formulario de autenticación */
-#auth-container {
-    max-width: 400px;
-    margin: 20px auto;
-    padding: 20px;
-    background: rgb(22 213 245 / 38%);
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(10px); /* Efecto de desenfoque */
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
+        #auth-container {
+            max-width: 450px;
+            margin: 40px auto;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.75);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.6s ease;
+        }
 
-#authForm {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-#formTitle {
-    text-align: center;
-    font-size: 24px;
-    color: white;
-    margin-bottom: 10px;
-}
+        #authForm {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
 
-#authForm input {
-    padding: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 5px;
-    background: rgb(0 0 0 / 49%);
-    color: white;
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.3s ease;
-}
+        #formTitle {
+            text-align: center;
+            font-size: 28px;
+            color: white;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
 
-#authForm input::placeholder {
-    color: rgba(255, 255, 255, 0.7);
-}
+        .input-group {
+            position: relative;
+        }
 
-#authForm input:focus {
-    border-color: #6200ea; /* Color morado */
-}
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+            font-size: 18px;
+        }
 
-.button-container {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
-}
+        #authForm input {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
 
-.icon-button {
-    background-color: #6200ea; /* Color morado */
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 50%; /* Botones circulares */
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
+        #authForm input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
 
-.icon-button:hover {
-    background-color: #3700b3; /* Color morado más oscuro al pasar el mouse */
-    transform: scale(1.1); /* Efecto de escala al pasar el mouse */
-}
+        #authForm input:focus {
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+        }
 
-.icon-button:active {
-    transform: scale(0.9); /* Efecto de escala al hacer clic */
-}
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
 
-.icon-button.secondary {
-    background-color: #757575; /* Color gris */
-}
+        .auth-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
 
-.icon-button.secondary:hover {
-    background-color: #616161; /* Color gris más oscuro al pasar el mouse */
-}
+        .auth-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
 
-.icon-button.google {
-    background-color: #db4437; /* Color rojo de Google */
-}
+        .auth-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
 
-.icon-button.google:hover {
-    background-color: #c1351d; /* Color rojo más oscuro al pasar el mouse */
-}
+        .auth-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
 
-.icon-button.email {
-    background-color: #4285f4; /* Color azul de Gmail */
-}
+        .auth-btn.secondary {
+            background: linear-gradient(135deg, #757575 0%, #5a5a5a 100%);
+        }
 
-.icon-button.email:hover {
-    background-color: #357abf; /* Color azul más oscuro al pasar el mouse */
-}
+        .auth-btn.google {
+            background: linear-gradient(135deg, #db4437 0%, #c1351d 100%);
+        }
 
-.icon-button img {
-    width: 15px;
-    height: 15px;
-}
+        .auth-btn.email {
+            background: linear-gradient(135deg, #4285f4 0%, #357abf 100%);
+        }
 
-/* Estilos para el texto debajo del formulario */
-#auth-container p {
-    text-align: center;
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 12px;
-    margin-top: 10px;
-}
+        .auth-btn img {
+            width: 18px;
+            height: 18px;
+        }
 
-#auth-container a {
-    color: #6200ea; /* Color morado */
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
+        .toggle-link {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.8);
+        }
 
-#auth-container a:hover {
-    color: #3700b3; /* Color morado más oscuro */
-}
+        .toggle-link button {
+            background: none;
+            border: none;
+            color: #667eea;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+
+        .toggle-link button:hover {
+            color: #764ba2;
+        }
+
+        .info-text {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+            margin-top: 20px;
+        }
+
+        .info-text a {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .info-text a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        hr {
+            margin: 20px 0;
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
+        }
+
+        /* Contenido después del login */
+        #content {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.75);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.6s ease;
+        }
+
+        #content h2 {
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        #content p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: rgba(102, 126, 234, 0.8);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: rgba(102, 126, 234, 1);
+            transform: translateY(-2px);
+        }
+
+        .action-btn.danger {
+            background: rgba(220, 53, 69, 0.8);
+        }
+
+        .action-btn.danger:hover {
+            background: rgba(220, 53, 69, 1);
+        }
+
+        .tarjeta {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        #fotoPerfil {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #667eea;
+        }
+
+        .usuario {
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .insignias-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0;
+        }
+
+        .notificacion {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            color: white;
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .notificacion.exito {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+        }
+
+        .notificacion.error {
+            background: linear-gradient(135deg, #ff4444, #cc0000);
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 600px) {
+            #auth-container, #content {
+                margin: 20px;
+                padding: 20px;
+            }
+            
+            .button-container {
+                flex-direction: column;
+            }
+            
+            .auth-btn {
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
     <header>
         <a href="https://grouvex.github.io/"><div class="img-container"></div></a> 
         <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
-            <span id="menuG"></span> <!-- General -->
-            <span id="menuT"></span> <!-- Temas/Idioma -->
-            <span id="menuU"></span> <!-- Usuario -->
+            <span id="menuG"></span>
+            <span id="menuT"></span>
+            <span id="menuU"></span>
         </span>
     </header>
     <main>
-        <h1>Autenticación de Usuarios en Grouvex Studios</h1>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<div id="auth-container">
-    <form id="authForm">
-        <h2 id="formTitle">Inicio de Sesión</h2>
-        <input type="email" id="authEmail" placeholder="Email" required>
-        <input type="password" id="authPassword" placeholder="Password" required>
-        <input type="text" id="authDisplayName" placeholder="Nombre de Usuario">
-        <div class="button-container">
-            <button type="submit" id="authButton" class="icon-button" title="Verificar Autenticación">
-                <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png" alt="Iniciar Sesión" width="15" height="15">
-            </button>
-            <button type="button" id="toggleButton" class="icon-button secondary" title="Cambia de Iniciar Sesión a Registrarse y viceversa" disabled>
-                <i class="fas fa-sync-alt"></i> <!-- Ícono de cambio -->
-            </button>
-            <button id="google-login-btn" class="icon-button google" title="Iniciar Sesión/Registrarse con Google" disabled>
-                <img src="https://img.icons8.com/?size=512&id=17949&format=png" alt="Google" width="15" height="15">
-            </button>
-            <button id="email-login-btn" class="icon-button email" title="Iniciar Sesión/Registrarse con Email" disabled>
-                <img src="https://static.vecteezy.com/system/resources/previews/022/484/508/non_2x/google-mail-gmail-icon-logo-symbol-free-png.png" alt="Email" width="15" height="15">
-            </button>
+        <div id="auth-container">
+            <form id="authForm">
+                <h2 id="formTitle">Iniciar Sesión</h2>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="authEmail" placeholder="Correo electrónico" required autocomplete="email">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="authPassword" placeholder="Contraseña" required autocomplete="current-password">
+                </div>
+                <div class="input-group" id="displayNameGroup" style="display: none;">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="authDisplayName" placeholder="Nombre de usuario" autocomplete="username">
+                </div>
+                <div class="button-container">
+                    <button type="submit" id="authButton" class="auth-btn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span id="authBtnText">Iniciar Sesión</span>
+                    </button>
+                    <button type="button" id="googleLoginBtn" class="auth-btn google">
+                        <i class="fab fa-google"></i>
+                        Google
+                    </button>
+                </div>
+                <div class="toggle-link">
+                    ¿No tienes cuenta? 
+                    <button type="button" id="toggleModeBtn">Registrarse</button>
+                </div>
+            </form>
+            <div class="info-text">
+                <p>¿Olvidaste tu contraseña? Contacta a: <a href="mailto:administracion@grouvex.com?subject=Cambiar%20contraseña">administracion@grouvex.com</a></p>
+                <hr>
+                <p>Al registrarte o iniciar sesión, aceptas los <a href="https://grouvex.github.io/tos">Términos de Servicio</a> y <a href="https://grouvex.github.io/pp">Políticas de Privacidad</a>.</p>
+            </div>
         </div>
-    </form>
-    <p>¿Olvidaste tu contraseña? Póngase en contacto con: <a href="mailto:administracion@grouvex.com?subject=Cambiar%20contraseña&body=Hola,%0A%0ASoy%20[Nombre de Usuario],%20mi%20correo%20asociado%20es%20[Correo del Usuario]%20y%20mi%20GSUserID%20es:%20[UID del Usuario]%0ASe%20me%20ha%20olvidado%20mi%20contraseña%20y%20me%20gustaría%20cambiarla.%0A%0AGracias,%0A[Nombre de Usuario]" style="color:white">administracion@grouvex.com</a></p>
-    <p>Al registrarte o iniciar sesión en Grouvex Studios, acepta los <a href="https://grouvex.github.io/tos">Términos de Servicios</a> y <a href="https://grouvex.github.io/pp">Políticas de Privacidad del mismo</a>.</p>
-    <hr>
-    <aside>
-    <p>Para registrarse dirijase <a href="https://script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec">aquí</a></p>
-    </aside>
-</div>
+
         <div id="content" style="display: none;">
-            <h2>Bienvenido</h2>
-            <p>Este contenido es visible solo para usuarios autenticados.</p>
-            <p>Si desea eliminar la cuenta, envie un correo a <a href="mailto:administracion@grouvex.com?subject=Solicitud%20de%20Eliminación%20de%20la%20Cuenta%20de%20Grouvex%20Studios" style="color:white">administracion@grouvex.com</a>, indicando: Nombre de Usuario, Correo Electronico y el GSUserID.</p>
-            <p>Bienvenid@, si necesita ayuda, puede ponerse en <a href="https://grouvex.github.io/contacto" style="color:white">contacto</a> con el equipo.</p>
-            <hr>
-            <p>Información de la cuenta</p>
-    <div class="tarjetas">
-        <div class="tarjeta">
-    <img id="fotoPerfil" src="https://grouvex.com/img/GROUVEX.png" alt="Foto de perfil">
-    <div>
-      <h2><span class="usuario"></span></h2>
-      <hr>
-      <span class="insignias-container"></span>
-      <p style="font-size:6px;font-family: Arial, Helvetica, sans-serif;"><n><span id="userID"></span></n></p>
-      <p><footer><span id="correoElectronico"></span></footer></p>
-    </div></div></div>
-    <p style="font-size:12px">El GSUserID (GS-XXXXXXXXXXXX) es único por cada usuario. Sirve para formularios o para comprobar la existencia y el estado del usuario. En caso de no aparecer tu nombre de usuario, deberás iniciar con Google.</p>
-            <hr>
-            <button id="resetPasswordBtn">Cambiar Contraseña</button><button id="logoutBtn">Cerrar Sesión</button>
-            <hr>
-            <button id="deleteBtn">Eliminar Cuenta</button>
-</div>
+            <h2>🎉 ¡Bienvenido!</h2>
+            <div class="tarjeta">
+                <img id="fotoPerfil" src="https://grouvex.com/img/GROUVEX.png" alt="Foto de perfil">
+                <div>
+                    <h2><span class="usuario">Cargando...</span></h2>
+                    <hr>
+                    <div class="insignias-container"></div>
+                    <p style="font-size: 11px;"><strong>ID:</strong> <span id="userID"></span></p>
+                    <p><strong>Email:</strong> <span id="correoElectronico"></span></p>
+                </div>
+            </div>
+            <p>Si deseas eliminar tu cuenta, envía un correo a <a href="mailto:administracion@grouvex.com">administracion@grouvex.com</a> con tu información.</p>
+            <div class="action-buttons">
+                <button id="resetPasswordBtn" class="action-btn">
+                    <i class="fas fa-key"></i> Cambiar Contraseña
+                </button>
+                <button id="logoutBtn" class="action-btn">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </button>
+                <button id="deleteBtn" class="action-btn danger">
+                    <i class="fas fa-trash"></i> Eliminar Cuenta
+                </button>
+            </div>
+        </div>
+        <!-- Elemento solo visible para admins -->
+        <div id="adminPanel" style="display: none;">
+            Panel de Administración
+        </div>
+        
+        <!-- Elemento solo visible para artistas -->
+        <div id="artistTools" style="display: none;">
+            Herramientas de Artista
+        </div>
     </main>
-    <!-- Footer -->
-    <div id="footer"></div>
+<script>
+// Mostrar elementos según el rol
+(async () => {
+    if (await usuarioTieneRol('admin')) {
+        document.getElementById('adminPanel').style.display = 'block';
+    }
+    if (await usuarioTieneRol('artista')) {
+        document.getElementById('artistTools').style.display = 'block';
+    }
+})();
+</script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="login.js"></script>
+<div id="footer"></div>
 </body>
 </html>

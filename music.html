@@ -2644,77 +2644,10 @@ auth.onAuthStateChanged((user) => {
 
 // Función para iniciar sesión (solo login, no registro)
 function gmxLogin() {
-  // Mostrar diálogo de login
-  const email = prompt('Ingresa tu correo electrónico autorizado:');
-  if (!email) return;
-  
-  const password = prompt('Ingresa tu contraseña:');
-  if (!password) return;
-  
-  auth.signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      gmxShowToast(`✅ Sesión iniciada como ${userCredential.user.email}`);
-    })
-    .catch((error) => {
-      let errorMsg = 'Error al iniciar sesión. ';
-        switch (error.code) {
-          // --- ERRORES DE LOGIN / CREDENCIALES ---
-          case 'auth/user-not-found':
-            errorMsg = 'Usuario no encontrado. Solo usuarios autorizados pueden acceder.';
-            break;
-          case 'auth/wrong-password':
-            errorMsg = 'Contraseña incorrecta. Por favor, inténtalo de nuevo.';
-            break;
-          case 'auth/invalid-email':
-            errorMsg = 'El formato del correo electrónico no es válido.';
-            break;
-          case 'auth/user-disabled':
-            errorMsg = 'Esta cuenta ha sido deshabilitada por un administrador.';
-            break;
-        
-          // --- ERRORES DE REGISTRO / CREACIÓN ---
-          case 'auth/email-already-in-use':
-            errorMsg = 'Este correo ya está registrado en otra cuenta.';
-            break;
-          case 'auth/weak-password':
-            errorMsg = 'La contraseña es muy débil. Debe tener al menos 6 caracteres.';
-            break;
-        
-          // --- ERRORES DE SEGURIDAD Y FLUJO ---
-          case 'auth/too-many-requests':
-            errorMsg = 'Demasiados intentos fallidos. La cuenta ha sido bloqueada temporalmente. Inténtalo más tarde.';
-            break;
-          case 'auth/operation-not-allowed':
-            errorMsg = 'El método de autenticación (Email/Password) no está habilitado en Firebase.';
-            break;
-          case 'auth/requires-recent-login':
-            errorMsg = 'Esta operación es sensible y requiere que vuelvas a iniciar sesión.';
-            break;
-          case 'auth/invalid-credential':
-            errorMsg = 'Las credenciales han expirado o no son válidas.';
-            break;
-        
-          // --- ERRORES DE RED Y SISTEMA ---
-          case 'auth/network-request-failed':
-            errorMsg = 'Error de conexión. Verifica tu internet.';
-            break;
-          case 'auth/internal-error':
-            errorMsg = 'Error interno del servidor. Por favor, intenta más tarde.';
-            break;
-        
-          // --- POPUPS Y TERCEROS (Google, Facebook, etc.) ---
-          case 'auth/popup-closed-by-user':
-            errorMsg = 'Se cerró la ventana de inicio de sesión antes de completar el proceso.';
-            break;
-          case 'auth/cancelled-popup-request':
-            errorMsg = 'La solicitud fue cancelada debido a múltiples popups abiertos.';
-            break;
-        
-          default:
-            errorMsg = 'Ha ocurrido un error inesperado: ' + error.message;
-        }
-      gmxShowToast(`❌ ${errorMsg}`, 4000);
-    });
+  gmxShowToast('🔐 Redirigiendo a la página de inicio de sesión...');
+  setTimeout(() => {
+    window.location.href = '/login';
+  }, 3000);
 }
 
 // Cerrar sesión

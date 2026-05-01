@@ -1,7 +1,7 @@
 // ============================================
 // PROTECCIÓN ANTI-INSPECCIÓN
 // ============================================
-!function(){'use strict';document.addEventListener('keydown',e=>{((e.ctrlKey&&e.shiftKey&&['I','J','C','K'].includes(e.key))||['F12','F8'].includes(e.key)||(e.ctrlKey&&['U','S'].includes(e.key.toUpperCase())))&&(e.preventDefault(),e.stopImmediatePropagation())},!0),document.addEventListener('contextmenu',e=>{e.preventDefault(),e.stopImmediatePropagation()},!0)}();
+!function(){'use strict';document.addEventListener('keydown',e=>{((e.ctrlKey&&e.shiftKey&&['I','J','C','K'].includes(e.key))||['F12','F8'].includes(e.key)||(e.ctrlKey&&['U','S'].includes(e.key.toUpperCase())))&&(e.preventDefault(),e.stopImmediatePropagation())},!0),document.addEventListener('contextmenu',e=>{e.preventDefault(),e.stopImmediatePropagation()},!0),document.addEventListener('selectstart',e=>e.preventDefault(),!0),setInterval(()=>{(window.outerWidth-window.innerWidth>100||window.outerHeight-window.innerHeight>100)&&console.log('x')},1e3)}();
 
 // ============================================
 // CONFIGURACIÓN DE FIREBASE
@@ -24,6 +24,13 @@ if (typeof firebase !== 'undefined' && !firebase.apps.length) {
 
 const auth = firebase.auth();
 const database = firebase.database();
+
+// ============================================
+// CONFIGURACIÓN INSIGNIAS
+// ============================================
+
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQBy3U9WSBBYfo9C-etH3KYe3_b9B_W1i40-XE6vUgatP16slZDnXtokxs25l80VBWjg/exec';
+const URL_BASE_INSIGNIAS = 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/';
 
 // ============================================
 // VARIABLES GLOBALES
@@ -209,22 +216,522 @@ async function handleAccountDeletion() {
 }
 
 // ============================================
-// INSIGNIAS Y ROLES (CORREGIDO - usa insignias)
+// FUNCIONES PARA OBTENER DATOS DEL USUARIO DESDE GOOGLE SHEETS
 // ============================================
-async function obtenerInsigniasUsuario(userID) {
+
+async function obtenerDatosUsuarioPorUserID(userID) {
     try {
-        const cleanID = userID.replace(/^GS-/i, '').trim();
-        const snapshot = await database.ref(`users/${cleanID}/insignias`).once('value');
-        const insigniasTexto = snapshot.val() || '';
+        console.log('🔍 Buscando datos para UserID:', userID);
         
-        if (!insigniasTexto) return [];
+        if (!userID || userID.trim() === '') {
+            console.log('❌ UserID vacío o inválido');
+            return null;
+        }
         
-        // Procesar insignias desde el texto (URLs separadas por comas)
-        return insigniasTexto.split(/[,;]+/).map(i => i.trim()).filter(i => i && i.includes('http'));
+        const searchUserID = userID.replace(/^GS-/i, '').trim();
+        
+        const url = `${APPS_SCRIPT_URL}?timestamp=${Date.now()}`;
+        console.log('📡 URL de solicitud:', url);
+        
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status}`);
+        }
+        
+        const text = await response.text();
+        
+        let jsonData;
+        try {
+            jsonData = JSON.parse(text);
+        } catch (e) {
+            console.error('❌ Error parseando JSON:', e);
+            return null;
+        }
+        
+        if (!jsonData.success) {
+            console.error('❌ Error en respuesta:', jsonData.error);
+            return null;
+        }
+        
+        const headers = jsonData.headers || [];
+        const data = jsonData.data || [];
+        
+        // Buscar índices de columnas
+        let userIDIndex = -1;
+        let insigniasIndex = -1;
+        let nombreIndex = -1;
+        let emailIndex = -1;
+        
+        headers.forEach((header, index) => {
+            const headerStr = header ? header.toString() : '';
+            
+            if (userIDIndex === -1 && headerStr.toLowerCase().includes('grouvex studios userid')) {
+                userIDIndex = index;
+                console.log('✅ Columna UserID encontrada en índice:', index);
+            }
+            
+            if (insigniasIndex === -1 && headerStr.toLowerCase() === 'insignias') {
+                insigniasIndex = index;
+                console.log('✅ Columna Insignias encontrada en índice:', index);
+            }
+            
+            if (nombreIndex === -1 && (headerStr.toLowerCase().includes('nombre de usuario') || 
+                                       headerStr.toLowerCase().includes('nombre del cliente') ||
+                                       headerStr.toLowerCase().includes('nombre y apellidos reales') ||
+                                       headerStr.toLowerCase().includes('nombre del artista/banda'))) {
+                nombreIndex = index;
+                console.log('✅ Columna Nombre encontrada en índice:', index);
+            }
+            
+            if (emailIndex === -1 && headerStr.toLowerCase().includes('email')) {
+                emailIndex = index;
+                console.log('✅ Columna Email encontrada en índice:', index);
+            }
+        });
+        
+        // Si no encuentra columna específica de nombre, buscar cualquier columna con "nombre"
+        if (nombreIndex === -1) {
+            headers.forEach((header, index) => {
+                const headerStr = header ? header.toString() : '';
+                if (nombreIndex === -1 && headerStr.toLowerCase().includes('nombre')) {
+                    nombreIndex = index;
+                    console.log('✅ Columna Nombre (aproximada) encontrada en índice:', index);
+                }
+            });
+        }
+        
+        if (userIDIndex === -1) {
+            console.error('❌ No se encontró la columna UserID');
+            return null;
+        }
+        
+        // Buscar el usuario en todas las filas
+        for (let i = 0; i < data.length; i++) {
+            const row = data[i];
+            const rowUserID = row[userIDIndex] ? row[userIDIndex].toString().trim() : '';
+            
+            if (rowUserID) {
+                const normalizedRowUserID = rowUserID.replace(/^GS-/i, '').trim();
+                
+                if (normalizedRowUserID.toLowerCase() === searchUserID.toLowerCase()) {
+                    console.log(`✅ Usuario encontrado en fila ${i + 2}`);
+                    
+                    const insigniasTexto = insigniasIndex !== -1 ? (row[insigniasIndex] ? row[insigniasIndex].toString().trim() : '') : '';
+                    const nombre = nombreIndex !== -1 ? (row[nombreIndex] ? row[nombreIndex].toString().trim() : '') : 'Usuario';
+                    const email = emailIndex !== -1 ? (row[emailIndex] ? row[emailIndex].toString().trim() : '') : '';
+                    
+                    return {
+                        userID: userID,
+                        nombre: nombre || 'Usuario',
+                        email: email || 'Sin email',
+                        insignias: insigniasTexto
+                    };
+                }
+            }
+        }
+        
+        console.log('❌ Usuario no encontrado en la base de datos');
+        return null;
+        
     } catch (error) {
-        console.error('Error obteniendo insignias:', error);
+        console.error('❌ Error obteniendo datos del usuario:', error);
+        return null;
+    }
+}
+
+// ============================================
+// FUNCIONES PARA PROCESAR INSIGNIAS
+// ============================================
+
+function procesarInsignias(textoInsignias) {
+    if (!textoInsignias || textoInsignias.trim() === '') {
         return [];
     }
+    
+    const texto = textoInsignias.trim();
+    
+    // Si indica que no hay insignias
+    if (texto.toLowerCase() === 'ninguna' || 
+        texto.toLowerCase() === 'sin insignias' ||
+        texto.toLowerCase() === 'n/a' ||
+        texto.toLowerCase() === 'no aplica') {
+        return [];
+    }
+    
+    const insignias = [];
+    
+    // Separar por comas, punto y coma
+    const separadores = /[,;]+/;
+    const partes = texto.split(separadores);
+    
+    partes.forEach(parte => {
+        const urlLimpia = parte.trim();
+        
+        if (urlLimpia && urlLimpia.toLowerCase().includes('githubusercontent.com')) {
+            const tieneExtension = /\.(png|gif|jpg|jpeg|webp|svg)(\?.*)?$/i.test(urlLimpia);
+            
+            if (tieneExtension) {
+                const nombre = extraerNombreInsignia(urlLimpia);
+                
+                insignias.push({
+                    nombre: nombre,
+                    url: urlLimpia,
+                    tipo: determinarTipoInsignia(urlLimpia)
+                });
+            }
+        }
+    });
+    
+    return insignias;
+}
+
+function extraerNombreInsignia(url) {
+    try {
+        const urlDecodificada = decodeURIComponent(url);
+        const nombreArchivo = urlDecodificada.split('/').pop();
+        const nombreSinExtension = nombreArchivo.split('.')[0];
+        
+        return nombreSinExtension
+            .replace(/%20/g, ' ')
+            .replace(/-/g, ' ')
+            .replace(/_/g, ' ')
+            .replace(/verified/g, 'Verified ')
+            .replace(/owner/g, 'Owner ')
+            .replace(/employee/g, 'Employee ')
+            .replace(/moderator/g, 'Moderator ')
+            .replace(/developer/g, 'Developer ')
+            .replace(/bughunter/g, 'Bug Hunter ')
+            .replace(/partner/g, 'Partner ')
+            .replace(/team/g, 'Team ')
+            .replace(/recording/g, 'Recording ')
+            .replace(/designs/g, 'Designs ')
+            .replace(/animations/g, 'Animations ')
+            .replace(/sistema/g, 'Sistema ')
+            .replace(/grouvex/g, 'Grouvex ')
+            .replace(/gco/g, 'GCO')
+            .replace(/^\s+|\s+$/g, '')
+            .toUpperCase();
+    } catch (e) {
+        return 'INSIGNIA';
+    }
+}
+
+function determinarTipoInsignia(url) {
+    const urlLower = url.toLowerCase();
+    
+    if (urlLower.includes('.gif')) return 'animada';
+    if (urlLower.includes('.png')) return 'estatica';
+    if (urlLower.includes('.jpg') || urlLower.includes('.jpeg')) return 'imagen';
+    if (urlLower.includes('.svg')) return 'vectorial';
+    
+    return 'desconocido';
+}
+
+function crearElementoInsignia(insignia, index) {
+    const container = document.createElement('div');
+    container.className = 'insignia-item';
+    container.dataset.tipo = insignia.tipo;
+    container.dataset.nombre = insignia.nombre;
+    container.style.cssText = `
+        display: inline-block;
+        margin: 5px;
+        position: relative;
+        animation: fadeIn 0.5s ease ${index * 0.1}s forwards;
+        opacity: 0;
+        transform-origin: center;
+    `;
+    
+    const img = document.createElement('img');
+    img.src = insignia.url;
+    img.alt = insignia.nombre;
+    img.title = insignia.nombre;
+    img.loading = 'lazy';
+    
+    let estilosBase = `
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        border: 2px solid rgba(255, 255, 255, 0.15);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        object-fit: contain;
+        background: rgba(255, 255, 255, 0.05);
+    `;
+    
+    if (insignia.tipo === 'animada') {
+        estilosBase += `
+            border-color: rgba(255, 215, 0, 0.3);
+            box-shadow: 0 0 5px rgba(255, 215, 0, 0.2);
+        `;
+    } else if (insignia.tipo === 'vectorial') {
+        estilosBase += `
+            border-color: rgba(0, 150, 255, 0.3);
+        `;
+    }
+    
+    img.style.cssText = estilosBase;
+    
+    img.addEventListener('mouseenter', () => {
+        img.style.transform = 'scale(1.2)';
+        img.style.boxShadow = '0 0 10px rgba(255, 215, 0, 0.4)';
+        img.style.borderColor = 'gold';
+    });
+    
+    img.addEventListener('mouseleave', () => {
+        img.style.transform = 'scale(1)';
+        img.style.boxShadow = insignia.tipo === 'animada' 
+            ? '0 0 5px rgba(255, 215, 0, 0.2)' 
+            : 'none';
+        img.style.borderColor = insignia.tipo === 'animada' 
+            ? 'rgba(255, 215, 0, 0.3)' 
+            : insignia.tipo === 'vectorial'
+            ? 'rgba(0, 150, 255, 0.3)'
+            : 'rgba(255, 255, 255, 0.15)';
+    });
+    
+    img.addEventListener('error', () => {
+        console.error(`❌ Error cargando insignia: ${insignia.url}`);
+        img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0icmdiYSgwLCAwLCAwLCAwLjEpIi8+CjxwYXRoIGQ9Ik0xNiAxMEgyMlYxNkgxNlYxMFpNMTYgMThIMjJWMjRIMTZWMThaIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjUiLz4KPHBhdGggZD0iTTEwIDEwSDIyVjIySDEwVjEwWk0xMiAxMlYyMEgyMFYxMkgxMloiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjciIHN0cm9rZS13aWR0aD0iMiIvPgo8L3N2Zz4=';
+        img.title = `❌ Error cargando: ${insignia.nombre}`;
+    });
+    
+    container.appendChild(img);
+    return container;
+}
+
+// ============================================
+// FUNCIONES PARA MOSTRAR DATOS E INSIGNIAS
+// ============================================
+
+async function mostrarDatosEInsigniasEnElemento(elementoTigsID) {
+    try {
+        const userID = elementoTigsID.getAttribute('tigsID');
+        if (!userID) {
+            console.log('❌ Elemento sin tigsID válido');
+            return;
+        }
+        
+        console.log(`🎯 Procesando elemento con tigsID: ${userID}`);
+        
+        elementoTigsID.textContent = 'Cargando...';
+        elementoTigsID.style.color = '#888';
+        elementoTigsID.style.fontStyle = 'italic';
+        
+        const contenedorInsignias = elementoTigsID.closest('div')?.querySelector('.insignias-container');
+        
+        const tarjeta = elementoTigsID.closest('.tarjeta');
+        const imgTIGS = tarjeta ? tarjeta.querySelector('#imgTIGS') : null;
+        
+        if (imgTIGS) {
+            const fotoURL = await obtenerFotoPerfilFirebase(userID);
+            imgTIGS.src = fotoURL;
+            imgTIGS.alt = `Foto de ${userID}`;
+            console.log(`✅ Imagen establecida para ${userID}: ${fotoURL}`);
+            
+            if (!imgTIGS.style.borderRadius) {
+                imgTIGS.style.cssText = `
+                    border-radius: 50%;
+                    width: 60px;
+                    height: 60px;
+                    object-fit: cover;
+                    margin-right: 15px;
+                    flex-shrink: 0;
+                    border: 2px solid rgba(255, 255, 255, 0.1);
+                    transition: all 0.3s ease;
+                `;
+            }
+        }
+        
+        const datosUsuario = await obtenerDatosUsuarioPorUserID(userID);
+        
+        if (!datosUsuario) {
+            elementoTigsID.textContent = 'Usuario no encontrado';
+            elementoTigsID.style.color = '#888';
+            elementoTigsID.style.fontStyle = 'italic';
+            if (contenedorInsignias) {
+                contenedorInsignias.innerHTML = '<div class="no-insignias-message">🎯 Sin datos</div>';
+            }
+            return;
+        }
+        
+        elementoTigsID.textContent = datosUsuario.nombre;
+        elementoTigsID.style.color = '';
+        elementoTigsID.style.fontStyle = '';
+        elementoTigsID.title = `ID: ${userID}`;
+        
+        console.log(`✅ Nombre mostrado: ${datosUsuario.nombre} para ${userID}`);
+        
+        if (contenedorInsignias) {
+            const insignias = procesarInsignias(datosUsuario.insignias);
+            
+            contenedorInsignias.innerHTML = '';
+            
+            if (!insignias || insignias.length === 0) {
+                contenedorInsignias.innerHTML = '<div class="no-insignias-message">🎯 Sin insignias</div>';
+                return;
+            }
+            
+            console.log(`✅ Mostrando ${insignias.length} insignias para ${userID}`);
+            
+            insignias.forEach((insignia, index) => {
+                const insigniaElement = crearElementoInsignia(insignia, index);
+                contenedorInsignias.appendChild(insigniaElement);
+            });
+            
+            if (insignias.length > 1) {
+                const contador = document.createElement('div');
+                contador.className = 'insignias-count';
+                contador.textContent = insignias.length;
+                contenedorInsignias.style.position = 'relative';
+                contenedorInsignias.appendChild(contador);
+            }
+        }
+        
+    } catch (error) {
+        console.error('❌ Error procesando elemento tigsID:', error);
+        if (elementoTigsID) {
+            elementoTigsID.textContent = 'Error';
+            elementoTigsID.style.color = '#ff4444';
+        }
+    }
+}
+
+// ============================================
+// FUNCIONES PARA OBTENER IMAGEN DE FIREBASE
+// ============================================
+
+async function obtenerFotoPerfilFirebase(userID) {
+    try {
+        if (!userID || userID.trim() === '') {
+            return 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png';
+        }
+        
+        const uid = userID.replace(/^GS-/i, '').trim();
+        
+        if (!uid) {
+            return 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png';
+        }
+        
+        const userRef = database.ref(`users/${uid}`);
+        const snapshot = await userRef.once('value');
+        
+        if (snapshot.exists()) {
+            const userData = snapshot.val();
+            return userData.photoURL || 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png';
+        }
+        
+        return 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png';
+    } catch (error) {
+        console.error('❌ Error obteniendo foto de perfil:', error);
+        return 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png';
+    }
+}
+
+// ============================================
+// FUNCIÓN PRINCIPAL PARA CARGAR DATOS E INSIGNIAS
+// ============================================
+
+async function cargarDatosEInsigniasEnTodosLosElementos() {
+    console.log('🚀 Iniciando carga de datos e insignias');
+    
+    const elementosConTigsID = document.querySelectorAll('[tigsID]');
+    console.log(`📊 Encontrados ${elementosConTigsID.length} elementos con tigsID`);
+    
+    for (const elemento of elementosConTigsID) {
+        await mostrarDatosEInsigniasEnElemento(elemento);
+    }
+    
+    const userIDElement = document.getElementById('userID');
+    if (userIDElement && userIDElement.textContent.trim()) {
+        const userID = userIDElement.textContent.trim();
+        console.log(`📋 UserID encontrado en texto: ${userID}`);
+        
+        const contenedorInsignias = userIDElement.closest('div')?.querySelector('.insignias-container');
+        
+        const fotoPerfil = document.getElementById('fotoPerfil');
+        
+        if (fotoPerfil) {
+            const fotoURL = await obtenerFotoPerfilFirebase(userID);
+            fotoPerfil.src = fotoURL;
+            fotoPerfil.alt = 'Foto de perfil';
+            console.log(`✅ Foto de perfil establecida: ${fotoURL}`);
+            
+            if (!fotoPerfil.style.borderRadius) {
+                fotoPerfil.style.cssText = `
+                    border-radius: 50%;
+                    width: 60px;
+                    height: 60px;
+                    object-fit: cover;
+                    margin-right: 15px;
+                    flex-shrink: 0;
+                    border: 2px solid rgba(255, 255, 255, 0.1);
+                    transition: all 0.3s ease;
+                `;
+            }
+        }
+        
+        if (contenedorInsignias) {
+            const datosUsuario = await obtenerDatosUsuarioPorUserID(userID);
+            
+            if (datosUsuario && datosUsuario.insignias) {
+                const insignias = procesarInsignias(datosUsuario.insignias);
+                
+                contenedorInsignias.innerHTML = '';
+                
+                if (insignias.length > 0) {
+                    insignias.forEach((insignia, index) => {
+                        const insigniaElement = crearElementoInsignia(insignia, index);
+                        contenedorInsignias.appendChild(insigniaElement);
+                    });
+                    
+                    if (insignias.length > 1) {
+                        const contador = document.createElement('div');
+                        contador.className = 'insignias-count';
+                        contador.textContent = insignias.length;
+                        contenedorInsignias.style.position = 'relative';
+                        contenedorInsignias.appendChild(contador);
+                    }
+                } else {
+                    contenedorInsignias.innerHTML = '<div class="no-insignias-message">🎯 Sin insignias</div>';
+                }
+            }
+        }
+    }
+    
+    const imagenesTIGSIndependientes = document.querySelectorAll('#imgTIGS');
+    for (const img of imagenesTIGSIndependientes) {
+        if (!img.src || img.src === '' || img.src.includes(window.location.origin)) {
+            img.src = 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png';
+            img.alt = 'Imagen por defecto';
+            
+            if (!img.style.borderRadius) {
+                img.style.cssText = `
+                    border-radius: 50%;
+                    width: 60px;
+                    height: 60px;
+                    object-fit: cover;
+                    margin-right: 15px;
+                    flex-shrink: 0;
+                    border: 2px solid rgba(255, 255, 255, 0.1);
+                    transition: all 0.3s ease;
+                `;
+            }
+        }
+    }
+    
+    console.log('✅ Carga de datos e insignias completada');
+}
+
+// ============================================
+// INSIGNIAS Y ROLES (basado en Google Sheets)
+// ============================================
+
+async function obtenerInsigniasUsuario(userID) {
+    const datosUsuario = await obtenerDatosUsuarioPorUserID(userID);
+    if (!datosUsuario || !datosUsuario.insignias) return [];
+    
+    return procesarInsignias(datosUsuario.insignias);
 }
 
 function insigniaContiene(insigniaURL, textoBuscado) {
@@ -240,7 +747,6 @@ async function usuarioTieneRol(rolBuscado) {
     const userID = `GS-${user.uid}`;
     const insignias = await obtenerInsigniasUsuario(userID);
     
-    // Mapeo de roles a palabras clave en las insignias
     const rolesMap = {
         'admin': ['verified-staff', 'admin', 'administrator', 'owner', 'staff'],
         'artista': ['verified-artist', 'artist', 'premium-artist', 'recording'],
@@ -256,7 +762,7 @@ async function usuarioTieneRol(rolBuscado) {
     
     for (const insignia of insignias) {
         for (const palabra of palabrasClave) {
-            if (insigniaContiene(insignia, palabra)) {
+            if (insigniaContiene(insignia.url, palabra)) {
                 return true;
             }
         }
@@ -292,134 +798,9 @@ async function obtenerNivelPermiso() {
 }
 
 // ============================================
-// OBTENER DATOS DE USUARIO
-// ============================================
-async function obtenerDatosUsuarioPorUserID(userID) {
-    try {
-        if (!userID) return null;
-        const cleanID = userID.replace(/^GS-/i, '').trim();
-        const snapshot = await database.ref(`users/${cleanID}`).once('value');
-        return snapshot.exists() ? snapshot.val() : null;
-    } catch (error) {
-        console.error('Error:', error);
-        return null;
-    }
-}
-
-async function obtenerFotoPerfilFirebase(userID) {
-    try {
-        if (!userID) return "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png";
-        const cleanID = userID.replace(/^GS-/i, '').trim();
-        const snapshot = await database.ref(`users/${cleanID}/photoURL`).once('value');
-        return snapshot.val() || "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png";
-    } catch (error) {
-        return "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png";
-    }
-}
-
-// ============================================
-// FUNCIONES PARA INSIGNIAS EN UI
-// ============================================
-function extraerNombreInsignia(url) {
-    try {
-        const nombreArchivo = decodeURIComponent(url).split('/').pop();
-        const nombre = nombreArchivo.split('.')[0];
-        return nombre.replace(/[_-]/g, ' ').replace(/^\w/, c => c.toUpperCase());
-    } catch (e) {
-        return 'INSIGNIA';
-    }
-}
-
-function determinarTipoInsignia(url) {
-    const urlLower = url.toLowerCase();
-    if (urlLower.includes('.gif')) return 'animada';
-    if (urlLower.includes('.png')) return 'estatica';
-    if (urlLower.includes('.svg')) return 'vectorial';
-    return 'imagen';
-}
-
-function crearElementoInsignia(insignia) {
-    const container = document.createElement('div');
-    container.className = 'insignia-item';
-    container.setAttribute('data-nombre', insignia.nombre);
-    
-    const img = document.createElement('img');
-    img.src = insignia.url;
-    img.alt = insignia.nombre;
-    img.title = insignia.nombre;
-    img.style.cssText = `
-        width: 32px;
-        height: 32px;
-        border-radius: 6px;
-        border: 2px solid rgba(255,255,255,0.15);
-        cursor: pointer;
-        object-fit: contain;
-        transition: transform 0.2s;
-    `;
-    
-    img.onerror = () => {
-        img.src = 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png';
-    };
-    
-    img.onmouseenter = () => img.style.transform = 'scale(1.2)';
-    img.onmouseleave = () => img.style.transform = 'scale(1)';
-    
-    container.appendChild(img);
-    return container;
-}
-
-async function cargarInsigniasUsuario(container, userID) {
-    if (!container) return;
-    
-    try {
-        const insigniasURLs = await obtenerInsigniasUsuario(userID);
-        container.innerHTML = '';
-        
-        if (!insigniasURLs.length) {
-            container.innerHTML = '<div class="no-insignias-message">🎯 Sin insignias</div>';
-            return;
-        }
-        
-        for (const url of insigniasURLs) {
-            const insignia = {
-                url: url,
-                nombre: extraerNombreInsignia(url),
-                tipo: determinarTipoInsignia(url)
-            };
-            container.appendChild(crearElementoInsignia(insignia));
-        }
-    } catch (error) {
-        console.error('Error cargando insignias:', error);
-        container.innerHTML = '<div class="no-insignias-message">❌ Error cargando insignias</div>';
-    }
-}
-
-async function cargarDatosEInsigniasEnTodosLosElementos() {
-    const elementos = document.querySelectorAll('[tigsID]');
-    for (const elemento of elementos) {
-        const userID = elemento.getAttribute('tigsID');
-        if (!userID) continue;
-        
-        const datos = await obtenerDatosUsuarioPorUserID(userID);
-        if (datos && datos.displayName) {
-            elemento.textContent = datos.displayName;
-        }
-    }
-    
-    // Cargar insignias en contenedores específicos
-    const insigniasContainer = document.querySelector('.insignias-container');
-    const userIDelement = document.getElementById('userID');
-    if (insigniasContainer && userIDelement) {
-        const userID = userIDelement.textContent.trim();
-        if (userID && userID !== 'Cargando...') {
-            await cargarInsigniasUsuario(insigniasContainer, userID);
-        }
-    }
-}
-
-// ============================================
 // VERIFICAR ACCESO POR PÁGINA
 // ============================================
+
 async function verificarAcceso() {
     const user = auth.currentUser;
     const paginaActual = window.location.pathname.split("/").pop() || 'index';
@@ -429,7 +810,6 @@ async function verificarAcceso() {
         return true;
     }
     
-    // Páginas que requieren roles específicos
     const paginasRestringidas = {
         'admin-panel': ['admin'],
         'developer-area': ['admin', 'developer'],
@@ -470,6 +850,7 @@ async function verificarAcceso() {
 // ============================================
 // OBSERVADOR DE AUTENTICACIÓN
 // ============================================
+
 auth.onAuthStateChanged(async (user) => {
     const authContainer = document.getElementById('auth-container');
     const content = document.getElementById('content');
@@ -484,7 +865,6 @@ auth.onAuthStateChanged(async (user) => {
         
         await updateProfileUI(user);
         
-        // Mostrar paneles según rol (basado en insignias)
         if (adminPanel) {
             adminPanel.style.display = (await usuarioTieneRol('admin')) ? 'block' : 'none';
         }
@@ -492,10 +872,18 @@ auth.onAuthStateChanged(async (user) => {
             artistTools.style.display = (await usuarioTieneRol('artista')) ? 'block' : 'none';
         }
         
-        // Cargar insignias del usuario logueado
         const insigniasContainer = document.querySelector('.insignias-container');
         if (insigniasContainer) {
-            await cargarInsigniasUsuario(insigniasContainer, `GS-${user.uid}`);
+            const insignias = await obtenerInsigniasUsuario(`GS-${user.uid}`);
+            insigniasContainer.innerHTML = '';
+            
+            if (insignias.length > 0) {
+                insignias.forEach((insignia, index) => {
+                    insigniasContainer.appendChild(crearElementoInsignia(insignia, index));
+                });
+            } else {
+                insigniasContainer.innerHTML = '<div class="no-insignias-message">🎯 Sin insignias</div>';
+            }
         }
         
         setTimeout(() => cargarDatosEInsigniasEnTodosLosElementos(), 500);
@@ -525,42 +913,92 @@ document.addEventListener('DOMContentLoaded', () => {
             .insignias-container {
                 display: flex;
                 flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
                 gap: 8px;
                 margin: 10px 0;
                 padding: 10px;
-                background: rgba(255,255,255,0.02);
+                min-height: 50px;
+                background: rgba(255, 255, 255, 0.02);
                 border-radius: 8px;
-                min-height: 60px;
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                position: relative;
             }
+            
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px) scale(0.9);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+            
             .insignia-item {
                 position: relative;
             }
+            
             .insignia-item:hover::after {
                 content: attr(data-nombre);
                 position: absolute;
                 bottom: -25px;
                 left: 50%;
                 transform: translateX(-50%);
-                background: rgba(0,0,0,0.9);
+                background: rgba(0, 0, 0, 0.9);
                 color: white;
                 padding: 4px 8px;
                 border-radius: 4px;
                 font-size: 11px;
+                font-weight: 500;
                 white-space: nowrap;
                 z-index: 100;
+                border: 1px solid rgba(255, 215, 0, 0.3);
+                pointer-events: none;
             }
+            
             .no-insignias-message {
+                text-align: center;
                 color: #888;
                 font-size: 12px;
                 padding: 10px;
+                font-style: italic;
+            }
+            
+            .loading-insignias {
                 text-align: center;
-                width: 100%;
+                color: #667eea;
+                font-size: 12px;
+                padding: 10px;
+            }
+            
+            .error-insignias {
+                text-align: center;
+                color: #ff4444;
+                font-size: 12px;
+                padding: 10px;
+            }
+            
+            .insignias-count {
+                position: absolute;
+                top: -5px;
+                right: -5px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                font-size: 10px;
+                font-weight: bold;
+                padding: 2px 6px;
+                border-radius: 10px;
+                border: 2px solid white;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                z-index: 10;
             }
         `;
         document.head.appendChild(style);
     }
     
-    // EVENTOS CORREGIDOS - usar CLICK en lugar de SUBMIT
+    // EVENTOS
     const authButton = document.getElementById('authButton');
     const toggleModeBtn = document.getElementById('toggleModeBtn');
     const googleBtn = document.getElementById('googleLoginBtn');
@@ -568,7 +1006,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const deleteBtn = document.getElementById('deleteBtn');
     const resetPasswordBtn = document.getElementById('resetPasswordBtn');
     
-    // Para el login/registro - usar CLICK en el botón
     if (authButton) {
         authButton.addEventListener('click', (e) => {
             e.preventDefault();
@@ -609,7 +1046,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Prevenir submit de cualquier formulario
     const anyForm = document.querySelector('form');
     if (anyForm) {
         anyForm.addEventListener('submit', (e) => {
@@ -618,19 +1054,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Verificar returnUrl
     const urlParams = new URLSearchParams(window.location.search);
     const returnUrl = urlParams.get('returnUrl');
     if (returnUrl) localStorage.setItem('returnUrl', returnUrl);
     
-    // Verificar acceso en páginas que no son login
     const currentPage = window.location.pathname.split('/').pop();
     if (currentPage !== 'login' && currentPage !== 'login.html') {
         verificarAcceso();
     }
+    
+    setTimeout(() => {
+        cargarDatosEInsigniasEnTodosLosElementos();
+    }, 1000);
 });
 
 // Exportar funciones útiles globalmente
 window.usuarioTieneRol = usuarioTieneRol;
 window.obtenerNivelPermiso = obtenerNivelPermiso;
-window.cargarInsigniasUsuario = cargarInsigniasUsuario;
+window.cargarInsigniasUsuario = obtenerInsigniasUsuario;

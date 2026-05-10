@@ -29,10 +29,11 @@
     <meta name="HandheldFriendly" content="true">
     <link rel="preconnect" href="https://example.com">
     <link rel="dns-prefetch" href="https://example.com">
-    <!-- Scripts sin nonce -->
+    
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.youtube.com https://www.google.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://grouvex.github.io; frame-src https://www.youtube.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+    
     <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script> 
-    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js"></script> 
-    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-database.js"></script> 
+    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js"></script>
     <script src="jquery-3.5.1.min.js"></script>
     <script> 
         document.addEventListener("DOMContentLoaded", function() { 
@@ -45,8 +46,13 @@
             $("#tosypp").load("tosypp.html");
         });
     </script>
-    <script src="//www.youtube.com/player_api"></script><script src="https://www.youtube.com/iframe_api"></script>
-    <script src="time.js"></script></script><script type="module" src="abc.js"></script><script src="index.js"></script>
+  
+    <script src="https://www.youtube.com/player_api"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    
+    <script src="time.js"></script>
+    <script type="module" src="abc.js"></script>
+    <script src="index.js"></script>
 </head>
 <body>
         <mainTop>
@@ -271,7 +277,7 @@
                     &lt;br&gt;
                 &lt;/p&gt;
                 &lt;div&gt;
-                    &lt;a target="_blank" href="http://support.routenote.com/kb-article/why-is-content-id-blocked-on-my-release/"&gt;
+                    &lt;a target="_blank" href="https://support.routenote.com/kb-article/why-is-content-id-blocked-on-my-release/"&gt;
                         support.routenote.com/kb-article/why-is-content-id-blocked-on-my-release/
                     &lt;/a&gt;
                     &lt;br&gt;

@@ -2,326 +2,190 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Anuncios - Grouvex Studios</title>
-    <meta name="description" content="Anuncios de Grouvex Studios, un sello discográfico, distribuidor de contenido multimedia y diseño.">
-    <meta property="og:title" content="Grouvex Studios">
-    <meta property="og:description" content="Sitio web oficial de Grouvex Studios, un sello discográfico, distribuidor de contenido multimedia y diseño.">
-    <meta property="og:image" content="img/GROUVEX.png">
-    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects">
-    <meta name="author" content="Grouvex Studios">
+    <title>Anuncio - Grouvex Studios</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="theme-color" content="#hexcode">
-    <meta property="og:url" content="https://grouvex.com/">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="es_ES">
-    <link rel="canonical" href="https://grouvex.com/">
-    <link rel="icon" href="img/GROUVEX.png" type="image/x-icon">
+    <meta name="robots" content="index, follow">
+    
+    <meta property="og:title" content="Grouvex Studios - Anuncio">
+    <meta property="og:type" content="article">
     <meta property="og:site_name" content="Grouvex Studios">
-    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+    
+    <link rel="icon" href="img/GROUVEX.png" type="image/x-icon">
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="temas.css">
-    <script src="time.js"></script>
-    <script type="module" src="abc.js"></script>
-    <script src="index.js"></script>
-    <script src="jquery-3.5.1.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            $("#menuG").load("menuG.html");
-            $("#menuE").load("menuE.html");
-            $("#menuT").load("menuT.html");
-            $("#menuU").load("menuU.html");
-            $("#footer").load("footer.html");
-            $("#news").load("news.html");
-            $("#tosypp").load("tosypp.html");
-        });
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
     <style>
         :root {
             --color-primary: #63eb25;
-            --color-secondary: #17cb80;
-            --color-accent: #610b69;
-            --color-warning: #ffc107;
-            --color-info: #17a2b8;
-            --color-danger: #dc3545;
-            --color-light: #f8f9fa;
-            --color-dark: #333;
+            --color-dark: #1a1a2e;
+            --border-radius: 12px;
         }
-
-        .anuncios {
+        
+        body {
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .anuncio-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .anuncio-header {
             display: flex;
-            flex-direction: row;
-        }
-
-        .index {
-            width: 20%;
-            background: var(--color-light);
-            padding: 10px;
-            box-sizing: border-box;
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            overflow-y: auto;
-        }
-
-        .index ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .index ul li {
-            margin: 10px 0;
-        }
-
-        .index ul li a {
-            text-decoration: none;
-            color: var(--color-dark);
-        }
-
-        .content {
-            width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-
-        .anuncio {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 20px;
-            padding: 20px;
-            background: transparent;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            position: relative;
-            transition: background-color 0.3s;
-        }
-
-        .cabecera-anuncio {
-            width: 100%;
-            background: var(--color-dark);
-            color: white;
-            padding: 10px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
             align-items: center;
-            text-align: center;
-            margin-bottom: 10px;
+            gap: 1.5rem;
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--color-primary);
         }
-
-        .cabecera-anuncio img {
-            width: 50px;
-            height: auto;
-            margin-bottom: 10px;
+        
+        .user-avatar-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--color-primary);
         }
-
-        .cabecera-anuncio span {
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-
-        .cabecera-anuncio p {
-            margin: 2px 0;
-            font-size: 12px;
-        }
-
-        .contenido-anuncio {
-            flex: 1;
-        }
-
-        .contenido-anuncio h1,
-        .contenido-anuncio h2 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        .contenido-anuncio .mas-info {
-            display: none;
-            margin-top: 10px;
-            padding: 10px;
-            background: transparent;
-            border-top: 1px solid #ddd;
-        }
-
-        .anuncio.maximizado .mas-info {
-            display: block;
-        }
-
-        .ver-mas {
-            margin-top: 10px;
-            padding: 5px 10px;
-            background: var(--color-info);
+        
+        .anuncio-title {
             color: white;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
+            font-size: 2rem;
+            margin-bottom: 1rem;
         }
-
-        .ver-mas:hover {
-            background: #138496;
+        
+        .anuncio-content {
+            color: rgba(255,255,255,0.9);
+            line-height: 1.8;
         }
-
-        .cargar-mas {
-            margin: 20px auto;
-            padding: 10px 20px;
-            background: var(--color-primary);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            display: block;
+        
+        .anuncio-content img {
+            max-width: 100%;
+            border-radius: 8px;
         }
-
-        .cargar-mas:disabled {
-            background: #6c757d;
-            cursor: not-allowed;
+        
+        .anuncio-content iframe {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 1rem 0;
         }
-
-        .toggle-indice {
-            margin: 10px;
-            padding: 5px 10px;
-            background: var(--color-warning);
-            color: black;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-
-        .toggle-indice:hover {
-            background: #e0a800;
-        }
-
-        .filtro-topicos {
-            margin: 10px;padding: 5px 10px;background: var(--color-info);color: white;
-            border: none;border-radius: 3px;cursor: pointer;
-            font-size: 16px;
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            padding-right: 35px;
-        }
-
-        .filtro-topicos:hover {
-            background: #138496;
-        }
-
-        .header-controls {
-            display: flex; justify-content: space-between;align-items: center;padding: 10px;background: var(--color-light);border-bottom: 1px solid #ddd;
-        }
-
-        #info-adicional {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-        }
-
-        #info-adicional a {
-            color: var(--color-primary);
+        
+        .back-button {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, var(--color-primary), #17cb80);
+            color: var(--color-dark);
             text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: transform 0.3s ease;
         }
-
-        #info-adicional a:hover {
-            text-decoration: underline;
+        
+        .back-button:hover {
+            transform: translateY(-2px);
         }
-
-        @media (max-width: 768px) {
-            .anuncios {
-                flex-direction: column;
-            }
-
-            .index {
-                width: 100%; height: 40vh; position: relative;
-            }
-
-            .content {
-                grid-template-columns: repeat(1, 1fr);
-            }
-
-            .header-controls {
-                flex-direction: column; align-items: flex-start;
-            }
-
-            .filtro-topicos {
-                width: 100%;margin: 5px 0;
-            }
+        
+        .not-found {
+            text-align: center;
+            color: white;
+            padding: 3rem;
         }
     </style>
-    <script>
-        // Función para obtener el parámetro 'id' de la URL
-        function obtenerParametroURL(nombre) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(nombre);
-        }
-
-        // Función para cargar el anuncio correspondiente
-        async function cargarAnuncio() {
-            const idAnuncio = obtenerParametroURL('id');
-            const response = await fetch('anuncios.json');
-            const anunciosData = await response.json();
-            const anuncio = anunciosData.find(a => a.id === idAnuncio);
-        
-            if (anuncio) {
-                document.title = anuncio.titulo;
-                document.getElementById('titulo').innerHTML = anuncio.titulo;
-                document.getElementById('contenido').innerHTML = anuncio.contenido;
-                document.getElementById('info-adicional').innerHTML = anuncio.infoAdicional || ''; // Mostrar info adicional
-                const userSpan = document.querySelector('.user');
-                userSpan.className = anuncio.user.replace(/\s+/g, '-'); // Sanitizar el id
-                document.getElementById('userimagen').src = anuncio.userimagen;
-                document.getElementById('tipo').innerHTML = anuncio.tipo;
-        
-                // Mostrar insignias del usuario
-                const elements = document.querySelectorAll(`.${anuncio.user.replace(/\s+/g, '-')}`);
-                if (elements.length > 0) {
-                    mostrarUsuarioYInsignias(anuncio.user, elements);
-                }
-            } else {
-                document.getElementById('contenido').textContent = "Anuncio no encontrado.";
-            }
-        }
-
-        // Cargar el anuncio cuando la página esté lista
-        document.addEventListener("DOMContentLoaded", cargarAnuncio);
-    </script>
 </head>
 <body>
     <header>
         <a href="https://grouvex.github.io/">
             <div class="img-container" loading="lazy"></div>
         </a>
-        <span style="font-family: Times New Roman; color: white; box-shadow: 0 0 10px gold; width: 100%">
-            <nav>
-                <span id="menuG"></span>
-                <span id="menuT"></span>
-                <span id="menuU"></span>
-            </nav>
-        </span>
+        <nav>
+            <span id="menuG"></span>
+            <span id="menuT"></span>
+            <span id="menuU"></span>
+        </nav>
     </header>
+    
     <main>
-        <div class="anuncio">
-            <div class="cabecera-anuncio">
-                <img id="userimagen" src="" alt="Usuario">
-                <span class="user"></span>
-                <p><span id="tipo"></span></p>
-            </div>
-            <div class="contenido-anuncio">
-                <h1 id="titulo"></h1>
-                <p id="contenido"></p>
-                <hr>
-                <div id="info-adicional"></div>
-            </div>
+        <div id="anuncioContent" class="anuncio-container">
+            <!-- Contenido dinámico -->
         </div>
-        <a href="anuncios" style="display: inline-block; padding: 10px 20px; background: linear-gradient(135deg, #6a11cb, #2575fc); color: white; text-decoration: none; border-radius: 5px; font-size: 16px; text-align: center; transition: background 0.3s ease; border: none; cursor: pointer;" onmouseover="this.style.background='linear-gradient(135deg, #ff7e5f, #feb47b)'" onmouseout="this.style.background='linear-gradient(135deg, #6a11cb, #2575fc)'"> Volver a la lista de anuncios </a>
     </main>
+    
     <div id="footer"></div>
+    
+    <script>
+        function sanitizeHTML(str) {
+            if (!str) return '';
+            return DOMPurify.sanitize(str, {
+                ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'ul', 'li', 'a', 'h1', 'h2', 'h3', 'h4', 'article', 'div', 'span', 'iframe', 'hr', 'img', 'n'],
+                ALLOWED_ATTR: ['href', 'target', 'src', 'frameborder', 'allow', 'class', 'id', 'style', 'alt', 'width', 'height']
+            });
+        }
+        
+        function getUrlParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+        
+        async function loadAnnouncement() {
+            const id = getUrlParam('id');
+            const container = document.getElementById('anuncioContent');
+            
+            if (!id) {
+                container.innerHTML = '<div class="not-found"><h2>❌ No se especificó ningún anuncio</h2><a href="anuncios" class="back-button">← Volver a anuncios</a></div>';
+                return;
+            }
+            
+            try {
+                const response = await fetch('anuncios.json');
+                if (!response.ok) throw new Error('Error al cargar datos');
+                const anuncios = await response.json();
+                const anuncio = anuncios.find(a => a.id === id);
+                
+                if (!anuncio) {
+                    container.innerHTML = '<div class="not-found"><h2>🔍 Anuncio no encontrado</h2><p>El anuncio que buscas no existe o ha sido eliminado.</p><a href="anuncios" class="back-button">← Volver a anuncios</a></div>';
+                    return;
+                }
+                
+                document.title = `${anuncio.titulo} - Grouvex Studios`;
+                
+                container.innerHTML = `
+                    <div class="anuncio-header">
+                        <img src="${sanitizeHTML(anuncio.userimagen)}" alt="${sanitizeHTML(anuncio.user)}" class="user-avatar-large" onerror="this.src='img/default-avatar.png'">
+                        <div>
+                            <div style="color: var(--color-primary); margin-bottom: 0.5rem;">📌 ${sanitizeHTML(anuncio.tipo)}</div>
+                            <div style="color: rgba(255,255,255,0.6);">👤 ${sanitizeHTML(anuncio.user)}</div>
+                        </div>
+                    </div>
+                    <h1 class="anuncio-title">${sanitizeHTML(anuncio.titulo)}</h1>
+                    <div class="anuncio-content">
+                        ${sanitizeHTML(anuncio.contenido)}
+                        ${anuncio.infoAdicional ? `<hr style="margin: 1.5rem 0; border-color: rgba(255,255,255,0.2);">${sanitizeHTML(anuncio.infoAdicional)}` : ''}
+                    </div>
+                    <a href="anuncios" class="back-button">← Volver a la lista de anuncios</a>
+                `;
+            } catch (error) {
+                console.error('Error:', error);
+                container.innerHTML = '<div class="not-found"><h2>⚠️ Error al cargar el anuncio</h2><p>Por favor, intenta de nuevo más tarde.</p><a href="anuncios" class="back-button">← Volver a anuncios</a></div>';
+            }
+        }
+        
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAnnouncement();
+            $("#menuG").load("menuG.html");
+            $("#menuT").load("menuT.html");
+            $("#menuU").load("menuU.html");
+            $("#footer").load("footer.html");
+        });
+    </script>
 </body>
 </html>

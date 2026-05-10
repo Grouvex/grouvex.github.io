@@ -5,7 +5,7 @@
     <title>Reproductor de música - Grouvex Studios</title>
     <meta property="og:site_name" content="Grouvex Studios">
     <meta property="og:title" content="Reproductor de música - Grouvex Studios">
-    <meta property="og:description" content="Reproductor de música de ©Grouvex Studios">
+    <meta property="og:description" content="Reproductor de música de ©Grouvex Studios Records">
     <meta property="og:type" content="website">
     <meta property="og:image" href="img/GROUVEX%20Studios%20Records.png">
     <meta property="og:url" content="https://records.grouvex.com/">
@@ -178,7 +178,7 @@
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     color: inherit;
-    padding: 8px 14px;
+    padding: 8px 8px;
     border-radius: 50px;
     cursor: pointer;
     transition: var(--transition);
@@ -191,7 +191,7 @@
 @media (min-width: 480px) {
     .gmx-theme-toggle,
     .gmx-playlist-toggle {
-        padding: 10px 18px;
+        padding: 10px 10px;
         font-size: 0.9rem;
     }
 }
@@ -199,7 +199,7 @@
 @media (min-width: 768px) {
     .gmx-theme-toggle,
     .gmx-playlist-toggle {
-        padding: 10px 20px;
+        padding: 15px 15px;
         font-size: 1rem;
     }
 }
@@ -208,6 +208,170 @@
 .gmx-playlist-toggle:hover {
     transform: translateY(-2px);
     background: rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================
+   CONTROL BUTTONS - SIEMPRE HORIZONTALES
+   ============================================ */
+.gmx-control-buttons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(6px, 2vw, 20px);
+    margin: 24px 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    padding: 4px 0;
+}
+
+/* Scroll horizontal personalizado */
+.gmx-control-buttons::-webkit-scrollbar {
+    height: 3px;
+}
+
+.gmx-control-buttons::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.gmx-control-buttons::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 3px;
+}
+
+/* Botones de control principales */
+.gmx-control-btn {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: inherit;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: clamp(38px, 8vw, 55px);
+    height: clamp(38px, 8vw, 55px);
+    font-size: clamp(1.1em, 4vw, 1.4em);
+    border-radius: 50%;
+}
+
+.gmx-control-btn:hover {
+    transform: translateY(-3px) scale(1.1);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Botón Play/Pause */
+.gmx-play-pause {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border: none;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    width: clamp(46px, 10vw, 65px);
+    height: clamp(46px, 10vw, 65px);
+    font-size: clamp(1.4em, 5vw, 1.8em);
+}
+
+.gmx-play-pause:hover {
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+}
+
+/* Botones adicionales (Shuffle, Loop, etc.) */
+.gmx-additional-btn {
+    background: var(--primary-color);
+    border: 1px solid var(--glass-border);
+    color: inherit;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: clamp(6px, 2vw, 10px) clamp(6px, 2vw, 10px);
+    font-size: clamp(0.7rem, 3vw, 0.9rem);
+    border-radius: 50px;
+}
+
+.gmx-additional-btn:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.gmx-additional-btn.active {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border-color: transparent;
+}
+
+.gmx-additional-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.gmx-additional-btn.disabled:hover {
+    transform: none;
+    background: var(--glass-bg);
+}
+
+/* Estilos específicos para botones */
+#gmxShuffleBtn.active {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border-color: transparent;
+}
+
+#gmxLoopBtn {
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#gmxLikeBtn {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    border: none;
+    transition: all 0.3s ease;
+}
+
+#gmxLikeBtn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+}
+
+#gmxLikeBtn:active {
+    transform: scale(0.95);
+}
+
+#gmxSleepTimerBtn {
+    transition: all 0.3s ease;
+}
+
+#gmxSleepTimerBtn.active {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    border-color: transparent;
+}
+
+/* Para pantallas muy pequeñas: alinear a la izquierda y permitir scroll */
+@media (max-width: 550px) {
+    .gmx-control-buttons {
+        justify-content: flex-start;
+        padding: 4px 8px;
+    }
+}
+
+/* Ocultar scrollbar en móviles pero mantener funcionalidad */
+@media (max-width: 480px) {
+    .gmx-control-buttons {
+        scrollbar-width: none;
+    }
+    .gmx-control-buttons::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 /* ============================================
@@ -376,6 +540,24 @@
     color: white;
 }
 
+/* Estilos para el contador de likes en playlist */
+.gmx-like-count {
+    font-size: 0.75em;
+    opacity: 0.8;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 4px;
+    border-radius: 20px;
+}
+
+.gmx-like-count:hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
 /* ============================================
    SONG INFO CONTAINER
    ============================================ */
@@ -466,6 +648,15 @@
     }
 }
 
+/* ============================================
+   SECCIÓN DEL ÁLBUM
+   ============================================ */
+.song-album-section {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+}
+
 .song-album-title {
     font-size: 1.2em;
     font-weight: 700;
@@ -486,7 +677,6 @@
     font-style: italic;
 }
 
-/* Genres */
 .song-genres {
     display: flex;
     gap: 8px;
@@ -509,7 +699,72 @@
     }
 }
 
-/* Details Grid */
+/* ============================================
+   SONG TRACK SECTION
+   ============================================ */
+.song-track-section {
+    background: rgba(102, 126, 234, 0.15);
+    border-radius: 16px;
+    padding: 12px;
+    margin-bottom: 15px;
+    transition: var(--transition);
+    animation: trackFadeIn 0.3s ease-out;
+}
+
+.song-track-section:hover {
+    background: rgba(102, 126, 234, 0.25);
+    transform: translateY(-2px);
+}
+
+.song-title-track {
+    font-size: 1.3em;
+    font-weight: 700;
+    margin-bottom: 8px;
+    word-break: break-word;
+}
+
+.song-artist-track {
+    font-size: 1em;
+    opacity: 0.9;
+    margin-bottom: 5px;
+}
+
+.song-composers {
+    font-size: 0.9em;
+    opacity: 0.8;
+    margin-top: 4px;
+}
+
+.song-lyricists {
+    font-size: 0.9em;
+    opacity: 0.8;
+    margin-top: 4px;
+}
+
+.song-track-section .preview-badge {
+    display: inline-block;
+    margin-top: 8px;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 0.7em;
+    color: white;
+}
+
+/* ============================================
+   DETALLES ADICIONALES (DETAILS/SUMMARY)
+   ============================================ */
+.detail-item {
+    font-size: 0.8em;
+    opacity: 0.9;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 2px;
+}
+
 .song-details-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -538,18 +793,6 @@
     display: none;
 }
 
-.detail-item {
-    font-size: 0.8em;
-    opacity: 0.9;
-}
-
-.detail-label {
-    font-weight: 600;
-    color: var(--primary-color);
-    margin-bottom: 2px;
-}
-
-/* Details inside grid */
 .song-details-grid details {
     grid-column: 1 / -1;
     margin-bottom: 10px;
@@ -565,14 +808,11 @@
     color: cyan;
     padding: 8px 0;
     user-select: none;
-}
-
-.light-theme .song-details-grid details summary {
-    color: magenta;
+    transition: opacity 0.2s;
 }
 
 .song-details-grid details summary:hover {
-    opacity: 1;
+    opacity: 0.8;
 }
 
 .song-details-grid details .detail-item {
@@ -593,6 +833,92 @@
 @media (min-width: 480px) {
     .song-details-grid details > div {
         grid-template-columns: 1fr 1fr;
+    }
+}
+
+.song-track-section details summary {
+    cursor: pointer;
+    font-weight: 600;
+    user-select: none;
+    color: var(--primary-color);
+}
+
+/* ============================================
+   TEMA CLARO PARA SONG TRACK
+   ============================================ */
+.light-theme .song-track-section {
+    background: rgba(102, 126, 234, 0.1);
+}
+
+.light-theme .song-track-section:hover {
+    background: rgba(102, 126, 234, 0.2);
+}
+
+.light-theme .song-album-section {
+    border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+.light-theme .song-details-grid {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.light-theme .song-details-grid details summary {
+    color: magenta;
+}
+
+.light-theme .gmx-playlist-item.active {
+    background: rgba(0, 0, 0, 0.1);
+    border-left: 4px solid var(--primary-color);
+}
+
+.light-theme .gmx-volume-slider {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.light-theme .gmx-volume-control {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+/* ============================================
+   RESPONSIVE PARA SONG TRACK
+   ============================================ */
+@media (max-width: 480px) {
+    .song-track-section {
+        padding: 10px;
+    }
+    
+    .song-title-track {
+        font-size: 1.1em;
+    }
+    
+    .song-artist-track {
+        font-size: 0.9em;
+    }
+    
+    .song-composers,
+    .song-lyricists {
+        font-size: 0.8em;
+    }
+    
+    .song-album-title {
+        font-size: 1em;
+    }
+    
+    .song-artist-info {
+        font-size: 0.85em;
+    }
+    
+    .genre-tag {
+        font-size: 0.7em;
+        padding: 2px 8px;
+    }
+    
+    .detail-item {
+        font-size: 0.7em;
+    }
+    
+    .gmx-song-title {
+        max-width: 150px;
     }
 }
 
@@ -654,7 +980,6 @@
     border: 1px solid var(--glass-border);
 }
 
-/* Song Info */
 .gmx-song-info {
     text-align: center;
     margin-bottom: 20px;
@@ -674,7 +999,6 @@
     font-size: 0.9em;
 }
 
-/* Progress Bar */
 .gmx-progress-container {
     margin: 20px 0;
 }
@@ -711,96 +1035,6 @@
     margin-top: 8px;
 }
 
-/* Control Buttons */
-.gmx-control-buttons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    margin: 24px 0;
-    flex-wrap: wrap;
-}
-
-@media (min-width: 480px) {
-    .gmx-control-buttons {
-        gap: 16px;
-    }
-}
-
-@media (min-width: 768px) {
-    .gmx-control-buttons {
-        gap: 20px;
-    }
-}
-
-.gmx-control-btn {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    color: inherit;
-    font-size: 1.2em;
-    cursor: pointer;
-    padding: 10px;
-    border-radius: 50%;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-}
-
-@media (min-width: 480px) {
-    .gmx-control-btn {
-        width: 48px;
-        height: 48px;
-        font-size: 1.3em;
-    }
-}
-
-@media (min-width: 768px) {
-    .gmx-control-btn {
-        width: 55px;
-        height: 55px;
-        font-size: 1.4em;
-    }
-}
-
-.gmx-control-btn:hover {
-    transform: translateY(-3px) scale(1.1);
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.gmx-play-pause {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    width: 50px;
-    height: 50px;
-    font-size: 1.5em;
-    border: none;
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-}
-
-@media (min-width: 480px) {
-    .gmx-play-pause {
-        width: 56px;
-        height: 56px;
-        font-size: 1.6em;
-    }
-}
-
-@media (min-width: 768px) {
-    .gmx-play-pause {
-        width: 65px;
-        height: 65px;
-        font-size: 1.8em;
-    }
-}
-
-.gmx-play-pause:hover {
-    transform: translateY(-3px) scale(1.1);
-    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
-}
-
-/* Volume Control */
 .gmx-volume-control {
     display: flex;
     align-items: center;
@@ -815,7 +1049,7 @@
 @media (min-width: 480px) {
     .gmx-volume-control {
         gap: 10px;
-        padding: 8px 14px;
+        padding: 8px 8px;
     }
 }
 
@@ -921,7 +1155,6 @@
     }
 }
 
-/* Additional Controls */
 .gmx-additional-controls {
     display: flex;
     justify-content: center;
@@ -934,78 +1167,6 @@
     .gmx-additional-controls {
         gap: 15px;
     }
-}
-
-.gmx-additional-btn {
-    background: var(--primary-color);
-    border: 1px solid var(--glass-border);
-    color: inherit;
-    padding: 8px 12px;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: var(--transition);
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.8rem;
-}
-
-@media (min-width: 480px) {
-    .gmx-additional-btn {
-        padding: 8px 16px;
-        font-size: 0.85rem;
-    }
-}
-
-@media (min-width: 768px) {
-    .gmx-additional-btn {
-        padding: 10px 20px;
-        font-size: 0.9rem;
-    }
-}
-
-.gmx-additional-btn.active {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    border-color: transparent;
-}
-
-.gmx-additional-btn.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.gmx-additional-btn.disabled:hover {
-    transform: none;
-    background: var(--glass-bg);
-}
-
-/* Like Button */
-#gmxLikeBtn {
-    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-    border: none;
-    transition: all 0.3s ease;
-}
-
-#gmxLikeBtn:hover {
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
-}
-
-#gmxLikeBtn:active {
-    transform: scale(0.95);
-}
-
-@keyframes likeAdd {
-    0% { transform: scale(1); background: var(--glass-bg); }
-    50% { transform: scale(1.2); background: linear-gradient(135deg, #ff6b6b, #ee5a24); box-shadow: 0 0 20px rgba(255, 107, 107, 0.8); }
-    100% { transform: scale(1); background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
-}
-
-@keyframes likeRemove {
-    0% { transform: scale(1); background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
-    50% { transform: scale(0.9); background: var(--glass-bg); }
-    100% { transform: scale(1); background: var(--glass-bg); }
 }
 
 /* Auth Container */
@@ -1021,7 +1182,7 @@
 @media (min-width: 480px) {
     #gmxAuthContainer .gmx-additional-btn {
         font-size: 0.8rem;
-        padding: 8px 14px;
+        padding: 8px 8px;
     }
 }
 
@@ -1068,7 +1229,7 @@
 
 @media (min-width: 480px) {
     .gmx-platform-link {
-        padding: 8px 14px;
+        padding: 8px 8px;
         font-size: 0.8rem;
     }
 }
@@ -1131,7 +1292,6 @@
     background: rgba(255, 255, 255, 0.2);
 }
 
-/* Iframes responsivos */
 .gmx-embed-player iframe,
 .carousel-item iframe {
     width: 100%;
@@ -1140,10 +1300,8 @@
 }
 
 /* ============================================
-   CARRUSEL - 1 IFRAME A LA VEZ CON SCROLL EXACTO
+   CARRUSEL
    ============================================ */
-
-/* Contenedor principal del carrusel */
 .iframe-carousel-container {
     width: 100%;
     overflow: hidden;
@@ -1151,7 +1309,6 @@
     margin: 10px 0;
 }
 
-/* Wrapper con scroll - muestra 1 item a la vez */
 .row-wrapper {
     display: flex;
     flex-wrap: nowrap;
@@ -1160,17 +1317,15 @@
     padding: 8px 0 12px 0;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* Ocultar scrollbar en Firefox */
+    scrollbar-width: none;
     scroll-snap-type: x mandatory;
     scroll-snap-stop: always;
 }
 
-/* Ocultar scrollbar en Chrome/Safari/Edge */
 .row-wrapper::-webkit-scrollbar {
     display: none;
 }
 
-/* Cada item ocupa EXACTAMENTE el 100% del ancho del contenedor */
 .carousel-item {
     flex: 0 0 100%;
     width: 100%;
@@ -1181,14 +1336,12 @@
     transition: transform 0.2s ease;
 }
 
-/* Efecto hover solo en desktop */
 @media (min-width: 768px) {
     .carousel-item:hover {
         transform: scale(1.01);
     }
 }
 
-/* Altura fija y consistente para todos los iframes del mismo tipo */
 .carousel-item iframe {
     width: 100%;
     height: 152px;
@@ -1198,88 +1351,25 @@
     display: block;
 }
 
-/* YouTube necesita más altura */
 .carousel-item iframe[src*="youtube"],
 .carousel-item iframe[src*="youtu.be"] {
     height: 360px;
 }
 
-/* Apple Music */
 .carousel-item iframe[src*="music.apple"],
 .carousel-item iframe[src*="apple.com/music"] {
     height: 450px;
 }
 
-/* Ajustes responsivos para Apple Music */
-@media (max-width: 768px) {
-    .carousel-item iframe[src*="music.apple"],
-    .carousel-item iframe[src*="apple.com/music"] {
-        height: 380px;
-    }
-}
-
-@media (max-width: 480px) {
-    .carousel-item iframe[src*="music.apple"],
-    .carousel-item iframe[src*="apple.com/music"] {
-        height: 320px;
-    }
-}
-
-/* Icono de Apple Music */
-.gmx-platform-link.apple {
-    background: #000;
-    color: white;
-    border-color: #333;
-}
-
-.gmx-platform-link.apple:hover {
-    background: #1a1a1a;
-    transform: translateY(-2px);
-}
-
-/* ============================================
-   AMAZON MUSIC - ESTILOS ESPECÍFICOS
-   ============================================ */
-
-/* Altura específica para Amazon Music en el carrusel */
 .carousel-item iframe[src*="amazon"],
 .carousel-item iframe[src*="music.amazon"] {
     height: 352px;
 }
 
-/* Ajustes responsivos para Amazon Music */
-@media (max-width: 768px) {
-    .carousel-item iframe[src*="amazon"],
-    .carousel-item iframe[src*="music.amazon"] {
-        height: 280px;
-    }
-}
-
-@media (max-width: 480px) {
-    .carousel-item iframe[src*="amazon"],
-    .carousel-item iframe[src*="music.amazon"] {
-        height: 220px;
-    }
-}
-
-/* Icono y estilo para el enlace de Amazon Music */
-.gmx-platform-link.amazon {
-    background: #FF9900;
-    color: white;
-    border-color: #FF9900;
-}
-
-.gmx-platform-link.amazon:hover {
-    background: #ec8a00;
-    transform: translateY(-2px);
-}
-    
-/* Spotify tiene altura estándar */
 .carousel-item iframe[src*="spotify"] {
     height: 152px;
 }
 
-/* Etiqueta de plataforma debajo del iframe */
 .carousel-item > div:last-child {
     text-align: center;
     font-size: 0.7rem;
@@ -1287,7 +1377,6 @@
     opacity: 0.8;
 }
 
-/* Navegación del carrusel */
 .carousel-nav {
     display: flex;
     justify-content: center;
@@ -1296,7 +1385,6 @@
     margin-top: 15px;
 }
 
-/* Botones de navegación */
 .carousel-btn {
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -1322,7 +1410,6 @@
     transform: scale(0.95);
 }
 
-/* Indicador de posición (ej: "1 / 3") */
 .carousel-position {
     font-size: 0.75rem;
     opacity: 0.8;
@@ -1334,11 +1421,7 @@
     font-weight: 500;
 }
 
-/* ============================================
-   RESPONSIVE: AJUSTE DE ALTURAS
-   ============================================ */
-
-/* Tablets */
+/* Responsive Carousel */
 @media (max-width: 768px) {
     .carousel-item iframe {
         height: 140px;
@@ -1350,9 +1433,12 @@
     .carousel-item iframe[src*="music.apple"] {
         height: 350px;
     }
+    .carousel-item iframe[src*="amazon"],
+    .carousel-item iframe[src*="music.amazon"] {
+        height: 280px;
+    }
 }
 
-/* Móviles grandes */
 @media (max-width: 480px) {
     .carousel-item iframe {
         height: 120px;
@@ -1364,13 +1450,15 @@
     .carousel-item iframe[src*="music.apple"] {
         height: 300px;
     }
-    
+    .carousel-item iframe[src*="amazon"],
+    .carousel-item iframe[src*="music.amazon"] {
+        height: 220px;
+    }
     .carousel-btn {
         width: 36px;
         height: 36px;
         font-size: 1em;
     }
-    
     .carousel-position {
         font-size: 0.7rem;
         padding: 4px 10px;
@@ -1378,7 +1466,6 @@
     }
 }
 
-/* Móviles muy pequeños */
 @media (max-width: 360px) {
     .carousel-item iframe {
         height: 100px;
@@ -1392,9 +1479,6 @@
     }
 }
 
-/* ============================================
-   TEMA CLARO
-   ============================================ */
 .light-theme .carousel-btn {
     background: rgba(0, 0, 0, 0.08);
     border: 1px solid rgba(0, 0, 0, 0.15);
@@ -1408,6 +1492,7 @@
     background: rgba(0, 0, 0, 0.15);
     color: var(--text-dark);
 }
+
 /* ============================================
    CONFIG PANEL
    ============================================ */
@@ -1662,7 +1747,6 @@
     50% { transform: translateY(-10px); }
 }
 
-/* Loading State */
 .song-info-loading {
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95));
     backdrop-filter: blur(10px);
@@ -1738,60 +1822,277 @@
    SEARCH BAR
    ============================================ */
 #gmxSearchInput {
-    font-size: 13px;
-    padding: 8px 32px 8px 12px;
+    font-size: 14px;
+    padding: 10px 35px 10px 15px;
+    border-radius: 50px;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    color: inherit;
+    outline: none;
+    transition: var(--transition);
+    width: 100%;
+    box-sizing: border-box;
 }
 
-@media (min-width: 480px) {
+#gmxSearchInput:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.3);
+}
+
+#gmxSearchInput::placeholder {
+    opacity: 0.6;
+}
+
+@media (max-width: 480px) {
     #gmxSearchInput {
-        font-size: 14px;
-        padding: 10px 35px 10px 15px;
+        font-size: 13px;
+        padding: 8px 32px 8px 12px;
     }
 }
 
-#gmxSearchSuggestions {
-    max-height: 180px;
+#gmxSearchClear {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+    z-index: 10;
+    font-size: 16px;
 }
 
-@media (min-width: 480px) {
+#gmxSearchClear:hover {
+    opacity: 1;
+}
+
+#gmxSearchSuggestions {
+    position: absolute;
+    top: 100%;
+    left: 8px;
+    right: 8px;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    margin-top: 5px;
+    max-height: 220px;
+    overflow-y: auto;
+    display: none;
+    z-index: 1000;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 480px) {
     #gmxSearchSuggestions {
-        max-height: 220px;
+        max-height: 180px;
     }
 }
 
 .gmx-search-suggestion {
-    padding: 8px 12px;
-    font-size: 0.85rem;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--glass-border);
 }
 
-@media (min-width: 480px) {
+@media (max-width: 480px) {
     .gmx-search-suggestion {
-        padding: 10px 15px;
-        font-size: 0.9rem;
+        padding: 8px 12px;
+        font-size: 0.85rem;
     }
+}
+
+.gmx-search-suggestion:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.gmx-search-suggestion:last-child {
+    border-bottom: none;
+}
+
+.light-theme .gmx-search-suggestion:hover {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.gmx-playlist-container > div:first-child {
+    position: sticky;
+    top: 0;
+    background: inherit;
+    z-index: 100;
+    backdrop-filter: blur(10px);
 }
 
 /* ============================================
    SLEEP TIMER MODAL
    ============================================ */
-#gmxSleepDialog > div {
-    min-width: 260px;
-    width: 85%;
-    max-width: 320px;
-    margin: 16px;
+#gmxSleepDialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+    backdrop-filter: blur(5px);
 }
 
-@media (min-width: 480px) {
+#gmxSleepDialog > div {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 24px;
+    min-width: 280px;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    animation: modalFadeIn 0.2s ease-out;
+}
+
+@media (max-width: 480px) {
     #gmxSleepDialog > div {
-        min-width: 280px;
-        width: auto;
-        max-width: 350px;
+        min-width: 260px;
+        margin: 16px;
+    }
+}
+
+.gmx-timer-option {
+    padding: 12px;
+    border-radius: 50px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    text-align: center;
+    font-weight: 500;
+}
+
+.gmx-timer-option:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+#gmxTimerCancel {
+    padding: 12px;
+    border-radius: 50px;
+    background: rgba(255, 107, 107, 0.2);
+    border: 1px solid #ff6b6b;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    text-align: center;
+}
+
+#gmxTimerCancel:hover {
+    background: rgba(255, 107, 107, 0.3);
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   ANIMACIONES
+   ============================================ */
+@keyframes likeAdd {
+    0% { transform: scale(1); background: var(--glass-bg); }
+    50% { transform: scale(1.2); background: linear-gradient(135deg, #ff6b6b, #ee5a24); box-shadow: 0 0 20px rgba(255, 107, 107, 0.8); }
+    100% { transform: scale(1); background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+}
+
+@keyframes likeRemove {
+    0% { transform: scale(1); background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+    50% { transform: scale(0.9); background: var(--glass-bg); }
+    100% { transform: scale(1); background: var(--glass-bg); }
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes randomMove {
+    0% { background-position: 0% 0%; }
+    17% { background-position: 80% 20%; }
+    34% { background-position: 20% 90%; }
+    51% { background-position: 100% 50%; }
+    68% { background-position: 0% 80%; }
+    85% { background-position: 60% 0%; }
+    100% { background-position: 0% 0%; }
+}
+
+@keyframes trackFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
 /* ============================================
-   TOAST NOTIFICATION
+   OTROS ESTILOS
    ============================================ */
+.duration-loading {
+    text-align: center;
+    padding: 10px;
+    font-size: 0.8em;
+    opacity: 0.7;
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .gmx-playlist {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+@media (max-width: 480px) {
+    #gmxAuthContainer .gmx-additional-btn {
+        font-size: 0.7rem;
+        padding: 6px 10px;
+    }
+}
+
+#gmxKeyboardHelp {
+    box-sizing: border-box;
+    animation: modalFadeIn 0.2s ease-out;
+}
+
+#gmxKeyboardHelp kbd {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 0.85em;
+}
+
+#gmxKeyboardHelp::-webkit-scrollbar {
+    width: 6px;
+}
+
+#gmxKeyboardHelp::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+#gmxKeyboardHelp::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
 #gmxToast {
     font-size: 12px;
     padding: 8px 16px;
@@ -1803,65 +2104,14 @@
 @media (min-width: 480px) {
     #gmxToast {
         font-size: 14px;
-        padding: 10px 20px;
+        padding: 15px 15px;
         white-space: nowrap;
         max-width: none;
     }
 }
 
-/* ============================================
-   DETAILS & SUMMARY
-   ============================================ */
-details {
-    word-wrap: break-word;
-}
-
-details summary {
-    font-size: 0.9rem;
-}
-
-@media (min-width: 480px) {
-    details summary {
-        font-size: 1rem;
-    }
-}
-
-/* ============================================
-   LIGHT THEME SPECIFIC
-   ============================================ */
-.light-theme .gmx-volume-slider {
-    background: rgba(0, 0, 0, 0.1);
-}
-
-.light-theme .gmx-volume-control {
-    background: rgba(0, 0, 0, 0.03);
-}
-
-/* ============================================
-   MEDIA QUERIES - SMALL SCREENS
-   ============================================ */
+/* Media Queries - Small Screens */
 @media (max-width: 380px) {
-    .gmx-control-buttons {
-        gap: 8px;
-    }
-    
-    .gmx-control-btn {
-        width: 38px;
-        height: 38px;
-        font-size: 1.1em;
-    }
-    
-    .gmx-play-pause {
-        width: 46px;
-        height: 46px;
-        font-size: 1.4em;
-    }
-    
-    .gmx-additional-btn {
-        padding: 6px 10px;
-        font-size: 0.7rem;
-    }
-    
     .gmx-song-title {
         font-size: 0.8rem;
         max-width: 140px;
@@ -1917,9 +2167,7 @@ details summary {
     }
 }
 
-/* ============================================
-   LANDSCAPE MODE
-   ============================================ */
+/* Landscape Mode */
 @media (max-width: 768px) and (orientation: landscape) {
     .grouvex-music-player {
         max-width: 95%;
@@ -1947,23 +2195,7 @@ details summary {
     }
 }
 
-/* ============================================
-   RANDOM MOVE ANIMATION FOR TITLE
-   ============================================ */
-@keyframes randomMove {
-    0% { background-position: 0% 0%; }
-    17% { background-position: 80% 20%; }
-    34% { background-position: 20% 90%; }
-    51% { background-position: 100% 50%; }
-    68% { background-position: 0% 80%; }
-    85% { background-position: 60% 0%; }
-    100% { background-position: 0% 0%; }
-}
-/* ============================================
-   FULLSCREEN MEJORADO
-   ============================================ */
-
-/* Estilos cuando el reproductor está en pantalla completa */
+/* Fullscreen */
 .grouvex-music-player:fullscreen {
     max-width: 100%;
     width: 100%;
@@ -1987,7 +2219,6 @@ details summary {
     margin-bottom: 20px;
 }
 
-/* Para móviles en fullscreen */
 @media (max-width: 768px) {
     .grouvex-music-player:fullscreen {
         padding: 10px;
@@ -2012,7 +2243,6 @@ details summary {
     }
 }
 
-/* Safari específico */
 .grouvex-music-player:-webkit-full-screen {
     max-width: 100%;
     width: 100%;
@@ -2021,7 +2251,7 @@ details summary {
     border-radius: 0;
     overflow-y: auto;
 }
-/* Asegurar que los toasts y modales aparezcan encima del fullscreen */
+
 #gmxToast,
 #gmxKeyboardHelp,
 #gmxSleepDialog {
@@ -2029,7 +2259,6 @@ details summary {
     z-index: 10000;
 }
 
-/* En fullscreen, asegurar que los elementos flotantes sigan visibles */
 .grouvex-music-player:fullscreen ~ #gmxToast,
 .grouvex-music-player:fullscreen ~ #gmxKeyboardHelp,
 .grouvex-music-player:fullscreen ~ #gmxSleepDialog,
@@ -2040,7 +2269,6 @@ details summary {
     z-index: 99999 !important;
 }
 
-/* Asegurar que el help aparezca correctamente en fullscreen */
 :fullscreen #gmxKeyboardHelp,
 :-webkit-full-screen #gmxKeyboardHelp {
     position: fixed !important;
@@ -2052,7 +2280,6 @@ details summary {
     backdrop-filter: blur(20px) !important;
 }
 
-/* Toast en fullscreen */
 :fullscreen #gmxToast,
 :-webkit-full-screen #gmxToast {
     position: fixed !important;
@@ -2062,58 +2289,6 @@ details summary {
     z-index: 99999 !important;
     font-size: 16px !important;
     padding: 12px 24px !important;
-}function gmxShowToast(message, duration = 2000) {
-    // Eliminar toast existente
-    const existingToast = document.getElementById('gmxToast');
-    if (existingToast) existingToast.remove();
-    
-    // Crear nuevo toast
-    const toast = document.createElement('div');
-    toast.id = 'gmxToast';
-    toast.textContent = message;
-    toast.style.cssText = `
-        position: fixed;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(0,0,0,0.9);
-        color: white;
-        padding: 12px 24px;
-        border-radius: 50px;
-        font-size: 14px;
-        z-index: 100000;
-        animation: fadeInOut 2s ease;
-        pointer-events: none;
-        backdrop-filter: blur(10px);
-        font-family: system-ui, -apple-system, sans-serif;
-        font-weight: 500;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        white-space: nowrap;
-    `;
-    
-    // En fullscreen, asegurar que se vea
-    if (document.fullscreenElement || document.webkitFullscreenElement) {
-        toast.style.zIndex = '999999';
-        toast.style.fontSize = '16px';
-    }
-    
-    // Añadir animación si no existe
-    if (!document.querySelector('#gmxToastStyle')) {
-        const style = document.createElement('style');
-        style.id = 'gmxToastStyle';
-        style.textContent = `
-            @keyframes fadeInOut {
-                0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
-                15% { opacity: 1; transform: translateX(-50%) translateY(0); }
-                85% { opacity: 1; transform: translateX(-50%) translateY(0); }
-                100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-            }
-        `;
-        document.head.appendChild(style);
-    }
-    
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), duration);
 }
 </style>
 </head>
@@ -2250,7 +2425,7 @@ details summary {
     </p>
     
     <p style="text-align: left; margin: 10px 0 5px 0; line-height: 1.5; font-size: 0.85em; opacity: 0.8;">
-        🎧 Disfruta de la música sin anuncios. © Grouvex Studios
+        🎧 Disfruta de la música sin anuncios. © Grouvex Studios Records una división de Grouvex Studios
     </p>
 </details>
 <details style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal; max-width: 100%; background: rgba(0, 0, 0, 0.7); border-radius: 12px; padding: 12px 16px; margin: 15px 0; border-left: 3px solid var(--primary-color, #667eea);">
@@ -2349,11 +2524,11 @@ details summary {
     
     <!-- Aviso de derechos -->
     <p style="text-align: left; margin: 10px 0 5px 0; line-height: 1.5; font-size: 0.85em; opacity: 0.8; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
-        © 2021 - 2026, Grouvex Studios Records. Publicado conforme al Boletín Oficial BOGS/2025/002.
+        © 2021 - 2026, Grouvex Studios Records una división de Grouvex Studios. Publicado conforme al Boletín Oficial BOGS/2025/002.
     </p>
 </details>
 <p style="text-align: left; direction: ltr; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; margin: 10px 0 5px 0; line-height: 1.5; font-size: 0.85em; opacity: 0.8;">
-    © 2021 - 2026, Grouvex Studios Records. Reproductor de música.
+    © 2021 - 2026, Grouvex Studios Records una división de Grouvex Studios. Reproductor de música.
 </p>
   <audio id="gmxAudioPlayer" preload="metadata"></audio>
 </div>
@@ -2469,77 +2644,10 @@ auth.onAuthStateChanged((user) => {
 
 // Función para iniciar sesión (solo login, no registro)
 function gmxLogin() {
-  // Mostrar diálogo de login
-  const email = prompt('Ingresa tu correo electrónico autorizado:');
-  if (!email) return;
-  
-  const password = prompt('Ingresa tu contraseña:');
-  if (!password) return;
-  
-  auth.signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      gmxShowToast(`✅ Sesión iniciada como ${userCredential.user.email}`);
-    })
-    .catch((error) => {
-      let errorMsg = 'Error al iniciar sesión. ';
-        switch (error.code) {
-          // --- ERRORES DE LOGIN / CREDENCIALES ---
-          case 'auth/user-not-found':
-            errorMsg = 'Usuario no encontrado. Solo usuarios autorizados pueden acceder.';
-            break;
-          case 'auth/wrong-password':
-            errorMsg = 'Contraseña incorrecta. Por favor, inténtalo de nuevo.';
-            break;
-          case 'auth/invalid-email':
-            errorMsg = 'El formato del correo electrónico no es válido.';
-            break;
-          case 'auth/user-disabled':
-            errorMsg = 'Esta cuenta ha sido deshabilitada por un administrador.';
-            break;
-        
-          // --- ERRORES DE REGISTRO / CREACIÓN ---
-          case 'auth/email-already-in-use':
-            errorMsg = 'Este correo ya está registrado en otra cuenta.';
-            break;
-          case 'auth/weak-password':
-            errorMsg = 'La contraseña es muy débil. Debe tener al menos 6 caracteres.';
-            break;
-        
-          // --- ERRORES DE SEGURIDAD Y FLUJO ---
-          case 'auth/too-many-requests':
-            errorMsg = 'Demasiados intentos fallidos. La cuenta ha sido bloqueada temporalmente. Inténtalo más tarde.';
-            break;
-          case 'auth/operation-not-allowed':
-            errorMsg = 'El método de autenticación (Email/Password) no está habilitado en Firebase.';
-            break;
-          case 'auth/requires-recent-login':
-            errorMsg = 'Esta operación es sensible y requiere que vuelvas a iniciar sesión.';
-            break;
-          case 'auth/invalid-credential':
-            errorMsg = 'Las credenciales han expirado o no son válidas.';
-            break;
-        
-          // --- ERRORES DE RED Y SISTEMA ---
-          case 'auth/network-request-failed':
-            errorMsg = 'Error de conexión. Verifica tu internet.';
-            break;
-          case 'auth/internal-error':
-            errorMsg = 'Error interno del servidor. Por favor, intenta más tarde.';
-            break;
-        
-          // --- POPUPS Y TERCEROS (Google, Facebook, etc.) ---
-          case 'auth/popup-closed-by-user':
-            errorMsg = 'Se cerró la ventana de inicio de sesión antes de completar el proceso.';
-            break;
-          case 'auth/cancelled-popup-request':
-            errorMsg = 'La solicitud fue cancelada debido a múltiples popups abiertos.';
-            break;
-        
-          default:
-            errorMsg = 'Ha ocurrido un error inesperado: ' + error.message;
-        }
-      gmxShowToast(`❌ ${errorMsg}`, 4000);
-    });
+  gmxShowToast('🔐 Redirigiendo a la página de inicio de sesión...');
+  setTimeout(() => {
+    window.location.href = '/login';
+  }, 3000);
 }
 
 // Cerrar sesión
@@ -3261,7 +3369,7 @@ async function gmxTryPlaySong(index) {
     
     // Actualizar el título de la canción actual
     let displayTitle = gmxFormatSongName(song);
-    let displayArtist = 'Grouvex';
+    let displayArtist = 'Grouvex Studios Records';
     
     if (info && info.found) {
         // Obtener el número de pista para mostrar el título correcto
@@ -4223,8 +4331,8 @@ function gmxInitMediaKeys() {
         // Mapa de teclas a acciones
         const keyActions = {
             // Reproducción básica
-            'MediaPlayPause': () => {gmxTogglePlay(); gmxShowToast(gmxIsPlaying ? '▶ Reproduciendo' : '⏸ Pausado', 800);},
-            'Space': () => {gmxTogglePlay(); gmxShowToast(gmxIsPlaying ? '▶ Reproduciendo' : '⏸ Pausado', 800);},
+            'MediaPlayPause': () => {gmxTogglePlay(); gmxShowToast(gmxIsPlaying ? '⏸ Pausado' : '▶ Reproduciendo', 800);},
+            'Space': () => {gmxTogglePlay(); gmxShowToast(gmxIsPlaying ? '⏸ Pausado' : '▶ Reproduciendo', 800);},
             
             // Navegación por tiempo
             'ArrowLeft': () => {
@@ -4466,8 +4574,8 @@ function actualizarNotificacionMediaSession(titulo, artista, album, imagenUrl) {
     
     navigator.mediaSession.metadata = new MediaMetadata({
         title: titulo || 'Sin título',
-        artist: artista || 'Grouvex Studios',
-        album: album || 'Grouvex Records',
+        artist: artista || 'Grouvex Studios Records',
+        album: album || 'Grouvex Studios Records',
         artwork: [
             { src: finalImageUrl, sizes: '96x96', type: 'image/png' },
             { src: finalImageUrl, sizes: '128x128', type: 'image/png' },
@@ -4560,8 +4668,8 @@ async function actualizarMediaSessionPorCancion(songFilename) {
     if (!('mediaSession' in navigator)) return;
     
     const songName = gmxFormatSongName(songFilename);
-    let artista = document.getElementById('gmxCurrentSongArtist')?.textContent || 'Grouvex Studios';
-    let album = 'Grouvex Records';
+    let artista = document.getElementById('gmxCurrentSongArtist')?.textContent || 'Grouvex Studios Records';
+    let album = 'Grouvex Studios Records';
     let imagenUrl = 'https://grouvex.github.io/img/GROUVEX%20Studios%20Records.png';
     
     try {
@@ -4683,9 +4791,9 @@ function actualizarMediaSessionConImagen(imagenUrl, titulo, artista) {
     if (!currentSong) return;
     
     const songName = titulo || gmxFormatSongName(currentSong);
-    const artistName = artista || document.getElementById('gmxCurrentSongArtist')?.textContent || 'Grouvex Studios';
+    const artistName = artista || document.getElementById('gmxCurrentSongArtist')?.textContent || 'Grouvex Studios Records';
     
-    actualizarNotificacionMediaSession(songName, artistName, 'Grouvex Records', imagenUrl);
+    actualizarNotificacionMediaSession(songName, artistName, 'Grouvex Studios Records', imagenUrl);
 }
 
 // ============================================

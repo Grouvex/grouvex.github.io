@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar en Grouvex</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Busca en todo el contenido de Grouvex">
+    <style>
+        :root {
+            --primary: #8B5CF6;
+            --primary-dark: #7C3AED;
+            --secondary: #10B981;
+            --dark: #1F2937;
+            --light: #F9FAFB;
+            --gray: #6B7280;
+            --gray-light: #E5E7EB;
+            --gradient: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+            --shadow: 0 10px 25px rgba(139, 92, 246, 0.15);
+            --shadow-lg: 0 20px 40px rgba(139, 92, 246, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .main-header {
+            background: white;
+            border-bottom: 1px solid var(--gray-light);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Contenido principal */
+        .search-page {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .search-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .search-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .search-subtitle {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        /* Barra de búsqueda principal */
+        .main-search-container {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-input-main {
+            flex: 1;
+            padding: 1.25rem 1.5rem;
+            border: 2px solid var(--gray-light);
+            border-radius: 12px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            background: var(--light);
+        }
+
+        .search-input-main:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        .search-button-main {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 0 2.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            white-space: nowrap;
+        }
+
+        .search-button-main:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Estadísticas */
+        .stats-container {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--gray-light);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--gray);
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        /* Resultados */
+        .results-container {
+            min-height: 400px;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .results-count {
+            color: var(--gray);
+            font-size: 1rem;
+        }
+
+        .sort-select {
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--gray-light);
+            border-radius: 8px;
+            background: white;
+            color: var(--dark);
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .results-list {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .result-item {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid var(--gray-light);
+            transition: all 0.3s ease;
+            position: relative;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .result-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .result-title a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .result-title a:hover {
+            text-decoration: underline;
+        }
+
+        .result-url {
+            color: var(--secondary);
+            font-size: 0.9rem;
+            font-family: monospace;
+            margin-bottom: 1rem;
+            word-break: break-all;
+        }
+
+        .result-snippet {
+            color: var(--gray);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .result-meta {
+            display: flex;
+            gap: 1.5rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .result-type {
+            background: var(--gray-light);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .result-type.html { background: #DBEAFE; color: #1E40AF; }
+        .result-type.md { background: #D1FAE5; color: #065F46; }
+        .result-type.pdf { background: #FEF3C7; color: #92400E; }
+        .result-type.txt { background: #E5E7EB; color: #374151; }
+        .result-type.other { background: #F3E8FF; color: #7C3AED; }
+
+        /* Paginación */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            min-width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--gray-light);
+            border-radius: 8px;
+            background: white;
+            color: var(--gray);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0 1rem;
+        }
+
+        .page-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .page-btn.active {
+            background: var(--gradient);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--gray);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--gray-light);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Progress bar */
+        .progress-container {
+            width: 100%;
+            background: var(--gray-light);
+            border-radius: 10px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: var(--gradient);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: var(--gray);
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+        /* No results */
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--gray-light);
+        }
+
+        .no-results-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .no-results-title {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .no-results-text {
+            color: var(--gray);
+            max-width: 500px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Footer */
+        .main-footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--gray-light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid var(--gray);
+            color: var(--gray-light);
+            font-size: 0.9rem;
+        }
+
+        /* Índice automático */
+        .auto-index-status {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .last-indexed {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Control de indexación */
+        .index-controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .index-btn {
+            padding: 0.5rem 1rem;
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 6px;
+            color: var(--primary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .index-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .search-form {
+                flex-direction: column;
+            }
+
+            .search-button-main {
+                padding: 1.25rem;
+                justify-content: center;
+            }
+
+            .results-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .stats-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .index-controls {
+                flex-direction: column;
+            }
+            
+            .logo-img {
+                height: 32px;
+            }
+            
+            .logo-text {
+                font-size: 1.25rem;
+            }
+        }
+
+        /* Filtros de búsqueda */
+        .search-filters {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: white;
+            border: 1px solid var(--gray-light);
+            border-radius: 20px;
+            color: var(--gray);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Logo fallback */
+        .logo-fallback {
+            width: 36px;
+            height: 36px;
+            background: var(--gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        /* Brand styling */
+        .brand-section {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .brand-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+    </style>
+    
+    <!-- Preconnect para carga rápida del logo -->
+    <link rel="preconnect" href="https://raw.githubusercontent.com">
+    <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <a href="/" class="logo-link">
+                <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/Grouvex-patch-1/img/GROUVEX%20Studio.png" 
+                     alt="Grouvex Logo" 
+                     class="logo-img"
+                     onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex';">
+                <div class="logo-fallback" id="logoFallback" style="display: none;">G</div>
+                <div class="brand-text">Grouvex</div>
+            </a>
+            <a href="/" class="page-btn" style="text-decoration: none;">← Volver al inicio</a>
+        </div>
+    </header>
+
+    <!-- Página de búsqueda -->
+    <main class="search-page">
+        <div class="search-header">
+            <h1 class="search-title">🔍 Buscar en Grouvex</h1>
+            <p class="search-subtitle">Buscador inteligente que indexa TODO el sitio web automáticamente</p>
+        </div>
+
+        <!-- Barra de búsqueda principal -->
+        <div class="main-search-container">
+            <form class="search-form" id="searchForm">
+                <input 
+                    type="search" 
+                    class="search-input-main" 
+                    id="mainSearchInput"
+                    placeholder="Escribe lo que quieres buscar..."
+                    autocomplete="off"
+                    autofocus
+                >
+                <button type="submit" class="search-button-main">
+                    <span>🔍</span>
+                    Buscar en todo el sitio
+                </button>
+            </form>
+
+            <!-- Filtros de búsqueda rápida -->
+            <div class="search-filters">
+                <button class="filter-btn" onclick="quickSearch('tutorial')">📚 Tutoriales</button>
+                <button class="filter-btn" onclick="quickSearch('proyecto')">🚀 Proyectos</button>
+                <button class="filter-btn" onclick="quickSearch('música')">🎵 Música</button>
+                <button class="filter-btn" onclick="quickSearch('diseño')">🎨 Diseño</button>
+                <button class="filter-btn" onclick="quickSearch('blog')">📝 Blog</button>
+                <button class="filter-btn" onclick="showAllPages()">📄 Ver todo</button>
+            </div>
+
+            <!-- Estadísticas -->
+            <div class="stats-container" id="statsContainer" style="display: none;">
+                <div class="stat-item">
+                    <span>📄</span>
+                    <span>Páginas indexadas: <span class="stat-value" id="pageCount">0</span></span>
+                </div>
+                <div class="stat-item">
+                    <span>🔤</span>
+                    <span>Palabras totales: <span class="stat-value" id="wordCount">0</span></span>
+                </div>
+                <div class="stat-item">
+                    <span>📁</span>
+                    <span>Directorios: <span class="stat-value" id="dirCount">0</span></span>
+                </div>
+                <div class="stat-item">
+                    <span>🔄</span>
+                    <div class="last-indexed" id="lastIndexed"></div>
+                </div>
+            </div>
+
+            <div id="currentQuery" style="color: var(--primary); font-weight: 500; font-size: 1.1rem; margin-top: 1rem;"></div>
+        </div>
+
+        <!-- Índice automático -->
+        <div class="auto-index-status" id="indexStatus">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                <div class="loading-spinner" style="width: 20px; height: 20px;"></div>
+                <span id="indexStatusText">Iniciando indexación del sitio...</span>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar" id="indexProgress"></div>
+            </div>
+            <div class="progress-text" id="indexProgressText">Preparando...</div>
+            
+            <div class="index-controls">
+                <button class="index-btn" onclick="pauseIndexing()" id="pauseBtn">⏸️ Pausar</button>
+                <button class="index-btn" onclick="resumeIndexing()" id="resumeBtn" style="display: none;">▶️ Continuar</button>
+                <button class="index-btn" onclick="stopIndexing()" id="stopBtn">⏹️ Detener</button>
+                <button class="index-btn" onclick="skipToDiscovery()" id="skipBtn">⏭️ Saltar a descubrimiento</button>
+            </div>
+        </div>
+
+        <!-- Resultados -->
+        <div class="results-container">
+            <div class="results-header" id="resultsHeader" style="display: none;">
+                <div class="results-count" id="resultsCount">Ingresa tu búsqueda...</div>
+                <select class="sort-select" id="sortSelect">
+                    <option value="relevance">Más relevantes</option>
+                    <option value="alphabetical">A → Z</option>
+                    <option value="reverse">Z → A</option>
+                    <option value="date">Más recientes</option>
+                    <option value="words">Más contenido</option>
+                </select>
+            </div>
+
+            <div id="resultsList" class="results-list">
+                <!-- Los resultados se cargarán aquí -->
+                <div class="loading" id="initialLoading">
+                    <div class="loading-spinner"></div>
+                    <p>Cargando buscador e indexando el sitio...</p>
+                    <p style="font-size: 0.9rem; color: var(--gray); margin-top: 1rem;">
+                        Escaneando recursivamente TODO el sitio web (esto puede tomar tiempo)
+                    </p>
+                    <div class="progress-container" style="max-width: 300px; margin: 1rem auto;">
+                        <div class="progress-bar" id="initialProgress"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Paginación -->
+            <div class="pagination" id="pagination" style="display: none;"></div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div>
+                <h3>Grouvex</h3>
+                <p style="color: var(--gray-light); margin-bottom: 1.5rem;">
+                    Buscador automático que indexa TODO el contenido del sitio.
+                </p>
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                    <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/Grouvex-patch-1/img/GROUVEX%20Studio.png" 
+                         alt="Grouvex Logo" 
+                         style="height: 24px; width: auto; filter: brightness(0) invert(1); opacity: 0.8;">
+                    <span style="color: var(--gray-light); font-size: 0.9rem;">Grouvex Studio</span>
+                </div>
+            </div>
+            
+            <div>
+                <h3>Búsqueda</h3>
+                <ul class="footer-links">
+                    <li><a href="/buscar?q=">Buscar en todo el sitio</a></li>
+                    <li><a href="javascript:void(0)" onclick="showAllPages()">Ver índice completo</a></li>
+                    <li><a href="javascript:void(0)" onclick="searchByType('html')">Solo páginas HTML</a></li>
+                    <li><a href="javascript:void(0)" onclick="searchByType('md')">Solo Markdown</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3>Herramientas</h3>
+                <ul class="footer-links">
+                    <li><a href="javascript:void(0)" onclick="clearCache()">🔄 Limpiar caché</a></li>
+                    <li><a href="javascript:void(0)" onclick="reindexSite()">🔍 Re-indexar sitio</a></li>
+                    <li><a href="/sitemap.html">🗺️ Mapa del sitio</a></li>
+                    <li><a href="javascript:void(0)" onclick="exportIndex()">📥 Exportar índice</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; <span id="currentYear"></span> Grouvex Studio | Buscador automático</p>
+            <p style="margin-top: 0.5rem;">Indexación recursiva de todo el sitio web</p>
+        </div>
+    </footer>
+
+    <script>
+        // ==================== CONFIGURACIÓN AVANZADA ====================
+        const SITE_URL = window.location.origin;
+        const CACHE_KEY = 'grouvex_search_index_v3';
+        const CACHE_TIMESTAMP_KEY = 'grouvex_index_timestamp_v3';
+        const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 horas
+        
+        // Estado del buscador
+        let searchIndex = [];
+        let currentPage = 1;
+        const resultsPerPage = 10;
+        let currentSort = 'relevance';
+        let currentSearchTerm = '';
+        
+        // Estado de indexación
+        let indexingPaused = false;
+        let indexingStopped = false;
+        let currentIndexingTask = null;
+        let discoveredDirectories = new Set(['/']);
+        let discoveredPages = new Set();
+        let totalIndexed = 0;
+        let maxDepth = 5; // Profundidad máxima de recursión
+
+        // ==================== INICIALIZACIÓN ====================
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Año actual
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+            
+            // Pre-cargar logo
+            preloadLogo();
+            
+            // Manejar parámetros de URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchQuery = urlParams.get('q');
+            const showAll = urlParams.get('show') === 'all';
+            
+            // Cargar o crear índice
+            await loadOrCreateIndex();
+            
+            // Configurar eventos
+            setupEventListeners();
+            
+            // Si hay búsqueda en URL, ejecutarla
+            if (searchQuery) {
+                document.getElementById('mainSearchInput').value = searchQuery;
+                performSearch(searchQuery);
+            } else if (showAll) {
+                showAllPages();
+            }
+        });
+
+        // Pre-cargar logo para evitar fallos
+        function preloadLogo() {
+            const logoImg = new Image();
+            logoImg.src = 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/Grouvex-patch-1/img/GROUVEX%20Studio.png';
+            logoImg.onload = function() {
+                console.log('Logo de Grouvex cargado correctamente');
+            };
+            logoImg.onerror = function() {
+                console.warn('No se pudo cargar el logo, usando fallback');
+                document.getElementById('logoFallback').style.display = 'flex';
+                const logoImgs = document.querySelectorAll('.logo-img');
+                logoImgs.forEach(img => img.style.display = 'none');
+            };
+        }
+
+        // ==================== SISTEMA DE INDEXACIÓN RECURSIVA ====================
+        async function loadOrCreateIndex() {
+            try {
+                // Verificar caché
+                const cachedData = localStorage.getItem(CACHE_KEY);
+                const cachedTimestamp = localStorage.getItem(CACHE_TIMESTAMP_KEY);
+                const now = Date.now();
+                
+                if (cachedData && cachedTimestamp && (now - parseInt(cachedTimestamp)) < CACHE_DURATION) {
+                    // Usar caché
+                    searchIndex = JSON.parse(cachedData);
+                    updateStats();
+                    showIndexStatus('success', 'Índice cargado desde caché');
+                    hideInitialLoading();
+                    return;
+                }
+                
+                // Crear nuevo índice recursivo
+                showIndexStatus('loading', 'Iniciando indexación recursiva del sitio...');
+                await createRecursiveIndex();
+                
+                // Guardar en caché
+                localStorage.setItem(CACHE_KEY, JSON.stringify(searchIndex));
+                localStorage.setItem(CACHE_TIMESTAMP_KEY, now.toString());
+                
+                updateStats();
+                showIndexStatus('success', 'Índice completo creado y guardado en caché');
+                hideInitialLoading();
+                
+            } catch (error) {
+                console.error('Error creando índice:', error);
+                showIndexStatus('error', 'Error creando índice. Usando caché si está disponible.');
+                
+                // Intentar usar caché vieja si hay error
+                const cachedData = localStorage.getItem(CACHE_KEY);
+                if (cachedData) {
+                    searchIndex = JSON.parse(cachedData);
+                    updateStats();
+                    hideInitialLoading();
+                }
+            }
+        }
+
+        // Crear índice recursivo
+        async function createRecursiveIndex() {
+            indexingPaused = false;
+            indexingStopped = false;
+            totalIndexed = 0;
+            discoveredDirectories.clear();
+            discoveredDirectories.add('/');
+            discoveredPages.clear();
+            
+            // Iniciar desde la raíz
+            await discoverAndIndexDirectory('/', 0);
+            
+            // Buscar en directorios adicionales comunes
+            const additionalDirs = [
+                '/blog/', '/posts/', '/articles/',
+                '/projects/', '/proyectos/',
+                '/music/', '/musica/', '/audio/',
+                '/design/', '/diseño/', '/art/',
+                '/docs/', '/documentation/', '/help/',
+                '/tutorials/', '/tutoriales/',
+                '/about/', '/acerca/', '/contact/', '/contacto/'
+            ];
+            
+            for (const dir of additionalDirs) {
+                if (!indexingStopped) {
+                    await discoverAndIndexDirectory(dir, 0);
+                }
+            }
+            
+            return searchIndex;
+        }
+
+        // Descubrir e indexar directorio recursivamente
+        async function discoverAndIndexDirectory(directory, depth) {
+            if (depth > maxDepth || indexingStopped) return;
+            
+            try {
+                // Actualizar progreso
+                updateProgress(`Escaneando directorio: ${directory}`, 
+                    (depth / maxDepth) * 100);
+                
+                // Obtener lista de archivos del directorio
+                const fileList = await getDirectoryListing(directory);
+                
+                if (!fileList || indexingStopped || indexingPaused) return;
+                
+                // Procesar cada elemento encontrado
+                for (const item of fileList) {
+                    if (indexingStopped || indexingPaused) break;
+                    
+                    if (item.type === 'directory') {
+                        // Es un subdirectorio - explorar recursivamente
+                        const subDir = directory.endsWith('/') ? 
+                            directory + item.name + '/' : 
+                            directory + '/' + item.name + '/';
+                        
+                        if (!discoveredDirectories.has(subDir)) {
+                            discoveredDirectories.add(subDir);
+                            await discoverAndIndexDirectory(subDir, depth + 1);
+                        }
+                    } else if (item.type === 'file') {
+                        // Es un archivo - indexar si es de tipo soportado
+                        const fileUrl = directory.endsWith('/') ? 
+                            directory + item.name : 
+                            directory + '/' + item.name;
+                        
+                        if (!discoveredPages.has(fileUrl) && isIndexableFile(item.name)) {
+                            discoveredPages.add(fileUrl);
+                            await indexPage(SITE_URL + fileUrl);
+                            totalIndexed++;
+                            
+                            // Actualizar progreso
+                            updateProgress(`Indexando: ${item.name}`, 
+                                (totalIndexed / 500) * 100); // Estimado
+                        }
+                    }
+                }
+                
+            } catch (error) {
+                console.warn(`Error explorando directorio ${directory}:`, error);
+            }
+        }
+
+        // Obtener listado de directorio (simulación para GitHub Pages)
+        async function getDirectoryListing(directory) {
+            try {
+                // Para GitHub Pages, intentamos diferentes métodos
+                
+                // Método 1: Intentar obtener índice del directorio
+                const indexPath = directory.endsWith('/') ? 
+                    directory + 'index.html' : directory + '/index.html';
+                
+                try {
+                    const response = await fetch(SITE_URL + indexPath);
+                    if (response.ok) {
+                        // Encontramos un index.html - procesarlo para enlaces
+                        const html = await response.text();
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        
+                        // Extraer enlaces del documento
+                        const links = doc.querySelectorAll('a[href]');
+                        const items = [];
+                        
+                        links.forEach(link => {
+                            const href = link.getAttribute('href');
+                            if (href && !href.startsWith('http') && !href.startsWith('#') && !href.startsWith('mailto:')) {
+                                // Determinar si es directorio o archivo
+                                const isDir = href.endsWith('/') || 
+                                             (href.includes('/') && !href.includes('.'));
+                                items.push({
+                                    name: href.split('/').pop() || href,
+                                    type: isDir ? 'directory' : 'file',
+                                    url: href
+                                });
+                            }
+                        });
+                        
+                        return items;
+                    }
+                } catch (e) {
+                    // Continuar con siguiente método
+                }
+                
+                // Método 2: Usar GitHub API si está disponible
+                try {
+                    const githubUrl = new URL(SITE_URL, window.location.origin);
+                    const githubHost = githubUrl.hostname;
+
+                    // Verificar que el host sea exactamente github.io o un subdominio válido de github.io
+                    if (githubHost === 'github.io' || githubHost.endsWith('.github.io')) {
+                        // Obtener la ruta del repositorio a partir del pathname
+                        const repoPath = githubUrl.pathname.replace(/^\/+/, '');
+                        const githubApiUrl = `https://api.github.com/repos/${repoPath.split('/')[0]}/${repoPath.split('/')[1] || repoPath}/contents/${directory.replace(/^\//, '')}`;
+
+                        try {
+                            const response = await fetch(githubApiUrl);
+                            if (response.ok) {
+                                const data = await response.json();
+                                return data.map(item => ({
+                                    name: item.name,
+                                    type: item.type === 'dir' ? 'directory' : 'file',
+                                    url: item.path
+                                }));
+                            }
+                        } catch (e) {
+                            // Continuar con siguiente método
+                        }
+                    }
+                } catch (e) {
+                    // Si SITE_URL no es una URL válida, continuar con siguiente método
+                }
+                
+                // Método 3: Intentar descubrir archivos comunes
+                return discoverCommonFiles(directory);
+                
+            } catch (error) {
+                console.warn(`Error obteniendo listado de ${directory}:`, error);
+                return discoverCommonFiles(directory);
+            }
+        }
+
+        // Descubrir archivos comunes en un directorio
+        function discoverCommonFiles(directory) {
+            const commonFiles = [
+                'index.html', 'index.htm', 'readme.md', 'README.md',
+                'about.html', 'contact.html', 'projects.html', 'blog.html',
+                'music.html', 'design.html', 'portfolio.html'
+            ];
+            
+            const commonExtensions = ['.html', '.htm', '.md', '.txt', '.pdf', '.json'];
+            
+            return commonFiles.map(file => ({
+                name: file,
+                type: 'file',
+                url: directory + file
+            })).concat(
+                commonExtensions.map(ext => ({
+                    name: `page${ext}`,
+                    type: 'file',
+                    url: directory + `page${ext}`
+                }))
+            );
+        }
+
+        // Verificar si un archivo es indexable
+        function isIndexableFile(filename) {
+            const indexableExtensions = [
+                '.html', '.htm', '.md', '.markdown', 
+                '.txt', '.text', '.pdf', '.json', '.xml'
+            ];
+            
+            return indexableExtensions.some(ext => 
+                filename.toLowerCase().endsWith(ext));
+        }
+
+        // Indexar una página individual
+        async function indexPage(url) {
+            if (indexingStopped || indexingPaused) return null;
+            
+            try {
+                const response = await fetch(url);
+                if (!response.ok) return null;
+                
+                const contentType = response.headers.get('content-type') || '';
+                let content = '';
+                
+                if (contentType.includes('text/html') || contentType.includes('text/plain')) {
+                    content = await response.text();
+                } else if (contentType.includes('application/pdf')) {
+                    // Para PDFs, usar texto simple
+                    content = `[Documento PDF: ${url.split('/').pop()}]`;
+                } else {
+                    return null;
+                }
+                
+                // Parsear contenido según tipo
+                let title = '';
+                let description = '';
+                let textContent = '';
+                
+                if (contentType.includes('text/html')) {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(content, 'text/html');
+                    
+                    title = doc.querySelector('title')?.textContent || 
+                           doc.querySelector('h1')?.textContent || 
+                           getFileName(url);
+                    
+                    description = doc.querySelector('meta[name="description"]')?.getAttribute('content') ||
+                                doc.querySelector('meta[property="og:description"]')?.getAttribute('content') ||
+                                extractFirstParagraph(doc);
+                    
+                    // Extraer contenido de texto
+                    const body = doc.body;
+                    if (body) {
+                        // Remover scripts y estilos
+                        const scripts = body.querySelectorAll('script, style');
+                        scripts.forEach(script => script.remove());
+                        textContent = body.textContent || '';
+                    }
+                } else {
+                    // Para texto plano, MD, etc.
+                    title = getFileName(url);
+                    textContent = content.substring(0, 10000); // Limitar
+                }
+                
+                // Limpiar texto
+                const cleanText = textContent.replace(/\s+/g, ' ').trim();
+                const wordCount = cleanText.split(/\s+/).filter(w => w.length > 0).length;
+                
+                // Determinar tipo de archivo
+                const fileType = getFileType(url);
+                
+                return {
+                    id: generatePageId(url),
+                    url: url,
+                    title: title.trim(),
+                    description: description?.trim() || '',
+                    content: cleanText.substring(0, 5000),
+                    type: fileType,
+                    wordCount: wordCount,
+                    lastIndexed: new Date().toISOString(),
+                    directory: getDirectoryFromUrl(url),
+                    depth: (url.match(/\//g) || []).length - 1
+                };
+                
+            } catch (error) {
+                console.warn(`Error indexando ${url}:`, error);
+                return null;
+            }
+        }
+
+        // ==================== FUNCIONES AUXILIARES ====================
+        function getFileName(url) {
+            const path = new URL(url).pathname;
+            return path.split('/').pop() || 'index';
+        }
+
+        function getDirectoryFromUrl(url) {
+            const path = new URL(url).pathname;
+            const parts = path.split('/');
+            parts.pop(); // Remover nombre de archivo
+            return parts.join('/') || '/';
+        }
+
+        function getFileType(url) {
+            const extension = url.split('.').pop().toLowerCase();
+            if (['html', 'htm'].includes(extension)) return 'html';
+            if (['md', 'markdown'].includes(extension)) return 'md';
+            if (['pdf'].includes(extension)) return 'pdf';
+            if (['txt', 'text'].includes(extension)) return 'txt';
+            if (['json', 'xml'].includes(extension)) return extension;
+            return 'other';
+        }
+
+        function extractFirstParagraph(doc) {
+            const firstP = doc.querySelector('p');
+            return firstP ? firstP.textContent.trim().substring(0, 200) : '';
+        }
+
+        function generatePageId(url) {
+            return btoa(url).replace(/[+/=]/g, '').substring(0, 12);
+        }
+
+        // ==================== CONTROL DE INDEXACIÓN ====================
+        function pauseIndexing() {
+            indexingPaused = true;
+            document.getElementById('pauseBtn').style.display = 'none';
+            document.getElementById('resumeBtn').style.display = 'block';
+            showIndexStatus('info', 'Indexación pausada');
+        }
+
+        function resumeIndexing() {
+            indexingPaused = false;
+            document.getElementById('pauseBtn').style.display = 'block';
+            document.getElementById('resumeBtn').style.display = 'none';
+            showIndexStatus('loading', 'Reanudando indexación...');
+            // Continuar donde se quedó
+        }
+
+        function stopIndexing() {
+            indexingStopped = true;
+            showIndexStatus('warning', 'Indexación detenida. Usando páginas indexadas hasta ahora.');
+            updateStats();
+            hideInitialLoading();
+        }
+
+        function skipToDiscovery() {
+            // Saltar a descubrimiento rápido
+            showIndexStatus('loading', 'Usando descubrimiento rápido...');
+            setTimeout(() => {
+                useQuickDiscovery();
+            }, 100);
+        }
+
+        async function useQuickDiscovery() {
+            // Método rápido: buscar páginas comunes
+            const quickPages = await discoverCommonPages();
+            searchIndex = quickPages;
+            updateStats();
+            showIndexStatus('success', 'Descubrimiento rápido completado');
+            hideInitialLoading();
+        }
+
+        // ==================== INTERFAZ DE USUARIO ====================
+        function setupEventListeners() {
+            // Formulario de búsqueda
+            document.getElementById('searchForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const query = document.getElementById('mainSearchInput').value.trim();
+                if (query) {
+                    updateUrlWithSearch(query);
+                    performSearch(query);
+                }
+            });
+            
+            // Ordenamiento
+            document.getElementById('sortSelect').addEventListener('change', function() {
+                currentSort = this.value;
+                applySearch();
+            });
+            
+            // Búsqueda en tiempo real
+            let searchTimeout;
+            document.getElementById('mainSearchInput').addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                const query = this.value.trim();
+                
+                if (query.length >= 2) {
+                    searchTimeout = setTimeout(() => {
+                        updateUrlWithSearch(query);
+                        performSearch(query);
+                    }, 300);
+                } else if (query.length === 0) {
+                    clearResults();
+                }
+            });
+            
+            // Navegación con botones atrás/adelante
+            window.addEventListener('popstate', function() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const searchQuery = urlParams.get('q');
+                if (searchQuery !== null) {
+                    document.getElementById('mainSearchInput').value = searchQuery;
+                    performSearch(searchQuery);
+                } else {
+                    clearResults();
+                }
+            });
+        }
+
+        function updateUrlWithSearch(query) {
+            const newUrl = new URL(window.location);
+            if (query) {
+                newUrl.searchParams.set('q', query);
+            } else {
+                newUrl.searchParams.delete('q');
+            }
+            window.history.pushState({}, '', newUrl);
+        }
+
+        function performSearch(query) {
+            currentSearchTerm = query.toLowerCase().trim();
+            currentPage = 1;
+            
+            if (!currentSearchTerm) {
+                clearResults();
+                return;
+            }
+            
+            showLoading();
+            setTimeout(() => {
+                applySearch();
+            }, 100);
+        }
+
+        function applySearch() {
+            let results = searchIndex.filter(page => 
+                matchesSearch(page, currentSearchTerm)
+            );
+            
+            // Ordenar resultados
+            results.sort((a, b) => {
+                switch(currentSort) {
+                    case 'alphabetical':
+                        return a.title.localeCompare(b.title);
+                    case 'reverse':
+                        return b.title.localeCompare(a.title);
+                    case 'date':
+                        return new Date(b.lastIndexed) - new Date(a.lastIndexed);
+                    case 'words':
+                        return b.wordCount - a.wordCount;
+                    default: // relevance
+                        const scoreA = calculateRelevanceScore(a, currentSearchTerm);
+                        const scoreB = calculateRelevanceScore(b, currentSearchTerm);
+                        return scoreB - scoreA;
+                }
+            });
+            
+            displayResults(results);
+        }
+
+        function matchesSearch(page, searchTerm) {
+            if (!searchTerm) return false;
+            
+            const searchTerms = searchTerm.toLowerCase().split(/\s+/);
+            
+            for (const term of searchTerms) {
+                if (term.length < 2) continue;
+                
+                const inTitle = page.title.toLowerCase().includes(term);
+                const inDescription = page.description.toLowerCase().includes(term);
+                const inContent = page.content.toLowerCase().includes(term);
+                const inUrl = page.url.toLowerCase().includes(term);
+                
+                if (inTitle || inDescription || inContent || inUrl) {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+
+        function calculateRelevanceScore(page, searchTerm) {
+            let score = 50;
+            const searchTerms = searchTerm.toLowerCase().split(/\s+/);
+            
+            searchTerms.forEach(term => {
+                if (term.length < 2) return;
+                
+                // Ponderaciones mejoradas
+                if (page.title.toLowerCase().includes(term)) score += 40;
+                if (page.description.toLowerCase().includes(term)) score += 25;
+                if (page.url.toLowerCase().includes(term)) score += 20;
+                if (page.content.toLowerCase().includes(term)) score += 10;
+                
+                // Bonus por páginas principales
+                if (page.url === SITE_URL + '/') score += 30;
+                if (page.depth === 1) score += 10; // Páginas en raíz
+            });
+            
+            return score;
+        }
+
+        function showLoading() {
+            document.getElementById('resultsList').innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Buscando "${currentSearchTerm}"...</p>
+                </div>
+            `;
+            document.getElementById('resultsHeader').style.display = 'flex';
+            document.getElementById('pagination').style.display = 'none';
+            document.getElementById('currentQuery').textContent = `Buscando: "${currentSearchTerm}"`;
+        }
+
+        function clearResults() {
+            document.getElementById('resultsList').innerHTML = `
+                <div class="no-results">
+                    <div class="no-results-icon">🔍</div>
+                    <h3 class="no-results-title">Busca en todo el sitio</h3>
+                    <p class="no-results-text">
+                        Escribe palabras clave para buscar en ${searchIndex.length} páginas indexadas
+                    </p>
+                </div>
+            `;
+            document.getElementById('resultsHeader').style.display = 'none';
+            document.getElementById('pagination').style.display = 'none';
+            document.getElementById('currentQuery').textContent = '';
+        }
+
+        function displayResults(results) {
+            const resultsList = document.getElementById('resultsList');
+            const totalResults = results.length;
+            
+            document.getElementById('resultsCount').textContent = 
+                totalResults === 0 ? 'No se encontraron resultados' :
+                `${totalResults} resultado${totalResults !== 1 ? 's' : ''} para "${currentSearchTerm}"`;
+            
+            document.getElementById('resultsHeader').style.display = 'flex';
+            
+            const totalPages = Math.ceil(totalResults / resultsPerPage);
+            const startIndex = (currentPage - 1) * resultsPerPage;
+            const endIndex = Math.min(startIndex + resultsPerPage, totalResults);
+            const pageResults = results.slice(startIndex, endIndex);
+            
+            if (pageResults.length === 0) {
+                resultsList.innerHTML = `
+                    <div class="no-results">
+                        <div class="no-results-icon">🔍</div>
+                        <h3 class="no-results-title">No se encontraron resultados</h3>
+                        <p class="no-results-text">
+                            No encontramos páginas que coincidan con "${currentSearchTerm}".
+                            Prueba con otras palabras clave o términos más generales.
+                        </p>
+                        <button class="page-btn" onclick="document.getElementById('mainSearchInput').focus()" style="margin: 1rem auto;">
+                            Intentar otra búsqueda
+                        </button>
+                    </div>
+                `;
+                document.getElementById('pagination').style.display = 'none';
+            } else {
+                let html = '';
+                
+                pageResults.forEach((page, index) => {
+                    const snippet = generateSnippet(page, currentSearchTerm);
+                    const relevanceScore = calculateRelevanceScore(page, currentSearchTerm);
+                    
+                    html += `
+                        <div class="result-item" style="animation-delay: ${index * 0.1}s">
+                            <div class="result-title">
+                                ${getTypeIcon(page.type)}
+                                <a href="${page.url}" target="_blank">${highlightMatches(page.title)}</a>
+                            </div>
+                            <div class="result-url">${page.url.replace(SITE_URL, '') || '/'}</div>
+                            <p class="result-snippet">${snippet}</p>
+                            <div class="result-meta">
+                                <span class="result-type ${page.type}">${page.type.toUpperCase()}</span>
+                                <span>📊 Relevancia: ${Math.min(relevanceScore, 100)}%</span>
+                                <span>📝 Palabras: ${page.wordCount}</span>
+                                <span>📁 ${page.directory}</span>
+                                <span>🕒 ${formatDate(page.lastIndexed)}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                resultsList.innerHTML = html;
+            }
+            
+            if (totalPages > 1) {
+                showPagination(totalPages);
+            } else {
+                document.getElementById('pagination').style.display = 'none';
+            }
+        }
+
+        function generateSnippet(page, searchTerm) {
+            const content = page.content.toLowerCase();
+            const searchTerms = searchTerm.toLowerCase().split(/\s+/);
+            
+            for (const term of searchTerms) {
+                if (term.length < 2) continue;
+                
+                const index = content.indexOf(term);
+                if (index !== -1) {
+                    const start = Math.max(0, index - 60);
+                    const end = Math.min(content.length, index + 120);
+                    let snippet = page.content.substring(start, end);
+                    
+                    snippet = snippet.replace(/[^\w\s.,!?-]/g, ' ');
+                    snippet = snippet.replace(/\s+/g, ' ').trim();
+                    
+                    if (start > 0) snippet = '...' + snippet;
+                    if (end < content.length) snippet = snippet + '...';
+                    
+                    return highlightMatches(snippet);
+                }
+            }
+            
+            const fallback = page.description || page.content.substring(0, 180);
+            return highlightMatches(fallback) + '...';
+        }
+
+        function highlightMatches(text) {
+            if (!currentSearchTerm || !text) return text;
+            
+            const searchTerms = currentSearchTerm.toLowerCase().split(/\s+/);
+            let highlighted = text.toString();
+            
+            searchTerms.forEach(term => {
+                if (term.length < 2) return;
+                
+                const regex = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                highlighted = highlighted.replace(regex, '<mark style="background: #FEF3C7; padding: 0 2px; border-radius: 2px; font-weight: 500;">$1</mark>');
+            });
+            
+            return highlighted;
+        }
+
+        function getTypeIcon(type) {
+            const icons = {
+                'html': '🌐',
+                'md': '📝',
+                'pdf': '📄',
+                'txt': '📝',
+                'json': '📊',
+                'xml': '📊',
+                'other': '📄'
+            };
+            return icons[type] || '📄';
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+            
+            if (diffMins < 60) return `hace ${diffMins} min`;
+            if (diffHours < 24) return `hace ${diffHours} h`;
+            if (diffDays < 30) return `hace ${diffDays} d`;
+            
+            return date.toLocaleDateString('es-ES', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        }
+
+        function showPagination(totalPages) {
+            const pagination = document.getElementById('pagination');
+            let html = '';
+            
+            html += `
+                <button class="page-btn" ${currentPage === 1 ? 'disabled' : ''} 
+                        onclick="changePage(${currentPage - 1})">
+                    ← Anterior
+                </button>
+            `;
+            
+            const maxVisible = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+            
+            if (endPage - startPage + 1 < maxVisible) {
+                startPage = Math.max(1, endPage - maxVisible + 1);
+            }
+            
+            if (startPage > 1) {
+                html += `<button class="page-btn" onclick="changePage(1)">1</button>`;
+                if (startPage > 2) html += `<span class="page-btn" style="border:none;">...</span>`;
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                html += `
+                    <button class="page-btn ${i === currentPage ? 'active' : ''}" 
+                            onclick="changePage(${i})">
+                        ${i}
+                    </button>
+                `;
+            }
+            
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) html += `<span class="page-btn" style="border:none;">...</span>`;
+                html += `<button class="page-btn" onclick="changePage(${totalPages})">${totalPages}</button>`;
+            }
+            
+            html += `
+                <button class="page-btn" ${currentPage === totalPages ? 'disabled' : ''} 
+                        onclick="changePage(${currentPage + 1})">
+                    Siguiente →
+                </button>
+            `;
+            
+            pagination.innerHTML = html;
+            pagination.style.display = 'flex';
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            applySearch();
+            window.scrollTo({ 
+                top: document.querySelector('.results-container').offsetTop - 100, 
+                behavior: 'smooth' 
+            });
+        }
+
+        function updateStats() {
+            const pageCount = searchIndex.length;
+            const wordCount = searchIndex.reduce((sum, page) => sum + (page.wordCount || 0), 0);
+            const dirCount = new Set(searchIndex.map(p => p.directory)).size;
+            const lastIndexed = localStorage.getItem(CACHE_TIMESTAMP_KEY);
+            
+            document.getElementById('pageCount').textContent = pageCount;
+            document.getElementById('wordCount').textContent = wordCount.toLocaleString();
+            document.getElementById('dirCount').textContent = dirCount;
+            
+            if (lastIndexed) {
+                const date = new Date(parseInt(lastIndexed));
+                document.getElementById('lastIndexed').innerHTML = `
+                    <span>Indexado: </span>
+                    <span style="color: var(--primary); font-weight: 500;">
+                        ${formatDate(date.toISOString())}
+                    </span>
+                `;
+            }
+            
+            document.getElementById('statsContainer').style.display = 'flex';
+        }
+
+        function showIndexStatus(type, message) {
+            const statusEl = document.getElementById('indexStatus');
+            const textEl = document.getElementById('indexStatusText');
+            
+            textEl.textContent = message;
+            
+            if (type === 'success') {
+                statusEl.innerHTML = `
+                    <div style="color: var(--secondary); display: flex; align-items: center; gap: 0.5rem;">
+                        <span>✅</span>
+                        <span>${message}</span>
+                    </div>
+                    <div style="font-size: 0.8rem; margin-top: 0.5rem;">
+                        ${searchIndex.length} páginas indexadas - Se actualiza cada 24h
+                    </div>
+                `;
+                
+            } else if (type === 'error') {
+                statusEl.innerHTML = `
+                    <div style="color: #EF4444; display: flex; align-items: center; gap: 0.5rem;">
+                        <span>❌</span>
+                        <span>${message}</span>
+                    </div>
+                `;
+            } else if (type === 'warning') {
+                statusEl.innerHTML = `
+                    <div style="color: #F59E0B; display: flex; align-items: center; gap: 0.5rem;">
+                        <span>⚠️</span>
+                        <span>${message}</span>
+                    </div>
+                `;
+            } else if (type === 'info') {
+                statusEl.innerHTML = `
+                    <div style="color: #3B82F6; display: flex; align-items: center; gap: 0.5rem;">
+                        <span>ℹ️</span>
+                        <span>${message}</span>
+                    </div>
+                `;
+            }
+        }
+
+        function updateProgress(message, percent) {
+            document.getElementById('indexProgress').style.width = `${percent}%`;
+            document.getElementById('indexProgressText').textContent = message;
+            
+            // También actualizar loading inicial
+            document.getElementById('initialProgress').style.width = `${percent}%`;
+        }
+
+        function hideInitialLoading() {
+            document.getElementById('initialLoading').style.display = 'none';
+        }
+
+        // ==================== FUNCIONES DE USUARIO ====================
+        function quickSearch(term) {
+            document.getElementById('mainSearchInput').value = term;
+            performSearch(term);
+        }
+
+        function showAllPages() {
+            currentSearchTerm = '';
+            currentPage = 1;
+            
+            document.getElementById('resultsList').innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Mostrando todas las páginas indexadas...</p>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                let results = [...searchIndex];
+                results.sort((a, b) => b.wordCount - a.wordCount);
+                
+                document.getElementById('resultsCount').textContent = 
+                    `${results.length} páginas indexadas en total`;
+                document.getElementById('resultsHeader').style.display = 'flex';
+                document.getElementById('currentQuery').textContent = 'Todas las páginas indexadas';
+                
+                displayResults(results);
+            }, 100);
+        }
+
+        function searchByType(type) {
+            const results = searchIndex.filter(page => page.type === type);
+            currentSearchTerm = '';
+            currentPage = 1;
+            
+            document.getElementById('resultsCount').textContent = 
+                `${results.length} páginas ${type.toUpperCase()}`;
+            document.getElementById('resultsHeader').style.display = 'flex';
+            document.getElementById('currentQuery').textContent = `Páginas ${type.toUpperCase()}`;
+            
+            displayResults(results);
+        }
+
+        function clearCache() {
+            if (confirm('¿Limpiar caché de búsqueda? La próxima búsqueda re-indexará todo el sitio.')) {
+                localStorage.removeItem(CACHE_KEY);
+                localStorage.removeItem(CACHE_TIMESTAMP_KEY);
+                showIndexStatus('success', 'Caché limpiada. Recargando...');
+                setTimeout(() => location.reload(), 1000);
+            }
+        }
+
+        function reindexSite() {
+            if (confirm('¿Re-indexar TODO el sitio web? Esto puede tomar varios minutos.')) {
+                localStorage.removeItem(CACHE_KEY);
+                localStorage.removeItem(CACHE_TIMESTAMP_KEY);
+                location.reload();
+            }
+        }
+
+        function exportIndex() {
+            const data = {
+                metadata: {
+                    generated: new Date().toISOString(),
+                    site: SITE_URL,
+                    totalPages: searchIndex.length,
+                    totalWords: searchIndex.reduce((sum, p) => sum + p.wordCount, 0)
+                },
+                pages: searchIndex
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `grouvex-index-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Descubrir páginas comunes (fallback)
+        async function discoverCommonPages() {
+            const pagesToTry = [
+                '/', '/index.html',
+                '/about', '/about.html', '/sobre', '/sobre.html',
+                '/contact', '/contact.html', '/contacto', '/contacto.html',
+                '/blog', '/blog.html',
+                '/projects', '/projects.html', '/proyectos', '/proyectos.html',
+                '/music', '/music.html', '/musica', '/musica.html',
+                '/design', '/design.html', '/diseño', '/diseño.html',
+                '/portfolio', '/portfolio.html',
+                '/services', '/services.html', '/servicios', '/servicios.html',
+                '/tutorials', '/tutorials.html', '/tutoriales', '/tutoriales.html',
+                '/faq', '/faq.html', '/preguntas', '/preguntas.html',
+                '/privacy', '/privacy.html', '/privacidad', '/privacidad.html',
+                '/terms', '/terms.html', '/terminos', '/terminos.html',
+                '/sitemap.html', '/sitemap.xml',
+                '/404.html', '/404'
+            ];
+            
+            const discovered = [];
+            
+            for (const page of pagesToTry) {
+                try {
+                    const url = SITE_URL + page;
+                    const pageData = await indexPage(url);
+                    if (pageData) {
+                        discovered.push(pageData);
+                    }
+                } catch (error) {
+                    // Continuar con siguiente página
+                }
+            }
+            
+            return discovered;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,624 @@
+/*Inicio Sesion*/
+form {
+    background: transparent;
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 4px rgb(107, 47, 47);
+}
+
+input {
+    display: block;
+    padding: 1px;
+    margin-bottom: 10px;
+    border: 1px solid #b12020;
+    border-radius: 4px;
+}
+
+button {
+    padding: 5px 10px;
+    color: black;
+    border-radius: 2px;
+    cursor: pointer;
+    background: linear-gradient(45deg,red,blue,green)
+}
+
+button:hover {
+    padding: 5px 10px;
+    border-radius: 2px;
+    color: white;
+    cursor: pointer;
+    background: linear-gradient(45deg,yellow,magenta,cyan)
+}
+button:disabled {
+    padding: 5px 10px;
+    border-radius: 2px;
+    color: black;
+    cursor: pointer;
+    background: linear-gradient(white,transparent,grey);
+    cursor: not-allowed;
+
+}
+/*Página*/
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+
+  .red {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+  .red1 {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-top: 1%;
+    margin-left: 0%;
+    position: absolute;
+  }
+  .red2 {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-top: 1%;
+    margin-left: 8%;
+    position: absolute;
+  }
+  .red3 {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-top: 1%;
+    margin-left: 16%;
+    position: absolute;
+  }
+  .red4 {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-top: 1%;
+    margin-left: -8%;
+    position: absolute;
+  }
+  .red5 {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-top: 1%;
+    margin-left: -16%;
+    position: absolute;
+  }
+  .red6 {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-top: 1%;
+    margin-left: 24%;
+    position: absolute;
+  }
+
+.Atencion {
+    color: white;
+    text-align: center;
+    background-color: blue;
+} 
+  n {
+    font-weight: bold;
+  }
+  ig {
+    color: fuchsia;
+  }
+  yt {
+    color: red;
+  }
+  tt {
+    color: aqua;
+  }
+  ds {
+    color: blue;
+  }
+  sp {
+    color: green;
+  }
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: transparent;
+    border: none;
+  }
+#selector-idioma {
+    font-size: 14px;
+    font-family: Times New Roman;
+    background-color: transparent; /* Fondo blanco */
+    color: white; /* Texto en color negro para contraste */
+    /* Añade más estilos según necesites */
+    width: 65px;
+    height: 20px;
+  }
+#selector-idioma option {
+    background-color: black;
+    color: white;
+  }
+#themeSelect {
+  font-size: 14px;
+  font-family: Times New Roman;
+    background-color: transparent; /* Fondo blanco */
+    color: gold; /* Texto en color negro para contraste */
+    /* Añade más estilos según necesites */
+    width: 45px;
+    height: 20px;
+  }
+#themeSelect option {
+    background-color: darkslategrey;
+    color: white;
+  }
+
+.orden-button {
+  background: white;
+  color: black;
+  cursor: pointer;
+}
+/* Estilo para las direcciones y texto pequeño */
+address, small {
+    display: block;
+}
+/* Estilo para la navegación */
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav li {
+    display: inline;
+    margin-right: 10px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+}
+
+.post-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.post-description {
+    font-size: 16px;
+    color: white;
+}
+/* Estilos para el acordeón */
+.accordion {
+    background-color: #000000;
+    color: #1e997a;
+    cursor: pointer;
+    padding: 10px;
+    margin: 5px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    transition: 0.4s;
+}
+
+.active, .accordion:hover {
+    background-color: #00ff6a;
+}
+
+.panel {
+    padding: 0 18px;
+    display: none;
+    background-color: white;
+    overflow: hidden;
+}
+
+  .hiddenOption {
+    display: none;
+  }
+/* news */
+.status {
+  display: inline-block;
+  padding: 2px 10px;
+  margin-left: 10px;
+  border-radius: 50px; /* Esto hace que la etiqueta sea ovalada */
+  color: white;
+  font-size: 0.5em;
+
+}
+/*Etiquetas*/
+.new {
+  background-color: green;
+  animation: rotate 2s infinite linear; /* Esto hace que la etiqueta "Nuevo" tenga un efecto de rotación */
+}
+.maintenance {
+  background-color: orange;
+}
+.updating {
+  background-color: blue;
+}
+.featured {
+  background-color: purple;
+  box-shadow: 0 0 10px rgb(255, 255, 255); /* Esto hace que la etiqueta "Destacado" destaque */
+}
+.popular {
+  background-image: url('https://usagif.com/wp-content/uploads/gif/outerspace-76.gif'); /* Asegúrate de reemplazar esto con la ruta a tu imagen de estrellas */
+  background-size: cover;
+  box-shadow: 0 0 10px rgb(230, 6, 6);
+  
+}
+.upcoming {
+  background-color: yellow;
+  color: black;
+}
+.exclusive {
+  background-color: purple;
+  box-shadow: 0 0 10px rgb(0, 0, 0); /* Esto hace que la etiqueta "Exclusivo" destaque */
+  animation: pulse 2s infinite; /* Esto hace que la etiqueta "Exclusivo" tenga un efecto de pulso */
+}
+.recommended {
+  background-color: rgb(15, 122, 122);
+}
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+.classic {
+  box-shadow: 0 0 10px grey;
+  background-color: grey;
+  animation: pulse 1.5s infinite;
+}
+.on-sale {
+  background-color: red;
+}
+.limited-edition {
+  background-color: gold;
+  color: black; /* As the background is light, we use black for the text */
+  box-shadow: 0 0 10px gold; /* Esto hace que la etiqueta "Edición limitada" destaque */
+}
+.insignia {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+}
+
+.verified-team {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-team.png);
+    background-size: contain;background-repeat: no-repeat;
+}
+.verified-team {position: relative;display: inline-block;}.verified-team img {display: block;}
+.verified-team::after {content: "Equipo Verificado";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.verified-team:hover::after {visibility: visible;opacity: 1;}
+
+.verified {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png);
+    background-size: contain;background-repeat: no-repeat;
+}
+.verified{position: relative; display: inline-block;}.verified img {display: block;}
+.verified::after {content: "Verificado";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.verified:hover::after {visibility: visible;opacity: 1;}
+
+.owner {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/owner.png);
+    background-size: contain;background-repeat: no-repeat;
+}
+.owner {position: relative;display: inline-block;}.owner img {display: block;}
+.owner::after {
+    content: "Creador/Propietario Grouvex Studios (GS)";;font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.owner:hover::after {visibility: visible;opacity: 1;}
+
+.owner-records {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/ownerRecording.png);
+    background-size: contain; /* Ensures the image fits within the div */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+}
+.owner-records {position: relative;display: inline-block;}.owner-records img {display: block;}
+.owner-records::after {
+    content: "Creador/Propietario GSRecords";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.owner-records:hover::after {visibility: visible;opacity: 1;}
+
+.owner-animations {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/ownerAnimations.png);
+    background-size: contain;background-repeat: no-repeat;
+}
+.owner-animations {position: relative;display: inline-block;}.owner-animations img {display: block;}
+.owner-animations::after {
+    content: "Creador/Propietario GSAnimations";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.owner-animations:hover::after {visibility: visible;opacity: 1;}
+
+.owner-designs {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/ownerDesigns.png);
+    background-size: contain;background-repeat: no-repeat;
+}
+.owner-designs {position: relative;display: inline-block;}.owner-designs img {display: block;}
+.owner-designs::after {
+    content: "Creador/Propietario GSDesigns";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.owner-designs:hover::after {visibility: visible;opacity: 1;}
+
+.vvadmin {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/sistema.png);
+    background-size: contain;background-repeat: no-repeat;
+}
+.vvadmin {position: relative;display: inline-block;}.vvadmin img {display: block;}
+.vvadmin::after {
+    content: "Sistema/Jefe";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.vvadmin:hover::after {visibility: visible;opacity: 1;}
+
+.vadmin {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-employee.gif);
+    background-size: contain;background-repeat: no-repeat;
+}
+.vadmin {position: relative;display: inline-block;}.vadmin img {display: block;}
+.vadmin::after {
+    content: "Administrador Verificado";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.vadmin:hover::after {visibility: visible;opacity: 1;}
+
+.admin {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/employee.png);
+    background-size: contain;background-repeat: no-repeat;
+}
+.admin {position: relative;display: inline-block;}.admin img {display: block;}
+.admin::after {
+    content: "Administrador";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.admin:hover::after {visibility: visible;opacity: 1;}
+
+.vmod {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-moderator.gif);
+    background-size: contain;background-repeat: no-repeat;
+}
+.vmod {position: relative;display: inline-block;}.vmod img {display: block;}
+.vmod::after {
+    content: "Moderador Verificado";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.vmod:hover::after {visibility: visible;opacity: 1;}
+
+.mod {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/moderator.png);
+    background-size: contain;background-repeat: no-repeat;
+}
+.mod {position: relative;display: inline-block;}.mod img {display: block;}
+.mod::after {
+    content: "Moderador";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.mod:hover::after {visibility: visible;opacity: 1;}
+
+.tmod {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/trial-moderator.png);
+    background-size: contain;background-repeat: no-repeat;
+}
+.tmod {position: relative;display: inline-block;}.tmod img {display: block;}
+.tmod::after {
+    content: "Moderador en Pruebas";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.tmod:hover::after {visibility: visible;opacity: 1;}
+
+.vdeveloper {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-developer-a.gif);
+    background-size: contain; /* Ensures the image fits within the div */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+}
+.vdeveloper {position: relative;display: inline-block;}.vdeveloper img {display: block;}
+.vdeveloper::after {
+    content: "Desarrollador Experto";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.vdeveloper:hover::after {visibility: visible;opacity: 1;}
+
+.developer {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/developer.png);
+    background-size: contain;background-repeat: no-repeat;
+}
+.developer {position: relative;display: inline-block;}.developer img {display: block;}
+.developer::after {
+    content: "Desarrollador";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.developer:hover::after {visibility: visible;opacity: 1;}
+
+.vbughunter {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-bughunter.gif);
+    background-size: contain;background-repeat: no-repeat;
+}
+.vbughunter {position: relative;display: inline-block;}.vbughunter img {display: block;}
+.vbughunter::after {
+    content: "Cazador de Errores Experto";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.vbughunter:hover::after {visibility: visible;opacity: 1;}
+.bughunter {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/BugHunter.png);
+    background-size: contain;background-repeat: no-repeat;
+}
+.bughunter {position: relative;display: inline-block;}.bughunter img {display: block;}
+.bughunter::after {
+    content: "Cazador de Errores";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.bughunter:hover::after {visibility: visible;opacity: 1;}
+.vpartner {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-partner.gif);
+    background-size: contain;background-repeat: no-repeat;
+}
+.vpartner {position: relative;display: inline-block;}.vpartner img {display: block;}
+.vpartner::after {
+    content: "Socio Veterano";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.vpartner:hover::after {visibility: visible;opacity: 1;}
+.partner {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/partner.png);
+    background-size: contain;background-repeat: no-repeat;
+}
+.partner {position: relative;display: inline-block;}.partner img {display: block;}
+.partner::after {
+    content: "Socio";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.partner:hover::after {visibility: visible;opacity: 1;}
+.creador {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Video_Creator.png);
+    background-size: contain;background-repeat: no-repeat;
+}
+.creador {position: relative;display: inline-block;}.creador img {display: block;}
+.creador::after {
+    content: "Creador de Contenido";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.creador:hover::after {visibility: visible;opacity: 1;}
+
+.diseñador {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Palette.png);
+    background-size: contain;background-repeat: no-repeat;
+}
+.diseñador {position: relative;display: inline-block;}.diseñador img {display: block;}
+.diseñador::after {
+    content: "Diseñador de Contenido";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.diseñador:hover::after {visibility: visible;opacity: 1;}
+
+.artista {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/artista.gif);
+    background-size: contain;background-repeat: no-repeat;
+}
+.artista {position: relative;display: inline-block;}.artista img {display: block;}
+.artista::after {
+    content: "Artista de Contenido";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.artista:hover::after {visibility: visible;opacity: 1;}
+.gsmember {
+    background-image: url(https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png);
+    background-size: contain;background-repeat: no-repeat;
+}
+.gsmember {position: relative;display: inline-block;}.gsmember img {display: block;}
+.gsmember::after {
+    content: "Member of Grouvex Studios";font-size: 10px;position: absolute;bottom: 100%;transform: translateY(200%);background-color: rgba(0, 0, 0, 0.7);color: #fff;padding: 5px;border-radius: 5px;white-space: nowrap;visibility: hidden;opacity: 0;transition: opacity 0.3s;}
+.gsmember:hover::after {visibility: visible;opacity: 1;}
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Posición de la notita */
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+.musica-section {
+display: block; 
+padding: 20px; 
+overflow: hidden;
+align-items: center;
+align-content: center;
+}
+.left-section {
+flex: 1;
+  display: flex;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  justify-content: center;
+  align-items: center;
+}
+.right-section{
+  word-wrap: break-word;
+  text-align: left;
+  box-sizing: border-box;
+  flex: 1;
+  padding: 20px;
+  margin-right: 10px;
+  overflow-y: auto;
+  max-width: 100%;
+}
+.left-section img {
+  max-width: 90%;
+  height: auto;
+}
+.contents { display: flex; flex-direction: row; }
+.index {display: none; width: 20%; background: #f4f4f4; padding: 10px; box-sizing: border-box; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+.index ul { list-style: none; padding: 0; }
+.index ul li { margin: 10px 0; }
+.index ul li a { text-decoration: none; color: #333; }
+.index ul li a:hover { text-decoration: none; color: cyan; }
+.index hr {
+    display: block;
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+    margin-inline-start: auto;
+    margin-inline-end: auto;
+    unicode-bidi: isolate;
+    overflow: hidden;
+    border-style: inset;
+    border-width: 1px;
+}
+.content { width: 100%; padding: 10px; box-sizing: border-box; }
+.toggle-indice { margin: 10px; padding: 5px 10px; background: #ffc107; color: black; border: none; border-radius: 3px; cursor: pointer; }
+.toggle-indice:hover { background: #e0a800; }
+@media (max-width: 768px) {
+.musica-section {
+display: flex;
+padding: 20px; 
+overflow: hidden;
+align-items: center;
+align-content: center;
+}
+.right-section{
+  word-wrap: break-word;
+  text-align: left;
+  box-sizing: border-box;
+  flex: 1;
+  padding: 20px;
+  margin-right: 10px;
+  overflow-y: auto;
+  max-height: 300px;
+  max-width: 100%;
+}
+.contents { flex-direction: column; }
+.index { width: 100%; height: 40vh; position: relative; }
+.content { width: 100%; }
+} 
+
+.user-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.follow-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.follow-btn:hover {
+    background: #0056b3;
+}
+
+.users-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.profile-stats {
+    display: flex;
+    gap: 20px;
+    margin: 20px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}

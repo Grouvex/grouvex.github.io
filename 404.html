@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Página no Encontrada (404) | Grouvex Studios</title>
+    <meta name="description" content="Sitio web oficial de Grouvex Studios, organización multiproyecto con sellos discográficos.">
+    <meta property="og:title" content="Grouvex Studios">
+    <meta property="og:description" content="Organización oficial de Grouvex Studios">
+    <meta property="og:image" content="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/Grouvex-patch-1/img/GROUVEX%20Studio.png">
+    <meta name="keywords" content="Grouvex Studios, Grouvex Studios Records, Documentos Oficiales, DDOO">
+    <meta name="author" content="Grouvex Studios">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#1a365d">
+    <meta property="og:url" content="https://grouvex.com/">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://grouvex.com/">
+    <link rel="icon" href="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/Grouvex-patch-1/img/GROUVEX%20Studio.png" type="image/x-icon">
+    <meta property="og:site_name" content="Grouvex Studios">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Variables y reset */
+        :root {
+            --primary: #1a365d;
+            --primary-light: #2d4a7a;
+            --secondary: #2b6cb0;
+            --accent: #4299e1;
+            --dark: #1a202c;
+            --light: #f7fafc;
+            --gray: #718096;
+            --gray-light: #e2e8f0;
+            --success: #38a169;
+            --warning: #d69e2e;
+            --danger: #e53e3e;
+            --gradient: linear-gradient(135deg, #1a365d 0%, #2b6cb0 100%);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .main-header {
+            background: white;
+            border-bottom: 1px solid var(--gray-light);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .logo-container:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo-img {
+            height: 40px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+
+        /* Contenido principal */
+        .main-content {
+            flex: 1;
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .error-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .error-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+        }
+
+        .error-content {
+            position: relative;
+        }
+
+        .error-code {
+            font-size: 8rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .error-code::after {
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        .error-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .error-description {
+            font-size: 1.125rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            max-width: 500px;
+        }
+
+        /* Información DDOO */
+        .ddoo-info {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+        }
+
+        .ddoo-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ddoo-list {
+            list-style: none;
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+
+        .ddoo-list li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ddoo-list li::before {
+            content: '•';
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* Botones */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border-color: var(--gray-light);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            background: var(--light);
+        }
+
+        .btn-disabled {
+            background: var(--gray-light);
+            color: var(--gray);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .btn-disabled:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: var(--gray-light);
+            background: var(--gray-light);
+        }
+
+        /* Búsqueda */
+        .search-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin: 2rem 0;
+        }
+
+        .search-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-light);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.1);
+        }
+
+        .search-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Footer */
+        .main-footer {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: var(--gray-light);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.875rem;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray-light);
+            font-size: 0.75rem;
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .header-container {
+                padding: 0 1rem;
+            }
+            
+            .main-content {
+                padding: 2rem 1rem;
+            }
+            
+            .error-code {
+                font-size: 6rem;
+            }
+            
+            .error-title {
+                font-size: 2rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <a href="/" class="logo-container">
+                <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/Grouvex-patch-1/img/GROUVEX%20Studio.png" 
+                     alt="Grouvex Studios Logo" class="logo-img">
+                <div class="logo-text">GROUVEX STUDIOS</div>
+            </a>
+        </div>
+    </header>
+
+    <!-- Contenido principal -->
+    <main class="main-content">
+        <div class="error-container">
+            <div class="error-content">
+                <div class="error-code">404</div>
+                <h1 class="error-title">Página no encontrada</h1>
+                <p class="error-description">
+                    La página que buscas no está disponible. Puede que haya sido movida, 
+                    eliminada o que la dirección no sea correcta.
+                </p>
+                
+                <div class="action-buttons">
+                    <a href="/" class="btn btn-primary">
+                        <span>🏠</span>
+                        Volver al Inicio
+                    </a>
+                    <a href="https://script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec" 
+                       class="btn btn-primary" target="_blank">
+                        <span>📊</span>
+                        Panel de Grouvex Studios
+                    </a>
+                    <a href="/contacto" class="btn btn-secondary">
+                        <span>📧</span>
+                        Contacto
+                    </a>
+                    <a href="/tos_pp" class="btn btn-secondary">
+                        <span>📄</span>
+                        Términos y Privacidad
+                    </a>
+                    <span class="btn btn-disabled">
+                        <span>🎨</span>
+                        GSDesigns (Deshabilitado)
+                    </span>
+                </div>
+
+                <!-- Información de Documentos Oficiales (DDOO) -->
+                <div class="ddoo-info">
+                    <div class="ddoo-title">
+                        <span>📋</span>
+                        Documentos Oficiales (DDOO)
+                    </div>
+                    <ul class="ddoo-list">
+                        <li>Boletín Oficial: BOGS/2025/001</li>
+                        <li>Última actualización: 22 nov 2025</li>
+                        <li>Documentación corporativa según Artículo 20</li>
+                        <li>ISSN: BOGS/2025/001</li>
+                    </ul>
+                </div>
+
+                <!-- Búsqueda -->
+                <div class="search-section">
+                    <div class="search-title">Buscar en el sitio</div>
+                    <div class="search-box">
+                        <input type="search" class="search-input" placeholder="Buscar contenido..." id="site-search">
+                        <button class="search-btn" onclick="performSearch()">
+                            <span>🔍</span>
+                            Buscar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="error-graphic">
+                <!-- Ilustración simple -->
+                <svg width="100%" height="auto" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="50" y="50" width="300" height="300" rx="8" fill="white" stroke="var(--gray-light)" stroke-width="2"/>
+                    
+                    <!-- Elemento principal -->
+                    <rect x="100" y="100" width="200" height="200" rx="4" fill="var(--primary)" opacity="0.05"/>
+                    <text x="200" y="85" text-anchor="middle" font-family="Arial" font-size="25" font-weight="bold" fill="var(--primary)" opacity="0.1">
+                        Página No Encontrada
+                    </text>
+                    <!-- Líneas de texto -->
+                    <rect x="120" y="120" width="160" height="20" rx="2" fill="var(--gray-light)"/>
+                    <rect x="120" y="150" width="120" height="20" rx="2" fill="var(--gray-light)"/>
+                    <rect x="120" y="180" width="140" height="20" rx="2" fill="var(--gray-light)"/>
+                    <rect x="120" y="210" width="100" height="20" rx="2" fill="var(--gray-light)"/>
+                    
+                    <!-- Número 404 -->
+                    <text x="200" y="300" text-anchor="middle" font-family="Arial" font-size="72" font-weight="bold" fill="red" opacity="0.4">
+                        404
+                    </text>
+                    <!-- Logo simplificado -->
+                    <image  href="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/Grouvex-patch-1/img/GROUVEX%20Studio.png" x="180" y="330" width="40" height="40" opacity="0.7"/>
+                </svg>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div>
+                <h3>Grouvex Studios</h3>
+                <ul class="footer-links">
+                    <li><a href="/">🏠 Inicio</a></li>
+                    <li><a href="/contacto">📧 Contacto</a></li>
+                    <li><a href="/tos_pp">📄 Términos y Privacidad</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3>Servicios</h3>
+                <ul class="footer-links">
+                    <li><a href="/gsrecords">🎵 Grouvex Studios Records</a></li>
+                    <li><span style="color: var(--gray); cursor: not-allowed;">🎨 Grouvex Studios Designs</span></li>
+                    <li><a href="/ddoo">📋 Documentos Oficiales</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3>Recursos</h3>
+                <ul class="footer-links">
+                    <li><a href="https://script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec" 
+                           target="_blank">📊 Panel de Control</a></li>
+                    <li><a href="mailto:oficina@grouvex.com">📨 Oficina</a></li>
+                    <li><a href="mailto:legal@grouvex.com">⚖️ Legal</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2021-<span id="currentYear"></span> Grouvex Studios. Madrid, España.</p>
+            <p>Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Año actual para el copyright
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentYear = new Date().getFullYear();
+            document.getElementById('currentYear').textContent = currentYear;
+            
+            // Efecto de aparición
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s';
+            
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+        
+        // Función de búsqueda usando /buscar?q=
+        function performSearch() {
+            const searchInput = document.getElementById('site-search');
+            const query = searchInput.value.trim();
+            
+            if (query) {
+                // Redirigir a la página de búsqueda
+                window.location.href = `/buscar?q=${encodeURIComponent(query)}`;
+            } else {
+                searchInput.focus();
+                searchInput.style.borderColor = 'var(--danger)';
+                setTimeout(() => {
+                    searchInput.style.borderColor = 'var(--gray-light)';
+                }, 1000);
+            }
+        }
+        
+        // Permitir búsqueda con Enter
+        document.getElementById('site-search').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') performSearch();
+        });
+    </script>
+</body>
+</html>

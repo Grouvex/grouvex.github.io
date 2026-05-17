@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Juegos - Grouvex Studios</title>
+    <meta name="description" content="Juegos de Grouvex Studios">
+    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects">
+    <meta name="author" content="Grouvex Studios">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#hexcode">
+    <meta property="og:title" content="Sitio web oficial - Grouvex Studios">
+    <meta property="og:description" content="Sitio web oficial de Grouvex Studios, un sello discográfico y creador de contenido multimedia y diseño.">
+    <meta property="og:image" content="img/GROUVEX.png">
+    <meta property="og:url" content="https://grouvex.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_ES">
+    <link rel="canonical" href="https://grouvex.com/">
+    <link rel="icon" href="img/GROUVEX.png" type="image/x-icon">
+    <script>
+     // Función para cargar JS dinámicamente
+        function loadScript(url, type = 'text/javascript', defer = false) {
+            return fetch(url)
+                .then(res => res.text())
+                .then(txt => {const s = document.createElement('script');s.type = type;if (defer) s.defer = true;s.innerHTML = txt;document.head.appendChild(s);})
+                .catch(err => console.error('Error cargando el script:', err));}
+            const loadScripts = async () => {
+                await loadScript('time.js');
+                await loadScript('abc.js', 'module');
+                await loadScript('index.js', 'text/javascript', true);
+            };
+            loadScripts();
+     // Función para cargar CSS dinámicamente
+            function loadCSS(url) {
+                fetch(url)
+                    .then(res => res.text())
+                    .then(css => {const style = document.createElement('style');style.innerHTML = css;document.head.appendChild(style);})
+                    .catch(err => console.error('Error cargando el CSS:', err));}
+            loadCSS('index.css');
+            loadCSS('temas.css');
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-database.js" defer></script>
+    <script src="jquery-3.5.1.min.js" defer></script>
+    <script> 
+        document.addEventListener("DOMContentLoaded", function() { 
+            $("#menuG").load("menuG.html"); 
+            $("#menuE").load("menuE.html"); 
+            $("#menuT").load("menuT.html");
+            $("#menuU").load("menuU.html");
+            $("#footer").load("footer.html"); 
+            $("#news").load("news.html"); 
+            $("#tosypp").load("tosypp.html");
+        });
+    </script>
+</head>
+<body>
+        <header>
+            <a href="https://grouvex.github.io/"> <div class="img-container" loading="lazy"></div></a> 
+            <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
+                <nav>
+                    <span id="menuG"></span> <!-- General -->
+                    <span id="menuT"></span> <!-- Temas/Idioma -->
+                    <span id="menuU"></span> <!-- Usuario -->
+                </nav>
+            </span>
+        </header>
+        <!-- Anuncio -->
+        <div id="news"></div>
+        <main>
+            <!-- Publicado por -->
+    <div class="tarjetas">
+        <div class="tarjeta">
+    <img src="../img/GROUVEX.png" alt="">
+    <div>
+      <h2 style="margin:2px; font-size: 7.5px;height:auto">Publicado por:</h2>
+      <h2><span class="Grouvex-Studios"></span></h2>
+      <hr>
+      <p><span id="ActualizadoDATE"></span></p>
+      <p><a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@grouvex.com</footer></a></p>
+    </div></div></div>
+<script>const uTActualizado = 1738429200; actualizarFechas(uTActualizado, "ActualizadoDATE");</script> 
+            <!-- Título -->
+            <article>
+                <h1>Juegos de Grouvex Studios</h1>
+                <!-- Texto -->
+                <section id="Intro">
+                    <a href="#Intro"><h2>Introducción</h2></a>
+                    <p>Nunca viene mal descansar un poco y jugar.</p>
+                </section>
+              <p>Divierteté con: <a href="https://grouvex.github.io/games/pacman">Pacman</a>, <a href="https://grouvex.github.io/games/corazones">Heart</a>, <a href="https://grouvex.github.io/games/memorylove">Memory Love</a>, <a href="https://grouvex.github.io/games/cupido">Cupido</a>, <a href="https://grouvex.github.io/games/labyrinthescape">Laberinto Amoroso</a></p>
+            </article>
+        </main>
+        <!-- Footer -->
+        <div id="footer"></div>
+</body>
+</html>

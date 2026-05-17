@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Comentarios - Grouvex Studios</title>
+    <meta name="description" content="Comenta en nuestra papágina web de Grouvex Studios">
+    <meta property="og:title" content="Comentarios - Grouvex Studios">
+    <meta property="og:description" content="Comenta en nuestra papágina web de Grouvex Studios">
+    <meta property="og:image" content="img/GROUVEX.png">
+    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects"><meta name="author" content="Grouvex Studios"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="theme-color" content="#hexcode"><meta property="og:url" content="https://grouvex.com/"><meta property="og:type" content="website"><meta property="og:locale" content="es_ES"><link rel="canonical" href="https://grouvex.com/"><link rel="icon" href="img/GROUVEX.png" type="image/x-icon"><meta property="og:site_name" content="Grouvex Studios">
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script><script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script><script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+    <link rel="stylesheet" href="index.css"><link rel="stylesheet" href="temas.css">
+    <script src="time.js"></script></script><script type="module" src="abc.js"></script><script src="index.js"></script>
+    <script src="jquery-3.5.1.min.js"></script>
+        <script> 
+            document.addEventListener("DOMContentLoaded", function() { 
+                $("#menuG").load("menuG.html");$("#menuE").load("menuE.html");$("#menuT").load("menuT.html");$("#menuU").load("menuU.html");
+                $("#footer").load("footer.html"); 
+                $("#news").load("news.html"); $("#tosypp").load("tosypp.html");
+            });
+    </script>
+</head>
+<body>
+    <header>
+        <a href="https://grouvex.github.io/"> <div class="img-container" loading="lazy"></div></a> 
+        <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
+            <nav>
+                <span id="menuG"></span>
+                <span id="menuT"></span>
+                <span id="menuU"></span>
+            </nav>
+        </span>
+    </header>
+ <!-- Anuncio -->
+ <div id="news"></div>
+<main>
+<!-- Publicado por -->
+<div style="box-shadow: 0 2px 5px rgb(37, 44, 247);width: 100%;flex-wrap: wrap;gap: 10px;justify-content: center;align-items: center;align-content: center;flex-direction: row;">
+<div class="tarjeta" style="display: flex;align-items: center;border-radius: 10px;box-shadow: 0 2px 5px rgb(51, 177, 215);margin: 20px;padding: 20px;height: auto;padding-left: 10px;padding-right: 10px;">
+<img src="../img/GROUVEX.png" alt="" style="border-radius: 50%; width: 15%;height: 15%;object-fit: cover; margin-right: 10px;loading=" lazy"="">
+<div style="width:100%;height:auto">
+<h2 style="margin:2px; font-size: 7.5px;height:auto">Publicado por:</h2><h2 style="margin:2px; padding: 1px;font-size: 20px;height:auto"><span class="Grouvex-Studios"></span></h2>
+<p style="color: white; font-size: 11px;height:auto"><span id="ActualizadoDATE"></span></p><a href="mailto:grouvex.studio@grouvex.com" style="color:white"><footer style="color: white; font-size: 7px;padding:2px">grouvex.studio@grouvex.com</footer></a></div></div>
+</div>
+<script>const uTActualizado = 1738429200; actualizarFechas(uTActualizado, "ActualizadoDATE");</script> 
+  <!-- Título -->
+    <style>
+        nav {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: blue;
+            cursor: pointer;
+        }
+        section {
+            display: none;
+        }
+        section.active {
+            display: block;
+        }
+        .comment-form, .comments-section, .config-section {
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .comments-section p {
+            margin: 10px 0;
+        }
+        .orden-button {
+            margin-top: 10px;
+        }
+        .delete-button {
+            margin-left: 10px;
+            color: red;
+            cursor: pointer;
+        }
+    </style>
+    <nav>
+      <h3>Activadas</h3>
+      <a onclick="showSection('newa')">Noticias</a>
+      <a onclick="showSection('reportes')">Reportes en la Web</a>
+      <a onclick="showSection('comentarios')">Comentarios</a>
+      <a onclick="showSection('sugerencias')">Sugerencias</a>
+      <details>
+      <summary><h3>Desactivadas</h3></summary>
+      <a onclick="showSection('deseos')" style="color:red">Deseos para 2024</a>
+      <a onclick="showSection('artistas')" style="color:red">Artistas</a>
+      </details>
+    </nav>
+    <p>Use esta página para ver las noticias, y poder comentar sobre la página web, como también otros temas. Recuerde no incumplir los Terminos de Servicio y la Política de Privacidad.</p>
+    <section id="newa" class="active">
+      <div class="comment-form">
+        <h2>Noticias</h2>
+        <p>Noticias del equipo de Grouvex Studios</p>
+        <form>
+        <input type="text" id="nombreInputNew" placeholder="Tu nombre..." required><br>
+        <input type="text" id="newInput" rows="4" placeholder="Escribe tu reporte aquí..." required><br>
+        <button type="submit" onclick="addComment('newa', 'nombreInputNew')">Enviar</button>
+        </form>
+        <button class="orden-button" onclick="ordenarComentarios('newa')">Ordenar</button>
+      </div>
+     <!-- <p><strong>${date} - ${nameText}:</strong> ${commentText}</p> -->
+      <div class="comments-section" id="newaComments">
+        <h3>Noticias:</h3>
+      </div>
+        <details>
+            <summary><h2>Archivados</h2></summary>
+              <details>
+                <summary><h3>Año 2024</h3></summary>
+                 <p><strong>Sat, 28 Dec 2024 17:57:54 GMT - Grouvex:</strong> Estamos actualizando la web y solucionando los errores</p>
+             </details>
+        </details>
+    </section>
+    <section id="artistas">
+      <div class="comment-form">
+        <h2>Artista</h2>
+        <p>Mensaje de los artistas</p>
+        <form>
+        <input type="text" id="nombreInputArtista" placeholder="Tu nombre..." required disabled><br>
+        <input type="text" id="artistaInput" rows="4" placeholder="Escribe tu reporte aquí..." required disabled><br>
+        <button type="submit" onclick="addComment('artistas', 'nombreInputArtista')" disabled>Enviar</button>
+        </form>
+        <button class="orden-button" onclick="ordenarComentarios('artistas')" disabled>Ordenar</button>
+      </div>
+      <div class="comments-section" id="artistasComments">
+        <h3>Artistas:</h3>
+      </div>
+        <details>
+            <summary><h2>Archivados</h2></summary>
+              <details>
+                <summary><h3>Año 2024</h3></summary>
+                 <p><strong>Invalid Date - Grouvex:</strong> Felices fiestas</p>
+                 <p><strong>Sun, 15 Dec 2024 21:39:00 GMT - Grouvex:</strong> Hola</p>
+                 <p><strong>Sun, 15 Dec 2024 21:52:31 GMT - Grouvex:</strong> Muchas gracias por vuestro apoyo. Para el próximo año habrá más emoción. Ya hay alguna canción o álbum programada para su lanzamiento el próximo año 😁</p>
+             </details>
+        </details>
+    </section> 
+    <section id="reportes">
+      <div class="comment-form">
+        <h2>Reportes a la página web</h2>
+        <p>Escriba los reportes (problemas) que tiene la web o califica la web</p>
+        <form>
+        <input type="text" id="nombreInputReporte" placeholder="Tu nombre (opcional)..."><br>
+        <input type="text" id="reporteInput" rows="4" placeholder="Escribe tu reporte aquí..." required><br>
+        <button type="submit" onclick="addComment('reportes', 'nombreInputReporte')">Enviar</button>
+        </form>
+        <button class="orden-button" onclick="ordenarComentarios('reportes')">Ordenar</button>
+      </div>
+      <div class="comments-section" id="reportesComments">
+        <h3>Reportes:</h3>
+      </div>
+        <details>
+          <summary><h2>Archivados</h2></summary>
+          <details disabled>
+            <summary><h3>Año 2024</h3></summary>
+          </details>
+        </details>
+    </section>
+
+    <section id="deseos">
+      <div class="comment-form">
+        <h2>Deseos para 2024 - 2025</h2>
+        <p>Pide un deseo aquí. Puede que se haga realidad tu sueño.⛄</p>
+        <form>
+        <input type="text" id="nombreInputDeseo" placeholder="Tu nombre (opcional)..." disabled><br>
+        <input type="text" id="deseoInput" rows="4" placeholder="Escribe tu deseo aquí..." required disabled><br>
+        <button type="submit" onclick="addComment('deseos', 'nombreInputDeseo')" disabled>Enviar</button>
+        </form>
+        <button class="orden-button" onclick="ordenarComentarios('deseos')" disabled>Ordenar</button>
+      </div>
+      <div class="comments-section" id="deseosComments">
+        <h3>Deseos:</h3>
+      </div>
+        <details>
+          <summary><h2>Archivados</h2></summary>
+          <details>
+            <summary><h3>Año 2024</h3></summary>
+            <p><strong>Sun, 15 Dec 2024 21:16:42 GMT - Grouvex Studios:</strong> Felices fiestas</p>
+          </details>
+        </details>
+    </section>
+
+    <section id="comentarios">
+      <div class="comment-form">
+        <h2>Comentarios</h2>
+        <p>Comenta lo que quieras sobre la web, los artistas o algo en relación a Grouvex Studios.</p>
+        <form>
+        <input type="text" id="nombreInputComentario" placeholder="Tu nombre (opcional)..."><br>
+        <input type="text" id="comentarioInput" rows="4" placeholder="Escribe tu comentario aquí..." required><br>
+        <button type="submit" onclick="addComment('comentarios', 'nombreInputComentario')">Enviar</button>
+        </form>
+        <button class="orden-button" onclick="ordenarComentarios('comentarios')">Ordenar</button>
+      </div>
+      <div class="comments-section" id="comentariosComments">
+        <h3>Comentarios:</h3>
+      </div>
+        <details>
+          <summary><h2>Archivados</h2></summary>
+          <details disabled>
+            <summary><h3>Año 2024</h3></summary>
+          </details>
+        </details>
+    </section>
+
+    <section id="sugerencias">
+      <div class="comment-form">
+        <h2>Sugerencias</h2>
+        <p>Haz sugerencias para mejorar la web 😉.</p>
+        <form>
+        <input type="text" id="nombreInputSugerencia" placeholder="Tu nombre (opcional)..."><br>
+        <input type="text" id="sugerenciaInput" rows="4" placeholder="Escribe tu sugerencia aquí..." required><br>
+        <button type="submit" onclick="addComment('sugerencias', 'nombreInputSugerencia')">Enviar</button>
+        </form>
+        <button class="orden-button" onclick="ordenarComentarios('sugerencias')">Ordenar</button>
+      </div>
+      <div class="comments-section" id="sugerenciasComments">
+        <h3>Sugerencias:</h3>
+      </div>
+       <details>
+          <summary><h2>Archivados</h2></summary>
+          <details disabled>
+            <summary><h3>Año 2024</h3></summary>
+          </details>
+        </details>
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+    <script>
+        let ordenarAscendente = true;
+        const palabrasBloqueadas = ["malaPalabra1", "malaPalabra2", "malaPalabra3"];
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarComentarios('artistas');
+            cargarComentarios('newa');
+            cargarComentarios('reportes');
+            cargarComentarios('sugerencias');
+            cargarComentarios('comentarios');
+            cargarComentarios('deseos');
+        });
+        function showSection(sectionId) {
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+        function containsBlockedWords(text) {
+            return palabrasBloqueadas.some(palabra => text.includes(palabra));
+        }
+        function escapeHTML(str) {
+            return str.replace(/[&<>"']/g, function (match) {
+                const escapeMap = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                };
+                return escapeMap[match];
+            });
+        }
+        function addComment(section, nameInputId) {
+            const nameInput = document.getElementById(nameInputId);
+            const inputElement = document.getElementById(section.slice(0, -1) + 'Input');
+            if (!nameInput || !inputElement) {
+                console.error("Element not found:", nameInputId, section.slice(0, -1) + 'Input');
+                return;
+            }
+            const nameText = escapeHTML(nameInput.value.trim() || "Anónimo");
+            const commentText = escapeHTML(inputElement.value.trim());
+            if (containsBlockedWords(commentText) || commentText.includes("http")) {
+                alert("El comentario contiene palabras bloqueadas o enlaces.");
+                inputElement.value = '';
+                return;
+            }
+            if (commentText) {
+                const date = new Date().toUTCString();
+                const timestamp = new Date().getTime();
+                const commentSection = document.getElementById(section + 'Comments');
+                const commentPara = document.createElement('p');
+                commentPara.innerHTML = `<strong>${date} - ${nameText}:</strong> ${commentText}`;
+                commentPara.dataset.timestamp = timestamp;
+                commentSection.appendChild(commentPara);
+                // Guardar comentario en Firebase
+                guardarComentarioEnServidor(section, nameText, commentText, timestamp);
+                inputElement.value = '';
+                nameInput.value = '';
+                ordenarComentarios(section);
+            }
+        }
+        function ordenarComentarios(section) {
+            const commentSection = document.getElementById(section + 'Comments');
+            const comments = Array.from(commentSection.querySelectorAll('p'));
+            comments.sort((a, b) => {
+                const aTime = parseInt(a.dataset.timestamp);
+                const bTime = parseInt(b.dataset.timestamp);
+                return ordenarAscendente ? bTime - aTime : aTime - bTime;
+            });
+            comments.forEach(comment => commentSection.appendChild(comment));
+            ordenarAscendente = !ordenarAscendente;
+        }
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                const userId = user.uid;
+                firebase.database().ref(`roles/admin/${userId}`).once('value').then((snapshot) => {
+                    if (snapshot.exists()) {
+                        console.log('User is an admin');
+                        // Usuario es administrador, habilitar eliminación
+                    } else {
+                        console.log('User is not an admin');
+                        // Usuario no es administrador, deshabilitar eliminación
+                    }
+                });
+            } else {
+                // Usuario no autenticado
+            }
+        });
+        function guardarComentarioEnServidor(section, name, comment, timestamp) {
+            const refPath = section === 'newa' ? 'new/' : section === 'artistas' ? 'artistas/' : `comments/${section}/`;
+            const newCommentRef = database.ref(refPath).push();
+            newCommentRef.set({ name: name, comment: comment, timestamp: timestamp });
+        }
+        function cargarComentarios(section) {
+            const refPath = section === 'newa' ? 'new/' : section === 'artistas' ? 'artistas/' : `comments/${section}/`;
+            const commentSection = document.getElementById(`${section}Comments`);
+            database.ref(refPath).once('value', (snapshot) => {
+                const comments = snapshot.val();
+                if (comments) {
+                    for (let id in comments) {
+                        const commentPara = document.createElement('p');
+                        commentPara.innerHTML = `<strong>${new Date(comments[id].timestamp).toUTCString()} - ${comments[id].name}:</strong> ${comments[id].comment}`;
+                        commentPara.dataset.timestamp = comments[id].timestamp;
+                        commentSection.appendChild(commentPara);
+                    }
+                } else {
+                    commentSection.innerHTML = '<p>No hay comentarios aún.</p>';
+                }
+            });
+        }
+    </script>
+<script src="abc.js"></script> 
+</main>
+ <!-- Footer -->
+ <div id="footer"></div>
+</body>
+</html>

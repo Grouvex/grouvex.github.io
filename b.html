@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Restringido</title>
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <style>
+        body {
+            background-color: #f8f8f8;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            display: block;
+        }
+        .content {
+            display: none;
+        }
+        h1 {
+            font-size: 2em;
+            color: #333;
+        }
+        p {
+            font-size: 1.2em;
+            color: #666;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="login-container">
+        <h1>Acceso Restringido</h1>
+        <p>Inicia sesión para continuar</p>
+        <button id="google-login-btn">Iniciar Sesión con Google</button>
+        <button id="email-login-btn">Iniciar Sesión con Email</button>
+    </div>
+    <div class="content" id="protected-content">
+        <h1>Acceso Permitido</h1>
+        <p>Bienvenido al contenido protegido</p>
+    </div>
+    <script>
+        // Configuración de Firebase
+        var firebaseConfig = {
+            apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw", 
+            authDomain: "grouvex-studios.firebaseapp.com", 
+            databaseURL: "https://grouvex-studios-default-rtdb.firebaseio.com",
+            projectId: "grouvex-studios", 
+            storageBucket: "grouvex-studios.appspot.com", 
+            messagingSenderId: "1070842606062", 
+            appId: "1:1070842606062:web:5d887863048fd100b49eff", 
+            measurementId: "G-75BR8D2CR3"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        var auth = firebase.auth();
+        var db = firebase.firestore();
+
+        // Función para iniciar sesión con Google
+        document.getElementById('google-login-btn').addEventListener('click', function() {
+            var provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    var user = result.user;
+                    checkAccess(user.uid);
+                })
+                .catch((error) => {
+                    console.error("Error al iniciar sesión con Google:", error);
+                });
+        });
+
+        // Función para iniciar sesión con Email/Password
+        document.getElementById('email-login-btn').addEventListener('click', function() {
+            var email = prompt("Introduce tu email:");
+            var password = prompt("Introduce tu contraseña:");
+            auth.signInWithEmailAndPassword(email, password)
+                .then((result) => {
+                    var user = result.user;
+                    checkAccess(user.uid);
+                })
+                .catch((error) => {
+                    console.error("Error al iniciar sesión con Email/Password:", error);
+                });
+        });
+
+        // Función para verificar el acceso
+        function checkAccess(uid) {
+            db.collection("allowedUsers").doc(uid).get().then((doc) => {
+                if (doc.exists) {
+                    // Acceso permitido
+                    alert("Acceso concedido");
+                    document.getElementById('login-container').style.display = 'none';
+                    document.getElementById('protected-content').style.display = 'block';
+                } else {
+                    // Acceso denegado
+                    alert("Acceso denegado. No tienes permiso para acceder a esta página.");
+                }
+            }).catch((error) => {
+                console.error("Error al verificar el acceso:", error);
+            });
+        }
+
+        // Verificar si el usuario está autenticado
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                checkAccess(user.uid);
+            } else {
+                console.log("No has iniciado sesión.");
+            }
+        });
+    </script>
+</body>
+</html>

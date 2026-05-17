@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Usuario</title>
+</head>
+<body>
+    <button id="editUserButton">Editar Información del Usuario</button>
+
+    <!-- Modal Formulario -->
+    <div id="userFormModal" style="display: none;">
+        <form id="userForm">
+            <label for="username">Nombre de Usuario:</label>
+            <input type="text" id="username" name="username"><br><br>
+
+            <label for="email">Correo Electrónico:</label>
+            <input type="email" id="email" name="email"><br><br>
+
+            <label for="phone">Número de Teléfono:</label>
+            <input type="text" id="phone" name="phone"><br><br>
+
+            <label for="address">Dirección:</label>
+            <input type="text" id="address" name="address"><br><br>
+
+            <label for="bio">Biografía:</label>
+            <textarea id="bio" name="bio"></textarea><br><br>
+
+            <label for="profileImage">Imagen de Perfil:</label>
+            <input type="file" id="profileImage" name="profileImage" accept="image/*"><br><br>
+
+            <button type="submit">Guardar Cambios</button>
+        </form>
+    </div>
+
+    <script type="module">
+// Importar las funciones necesarias desde Firebase
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
+
+// Configuración de Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
+    authDomain: "grouvex-studios.firebaseapp.com",
+    databaseURL: "https://grouvex-studios-default-rtdb.firebaseio.com",
+    projectId: "grouvex-studios",
+    storageBucket: "grouvex-studios.appspot.com",
+    messagingSenderId: "1070842606062",
+    appId: "1:1070842606062:web:5d887863048fd100b49eff",
+    measurementId: "G-75BR8D2CR3"
+};
+
+// Inicializar Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const database = getDatabase(app);
+const storage = getStorage(app);
+
+// Esperar a que el DOM se cargue completamente
+document.addEventListener('DOMContentLoaded', () => {
+    // Referencias de los elementos
+    const editUserButton = document.getElementById('editUserButton');
+    const userFormModal = document.getElementById('userFormModal');
+    const userForm = document.getElementById('userForm');
+    const profileImageInput = document.getElementById('profileImage');
+
+    // Mostrar el formulario al hacer clic en el botón
+    editUserButton.addEventListener('click', () => {
+        userFormModal.style.display = 'block';
+    });
+
+    // Guardar los cambios en Firebase
+    userForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+        const bio = document.getElementById('bio').value;
+        const profileImageFile = profileImageInput.files[0];
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const userId = user.uid;
+
+                if (profileImageFile) {
+                    const storageReference = storageRef(storage, 'profileImages/' + userId + '/' + profileImageFile.name);
+                    uploadBytes(storageReference, profileImageFile).then((snapshot) => {
+                        return getDownloadURL(snapshot.ref);
+                    }).then((downloadURL) => {
+                        const changes = {
+                            username: username,
+                            email: email,
+                            phone: phone,
+                            address: address,
+                            bio: bio,
+                            profileImageURL: downloadURL
+                        };
+                        update(ref(database, 'users/' + userId), changes).then(() => {
+                            alert('Información actualizada correctamente');
+                            userFormModal.style.display = 'none';
+                        }).catch((error) => {
+                            alert('Error actualizando la información: ' + error.message);
+                        });
+                    }).catch((error) => {
+                        alert('Error subiendo la imagen: ' + error.message);
+                    });
+                } else {
+                    const changes = {
+                        username: username,
+                        email: email,
+                        phone: phone,
+                        address: address,
+                        bio: bio
+                    };
+                    update(ref(database, 'users/' + userId), changes).then(() => {
+                        alert('Información actualizada correctamente');
+                        userFormModal.style.display = 'none';
+                    }).catch((error) => {
+                        alert('Error actualizando la información: ' + error.message);
+                    });
+                }
+            } else {
+                alert('Usuario no autenticado.');
+            }
+        });
+    });
+});
+
+    </script>
+</body>
+</html>

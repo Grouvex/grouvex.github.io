@@ -1,0 +1,28 @@
+{
+    "artistas": [
+        {
+            "nombre": "Grouvex",
+            "imagen": "../img/GROUVEX.png",
+            "descripcion": "Grouvex es un grupo que une toda la música que otros artistas ceden al sello discográfico. EL dinero recopilado por este artista se usará lo mejor posible para el beneficio de la humanidad.",
+            "enlace": "grouvex/inicio"
+        },
+        {
+            "nombre": "Tarlight Etherall",
+            "imagen": "../img/Tarlight_Etherall.png",
+            "descripcion": "Tarlight Etherall es un artista novato que quiere aprender música.",
+            "enlace": "tarlight_etherall/inicio"
+        },
+        {
+            "nombre": "Maiki Dran",
+            "imagen": "../img/Maiki Dran.jpg",
+            "descripcion": "Maiki Dran es un artista principiante, que está aprendiendo a componer y a ser letrista.",
+            "enlace": "maikidran/inicio"
+        },
+        {
+            "nombre": "Ángela H.D",
+            "imagen": "",
+            "descripcion": "",
+            "enlace": "angelahd/inicio"
+        }
+    ]
+}

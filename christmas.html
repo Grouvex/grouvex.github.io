@@ -1,0 +1,1993 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Christmas - Grouvex Studios</title>
+    <meta name="description" content="Celebra Navidad, Año Nuevo y Reyes magos en nuestro Sitio web oficial de Grouvex Studios. Felices Fiestas">
+    <meta property="og:title" content="Christmas - Grouvex Studios">
+    <meta property="og:description" content="Celebra Navidad, Año Nuevo y Reyes magos en nuestro Sitio web oficial de Grouvex Studios. Felices Fiestas">
+    <meta property="og:image" content="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png">
+    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects">
+    <meta name="author" content="Grouvex Studios">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#1a472a">
+    <link rel="icon" href="img/GROUVEX.png" type="image/x-icon">
+    
+    <!-- Preload CSS para mejor performance -->
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="temas.css">
+    
+    <!-- Preconnect para recursos externos -->
+    <link rel="preconnect" href="https://www.gstatic.com">
+    <link rel="preconnect" href="https://translate.google.com">
+    <link rel="preconnect" href="https://raw.githubusercontent.com">
+    
+    <!-- CSS inline para critical render path -->
+    <style>
+        /* ESTILOS RESPONSIVE MEJORADOS PARA CALENDARIO */
+        :root {
+            --gvx-primary-color: #1a472a;
+            --gvx-secondary-color: #2e8b57;
+            --gvx-accent-color: #ff6b6b;
+            --gvx-gold-color: #ffd700;
+            --gvx-light-color: #f8f9fa;
+            --gvx-dark-color: #1a1a2e;
+            --gvx-blue-color: #4a90e2;
+            --gvx-purple-color: #9b59b6;
+            --gvx-red-color: #e74c3c;
+            --safe-area-top: env(safe-area-inset-top, 0px);
+            --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-area-left: env(safe-area-inset-left, 0px);
+            --safe-area-right: env(safe-area-inset-right, 0px);
+        }
+
+        /* Solo afectar elementos dentro del calendario */
+        .gvx-calendario-container * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .gvx-calendario-container {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a472a, #2e8b57);
+            color: var(--gvx-light-color);
+            min-height: 100vh;
+            min-height: calc(100vh - var(--safe-area-top) - var(--safe-area-bottom));
+            padding: 15px;
+            padding-top: calc(15px + var(--safe-area-top));
+            padding-bottom: calc(15px + var(--safe-area-bottom));
+            overflow-x: hidden;
+            position: relative;
+            transition: all 0.5s ease;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Media queries para diferentes tamaños de pantalla */
+        @media (min-width: 1200px) {
+            .gvx-calendario-container { 
+                padding-left: 30px;
+                padding-right: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .gvx-calendario-container { 
+                padding: 10px;
+                padding-top: calc(10px + var(--safe-area-top));
+                padding-bottom: calc(10px + var(--safe-area-bottom));
+            }
+        }
+
+        /* Fondos especiales - Responsivos */
+        .gvx-calendario-container.gvx-christmas-theme {
+            background: linear-gradient(135deg, #b30000, #1a472a);
+            background-attachment: fixed;
+        }
+
+        .gvx-calendario-container.gvx-newyear-theme {
+            background: linear-gradient(135deg, #000428, #004e92);
+            background-attachment: fixed;
+        }
+
+        .gvx-calendario-container.gvx-reyes-theme {
+            background: linear-gradient(135deg, #8B4513, #D2691E, #FFD700);
+            background-attachment: fixed;
+        }
+
+        .gvx-calendario-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            min-width: 280px;
+        }
+
+        /* Header responsive mejorado */
+        .gvx-calendario-header {
+            margin-bottom: clamp(15px, 3vw, 25px);
+            padding: clamp(12px, 2.5vw, 20px);
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: clamp(8px, 1.5vw, 12px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gvx-calendario-h1 {
+            font-size: clamp(1.5rem, 6vw, 3rem);
+            margin-bottom: clamp(8px, 1.5vw, 15px);
+            text-align: center;
+            color: var(--gvx-gold-color);
+            line-height: 1.2;
+            word-break: break-word;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-weight: 800;
+        }
+
+        .gvx-calendario-subtitle {
+            font-size: clamp(0.85rem, 3vw, 1.1rem);
+            margin-bottom: clamp(10px, 2vw, 15px);
+            text-align: center;
+            opacity: 0.9;
+            line-height: 1.4;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* UTC Notice responsive */
+        .gvx-utc-notice {
+            background: rgba(255, 215, 0, 0.15);
+            border: 2px solid var(--gvx-gold-color);
+            border-radius: clamp(6px, 1vw, 8px);
+            padding: clamp(8px, 1.5vw, 12px);
+            margin: clamp(10px, 2vw, 15px) auto;
+            font-size: clamp(0.75rem, 2vw, 0.95rem);
+            text-align: center;
+            max-width: 800px;
+            backdrop-filter: blur(5px);
+        }
+
+        .gvx-utc-time {
+            font-weight: bold;
+            color: var(--gvx-gold-color);
+            display: inline-block;
+            margin-top: 5px;
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            word-break: break-word;
+        }
+
+        /* Contadores responsivos mejorados */
+        .gvx-countdown-container {
+            display: none;
+            margin: clamp(15px, 3vw, 25px) auto;
+            width: 100%;
+            max-width: 900px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: clamp(10px, 2vw, 12px);
+            padding: clamp(15px, 3vw, 25px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gvx-countdown-title {
+            font-size: clamp(1.1rem, 4vw, 2rem);
+            margin-bottom: clamp(12px, 2.5vw, 20px);
+            color: var(--gvx-gold-color);
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .gvx-countdown {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: clamp(8px, 1.5vw, 15px);
+            margin-bottom: clamp(12px, 2vw, 18px);
+        }
+
+        @media (max-width: 480px) {
+            .gvx-countdown {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .gvx-countdown {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+        }
+
+        .gvx-countdown-item {
+            background: linear-gradient(145deg, var(--gvx-secondary-color), var(--gvx-primary-color));
+            border-radius: clamp(6px, 1vw, 8px);
+            padding: clamp(10px, 2vw, 15px);
+            text-align: center;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            min-height: 90px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .gvx-countdown-number {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            font-weight: bold;
+            color: var(--gvx-gold-color);
+            font-family: 'Courier New', monospace;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .gvx-countdown-label {
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .gvx-countdown-message {
+            font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+            margin-top: clamp(10px, 2vw, 15px);
+            color: var(--gvx-gold-color);
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        /* Calendario responsive mejorado */
+        .gvx-calendar-container {
+            display: none;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .gvx-calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: clamp(4px, 1vw, 10px);
+            margin-bottom: clamp(15px, 3vw, 25px);
+            width: 100%;
+        }
+
+        @media (max-width: 480px) {
+            .gvx-calendar {
+                gap: 3px;
+            }
+        }
+
+        .gvx-calendar-title {
+            grid-column: 1 / -1;
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            margin-bottom: clamp(10px, 2vw, 15px);
+            color: var(--gvx-gold-color);
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        .gvx-day-label {
+            font-weight: bold;
+            padding: clamp(6px, 1vw, 10px);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            font-size: clamp(0.65rem, 1.8vw, 0.85rem);
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .gvx-day {
+            aspect-ratio: 1;
+            background: linear-gradient(145deg, var(--gvx-secondary-color), var(--gvx-primary-color));
+            border-radius: clamp(4px, 0.8vw, 6px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            padding: clamp(2px, 0.5vw, 5px);
+            border: 2px solid transparent;
+            user-select: none;
+        }
+
+        .gvx-day:hover:not(.gvx-disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .gvx-day:active:not(.gvx-disabled) {
+            transform: translateY(-1px);
+            transition-duration: 0.1s;
+        }
+
+        .gvx-day.gvx-opened {
+            background: linear-gradient(145deg, var(--gvx-gold-color), #ffa500);
+            color: var(--gvx-dark-color);
+        }
+
+        .gvx-day.gvx-opened::after {
+            content: "✓";
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            font-size: clamp(0.7rem, 1.5vw, 1rem);
+            color: var(--gvx-dark-color);
+            font-weight: bold;
+        }
+
+        .gvx-day.gvx-disabled {
+            background: linear-gradient(145deg, #555, #333);
+            color: #777;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .gvx-day.gvx-today {
+            border: 3px solid var(--gvx-accent-color);
+            animation: gvx-pulse 2s infinite;
+        }
+
+        .gvx-day.gvx-special {
+            border: 2px solid var(--gvx-gold-color);
+        }
+
+        .gvx-day.gvx-christmas {
+            background: linear-gradient(145deg, var(--gvx-gold-color), #ff6b6b);
+            color: var(--gvx-dark-color);
+            animation: gvx-christmasGlow 2s infinite alternate;
+        }
+
+        .gvx-day.gvx-new-year {
+            background: linear-gradient(145deg, var(--gvx-blue-color), var(--gvx-purple-color));
+            color: white;
+            animation: gvx-newYearGlow 1.5s infinite alternate;
+        }
+
+        .gvx-day.gvx-reyes {
+            background: linear-gradient(145deg, #8B4513, #D2691E, #FFD700);
+            color: white;
+            animation: gvx-reyesGlow 2s infinite alternate;
+        }
+
+        .gvx-day-number {
+            font-size: clamp(0.9rem, 3vw, 1.5rem);
+            line-height: 1;
+            margin-bottom: 2px;
+            font-weight: 800;
+        }
+
+        .gvx-day-content {
+            font-size: clamp(0.55rem, 1.5vw, 0.75rem);
+            text-align: center;
+            line-height: 1.1;
+            max-width: 90%;
+            word-break: break-word;
+        }
+
+        /* MODAL RESPONSIVE MEJORADO */
+        .gvx-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.1);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(10px, 3vw, 20px);
+            padding-top: calc(clamp(10px, 3vw, 20px) + var(--safe-area-top));
+            padding-bottom: calc(clamp(10px, 3vw, 20px) + var(--safe-area-bottom));
+            animation: gvx-modalFadeIn 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .gvx-modal-content {
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            color: var(--gvx-dark-color);
+            width: 100%;
+            max-width: min(95vw, 600px);
+            max-height: calc(100vh - 40px - var(--safe-area-top) - var(--safe-area-bottom));
+            padding: clamp(15px, 3vw, 25px);
+            border-radius: clamp(10px, 2vw, 15px);
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: gvx-modalSlideIn 0.4s ease;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+        }
+
+        .gvx-close-modal {
+            position: absolute;
+            top: clamp(10px, 2vw, 15px);
+            right: clamp(10px, 2vw, 15px);
+            width: clamp(32px, 6vw, 40px);
+            height: clamp(32px, 6vw, 40px);
+            border-radius: 50%;
+            background: var(--gvx-accent-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: bold;
+            z-index: 10;
+            border: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .gvx-close-modal:hover {
+            background: #ff5252;
+            transform: scale(1.1);
+        }
+
+        .gvx-close-modal:active {
+            transform: scale(0.95);
+        }
+
+        .gvx-modal-title {
+            color: var(--gvx-primary-color);
+            margin-bottom: clamp(12px, 2.5vw, 20px);
+            font-size: clamp(1.1rem, 4vw, 1.8rem);
+            line-height: 1.3;
+            padding-right: clamp(40px, 8vw, 50px);
+            text-align: center;
+            word-break: break-word;
+        }
+
+        /* CONTENIDOS RESPONSIVE DEL MODAL */
+        .gvx-modal-body {
+            width: 100%;
+        }
+
+        .gvx-modal-text-content {
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            font-weight: bold;
+            margin: clamp(15px, 3vw, 25px) 0;
+            text-align: center;
+            line-height: 1.4;
+            color: #1a472a;
+            padding: clamp(10px, 2vw, 15px);
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid var(--gvx-gold-color);
+            word-break: break-word;
+            hyphens: auto;
+        }
+
+        .gvx-modal-description {
+            color: #333;
+            margin: clamp(10px, 2vw, 15px) 0;
+            line-height: 1.6;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        /* Imágenes responsive */
+        .gvx-modal-image-container {
+            width: 100%;
+            margin: clamp(15px, 3vw, 25px) 0;
+            border-radius: clamp(8px, 1.5vw, 12px);
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background: #f0f0f0;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gvx-modal-image {
+            width: 100%;
+            height: auto;
+            max-height: 60vh;
+            object-fit: contain;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .gvx-modal-image:hover {
+            transform: scale(1.02);
+        }
+
+        /* Audio responsive */
+        .gvx-modal-audio-container {
+            width: 100%;
+            margin: clamp(15px, 3vw, 25px) 0;
+            background: rgba(26, 71, 42, 0.1);
+            border-radius: clamp(8px, 1.5vw, 12px);
+            padding: clamp(15px, 3vw, 20px);
+        }
+
+        .gvx-modal-audio {
+            width: 100%;
+            height: 54px;
+            border-radius: 27px;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border: 2px solid var(--gvx-secondary-color);
+        }
+
+        .gvx-modal-audio::-webkit-media-controls-panel {
+            background: white;
+        }
+
+        .gvx-modal-audio::-webkit-media-controls-play-button {
+            background-color: var(--gvx-secondary-color);
+            border-radius: 50%;
+        }
+
+        /* Opciones de audio responsive */
+        .gvx-audio-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: clamp(8px, 1.5vw, 12px);
+            margin: clamp(15px, 3vw, 25px) 0;
+        }
+
+        @media (max-width: 480px) {
+            .gvx-audio-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .gvx-audio-option {
+            background: var(--gvx-secondary-color);
+            color: white;
+            border: none;
+            padding: clamp(12px, 2vw, 16px);
+            border-radius: clamp(6px, 1vw, 8px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: clamp(0.85rem, 2vw, 1rem);
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .gvx-audio-option:hover {
+            background: var(--gvx-primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .gvx-audio-option:active {
+            transform: translateY(0);
+        }
+
+        /* Controles de música responsive */
+        .gvx-music-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: clamp(10px, 2vw, 15px);
+            margin: clamp(15px, 3vw, 25px) 0;
+            padding: 0 clamp(5px, 1vw, 10px);
+        }
+
+        @media (max-width: 480px) {
+            .gvx-music-controls {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .gvx-music-btn {
+            background: linear-gradient(145deg, var(--gvx-accent-color), #ff5252);
+            color: white;
+            border: none;
+            padding: clamp(12px, 2.5vw, 16px);
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(6px, 1vw, 10px);
+            font-size: clamp(0.85rem, 2.2vw, 1rem);
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
+            min-height: 50px;
+        }
+
+        .gvx-music-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(255, 107, 107, 0.4);
+        }
+
+        .gvx-music-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Footer responsive */
+        .gvx-calendario-footer {
+            margin-top: clamp(15px, 3vw, 25px);
+            padding: clamp(12px, 2.5vw, 18px);
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: clamp(8px, 1.5vw, 12px);
+            font-size: clamp(0.8rem, 2vw, 0.95rem);
+            line-height: 1.5;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Mensajes especiales responsive */
+        .gvx-special-message {
+            font-size: clamp(1.2rem, 4vw, 2.2rem);
+            font-weight: bold;
+            margin: clamp(15px, 3vw, 25px) 0;
+            text-align: center;
+            padding: clamp(15px, 3vw, 25px);
+            border-radius: clamp(10px, 2vw, 15px);
+            backdrop-filter: blur(10px);
+            line-height: 1.3;
+            word-break: break-word;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: gvx-textGlow 2s infinite alternate;
+            border: 3px solid;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .gvx-christmas-message {
+            color: #ff6b6b;
+            background: linear-gradient(135deg, rgba(179, 0, 0, 0.3), rgba(26, 71, 42, 0.3));
+            border-color: var(--gvx-gold-color);
+        }
+
+        .gvx-newyear-message {
+            color: #4a90e2;
+            background: linear-gradient(135deg, rgba(0, 78, 146, 0.3), rgba(0, 4, 40, 0.3));
+            border-color: #00ffff;
+        }
+
+        .gvx-reyes-message {
+            color: #FFD700;
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.3), rgba(210, 105, 30, 0.3));
+            border-color: var(--gvx-gold-color);
+        }
+
+        /* Contadores especiales responsive */
+        .gvx-special-countdown-section {
+            margin-bottom: clamp(20px, 4vw, 30px);
+            padding: clamp(15px, 3vw, 20px);
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: clamp(10px, 2vw, 15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gvx-special-countdown-title {
+            font-size: clamp(0.95rem, 3vw, 1.4rem);
+            margin-bottom: clamp(12px, 2.5vw, 18px);
+            color: var(--gvx-gold-color);
+            text-align: center;
+        }
+
+        .gvx-detailed-countdown {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: clamp(8px, 1.5vw, 12px);
+        }
+
+        @media (max-width: 480px) {
+            .gvx-detailed-countdown {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 320px) {
+            .gvx-detailed-countdown {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .gvx-detailed-countdown-item {
+            background: linear-gradient(145deg, var(--gvx-secondary-color), var(--gvx-primary-color));
+            border-radius: clamp(6px, 1vw, 8px);
+            padding: clamp(10px, 2vw, 15px);
+            text-align: center;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .gvx-detailed-countdown-number {
+            font-size: clamp(1.2rem, 4vw, 2rem);
+            font-weight: bold;
+            color: var(--gvx-gold-color);
+            font-family: 'Courier New', monospace;
+            line-height: 1;
+        }
+
+        .gvx-detailed-countdown-label {
+            font-size: clamp(0.65rem, 1.8vw, 0.8rem);
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 5px;
+        }
+
+        .gvx-urgent-countdown {
+            animation: gvx-urgentFlash 1s infinite;
+            background: linear-gradient(145deg, #ff6b6b, #ff5252) !important;
+            border: 2px solid #ffd700 !important;
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.7) !important;
+        }
+
+        /* Información de tiempo responsive */
+        .gvx-time-info {
+            margin-top: clamp(10px, 2vw, 15px);
+            font-size: clamp(0.75rem, 2vw, 0.9rem);
+            opacity: 0.8;
+            text-align: center;
+            line-height: 1.4;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        /* Animaciones responsivas */
+        @keyframes gvx-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 107, 107, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); }
+        }
+
+        @keyframes gvx-modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes gvx-modalSlideIn {
+            from { 
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes gvx-textGlow {
+            0% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+            100% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+        }
+
+        @keyframes gvx-christmasGlow {
+            0% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.5); }
+            100% { box-shadow: 0 0 30px rgba(255, 0, 0, 0.7); }
+        }
+
+        @keyframes gvx-newYearGlow {
+            0% { box-shadow: 0 0 15px rgba(74, 144, 226, 0.5); }
+            100% { box-shadow: 0 0 30px rgba(155, 89, 182, 0.7); }
+        }
+
+        @keyframes gvx-reyesGlow {
+            0% { box-shadow: 0 0 15px rgba(139, 69, 19, 0.5); }
+            100% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.7); }
+        }
+
+        @keyframes gvx-urgentFlash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Loading state para imágenes */
+        .gvx-modal-image.gvx-loading {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: gvx-loading 1.5s infinite;
+        }
+
+        @keyframes gvx-loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Scrollbar personalizado */
+        .gvx-modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .gvx-modal-content::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+
+        .gvx-modal-content::-webkit-scrollbar-thumb {
+            background: var(--gvx-secondary-color);
+            border-radius: 4px;
+        }
+
+        .gvx-modal-content::-webkit-scrollbar-thumb:hover {
+            background: var(--gvx-primary-color);
+        }
+
+        /* Fallback para navegadores antiguos */
+        @media (max-width: 768px) {
+            .gvx-modal-content {
+                font-size: 16px;
+            }
+            
+            .gvx-day {
+                font-size: 14px;
+            }
+        }
+
+        /* Ajustes para tablets en landscape */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .gvx-modal-content {
+                max-height: 85vh;
+                padding: 15px;
+            }
+            
+            .gvx-calendar {
+                gap: 3px;
+            }
+            
+            .gvx-day {
+                min-height: 40px;
+            }
+            
+            .gvx-modal-image-container {
+                max-height: 40vh;
+            }
+        }
+
+        /* Mejoras para accesibilidad */
+        @media (prefers-reduced-motion: reduce) {
+            .gvx-calendario-container * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* High contrast mode */
+        @media (prefers-contrast: high) {
+            .gvx-day {
+                border: 2px solid white;
+            }
+            
+            .gvx-modal-content {
+                border: 2px solid black;
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            .gvx-modal-content {
+                background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
+                color: #f0f0f0;
+            }
+            
+            .gvx-modal-text-content {
+                color: #ffd700;
+                background: rgba(255, 215, 0, 0.1);
+            }
+            
+            .gvx-modal-description {
+                color: #ccc;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .gvx-modal,
+            .gvx-music-controls,
+            .gvx-close-modal {
+                display: none !important;
+            }
+            
+            .gvx-day {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="https://grouvex.github.io/">
+            <div class="img-container" loading="lazy"></div>
+        </a>
+        <span style="font-family: Times New Roman; color: white; box-shadow: 0 0 10px gold; width: 100%">
+            <nav>
+                <span id="menuG"></span>
+                <span id="menuT"></span>
+                <span id="menuU"></span>
+            </nav>
+        </span>
+    </header>
+    
+    <!-- Anuncio -->
+    <div id="news"></div>
+    
+    <main class="gvx-calendario-container" id="gvxCalendarioContainer">
+        <div class="gvx-calendario-content">
+            <div class="gvx-calendario-header">
+                <h1 class="gvx-calendario-h1" id="gvxMainTitle">🎄 Calendario de Adviento Mágico 🎅</h1>
+                <p class="gvx-calendario-subtitle" id="gvxMainSubtitle">¡Abre una sorpresa cada día hasta Navidad y más allá!</p>
+                <div class="gvx-utc-notice">
+                    ⚠️ <strong>CALENDARIO EN HORARIO UTC</strong> ⚠️<br>
+                    Los días cambian según la hora UTC (Tiempo Universal Coordinado)<br>
+                    <span class="gvx-utc-time" id="gvxUtcTimeDisplay">Hora UTC actual: calculando...</span>
+                </div>
+            </div>
+
+            <!-- Mensajes especiales -->
+            <div id="gvxSpecialMessages"></div>
+
+            <!-- Contador hasta el inicio del calendario -->
+            <div class="gvx-countdown-container" id="gvxCountdownToCalendar">
+                <h2 class="gvx-countdown-title">¡Pronto comenzará la magia navideña!</h2>
+                <div class="gvx-countdown" id="gvxCountdownCalendar">
+                    <div class="gvx-countdown-item">
+                        <div class="gvx-countdown-number" id="gvxDaysToCalendar">00</div>
+                        <div class="gvx-countdown-label">Días</div>
+                    </div>
+                    <div class="gvx-countdown-item">
+                        <div class="gvx-countdown-number" id="gvxHoursToCalendar">00</div>
+                        <div class="gvx-countdown-label">Horas</div>
+                    </div>
+                    <div class="gvx-countdown-item">
+                        <div class="gvx-countdown-number" id="gvxMinutesToCalendar">00</div>
+                        <div class="gvx-countdown-label">Minutos</div>
+                    </div>
+                    <div class="gvx-countdown-item">
+                        <div class="gvx-countdown-number" id="gvxSecondsToCalendar">00</div>
+                        <div class="gvx-countdown-label">Segundos</div>
+                    </div>
+                </div>
+                <p class="gvx-countdown-message" id="gvxMessageToCalendar">El calendario se activará el 1 de diciembre </p>
+                <div class="gvx-time-info" id="gvxLocalTimeInfo"></div>
+            </div>
+
+            <!-- Contador especial para Navidad y Año Nuevo -->
+            <div class="gvx-countdown-container" id="gvxSpecialCountdownContainer">
+                <h2 class="gvx-countdown-title" id="gvxSpecialCountdownTitle">¡Cuenta atrás para las fiestas especiales!</h2>
+                <div class="gvx-detailed-countdown" id="gvxSpecialCountdown">
+                    <!-- Se generará dinámicamente -->
+                </div>
+                <p class="gvx-countdown-message" id="gvxSpecialCountdownMessage">¡Disfruta de cada día del calendario!</p>
+                <div class="gvx-time-info" id="gvxSpecialTimeInfo"></div>
+            </div>
+
+            <!-- Calendario completo de diciembre -->
+            <div class="gvx-calendar-container" id="gvxCalendarContainer">
+                <div class="gvx-calendar" id="gvxCalendar">
+                    <!-- Los días se generarán con JavaScript -->
+                </div>
+
+                <div class="gvx-music-controls">
+                    <button class="gvx-music-btn" id="gvxPlayMusic">
+                        <span>🎵</span> Reproducir Música Navideña
+                    </button>
+                    <button class="gvx-music-btn" id="gvxStopMusic">
+                        <span>🔇</span> Detener Música
+                    </button>
+                </div>
+                <div class="gvx-time-info">
+                    Calendario activo del 1/12 al 7/01. Día actual : <span id="gvxCurrentUTCDay"></span>
+                </div>
+            </div>
+
+            <div class="gvx-calendario-footer" id="gvxMainFooter">
+                <p>Disfruta de cada día con una sorpresa única. ¡Felices fiestas! 🎁</p>
+            </div>
+        </div>
+
+        <!-- MODAL RESPONSIVE MEJORADO -->
+        <div class="gvx-modal" id="gvxModal">
+            <div class="gvx-modal-content">
+                <button class="gvx-close-modal" id="gvxCloseModal" aria-label="Cerrar">&times;</button>
+                <h2 class="gvx-modal-title" id="gvxModalTitle">Día 1</h2>
+                <div class="gvx-modal-body" id="gvxModalContent">
+                    <!-- El contenido específico del día se cargará aquí -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+    <!-- Scripts (manteniendo la funcionalidad original) -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script src="jquery-3.5.1.min.js"></script>
+    
+    <!-- Scripts locales -->
+    <script>
+        // Carga de componentes con jQuery (manteniendo funcionalidad original)
+        document.addEventListener("DOMContentLoaded", function() { 
+            $("#menuG").load("menuG.html");
+            $("#menuE").load("menuE.html");
+            $("#menuT").load("menuT.html");
+            $("#menuU").load("menuU.html");
+            $("#footer").load("footer.html"); 
+            $("#news").load("news.html"); 
+            $("#tosypp").load("tosypp.html");
+        });
+    </script>
+    
+    <script src="time.js"></script>
+    <script src="index.js"></script>
+    <script src="preloader.js"></script>
+
+    <!-- Script principal del calendario (ACTUALIZADO para contenido responsive) -->
+    <script>
+        // URLs de música desde tu repositorio
+        const musicBaseURL = "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/main/music/";
+        
+        // Contenido para cada día del calendario
+        const dailyContent = {
+            1: {
+                title: "¡Feliz 1 de Diciembre! ",
+                type: "image",
+                content: "https://i.pinimg.com/736x/1b/45/fe/1b45fe7a80afd3570d1e028924ea3e6b.jpg",
+                text: "¡Comienza la cuenta atrás para Navidad! Hoy te regalamos esta imagen navideña para alegrar tu día."
+            },
+            2: {
+                title: "Día 2 - Villancico ",
+                type: "audio",
+                content: musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World%20(Piano%20Version).mp3",
+                text: "Disfruta de esta hermosa versión en piano de 'Yo Quiero - A New World'."
+            },
+            3: {
+                title: "Día 3 - Chiste Navideño ",
+                type: "text",
+                content: "¿Qué le dice un árbol a otro árbol? ¡Qué hojas de verte!",
+                text: "Esperamos que este chiste te haya sacado una sonrisa. ¡Feliz día!"
+            },
+            4: {
+                title: "Día 4 - Imagen Festiva ",
+                type: "image",
+                content: "https://marketplace.canva.com/EAFVQh8k_KM/1/0/1600w/canva-fondo-de-pantalla-muñeco-de-nieve-acuarelas-ilustrado-rojo-v0-Clh59Guw.jpg",
+                text: "Un momento mágico navideño para alegrar tu día."
+            },
+            5: {
+                title: "Día 5 - Canción Alegre ",
+                type: "audio",
+                content: musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World.mp3",
+                text: "Escucha la versión completa de 'Yo Quiero - A New World'."
+            },
+            6: {
+                title: "Día 6 - Acertijo ",
+                type: "text",
+                content: "¿Qué es lo que siempre viene en diciembre pero nunca en enero? La letra D.",
+                text: "¿Adivinaste el acertijo? ¡Esperamos que sí!"
+            },
+            7: {
+                title: "Día 7 - Decoración Navideña ",
+                type: "image",
+                content: "https://img.freepik.com/fotos-premium/fondo-feliz-navidad-regalos-bolas-arboles-pino-adornos-navidenos-ilustracion-digital_285885-813.jpg?semt=ais_hybrid&w=740&q=80",
+                text: "Inspírate con esta decoración navideña para tu hogar."
+            },
+            8: {
+                title: "Día 8 - Música Relajante ",
+                type: "audio",
+                content: musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World%20-Versión%20Instrumental.mp3",
+                text: "Disfruta de la versión instrumental de 'Yo Quiero - A New World'."
+            },
+            9: {
+                title: "Día 9 - Curiosidad Navideña ",
+                type: "text",
+                content: "¿Sabías que la tradición del árbol de Navidad se originó en Alemania en el siglo XVI?",
+                text: "Una curiosidad navideña para compartir con tus seres queridos."
+            },
+            10: {
+                title: "Día 10 - Paisaje Invernal ",
+                type: "image",
+                content: "https://i.etsystatic.com/42876221/r/il/35fe9b/5615151405/il_570xN.5615151405_to3y.jpg",
+                text: "Disfruta de este hermoso paisaje invernal."
+            },
+            11: {
+                title: "Día 11 - Villancico Animado ",
+                type: "audio",
+                content: "https://sonidosmp3gratis.com/sounds/coca-cola-christmas.mp3",
+                text: "¡Es hora de cantar!"
+            },
+            12: {
+                title: "Día 12 - Refrán Navideño ",
+                type: "text",
+                content: "Hasta los gatos se visten de gala en Nochebuena.",
+                text: "Un refrán tradicional para reflexionar en estas fechas."
+            },
+            13: {
+                title: "Día 13 - Luces Navideñas ",
+                type: "image",
+                content: "https://cdn.pixabay.com/photo/2017/11/01/19/04/christmas-tree-2909020_640.jpg",
+                text: "Las luces navideñas siempre alegran cualquier lugar."
+            },
+            14: {
+                title: "Día 14 - Música Clásica ",
+                type: "audio",
+                content: "https://sonidosmp3gratis.com/sounds/navidad-ringtones-navidad.mp3",
+                text: "Disfruta de esta pieza musical especial."
+            },
+            15: {
+                title: "Día 15 - Dato Curioso ",
+                type: "text",
+                content: "En Finlandia, la Nochebuena es el día más importante de la Navidad.",
+                text: "Cada país tiene sus propias tradiciones navideñas."
+            },
+            16: {
+                title: "Día 16 - Regalos Navideños ",
+                type: "image",
+                content: "https://www.chiquipedia.com/images/fondos-pantalla-navidad-snoopy-1024.jpg?phpMyAdmin=9ea091c51a5aa3cf876fb3cf0a5f7f3d",
+                text: "Los regalos son una parte importante de la magia navideña."
+            },
+            17: {
+                title: "Día 17 - Canción Festiva ",
+                type: "audio",
+                content: "https://sonidosmp3gratis.com/sounds/navidad-cancion-metal-.mp3",
+                text: "Una canción festiva para animar tu día."
+            },
+            18: {
+                title: "Día 18 - Pensamiento Navideño ",
+                type: "text",
+                content: "La Navidad no es un momento ni una temporada, sino un estado de la mente.",
+                text: "Un pensamiento profundo sobre el verdadero significado de la Navidad."
+            },
+            19: {
+                title: "Día 19 - Comida Navideña ",
+                type: "image",
+                content: "https://wallpaper.forfun.com/fetch/40/409013082f3c8bbbb05ec033b07dbd03.jpeg",
+                text: "La comida navideña es una de las mejores partes de estas fiestas."
+            },
+            20: {
+                title: "Día 20 - Villancico Tradicional ",
+                type: "audio",
+                content: "https://sonidosmp3gratis.com/sounds/cajas-registradoras_5.mp3",
+                text: "Un villancico tradicional para recordar las navidades de antaño."
+            },
+            21: {
+                title: "Día 21 - Cita Navideña ",
+                type: "text",
+                content: "La mejor manera de spreadir el espíritu navideño es cantando fuerte para que todos lo oigan.",
+                text: "- El Grinch (cómo el Grinch robó la Navidad)"
+            },
+            22: {
+                title: "Día 22 - Decoración Creativa ",
+                type: "image",
+                content: "https://www.xtrafondos.com/thumbs/1_4239.jpg",
+                text: "Ideas creativas para decorar tu hogar estas navidades."
+            },
+            23: {
+                title: "Día 23 - Ya se oyen los renos!  ",
+                type: "audio",
+                content: "https://sonidosmp3gratis.com/sounds/Campanas-de-trineo.mp3",
+                text: "Música perfecta para celebrar con familia y amigos."
+            },
+            24: {
+                title: "¡Nochebuena! ",
+                type: "special-audio",
+                content: musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World.mp3",
+                text: "¡Feliz Nochebuena! Disfruta de todas las versiones de 'Yo Quiero - A New World' en este día especial."
+            },
+            25: {
+                title: "¡Feliz Navidad! ",
+                type: "text",
+                content: "🎄 ¡Feliz Navidad! 🎅",
+                text: "Que este día esté lleno de amor, alegría y momentos especiales con tus seres queridos."
+            },
+            26: {
+                title: "Día 26 - Día de San Esteban ",
+                type: "text",
+                content: "En muchos países, hoy se celebra el Día de San Esteban.",
+                text: "Es un día para descansar y disfrutar de los regalos recibidos."
+            },
+            27: {
+                title: "Día 27 - Preparando el Año Nuevo ",
+                type: "image",
+                content: "https://s1.1zoom.me/big0/497/Christmas_Christmas_tree_465487.jpg",
+                text: "Ya se acerca el Año Nuevo, ¡prepárate para celebrar!"
+            },
+            28: {
+                title: "Día 28 - Propósitos ",
+                type: "text",
+                content: "¿Ya tienes tus propósitos para el próximo año?",
+                text: "Es un buen momento para reflexionar sobre lo que quieres lograr."
+            },
+            29: {
+                title: "Día 29 - Despedida ",
+                type: "audio",
+                content: "https://sonidosmp3gratis.com/sounds/navidad-cancion-.mp3",
+                text: "Disfruta de esta melodía mientras nos despedimos del año."
+            },
+            30: {
+                title: "Día 30 - Último día del año ",
+                type: "text",
+                content: "¡Mañana es Nochevieja!",
+                text: "Prepárate para despedir el año por todo lo alto."
+            },
+            31: {
+                title: "¡Feliz Año Nuevo! ",
+                type: "text",
+                content: "🎆 ¡Feliz Año Nuevo! 🎇",
+                text: "Que el próximo año esté lleno de bendiciones, salud y prosperidad."
+            },
+            "1.1": {
+                title: "¡Feliz Año Nuevo 2025! ",
+                type: "text",
+                content: "🎉 ¡Feliz Año Nuevo! 🎊",
+                text: "¡Que todos tus deseos se cumplan en este nuevo año!"
+            },
+            "2.1": {
+                title: "2 de Enero ",
+                type: "text",
+                content: "Seguimos disfrutando de las fiestas",
+                text: "Aprovecha estos días de descanso y alegría."
+            },
+            "3.1": {
+                title: "3 de Enero ",
+                type: "text",
+                content: "Preparando la llegada de los Reyes Magos",
+                text: "¿Ya has escrito tu carta a los Reyes Magos?"
+            },
+            "4.1": {
+                title: "4 de Enero ",
+                type: "text",
+                content: "Faltan pocos días para Reyes",
+                text: "La emoción va en aumento..."
+            },
+            "5.1": {
+                title: "5 de Enero ",
+                type: "text",
+                content: "¡Noche de Reyes!",
+                text: "Esta noche los Reyes Magos visitan todas las casas."
+            },
+            "6.1": {
+                title: "¡Feliz Día de Reyes! ",
+                type: "text",
+                content: "🎁 ¡Feliz Día de Reyes! 👑",
+                text: "Que los Reyes Magos te traigan muchos regalos y alegría."
+            },
+            "7.1": {
+                title: "Último día del calendario ",
+                type: "text",
+                content: "Fin de las fiestas navideñas",
+                text: "Esperamos que hayas disfrutado de este calendario. ¡Hasta el próximo año!"
+            }
+        };
+
+        // Elementos DOM
+        const calendarEl = document.getElementById('gvxCalendar');
+        const modalEl = document.getElementById('gvxModal');
+        const modalTitleEl = document.getElementById('gvxModalTitle');
+        const modalContentEl = document.getElementById('gvxModalContent');
+        const closeModalEl = document.getElementById('gvxCloseModal');
+        const playMusicBtn = document.getElementById('gvxPlayMusic');
+        const stopMusicBtn = document.getElementById('gvxStopMusic');
+        const countdownToCalendarEl = document.getElementById('gvxCountdownToCalendar');
+        const specialCountdownContainerEl = document.getElementById('gvxSpecialCountdownContainer');
+        const specialCountdownEl = document.getElementById('gvxSpecialCountdown');
+        const specialCountdownTitleEl = document.getElementById('gvxSpecialCountdownTitle');
+        const specialCountdownMessageEl = document.getElementById('gvxSpecialCountdownMessage');
+        const calendarContainerEl = document.getElementById('gvxCalendarContainer');
+        const daysToCalendarEl = document.getElementById('gvxDaysToCalendar');
+        const hoursToCalendarEl = document.getElementById('gvxHoursToCalendar');
+        const minutesToCalendarEl = document.getElementById('gvxMinutesToCalendar');
+        const secondsToCalendarEl = document.getElementById('gvxSecondsToCalendar');
+        const messageToCalendarEl = document.getElementById('gvxMessageToCalendar');
+        const utcTimeDisplayEl = document.getElementById('gvxUtcTimeDisplay');
+        const localTimeInfoEl = document.getElementById('gvxLocalTimeInfo');
+        const specialTimeInfoEl = document.getElementById('gvxSpecialTimeInfo');
+        const currentUTCDayEl = document.getElementById('gvxCurrentUTCDay');
+        const specialMessagesEl = document.getElementById('gvxSpecialMessages');
+        const mainTitleEl = document.getElementById('gvxMainTitle');
+        const mainSubtitleEl = document.getElementById('gvxMainSubtitle');
+        const mainFooterEl = document.getElementById('gvxMainFooter');
+        const gvxCalendarioContainer = document.getElementById('gvxCalendarioContainer');
+
+        // Variables para el control de la cuenta regresiva
+        let lastSeconds = {};
+        let countdownInterval;
+
+        // Audio para la música de fondo
+        const backgroundMusic = new Audio();
+        backgroundMusic.loop = true;
+
+        // Obtener fecha UTC actual
+        function getUTCDate() {
+            const now = new Date();
+            return new Date(Date.UTC(
+                now.getUTCFullYear(),
+                now.getUTCMonth(),
+                now.getUTCDate(),
+                now.getUTCHours(),
+                now.getUTCMinutes(),
+                now.getUTCSeconds()
+            ));
+        }
+
+        // Actualizar display de hora UTC
+        function updateUTCTimeDisplay() {
+            const now = getUTCDate();
+            const utcTimeString = now.toUTCString();
+            utcTimeDisplayEl.textContent = `Hora UTC actual: ${utcTimeString}`;
+            
+            // Actualizar también el día UTC actual en el calendario
+            if (currentUTCDayEl) {
+                currentUTCDayEl.textContent = now.getUTCDate() + '/' + (now.getUTCMonth() + 1);
+            }
+        }
+
+        // Formatear números a 2 dígitos
+        function formatTime(number) {
+            return number.toString().padStart(2, '0');
+        }
+
+        // Efecto flash cuando cambia un número
+        function flashElement(element) {
+            element.classList.add('gvx-countdown-flash');
+            setTimeout(() => {
+                element.classList.remove('gvx-countdown-flash');
+            }, 500);
+        }
+
+        // Fecha actual en UTC
+        const todayUTC = getUTCDate();
+        const currentUTCDay = todayUTC.getUTCDate();
+        const currentUTCMonth = todayUTC.getUTCMonth(); // 0 = Enero, 11 = Diciembre
+        const currentUTCYear = todayUTC.getUTCFullYear();
+
+        // Fechas importantes en UTC
+        const calendarStartDateUTC = new Date(Date.UTC(currentUTCYear, 11, 1)); // 1 de diciembre UTC
+        const calendarEndDateUTC = new Date(Date.UTC(currentUTCYear + 1, 0, 7)); // 7 de enero UTC del próximo año
+        const christmasDateUTC = new Date(Date.UTC(currentUTCYear, 11, 25)); // 25 de diciembre UTC
+        const newYearDateUTC = new Date(Date.UTC(currentUTCYear + 1, 0, 1)); // 1 de enero del próximo año UTC
+        const reyesDateUTC = new Date(Date.UTC(currentUTCYear + 1, 0, 6)); // 6 de enero del próximo año UTC
+
+        // Cargar días abiertos desde localStorage
+        let openedDays = JSON.parse(localStorage.getItem('gvxAdventCalendarOpenedDays')) || [];
+
+        // Aplicar temas especiales según la fecha
+        function applySpecialThemes() {
+            gvxCalendarioContainer.classList.remove('gvx-christmas-theme', 'gvx-newyear-theme', 'gvx-reyes-theme');
+            
+            // Resetear todos los elementos
+            mainTitleEl.innerHTML = '🎄 Calendario de Adviento Mágico 🎅';
+            mainSubtitleEl.textContent = '¡Abre una sorpresa cada día hasta Navidad y más allá!';
+            mainFooterEl.innerHTML = '<p>Disfruta de cada día con una sorpresa única. ¡Felices fiestas! 🎁</p>';
+
+            // Mostrar mensajes especiales
+            specialMessagesEl.innerHTML = '';
+
+            // Navidad (25 de diciembre)
+            if (currentUTCMonth === 11 && currentUTCDay === 25) {
+                gvxCalendarioContainer.classList.add('gvx-christmas-theme');
+                mainTitleEl.innerHTML = '🎅 ¡FELIZ NAVIDAD! 🎄';
+                mainSubtitleEl.textContent = 'Que este día esté lleno de amor, alegría y momentos especiales';
+                mainFooterEl.innerHTML = '<p>¡Feliz Navidad! Que la magia de esta fecha llene tu hogar de alegría 🎁</p>';
+                specialMessagesEl.innerHTML = '<div class="gvx-special-message gvx-christmas-message">🎄 ¡FELIZ NAVIDAD! 🎅</div>';
+                createFireworks();
+            }
+            // Año Nuevo (1 de enero)
+            else if (currentUTCMonth === 0 && currentUTCDay === 1) {
+                gvxCalendarioContainer.classList.add('gvx-newyear-theme');
+                mainTitleEl.innerHTML = '🎆 ¡FELIZ AÑO NUEVO! 🎇';
+                mainSubtitleEl.textContent = 'Que el nuevo año traiga bendiciones, salud y prosperidad';
+                mainFooterEl.innerHTML = '<p>¡Feliz Año Nuevo! Que todos tus sueños se hagan realidad en el ' + (currentUTCYear + 1) + ' ✨</p>';
+                specialMessagesEl.innerHTML = '<div class="gvx-special-message gvx-newyear-message">🎆 ¡FELIZ AÑO NUEVO! 🎇</div>';
+                createFireworks();
+            }
+            // Reyes Magos (6 de enero)
+            else if (currentUTCMonth === 0 && currentUTCDay === 6) {
+                gvxCalendarioContainer.classList.add('gvx-reyes-theme');
+                mainTitleEl.innerHTML = '👑 ¡FELIZ DÍA DE REYES! 🎁';
+                mainSubtitleEl.textContent = 'Que los Reyes Magos te traigan muchos regalos y alegría';
+                mainFooterEl.innerHTML = '<p>¡Feliz Día de Reyes! Que la magia de la ilusión nunca desaparezca ✨</p>';
+                specialMessagesEl.innerHTML = '<div class="gvx-special-message gvx-reyes-message">👑 ¡FELIZ DÍA DE REYES! 🎁</div>';
+                createFireworks();
+            }
+        }
+
+        // Inicializar la aplicación
+        function initApp() {
+            // Actualizar display de hora UTC
+            updateUTCTimeDisplay();
+            setInterval(updateUTCTimeDisplay, 1000);
+
+            // Aplicar temas especiales
+            applySpecialThemes();
+
+            // Verificar si estamos en el período activo del calendario (1/12 al 7/01)
+            const isActivePeriod = (currentUTCMonth === 11 && currentUTCDay >= 1) || 
+                                 (currentUTCMonth === 0 && currentUTCDay <= 7);
+
+            if (isActivePeriod) {
+                // Mostrar calendario y contador de fiestas
+                countdownToCalendarEl.style.display = 'none';
+                calendarContainerEl.style.display = 'block';
+                specialCountdownContainerEl.style.display = 'block';
+                initCalendar();
+                updateSpecialCountdown();
+                setInterval(updateSpecialCountdown, 1000);
+            } else if (currentUTCMonth === 10 && currentUTCDay < 31) {
+                // Mostrar contador hasta diciembre UTC
+                countdownToCalendarEl.style.display = 'block';
+                calendarContainerEl.style.display = 'none';
+                specialCountdownContainerEl.style.display = 'none';
+                updateCalendarCountdown();
+                setInterval(updateCalendarCountdown, 1000);
+            } else {
+                // Fuera del período activo
+                countdownToCalendarEl.style.display = 'none';
+                calendarContainerEl.style.display = 'none';
+                specialCountdownContainerEl.style.display = 'none';
+                specialMessagesEl.innerHTML = '<div class="gvx-special-message">El calendario estará disponible del 1 de diciembre al 7 de enero</div>';
+            }
+        }
+
+        // Actualizar contador hasta el calendario 
+        function updateCalendarCountdown() {
+            const nowUTC = getUTCDate();
+            const timeRemaining = calendarStartDateUTC - nowUTC;
+            
+            if (timeRemaining <= 0) {
+                // Ya es diciembre UTC, recargar para mostrar el calendario
+                location.reload();
+                return;
+            }
+            
+            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+            
+            // Aplicar efectos de cuenta regresiva
+            if (lastSeconds.daysToCalendar !== days) {
+                daysToCalendarEl.textContent = formatTime(days);
+                flashElement(daysToCalendarEl);
+                lastSeconds.daysToCalendar = days;
+            }
+            
+            if (lastSeconds.hoursToCalendar !== hours) {
+                hoursToCalendarEl.textContent = formatTime(hours);
+                flashElement(hoursToCalendarEl);
+                lastSeconds.hoursToCalendar = hours;
+            }
+            
+            if (lastSeconds.minutesToCalendar !== minutes) {
+                minutesToCalendarEl.textContent = formatTime(minutes);
+                flashElement(minutesToCalendarEl);
+                lastSeconds.minutesToCalendar = minutes;
+            }
+            
+            if (lastSeconds.secondsToCalendar !== seconds) {
+                secondsToCalendarEl.textContent = formatTime(seconds);
+                flashElement(secondsToCalendarEl);
+                lastSeconds.secondsToCalendar = seconds;
+            }
+            
+            // Actualizar mensaje
+            if (days === 0) {
+                messageToCalendarEl.textContent = "¡El calendario se activará hoy!";
+            } else if (days === 1) {
+                messageToCalendarEl.textContent = "¡Solo 1 día para que comience el calendario!";
+            } else {
+                messageToCalendarEl.textContent = `El calendario se activará el 1 de diciembre (en ${days} días)`;
+            }
+        }
+
+        // Actualizar contador especial para Navidad y Año Nuevo
+        function updateSpecialCountdown() {
+            const nowUTC = getUTCDate();
+            
+            // Días hasta Navidad
+            const timeToChristmas = christmasDateUTC - nowUTC;
+            const daysToChristmas = Math.floor(timeToChristmas / (1000 * 60 * 60 * 24));
+            const hoursToChristmas = Math.floor((timeToChristmas % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutesToChristmas = Math.floor((timeToChristmas % (1000 * 60 * 60)) / (1000 * 60));
+            const secondsToChristmas = Math.floor((timeToChristmas % (1000 * 60)) / 1000);
+            
+            // Días hasta Año Nuevo
+            const timeToNewYear = newYearDateUTC - nowUTC;
+            const daysToNewYear = Math.floor(timeToNewYear / (1000 * 60 * 60 * 24));
+            const hoursToNewYear = Math.floor((timeToNewYear % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutesToNewYear = Math.floor((timeToNewYear % (1000 * 60 * 60)) / (1000 * 60));
+            const secondsToNewYear = Math.floor((timeToNewYear % (1000 * 60)) / 1000);
+            
+            // Días hasta Reyes
+            const timeToReyes = reyesDateUTC - nowUTC;
+            const daysToReyes = Math.floor(timeToReyes / (1000 * 60 * 60 * 24));
+            const hoursToReyes = Math.floor((timeToReyes % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutesToReyes = Math.floor((timeToReyes % (1000 * 60 * 60)) / (1000 * 60));
+            const secondsToReyes = Math.floor((timeToReyes % (1000 * 60)) / 1000);
+            
+            // Actualizar contador especial
+            specialCountdownEl.innerHTML = '';
+            
+            // Solo mostrar contador especial si estamos cerca de alguna fecha importante (15 días o menos)
+            const showChristmasCountdown = daysToChristmas <= 10 && daysToChristmas >= 0;
+            const showNewYearCountdown = daysToNewYear <= 7 && daysToNewYear >= 0;
+            const showReyesCountdown = daysToReyes <= 7 && daysToReyes >= 0;
+            
+            if (showChristmasCountdown || showNewYearCountdown || showReyesCountdown) {
+                specialCountdownContainerEl.style.display = 'block';
+                
+                if (showChristmasCountdown) {
+                    const isUrgent = daysToChristmas <= 5;
+                    const christmasCountdown = document.createElement('div');
+                    christmasCountdown.className = 'gvx-special-countdown-section';
+                    christmasCountdown.innerHTML = `
+                        <h3 class="gvx-special-countdown-title">🎄 Hasta Navidad</h3>
+                        <div class="gvx-detailed-countdown">
+                            <div class="gvx-detailed-countdown-item ${isUrgent ? 'gvx-urgent-countdown' : ''}">
+                                <div class="gvx-detailed-countdown-number">${formatTime(Math.max(0, daysToChristmas))}</div>
+                                <div class="gvx-detailed-countdown-label">Días</div>
+                            </div>
+                            <div class="gvx-detailed-countdown-item ${isUrgent ? 'gvx-urgent-countdown' : ''}">
+                                <div class="gvx-detailed-countdown-number">${formatTime(Math.max(0, hoursToChristmas))}</div>
+                                <div class="gvx-detailed-countdown-label">Horas</div>
+                            </div>
+                            <div class="gvx-detailed-countdown-item ${isUrgent ? 'gvx-urgent-countdown' : ''}">
+                                <div class="gvx-detailed-countdown-number">${formatTime(Math.max(0, minutesToChristmas))}</div>
+                                <div class="gvx-detailed-countdown-label">Minutos</div>
+                            </div>
+                            <div class="gvx-detailed-countdown-item ${isUrgent ? 'gvx-urgent-countdown' : ''}">
+                                <div class="gvx-detailed-countdown-number">${formatTime(Math.max(0, secondsToChristmas))}</div>
+                                <div class="gvx-detailed-countdown-label">Segundos</div>
+                            </div>
+                        </div>
+                    `;
+                    specialCountdownEl.appendChild(christmasCountdown);
+                }
+                
+                if (showNewYearCountdown) {
+                    const isUrgent = daysToNewYear <= 5;
+                    const newYearCountdown = document.createElement('div');
+                    newYearCountdown.className = 'gvx-special-countdown-section';
+                    newYearCountdown.innerHTML = `
+                        <h3 class="gvx-special-countdown-title">🎆 Hasta Año Nuevo</h3>
+                        <div class="gvx-detailed-countdown">
+                            <div class="gvx-detailed-countdown-item ${isUrgent ? 'gvx-urgent-countdown' : ''}">
+                                <div class="gvx-detailed-countdown-number">${formatTime(Math.max(0, daysToNewYear))}</div>
+                                <div class="gvx-detailed-countdown-label">Días</div>
+                            </div>
+                            <div class="gvx-detailed-countdown-item ${isUrgent ? 'gvx-urgent-countdown' : ''}">
+                                <div class="gvx-detailed-countdown-number">${formatTime(Math.max(0, hoursToNewYear))}</div>
+                                <div class="gvx-detailed-countdown-label">Horas</div>
+                            </div>
+                            <div class="gvx-detailed-countdown-item ${isUrgent ? 'gvx-urgent-countdown' : ''}">
+                                <div class="gvx-detailed-countdown-number">${formatTime(Math.max(0, minutesToNewYear))}</div>
+                                <div class="gvx-detailed-countdown-label">Minutos</div>
+                            </div>
+                            <div class="gvx-detailed-countdown-item ${isUrgent ? 'gvx-urgent-countdown' : ''}">
+                                <div class="gvx-detailed-countdown-number">${formatTime(Math.max(0, secondsToNewYear))}</div>
+                                <div class="gvx-detailed-countdown-label">Segundos</div>
+                            </div>
+                        </div>
+                    `;
+                    specialCountdownEl.appendChild(newYearCountdown);
+                }
+                
+                if (showReyesCountdown) {
+                    const isUrgent = daysToReyes <= 5;
+                    const reyesCountdown = document.createElement('div');
+                    reyesCountdown.className = 'gvx-special-countdown-section';
+                    reyesCountdown.innerHTML = `
+                        <h3 class="gvx-special-countdown-title">👑 Hasta Reyes</h3>
+                        <div class="gvx-detailed-countdown">
+                            <div class="gvx-detailed-countdown-item ${isUrgent ? 'gvx-urgent-countdown' : ''}">
+                                <div class="gvx-detailed-countdown-number">${formatTime(Math.max(0, daysToReyes))}</div>
+                                <div class="gvx-detailed-countdown-label">Días</div>
+                            </div>
+                            <div class="gvx-detailed-countdown-item ${isUrgent ? 'gvx-urgent-countdown' : ''}">
+                                <div class="gvx-detailed-countdown-number">${formatTime(Math.max(0, hoursToReyes))}</div>
+                                <div class="gvx-detailed-countdown-label">Horas</div>
+                            </div>
+                            <div class="gvx-detailed-countdown-item ${isUrgent ? 'gvx-urgent-countdown' : ''}">
+                                <div class="gvx-detailed-countdown-number">${formatTime(Math.max(0, minutesToReyes))}</div>
+                                <div class="gvx-detailed-countdown-label">Minutos</div>
+                            </div>
+                            <div class="gvx-detailed-countdown-item ${isUrgent ? 'gvx-urgent-countdown' : ''}">
+                                <div class="gvx-detailed-countdown-number">${formatTime(Math.max(0, secondsToReyes))}</div>
+                                <div class="gvx-detailed-countdown-label">Segundos</div>
+                            </div>
+                        </div>
+                    `;
+                    specialCountdownEl.appendChild(reyesCountdown);
+                }
+                
+                // Actualizar título y mensaje
+                if (daysToChristmas <= 5 || daysToNewYear <= 5 || daysToReyes <= 5) {
+                    specialCountdownTitleEl.textContent = '¡Faltan muy pocos días! ⏰';
+                    specialCountdownMessageEl.textContent = '¡Prepárate para celebrar!';
+                } else {
+                    specialCountdownTitleEl.textContent = '¡Se acercan las fiestas! 🎉';
+                    specialCountdownMessageEl.textContent = '¡La cuenta atrás continúa!';
+                }
+            } else {
+                specialCountdownContainerEl.style.display = 'none';
+            }
+        }
+
+        // Inicializar el calendario
+        function initCalendar() {
+            // Añadir título y días de la semana
+            calendarEl.innerHTML = '<div class="gvx-calendar-title">Diciembre ' + currentUTCYear + ' - Enero ' + (currentUTCYear + 1) + '</div>';
+            const dayLabels = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+            dayLabels.forEach(label => {
+                const labelEl = document.createElement('div');
+                labelEl.className = 'gvx-day-label';
+                labelEl.textContent = label;
+                calendarEl.appendChild(labelEl);
+            });
+
+            // Calcular el día de la semana del 1 de diciembre
+            const firstDay = new Date(Date.UTC(currentUTCYear, 11, 1)).getUTCDay();
+            
+            // Añadir espacios vacíos para alinear el calendario
+            for (let i = 0; i < firstDay; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'gvx-day gvx-disabled';
+                calendarEl.appendChild(emptyDay);
+            }
+
+            // Añadir los días del período activo (1/12 al 7/01)
+            const startDate = new Date(Date.UTC(currentUTCYear, 11, 1));
+            const endDate = new Date(Date.UTC(currentUTCYear + 1, 0, 7));
+            
+            let currentDate = new Date(startDate);
+            let dayCount = 0;
+            
+            while (currentDate <= endDate) {
+                const day = currentDate.getUTCDate();
+                const month = currentDate.getUTCMonth();
+                const year = currentDate.getUTCFullYear();
+                
+                const dayEl = document.createElement('div');
+                dayEl.className = 'gvx-day';
+                
+                // Para enero, mostrar "Ene" en el contenido
+                const monthLabel = month === 11 ? 'Dic' : 'Ene';
+                const displayDay = month === 11 ? day : day + '.Ene';
+                
+                dayEl.innerHTML = `
+                    <div class="gvx-day-number">${displayDay}</div>
+                    <div class="gvx-day-content">${getDayContent(day, month)}</div>
+                `;
+                
+                // Usar clave única que incluya mes y día
+                const dayKey = month === 11 ? day : day + '.' + (month + 1);
+                dayEl.dataset.day = dayKey;
+
+                // Verificar si el día está disponible (días pasados o actual)
+                const isPastOrCurrent = (month === 11 && day <= currentUTCDay) || 
+                                      (month === 0 && day <= currentUTCDay && currentUTCMonth === 0);
+                
+                if (isPastOrCurrent) {
+                    dayEl.addEventListener('click', () => openDay(dayKey, month));
+                    
+                    // Marcar como hoy si es el día actual
+                    if (day === currentUTCDay && month === currentUTCMonth) {
+                        dayEl.classList.add('gvx-today');
+                    }
+                    
+                    // Marcar como abierto si ya fue abierto antes
+                    if (openedDays.includes(dayKey)) {
+                        dayEl.classList.add('gvx-opened');
+                    }
+                } else {
+                    // Días futuros
+                    dayEl.classList.add('gvx-disabled');
+                }
+
+                // Añadir clases especiales para días festivos
+                if ((month === 11 && day === 24) || (month === 11 && day === 25)) {
+                    dayEl.classList.add('gvx-christmas');
+                    dayEl.classList.add('gvx-special');
+                } else if ((month === 0 && day === 1)) {
+                    dayEl.classList.add('gvx-new-year');
+                    dayEl.classList.add('gvx-special');
+                } else if ((month === 0 && day === 6)) {
+                    dayEl.classList.add('gvx-reyes');
+                    dayEl.classList.add('gvx-special');
+                } else if (dayKey === '7.1') {
+                    dayEl.classList.add('gvx-special');
+                }
+
+                calendarEl.appendChild(dayEl);
+                
+                // Siguiente día
+                currentDate.setUTCDate(currentDate.getUTCDate() + 1);
+                dayCount++;
+            }
+        }
+
+        // Obtener contenido para mostrar en el día
+        function getDayContent(day, month) {
+            const dayKey = month === 11 ? day : day + '.' + (month + 1);
+            
+            if (month === 11 && day === 24) return "Nochebuena";
+            if (month === 11 && day === 25) return "Navidad";
+            if (month === 0 && day === 1) return "Año Nuevo";
+            if (month === 0 && day === 6) return "Reyes Magos";
+            if (dayKey === '7.1') return "Fin del calendario";
+            
+            if (dailyContent[dayKey]) {
+                if (dailyContent[dayKey].type === "audio") return "🎵 Música";
+                if (dailyContent[dayKey].type === "image") return "🖼️ Imagen";
+                if (dailyContent[dayKey].type === "text") return "📝 Texto";
+                if (dailyContent[dayKey].type === "special-audio") return "🎶 Música Especial";
+            }
+            return "";
+        }
+
+        // FUNCIÓN MEJORADA: Abrir un día del calendario (CONTENIDO RESPONSIVE)
+        function openDay(dayKey, month) {
+            const content = dailyContent[dayKey];
+            if (!content) return;
+
+            // Guardar en localStorage que este día fue abierto
+            if (!openedDays.includes(dayKey)) {
+                openedDays.push(dayKey);
+                localStorage.setItem('gvxAdventCalendarOpenedDays', JSON.stringify(openedDays));
+            }
+
+            // Marcar el día como abierto
+            const dayEl = document.querySelector(`.gvx-day[data-day="${dayKey}"]`);
+            if (dayEl) {
+                dayEl.classList.add('gvx-opened');
+            }
+
+            // Mostrar el contenido en el modal
+            modalTitleEl.textContent = content.title;
+            
+            let contentHTML = '';
+            
+            if (content.type === 'image') {
+                // IMAGEN RESPONSIVE
+                contentHTML = `
+                    <div class="gvx-modal-image-container">
+                        <img src="${content.content}" 
+                             alt="Imagen del día ${dayKey}" 
+                             class="gvx-modal-image"
+                             loading="lazy"
+                             onerror="this.onerror=null; this.src='https://via.placeholder.com/600x400/1a472a/ffffff?text=Imagen+no+disponible';">
+                    </div>
+                    <p class="gvx-modal-description">${content.text}</p>
+                `;
+            } else if (content.type === 'audio') {
+                // AUDIO RESPONSIVE
+                contentHTML = `
+                    <div class="gvx-modal-audio-container">
+                        <audio controls class="gvx-modal-audio" preload="metadata">
+                            <source src="${content.content}" type="audio/mpeg">
+                            Tu navegador no soporta el elemento de audio.
+                        </audio>
+                    </div>
+                    <p class="gvx-modal-description">${content.text}</p>
+                `;
+            } else if (content.type === 'text') {
+                // TEXTO RESPONSIVE
+                contentHTML = `
+                    <div class="gvx-modal-text-content">"${content.content}"</div>
+                    <p class="gvx-modal-description">${content.text}</p>
+                `;
+            } else if (content.type === 'special-audio') {
+                // AUDIO ESPECIAL RESPONSIVE
+                contentHTML = `
+                    <p class="gvx-modal-description">${content.text}</p>
+                    <div class="gvx-audio-options">
+                        <button class="gvx-audio-option" onclick="playAudio('${musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World%20(Piano%20Version).mp3"}', 'Versión Piano')">
+                            Versión Piano
+                        </button>
+                        <button class="gvx-audio-option" onclick="playAudio('${musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World.mp3"}', 'Versión Completa')">
+                            Versión Completa
+                        </button>
+                        <button class="gvx-audio-option" onclick="playAudio('${musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World%20-Versión%20Instrumental.mp3"}', 'Versión Instrumental')">
+                            Versión Instrumental
+                        </button>
+                        <button class="gvx-audio-option" onclick="playAudio('${musicBaseURL + "Yo%20Quiero%20-%20A%20New%20World%20-%20Versión%20Karaoke.mp3"}', 'Versión Karaoke')">
+                            Versión Karaoke
+                        </button>
+                    <button class="gvx-audio-option" onclick="playAudio('https://sonidosmp3gratis.com/sounds/navidad-cancion-56-.mp3', 'Navidad Canción 56')">
+                        Navidad Canción 56
+                    </button>
+                    <button class="gvx-audio-option" onclick="playAudio('https://sonidosmp3gratis.com/sounds/Minions-2.mp3', 'Minions Navideños')">
+                        Minions Navideños
+                    </button>
+                    </div>
+                    <div class="gvx-modal-audio-container">
+                        <audio id="gvxSpecialAudio" controls class="gvx-modal-audio" style="display: none;">
+                            Tu navegador no soporta el elemento de audio.
+                        </audio>
+                    </div>
+                `;
+            }
+
+            modalContentEl.innerHTML = contentHTML;
+            modalEl.style.display = 'flex';
+            
+            // Forzar reflow para asegurar que las animaciones funcionen
+            modalEl.offsetHeight;
+
+            // Efectos especiales para días festivos
+            if (dayKey === '24' || dayKey === '25' || dayKey === '1.1' || dayKey === '6.1') {
+                createFireworks();
+            }
+        }
+
+        // Función para reproducir audio especial (MEJORADA)
+        function playAudio(url, title) {
+            const audioContainer = document.querySelector('.gvx-modal-audio-container');
+            const audioElement = document.getElementById('gvxSpecialAudio');
+            
+            // Actualizar el título si se proporciona
+            if (title) {
+                modalTitleEl.textContent = title;
+            }
+            
+            // Configurar y mostrar el audio
+            audioElement.src = url;
+            audioElement.style.display = 'block';
+            audioElement.controls = true;
+            
+            // Reproducir automáticamente
+            const playPromise = audioElement.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("La reproducción automática falló:", error);
+                    // Mostrar mensaje para el usuario
+                    alert("Para reproducir el audio, haz clic en el botón de play del reproductor.");
+                });
+            }
+        }
+
+        // Cerrar el modal
+        function closeModal() {
+            modalEl.style.display = 'none';
+            
+            // Detener cualquier audio que esté reproduciéndose
+            const audios = document.querySelectorAll('audio');
+            audios.forEach(audio => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
+            
+            // Ocultar el audio especial si está visible
+            const specialAudio = document.getElementById('gvxSpecialAudio');
+            if (specialAudio) {
+                specialAudio.style.display = 'none';
+            }
+        }
+
+        // Reproducir música de fondo
+        function playBackgroundMusic() {
+            // Seleccionar una canción navideña aleatoria
+            const christmasSongs = [
+                musicBaseURL + "Capricornio.mp3",
+                musicBaseURL + "Forbidden Friendship.mp3",
+                musicBaseURL + "La Magia de la Estrella Polar (Versión Acústica).mp3",
+                musicBaseURL + "La Magia de la Estrella Polar.mp3"
+            ];
+            
+            const randomSong = christmasSongs[Math.floor(Math.random() * christmasSongs.length)];
+            backgroundMusic.src = randomSong;
+            
+            const playPromise = backgroundMusic.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(e => {
+                    console.log("La reproducción automática fue bloqueada.");
+                    // Mostrar instrucciones amigables
+                    alert("Para reproducir la música navideña:\n\n1. Haz clic en 'Reproducir Música Navideña'\n2. Dale permiso al navegador si te lo pide\n\n¡Felices fiestas! 🎄");
+                });
+            }
+        }
+
+        // Detener música de fondo
+        function stopBackgroundMusic() {
+            backgroundMusic.pause();
+            backgroundMusic.currentTime = 0;
+        }
+
+        // Crear efecto de fuegos artificiales
+        function createFireworks() {
+            if (window.innerWidth < 768) return; // No mostrar en móviles para mejor rendimiento
+            
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffffff'];
+            const fireworkCount = Math.min(30, window.innerWidth / 25);
+
+            for (let i = 0; i < fireworkCount; i++) {
+                setTimeout(() => {
+                    const firework = document.createElement('div');
+                    firework.className = 'gvx-firework';
+                    firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    firework.style.left = `${Math.random() * 100}vw`;
+                    firework.style.top = `${Math.random() * 100}vh`;
+                    firework.style.zIndex = '9998';
+                    
+                    document.body.appendChild(firework);
+                    
+                    // Animación
+                    firework.animate([
+                        { transform: 'scale(0)', opacity: 1 },
+                        { transform: `scale(${Math.random() * 2 + 1})`, opacity: 0 }
+                    ], {
+                        duration: 800 + Math.random() * 800,
+                        easing: 'ease-out'
+                    });
+                    
+                    // Eliminar después de la animación
+                    setTimeout(() => {
+                        if (firework.parentNode) {
+                            firework.remove();
+                        }
+                    }, 2000);
+                }, i * 150);
+            }
+        }
+
+        // Event listeners
+        closeModalEl.addEventListener('click', closeModal);
+        modalEl.addEventListener('click', (e) => {
+            if (e.target === modalEl) closeModal();
+        });
+        playMusicBtn.addEventListener('click', playBackgroundMusic);
+        stopMusicBtn.addEventListener('click', stopBackgroundMusic);
+
+        // Cerrar modal con tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modalEl.style.display === 'flex') {
+                closeModal();
+            }
+        });
+
+        // Inicializar la aplicación
+        initApp();
+
+        // Optimización para móviles: ajustar dinámicamente
+        function optimizeForMobile() {
+            if (window.innerWidth < 768) {
+                // Ajustar cantidad de animaciones en móviles
+                const animatedElements = document.querySelectorAll('.gvx-day');
+                animatedElements.forEach(el => {
+                    el.style.animation = 'none';
+                });
+            }
+        }
+
+        // Llamar a la optimización al cargar y al cambiar tamaño
+        window.addEventListener('load', optimizeForMobile);
+        window.addEventListener('resize', optimizeForMobile);
+
+        // Mensaje de consola divertido
+        console.log(`
+        🎄 ¡Feliz Navidad! 🎅
+        Calendario de Adviento Responsive v2.0
+        Creado con ❤️ para Grouvex Studios
+        ¡Disfruta de cada día con una sorpresa única!
+        `);
+    </script>
+</body>
+</html>

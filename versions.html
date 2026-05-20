@@ -460,6 +460,15 @@
             border-top: 1px solid var(--vh-gray-200);
         }
 
+        #versions-history .vh-resources-section summary {
+            cursor: pointer;
+            list-style: none;
+        }
+
+        #versions-history .vh-resources-section summary::-webkit-details-marker {
+            display: none;
+        }
+
         #versions-history .vh-resources-title {
             font-size: 1.125rem;
             font-weight: 700;
@@ -556,6 +565,30 @@
             line-height: 1.6;
         }
 
+        /* Enlace de versión */
+        #versions-history .vh-version-link {
+            text-decoration: none;
+            color: var(--vh-primary);
+            font-size: 1.25rem;
+            transition: opacity 0.2s ease, color 0.2s ease;
+        }
+        
+        #versions-history .vh-version-link:hover {
+            opacity: 0.8;
+            color: var(--vh-secondary);
+        }
+
+        /* Botón compartir */
+        #versions-history .vh-share-btn {
+            transition: all 0.2s ease;
+        }
+        
+        #versions-history .vh-share-btn:hover {
+            background: var(--vh-gray-200) !important;
+            border-color: var(--vh-gray-400) !important;
+            transform: translateY(-1px);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             #versions-history .vh-title {
@@ -593,19 +626,6 @@
         html {
             scroll-behavior: smooth;
         }
-
-        /* Utilitarios */
-        .vh-sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
     </style>
 </head>
 <body>
@@ -639,10 +659,16 @@
         </div>
         <script>
             const uTActualizado = 1738429200; 
+            function actualizarFechas(timestamp, elementId) {
+                const date = new Date(timestamp * 1000);
+                const formatted = `${date.getUTCDate().toString().padStart(2,'0')}/${(date.getUTCMonth()+1).toString().padStart(2,'0')}/${date.getUTCFullYear()}`;
+                const el = document.getElementById(elementId);
+                if(el) el.textContent = formatted;
+            }
             actualizarFechas(uTActualizado, "ActualizadoDATE");
         </script>
         
-        <!-- Historial de Versiones - CONTENIDO NUEVO -->
+        <!-- Historial de Versiones -->
         <section id="versions-history">
             <div class="vh-container">
                 <!-- Cabecera -->
@@ -664,7 +690,7 @@
                                 <span class="vh-current-badge">Versión Actual</span>
                             </div>
                         </div>
-                        <div class="vh-current-version" id="current-web-version">v2.1.0</div>
+                        <div class="vh-current-version" id="current-web-version">--</div>
                         <div class="vh-current-timestamp" id="current-web-timestamp"></div>
                     </div>
                     
@@ -676,7 +702,7 @@
                                 <span class="vh-current-badge">Versión Actual</span>
                             </div>
                         </div>
-                        <div class="vh-current-version" id="current-panel-version">v1.5.2</div>
+                        <div class="vh-current-version" id="current-panel-version">--</div>
                         <div class="vh-current-timestamp" id="current-panel-timestamp"></div>
                     </div>
                     
@@ -688,7 +714,7 @@
                                 <span class="vh-current-badge">Versión Actual</span>
                             </div>
                         </div>
-                        <div class="vh-current-version" id="current-api-version">v3.0.1</div>
+                        <div class="vh-current-version" id="current-api-version">--</div>
                         <div class="vh-current-timestamp" id="current-api-timestamp"></div>
                     </div>
                 </div>
@@ -698,28 +724,32 @@
                     <button class="vh-filter-btn active" data-filter="all">
                         <span>📋</span>
                         <span>Todas las versiones</span>
-                        <span class="vh-filter-count">8</span>
+                        <span class="vh-filter-count">0</span>
                     </button>
                     <button class="vh-filter-btn" data-filter="website">
                         <span>🌐</span>
                         <span>Sitio Web</span>
-                        <span class="vh-filter-count">3</span>
+                        <span class="vh-filter-count">0</span>
                     </button>
                     <button class="vh-filter-btn" data-filter="panel">
                         <span>⚙️</span>
                         <span>Panel</span>
-                        <span class="vh-filter-count">3</span>
+                        <span class="vh-filter-count">0</span>
                     </button>
                     <button class="vh-filter-btn" data-filter="api">
                         <span>🔧</span>
                         <span>API</span>
-                        <span class="vh-filter-count">2</span>
+                        <span class="vh-filter-count">0</span>
                     </button>
                 </nav>
                 
                 <!-- Grid de versiones -->
                 <div class="vh-versions-grid" id="vh-versions-container">
-                    <!-- Las versiones se cargarán aquí -->
+                    <div class="vh-empty-state">
+                        <div class="vh-empty-icon">⏳</div>
+                        <h3 class="vh-empty-title">Cargando versiones...</h3>
+                        <p class="vh-empty-text">Por favor espere mientras se cargan los datos.</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -731,326 +761,53 @@
     <script src="preloader.js"></script>
     
 <script>
-// DATOS COMPLETOS DE VERSIONES CON TIMESTAMP
-const vhVersionsData = {
-    versions: [
-        {
-            id: 1,
-            type: "website",
-            version: "2.1.0",
-            title: "Mejoras en sistema de notificaciones y seguridad avanzada",
-            timestamp: 1738627200, // 5 febrero 2025 00:00:00 UTC
-            current: true,
-            changes: [
-                {
-                    type: "added",
-                    detail: "Nuevo sistema de notificaciones en tiempo real con WebSockets",
-                    description: "Implementación completa de WebSockets para notificaciones instantáneas"
-                },
-                {
-                    type: "added",
-                    detail: "Autenticación de dos factores (2FA) para usuarios administradores",
-                    description: "Integración con Google Authenticator y códigos de respaldo"
-                },
-                {
-                    type: "updated",
-                    detail: "Rediseño completo del dashboard principal",
-                    description: "Nueva interfaz con mejoras en usabilidad y experiencia de usuario"
-                },
-                {
-                    type: "fixed",
-                    detail: "Corrección de vulnerabilidad XSS en formularios de contacto",
-                    description: "Implementación de sanitización de inputs y protección CSRF"
-                },
-                {
-                    type: "updated",
-                    detail: "Optimización de rendimiento en carga de imágenes",
-                    description: "Reducción del tiempo de carga en un 40% con lazy loading"
-                }
-            ],
-            resources: [
-                {
-                    type: "document",
-                    icon: "📄",
-                    label: "Documentación técnica v2.1.0",
-                    url: "docs/technical-doc-v2.1.0.pdf"
-                },
-                {
-                    type: "video",
-                    icon: "🎥",
-                    label: "Video tutorial nuevas funciones",
-                    url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
-                },
-                {
-                    type: "image",
-                    icon: "🖼️",
-                    label: "Capturas del nuevo dashboard",
-                    url: "images/dashboard-screenshots.zip"
-                },
-                {
-                    type: "link",
-                    icon: "🔗",
-                    label: "Guía de migración v2.0 → v2.1",
-                    url: "guides/migration-v2.1.html"
-                }
-            ]
-        },
-        {
-            id: 2,
-            type: "panel",
-            version: "1.5.2",
-            title: "Actualización de seguridad y panel de estadísticas",
-            timestamp: 1738620000, // 4 febrero 2025 22:00:00 UTC
-            current: true,
-            changes: [
-                {
-                    type: "added",
-                    detail: "Panel de estadísticas con gráficos interactivos",
-                    description: "Implementación de Chart.js para visualización de datos"
-                },
-                {
-                    type: "added",
-                    detail: "Exportación de datos en múltiples formatos (PDF, Excel, CSV)",
-                    description: "Soporte para exportación directa desde el panel"
-                },
-                {
-                    type: "fixed",
-                    detail: "Corrección de vulnerabilidad en gestión de sesiones",
-                    description: "Implementación de tokens JWT con expiración controlada"
-                },
-                {
-                    type: "updated",
-                    detail: "Mejoras en la interfaz de gestión de usuarios",
-                    description: "Nuevos filtros y opciones de búsqueda avanzada"
-                },
-                {
-                    type: "removed",
-                    detail: "Función obsoleta de sincronización manual",
-                    description: "Reemplazada por sincronización automática en tiempo real"
-                }
-            ],
-            resources: [
-                {
-                    type: "document",
-                    icon: "📄",
-                    label: "Manual de administración v1.5.2",
-                    url: "docs/admin-manual-v1.5.2.pdf"
-                },
-                {
-                    type: "image",
-                    icon: "🖼️",
-                    label: "Galería de gráficos nuevos",
-                    url: "images/charts-gallery.zip"
-                },
-                {
-                    type: "link",
-                    icon: "🔗",
-                            label: "Reporte de auditoría de seguridad",
-                    url: "reports/security-audit.html"
-                }
-            ]
-        },
-        {
-            id: 3,
-            type: "api",
-            version: "3.0.1",
-            title: "Nuevos endpoints y mejoras de rendimiento API",
-            timestamp: 1738612800, // 4 febrero 2025 20:00:00 UTC
-            current: true,
-            changes: [
-                {
-                    type: "added",
-                    detail: "5 nuevos endpoints REST para gestión de usuarios",
-                    description: "CRUD completo con validaciones mejoradas"
-                },
-                {
-                    type: "added",
-                    detail: "Soporte para paginación avanzada en todos los endpoints",
-                    description: "Paginación con límites, offsets y ordenamiento"
-                },
-                {
-                    type: "updated",
-                    detail: "Límite de rate aumentado a 1000 requests/minuto",
-                    description: "Mejora en la capacidad de procesamiento"
-                },
-                {
-                    type: "fixed",
-                    detail: "Corrección de errores en validación de datos de entrada",
-                    description: "Implementación de validadores específicos por tipo"
-                },
-                {
-                    type: "updated",
-                    detail: "Documentación Swagger completamente actualizada",
-                    description: "Incluye ejemplos para todos los endpoints"
-                }
-            ],
-            resources: [
-                {
-                    type: "document",
-                    icon: "📄",
-                    label: "Documentación API v3.0.1",
-                    url: "docs/api-documentation-v3.0.1.pdf"
-                },
-                {
-                    type: "link",
-                    icon: "🔗",
-                    label: "Swagger UI interactivo",
-                    url: "api/swagger/v3.0.1"
-                },
-                {
-                    type: "code",
-                    icon: "💻",
-                    label: "Ejemplos de código",
-                    url: "examples/api-examples.zip"
-                }
-            ]
-        },
-        {
-            id: 4,
-            type: "website",
-            version: "2.0.5",
-            title: "Optimización móvil y correcciones menores",
-            timestamp: 1738429200, // 2 febrero 2025 17:00:00 UTC
-            current: false,
-            changes: [
-                {
-                    type: "updated",
-                    detail: "Diseño completamente responsivo para móviles",
-                    description: "Mejoras en la experiencia en dispositivos móviles"
-                },
-                {
-                    type: "fixed",
-                    detail: "Corrección de problemas en navegadores Safari",
-                    description: "Compatibilidad mejorada con WebKit"
-                },
-                {
-                    type: "fixed",
-                    detail: "Error 404 en páginas específicas del blog",
-                    description: "Corrección de rutas y redirecciones"
-                },
-                {
-                    type: "updated",
-                    detail: "Mejoras en tiempo de carga de imágenes",
-                    description: "Optimización de compresión y caché"
-                }
-            ],
-            resources: [
-                {
-                    type: "document",
-                    icon: "📄",
-                    label: "Reporte de optimización móvil",
-                    url: "reports/mobile-optimization.pdf"
-                },
-                {
-                    type: "image",
-                    icon: "🖼️",
-                    label: "Comparativa móvil vs desktop",
-                    url: "images/mobile-comparison.zip"
-                }
-            ]
-        },
-        {
-            id: 5,
-            type: "panel",
-            version: "1.4.8",
-            title: "Correcciones de bugs y mejoras en interfaz",
-            timestamp: 1738342800, // 1 febrero 2025 17:00:00 UTC
-            current: false,
-            changes: [
-                {
-                    type: "fixed",
-                    detail: "Bug en subida de archivos mayores a 50MB",
-                    description: "Implementación de chunk upload para archivos grandes"
-                },
-                {
-                    type: "updated",
-                    detail: "Nuevas opciones de filtrado en tablas de datos",
-                    description: "Filtros por fecha, tipo y estado"
-                },
-                {
-                    type: "fixed",
-                    detail: "Problema de sincronización con base de datos",
-                    description: "Corrección en las consultas de actualización"
-                },
-                {
-                    type: "updated",
-                    detail: "Mejoras en la interfaz de reportes",
-                    description: "Nuevos formatos de visualización"
-                }
-            ],
-            resources: [
-                {
-                    type: "document",
-                    icon: "📄",
-                    label: "Lista de bugs corregidos",
-                    url: "docs/bugs-fixed-v1.4.8.pdf"
-                },
-                {
-                    type: "link",
-                    icon: "🔗",
-                    label: "Guía rápida de nuevas funciones",
-                    url: "guides/quick-guide-v1.4.8.html"
-                }
-            ]
-        },
-        {
-            id: 6,
-            type: "website",
-            version: "2.0.0",
-            title: "Lanzamiento principal con nuevas funcionalidades",
-            timestamp: 1738256400, // 31 enero 2025 17:00:00 UTC
-            current: false,
-            changes: [
-                {
-                    type: "added",
-                    detail: "Sistema completo de gestión de usuarios",
-                    description: "Registro, autenticación y perfiles de usuario"
-                },
-                {
-                    type: "added",
-                    detail: "Panel administrativo básico",
-                    description: "Interfaz inicial para administradores"
-                },
-                {
-                    type: "added",
-                    detail: "API REST v1.0",
-                    description: "Primera versión de la API pública"
-                },
-                {
-                    type: "updated",
-                    detail: "Rediseño completo de la interfaz",
-                    description: "Nuevo sistema de diseño y componentes"
-                }
-            ],
-            resources: [
-                {
-                    type: "document",
-                    icon: "📄",
-                    label: "Documentación v2.0.0",
-                    url: "docs/website-v2.0.0.pdf"
-                },
-                {
-                    type: "link",
-                    icon: "🔗",
-                    label: "Changelog completo",
-                    url: "changelog/v2.0.0.html"
-                }
-            ]
-        }
-    ]
-};
+// VARIABLE GLOBAL PARA ALMACENAR LOS DATOS CARGADOS
+let vhVersionsData = { versions: [] };
 
-// FUNCIONES PARA FORMATO UTC
+// FUNCIÓN PARA CARGAR DATOS DESDE JSON
+async function loadVersionsData() {
+    try {
+        const response = await fetch('versions-data.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        vhVersionsData = data;
+        
+        // Una vez cargados los datos, inicializar la interfaz
+        initializeVersionHistory();
+        
+        return data;
+    } catch (error) {
+        console.error('Error cargando versions-data.json:', error);
+        showVersionsError('No se pudieron cargar los datos de versiones. Verifique que el archivo versions-data.json exista.');
+        return null;
+    }
+}
+
+function showVersionsError(message) {
+    const container = document.getElementById('vh-versions-container');
+    if (container) {
+        container.innerHTML = `
+            <div class="vh-empty-state">
+                <div class="vh-empty-icon">⚠️</div>
+                <h3 class="vh-empty-title">Error al cargar datos</h3>
+                <p class="vh-empty-text">${message}</p>
+                <button onclick="location.reload()" style="margin-top: 1rem; padding: 0.5rem 1rem; background: var(--vh-primary); color: white; border: none; border-radius: var(--vh-radius-md); cursor: pointer;">
+                    Reintentar
+                </button>
+            </div>
+        `;
+    }
+}
+
 function formatTimestampUTC(timestamp) {
     const date = new Date(timestamp * 1000);
-    
-    // Formato: DD/MM/YYYY HH:MM UTC
     const day = String(date.getUTCDate()).padStart(2, '0');
     const month = String(date.getUTCMonth() + 1).padStart(2, '0');
     const year = date.getUTCFullYear();
     const hours = String(date.getUTCHours()).padStart(2, '0');
     const minutes = String(date.getUTCMinutes()).padStart(2, '0');
-    
     return `${day}/${month}/${year} ${hours}:${minutes} UTC`;
 }
 
@@ -1066,35 +823,30 @@ function formatRelativeTime(timestamp) {
     return formatTimestampUTC(timestamp);
 }
 
-// Función para generar el anchor ID de la versión
 function getVersionAnchor(version) {
-    return `v${version.version}`;
+    return `v${version.version.replace(/\./g, '_')}`;
 }
 
 // INICIALIZACIÓN DEL SISTEMA
-document.addEventListener('DOMContentLoaded', function() {
+function initializeVersionHistory() {
     const container = document.getElementById('vh-versions-container');
     const filterButtons = document.querySelectorAll('.vh-filter-btn');
     
-    // Actualizar versión actual en cada categoría
-    updateCurrentVersions();
+    if (!vhVersionsData || !vhVersionsData.versions || vhVersionsData.versions.length === 0) {
+        showVersionsError('No hay versiones disponibles para mostrar.');
+        return;
+    }
     
-    // Mostrar todas las versiones inicialmente
+    updateCurrentVersions();
     displayVersions(vhVersionsData.versions);
     
-    // Configurar filtros
     filterButtons.forEach(button => {
         button.addEventListener('click', function() {
-            // Remover clase active de todos
             filterButtons.forEach(btn => btn.classList.remove('active'));
-            
-            // Agregar clase active al clickeado
             this.classList.add('active');
             
-            // Obtener filtro
             const filterType = this.getAttribute('data-filter');
             
-            // Filtrar versiones
             if (filterType === 'all') {
                 displayVersions(vhVersionsData.versions);
             } else {
@@ -1102,47 +854,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 displayVersions(filtered);
             }
             
-            // Actualizar URL sin recargar
             updateUrlWithFilter(filterType);
         });
     });
 
-    // Verificar si hay un hash en la URL para desplazarse a esa versión
     checkHashAndScroll();
-
-    // Función para actualizar las versiones actuales
+    window.addEventListener('hashchange', checkHashAndScroll);
+    
     function updateCurrentVersions() {
-        const websiteCurrent = vhVersionsData.versions
-            .filter(v => v.type === 'website' && v.current)
-            .sort((a, b) => b.timestamp - a.timestamp)[0];
+        const websiteLatest = vhVersionsData.versions.filter(v => v.type === 'website').sort((a, b) => b.date - a.date)[0];
+        const panelLatest = vhVersionsData.versions.filter(v => v.type === 'panel').sort((a, b) => b.date - a.date)[0];
+        const apiLatest = vhVersionsData.versions.filter(v => v.type === 'api').sort((a, b) => b.date - a.date)[0];
         
-        const panelCurrent = vhVersionsData.versions
-            .filter(v => v.type === 'panel' && v.current)
-            .sort((a, b) => b.timestamp - a.timestamp)[0];
-        
-        const apiCurrent = vhVersionsData.versions
-            .filter(v => v.type === 'api' && v.current)
-            .sort((a, b) => b.timestamp - a.timestamp)[0];
-        
-        if (websiteCurrent) {
-            document.getElementById('current-web-version').textContent = `v${websiteCurrent.version}`;
-            document.getElementById('current-web-timestamp').textContent = formatTimestampUTC(websiteCurrent.timestamp);
+        if (websiteLatest) {
+            document.getElementById('current-web-version').textContent = `v${websiteLatest.version}`;
+            document.getElementById('current-web-timestamp').textContent = formatTimestampUTC(websiteLatest.date);
         }
-        
-        if (panelCurrent) {
-            document.getElementById('current-panel-version').textContent = `v${panelCurrent.version}`;
-            document.getElementById('current-panel-timestamp').textContent = formatTimestampUTC(panelCurrent.timestamp);
+        if (panelLatest) {
+            document.getElementById('current-panel-version').textContent = `v${panelLatest.version}`;
+            document.getElementById('current-panel-timestamp').textContent = formatTimestampUTC(panelLatest.date);
         }
-        
-        if (apiCurrent) {
-            document.getElementById('current-api-version').textContent = `v${apiCurrent.version}`;
-            document.getElementById('current-api-timestamp').textContent = formatTimestampUTC(apiCurrent.timestamp);
+        if (apiLatest) {
+            document.getElementById('current-api-version').textContent = `v${apiLatest.version}`;
+            document.getElementById('current-api-timestamp').textContent = formatTimestampUTC(apiLatest.date);
         }
     }
 
-    // Función para mostrar versiones
     function displayVersions(versions) {
-        if (versions.length === 0) {
+        if (!versions || versions.length === 0) {
             container.innerHTML = `
                 <div class="vh-empty-state">
                     <div class="vh-empty-icon">📭</div>
@@ -1154,114 +893,131 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         container.innerHTML = '';
-
-        // Ordenar por timestamp (más reciente primero)
-        versions.sort((a, b) => b.timestamp - a.timestamp);
+        versions.sort((a, b) => b.date - a.date);
 
         versions.forEach(version => {
             const card = createVersionCard(version);
             container.appendChild(card);
         });
         
-        // Después de mostrar las versiones, verificar si hay un hash
         setTimeout(checkHashAndScroll, 100);
+        updateFilterCounts();
+    }
+    
+    function isLatestVersion(version) {
+        const sameTypeVersions = vhVersionsData.versions.filter(v => v.type === version.type);
+        const latestDate = Math.max(...sameTypeVersions.map(v => v.date));
+        return version.date === latestDate;
+    }
+    
+    function getResourceIcon(type) {
+        const iconMap = { 'document': '📄', 'image': '🖼️', 'video': '🎥', 'link': '🔗', 'code': '💻' };
+        return iconMap[type] || '📎';
     }
 
-    // Función para crear tarjeta de versión
+    function getTypeLabel(type) {
+        const typeMap = { 'website': 'Sitio Web', 'panel': 'Panel de Control', 'api': 'API', 'mobile': 'Aplicación Móvil' };
+        return typeMap[type] || type;
+    }
+
+    function getTypeIcon(type) {
+        const iconMap = { 'website': '🌐', 'panel': '⚙️', 'api': '🔧', 'mobile': '📱' };
+        return iconMap[type] || '📄';
+    }
+
+    function getChangeLabel(type) {
+        const labelMap = { 'added': 'Añadido', 'updated': 'Actualizado', 'fixed': 'Corregido', 'removed': 'Eliminado' };
+        return labelMap[type] || type;
+    }
+
+    function getChangeIcon(type) {
+        const iconMap = { 'added': '➕', 'updated': '🔄', 'fixed': '🔧', 'removed': '🗑️' };
+        return iconMap[type] || '📝';
+    }
+    
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
     function createVersionCard(version) {
         const card = document.createElement('article');
         card.className = 'vh-version-card';
         card.id = getVersionAnchor(version);
         
-        // Obtener datos de la versión
         const typeLabel = getTypeLabel(version.type);
         const typeIcon = getTypeIcon(version.type);
-        const formattedTimestamp = formatTimestampUTC(version.timestamp);
-        const relativeTime = formatRelativeTime(version.timestamp);
+        const formattedTimestamp = formatTimestampUTC(version.date);
+        const relativeTime = formatRelativeTime(version.date);
+        const isCurrent = isLatestVersion(version);
         
-        // Crear cambios HTML
         let changesHTML = '';
         if (version.changes && version.changes.length > 0) {
-            changesHTML = version.changes.map(change => `
-                <li class="vh-change-item">
-                    <span class="vh-change-type ${change.type}">
-                        ${getChangeIcon(change.type)} ${getChangeLabel(change.type)}
-                    </span>
-                    <div class="vh-change-detail">
-                        <strong>${change.detail}</strong>
-                        ${change.description ? 
-                            `<span class="vh-change-description">${change.description}</span>` 
-                            : ''}
-                    </div>
-                </li>
-            `).join('');
+            changesHTML = version.changes.map(change => {
+                const changeType = change.type || 'updated';
+                return `
+                    <li class="vh-change-item">
+                        <span class="vh-change-type ${changeType}">
+                            ${getChangeIcon(changeType)} ${getChangeLabel(changeType)}
+                        </span>
+                        <div class="vh-change-detail">
+                            <strong>${escapeHtml(change.detail)}</strong>
+                            ${change.description ? `<span class="vh-change-description">${escapeHtml(change.description)}</span>` : ''}
+                        </div>
+                    </li>
+                `;
+            }).join('');
         }
         
-        // Crear recursos HTML
         let resourcesHTML = '';
         if (version.resources && version.resources.length > 0) {
-            resourcesHTML = version.resources.map(resource => `
-                <a href="${resource.url}" class="vh-resource-card ${resource.type}" 
-                   ${resource.type === 'video' || resource.type === 'image' ? 'target="_blank"' : ''}
-                   ${resource.type === 'link' ? 'target="_blank" rel="noopener noreferrer"' : ''}>
-                    <span class="vh-resource-icon">${resource.icon}</span>
-                    <span>${resource.label}</span>
-                </a>
-            `).join('');
+            resourcesHTML = version.resources.map(resource => {
+                const resourceIcon = resource.icon || getResourceIcon(resource.type);
+                return `
+                    <a href="${escapeHtml(resource.url)}" class="vh-resource-card ${resource.type}" 
+                       ${resource.type === 'video' || resource.type === 'image' ? 'target="_blank"' : ''}
+                       ${resource.type === 'link' ? 'target="_blank" rel="noopener noreferrer"' : ''}>
+                        <span class="vh-resource-icon">${resourceIcon}</span>
+                        <span>${escapeHtml(resource.label)}</span>
+                    </a>
+                `;
+            }).join('');
         }
 
         card.innerHTML = `
             <div class="vh-version-header">
                 <div class="vh-version-tag">
                     ${typeIcon} ${typeLabel}
-                    ${version.current ? '<span style="color: var(--vh-success); margin-left: 0.25rem;">🏆</span>' : ''}
+                    ${isCurrent ? '<span style="color: var(--vh-success); margin-left: 0.25rem;">🏆 Última versión</span>' : ''}
                 </div>
-                <h2 class="vh-version-title">
-                    ${version.title}
-                </h2>
+                <h2 class="vh-version-title">${escapeHtml(version.title)}</h2>
                 <div class="vh-version-meta">
-                    <a href="#${getVersionAnchor(version)}" class="vh-version-link" title="Enlace directo a esta versión" onclick="copyVersionLink('${getVersionAnchor(version)}', event)"><span class="vh-version-number">v${version.version}</span></a>
-                    <span class="vh-version-timestamp" title="${formattedTimestamp}">
-                        📅 ${relativeTime}
-                    </span>
+                    <a href="#${getVersionAnchor(version)}" class="vh-version-link" title="Enlace directo a esta versión" onclick="copyVersionLink('${getVersionAnchor(version)}', event)">
+                        <span class="vh-version-number">v${escapeHtml(version.version)}</span>
+                    </a>
+                    <span class="vh-version-timestamp" title="${formattedTimestamp}">📅 ${relativeTime}</span>
                 </div>
             </div>
-            
             <div class="vh-changes-section">
                 <h3 class="vh-changes-title">
                     <span>📋</span>
                     <span>Cambios realizados</span>
-                    <span style="font-size: 0.75rem; color: var(--vh-gray-500); margin-left: auto;">
-                        ${version.changes ? version.changes.length : 0} cambios
-                    </span>
+                    <span style="font-size: 0.75rem; color: var(--vh-gray-500); margin-left: auto;">${version.changes ? version.changes.length : 0} cambios</span>
                 </h3>
-                <ul class="vh-changes-list">
-                    ${changesHTML}
-                </ul>
+                <ul class="vh-changes-list">${changesHTML}</ul>
             </div>
-            
             ${version.resources && version.resources.length > 0 ? `
             <details class="vh-resources-section">
                 <summary><h3 class="vh-resources-title">
                     <span>📎</span>
                     <span>Recursos relacionados</span>
-                    <span style="font-size: 0.75rem; color: var(--vh-gray-500); margin-left: auto;">
-                        ${version.resources.length} recursos
-                    </span>
+                    <span style="font-size: 0.75rem; color: var(--vh-gray-500); margin-left: auto;">${version.resources.length} recursos</span>
                 </h3></summary>
-                <div class="vh-resources-grid">
-                    ${resourcesHTML}
-                </div>
+                <div class="vh-resources-grid">${resourcesHTML}</div>
             </details>
             ` : ''}
-            
             <div class="vh-share-section" style="padding: 1rem 2rem; border-top: 1px solid var(--vh-gray-200); text-align: center;">
-                <button class="vh-share-btn" 
-                        onclick="shareVersion('${version.type}', '${version.version}', '${version.title}')"
-                        style="background: var(--vh-gray-100); border: 1px solid var(--vh-gray-300); 
-                               padding: 0.5rem 1rem; border-radius: var(--vh-radius-md); 
-                               color: var(--vh-gray-700); cursor: pointer; font-size: 0.875rem;
-                               display: inline-flex; align-items: center; gap: 0.5rem;">
+                <button class="vh-share-btn" onclick="shareVersion('${version.type}', '${escapeHtml(version.version)}', '${escapeHtml(version.title)}')">
                     <span>📤</span>
                     <span>Compartir esta versión</span>
                 </button>
@@ -1271,88 +1027,45 @@ document.addEventListener('DOMContentLoaded', function() {
         return card;
     }
 
-    // Funciones auxiliares
-    function getTypeLabel(type) {
-        const typeMap = {
-            'website': 'Sitio Web',
-            'panel': 'Panel de Control',
-            'api': 'API',
-            'mobile': 'Aplicación Móvil'
-        };
-        return typeMap[type] || type;
-    }
-
-    function getTypeIcon(type) {
-        const iconMap = {
-            'website': '🌐',
-            'panel': '⚙️',
-            'api': '🔧',
-            'mobile': '📱'
-        };
-        return iconMap[type] || '📄';
-    }
-
-    function getChangeLabel(type) {
-        const labelMap = {
-            'added': 'Añadido',
-            'updated': 'Actualizado',
-            'fixed': 'Corregido',
-            'removed': 'Eliminado'
-        };
-        return labelMap[type] || type;
-    }
-
-    function getChangeIcon(type) {
-        const iconMap = {
-            'added': '➕',
-            'updated': '🔄',
-            'fixed': '🔧',
-            'removed': '🗑️'
-        };
-        return iconMap[type] || '📝';
-    }
-
-    // Actualizar contadores de filtros
     function updateFilterCounts() {
         const allCount = vhVersionsData.versions.length;
         const websiteCount = vhVersionsData.versions.filter(v => v.type === 'website').length;
         const panelCount = vhVersionsData.versions.filter(v => v.type === 'panel').length;
         const apiCount = vhVersionsData.versions.filter(v => v.type === 'api').length;
         
-        document.querySelector('[data-filter="all"] .vh-filter-count').textContent = allCount;
-        document.querySelector('[data-filter="website"] .vh-filter-count').textContent = websiteCount;
-        document.querySelector('[data-filter="panel"] .vh-filter-count').textContent = panelCount;
-        document.querySelector('[data-filter="api"] .vh-filter-count').textContent = apiCount;
+        const allBtn = document.querySelector('[data-filter="all"] .vh-filter-count');
+        const websiteBtn = document.querySelector('[data-filter="website"] .vh-filter-count');
+        const panelBtn = document.querySelector('[data-filter="panel"] .vh-filter-count');
+        const apiBtn = document.querySelector('[data-filter="api"] .vh-filter-count');
+        
+        if (allBtn) allBtn.textContent = allCount;
+        if (websiteBtn) websiteBtn.textContent = websiteCount;
+        if (panelBtn) panelBtn.textContent = panelCount;
+        if (apiBtn) apiBtn.textContent = apiCount;
     }
 
-    // Función para verificar hash y desplazarse
     function checkHashAndScroll() {
         const hash = window.location.hash;
         if (hash && hash.startsWith('#v')) {
-            const versionElement = document.getElementById(hash.substring(1));
+            const targetId = hash.substring(1);
+            const versionElement = document.getElementById(targetId);
             if (versionElement) {
-                // Esperar un momento para que se renderice
                 setTimeout(() => {
                     versionElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    
-                    // Añadir efecto visual
                     versionElement.style.transition = 'all 0.5s ease';
                     versionElement.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.3)';
                     versionElement.style.borderColor = 'var(--vh-secondary)';
-                    
                     setTimeout(() => {
                         versionElement.style.boxShadow = '';
                         versionElement.style.borderColor = '';
                     }, 2000);
                     
-                    // Actualizar filtro activo basado en la versión
-                    const versionData = vhVersionsData.versions.find(v => getVersionAnchor(v) === hash.substring(1));
+                    const versionData = vhVersionsData.versions.find(v => getVersionAnchor(v) === targetId);
                     if (versionData) {
                         const filterBtn = document.querySelector(`[data-filter="${versionData.type}"]`);
                         if (filterBtn && !filterBtn.classList.contains('active')) {
                             filterButtons.forEach(btn => btn.classList.remove('active'));
                             filterBtn.classList.add('active');
-                            
                             const filtered = vhVersionsData.versions.filter(v => v.type === versionData.type);
                             displayVersions(filtered);
                         }
@@ -1362,148 +1075,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Función para actualizar URL con filtro
     function updateUrlWithFilter(filterType) {
-        const currentHash = window.location.hash;
-        const newHash = filterType === 'all' ? '' : `filter=${filterType}`;
-        
-        // Actualizar URL sin recargar
-        const newUrl = `${window.location.pathname}${newHash ? `#${newHash}` : ''}`;
+        const newUrl = `${window.location.pathname}${filterType === 'all' ? '' : `#filter=${filterType}`}`;
         window.history.pushState({ filter: filterType }, '', newUrl);
     }
+}
 
-    // Configurar eventos para recursos multimedia
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('.vh-resource-card.video') || e.target.closest('.vh-resource-card.image')) {
-            e.preventDefault();
-            const card = e.target.closest('.vh-resource-card');
-            const url = card.getAttribute('href');
-            const label = card.textContent.trim();
-            const type = card.classList.contains('video') ? 'video' : 'image';
-            
-            openMediaModal(type, url, label);
-        }
-    });
-
-    // Función para abrir modal de medios
-    function openMediaModal(type, url, label) {
-        const modal = document.createElement('div');
-        modal.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            padding: 1rem;
-        `;
-
-        const content = document.createElement('div');
-        content.style.cssText = `
-            max-width: 90%;
-            max-height: 90%;
-            position: relative;
-        `;
-
-        const closeBtn = document.createElement('button');
-        closeBtn.innerHTML = '×';
-        closeBtn.style.cssText = `
-            position: absolute;
-            top: -40px;
-            right: 0;
-            background: #fff;
-            border: none;
-            color: #000;
-            font-size: 24px;
-            cursor: pointer;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        `;
-        closeBtn.onclick = () => document.body.removeChild(modal);
-
-        let mediaElement;
-        if (type === 'video') {
-            mediaElement = document.createElement('iframe');
-            mediaElement.src = url;
-            mediaElement.style.cssText = `
-                width: 80vw;
-                height: 45vw;
-                max-width: 800px;
-                max-height: 450px;
-                border: none;
-                border-radius: 8px;
-            `;
-            mediaElement.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-            mediaElement.allowFullscreen = true;
-        } else if (type === 'image') {
-            mediaElement = document.createElement('img');
-            mediaElement.src = url;
-            mediaElement.alt = label;
-            mediaElement.style.cssText = `
-                max-width: 100%;
-                max-height: 80vh;
-                object-fit: contain;
-                border-radius: 8px;
-            `;
-        }
-
-        const caption = document.createElement('div');
-        caption.textContent = label;
-        caption.style.cssText = `
-            color: white;
-            text-align: center;
-            margin-top: 1rem;
-            font-size: 0.9rem;
-        `;
-
-        content.appendChild(mediaElement);
-        content.appendChild(closeBtn);
-        if (label) content.appendChild(caption);
-        modal.appendChild(content);
-        document.body.appendChild(modal);
-
-        // Cerrar con ESC
-        modal.onkeydown = (e) => {
-            if (e.key === 'Escape') {
-                document.body.removeChild(modal);
-            }
-        };
-        modal.focus();
-    }
-
-    // Inicializar contadores
-    updateFilterCounts();
-    
-    // Configurar listener para cambios en el hash
-    window.addEventListener('hashchange', function() {
-        checkHashAndScroll();
-    });
-});
-
-// FUNCIONES GLOBALES PARA COMPARTIR VERSIONES
+// FUNCIONES GLOBALES
 function copyVersionLink(anchorId, event) {
     if (event) event.preventDefault();
-    
     const url = `${window.location.origin}${window.location.pathname}#${anchorId}`;
     
-    // Usar Clipboard API si está disponible
     if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(url).then(() => {
-            showToast('✅ Enlace copiado al portapapeles');
-        }).catch(err => {
-            // Fallback para navegadores más antiguos
-            copyToClipboardFallback(url);
-        });
+        navigator.clipboard.writeText(url).then(() => showToast('✅ Enlace copiado al portapapeles'))
+            .catch(() => copyToClipboardFallback(url));
     } else {
-        // Fallback para navegadores más antiguos
         copyToClipboardFallback(url);
     }
 }
@@ -1511,47 +1097,31 @@ function copyVersionLink(anchorId, event) {
 function copyToClipboardFallback(text) {
     const textArea = document.createElement('textarea');
     textArea.value = text;
-    textArea.style.position = 'fixed';
-    textArea.style.left = '-999999px';
-    textArea.style.top = '-999999px';
+    textArea.style.cssText = 'position:fixed;left:-999999px;top:-999999px';
     document.body.appendChild(textArea);
-    textArea.focus();
     textArea.select();
-    
     try {
         document.execCommand('copy');
         showToast('✅ Enlace copiado al portapapeles');
     } catch (err) {
-        console.error('Error al copiar: ', err);
         showToast('❌ Error al copiar el enlace');
     }
-    
     document.body.removeChild(textArea);
 }
 
 function shareVersion(type, version, title) {
-    const url = `${window.location.origin}${window.location.pathname}#v${version}`;
+    const url = `${window.location.origin}${window.location.pathname}#v${version.replace(/\./g, '_')}`;
     const text = `Versión ${version} de ${type}: ${title}`;
     
-    // Verificar si Web Share API está disponible
     if (navigator.share) {
-        navigator.share({
-            title: `Grouvex Studios - v${version}`,
-            text: text,
-            url: url
-        }).catch(err => {
-            console.log('Error al compartir:', err);
-            // Fallback a copiar enlace
-            copyVersionLink(`v${version}`);
-        });
+        navigator.share({ title: `Grouvex Studios - v${version}`, text: text, url: url })
+            .catch(() => copyVersionLink(`v${version.replace(/\./g, '_')}`));
     } else {
-        // Fallback a copiar enlace
-        copyVersionLink(`v${version}`);
+        copyVersionLink(`v${version.replace(/\./g, '_')}`);
     }
 }
 
 function showToast(message) {
-    // Crear o reutilizar toast
     let toast = document.getElementById('vh-toast');
     if (!toast) {
         toast = document.createElement('div');
@@ -1574,53 +1144,15 @@ function showToast(message) {
         `;
         document.body.appendChild(toast);
     }
-    
     toast.textContent = message;
     toast.style.opacity = '1';
-    
-    setTimeout(() => {
-        toast.style.opacity = '0';
-    }, 3000);
+    setTimeout(() => { toast.style.opacity = '0'; }, 3000);
 }
 
-// Añadir estilos adicionales para el enlace de versión
-const additionalStyles = document.createElement('style');
-additionalStyles.textContent = `
-    #versions-history .vh-version-link {
-        text-decoration: none;
-        color: var(--vh-gray-400);
-        font-size: 0.875rem;
-        margin-left: 0.5rem;
-        opacity: 0.5;
-        transition: opacity 0.2s ease, color 0.2s ease;
-    }
-    
-    #versions-history .vh-version-link:hover {
-        opacity: 1;
-        color: var(--vh-secondary);
-    }
-    
-    #versions-history .vh-version-title {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-    
-    #versions-history .vh-version-title a {
-        flex-shrink: 0;
-    }
-    
-    #versions-history .vh-share-btn {
-        transition: all 0.2s ease;
-    }
-    
-    #versions-history .vh-share-btn:hover {
-        background: var(--vh-gray-200) !important;
-        border-color: var(--vh-gray-400) !important;
-        transform: translateY(-1px);
-    }
-`;
-document.head.appendChild(additionalStyles);
+// INICIAR CARGA DE DATOS
+document.addEventListener('DOMContentLoaded', function() {
+    loadVersionsData();
+});
 </script>
 </body>
 </html>

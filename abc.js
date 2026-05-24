@@ -368,17 +368,28 @@ function procesarInsignias(textoInsignias) {
     partes.forEach(parte => {
         const urlLimpia = parte.trim();
         
-        if (urlLimpia && urlLimpia.toLowerCase().includes('githubusercontent.com')) {
-            const tieneExtension = /\.(png|gif|jpg|jpeg|webp|svg)(\?.*)?$/i.test(urlLimpia);
+        if (urlLimpia) {
+            let esHostPermitido = false;
             
-            if (tieneExtension) {
-                const nombre = extraerNombreInsignia(urlLimpia);
+            try {
+                const host = new URL(urlLimpia).hostname.toLowerCase();
+                esHostPermitido = host === 'githubusercontent.com' || host.endsWith('.githubusercontent.com');
+            } catch (e) {
+                esHostPermitido = false;
+            }
+
+            if (esHostPermitido) {
+                const tieneExtension = /\.(png|gif|jpg|jpeg|webp|svg)(\?.*)?$/i.test(urlLimpia);
                 
-                insignias.push({
-                    nombre: nombre,
-                    url: urlLimpia,
-                    tipo: determinarTipoInsignia(urlLimpia)
-                });
+                if (tieneExtension) {
+                    const nombre = extraerNombreInsignia(urlLimpia);
+                    
+                    insignias.push({
+                        nombre: nombre,
+                        url: urlLimpia,
+                        tipo: determinarTipoInsignia(urlLimpia)
+                    });
+                }
             }
         }
     });

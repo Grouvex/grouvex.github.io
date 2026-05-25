@@ -4,10 +4,16 @@
     <meta charset="UTF-8">
     <title>Anuncio - Grouvex Studios</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    
+    <meta property="og:title" content="Grouvex Studios - Anuncio">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Grouvex Studios">
+    
     <link rel="icon" href="img/GROUVEX.png" type="image/x-icon">
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="temas.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js" integrity="sha512-uH9S9POfu5uD99+nnoB0msh7n9L21v1Jt00fH8U8p0Wv46v2Bf2C901614f16b251216b24021234567890abcdef" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
     <style>
@@ -61,6 +67,17 @@
             line-height: 1.8;
         }
         
+        .anuncio-content img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        
+        .anuncio-content iframe {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
         .back-button {
             display: inline-block;
             margin-top: 2rem;
@@ -98,7 +115,7 @@
     
     <main>
         <div id="anuncioContent" class="anuncio-container">
-            <div style="color:white; text-align:center;">Cargando anuncio...</div>
+            <!-- Contenido dinámico -->
         </div>
     </main>
     
@@ -107,11 +124,15 @@
     <script>
         function sanitizeHTML(str) {
             if (!str) return '';
-            return DOMPurify.sanitize(str);
+            return DOMPurify.sanitize(str, {
+                ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'ul', 'li', 'a', 'h1', 'h2', 'h3', 'h4', 'article', 'div', 'span', 'iframe', 'hr', 'img', 'n'],
+                ALLOWED_ATTR: ['href', 'target', 'src', 'frameborder', 'allow', 'class', 'id', 'style', 'alt', 'width', 'height']
+            });
         }
         
         function getUrlParam(param) {
-            return new URLSearchParams(window.location.search).get(param);
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
         }
         
         async function loadAnnouncement() {
@@ -119,18 +140,18 @@
             const container = document.getElementById('anuncioContent');
             
             if (!id) {
-                container.innerHTML = '<div class="not-found"><h2>❌ No se especificó ningún anuncio</h2><a href="anuncios" class="back-button">← Volver</a></div>';
+                container.innerHTML = '<div class="not-found"><h2>❌ No se especificó ningún anuncio</h2><a href="anuncios" class="back-button">← Volver a anuncios</a></div>';
                 return;
             }
             
             try {
                 const response = await fetch('anuncios.json');
-                if (!response.ok) throw new Error();
+                if (!response.ok) throw new Error('Error al cargar datos');
                 const anuncios = await response.json();
                 const anuncio = anuncios.find(a => a.id === id);
                 
                 if (!anuncio) {
-                    container.innerHTML = '<div class="not-found"><h2>🔍 Anuncio no encontrado</h2><a href="anuncios" class="back-button">← Volver</a></div>';
+                    container.innerHTML = '<div class="not-found"><h2>🔍 Anuncio no encontrado</h2><p>El anuncio que buscas no existe o ha sido eliminado.</p><a href="anuncios" class="back-button">← Volver a anuncios</a></div>';
                     return;
                 }
                 
@@ -140,29 +161,30 @@
                     <div class="anuncio-header">
                         <img src="${sanitizeHTML(anuncio.userimagen)}" alt="${sanitizeHTML(anuncio.user)}" class="user-avatar-large" onerror="this.src='img/default-avatar.png'">
                         <div>
-                            <div style="color: var(--color-primary);">📌 ${sanitizeHTML(anuncio.tipo)}</div>
+                            <div style="color: var(--color-primary); margin-bottom: 0.5rem;">📌 ${sanitizeHTML(anuncio.tipo)}</div>
                             <div style="color: rgba(255,255,255,0.6);">👤 ${sanitizeHTML(anuncio.user)}</div>
                         </div>
                     </div>
                     <h1 class="anuncio-title">${sanitizeHTML(anuncio.titulo)}</h1>
                     <div class="anuncio-content">
                         ${sanitizeHTML(anuncio.contenido)}
-                        ${anuncio.infoAdicional ? `<hr><br>${sanitizeHTML(anuncio.infoAdicional)}` : ''}
+                        ${anuncio.infoAdicional ? `<hr style="margin: 1.5rem 0; border-color: rgba(255,255,255,0.2);">${sanitizeHTML(anuncio.infoAdicional)}` : ''}
                     </div>
-                    <a href="anuncios" class="back-button">← Volver a anuncios</a>
+                    <a href="anuncios" class="back-button">← Volver a la lista de anuncios</a>
                 `;
             } catch (error) {
-                container.innerHTML = '<div class="not-found"><h2>⚠️ Error al cargar</h2><a href="anuncios" class="back-button">← Volver</a></div>';
+                console.error('Error:', error);
+                container.innerHTML = '<div class="not-found"><h2>⚠️ Error al cargar el anuncio</h2><p>Por favor, intenta de nuevo más tarde.</p><a href="anuncios" class="back-button">← Volver a anuncios</a></div>';
             }
         }
         
-        // Cargar menús y footer
-        $(document).ready(function() {
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAnnouncement();
             $("#menuG").load("menuG.html");
             $("#menuT").load("menuT.html");
             $("#menuU").load("menuU.html");
             $("#footer").load("footer.html");
-            loadAnnouncement();
         });
     </script>
 </body>

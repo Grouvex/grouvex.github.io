@@ -601,40 +601,35 @@
             const start = state.loadedCount;
             const end = start + CONFIG.ITEMS_PER_PAGE;
             const toRender = state.filteredAnuncios.slice(start, end);
-
+        
             if (state.loadedCount === 0) {
                 elements.contentGrid.innerHTML = '';
             }
-
+        
             toRender.forEach(anuncio => {
                 const card = createAnnouncementCard(anuncio);
                 elements.contentGrid.appendChild(card);
             });
             
-            if (typeof window.cargarDatosEInsigniasEnTodosLosElementos === 'function') {
-                window.cargarDatosEInsigniasEnTodosLosElementos();
-            }
-            
             state.loadedCount += toRender.length;
-
+        
             // Actualizar botón de carga
             const hasMore = state.loadedCount < state.filteredAnuncios.length;
             elements.loadMoreBtn.disabled = !hasMore;
             elements.loadMoreBtn.textContent = hasMore ? 'Cargar más anuncios' : '📭 No hay más anuncios';
             
-            const recargarInsignias = (intento = 0) => {
+            const procesarInsignias = (intento = 0) => {
                 if (typeof window.cargarDatosEInsigniasEnTodosLosElementos === 'function') {
-                    console.log(`🔄 Recargando insignias (intento ${intento + 1})`);
+                    console.log(`🔄 Procesando insignias (intento ${intento + 1})`);
                     window.cargarDatosEInsigniasEnTodosLosElementos();
                 } else if (intento < 10) {
-                    // Reintentar hasta 10 veces (1 segundo)
-                    setTimeout(() => recargarInsignias(intento + 1), 100);
+                    setTimeout(() => procesarInsignias(intento + 1), 100);
                 } else {
                     console.error('❌ No se pudo cargar la función de insignias');
                 }
             };
             
-            recargarInsignias();
+            procesarInsignias();
         }
 
         function createAnnouncementCard(anuncio) {

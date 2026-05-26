@@ -1083,3 +1083,4 @@ document.addEventListener('DOMContentLoaded', () => {
 window.usuarioTieneRol = usuarioTieneRol;
 window.obtenerNivelPermiso = obtenerNivelPermiso;
 window.cargarInsigniasUsuario = obtenerInsigniasUsuario;
+window.cargarDatosEInsigniasEnTodosLosElementos = cargarDatosEInsigniasEnTodosLosElementos;

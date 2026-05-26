@@ -1,7 +1,7 @@
 // ============================================
 // PROTECCIÓN ANTI-INSPECCIÓN
 // ============================================
-!function(){'use strict';document.addEventListener('keydown',e=>{((e.ctrlKey&&e.shiftKey&&['I','J','C','K'].includes(e.key))||['F12','F8'].includes(e.key)||(e.ctrlKey&&['U','S'].includes(e.key.toUpperCase())))&&(e.preventDefault(),e.stopImmediatePropagation())},!0),document.addEventListener('contextmenu',e=>{e.preventDefault(),e.stopImmediatePropagation()},!0),document.addEventListener('selectstart',e=>e.preventDefault(),!0),setInterval(()=>{(window.outerWidth-window.innerWidth>100||window.outerHeight-window.innerHeight>100)},1e3)}();
+// !function(){'use strict';document.addEventListener('keydown',e=>{((e.ctrlKey&&e.shiftKey&&['I','J','C','K'].includes(e.key))||['F12','F8'].includes(e.key)||(e.ctrlKey&&['U','S'].includes(e.key.toUpperCase())))&&(e.preventDefault(),e.stopImmediatePropagation())},!0),document.addEventListener('contextmenu',e=>{e.preventDefault(),e.stopImmediatePropagation()},!0),document.addEventListener('selectstart',e=>e.preventDefault(),!0),setInterval(()=>{(window.outerWidth-window.innerWidth>100||window.outerHeight-window.innerHeight>100)},1e3)}();
 
 // ============================================
 // CONFIGURACIÓN DE FIREBASE
@@ -216,132 +216,130 @@ async function handleAccountDeletion() {
 }
 
 // ============================================
-// FUNCIONES PARA OBTENER DATOS DEL USUARIO DESDE GOOGLE SHEETS
+// FUNCIONES PARA OBTENER DATOS DEL USUARIO DESDE GOOGLE SHEETS (OPTIMIZADA)
 // ============================================
+
+// Cache para datos de la API (válido por 5 minutos)
+let apiDataCache = null;
+let apiCacheTime = 0;
+const API_CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
 
 async function obtenerDatosUsuarioPorUserID(userID) {
     try {
-        console.log('🔍 Buscando datos para UserID:', userID);
-        
         if (!userID || userID.trim() === '') {
-            console.log('❌ UserID vacío o inválido');
             return null;
         }
         
         const searchUserID = userID.replace(/^GS-/i, '').trim();
         
-        const url = `${APPS_SCRIPT_URL}?timestamp=${Date.now()}`;
-        console.log('📡 URL de solicitud:', url);
-        
-        const response = await fetch(url);
-        
-        if (!response.ok) {
-            throw new Error(`Error HTTP: ${response.status}`);
-        }
-        
-        const text = await response.text();
-        
+        // Obtener datos de la API (con caché)
         let jsonData;
-        try {
+        const now = Date.now();
+        
+        if (apiDataCache && (now - apiCacheTime) < API_CACHE_DURATION) {
+            jsonData = apiDataCache;
+            console.log('📦 Usando caché de API');
+        } else {
+            console.log('🌐 Consultando API...');
+            const url = `${APPS_SCRIPT_URL}?timestamp=${now}`;
+            const response = await fetch(url);
+            
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            
+            const text = await response.text();
             jsonData = JSON.parse(text);
-        } catch (e) {
-            console.error('❌ Error parseando JSON:', e);
-            return null;
+            
+            if (jsonData.success) {
+                apiDataCache = jsonData;
+                apiCacheTime = now;
+            }
         }
         
-        if (!jsonData.success) {
-            console.error('❌ Error en respuesta:', jsonData.error);
+        if (!jsonData?.success) {
+            console.error('❌ Error en API:', jsonData?.error);
             return null;
         }
         
         const headers = jsonData.headers || [];
         const data = jsonData.data || [];
         
-        // Buscar índices de columnas
-        let userIDIndex = -1;
-        let insigniasIndex = -1;
-        let nombreIndex = -1;
-        let emailIndex = -1;
-        
-        headers.forEach((header, index) => {
-            const headerStr = header ? header.toString() : '';
+        // Pre-calcular índices (solo la primera vez)
+        if (!window._columnIndices) {
+            window._columnIndices = {
+                userID: -1,
+                insignias: -1,
+                nombre: -1,
+                email: -1
+            };
             
-            if (userIDIndex === -1 && headerStr.toLowerCase().includes('grouvex studios userid')) {
-                userIDIndex = index;
-                console.log('✅ Columna UserID encontrada en índice:', index);
-            }
-            
-            if (insigniasIndex === -1 && headerStr.toLowerCase() === 'insignias') {
-                insigniasIndex = index;
-                console.log('✅ Columna Insignias encontrada en índice:', index);
-            }
-            
-            if (nombreIndex === -1 && (headerStr.toLowerCase().includes('nombre de usuario') || 
-                                       headerStr.toLowerCase().includes('nombre del cliente') ||
-                                       headerStr.toLowerCase().includes('nombre y apellidos reales') ||
-                                       headerStr.toLowerCase().includes('nombre del artista/banda'))) {
-                nombreIndex = index;
-                console.log('✅ Columna Nombre encontrada en índice:', index);
-            }
-            
-            if (emailIndex === -1 && headerStr.toLowerCase().includes('email')) {
-                emailIndex = index;
-                console.log('✅ Columna Email encontrada en índice:', index);
-            }
-        });
-        
-        // Si no encuentra columna específica de nombre, buscar cualquier columna con "nombre"
-        if (nombreIndex === -1) {
             headers.forEach((header, index) => {
-                const headerStr = header ? header.toString() : '';
-                if (nombreIndex === -1 && headerStr.toLowerCase().includes('nombre')) {
-                    nombreIndex = index;
-                    console.log('✅ Columna Nombre (aproximada) encontrada en índice:', index);
+                const headerStr = header?.toString()?.toLowerCase() || '';
+                
+                if (window._columnIndices.userID === -1 && headerStr.includes('grouvex studios userid')) {
+                    window._columnIndices.userID = index;
+                }
+                if (window._columnIndices.insignias === -1 && headerStr === 'insignias') {
+                    window._columnIndices.insignias = index;
+                }
+                if (window._columnIndices.nombre === -1 && 
+                    (headerStr.includes('nombre de usuario') || 
+                     headerStr.includes('nombre del cliente') ||
+                     headerStr.includes('nombre y apellidos reales') ||
+                     headerStr.includes('nombre del artista/banda'))) {
+                    window._columnIndices.nombre = index;
+                }
+                if (window._columnIndices.email === -1 && headerStr.includes('email')) {
+                    window._columnIndices.email = index;
                 }
             });
+            
+            // Búsqueda secundaria de nombre
+            if (window._columnIndices.nombre === -1) {
+                headers.forEach((header, index) => {
+                    const headerStr = header?.toString()?.toLowerCase() || '';
+                    if (window._columnIndices.nombre === -1 && headerStr.includes('nombre')) {
+                        window._columnIndices.nombre = index;
+                    }
+                });
+            }
         }
         
-        if (userIDIndex === -1) {
-            console.error('❌ No se encontró la columna UserID');
+        const indices = window._columnIndices;
+        
+        if (indices.userID === -1) {
+            console.error('❌ No se encontró columna UserID');
             return null;
         }
         
-        // Buscar el usuario en todas las filas
-        for (let i = 0; i < data.length; i++) {
-            const row = data[i];
-            const rowUserID = row[userIDIndex] ? row[userIDIndex].toString().trim() : '';
-            
-            if (rowUserID) {
-                const normalizedRowUserID = rowUserID.replace(/^GS-/i, '').trim();
-                
-                if (normalizedRowUserID.toLowerCase() === searchUserID.toLowerCase()) {
-                    console.log(`✅ Usuario encontrado en fila ${i + 2}`);
-                    
-                    const insigniasTexto = insigniasIndex !== -1 ? (row[insigniasIndex] ? row[insigniasIndex].toString().trim() : '') : '';
-                    const nombre = nombreIndex !== -1 ? (row[nombreIndex] ? row[nombreIndex].toString().trim() : '') : 'Usuario';
-                    const email = emailIndex !== -1 ? (row[emailIndex] ? row[emailIndex].toString().trim() : '') : '';
-                    
-                    return {
-                        userID: userID,
-                        nombre: nombre || 'Usuario',
-                        email: email || 'Sin email',
-                        insignias: insigniasTexto
-                    };
-                }
-            }
+        // Búsqueda más rápida usando find
+        const row = data.find(row => {
+            const rowUserID = row[indices.userID]?.toString().trim() || '';
+            if (!rowUserID) return false;
+            const normalizedRowUserID = rowUserID.replace(/^GS-/i, '').trim();
+            return normalizedRowUserID.toLowerCase() === searchUserID.toLowerCase();
+        });
+        
+        if (row) {
+            console.log(`✅ Usuario encontrado`);
+            return {
+                userID: userID,
+                nombre: indices.nombre !== -1 ? (row[indices.nombre]?.toString().trim() || 'Usuario') : 'Usuario',
+                email: indices.email !== -1 ? (row[indices.email]?.toString().trim() || 'Sin email') : 'Sin email',
+                insignias: indices.insignias !== -1 ? (row[indices.insignias]?.toString().trim() || '') : ''
+            };
         }
         
-        console.log('❌ Usuario no encontrado en la base de datos');
+        console.log('❌ Usuario no encontrado');
         return null;
         
     } catch (error) {
-        console.error('❌ Error obteniendo datos del usuario:', error);
+        console.error('❌ Error:', error);
         return null;
     }
 }
 
 // ============================================
-// FUNCIONES PARA PROCESAR INSIGNIAS
+// FUNCIONES PARA PROCESAR INSIGNIAS (OPTIMIZADA)
 // ============================================
 
 function procesarInsignias(textoInsignias) {
@@ -349,50 +347,48 @@ function procesarInsignias(textoInsignias) {
         return [];
     }
     
-    const texto = textoInsignias.trim();
+    const texto = textoInsignias.trim().toLowerCase();
     
-    // Si indica que no hay insignias
-    if (texto.toLowerCase() === 'ninguna' || 
-        texto.toLowerCase() === 'sin insignias' ||
-        texto.toLowerCase() === 'n/a' ||
-        texto.toLowerCase() === 'no aplica') {
+    // Verificaciones rápidas
+    const textosVacios = ['ninguna', 'sin insignias', 'n/a', 'no aplica'];
+    if (textosVacios.includes(texto)) {
         return [];
     }
     
     const insignias = [];
-    
-    // Separar por comas, punto y coma
     const separadores = /[,;]+/;
     const partes = texto.split(separadores);
     
-    partes.forEach(parte => {
+    // Procesar cada parte (evitar regex innecesarias dentro del loop)
+    for (const parte of partes) {
         const urlLimpia = parte.trim();
+        if (!urlLimpia) continue;
         
-        if (urlLimpia) {
-            let esHostPermitido = false;
-            
+        // Verificar dominio rápidamente
+        let esHostPermitido = false;
+        if (urlLimpia.includes('githubusercontent.com')) {
+            esHostPermitido = true;
+        } else {
             try {
                 const host = new URL(urlLimpia).hostname.toLowerCase();
                 esHostPermitido = host === 'githubusercontent.com' || host.endsWith('.githubusercontent.com');
             } catch (e) {
-                esHostPermitido = false;
-            }
-
-            if (esHostPermitido) {
-                const tieneExtension = /\.(png|gif|jpg|jpeg|webp|svg)(\?.*)?$/i.test(urlLimpia);
-                
-                if (tieneExtension) {
-                    const nombre = extraerNombreInsignia(urlLimpia);
-                    
-                    insignias.push({
-                        nombre: nombre,
-                        url: urlLimpia,
-                        tipo: determinarTipoInsignia(urlLimpia)
-                    });
-                }
+                continue;
             }
         }
-    });
+        
+        if (!esHostPermitido) continue;
+        
+        // Verificar extensión
+        const tieneExtension = /\.(png|gif|jpg|jpeg|webp|svg)([\?#].*)?$/i.test(urlLimpia);
+        if (!tieneExtension) continue;
+        
+        insignias.push({
+            url: urlLimpia,
+            nombre: extraerNombreInsignia(urlLimpia),
+            tipo: determinarTipoInsignia(urlLimpia)
+        });
+    }
     
     return insignias;
 }
@@ -512,8 +508,12 @@ function crearElementoInsignia(insignia, index) {
 }
 
 // ============================================
-// FUNCIONES PARA MOSTRAR DATOS E INSIGNIAS
+// FUNCIONES PARA MOSTRAR DATOS E INSIGNIAS (OPTIMIZADA)
 // ============================================
+
+// Cache para almacenar datos de usuarios ya consultados
+const userDataCache = new Map();
+const userImageCache = new Map();
 
 async function mostrarDatosEInsigniasEnElemento(elementoTigsID) {
     try {
@@ -523,72 +523,64 @@ async function mostrarDatosEInsigniasEnElemento(elementoTigsID) {
             return;
         }
         
-        console.log(`🎯 Procesando elemento con tigsID: ${userID}`);
+        // Evitar procesar el mismo elemento múltiples veces
+        if (elementoTigsID.dataset.procesado === 'true') {
+            console.log(`⏩ Elemento ya procesado: ${userID}`);
+            return;
+        }
         
-        elementoTigsID.textContent = 'Cargando...';
-        elementoTigsID.style.color = '#888';
-        elementoTigsID.style.fontStyle = 'italic';
+        elementoTigsID.dataset.procesado = 'true';
+        console.log(`🎯 Procesando: ${userID}`);
         
-        const contenedorInsignias = elementoTigsID.closest('div')?.querySelector('.insignias-container');
+        // Mostrar loading solo si no tiene contenido
+        if (!elementoTigsID.textContent || elementoTigsID.textContent === '') {
+            elementoTigsID.textContent = 'Cargando...';
+            elementoTigsID.style.cssText = 'color: #888; font-style: italic;';
+        }
         
-        const tarjeta = elementoTigsID.closest('.tarjeta');
-        const imgTIGS = tarjeta ? tarjeta.querySelector('#imgTIGS') : null;
+        // Buscar contenedor de insignias (una sola vez)
+        const contenedorInsignias = elementoTigsID.closest('div, .user-info')?.querySelector('.insignias-container');
         
-        if (imgTIGS) {
-            const fotoURL = await obtenerFotoPerfilFirebase(userID);
-            imgTIGS.src = fotoURL;
-            imgTIGS.alt = `Foto de ${userID}`;
-            console.log(`✅ Imagen establecida para ${userID}: ${fotoURL}`);
-            
-            if (!imgTIGS.style.borderRadius) {
-                imgTIGS.style.cssText = `
-                    border-radius: 50%;
-                    width: 60px;
-                    height: 60px;
-                    object-fit: cover;
-                    margin-right: 15px;
-                    flex-shrink: 0;
-                    border: 2px solid rgba(255, 255, 255, 0.1);
-                    transition: all 0.3s ease;
-                `;
+        // Obtener datos (con caché)
+        let datosUsuario = userDataCache.get(userID);
+        if (!datosUsuario) {
+            datosUsuario = await obtenerDatosUsuarioPorUserID(userID);
+            if (datosUsuario) {
+                userDataCache.set(userID, datosUsuario);
             }
         }
         
-        const datosUsuario = await obtenerDatosUsuarioPorUserID(userID);
-        
         if (!datosUsuario) {
             elementoTigsID.textContent = 'Usuario no encontrado';
-            elementoTigsID.style.color = '#888';
-            elementoTigsID.style.fontStyle = 'italic';
+            elementoTigsID.style.cssText = 'color: #888; font-style: italic;';
             if (contenedorInsignias) {
                 contenedorInsignias.innerHTML = '<div class="no-insignias-message">🎯 Sin datos</div>';
             }
             return;
         }
         
+        // Actualizar nombre
         elementoTigsID.textContent = datosUsuario.nombre;
-        elementoTigsID.style.color = '';
-        elementoTigsID.style.fontStyle = '';
+        elementoTigsID.style.cssText = '';
         elementoTigsID.title = `ID: ${userID}`;
         
-        console.log(`✅ Nombre mostrado: ${datosUsuario.nombre} para ${userID}`);
-        
-        if (contenedorInsignias) {
+        // Procesar insignias (solo si no están ya procesadas)
+        if (contenedorInsignias && !contenedorInsignias.dataset.procesado) {
+            contenedorInsignias.dataset.procesado = 'true';
             const insignias = procesarInsignias(datosUsuario.insignias);
-            
-            contenedorInsignias.innerHTML = '';
             
             if (!insignias || insignias.length === 0) {
                 contenedorInsignias.innerHTML = '<div class="no-insignias-message">🎯 Sin insignias</div>';
                 return;
             }
             
-            console.log(`✅ Mostrando ${insignias.length} insignias para ${userID}`);
-            
+            // Usar DocumentFragment para mejor rendimiento
+            const fragment = document.createDocumentFragment();
             insignias.forEach((insignia, index) => {
-                const insigniaElement = crearElementoInsignia(insignia, index);
-                contenedorInsignias.appendChild(insigniaElement);
+                fragment.appendChild(crearElementoInsignia(insignia, index));
             });
+            contenedorInsignias.innerHTML = '';
+            contenedorInsignias.appendChild(fragment);
             
             if (insignias.length > 1) {
                 const contador = document.createElement('div');
@@ -599,8 +591,38 @@ async function mostrarDatosEInsigniasEnElemento(elementoTigsID) {
             }
         }
         
+        // Procesar imagen (si existe)
+        const tarjeta = elementoTigsID.closest('.tarjeta, .anuncio-card, .card-header');
+        const imgTIGS = tarjeta?.querySelector('#imgTIGS, .user-avatar, .user-avatar-large');
+        
+        if (imgTIGS && !imgTIGS.dataset.procesado) {
+            imgTIGS.dataset.procesado = 'true';
+            
+            let fotoURL = userImageCache.get(userID);
+            if (!fotoURL) {
+                fotoURL = await obtenerFotoPerfilFirebase(userID);
+                userImageCache.set(userID, fotoURL);
+            }
+            
+            imgTIGS.src = fotoURL;
+            imgTIGS.alt = `Foto de ${datosUsuario.nombre}`;
+            
+            if (!imgTIGS.style.borderRadius) {
+                Object.assign(imgTIGS.style, {
+                    borderRadius: '50%',
+                    width: '60px',
+                    height: '60px',
+                    objectFit: 'cover',
+                    marginRight: '15px',
+                    flexShrink: '0',
+                    border: '2px solid rgba(255, 255, 255, 0.1)',
+                    transition: 'all 0.3s ease'
+                });
+            }
+        }
+        
     } catch (error) {
-        console.error('❌ Error procesando elemento tigsID:', error);
+        console.error('❌ Error procesando:', error);
         if (elementoTigsID) {
             elementoTigsID.textContent = 'Error';
             elementoTigsID.style.color = '#ff4444';
@@ -640,61 +662,72 @@ async function obtenerFotoPerfilFirebase(userID) {
 }
 
 // ============================================
-// FUNCIÓN PRINCIPAL PARA CARGAR DATOS E INSIGNIAS
+// FUNCIÓN PRINCIPAL PARA CARGAR DATOS E INSIGNIAS (OPTIMIZADA)
 // ============================================
 
 async function cargarDatosEInsigniasEnTodosLosElementos() {
     console.log('🚀 Iniciando carga de datos e insignias');
     
+    // 1. Obtener todos los elementos de una vez
     const elementosConTigsID = document.querySelectorAll('[tigsID]');
     console.log(`📊 Encontrados ${elementosConTigsID.length} elementos con tigsID`);
     
-    for (const elemento of elementosConTigsID) {
-        await mostrarDatosEInsigniasEnElemento(elemento);
+    if (elementosConTigsID.length === 0 && !document.getElementById('userID')) {
+        console.log('ℹ️ No hay elementos para procesar');
+        return;
     }
     
+    // 2. Procesar TODOS los elementos en paralelo (no secuencial)
+    const promesas = Array.from(elementosConTigsID).map(elemento => 
+        mostrarDatosEInsigniasEnElemento(elemento)
+    );
+    
+    await Promise.all(promesas);
+    
+    // 3. Procesar el perfil del usuario actual (si existe)
     const userIDElement = document.getElementById('userID');
     if (userIDElement && userIDElement.textContent.trim()) {
         const userID = userIDElement.textContent.trim();
-        console.log(`📋 UserID encontrado en texto: ${userID}`);
+        console.log(`📋 Procesando perfil: ${userID}`);
         
-        const contenedorInsignias = userIDElement.closest('div')?.querySelector('.insignias-container');
-        
+        // Procesar foto de perfil
         const fotoPerfil = document.getElementById('fotoPerfil');
-        
-        if (fotoPerfil) {
+        if (fotoPerfil && !fotoPerfil.dataset.procesado) {
+            fotoPerfil.dataset.procesado = 'true';
             const fotoURL = await obtenerFotoPerfilFirebase(userID);
             fotoPerfil.src = fotoURL;
-            fotoPerfil.alt = 'Foto de perfil';
-            console.log(`✅ Foto de perfil establecida: ${fotoURL}`);
             
             if (!fotoPerfil.style.borderRadius) {
-                fotoPerfil.style.cssText = `
-                    border-radius: 50%;
-                    width: 60px;
-                    height: 60px;
-                    object-fit: cover;
-                    margin-right: 15px;
-                    flex-shrink: 0;
-                    border: 2px solid rgba(255, 255, 255, 0.1);
-                    transition: all 0.3s ease;
-                `;
+                Object.assign(fotoPerfil.style, {
+                    borderRadius: '50%',
+                    width: '60px',
+                    height: '60px',
+                    objectFit: 'cover',
+                    marginRight: '15px',
+                    flexShrink: '0',
+                    border: '2px solid rgba(255, 255, 255, 0.1)',
+                    transition: 'all 0.3s ease'
+                });
             }
         }
         
-        if (contenedorInsignias) {
+        // Procesar insignias del perfil
+        const contenedorInsignias = userIDElement.closest('div')?.querySelector('.insignias-container');
+        if (contenedorInsignias && !contenedorInsignias.dataset.procesado) {
+            contenedorInsignias.dataset.procesado = 'true';
             const datosUsuario = await obtenerDatosUsuarioPorUserID(userID);
             
             if (datosUsuario && datosUsuario.insignias) {
                 const insignias = procesarInsignias(datosUsuario.insignias);
-                
                 contenedorInsignias.innerHTML = '';
                 
                 if (insignias.length > 0) {
+                    // Usar DocumentFragment para mejor rendimiento
+                    const fragment = document.createDocumentFragment();
                     insignias.forEach((insignia, index) => {
-                        const insigniaElement = crearElementoInsignia(insignia, index);
-                        contenedorInsignias.appendChild(insigniaElement);
+                        fragment.appendChild(crearElementoInsignia(insignia, index));
                     });
+                    contenedorInsignias.appendChild(fragment);
                     
                     if (insignias.length > 1) {
                         const contador = document.createElement('div');
@@ -710,26 +743,30 @@ async function cargarDatosEInsigniasEnTodosLosElementos() {
         }
     }
     
-    const imagenesTIGSIndependientes = document.querySelectorAll('#imgTIGS');
-    for (const img of imagenesTIGSIndependientes) {
-        if (!img.src || img.src === '' || img.src.includes(window.location.origin)) {
-            img.src = 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png';
-            img.alt = 'Imagen por defecto';
-            
-            if (!img.style.borderRadius) {
-                img.style.cssText = `
-                    border-radius: 50%;
-                    width: 60px;
-                    height: 60px;
-                    object-fit: cover;
-                    margin-right: 15px;
-                    flex-shrink: 0;
-                    border: 2px solid rgba(255, 255, 255, 0.1);
-                    transition: all 0.3s ease;
-                `;
+    // 4. Procesar imágenes independientes (solo las que no tienen src)
+    const imagenesTIGS = document.querySelectorAll('#imgTIGS');
+    const promesasImagenes = Array.from(imagenesTIGS)
+        .filter(img => !img.src || img.src === '' || img.src.includes(window.location.origin))
+        .map(async (img) => {
+            if (!img.dataset.procesado) {
+                img.dataset.procesado = 'true';
+                img.src = 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png';
+                if (!img.style.borderRadius) {
+                    Object.assign(img.style, {
+                        borderRadius: '50%',
+                        width: '60px',
+                        height: '60px',
+                        objectFit: 'cover',
+                        marginRight: '15px',
+                        flexShrink: '0',
+                        border: '2px solid rgba(255, 255, 255, 0.1)',
+                        transition: 'all 0.3s ease'
+                    });
+                }
             }
-        }
-    }
+        });
+    
+    await Promise.all(promesasImagenes);
     
     console.log('✅ Carga de datos e insignias completada');
 }

@@ -269,7 +269,8 @@ async function obtenerDatosUsuarioPorUserID(userID) {
                 userID: -1,
                 insignias: -1,
                 nombre: -1,
-                email: -1
+                email: -1,
+                imagen: -1,
             };
             
             headers.forEach((header, index) => {
@@ -290,6 +291,9 @@ async function obtenerDatosUsuarioPorUserID(userID) {
                 }
                 if (window._columnIndices.email === -1 && headerStr.includes('email')) {
                     window._columnIndices.email = index;
+                }
+                if (window._columnIndices.imagen === -1 && headerStr.includes('imagen 1')) {
+                    window._columnIndices.imagen = index;
                 }
             });
             
@@ -325,7 +329,8 @@ async function obtenerDatosUsuarioPorUserID(userID) {
                 userID: userID,
                 nombre: indices.nombre !== -1 ? (row[indices.nombre]?.toString().trim() || 'Usuario') : 'Usuario',
                 email: indices.email !== -1 ? (row[indices.email]?.toString().trim() || 'Sin email') : 'Sin email',
-                insignias: indices.insignias !== -1 ? (row[indices.insignias]?.toString().trim() || '') : ''
+                insignias: indices.insignias !== -1 ? (row[indices.insignias]?.toString().trim() || '') : '',
+                imagen: indices.imagen !== -1 ? (row[indices.imagen]?.toString().trim() || 'img/GROUVEX.png') : 'img/GROUVEX.png',
             };
         }
         
@@ -538,7 +543,7 @@ async function mostrarDatosEInsigniasEnElemento(elementoTigsID) {
             elementoTigsID.style.cssText = 'color: #888; font-style: italic;';
         }
         
-        // Buscar contenedor de insignias (una sola vez)
+        // Buscar contenedor de insignias
         const contenedorInsignias = elementoTigsID.closest('div, .user-info')?.querySelector('.insignias-container');
         
         // Obtener datos (con caché)
@@ -564,44 +569,53 @@ async function mostrarDatosEInsigniasEnElemento(elementoTigsID) {
         elementoTigsID.style.cssText = '';
         elementoTigsID.title = `ID: ${userID}`;
         
-        // Procesar insignias (solo si no están ya procesadas)
+        // Procesar insignias
         if (contenedorInsignias && !contenedorInsignias.dataset.procesado) {
             contenedorInsignias.dataset.procesado = 'true';
             const insignias = procesarInsignias(datosUsuario.insignias);
             
             if (!insignias || insignias.length === 0) {
                 contenedorInsignias.innerHTML = '<div class="no-insignias-message">🎯 Sin insignias</div>';
-                return;
-            }
-            
-            // Usar DocumentFragment para mejor rendimiento
-            const fragment = document.createDocumentFragment();
-            insignias.forEach((insignia, index) => {
-                fragment.appendChild(crearElementoInsignia(insignia, index));
-            });
-            contenedorInsignias.innerHTML = '';
-            contenedorInsignias.appendChild(fragment);
-            
-            if (insignias.length > 1) {
-                const contador = document.createElement('div');
-                contador.className = 'insignias-count';
-                contador.textContent = insignias.length;
-                contenedorInsignias.style.position = 'relative';
-                contenedorInsignias.appendChild(contador);
+            } else {
+                const fragment = document.createDocumentFragment();
+                insignias.forEach((insignia, index) => {
+                    fragment.appendChild(crearElementoInsignia(insignia, index));
+                });
+                contenedorInsignias.innerHTML = '';
+                contenedorInsignias.appendChild(fragment);
+                
+                if (insignias.length > 1) {
+                    const contador = document.createElement('div');
+                    contador.className = 'insignias-count';
+                    contador.textContent = insignias.length;
+                    contenedorInsignias.style.position = 'relative';
+                    contenedorInsignias.appendChild(contador);
+                }
             }
         }
         
-        // Procesar imagen (si existe)
+        // ✅ PROCESAR IMAGEN DESDE LA API (columna "Imagen 1")
         const tarjeta = elementoTigsID.closest('.tarjeta, .anuncio-card, .card-header');
         const imgTIGS = tarjeta?.querySelector('#imgTIGS, .user-avatar, .user-avatar-large');
         
         if (imgTIGS && !imgTIGS.dataset.procesado) {
             imgTIGS.dataset.procesado = 'true';
             
+            // Obtener imagen de la API
             let fotoURL = userImageCache.get(userID);
-            if (!fotoURL) {
-                fotoURL = await obtenerFotoPerfilFirebase(userID);
+            if (!fotoURL && datosUsuario.imagen) {
+                let imagenUrl = datosUsuario.imagen;
+                // Si es una ruta relativa, completarla
+                if (imagenUrl && !imagenUrl.startsWith('http') && !imagenUrl.startsWith('//')) {
+                    imagenUrl = `img/${imagenUrl}`;
+                }
+                fotoURL = imagenUrl;
                 userImageCache.set(userID, fotoURL);
+            }
+            
+            // Fallback a imagen por defecto
+            if (!fotoURL) {
+                fotoURL = 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/GROUVEX.png';
             }
             
             imgTIGS.src = fotoURL;
@@ -694,7 +708,11 @@ async function cargarDatosEInsigniasEnTodosLosElementos() {
         const fotoPerfil = document.getElementById('fotoPerfil');
         if (fotoPerfil && !fotoPerfil.dataset.procesado) {
             fotoPerfil.dataset.procesado = 'true';
-            const fotoURL = await obtenerFotoPerfilFirebase(userID);
+            const datosUsuario = await obtenerDatosUsuarioPorUserID(userID);
+            const fotoURL = datosUsuario?.imagen || 'img/GROUVEX.png';
+            if (fotoURL && !fotoURL.startsWith('http')) {
+                fotoURL = `img/${fotoURL}`;
+            }
             fotoPerfil.src = fotoURL;
             
             if (!fotoPerfil.style.borderRadius) {

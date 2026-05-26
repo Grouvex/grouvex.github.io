@@ -151,6 +151,9 @@
                     </div>
                     <a href="anuncios" class="back-button">← Volver a anuncios</a>
                 `;
+                if (typeof window.cargarDatosEInsigniasEnTodosLosElementos === 'function') {
+                    window.cargarDatosEInsigniasEnTodosLosElementos();
+                }
             } catch (error) {
                 container.innerHTML = '<div class="not-found"><h2>⚠️ Error al cargar</h2><a href="anuncios" class="back-button">← Volver</a></div>';
             }

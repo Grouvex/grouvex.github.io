@@ -632,14 +632,14 @@
             card.innerHTML = `
                 <a href="${safeUrl}" class="card-link">
                     <div class="card-header">
-                        <img src="${sanitizeHTML(anuncio.userimagen)}" alt="${sanitizeHTML(anuncio.user)}" class="user-avatar" onerror="this.src='img/default-avatar.png'">
+                        <img src="${sanitizeHTML(anuncio.userimagen)}" alt="Logo del Anunciante" class="user-avatar" onerror="this.src='img/default-avatar.png'">
                         <div class="user-info">
                             <div class="user-name">
                                 <span tigsID="${sanitizeHTML(anuncio.userID)}"></span>
                                 ${isNewAnnouncement ? '<span class="badge-new">NUEVO</span>' : ''}
+                                <span class="insignias-container"></span>
                             </div>
                             <div class="card-type">📌 ${sanitizeHTML(anuncio.tipo)}</div>
-                            <span class="insignias-container"></span>
                         </div>
                     </div>
                     <div class="card-content">

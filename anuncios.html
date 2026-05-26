@@ -463,7 +463,9 @@
                 <option value="General">📢 General</option>
                 <option value="Reglamentos">📜 Reglamentos</option>
                 <option value="Recording">🎵 Recording</option>
+                <option value="Records" disabled>🎵 Records</option>
                 <option value="Animation">🎬 Animation</option>
+                <option value="Games" disabled>🎬 Games</option>
                 <option value="Design">🎨 Design</option>
                 <option value="Web">💻 Web</option>
             </select>
@@ -619,6 +621,20 @@
             const hasMore = state.loadedCount < state.filteredAnuncios.length;
             elements.loadMoreBtn.disabled = !hasMore;
             elements.loadMoreBtn.textContent = hasMore ? 'Cargar más anuncios' : '📭 No hay más anuncios';
+            
+            const recargarInsignias = (intento = 0) => {
+                if (typeof window.cargarDatosEInsigniasEnTodosLosElementos === 'function') {
+                    console.log(`🔄 Recargando insignias (intento ${intento + 1})`);
+                    window.cargarDatosEInsigniasEnTodosLosElementos();
+                } else if (intento < 10) {
+                    // Reintentar hasta 10 veces (1 segundo)
+                    setTimeout(() => recargarInsignias(intento + 1), 100);
+                } else {
+                    console.error('❌ No se pudo cargar la función de insignias');
+                }
+            };
+            
+            recargarInsignias();
         }
 
         function createAnnouncementCard(anuncio) {

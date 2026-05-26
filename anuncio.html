@@ -144,8 +144,10 @@
                         <img src="${sanitizeHTML(anuncio.userimagen)}" alt="${sanitizeHTML(anuncio.user)}" class="user-avatar-large" onerror="this.src='img/default-avatar.png'">
                         <div>
                             <div style="color: var(--color-primary);">📌 ${sanitizeHTML(anuncio.tipo)}</div>
-                            <div style="color: rgba(255,255,255,0.6);">👤 <span tigsID="${sanitizeHTML(anuncio.userID)}"></span></div>
-                            <span class="insignias-container"></span>
+                            <div style="color: rgba(255,255,255,0.6);">
+                                👤 <span tigsID="${sanitizeHTML(anuncio.userID)}"></span>
+                                <span class="insignias-container"></span>
+                            </div>
                         </div>
                     </div>
                     <h1 class="anuncio-title">${sanitizeHTML(anuncio.titulo)}</h1>

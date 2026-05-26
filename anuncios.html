@@ -72,11 +72,6 @@
         ============================================ */
         header {
             background: linear-gradient(135deg, var(--color-dark), #16213e);
-            padding: 1rem 2rem;
-            box-shadow: var(--shadow-lg);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
         }
 
         /* ============================================
@@ -613,7 +608,11 @@
                 const card = createAnnouncementCard(anuncio);
                 elements.contentGrid.appendChild(card);
             });
-
+            
+            if (typeof window.cargarDatosEInsigniasEnTodosLosElementos === 'function') {
+                window.cargarDatosEInsigniasEnTodosLosElementos();
+            }
+            
             state.loadedCount += toRender.length;
 
             // Actualizar botón de carga

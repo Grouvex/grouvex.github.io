@@ -3773,7 +3773,7 @@ async function gmxTryPlaySong(index) {
     gmxCurrentIndex = index;
     
     // Actualizar el título de la canción actual
-    let displayTitle = gmxFormatSongName(song);
+    let displayTitle = gmxSongTitleCache.get(song) || 'Sin Definir';
     let displayArtist = 'Grouvex Studios Records';
     
     if (info && info.found) {
@@ -5180,7 +5180,7 @@ function sincronizarProgresoMediaSession() {
 async function actualizarMediaSessionPorCancion(songFilename) {
     if (!('mediaSession' in navigator)) return;
     
-    const songName = gmxFormatSongName(songFilename);
+    const songName = gmxSongTitleCache.get(songFilename) || 'Sin Definir';
     let artista = document.getElementById('gmxCurrentSongArtist')?.textContent || 'Grouvex Studios Records';
     let album = 'Grouvex Studios Records';
     let imagenUrl = 'https://grouvex.github.io/img/GROUVEX%20Studios%20Records.png';
@@ -5303,7 +5303,7 @@ function actualizarMediaSessionConImagen(imagenUrl, titulo, artista) {
     const currentSong = gmxCurrentPlaylist[gmxCurrentIndex];
     if (!currentSong) return;
     
-    const songName = titulo || gmxFormatSongName(currentSong);
+    const songName = titulo || 'Sin Definir';
     const artistName = artista || document.getElementById('gmxCurrentSongArtist')?.textContent || 'Grouvex Studios Records';
     
     actualizarNotificacionMediaSession(songName, artistName, 'Grouvex Studios Records', imagenUrl);
@@ -5427,7 +5427,7 @@ function gmxPerformSearch(query) {
     
     // Buscar en todas las canciones
     const results = gmxAllMusicFiles.filter(song => {
-        const songName = gmxFormatSongName(song).toLowerCase();
+        const songName = gmxSongTitleCache.get(song) ||  gmxFormatSongName(song).toLowerCase() || 'Sin Definir';
         return songName.includes(query);
     });
     

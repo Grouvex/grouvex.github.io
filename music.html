@@ -27,8 +27,8 @@
     <link rel="shortlink" href="https://records.grouvex.com/">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="HandheldFriendly" content="true">
-    <link rel="preconnect" href="https://example.com">
-    <link rel="dns-prefetch" href="https://example.com">
+    <link rel="preconnect" href="https://records.grovuex.com">
+    <link rel="dns-prefetch" href="https://records.grouvex.com">
     <!-- FontAwesome para los íconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Scripts sin nonce -->
@@ -2752,15 +2752,37 @@ async function gmxLoadUserLikeStatus() {
   return Promise.all(promises);
 }
 
+function getUPCAndISRCFromFilename(filename) {
+    const nameWithoutExt = filename.replace('.mp3', '');
+    const parts = nameWithoutExt.split('_');
+    
+    if (parts.length >= 2) {
+        const upc = parts[0];
+        const isrc = parts[1];
+        return { upc, isrc, hasUPCISRC: true };
+    }
+    
+    return { upc: null, isrc: null, hasUPCISRC: false };
+}
+
 async function gmxLoadSongUPC(songFilename) {
     if (gmxSongUPCs.has(songFilename)) return gmxSongUPCs.get(songFilename);
+    
+    // Primero verificar si el nombre del archivo contiene UPC
+    const { upc, hasUPCISRC } = getUPCAndISRCFromFilename(songFilename);
+    if (hasUPCISRC && upc) {
+        gmxSongUPCs.set(songFilename, upc);
+        return upc;
+    }
+    
+    // Si no, consultar API
     const songTitle = songFilename.replace('.mp3', '');
     return new Promise((resolve) => {
         google.script.run
             .withSuccessHandler((songInfo) => {
-                const upc = songInfo.upcean || null;
-                if (upc) gmxSongUPCs.set(songFilename, upc);
-                resolve(upc);
+                const upcValue = songInfo.upcean || null;
+                if (upcValue) gmxSongUPCs.set(songFilename, upcValue);
+                resolve(upcValue);
             })
             .withFailureHandler(() => resolve(null))
             .getCurrentSongInfo(songTitle);
@@ -3049,7 +3071,7 @@ async function getSongState(filename) {
       }
       
       try {
-          const repoUrl = 'https://api.github.com/repos/Grouvex/grouvex.github.io/contents/music';
+          const repoUrl = 'https://api.github.com/repos/Grouvex/grouvex.github.io/contents/priv/arch/sonido/music';
           const response = await fetch(repoUrl);
           if (!response.ok) throw new Error(`Error: ${response.status}`);
           const files = await response.json();
@@ -3070,7 +3092,7 @@ async function getSongState(filename) {
   
   function gmxFormatSongName(filename) { return filename.replace('.mp3', ''); }
   function gmxFormatTime(seconds) { if (isNaN(seconds)) return '0:00'; const mins = Math.floor(seconds / 60); const secs = Math.floor(seconds % 60); return `${mins}:${secs.toString().padStart(2, '0')}`; }
-  function getMusicUrl(filename) { return `https://github.com/Grouvex/grouvex.github.io/raw/main/music/${encodeURIComponent(filename)}`; }
+  function getMusicUrl(filename) { return `https://github.com/Grouvex/grouvex.github.io/raw/main/priv/arch/sonido/music/${encodeURIComponent(filename)}`; }
   
 // Añadir esta función para obtener el like count y renderizarlo
 async function gmxRenderPlaylist() {

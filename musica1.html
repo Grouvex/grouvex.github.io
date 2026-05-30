@@ -2750,7 +2750,7 @@ auth.onAuthStateChanged((user) => {
     // Usuario logueado, cargar sus likes
     gmxLoadUserLikeStatus().then(() => {
       gmxRenderPlaylist();
-      gmxShowToast(`✅ Bienvenido, ${user.email || user.displayName || 'Usuario'}!`);
+      gmxShowToast(`😀 Bienvenidx, ${user.email || user.displayName || 'Usuario'}!`);
     });
   } else {
     // Usuario no logueado, limpiar likes locales
@@ -2770,10 +2770,10 @@ function gmxLogin() {
 // Cerrar sesión
 function gmxLogout() {
   auth.signOut().then(() => {
-    gmxShowToast('✅ Sesión cerrada');
+    gmxShowToast('Hasta pronto 🤗');
     gmxRenderPlaylist();
   }).catch((error) => {
-    gmxShowToast('❌ Error al cerrar sesión');
+    gmxShowToast('Hay algún problema en cerrar la sesión 😦');
   });
 }
 
@@ -2903,7 +2903,7 @@ function gmxToggleLike(songFilename, event) {
     if (event) event.stopPropagation();
     
     if (!gmxIsLoggedIn) {
-        gmxShowToast('🔐 Debes iniciar sesión para dar like', 3000);
+        gmxShowToast('🧐 Debes iniciar sesión para dar like', 3000);
         return;
     }
     
@@ -2911,7 +2911,7 @@ function gmxToggleLike(songFilename, event) {
     
     gmxLoadSongUPC(songFilename).then(upc => {
         if (!upc) {
-            gmxShowToast(`❌ No se pudo identificar la canción`, 3000);
+            gmxShowToast(`😥 No se pudo identificar la canción`, 3000);
             return;
         }
         
@@ -2932,7 +2932,7 @@ function gmxToggleLike(songFilename, event) {
                     }
                 })
                 .withFailureHandler(() => {
-                    gmxShowToast(`❌ Error al quitar like`, 3000);
+                    gmxShowToast(`😖 Error al quitar like`, 3000);
                 })
                 .removeLike(upc, userId);
         } else {
@@ -2945,13 +2945,13 @@ function gmxToggleLike(songFilename, event) {
                         gmxUpdateLikeInPlaylist(songFilename);
                         gmxShowToast(`❤️ Like guardado (${response.likes} ${response.likes === 1 ? 'persona' : 'personas'})`);
                     } else if (response.error === 'Ya has dado like a esta canción') {
-                        gmxShowToast(`⚠️ Ya te gusta esta canción`, 2000);
+                        gmxShowToast(`😳 Ya te gusta esta canción`, 2000);
                     } else {
                         gmxShowToast(`❌ ${response.error || 'Error al dar like'}`, 3000);
                     }
                 })
                 .withFailureHandler(() => {
-                    gmxShowToast(`❌ Error al dar like`, 3000);
+                    gmxShowToast(`😩 Error al dar like`, 3000);
                 })
                 .addLike(upc, userId, userEmail);
         }
@@ -3055,6 +3055,8 @@ async function init() {
     
     // 7. Configurar eventos y características adicionales
     setupEvents();
+    gmxSyncVolumeWithHardwareButtons();
+    gmxSyncVolumeWithKeyboard();
     gmxUpdateAuthUI();
     gmxInitNewFeatures();
     setupPlaylistLazyLoad();
@@ -3490,7 +3492,7 @@ function gmxToggleLike(songFilename, event) {
     if (event) event.stopPropagation();
     
     if (!gmxIsLoggedIn) {
-        gmxShowToast('🔐 Debes iniciar sesión para dar like', 3000);
+        gmxShowToast('🧐 Debes iniciar sesión para dar like', 3000);
         return;
     }
     
@@ -3498,7 +3500,7 @@ function gmxToggleLike(songFilename, event) {
     
     gmxLoadSongUPC(songFilename).then(upc => {
         if (!upc) {
-            gmxShowToast(`❌ No se pudo identificar la canción`, 3000);
+            gmxShowToast(`😫 No se pudo identificar la canción`, 3000);
             return;
         }
         
@@ -3532,7 +3534,7 @@ function gmxToggleLike(songFilename, event) {
                         gmxUpdateLikeInPlaylist(songFilename);
                         gmxShowToast(`❤️ Like guardado (${response.likes} ${response.likes === 1 ? 'persona' : 'personas'})`);
                     } else if (response.error === 'Ya has dado like a esta canción') {
-                        gmxShowToast(`⚠️ Ya te gusta esta canción`, 2000);
+                        gmxShowToast(`😳 Ya te gusta esta canción`, 2000);
                     } else {
                         gmxShowToast(`❌ ${response.error || 'Error al dar like'}`, 3000);
                     }
@@ -3870,13 +3872,13 @@ async function gmxUpdateLikeButtonWithCount(songFilename) {
 // Dar like a la canción actualmente reproduciéndose
 function gmxToggleCurrentLike() {
   if (!gmxIsLoggedIn) {
-    gmxShowToast('🔐 Debes iniciar sesión para dar like', 3000);
+    gmxShowToast('🧐 Debes iniciar sesión para dar like', 3000);
     return;
   }
   
   const currentSong = gmxCurrentPlaylist[gmxCurrentIndex];
   if (!currentSong) {
-    gmxShowToast('❌ No hay una canción reproduciéndose', 3000);
+    gmxShowToast('😴 No hay una canción reproduciéndose', 3000);
     return;
   }
   
@@ -3893,7 +3895,7 @@ function gmxToggleCurrentLike() {
   
   gmxLoadSongUPC(currentSong).then(upc => {
     if (!upc) {
-      gmxShowToast(`❌ Esta canción no tiene UPC/EAN`, 3000);
+      gmxShowToast(`😬 Esta canción no tiene UPC/EAN`, 3000);
       if (likeBtn) {
         likeBtn.style.opacity = '';
         likeBtn.style.pointerEvents = '';
@@ -3954,7 +3956,7 @@ function gmxToggleCurrentLike() {
               }, 400);
             }
           } else if (response.error === 'Ya has dado like a esta canción') {
-            gmxShowToast(`⚠️ Ya te gusta esta canción`, 2000);
+            gmxShowToast(`😳 Ya te gusta esta canción`, 2000);
           } else {
             gmxShowToast(`❌ ${response.error || 'Error al dar like'}`, 3000);
           }
@@ -4697,6 +4699,45 @@ function gmxCreateAutoNextToggle() {
     }
 }
 
+// ============================================
+// SINCRONIZAR VOLUMEN CON BOTONES FÍSICOS
+// ============================================
+
+function gmxSyncVolumeWithHardwareButtons() {
+    const audio = document.getElementById('gmxAudioPlayer');
+    const volumeSlider = document.getElementById('gmxVolumeSlider');
+    const volumeValue = document.getElementById('gmxVolumeValue');
+    
+    if (!audio || !volumeSlider) return;
+    
+    // Escuchar cambios en el volumen del audio
+    audio.addEventListener('volumechange', () => {
+        volumeSlider.value = audio.volume;
+        if (volumeValue) {
+            volumeValue.innerText = Math.round(audio.volume * 100) + '%';
+        }
+    });
+}
+
+function gmxSyncVolumeWithKeyboard() {
+    document.addEventListener('keydown', (e) => {
+        const volumeKeys = ['ArrowUp', 'ArrowDown', 'AudioVolumeUp', 'AudioVolumeDown'];
+        if (volumeKeys.includes(e.key)) {
+            setTimeout(() => {
+                const audio = document.getElementById('gmxAudioPlayer');
+                const volumeSlider = document.getElementById('gmxVolumeSlider');
+                const volumeValue = document.getElementById('gmxVolumeValue');
+                
+                if (volumeSlider && audio) {
+                    volumeSlider.value = audio.volume;
+                }
+                if (volumeValue && audio) {
+                    volumeValue.innerText = Math.round(audio.volume * 100) + '%';
+                }
+            }, 50);
+        }
+    });
+}
   function gmxToggleLoop() { gmxIsLooping = (gmxIsLooping + 1) % 3; const btn = document.getElementById('gmxLoopBtn'); const audio = document.getElementById('gmxAudioPlayer'); if (gmxIsLooping === 0) { btn.innerHTML = '🔁'; audio.loop = false; } else if (gmxIsLooping === 1) { btn.innerHTML = '🔂'; audio.loop = true; } else { btn.innerHTML = '🔁 | ∞'; audio.loop = false; } }
   function gmxToggleTheme() { document.getElementById('grouvexMusicPlayer').classList.toggle('light-theme'); document.querySelector('.gmx-theme-toggle').innerHTML = document.getElementById('grouvexMusicPlayer').classList.contains('light-theme') ? '☀️' : '🌙 '; }
   function gmxTogglePlaylist() { document.getElementById('gmxPlaylistContent').classList.toggle('show'); }
@@ -4866,25 +4907,25 @@ function gmxInitMediaKeys() {
             // Navegación entre canciones
             'ArrowUp': () => {
                 const audio = document.getElementById('gmxAudioPlayer');
-                const newVol = Math.min(1, audio.volume + 0.05);
+                const newVol = Math.min(1, audio.volume + 0.01);
                 gmxSetVolume(newVol);
                 gmxShowToast(`🔊 ${Math.round(newVol * 100)}%`, 600);
             },
             'AudioVolumeUp': () => {
                 const audio = document.getElementById('gmxAudioPlayer');
-                const newVol = Math.min(1, audio.volume + 0.05);
+                const newVol = Math.min(1, audio.volume + 0.01);
                 gmxSetVolume(newVol);
                 gmxShowToast(`🔊 ${Math.round(newVol * 100)}%`, 600);
             },
             'ArrowDown': () => {
                 const audio = document.getElementById('gmxAudioPlayer');
-                const newVol = Math.max(0, audio.volume - 0.05);
+                const newVol = Math.max(0, audio.volume - 0.01);
                 gmxSetVolume(newVol);
                 gmxShowToast(`🔈 ${Math.round(newVol * 100)}%`, 600);
             },
             'AudioVolumeDown': () => {
                 const audio = document.getElementById('gmxAudioPlayer');
-                const newVol = Math.max(0, audio.volume - 0.05);
+                const newVol = Math.max(0, audio.volume - 0.01);
                 gmxSetVolume(newVol);
                 gmxShowToast(`🔈 ${Math.round(newVol * 100)}%`, 600);
             },

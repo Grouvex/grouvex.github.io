@@ -2904,35 +2904,40 @@ function gmxOnFullscreenChange() {
 }
 
 async function init() {
-  const playlistElement = document.getElementById('gmxPlaylist');
-  if (playlistElement) {
-    playlistElement.innerHTML = '<div class="gmx-playlist-item">⏳ Cargando playlist...</div>';
-  }
-  
-  // Cargar archivos de música
-  gmxAllMusicFiles = await gmxFetchMusicFiles();
-  
-  if (gmxAllMusicFiles.length) { 
-    // Cargar estados y likes en PARALELO (no secuencial)
-    const [songStates, globalLikes] = await Promise.all([
-      Promise.all(gmxAllMusicFiles.map(song => getSongState(song))),
-      gmxLoadAllGlobalLikes()
-    ]);
-    
-    // Guardar estados en caché
-    songStates.forEach((state, idx) => {
-      songInfoCache.set(gmxAllMusicFiles[idx], state);
-    });
-    
-    gmxCurrentPlaylist = [...gmxAllMusicFiles];
-    
-    // Si hay usuario logueado, cargar sus likes
-    if (gmxIsLoggedIn && gmxCurrentUser) {
-      await gmxLoadUserLikeStatus();
+    const playlistElement = document.getElementById('gmxPlaylist');
+    if (playlistElement) {
+        playlistElement.innerHTML = '<div class="gmx-playlist-item">⏳ Cargando playlist...</div>';
     }
     
-    // Renderizar playlist (ahora con todos los datos)
-    await gmxRenderPlaylist(); 
+    // 1. Cargar archivos de música
+    gmxAllMusicFiles = await gmxFetchMusicFiles();
+    
+    if (gmxAllMusicFiles.length === 0) {
+        playlistElement.innerHTML = '<div class="gmx-playlist-item">❌ Error: No se pudieron cargar las canciones</div>';
+        return;
+    }
+    
+    // 2. Cargar estados de canciones (upcoming/preview/normal)
+    const songStates = await Promise.all(gmxAllMusicFiles.map(song => getSongState(song)));
+    songStates.forEach((state, idx) => {
+        songInfoCache.set(gmxAllMusicFiles[idx], state);
+    });
+    
+    // 3. Cargar likes globales
+    await gmxLoadAllGlobalLikes();
+    
+    // 4. Si hay usuario logueado, cargar sus likes
+    if (gmxIsLoggedIn && gmxCurrentUser) {
+        await gmxLoadUserLikeStatus();
+    }
+    
+    // 5. Configurar playlist actual
+    gmxCurrentPlaylist = [...gmxAllMusicFiles];
+    
+    // 6. RENDERIZAR PLAYLIST (esto ahora espera los títulos)
+    await gmxRenderPlaylist();
+    
+    // 7. Configurar eventos y características adicionales
     setupEvents();
     gmxUpdateAuthUI();
     gmxInitNewFeatures();
@@ -2940,8 +2945,8 @@ async function init() {
     gmxSetupMobileMediaControls();
     inicializarMediaSession();
     gmxCleanOldCaches();
-  }
 }
+    
 // Cache de duraciones (persistente)
 let gmxDurationCache = new Map();
 // Solo cargar duraciones cuando la playlist es visible
@@ -3101,42 +3106,73 @@ async function gmxGetRealTitle(filename) {
 async function gmxLoadAllRealTitles() {
     if (gmxSongTitleCache.size === gmxAllMusicFiles.length) return;
     
-    console.log("🔄 Modo respaldo: cargando títulos uno por uno...");
+    console.log("🔄 Cargando títulos de canciones...");
     
-    // Cargar títulos uno por uno (más lento pero más confiable)
-    for (let i = 0; i < gmxAllMusicFiles.length; i++) {
-        const song = gmxAllMusicFiles[i];
-        
-        if (gmxSongTitleCache.has(song)) continue;
+    // Crear promesas para TODAS las canciones
+    const promises = gmxAllMusicFiles.map(async (song) => {
+        // Si ya está en caché, saltar
+        if (gmxSongTitleCache.has(song)) return;
         
         const upcIsrc = song.replace('.mp3', '');
         
-        await new Promise((resolve) => {
+        return new Promise((resolve) => {
+            // Timeout de 5 segundos para no quedarse colgado
+            const timeout = setTimeout(() => {
+                gmxSongTitleCache.set(song, gmxFormatSongName(song));
+                resolve();
+            }, 5000);
+            
             google.script.run
                 .withSuccessHandler((songInfo) => {
+                    clearTimeout(timeout);
                     let realTitle = gmxFormatSongName(song);
+                    
                     if (songInfo && songInfo.found && songInfo[`titulo${songInfo.trackNumber}`]) {
                         realTitle = songInfo[`titulo${songInfo.trackNumber}`];
+                    } else if (songInfo && songInfo.found && songInfo.tituloAlbum) {
+                        // Fallback: usar título del álbum si no hay título de pista
+                        realTitle = songInfo.tituloAlbum;
                     }
+                    
                     gmxSongTitleCache.set(song, realTitle);
                     resolve();
                 })
                 .withFailureHandler(() => {
+                    clearTimeout(timeout);
+                    console.warn(`⚠️ No se pudo cargar título para: ${song}`);
                     gmxSongTitleCache.set(song, gmxFormatSongName(song));
                     resolve();
                 })
                 .getCurrentSongInfo(upcIsrc);
         });
-        
-        // Actualizar UI progresivamente
-        const titleSpan = document.querySelector(`.gmx-song-title[data-filename="${song.replace(/"/g, '&quot;')}"]`);
-        if (titleSpan) {
-            titleSpan.textContent = gmxSongTitleCache.get(song);
-        }
-    }
+    });
     
-    console.log("✅ Carga completada");
+    // Esperar a que TODAS las promesas se completen
+    await Promise.all(promises);
+    
+    console.log(`✅ Títulos cargados: ${gmxSongTitleCache.size} canciones`);
+// Al final de gmxLoadAllRealTitles(), guardar en localStorage
+const cacheToSave = {};
+for (const [key, value] of gmxSongTitleCache.entries()) {
+    cacheToSave[key] = value;
 }
+localStorage.setItem('gmx_titles_cache', JSON.stringify(cacheToSave));
+localStorage.setItem('gmx_titles_cache_time', Date.now().toString());
+
+// Al inicio de la función, intentar cargar desde caché
+const cachedTitles = localStorage.getItem('gmx_titles_cache');
+const cacheTime = localStorage.getItem('gmx_titles_cache_time');
+const ONE_DAY = 24 * 60 * 60 * 1000;
+
+if (cachedTitles && cacheTime && (Date.now() - parseInt(cacheTime)) < ONE_DAY) {
+    const titles = JSON.parse(cachedTitles);
+    for (const [song, title] of Object.entries(titles)) {
+        gmxSongTitleCache.set(song, title);
+    }
+    return; // No necesita consultar la API
+}
+}
+    
   function gmxFormatTime(seconds) { if (isNaN(seconds)) return '0:00'; const mins = Math.floor(seconds / 60); const secs = Math.floor(seconds % 60); return `${mins}:${secs.toString().padStart(2, '0')}`; }
   function getMusicUrl(filename) { return `https://github.com/Grouvex/dev.grouvex.github.io/raw/main/priv/arch/sonido/musica/${encodeURIComponent(filename)}`; }
   
@@ -3146,34 +3182,25 @@ async function gmxRenderPlaylist() {
     const playlistElement = document.getElementById('gmxPlaylist');
     if (!playlistElement) return;
     
-    playlistElement.innerHTML = '';
+    // Mostrar estado de carga mejorado
+    playlistElement.innerHTML = '<div class="gmx-playlist-item" style="justify-content: center;">🎵 Cargando playlist... <span style="margin-left: 8px;" id="gmxLoadProgress"></span></div>';
     
-    if (gmxCurrentPlaylist.length === 0) { 
-        playlistElement.innerHTML = '<div class="gmx-playlist-item">No hay canciones disponibles</div>'; 
-        return; 
+    // PASO 1: Asegurar que la lista de archivos existe
+    if (gmxAllMusicFiles.length === 0) {
+        playlistElement.innerHTML = '<div class="gmx-playlist-item">No hay canciones disponibles</div>';
+        return;
     }
     
-    // Mostrar skeleton loading
-    let skeletonHtml = '';
-    for (let i = 0; i < gmxCurrentPlaylist.length; i++) {
-        const song = gmxCurrentPlaylist[i];
-        skeletonHtml += `
-            <div class="gmx-playlist-item ${i === gmxCurrentIndex ? 'active' : ''}" data-index="${i}">
-                <div style="display: flex; gap: 8px; align-items: center; flex: 1;">
-                    <div class="gmx-song-info-wrapper" style="flex: 1;">
-                        <span class="gmx-song-title" data-filename="${song.replace(/"/g, '&quot;')}" data-full-title="${song.replace(/"/g, '&quot;')}">Cargando...</span>
-                    </div>
-                    <span class="gmx-song-duration">--:--</span>
-                </div>
-            </div>`;
-    }
-    playlistElement.innerHTML = skeletonHtml;
+    // PASO 2: Cargar TODOS los títulos ANTES de mostrar la lista
+    const progressSpan = document.getElementById('gmxLoadProgress');
+    if (progressSpan) progressSpan.textContent = '(cargando títulos...)';
     
-    // ✅ PASO 1: Cargar TODOS los títulos en UNA sola llamada ANTES de actualizar la UI
-    await gmxLoadAllRealTitles();
+    await gmxLoadAllRealTitles();  // ⚠️ ESPERA a que terminen TODOS los títulos
     
-    // Cargar likes en paralelo
-    const likePromises = gmxCurrentPlaylist.map(async (song) => {
+    if (progressSpan) progressSpan.textContent = '(preparando lista...)';
+    
+    // PASO 3: Cargar likes en paralelo (esto puede ir en segundo plano)
+    const likePromises = gmxAllMusicFiles.map(async (song) => {
         const likeCount = await gmxGetLikeCount(song);
         const hasLike = gmxHasLike(song);
         return { song, likeCount, hasLike };
@@ -3182,19 +3209,16 @@ async function gmxRenderPlaylist() {
     const likesData = await Promise.all(likePromises);
     const likesMap = new Map(likesData.map(data => [data.song, data]));
     
-    // ✅ PASO 2: Actualizar UI con los títulos ya en caché
-    for (let i = 0; i < gmxCurrentPlaylist.length; i++) {
-        const song = gmxCurrentPlaylist[i];
-        const item = playlistElement.children[i];
-        if (!item) continue;
+    // PASO 4: Construir HTML de la playlist (AHORA los títulos YA están en caché)
+    let playlistHtml = '';
+    for (let i = 0; i < gmxAllMusicFiles.length; i++) {
+        const song = gmxAllMusicFiles[i];
+        const realTitle = gmxSongTitleCache.get(song) || gmxFormatSongName(song);
         
         const cached = songInfoCache.get(song);
         const state = cached ? cached.state : { isUpcoming: true, isPreview: false };
         const { likeCount = 0, hasLike = false } = likesMap.get(song) || {};
         const duration = gmxDurationCache.get(song) || '--:--';
-        
-        // ✅ Ahora el título ya está en caché por gmxLoadAllRealTitles()
-        const realTitle = gmxSongTitleCache.get(song) || gmxFormatSongName(song);
         
         let badge = '';
         if (state.isUpcoming) badge = '<span class="gmx-badge upcoming-badge">🎵 Próximamente</span>';
@@ -3203,51 +3227,31 @@ async function gmxRenderPlaylist() {
         const likeIcon = hasLike ? '❤️' : '🤍';
         const likeDisplay = likeCount > 0 ? `${likeIcon} ${likeCount}` : '';
         
-        // Actualizar el contenido del item
-        const firstDiv = item.querySelector('div:first-child');
-        const wrapper = item.querySelector('.gmx-song-info-wrapper');
-        const titleSpan = item.querySelector('.gmx-song-title');
-        const durationSpan = item.querySelector('.gmx-song-duration');
-        
-        if (titleSpan) titleSpan.textContent = realTitle;
-        if (durationSpan) durationSpan.textContent = duration;
-        
-        // Actualizar like display
-        let likeSpan = item.querySelector('.gmx-like-count');
-        if (likeDisplay) {
-            if (likeSpan) {
-                likeSpan.textContent = likeDisplay;
-            } else if (firstDiv) {
-                const newLikeSpan = document.createElement('span');
-                newLikeSpan.className = 'gmx-like-count';
-                newLikeSpan.style.cssText = 'font-size: 0.75em; opacity: 0.8; cursor: pointer;';
-                newLikeSpan.textContent = likeDisplay;
-                newLikeSpan.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    gmxToggleLike(song, e);
-                });
-                firstDiv.insertBefore(newLikeSpan, firstDiv.firstChild);
-            }
-        } else if (likeSpan) {
-            likeSpan.remove();
-        }
-        
-        // Actualizar badge
-        if (wrapper) {
-            const existingBadge = wrapper.querySelector('.gmx-badge');
-            if (existingBadge) existingBadge.remove();
-            if (badge) {
-                wrapper.insertAdjacentHTML('beforeend', badge);
-            }
-        }
+        playlistHtml += `
+            <div class="gmx-playlist-item ${i === gmxCurrentIndex ? 'active' : ''}" data-index="${i}" data-song="${song.replace(/"/g, '&quot;')}">
+                <div style="display: flex; gap: 8px; align-items: center; flex: 1;">
+                    ${likeDisplay ? `<span class="gmx-like-count" style="font-size: 0.75em; opacity: 0.8; cursor: pointer;">${likeDisplay}</span>` : ''}
+                    <div class="gmx-song-info-wrapper" style="flex: 1;">
+                        <span class="gmx-song-title" data-full-title="${realTitle.replace(/"/g, '&quot;')}">${escapeHtml(realTitle)}</span>
+                        ${badge}
+                    </div>
+                    <span class="gmx-song-duration">${duration}</span>
+                </div>
+            </div>
+        `;
     }
     
+    playlistElement.innerHTML = playlistHtml;
+    
+    // PASO 5: Adjuntar eventos (después de que el DOM esté listo)
     attachPlaylistEvents();
     
-    // Cargar duraciones en background si es necesario
+    // PASO 6: Cargar duraciones en segundo plano (no bloquea)
     if (gmxDurationCache.size === 0) {
         gmxLoadDurationsBatch();
     }
+    
+    if (progressSpan) progressSpan.remove();
 }
 
 // Cache para counts de likes
@@ -3490,31 +3494,22 @@ async function gmxRefreshPlaylist() {
             }
         }
         
-        // 2. FORZAR RECARGA DE ARCHIVOS DESDE GITHUB (sin caché)
-        const repoUrl = 'https://api.github.com/repos/Grouvex/dev.grouvex.github.io/contents/priv/arch/sonido/musica';
-        const response = await fetch(repoUrl, {
-            cache: 'no-cache',
-            headers: {
-                'Cache-Control': 'no-cache',
-                'Pragma': 'no-cache'
-            }
-        });
+        // 2. FORZAR RECARGA DE ARCHIVOS (usando GitHub API raw + proxy CORS si es necesario)
+        // Opción 1: Usar GitHub API con modo no-cors (limitado) o usar un proxy CORS
+        // Opción 2: Mantener una lista local de canciones (recomendado para evitar CORS)
         
-        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
-        const files = await response.json();
-        const mp3Files = files.filter(file => file.name.toLowerCase().endsWith('.mp3')).map(file => file.name);
+        // Para evitar problemas CORS, vamos a usar un enfoque alternativo:
+        // Mantenemos la lista actual de canciones y solo forzamos recarga de títulos
         
-        // Actualizar lista global
-        gmxAllMusicFiles = mp3Files;
+        gmxShowToast('🔄 Recargando información de canciones...', 2000);
         
-        // Guardar nuevo caché
-        localStorage.setItem('gmx_playlist_cache', JSON.stringify(mp3Files));
-        localStorage.setItem('gmx_playlist_cache_time', Date.now().toString());
-        
-        // 3. RECARGAR ESTADOS DE CANCIONES (con manejo de errores)
+        // Recargar estados de canciones (forzar desde API)
         const songStates = [];
         for (const song of gmxAllMusicFiles) {
             try {
+                // Forzar recarga de estado (ignorar caché)
+                localStorage.removeItem(`gmx_song_state_${song}`);
+                localStorage.removeItem(`gmx_song_state_time_${song}`);
                 const state = await getSongState(song);
                 songStates.push(state);
             } catch(e) {
@@ -3527,14 +3522,14 @@ async function gmxRefreshPlaylist() {
             songInfoCache.set(gmxAllMusicFiles[idx], state);
         });
         
-        // 4. RECARGAR LIKES GLOBALES
+        // Recargar likes globales
         await gmxLoadAllGlobalLikes();
         
-        // 5. ACTUALIZAR PLAYLIST
+        // Actualizar playlist
         gmxCurrentPlaylist = [...gmxAllMusicFiles];
         gmxCurrentIndex = 0;
         
-        // 6. RECARGAR LIKES DEL USUARIO (solo si está logueado, con manejo de errores)
+        // Recargar likes del usuario
         if (gmxIsLoggedIn && gmxCurrentUser) {
             try {
                 await gmxLoadUserLikeStatus();
@@ -3543,12 +3538,19 @@ async function gmxRefreshPlaylist() {
             }
         }
         
-        // 7. CARGAR TÍTULOS (en paralelo para ser más rápido)
+        // Recargar títulos (forzando desde API)
+        gmxSongTitleCache.clear();
+        
         const titlePromises = gmxAllMusicFiles.map(async (song) => {
             const upcIsrc = song.replace('.mp3', '');
             return new Promise((resolve) => {
+                const timeout = setTimeout(() => {
+                    resolve({ song, title: gmxFormatSongName(song) });
+                }, 8000);
+                
                 google.script.run
                     .withSuccessHandler((songInfo) => {
+                        clearTimeout(timeout);
                         let realTitle = gmxFormatSongName(song);
                         if (songInfo && songInfo.found && songInfo[`titulo${songInfo.trackNumber}`]) {
                             realTitle = songInfo[`titulo${songInfo.trackNumber}`];
@@ -3556,6 +3558,7 @@ async function gmxRefreshPlaylist() {
                         resolve({ song, title: realTitle });
                     })
                     .withFailureHandler(() => {
+                        clearTimeout(timeout);
                         resolve({ song, title: gmxFormatSongName(song) });
                     })
                     .getCurrentSongInfo(upcIsrc);
@@ -3575,7 +3578,7 @@ async function gmxRefreshPlaylist() {
         localStorage.setItem('gmx_titles_cache', JSON.stringify(cacheToSave));
         localStorage.setItem('gmx_titles_cache_time', Date.now().toString());
         
-        // 8. RENDERIZAR PLAYLIST ACTUALIZADA
+        // Renderizar playlist actualizada
         await gmxRenderPlaylist();
         
         gmxShowToast('✅ Playlist actualizada correctamente', 3000);
@@ -3643,32 +3646,6 @@ function updateDurationInUI(song, duration) {
     if (span) span.textContent = duration;
   }
 }
-
-async function getSongState(filename) {
-  // Intentar caché en memoria primero
-  if (songInfoCache.has(filename)) return songInfoCache.get(filename);
-  
-  // Intentar localStorage
-  const cachedState = localStorage.getItem(`gmx_song_state_${filename}`);
-  const cachedTime = localStorage.getItem(`gmx_song_state_time_${filename}`);
-  const ONE_DAY = 24 * 60 * 60 * 1000;
-  
-  if (cachedState && cachedTime && (Date.now() - parseInt(cachedTime)) < ONE_DAY) {
-    const state = JSON.parse(cachedState);
-    songInfoCache.set(filename, state);
-    return state;
-  }
-  
-  const info = await fetchSongInfo(filename);
-  const stateObj = getSongDynamicState(filename, info);
-  songInfoCache.set(filename, { info, state: stateObj });
-  
-  // Guardar en localStorage
-  localStorage.setItem(`gmx_song_state_${filename}`, JSON.stringify({ info, state: stateObj }));
-  localStorage.setItem(`gmx_song_state_time_${filename}`, Date.now().toString());
-  
-  return { info, state: stateObj };
-}
   
 async function gmxTryPlaySong(index) {
     if (index < 0 || index >= gmxCurrentPlaylist.length) return;
@@ -3716,35 +3693,30 @@ async function gmxTryPlaySong(index) {
 }
 
 function attachPlaylistEvents() {
-  document.querySelectorAll('.gmx-playlist-item').forEach(item => {
-    // Evitar agregar eventos duplicados
-    if (item.hasAttribute('data-events-attached')) return;
-    
-    const index = parseInt(item.dataset.index);
-    const song = gmxCurrentPlaylist[index];
-    
-    // Evento principal para reproducir
-    item.addEventListener('click', (e) => {
-      if (e.target.classList && e.target.classList.contains('gmx-like-count')) {
-        return;
-      }
-      console.log(`Reproduciendo: ${song}`);
-      gmxTryPlaySong(index);
+    document.querySelectorAll('.gmx-playlist-item').forEach(item => {
+        if (item.hasAttribute('data-events-attached')) return;
+        
+        const index = parseInt(item.dataset.index);
+        const song = gmxAllMusicFiles[index];
+        
+        item.addEventListener('click', (e) => {
+            if (e.target.classList && e.target.classList.contains('gmx-like-count')) {
+                return;
+            }
+            gmxTryPlaySong(index);
+        });
+        
+        const likeSpan = item.querySelector('.gmx-like-count');
+        if (likeSpan) {
+            likeSpan.addEventListener('click', (e) => {
+                e.stopPropagation();
+                gmxToggleLike(song, e);
+            });
+        }
+        
+        item.setAttribute('data-events-attached', 'true');
     });
-    
-    // Evento para el like
-    const likeSpan = item.querySelector('.gmx-like-count');
-    if (likeSpan) {
-      likeSpan.addEventListener('click', (e) => {
-        e.stopPropagation();
-        gmxToggleLike(song, e);
-      });
-    }
-    
-    item.setAttribute('data-events-attached', 'true');
-  });
 }
-
 
 // Mostrar contador de likes en el botón
 async function gmxUpdateLikeButtonWithCount(songFilename) {

@@ -27,8 +27,10 @@
     <link rel="shortlink" href="https://grouvex.com/">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="HandheldFriendly" content="true">
-    <link rel="preconnect" href="https://example.com">
-    <link rel="dns-prefetch" href="https://example.com">
+    <link rel="preconnect" href="https://www.grouvex.com">
+    <link rel="dns-prefetch" href="https://www.grouvex.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* Estilos específicos para los planes que no afectarán a los formularios */
         .plans-container details {
@@ -351,8 +353,6 @@
                     *Nota: Puedes ponerte en contacto con <a href="mailto:administracion@grouvex.com" target="_blank"><i class="fa-solid fa-envelope"></i> administracion@grouvex.com</a> para cualquier tema de la suscripción, o dirigirte a <a href="https://grouvex.github.io/contacto" target="_blank">Contacto</a>.
                 </div>
             </div>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
             <style>
                 :root { --bg-body: #f8fafc; --surface: #ffffff; --primary: #6366f1; --text-main: #0f172a; --text-muted: #64748b; --border: #e2e8f0; --accent-green: #10b981; --danger: #ef4444; }
                 
@@ -413,6 +413,34 @@
                 .qty-input { width: 50px; padding: 8px; border: 1px solid var(--border); border-radius: 8px; font-weight: 600; text-align: center; }
                 .limit-reached { border-color: var(--danger) !important; background: #fef2f2 !important; }
             
+                /* Estilo para el ícono de información */
+                .info-icon {
+                    display: inline-block;
+                    width: 18px;
+                    height: 18px;
+                    background: #e2e8f0;
+                    color: #64748b;
+                    border-radius: 50%;
+                    text-align: center;
+                    line-height: 18px;
+                    font-size: 12px;
+                    font-weight: bold;
+                    margin-left: 8px;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                }
+                .info-icon:hover {
+                    background: var(--primary);
+                    color: white;
+                    transform: scale(1.1);
+                }
+                .item-name {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    flex-wrap: wrap;
+                }
+            
                 /* Sidebar fijo centrado */
                 .sidebar { 
                     width: 100%;
@@ -427,6 +455,7 @@
                 .coupon-input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; box-sizing: border-box; margin-bottom: 10px; }
                 .coupon-input:read-only { background-color: #f1f5f9; cursor: not-allowed; opacity: 0.7; }
                 .coupon-list-item { display: flex; justify-content: space-between; font-size: 0.8rem; padding: 6px 0; border-bottom: 1px solid #f1f5f9; }
+                .red-placeholder::placeholder {color: red;}
                 .status-tag { font-weight: 700; }
                 .active { color: var(--accent-green); }
                 .expired { color: var(--danger); text-decoration: line-through; }
@@ -446,6 +475,33 @@
                 .price-card label { color: #94a3b8; font-size: 0.7rem; font-weight: 700; display: block; margin-bottom: 5px; }
                 .price-card .val { font-size: 2rem; font-weight: 700; color: var(--accent-green); display: block; }
                 .price-card .val.zero { color: var(--danger); }
+                /* Tooltip personalizado */
+                .tooltip {
+                    position: fixed;
+                    background: #1e293b;
+                    color: white;
+                    padding: 12px 18px;
+                    border-radius: 12px;
+                    font-size: 0.85rem;
+                    max-width: 350px;
+                    width: max-content;
+                    min-width: 200px;
+                    z-index: 1000;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    pointer-events: none;
+                    opacity: 0;
+                    transition: opacity 0.2s ease;
+                    font-weight: 400;
+                    line-height: 1.5;
+                    white-space: normal;
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                    overflow: visible;
+                    display: block;
+                }
+                .tooltip.show {
+                    opacity: 1;
+                }
                 
                 /* Scrollbar personalizada */
                 .left-scrollable::-webkit-scrollbar {
@@ -518,13 +574,25 @@
             
             <script>
                 const data = [
-                    ["Cantidad de Cuentas", 1, 10.0, 0, 10], ["Copyright?", 1, 7.0, 1, 2], ["Sound Copyright?", 1, 7.0, 1, 2],
-                    ["Servicio de Soporte?", 1, 1.0, 1, 2], ["Video Musical al Año", 1, 100.0, 0, 1000], ["Elegir Otros Idiomas", 1, 170.0, 0, 1],
-                    ["Playlist YouTube Sello", 1, 100.0, 0, 1], ["Acceso a Pre-Order", 0, 150.0, 0, 1], ["Verificada YT/TikTok", 0, 200.0, 0, 1],
-                    ["Letras", 0, 220.0, 0, 1], ["Web Aprobado/Pre-Order", 0, 200.0, 0, 1], ["Mejora Audio", 0, 270.0, 0, 1],
-                    ["Mejora Imagen", 0, 270.0, 0, 1], ["Verificada Meta", 0, 250.0, 0, 1], ["100% Retención", 1, 40.0, 0, 2],
-                    ["Fecha Lanzamiento", 1, 0.1, 0, 1], ["Distribución", 1, 0.2, 0, 1], ["UPC/EAN/ISRC", 1, 0.2, 0, 1],
-                    ["Repartir Regalías", 1, 1.5, 0, 1]
+                    ["Perfil de Artista", 1, 10.0, 0, 10, "La cantidad de perfiles de artistas asociados a tu GS-UserId. Como máximo puedes tener 10 perfiles de artistas."],
+                    ["Copyright?", 1, 7.0, 1, 2, "Protección de derechos de autor para tu contenido musical. El 1 es cuando pertenece a Grouvex Studios Records. El 2 cuando le pertenece a usted."],
+                    ["Sound Copyright?", 1, 7.0, 1, 2, "Protección específica para derechos de sonido y grabación. El 1 es cuando pertenece a Grouvex Studios Records. El 2 cuando le pertenece a usted."],
+                    ["Servicio de Soporte?", 1, 1.0, 0, 2, "Soporte técnico y atención al cliente personalizada. El 0  cuando no tienes servicio de soporte. El 1 cuando es el \"normal\", es decir, el establecido en los DDOO. El 2 es soporte de 24h, dentro de lo posible."],
+                    ["Video Musical al Año", 1, 100.0, 0, 1000, "Cantidad de videos musicales que puedes publicar al año."],
+                    ["Elegir Otros Idiomas", 1, 170.0, 0, 1, "Traducción y adaptación a múltiples idiomas."],
+                    ["Playlist YouTube Sello", 1, 100.0, 0, 1, "Inclusión en playlists oficiales del sello en YouTube."],
+                    ["Acceso a Pre-Order", 0, 150.0, 0, 1, "Acceso anticipado a preventas y lanzamientos."],
+                    ["Verificada YT/TikTok", 0, 200.0, 0, 1, "Verificación oficial en YouTube y TikTok (check azul)."],
+                    ["Letras", 0, 220.0, 0, 1, "Inclusión de letras de canciones en plataformas."],
+                    ["Web Aprobado/Pre-Order", 0, 200.0, 0, 1, "Aprobación web y gestión de preventas online."],
+                    ["Mejora Audio", 0, 270.0, 0, 1, "Masterización y mejora de calidad de audio profesional."],
+                    ["Mejora Imagen", 0, 270.0, 0, 1, "Diseño gráfico y mejora de calidad visual de portadas."],
+                    ["Verificada Meta", 0, 250.0, 0, 1, "Verificación oficial en plataformas Meta (Instagram/Facebook)."],
+                    ["100% Retención", 1, 40.0, 0, 2, "Retención completa de regalías sin comisiones adicionales."],
+                    ["Fecha Lanzamiento", 1, 0.1, 0, 1, "Programación y gestión de fecha de lanzamiento."],
+                    ["Distribución", 1, 0.2, 0, 1, "Distribución digital en todas las plataformas (Spotify, Apple Music, etc.)."],
+                    ["UPC/EAN/ISRC", 1, 0.2, 0, 1, "Códigos internacionales para identificación de tu música."],
+                    ["Repartir Regalías", 1, 1.5, 0, 1, "División automática de regalías entre colaboradores y sellos."]
                 ];
                 
                 // Cupones - VACÍO (no hay cupones disponibles)
@@ -538,12 +606,75 @@
                 };
             
                 const body = document.getElementById('body');
-                data.forEach(item => {
+                data.forEach((item, index) => {
                     body.innerHTML += `<tr>
-                        <td style="font-weight: 500; font-size: 0.9rem;">${item[0]}</td>
+                        <td style="font-weight: 500; font-size: 0.9rem;">
+                            <div class="item-name">
+                                ${item[0]}
+                                <span class="info-icon" data-info="${item[5] || 'Sin información adicional'}" data-index="${index}">?</span>
+                            </div>
+                        </td>
                         <td><input type="number" class="qty-input" value="${item[1]}" data-w="${item[2]}" min="${item[3]}" max="${item[4]}"></td>
                         <td style="font-size: 0.8rem; color: var(--text-muted);">${item[2].toFixed(2)}%</td>
                     </tr>`;
+                });
+            
+                // Sistema de tooltip
+                let tooltip = null;
+                
+                function createTooltip() {
+                    if (!tooltip) {
+                        tooltip = document.createElement('div');
+                        tooltip.className = 'tooltip';
+                        document.body.appendChild(tooltip);
+                    }
+                    return tooltip;
+                }
+                
+                function showInfo(event, text) {
+                    const tooltipEl = createTooltip();
+                    tooltipEl.innerHTML = text;
+                    tooltipEl.classList.add('show');
+                    
+                    // Posicionar cerca del cursor
+                    const x = event.clientX + 15;
+                    const y = event.clientY - 10;
+                    
+                    tooltipEl.style.left = x + 'px';
+                    tooltipEl.style.top = y + 'px';
+                    
+                    // Evitar que se salga de la pantalla
+                    const rect = tooltipEl.getBoundingClientRect();
+                    if (rect.right > window.innerWidth) {
+                        tooltipEl.style.left = (event.clientX - rect.width - 15) + 'px';
+                    }
+                    if (rect.top < 0) {
+                        tooltipEl.style.top = (event.clientY + 20) + 'px';
+                    }
+                }
+                
+                function hideInfo() {
+                    if (tooltip) {
+                        tooltip.classList.remove('show');
+                    }
+                }
+                
+                // Agregar eventos a los íconos de información
+                document.querySelectorAll('.info-icon').forEach(icon => {
+                    const infoText = icon.getAttribute('data-info');
+                    
+                    icon.addEventListener('mouseenter', (e) => {
+                        showInfo(e, infoText);
+                    });
+                    
+                    icon.addEventListener('mouseleave', () => {
+                        hideInfo();
+                    });
+                    
+                    icon.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        alert(infoText);
+                    });
                 });
             
                 function calcularSumaPonderada() {
@@ -595,6 +726,7 @@
                         // No hay cupones - hacer readonly y mostrar mensaje
                         couponInput.readOnly = true;
                         couponInput.placeholder = "🎫 No hay cupones disponibles";
+                        couponInput.classList.add('red-placeholder');
                     } else {
                         // Hay cupones - habilitar input
                         couponInput.readOnly = false;

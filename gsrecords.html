@@ -351,6 +351,356 @@
                     *Nota: Puedes ponerte en contacto con <a href="mailto:administracion@grouvex.com" target="_blank"><i class="fa-solid fa-envelope"></i> administracion@grouvex.com</a> para cualquier tema de la suscripción, o dirigirte a <a href="https://grouvex.github.io/contacto" target="_blank">Contacto</a>.
                 </div>
             </div>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+            <style>
+                :root { --bg-body: #f8fafc; --surface: #ffffff; --primary: #6366f1; --text-main: #0f172a; --text-muted: #64748b; --border: #e2e8f0; --accent-green: #10b981; --danger: #ef4444; }
+                
+                * { margin: 0; padding: 0; box-sizing: border-box; }
+                
+                body { 
+                    font-family: 'Inter', sans-serif; 
+                    background-color: var(--bg-body); 
+                    color: var(--text-main); 
+                    height: 100vh;
+                    overflow: hidden;
+                }
+                
+                /* Layout principal - derecho fijo, izquierdo scroll */
+                .page-wrapper { 
+                    display: flex; 
+                    height: 100vh;
+                    width: 100%;
+                    position: relative;
+                }
+                
+                /* Lado izquierdo - SCROLLABLE */
+                .left-scrollable { 
+                    flex: 1;
+                    overflow-y: auto;
+                    padding: 20px;
+                    height: 100vh;
+                }
+                
+                /* Lado derecho - FIJO y CENTRADO */
+                .right-fixed { 
+                    width: 380px;
+                    height: 100vh;
+                    position: sticky;
+                    top: 0;
+                    right: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 20px;
+                    background: var(--bg-body);
+                    flex-shrink: 0;
+                }
+                
+                .card { 
+                    background: var(--surface); 
+                    padding: 24px; 
+                    border-radius: 20px; 
+                    border: 1px solid var(--border); 
+                    margin-bottom: 0;
+                }
+                
+                h2 { font-size: 1.25rem; margin-top: 0; margin-bottom: 20px; }
+                
+                table { width: 100%; border-collapse: collapse; }
+                th { color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; padding: 12px; text-align: left; }
+                td { padding: 12px; border-bottom: 1px solid #f1f5f9; }
+                .qty-input { width: 50px; padding: 8px; border: 1px solid var(--border); border-radius: 8px; font-weight: 600; text-align: center; }
+                .limit-reached { border-color: var(--danger) !important; background: #fef2f2 !important; }
+            
+                /* Sidebar fijo centrado */
+                .sidebar { 
+                    width: 100%;
+                    max-width: 320px;
+                    display: flex; 
+                    flex-direction: column; 
+                    gap: 16px; 
+                }
+                
+                /* Estilos de Cupón */
+                .coupon-section { background: #fff; padding: 20px; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 0; }
+                .coupon-input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; box-sizing: border-box; margin-bottom: 10px; }
+                .coupon-input:read-only { background-color: #f1f5f9; cursor: not-allowed; opacity: 0.7; }
+                .coupon-list-item { display: flex; justify-content: space-between; font-size: 0.8rem; padding: 6px 0; border-bottom: 1px solid #f1f5f9; }
+                .status-tag { font-weight: 700; }
+                .active { color: var(--accent-green); }
+                .expired { color: var(--danger); text-decoration: line-through; }
+                .coupon-type-badge { font-size: 0.7rem; background: #e2e8f0; padding: 2px 6px; border-radius: 10px; }
+                .no-coupons { text-align: center; padding: 20px; color: var(--text-muted); font-size: 0.85rem; }
+            
+                .price-card { 
+                    background: var(--text-main); 
+                    padding: 20px; 
+                    border-radius: 20px; 
+                    color: white; 
+                    text-align: center; 
+                    min-height: 80px;
+                    transition: all 0.3s ease;
+                }
+                .price-card.light { background: #fff; color: var(--text-main); border: 1px solid var(--border); }
+                .price-card label { color: #94a3b8; font-size: 0.7rem; font-weight: 700; display: block; margin-bottom: 5px; }
+                .price-card .val { font-size: 2rem; font-weight: 700; color: var(--accent-green); display: block; }
+                .price-card .val.zero { color: var(--danger); }
+                
+                /* Scrollbar personalizada */
+                .left-scrollable::-webkit-scrollbar {
+                    width: 8px;
+                }
+                .left-scrollable::-webkit-scrollbar-track {
+                    background: #e2e8f0;
+                    border-radius: 10px;
+                }
+                .left-scrollable::-webkit-scrollbar-thumb {
+                    background: #94a3b8;
+                    border-radius: 10px;
+                }
+                .left-scrollable::-webkit-scrollbar-thumb:hover {
+                    background: #64748b;
+                }
+                
+                @media (max-width: 900px) {
+                    .page-wrapper { flex-direction: column; }
+                    .left-scrollable { height: auto; overflow-y: visible; }
+                    .right-fixed { 
+                        position: relative;
+                        width: 100%;
+                        height: auto;
+                        sticky: none;
+                    }
+                    body { overflow: auto; height: auto; }
+                }
+            </style>
+            
+            <div class="page-wrapper">
+                <!-- Lado izquierdo: SCROLLABLE -->
+                <div class="left-scrollable">
+                    <div class="card">
+                        <h2>Configuración de Servicio</h2>
+                        <table>
+                            <thead>
+                                <tr><th>Item</th><th>Nivel/Cant.</th><th>Ponderación</th></tr>
+                            </thead>
+                            <tbody id="body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            
+                <!-- Lado derecho: FIJO y CENTRADO -->
+                <div class="right-fixed">
+                    <div class="sidebar">
+                        <div class="coupon-section">
+                            <h3>Código de descuento</h3>
+                            <input type="text" id="coupon" class="coupon-input" placeholder="Introduce tu código">
+                            <div id="coupon-msg" style="font-size: 0.8rem; margin-bottom: 10px;"></div>
+                            <div id="coupon-list"></div>
+                        </div>
+            
+                        <div class="price-card light">
+                            <label>PRECIO TOTAL (BRUTO)</label>
+                            <span id="precio-bruto" class="val" style="color: var(--text-main); font-size: 1.5rem;">0,00 €</span>
+                        </div>
+                        <div class="price-card" id="card-m">
+                            <label>MENSUAL</label>
+                            <span id="mensual" class="val">0,00 €</span>
+                        </div>
+                        <div class="price-card light" id="card-a">
+                            <label style="color: var(--text-muted);">ANUAL</label>
+                            <span id="anual" class="val" style="color: var(--primary);">0,00 €</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <script>
+                const data = [
+                    ["Cantidad de Cuentas", 1, 10.0, 0, 10], ["Copyright?", 1, 7.0, 1, 2], ["Sound Copyright?", 1, 7.0, 1, 2],
+                    ["Servicio de Soporte?", 1, 1.0, 1, 2], ["Video Musical al Año", 1, 100.0, 0, 1000], ["Elegir Otros Idiomas", 1, 170.0, 0, 1],
+                    ["Playlist YouTube Sello", 1, 100.0, 0, 1], ["Acceso a Pre-Order", 0, 150.0, 0, 1], ["Verificada YT/TikTok", 0, 200.0, 0, 1],
+                    ["Letras", 0, 220.0, 0, 1], ["Web Aprobado/Pre-Order", 0, 200.0, 0, 1], ["Mejora Audio", 0, 270.0, 0, 1],
+                    ["Mejora Imagen", 0, 270.0, 0, 1], ["Verificada Meta", 0, 250.0, 0, 1], ["100% Retención", 1, 40.0, 0, 2],
+                    ["Fecha Lanzamiento", 1, 0.1, 0, 1], ["Distribución", 1, 0.2, 0, 1], ["UPC/EAN/ISRC", 1, 0.2, 0, 1],
+                    ["Repartir Regalías", 1, 1.5, 0, 1]
+                ];
+                
+                // Cupones - VACÍO (no hay cupones disponibles)
+                const cupones = { 
+                    //"DESC10": { type: "percentage", desc: 0.10, exp: 9999999999 },
+                    //"PROMO": { type: "percentage", desc: 0.20, exp: 177680000 },
+                    //"AHORRO50": { type: "fixed", desc: 50, exp: 9999999999 },
+                    //"GRANDE": { type: "percentage", desc: 0.30, max_discount: 100, exp: 9999999999 },
+                    //"SUPER10": { type: "fixed", desc: 10, exp: 9999999999 },
+                    //"LIMITADO": { type: "percentage", desc: 0.25, max_discount: 75, exp: 9999999999 }
+                };
+            
+                const body = document.getElementById('body');
+                data.forEach(item => {
+                    body.innerHTML += `<tr>
+                        <td style="font-weight: 500; font-size: 0.9rem;">${item[0]}</td>
+                        <td><input type="number" class="qty-input" value="${item[1]}" data-w="${item[2]}" min="${item[3]}" max="${item[4]}"></td>
+                        <td style="font-size: 0.8rem; color: var(--text-muted);">${item[2].toFixed(2)}%</td>
+                    </tr>`;
+                });
+            
+                function calcularSumaPonderada() {
+                    let suma = 0;
+                    document.querySelectorAll('.qty-input').forEach(el => {
+                        let val = Math.max(el.min, Math.min(el.max, el.value));
+                        el.value = val;
+                        el.classList.toggle('limit-reached', val == el.min || val == el.max);
+                        suma += val * (el.dataset.w / 100);
+                    });
+                    return suma;
+                }
+            
+                function calcularPrecios(sumaPonderada, descuentoAplicado) {
+                    const baseSinDescuento = sumaPonderada * 2.4495 / 1.221;
+                    const baseConDescuento = Math.max(0, baseSinDescuento - descuentoAplicado);
+                    
+                    let mensualTemp = baseConDescuento / 12 + 0.1;
+                    let mensual = mensualTemp < 0.231 ? 0 : mensualTemp;
+                    
+                    let anual = baseConDescuento < 1.561 ? 0 : baseConDescuento;
+                    
+                    return {
+                        bruto: baseSinDescuento,
+                        brutoConDescuento: baseConDescuento,
+                        mensual: mensual,
+                        anual: anual
+                    };
+                }
+            
+                function update() {
+                    let sumaPonderada = calcularSumaPonderada();
+                    
+                    let couponInput = document.getElementById('coupon');
+                    let cVal = couponInput.value;
+                    let cMsg = document.getElementById('coupon-msg');
+                    let discountValue = 0;
+                    let appliedCoupon = null;
+                    let now = Math.floor(Date.now() / 1000);
+                    
+                    const baseSinDescuento = sumaPonderada * 2.4495 / 1.221;
+                    
+                    const listEl = document.getElementById('coupon-list');
+                    
+                    // Verificar si hay cupones disponibles
+                    const cuponesKeys = Object.keys(cupones);
+                    
+                    if (cuponesKeys.length === 0) {
+                        // No hay cupones - hacer readonly y mostrar mensaje
+                        couponInput.readOnly = true;
+                        couponInput.placeholder = "🎫 No hay cupones disponibles";
+                    } else {
+                        // Hay cupones - habilitar input
+                        couponInput.readOnly = false;
+                        couponInput.placeholder = "Introduce tu código";
+                        // Mostrar lista de cupones
+                        listEl.innerHTML = "<strong>Cupones disponibles:</strong>";
+                        cuponesKeys.forEach(c => {
+                            let cupon = cupones[c];
+                            let isExpired = cupon.exp < now;
+                            let typeText = cupon.type === "percentage" ? `${(cupon.desc * 100).toFixed(0)}%` : `${cupon.desc.toFixed(2)}€`;
+                            let maxText = cupon.type === "percentage" && cupon.max_discount ? ` (máx ${cupon.max_discount.toFixed(2)}€)` : "";
+                            
+                            listEl.innerHTML += `<div class="coupon-list-item ${isExpired ? 'expired' : ''}">
+                                <div><strong>${c}</strong> <span class="coupon-type-badge">${typeText}${maxText}</span></div>
+                                <span class="status-tag ${isExpired ? 'expired' : 'active'}">${isExpired ? 'Expirado' : 'Disponible'}</span>
+                            </div>`;
+                        });
+                    }
+                    
+                    // Solo procesar cupón si existen cupones
+                    if (cuponesKeys.length > 0 && cupones[cVal] && cupones[cVal].exp >= now) {
+                        const cupon = cupones[cVal];
+                        appliedCoupon = cupon;
+                        
+                        if (cupon.type === "percentage") {
+                            let rawDiscount = baseSinDescuento * cupon.desc;
+                            if (cupon.max_discount !== undefined && rawDiscount > cupon.max_discount) {
+                                rawDiscount = cupon.max_discount;
+                                discountValue = rawDiscount;
+                                cMsg.innerText = `✓ Cupón aplicado: ${(cupon.desc * 100).toFixed(0)}% (máx ${cupon.max_discount.toFixed(2)}€)`;
+                            } else {
+                                discountValue = rawDiscount;
+                                cMsg.innerText = `✓ Cupón aplicado: ${(cupon.desc * 100).toFixed(0)}% de descuento`;
+                            }
+                            cMsg.style.color = "var(--accent-green)";
+                        } 
+                        else if (cupon.type === "fixed") {
+                            discountValue = cupon.desc;
+                            cMsg.innerText = `✓ Cupón aplicado: ${cupon.desc.toFixed(2)}€ de descuento`;
+                            cMsg.style.color = "var(--accent-green)";
+                        }
+                    } 
+                    else if(cVal !== "" && cuponesKeys.length > 0) { 
+                        cMsg.innerText = "No válido o expirado"; 
+                        cMsg.style.color = "var(--danger)"; 
+                    } else if(cVal !== "" && cuponesKeys.length === 0) {
+                        cMsg.innerText = "No hay cupones disponibles";
+                        cMsg.style.color = "var(--danger)";
+                    } else {
+                        cMsg.innerText = "";
+                    }
+                    
+                    const precios = calcularPrecios(sumaPonderada, discountValue);
+                    
+                    document.getElementById('precio-bruto').innerText = precios.bruto.toFixed(2).replace('.', ',') + ' €';
+                    
+                    const mensualElement = document.getElementById('mensual');
+                    const mensualText = precios.mensual.toFixed(2).replace('.', ',') + ' €';
+                    mensualElement.innerText = mensualText;
+                    if (precios.mensual === 0) {
+                        mensualElement.classList.add('zero');
+                        mensualElement.style.color = "var(--danger)";
+                    } else {
+                        mensualElement.classList.remove('zero');
+                        mensualElement.style.color = "var(--accent-green)";
+                    }
+                    
+                    const anualElement = document.getElementById('anual');
+                    const anualText = precios.anual.toFixed(2).replace('.', ',') + ' €';
+                    anualElement.innerText = anualText;
+                    if (precios.anual === 0) {
+                        anualElement.classList.add('zero');
+                        anualElement.style.color = "var(--danger)";
+                    } else {
+                        anualElement.classList.remove('zero');
+                        anualElement.style.color = "var(--primary)";
+                    }
+                    
+                    if (appliedCoupon && appliedCoupon.type === "percentage" && appliedCoupon.max_discount && discountValue === appliedCoupon.max_discount) {
+                        if (!anualElement.getAttribute('data-tooltip')) {
+                            anualElement.title = `Descuento limitado a ${appliedCoupon.max_discount.toFixed(2)}€`;
+                            anualElement.style.cursor = "help";
+                        }
+                    }
+                    
+                    if (precios.mensual === 0 || precios.anual === 0) {
+                        const cards = document.querySelectorAll('.price-card');
+                        cards.forEach(card => {
+                            if ((precios.mensual === 0 && card.id === 'card-m') || 
+                                (precios.anual === 0 && card.id === 'card-a')) {
+                                card.style.opacity = '0.7';
+                                card.style.filter = 'grayscale(0.3)';
+                            }
+                        });
+                    } else {
+                        document.querySelectorAll('.price-card').forEach(card => {
+                            card.style.opacity = '1';
+                            card.style.filter = 'none';
+                        });
+                    }
+                }
+            
+                document.querySelectorAll('.qty-input').forEach(el => el.addEventListener('input', update));
+                document.getElementById('coupon').addEventListener('input', update);
+                update();
+            </script>
         </details>
     </main>
     <script src="abc.js"></script>

@@ -353,476 +353,734 @@
                     *Nota: Puedes ponerte en contacto con <a href="mailto:administracion@grouvex.com" target="_blank"><i class="fa-solid fa-envelope"></i> administracion@grouvex.com</a> para cualquier tema de la suscripción, o dirigirte a <a href="https://grouvex.github.io/contacto" target="_blank">Contacto</a>.
                 </div>
             </div>
-            <style>
-                :root { --bg-body: #f8fafc; --surface: #ffffff; --primary: #6366f1; --text-main: #0f172a; --text-muted: #64748b; --border: #e2e8f0; --accent-green: #10b981; --danger: #ef4444; }
-                
-                /* Layout principal - derecho fijo, izquierdo scroll */
-                .page-wrapper { 
-                    display: flex; 
-                    height: 100vh;
-                    width: 100%;
-                    position: relative;
-                }
-                
-                /* Lado izquierdo - SCROLLABLE */
-                .left-scrollable { 
-                    flex: 1;
-                    overflow-y: auto;
-                    padding: 20px;
-                    height: 100vh;
-                }
-                
-                /* Lado derecho - FIJO y CENTRADO */
-                .right-fixed { 
-                    width: 380px;
-                    height: 100vh;
-                    position: sticky;
-                    top: 0;
-                    right: 0;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 20px;
-                    background: var(--bg-body);
-                    flex-shrink: 0;
-                }
-                
-                .card { 
-                    background: var(--surface); 
-                    padding: 24px; 
-                    border-radius: 20px; 
-                    border: 1px solid var(--border); 
-                    margin-bottom: 0;
-                }
-                
-                h2 { font-size: 1.25rem; margin-top: 0; margin-bottom: 20px; }
-                
-                table { width: 100%; border-collapse: collapse; }
-                th { color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; padding: 12px; text-align: left; }
-                td { padding: 12px; border-bottom: 1px solid #f1f5f9; }
-                .qty-input { width: 50px; padding: 8px; border: 1px solid var(--border); border-radius: 8px; font-weight: 600; text-align: center; }
-                .limit-reached { border-color: var(--danger) !important; background: #fef2f2 !important; }
-            
-                /* Estilo para el ícono de información */
-                .info-icon {
-                    display: inline-block;
-                    width: 18px;
-                    height: 18px;
-                    background: #e2e8f0;
-                    color: #64748b;
-                    border-radius: 50%;
-                    text-align: center;
-                    line-height: 18px;
-                    font-size: 12px;
-                    font-weight: bold;
-                    margin-left: 8px;
-                    cursor: pointer;
-                    transition: all 0.2s ease;
-                }
-                .info-icon:hover {
-                    background: var(--primary);
-                    color: white;
-                    transform: scale(1.1);
-                }
-                .item-name {
-                    display: flex;
-                    align-items: center;
-                    gap: 6px;
-                    flex-wrap: wrap;
-                }
-            
-                /* Sidebar fijo centrado */
-                .sidebar { 
-                    width: 100%;
-                    max-width: 320px;
-                    display: flex; 
-                    flex-direction: column; 
-                    gap: 16px; 
-                }
-                
-                /* Estilos de Cupón */
-                .coupon-section { background: #fff; padding: 20px; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 0; }
-                .coupon-input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; box-sizing: border-box; margin-bottom: 10px; }
-                .coupon-input:read-only { background-color: #f1f5f9; cursor: not-allowed; opacity: 0.7; }
-                .coupon-list-item { display: flex; justify-content: space-between; font-size: 0.8rem; padding: 6px 0; border-bottom: 1px solid #f1f5f9; }
-                .red-placeholder::placeholder {color: red;}
-                .status-tag { font-weight: 700; }
-                .active { color: var(--accent-green); }
-                .expired { color: var(--danger); text-decoration: line-through; }
-                .coupon-type-badge { font-size: 0.7rem; background: #e2e8f0; padding: 2px 6px; border-radius: 10px; }
-                .no-coupons { text-align: center; padding: 20px; color: var(--text-muted); font-size: 0.85rem; }
-            
-                .price-card { 
-                    background: var(--text-main); 
-                    padding: 20px; 
-                    border-radius: 20px; 
-                    color: white; 
-                    text-align: center; 
-                    min-height: 80px;
-                    transition: all 0.3s ease;
-                }
-                .price-card.light { background: #fff; color: var(--text-main); border: 1px solid var(--border); }
-                .price-card label { color: #94a3b8; font-size: 0.7rem; font-weight: 700; display: block; margin-bottom: 5px; }
-                .price-card .val { font-size: 2rem; font-weight: 700; color: var(--accent-green); display: block; }
-                .price-card .val.zero { color: var(--danger); }
-                /* Tooltip personalizado */
-                .tooltip {
-                    position: fixed;
-                    background: #1e293b;
-                    color: white;
-                    padding: 12px 18px;
-                    border-radius: 12px;
-                    font-size: 0.85rem;
-                    max-width: 350px;
-                    width: max-content;
-                    min-width: 200px;
-                    z-index: 1000;
-                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                    pointer-events: none;
-                    opacity: 0;
-                    transition: opacity 0.2s ease;
-                    font-weight: 400;
-                    line-height: 1.5;
-                    white-space: normal;
-                    word-wrap: break-word;
-                    overflow-wrap: break-word;
-                    overflow: visible;
-                    display: block;
-                }
-                .tooltip.show {
-                    opacity: 1;
-                }
-                
-                /* Scrollbar personalizada */
-                .left-scrollable::-webkit-scrollbar {
-                    width: 8px;
-                }
-                .left-scrollable::-webkit-scrollbar-track {
-                    background: #e2e8f0;
-                    border-radius: 10px;
-                }
-                .left-scrollable::-webkit-scrollbar-thumb {
-                    background: #94a3b8;
-                    border-radius: 10px;
-                }
-                .left-scrollable::-webkit-scrollbar-thumb:hover {
-                    background: #64748b;
-                }
-                
-                @media (max-width: 900px) {
-                    .page-wrapper { flex-direction: column; }
-                    .left-scrollable { height: auto; overflow-y: visible; }
-                    .right-fixed { 
-                        position: relative;
-                        width: 100%;
-                        height: auto;
-                        sticky: none;
-                    }
-                    body { overflow: auto; height: auto; }
-                }
-            </style>
-            
-            <div class="page-wrapper">
-                <!-- Lado izquierdo: SCROLLABLE -->
-                <div class="left-scrollable">
-                    <div class="card">
-                        <h2>Configuración de Servicio</h2>
-                        <table>
-                            <thead>
-                                <tr><th>Item</th><th>Nivel/Cant.</th><th>Ponderación</th></tr>
-                            </thead>
-                            <tbody id="body"></tbody>
-                        </table>
-                    </div>
+<style>
+/* Todas las clases son únicas con el prefijo "gs-calc-" */
+.gs-calc-root { --gs-bg-body: #f8fafc; --gs-surface: #ffffff; --gs-primary: #6366f1; --gs-text-main: #0f172a; --gs-text-muted: #64748b; --gs-border: #e2e8f0; --gs-accent-green: #10b981; --gs-danger: #ef4444; }
+
+/* Layout principal - responsive */
+.gs-calc-page-wrapper { 
+    display: flex; 
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    color: black;
+}
+
+/* Lado izquierdo - SCROLLABLE */
+.gs-calc-left-scrollable { 
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+/* Lado derecho - siempre visible y centrado en escritorio */
+.gs-calc-right-fixed { 
+    width: 380px;
+    min-height: 100vh;
+    position: sticky;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: var(--gs-bg-body);
+    flex-shrink: 0;
+    align-self: flex-start;
+}
+
+.gs-calc-card { 
+    background: var(--gs-surface); 
+    padding: 24px; 
+    border-radius: 20px; 
+    border: 1px solid var(--gs-border); 
+    margin-bottom: 0;
+}
+
+.gs-calc-card h2 { font-size: 1.25rem; margin-top: 0; margin-bottom: 20px; color: var(--gs-text-main); }
+
+.gs-calc-table { width: 100%; border-collapse: collapse; }
+.gs-calc-table th { color: var(--gs-text-muted); font-size: 0.7rem; text-transform: uppercase; padding: 12px; text-align: left; }
+.gs-calc-table td { padding: 12px; border-bottom: 1px solid #f1f5f9; }
+
+.gs-calc-qty-input { width: 50px; padding: 8px; border: 1px solid var(--gs-border); border-radius: 8px; font-weight: 600; text-align: center; background: var(--gs-surface); color: var(--gs-text-main); }
+.gs-calc-limit-reached { border-color: var(--gs-danger) !important; background: #fef2f2 !important; }
+
+/* Estilo para el ícono de información */
+.gs-calc-info-icon {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background: #e2e8f0;
+    color: #64748b;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 18px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.gs-calc-info-icon:hover {
+    background: var(--gs-primary);
+    color: white;
+    transform: scale(1.1);
+}
+.gs-calc-item-name {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+/* Sidebar fijo centrado */
+.gs-calc-sidebar { 
+    width: 100%;
+    max-width: 320px;
+    display: flex; 
+    flex-direction: column; 
+    gap: 16px; 
+}
+
+/* Estilos de Cupón */
+.gs-calc-coupon-section { background: #fff; padding: 20px; border-radius: 16px; border: 1px solid var(--gs-border); margin-bottom: 0; }
+.gs-calc-coupon-section h3 { margin: 0 0 12px 0; font-size: 1rem; color: var(--gs-text-main); }
+.gs-calc-coupon-input { width: 100%; padding: 12px; border: 1px solid var(--gs-border); border-radius: 8px; box-sizing: border-box; margin-bottom: 10px; background: var(--gs-surface); color: var(--gs-text-main); }
+.gs-calc-coupon-input:read-only { background-color: #f1f5f9; cursor: not-allowed; opacity: 0.7; }
+.gs-calc-coupon-list-item { display: flex; justify-content: space-between; font-size: 0.8rem; padding: 6px 0; border-bottom: 1px solid #f1f5f9; }
+.gs-calc-red-placeholder::placeholder {color: red;}
+.gs-calc-status-tag { font-weight: 700; }
+.gs-calc-active { color: var(--gs-accent-green); }
+.gs-calc-expired { color: var(--gs-danger); text-decoration: line-through; }
+.gs-calc-coupon-type-badge { font-size: 0.7rem; background: #e2e8f0; padding: 2px 6px; border-radius: 10px; }
+.gs-calc-no-coupons { text-align: center; padding: 20px; color: var(--gs-text-muted); font-size: 0.85rem; }
+
+/* Contenedor de precios en serie */
+.gs-calc-prices-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Tarjetas de precio - diseño moderno */
+.gs-calc-price-card { 
+    background: var(--gs-text-main); 
+    padding: 20px; 
+    border-radius: 20px; 
+    color: white; 
+    text-align: center; 
+    min-height: 80px;
+    transition: all 0.3s ease;
+    flex: 1;
+}
+.gs-calc-price-card.gs-calc-light { background: #fff; color: var(--gs-text-main); border: 1px solid var(--gs-border); }
+.gs-calc-price-card label { color: #94a3b8; font-size: 0.7rem; font-weight: 700; display: block; margin-bottom: 5px; }
+.gs-calc-price-card .gs-calc-val { font-size: 2rem; font-weight: 700; color: var(--gs-accent-green); display: block; }
+.gs-calc-price-card .gs-calc-val.gs-calc-zero { color: var(--gs-danger); }
+
+/* Tooltip personalizado */
+.gs-calc-tooltip {
+    position: fixed;
+    background: #1e293b;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    max-width: 350px;
+    width: max-content;
+    min-width: 200px;
+    z-index: 10000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    font-weight: 400;
+    line-height: 1.5;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    overflow: visible;
+    display: block;
+}
+.gs-calc-tooltip.gs-calc-show {
+    opacity: 1;
+}
+
+/* Scrollbar personalizada */
+.gs-calc-left-scrollable::-webkit-scrollbar {
+    width: 8px;
+}
+.gs-calc-left-scrollable::-webkit-scrollbar-track {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+.gs-calc-left-scrollable::-webkit-scrollbar-thumb {
+    background: #94a3b8;
+    border-radius: 10px;
+}
+.gs-calc-left-scrollable::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+/* ============================================ */
+/* ESTILOS PARA ESCRITORIO - COLUMNA DERECHA FIJA Y CENTRADA */
+/* ============================================ */
+
+/* Ajustes para escritorio (pantallas mayores a 768px) */
+@media (min-width: 769px) {
+    .gs-calc-right-fixed {
+        position: sticky;
+        top: 50%;
+        transform: translateY(-50%);
+        height: fit-content;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    
+    /* Scroll interno para el sidebar si es muy alto */
+    .gs-calc-sidebar {
+        max-height: 85vh;
+        overflow-y: auto;
+        padding-right: 4px;
+    }
+    
+    .gs-calc-sidebar::-webkit-scrollbar {
+        width: 4px;
+    }
+    
+    .gs-calc-sidebar::-webkit-scrollbar-track {
+        background: #e2e8f0;
+        border-radius: 10px;
+    }
+    
+    .gs-calc-sidebar::-webkit-scrollbar-thumb {
+        background: #94a3b8;
+        border-radius: 10px;
+    }
+}
+
+/* ============================================ */
+/* ESTILOS MEJORADOS PARA MÓVIL - PRECIOS STICKY SIEMPRE VISIBLES */
+/* ============================================ */
+
+/* Tablets y pantallas medianas (hasta 1024px) */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .gs-calc-right-fixed {
+        width: 320px;
+    }
+    .gs-calc-sidebar {
+        max-width: 280px;
+    }
+}
+
+/* Móviles y pantallas pequeñas (hasta 768px) */
+@media (max-width: 768px) {
+    .gs-calc-page-wrapper { 
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .gs-calc-left-scrollable { 
+        height: auto;
+        overflow-y: visible;
+        min-height: auto;
+        padding: 16px;
+        padding-top: 0;
+        order: 2;
+    }
+    
+    .gs-calc-right-fixed { 
+        position: sticky;
+        top: 0;
+        width: 100%;
+        height: auto;
+        min-height: auto;
+        left: 0;
+        right: auto;
+        padding: 12px;
+        background: var(--gs-bg-body);
+        order: 1;
+        display: block;
+        z-index: 100;
+        transform: none;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .gs-calc-sidebar { 
+        max-width: 100%;
+        gap: 10px;
+    }
+    
+    .gs-calc-prices-container {
+        flex-direction: row;
+        gap: 10px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: visible;
+        padding-bottom: 4px;
+    }
+    
+    .gs-calc-price-card {
+        padding: 10px 8px;
+        min-width: 100px;
+        flex: 1;
+        min-height: auto;
+    }
+    
+    .gs-calc-price-card .gs-calc-val {
+        font-size: 1.1rem;
+        white-space: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        max-width: 100%;
+        display: block;
+    }
+    
+    .gs-calc-price-card label {
+        font-size: 0.55rem;
+        white-space: nowrap;
+    }
+    
+    .gs-calc-coupon-section {
+        margin-bottom: 0;
+        padding: 12px;
+    }
+    
+    .gs-calc-coupon-section h3 {
+        margin: 0 0 8px 0;
+        font-size: 0.9rem;
+    }
+    
+    .gs-calc-coupon-input {
+        padding: 8px;
+        font-size: 0.85rem;
+        margin-bottom: 6px;
+    }
+    
+    .gs-calc-left-scrollable .gs-calc-card {
+        margin-top: 0;
+    }
+}
+
+/* Móviles pequeños (hasta 480px) */
+@media (max-width: 480px) {
+    .gs-calc-left-scrollable {
+        padding: 12px;
+        padding-top: 0;
+    }
+    
+    .gs-calc-right-fixed {
+        padding: 10px;
+    }
+    
+    .gs-calc-card {
+        padding: 16px;
+    }
+    
+    .gs-calc-card h2 {
+        font-size: 1.1rem;
+        margin-bottom: 16px;
+    }
+    
+    .gs-calc-table th,
+    .gs-calc-table td {
+        padding: 8px;
+        font-size: 0.75rem;
+    }
+    
+    .gs-calc-qty-input {
+        width: 42px;
+        padding: 5px;
+        font-size: 0.75rem;
+    }
+    
+    .gs-calc-prices-container {
+        gap: 8px;
+    }
+    
+    .gs-calc-price-card {
+        padding: 8px 5px;
+        min-width: 85px;
+    }
+    
+    .gs-calc-price-card .gs-calc-val {
+        font-size: 0.95rem;
+    }
+    
+    .gs-calc-price-card label {
+        font-size: 0.5rem;
+    }
+    
+    .gs-calc-item-name {
+        font-size: 0.8rem;
+    }
+    
+    .gs-calc-info-icon {
+        width: 14px;
+        height: 14px;
+        line-height: 14px;
+        font-size: 9px;
+    }
+}
+
+/* Móviles muy pequeños (hasta 380px) */
+@media (max-width: 380px) {
+    .gs-calc-price-card {
+        min-width: 70px;
+        padding: 6px 3px;
+    }
+    
+    .gs-calc-price-card .gs-calc-val {
+        font-size: 0.85rem;
+    }
+    
+    .gs-calc-price-card label {
+        font-size: 0.45rem;
+    }
+    
+    .gs-calc-prices-container {
+        gap: 6px;
+    }
+}
+
+/* Móviles en modo landscape */
+@media (max-width: 768px) and (orientation: landscape) {
+    .gs-calc-right-fixed {
+        padding: 6px 12px;
+        position: sticky;
+        top: 0;
+    }
+    
+    .gs-calc-sidebar {
+        gap: 6px;
+    }
+    
+    .gs-calc-coupon-section {
+        padding: 8px;
+    }
+    
+    .gs-calc-coupon-section h3 {
+        font-size: 0.8rem;
+        margin-bottom: 4px;
+    }
+    
+    .gs-calc-coupon-input {
+        padding: 6px;
+        font-size: 0.8rem;
+    }
+    
+    .gs-calc-price-card {
+        padding: 6px 4px;
+    }
+    
+    .gs-calc-price-card .gs-calc-val {
+        font-size: 0.9rem;
+    }
+    
+    .gs-calc-left-scrollable {
+        padding: 12px;
+        padding-top: 0;
+    }
+}
+
+/* Ajustes para pantallas muy grandes */
+@media (min-width: 1400px) {
+    .gs-calc-right-fixed {
+        width: 420px;
+    }
+    
+    .gs-calc-sidebar {
+        max-width: 360px;
+    }
+    
+    .gs-calc-price-card .gs-calc-val {
+        font-size: 2.2rem;
+    }
+}
+</style>
+
+<div class="gs-calc-root" id="gs-calculator-app">
+    <div class="gs-calc-page-wrapper">
+        <div class="gs-calc-left-scrollable">
+            <div class="gs-calc-card">
+                <h2>Configuración de Servicio</h2>
+                <table class="gs-calc-table">
+                    <thead>
+                        <tr><th>Item</th><th>Nivel/Cant.</th><th>Ponderación</th></tr>
+                    </thead>
+                    <tbody id="gs-calc-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="gs-calc-right-fixed">
+            <div class="gs-calc-sidebar">
+                <div class="gs-calc-coupon-section">
+                    <h3>Código de descuento</h3>
+                    <input type="text" id="gs-calc-coupon" class="gs-calc-coupon-input" placeholder="Introduce tu código">
+                    <div id="gs-calc-coupon-msg" style="font-size: 0.8rem; margin-bottom: 10px;"></div>
+                    <div id="gs-calc-coupon-list"></div>
                 </div>
-            
-                <!-- Lado derecho: FIJO y CENTRADO -->
-                <div class="right-fixed">
-                    <div class="sidebar">
-                        <div class="coupon-section">
-                            <h3>Código de descuento</h3>
-                            <input type="text" id="coupon" class="coupon-input" placeholder="Introduce tu código">
-                            <div id="coupon-msg" style="font-size: 0.8rem; margin-bottom: 10px;"></div>
-                            <div id="coupon-list"></div>
-                        </div>
-            
-                        <div class="price-card light">
-                            <label>PRECIO TOTAL (BRUTO)</label>
-                            <span id="precio-bruto" class="val" style="color: var(--text-main); font-size: 1.5rem;">0,00 €</span>
-                        </div>
-                        <div class="price-card" id="card-m">
-                            <label>MENSUAL</label>
-                            <span id="mensual" class="val">0,00 €</span>
-                        </div>
-                        <div class="price-card light" id="card-a">
-                            <label style="color: var(--text-muted);">ANUAL</label>
-                            <span id="anual" class="val" style="color: var(--primary);">0,00 €</span>
-                        </div>
+
+                <div class="gs-calc-prices-container">
+                    <div class="gs-calc-price-card gs-calc-light">
+                        <label>PRECIO TOTAL (BRUTO)</label>
+                        <span id="gs-calc-precio-bruto" class="gs-calc-val" style="color: var(--gs-text-main); font-size: 1.5rem;">0,00 €</span>
+                    </div>
+                    <div class="gs-calc-price-card" id="gs-calc-card-m">
+                        <label>MENSUAL</label>
+                        <span id="gs-calc-mensual" class="gs-calc-val">0,00 €</span>
+                    </div>
+                    <div class="gs-calc-price-card gs-calc-light" id="gs-calc-card-a">
+                        <label style="color: var(--gs-text-muted);">ANUAL</label>
+                        <span id="gs-calc-anual" class="gs-calc-val" style="color: var(--gs-primary);">0,00 €</span>
                     </div>
                 </div>
             </div>
-            
-            <script>
-                const data = [
-                    ["Perfil de Artista", 1, 10.0, 0, 10, "La cantidad de perfiles de artistas asociados a tu GS-UserId. Como máximo puedes tener 10 perfiles de artistas."],
-                    ["Copyright?", 1, 7.0, 1, 2, "Protección de derechos de autor para tu contenido musical. El 1 es cuando pertenece a Grouvex Studios Records. El 2 cuando le pertenece a usted."],
-                    ["Sound Copyright?", 1, 7.0, 1, 2, "Protección específica para derechos de sonido y grabación. El 1 es cuando pertenece a Grouvex Studios Records. El 2 cuando le pertenece a usted."],
-                    ["Servicio de Soporte?", 1, 1.0, 0, 2, "Soporte técnico y atención al cliente personalizada. El 0  cuando no tienes servicio de soporte. El 1 cuando es el \"normal\", es decir, el establecido en los DDOO. El 2 es soporte de 24h, dentro de lo posible."],
-                    ["Video Musical al Año", 1, 100.0, 0, 1000, "Cantidad de videos musicales que puedes publicar al año."],
-                    ["Elegir Otros Idiomas", 1, 170.0, 0, 1, "Traducción y adaptación a múltiples idiomas."],
-                    ["Playlist YouTube Sello", 1, 100.0, 0, 1, "Inclusión en playlists oficiales del sello en YouTube."],
-                    ["Acceso a Pre-Order", 0, 150.0, 0, 1, "Acceso anticipado a preventas y lanzamientos."],
-                    ["Verificada YT/TikTok", 0, 200.0, 0, 1, "Verificación oficial en YouTube y TikTok (check azul)."],
-                    ["Letras", 0, 220.0, 0, 1, "Inclusión de letras de canciones en plataformas."],
-                    ["Web Aprobado/Pre-Order", 0, 200.0, 0, 1, "Aprobación web y gestión de preventas online."],
-                    ["Mejora Audio", 0, 270.0, 0, 1, "Masterización y mejora de calidad de audio profesional."],
-                    ["Mejora Imagen", 0, 270.0, 0, 1, "Diseño gráfico y mejora de calidad visual de portadas."],
-                    ["Verificada Meta", 0, 250.0, 0, 1, "Verificación oficial en plataformas Meta (Instagram/Facebook)."],
-                    ["100% Retención", 1, 40.0, 0, 2, "Retención completa de regalías sin comisiones adicionales."],
-                    ["Fecha Lanzamiento", 1, 0.1, 0, 1, "Programación y gestión de fecha de lanzamiento."],
-                    ["Distribución", 1, 0.2, 0, 1, "Distribución digital en todas las plataformas (Spotify, Apple Music, etc.)."],
-                    ["UPC/EAN/ISRC", 1, 0.2, 0, 1, "Códigos internacionales para identificación de tu música."],
-                    ["Repartir Regalías", 1, 1.5, 0, 1, "División automática de regalías entre colaboradores y sellos."]
-                ];
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    const gsCalcData = [
+        ["Perfil de Artista", 1, 10.0, 0, 10, "La cantidad de perfiles de artistas asociados a tu GS-UserId. Como máximo puedes tener 10 perfiles de artistas."],
+        ["Copyright?", 1, 7.0, 1, 2, "Protección de derechos de autor para tu contenido musical. El 1 es cuando pertenece a Grouvex Studios Records. El 2 cuando le pertenece a usted."],
+        ["Sound Copyright?", 1, 7.0, 1, 2, "Protección específica para derechos de sonido y grabación. El 1 es cuando pertenece a Grouvex Studios Records. El 2 cuando le pertenece a usted."],
+        ["Servicio de Soporte?", 1, 1.0, 0, 2, "Soporte técnico y atención al cliente personalizada. El 0 cuando no tienes servicio de soporte. El 1 cuando es el \"normal\", es decir, el establecido en los DDOO. El 2 es soporte de 24h, dentro de lo posible."],
+        ["Video Musical al Año", 1, 100.0, 0, 1000, "Cantidad de videos musicales que puedes publicar al año."],
+        ["Elegir Otros Idiomas", 1, 170.0, 0, 1, "Traducción y adaptación a múltiples idiomas."],
+        ["Playlist YouTube Sello", 1, 100.0, 0, 1, "Inclusión en playlists oficiales del sello en YouTube."],
+        ["Acceso a Pre-Order", 0, 150.0, 0, 1, "Acceso anticipado a preventas y lanzamientos."],
+        ["Verificada YT/TikTok", 0, 200.0, 0, 1, "Verificación oficial en YouTube y TikTok (check azul)."],
+        ["Letras", 0, 220.0, 0, 1, "Inclusión de letras de canciones en plataformas."],
+        ["Web Aprobado/Pre-Order", 0, 200.0, 0, 1, "Aprobación web y gestión de preventas online."],
+        ["Mejora Audio", 0, 270.0, 0, 1, "Masterización y mejora de calidad de audio profesional."],
+        ["Mejora Imagen", 0, 270.0, 0, 1, "Diseño gráfico y mejora de calidad visual de portadas."],
+        ["Verificada Meta", 0, 250.0, 0, 1, "Verificación oficial en plataformas Meta (Instagram/Facebook)."],
+        ["100% Retención", 1, 40.0, 0, 2, "Retención completa de regalías sin comisiones adicionales."],
+        ["Fecha Lanzamiento", 1, 0.1, 0, 1, "Programación y gestión de fecha de lanzamiento."],
+        ["Distribución", 1, 0.2, 0, 1, "Distribución digital en todas las plataformas (Spotify, Apple Music, etc.)."],
+        ["UPC/EAN/ISRC", 1, 0.2, 0, 1, "Códigos internacionales para identificación de tu música."],
+        ["Repartir Regalías", 1, 1.5, 0, 1, "División automática de regalías entre colaboradores y sellos."]
+    ];
+    
+    const gsCupones = {};
+
+    const body = document.getElementById('gs-calc-body');
+    
+    gsCalcData.forEach((item, index) => {
+        body.innerHTML += '<tr>' +
+            '<td style="font-weight: 500; font-size: 0.9rem;">' +
+                '<div class="gs-calc-item-name">' +
+                    item[0] +
+                    '<span class="gs-calc-info-icon" data-info="' + (item[5] || 'Sin información adicional') + '" data-index="' + index + '">?</span>' +
+                '</div>' +
+            '</td>' +
+            '<td><input type="number" class="gs-calc-qty-input" value="' + item[1] + '" data-w="' + item[2] + '" min="' + item[3] + '" max="' + item[4] + '"></td>' +
+            '<td style="font-size: 0.8rem; color: var(--gs-text-muted);">' + item[2].toFixed(2) + '%</td>' +
+        '</tr>';
+    });
+
+    let gsTooltip = null;
+    
+    function gsCreateTooltip() {
+        if (!gsTooltip) {
+            gsTooltip = document.createElement('div');
+            gsTooltip.className = 'gs-calc-tooltip';
+            document.body.appendChild(gsTooltip);
+        }
+        return gsTooltip;
+    }
+    
+    function gsShowInfo(event, text) {
+        const tooltipEl = gsCreateTooltip();
+        tooltipEl.innerHTML = text;
+        tooltipEl.classList.add('gs-calc-show');
+        
+        const x = event.clientX + 15;
+        const y = event.clientY - 10;
+        
+        tooltipEl.style.left = x + 'px';
+        tooltipEl.style.top = y + 'px';
+        
+        const rect = tooltipEl.getBoundingClientRect();
+        if (rect.right > window.innerWidth) {
+            tooltipEl.style.left = (event.clientX - rect.width - 15) + 'px';
+        }
+        if (rect.top < 0) {
+            tooltipEl.style.top = (event.clientY + 20) + 'px';
+        }
+    }
+    
+    function gsHideInfo() {
+        if (gsTooltip) {
+            gsTooltip.classList.remove('gs-calc-show');
+        }
+    }
+    
+    document.querySelectorAll('.gs-calc-info-icon').forEach(icon => {
+        const infoText = icon.getAttribute('data-info');
+        
+        icon.addEventListener('mouseenter', (e) => {
+            gsShowInfo(e, infoText);
+        });
+        
+        icon.addEventListener('mouseleave', () => {
+            gsHideInfo();
+        });
+        
+        icon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            alert(infoText);
+        });
+    });
+
+    function gsCalcularSumaPonderada() {
+        let suma = 0;
+        document.querySelectorAll('.gs-calc-qty-input').forEach(el => {
+            let val = Math.max(parseInt(el.min), Math.min(parseInt(el.max), parseInt(el.value) || 0));
+            el.value = val;
+            el.classList.toggle('gs-calc-limit-reached', val == parseInt(el.min) || val == parseInt(el.max));
+            suma += val * (parseFloat(el.dataset.w) / 100);
+        });
+        return suma;
+    }
+
+    function gsCalcularPrecios(sumaPonderada, descuentoAplicado) {
+        const baseSinDescuento = sumaPonderada * 2.4495 / 1.221;
+        const baseConDescuento = Math.max(0, baseSinDescuento - descuentoAplicado);
+        
+        let mensualTemp = baseConDescuento / 12 + 0.1;
+        let mensual = mensualTemp < 0.231 ? 0 : mensualTemp;
+        
+        let anual = baseConDescuento < 1.561 ? 0 : baseConDescuento;
+        
+        return {
+            bruto: baseSinDescuento,
+            brutoConDescuento: baseConDescuento,
+            mensual: mensual,
+            anual: anual
+        };
+    }
+
+    function gsUpdate() {
+        let sumaPonderada = gsCalcularSumaPonderada();
+        
+        let couponInput = document.getElementById('gs-calc-coupon');
+        let cVal = couponInput.value;
+        let cMsg = document.getElementById('gs-calc-coupon-msg');
+        let discountValue = 0;
+        let now = Math.floor(Date.now() / 1000);
+        
+        const baseSinDescuento = sumaPonderada * 2.4495 / 1.221;
+        
+        const listEl = document.getElementById('gs-calc-coupon-list');
+        
+        const cuponesKeys = Object.keys(gsCupones);
+        
+        if (cuponesKeys.length === 0) {
+            couponInput.readOnly = true;
+            couponInput.placeholder = "🎫 No hay cupones disponibles";
+            couponInput.classList.add('gs-calc-red-placeholder');
+            listEl.innerHTML = '<div class="gs-calc-no-coupons">No hay cupones disponibles actualmente</div>';
+        } else {
+            couponInput.readOnly = false;
+            couponInput.placeholder = "Introduce tu código";
+            listEl.innerHTML = "<strong>Cupones disponibles:</strong>";
+            cuponesKeys.forEach(c => {
+                let cupon = gsCupones[c];
+                let isExpired = cupon.exp < now;
+                let typeText = cupon.type === "percentage" ? (cupon.desc * 100).toFixed(0) + '%' : cupon.desc.toFixed(2) + '€';
+                let maxText = cupon.type === "percentage" && cupon.max_discount ? ' (máx ' + cupon.max_discount.toFixed(2) + '€)' : "";
                 
-                // Cupones - VACÍO (no hay cupones disponibles)
-                const cupones = { 
-                    //"DESC10": { type: "percentage", desc: 0.10, exp: 9999999999 },
-                    //"PROMO": { type: "percentage", desc: 0.20, exp: 177680000 },
-                    //"AHORRO50": { type: "fixed", desc: 50, exp: 9999999999 },
-                    //"GRANDE": { type: "percentage", desc: 0.30, max_discount: 100, exp: 9999999999 },
-                    //"SUPER10": { type: "fixed", desc: 10, exp: 9999999999 },
-                    //"LIMITADO": { type: "percentage", desc: 0.25, max_discount: 75, exp: 9999999999 }
-                };
+                listEl.innerHTML += '<div class="gs-calc-coupon-list-item ' + (isExpired ? 'gs-calc-expired' : '') + '">' +
+                    '<div><strong>' + c + '</strong> <span class="gs-calc-coupon-type-badge">' + typeText + maxText + '</span></div>' +
+                    '<span class="gs-calc-status-tag ' + (isExpired ? 'gs-calc-expired' : 'gs-calc-active') + '">' + (isExpired ? 'Expirado' : 'Disponible') + '</span>' +
+                '</div>';
+            });
+        }
+        
+        if (cuponesKeys.length > 0 && gsCupones[cVal] && gsCupones[cVal].exp >= now) {
+            const cupon = gsCupones[cVal];
             
-                const body = document.getElementById('body');
-                data.forEach((item, index) => {
-                    body.innerHTML += `<tr>
-                        <td style="font-weight: 500; font-size: 0.9rem;">
-                            <div class="item-name">
-                                ${item[0]}
-                                <span class="info-icon" data-info="${item[5] || 'Sin información adicional'}" data-index="${index}">?</span>
-                            </div>
-                        </td>
-                        <td><input type="number" class="qty-input" value="${item[1]}" data-w="${item[2]}" min="${item[3]}" max="${item[4]}"></td>
-                        <td style="font-size: 0.8rem; color: var(--text-muted);">${item[2].toFixed(2)}%</td>
-                    </tr>`;
-                });
-            
-                // Sistema de tooltip
-                let tooltip = null;
-                
-                function createTooltip() {
-                    if (!tooltip) {
-                        tooltip = document.createElement('div');
-                        tooltip.className = 'tooltip';
-                        document.body.appendChild(tooltip);
-                    }
-                    return tooltip;
+            if (cupon.type === "percentage") {
+                let rawDiscount = baseSinDescuento * cupon.desc;
+                if (cupon.max_discount !== undefined && rawDiscount > cupon.max_discount) {
+                    rawDiscount = cupon.max_discount;
+                    discountValue = rawDiscount;
+                    cMsg.innerText = '✓ Cupón aplicado: ' + (cupon.desc * 100).toFixed(0) + '% (máx ' + cupon.max_discount.toFixed(2) + '€)';
+                } else {
+                    discountValue = rawDiscount;
+                    cMsg.innerText = '✓ Cupón aplicado: ' + (cupon.desc * 100).toFixed(0) + '% de descuento';
                 }
-                
-                function showInfo(event, text) {
-                    const tooltipEl = createTooltip();
-                    tooltipEl.innerHTML = text;
-                    tooltipEl.classList.add('show');
-                    
-                    // Posicionar cerca del cursor
-                    const x = event.clientX + 15;
-                    const y = event.clientY - 10;
-                    
-                    tooltipEl.style.left = x + 'px';
-                    tooltipEl.style.top = y + 'px';
-                    
-                    // Evitar que se salga de la pantalla
-                    const rect = tooltipEl.getBoundingClientRect();
-                    if (rect.right > window.innerWidth) {
-                        tooltipEl.style.left = (event.clientX - rect.width - 15) + 'px';
-                    }
-                    if (rect.top < 0) {
-                        tooltipEl.style.top = (event.clientY + 20) + 'px';
-                    }
+                cMsg.style.color = "var(--gs-accent-green)";
+            } 
+            else if (cupon.type === "fixed") {
+                discountValue = cupon.desc;
+                cMsg.innerText = '✓ Cupón aplicado: ' + cupon.desc.toFixed(2) + '€ de descuento';
+                cMsg.style.color = "var(--gs-accent-green)";
+            }
+        } 
+        else if(cVal !== "" && cuponesKeys.length > 0) { 
+            cMsg.innerText = "No válido o expirado"; 
+            cMsg.style.color = "var(--gs-danger)"; 
+        } else if(cVal !== "" && cuponesKeys.length === 0) {
+            cMsg.innerText = "No hay cupones disponibles";
+            cMsg.style.color = "var(--gs-danger)";
+        } else {
+            cMsg.innerText = "";
+        }
+        
+        const precios = gsCalcularPrecios(sumaPonderada, discountValue);
+        
+        document.getElementById('gs-calc-precio-bruto').innerText = precios.bruto.toFixed(2).replace('.', ',') + ' €';
+        
+        const mensualElement = document.getElementById('gs-calc-mensual');
+        const mensualText = precios.mensual.toFixed(2).replace('.', ',') + ' €';
+        mensualElement.innerText = mensualText;
+        if (precios.mensual === 0) {
+            mensualElement.classList.add('gs-calc-zero');
+        } else {
+            mensualElement.classList.remove('gs-calc-zero');
+        }
+        
+        const anualElement = document.getElementById('gs-calc-anual');
+        const anualText = precios.anual.toFixed(2).replace('.', ',') + ' €';
+        anualElement.innerText = anualText;
+        if (precios.anual === 0) {
+            anualElement.classList.add('gs-calc-zero');
+        } else {
+            anualElement.classList.remove('gs-calc-zero');
+        }
+        
+        if (precios.mensual === 0 || precios.anual === 0) {
+            const cards = document.querySelectorAll('.gs-calc-price-card');
+            cards.forEach(card => {
+                if ((precios.mensual === 0 && card.id === 'gs-calc-card-m') || 
+                    (precios.anual === 0 && card.id === 'gs-calc-card-a')) {
+                    card.style.opacity = '0.7';
+                    card.style.filter = 'grayscale(0.3)';
                 }
-                
-                function hideInfo() {
-                    if (tooltip) {
-                        tooltip.classList.remove('show');
-                    }
-                }
-                
-                // Agregar eventos a los íconos de información
-                document.querySelectorAll('.info-icon').forEach(icon => {
-                    const infoText = icon.getAttribute('data-info');
-                    
-                    icon.addEventListener('mouseenter', (e) => {
-                        showInfo(e, infoText);
-                    });
-                    
-                    icon.addEventListener('mouseleave', () => {
-                        hideInfo();
-                    });
-                    
-                    icon.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        alert(infoText);
-                    });
-                });
-            
-                function calcularSumaPonderada() {
-                    let suma = 0;
-                    document.querySelectorAll('.qty-input').forEach(el => {
-                        let val = Math.max(el.min, Math.min(el.max, el.value));
-                        el.value = val;
-                        el.classList.toggle('limit-reached', val == el.min || val == el.max);
-                        suma += val * (el.dataset.w / 100);
-                    });
-                    return suma;
-                }
-            
-                function calcularPrecios(sumaPonderada, descuentoAplicado) {
-                    const baseSinDescuento = sumaPonderada * 2.4495 / 1.221;
-                    const baseConDescuento = Math.max(0, baseSinDescuento - descuentoAplicado);
-                    
-                    let mensualTemp = baseConDescuento / 12 + 0.1;
-                    let mensual = mensualTemp < 0.231 ? 0 : mensualTemp;
-                    
-                    let anual = baseConDescuento < 1.561 ? 0 : baseConDescuento;
-                    
-                    return {
-                        bruto: baseSinDescuento,
-                        brutoConDescuento: baseConDescuento,
-                        mensual: mensual,
-                        anual: anual
-                    };
-                }
-            
-                function update() {
-                    let sumaPonderada = calcularSumaPonderada();
-                    
-                    let couponInput = document.getElementById('coupon');
-                    let cVal = couponInput.value;
-                    let cMsg = document.getElementById('coupon-msg');
-                    let discountValue = 0;
-                    let appliedCoupon = null;
-                    let now = Math.floor(Date.now() / 1000);
-                    
-                    const baseSinDescuento = sumaPonderada * 2.4495 / 1.221;
-                    
-                    const listEl = document.getElementById('coupon-list');
-                    
-                    // Verificar si hay cupones disponibles
-                    const cuponesKeys = Object.keys(cupones);
-                    
-                    if (cuponesKeys.length === 0) {
-                        // No hay cupones - hacer readonly y mostrar mensaje
-                        couponInput.readOnly = true;
-                        couponInput.placeholder = "🎫 No hay cupones disponibles";
-                        couponInput.classList.add('red-placeholder');
-                    } else {
-                        // Hay cupones - habilitar input
-                        couponInput.readOnly = false;
-                        couponInput.placeholder = "Introduce tu código";
-                        // Mostrar lista de cupones
-                        listEl.innerHTML = "<strong>Cupones disponibles:</strong>";
-                        cuponesKeys.forEach(c => {
-                            let cupon = cupones[c];
-                            let isExpired = cupon.exp < now;
-                            let typeText = cupon.type === "percentage" ? `${(cupon.desc * 100).toFixed(0)}%` : `${cupon.desc.toFixed(2)}€`;
-                            let maxText = cupon.type === "percentage" && cupon.max_discount ? ` (máx ${cupon.max_discount.toFixed(2)}€)` : "";
-                            
-                            listEl.innerHTML += `<div class="coupon-list-item ${isExpired ? 'expired' : ''}">
-                                <div><strong>${c}</strong> <span class="coupon-type-badge">${typeText}${maxText}</span></div>
-                                <span class="status-tag ${isExpired ? 'expired' : 'active'}">${isExpired ? 'Expirado' : 'Disponible'}</span>
-                            </div>`;
-                        });
-                    }
-                    
-                    // Solo procesar cupón si existen cupones
-                    if (cuponesKeys.length > 0 && cupones[cVal] && cupones[cVal].exp >= now) {
-                        const cupon = cupones[cVal];
-                        appliedCoupon = cupon;
-                        
-                        if (cupon.type === "percentage") {
-                            let rawDiscount = baseSinDescuento * cupon.desc;
-                            if (cupon.max_discount !== undefined && rawDiscount > cupon.max_discount) {
-                                rawDiscount = cupon.max_discount;
-                                discountValue = rawDiscount;
-                                cMsg.innerText = `✓ Cupón aplicado: ${(cupon.desc * 100).toFixed(0)}% (máx ${cupon.max_discount.toFixed(2)}€)`;
-                            } else {
-                                discountValue = rawDiscount;
-                                cMsg.innerText = `✓ Cupón aplicado: ${(cupon.desc * 100).toFixed(0)}% de descuento`;
-                            }
-                            cMsg.style.color = "var(--accent-green)";
-                        } 
-                        else if (cupon.type === "fixed") {
-                            discountValue = cupon.desc;
-                            cMsg.innerText = `✓ Cupón aplicado: ${cupon.desc.toFixed(2)}€ de descuento`;
-                            cMsg.style.color = "var(--accent-green)";
-                        }
-                    } 
-                    else if(cVal !== "" && cuponesKeys.length > 0) { 
-                        cMsg.innerText = "No válido o expirado"; 
-                        cMsg.style.color = "var(--danger)"; 
-                    } else if(cVal !== "" && cuponesKeys.length === 0) {
-                        cMsg.innerText = "No hay cupones disponibles";
-                        cMsg.style.color = "var(--danger)";
-                    } else {
-                        cMsg.innerText = "";
-                    }
-                    
-                    const precios = calcularPrecios(sumaPonderada, discountValue);
-                    
-                    document.getElementById('precio-bruto').innerText = precios.bruto.toFixed(2).replace('.', ',') + ' €';
-                    
-                    const mensualElement = document.getElementById('mensual');
-                    const mensualText = precios.mensual.toFixed(2).replace('.', ',') + ' €';
-                    mensualElement.innerText = mensualText;
-                    if (precios.mensual === 0) {
-                        mensualElement.classList.add('zero');
-                        mensualElement.style.color = "var(--danger)";
-                    } else {
-                        mensualElement.classList.remove('zero');
-                        mensualElement.style.color = "var(--accent-green)";
-                    }
-                    
-                    const anualElement = document.getElementById('anual');
-                    const anualText = precios.anual.toFixed(2).replace('.', ',') + ' €';
-                    anualElement.innerText = anualText;
-                    if (precios.anual === 0) {
-                        anualElement.classList.add('zero');
-                        anualElement.style.color = "var(--danger)";
-                    } else {
-                        anualElement.classList.remove('zero');
-                        anualElement.style.color = "var(--primary)";
-                    }
-                    
-                    if (appliedCoupon && appliedCoupon.type === "percentage" && appliedCoupon.max_discount && discountValue === appliedCoupon.max_discount) {
-                        if (!anualElement.getAttribute('data-tooltip')) {
-                            anualElement.title = `Descuento limitado a ${appliedCoupon.max_discount.toFixed(2)}€`;
-                            anualElement.style.cursor = "help";
-                        }
-                    }
-                    
-                    if (precios.mensual === 0 || precios.anual === 0) {
-                        const cards = document.querySelectorAll('.price-card');
-                        cards.forEach(card => {
-                            if ((precios.mensual === 0 && card.id === 'card-m') || 
-                                (precios.anual === 0 && card.id === 'card-a')) {
-                                card.style.opacity = '0.7';
-                                card.style.filter = 'grayscale(0.3)';
-                            }
-                        });
-                    } else {
-                        document.querySelectorAll('.price-card').forEach(card => {
-                            card.style.opacity = '1';
-                            card.style.filter = 'none';
-                        });
-                    }
-                }
-            
-                document.querySelectorAll('.qty-input').forEach(el => el.addEventListener('input', update));
-                document.getElementById('coupon').addEventListener('input', update);
-                update();
-            </script>
+            });
+        } else {
+            document.querySelectorAll('.gs-calc-price-card').forEach(card => {
+                card.style.opacity = '1';
+                card.style.filter = 'none';
+            });
+        }
+    }
+
+    document.querySelectorAll('.gs-calc-qty-input').forEach(el => el.addEventListener('input', gsUpdate));
+    const couponInputField = document.getElementById('gs-calc-coupon');
+    if (couponInputField) {
+        couponInputField.addEventListener('input', gsUpdate);
+    }
+    gsUpdate();
+})();
+</script>
         </details>
     </main>
     <script src="abc.js"></script>

@@ -2480,97 +2480,162 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 <script>
+  function showNotification(message, type = 'info', duration = 10000) {
+    // 1. Inicializar el almacenamiento interno de la función si no existe
+    showNotification.maxVisible = 5;
+    showNotification.active = showNotification.active || [];
+    showNotification.queue = showNotification.queue || [];
+
+    // Configuración de estilos y tipografías por cada tipo
+    const typesConfig = {
+      success:   { bg: '#28a745', icon: 'fa-check-circle' },
+      error:     { bg: '#dc3545', icon: 'fa-exclamation-circle' },
+      forbidden: { bg: '#a71d2a', icon: 'fa-ban' },
+      warning:   { bg: '#ffc107', color: '#1f2d3d', icon: 'fa-exclamation-triangle' },
+      info:      { bg: '#17a2b8', icon: 'fa-info-circle' },
+      primary:   { bg: '#007bff', icon: 'fa-bell' },
+      question:  { bg: '#6f42c1', icon: 'fa-question-circle' },
+      loading:   { bg: '#6c757d', icon: 'fa-spinner fa-spin' }
+    };
+
+    // 2. Función interna que se encarga de crear y renderizar el DOM
+    const render = (msg, t, dur) => {
+      // Asegurar que exista el contenedor de la pila
+      let container = document.getElementById('notification-stack-container');
+      if (!container) {
+        container = document.createElement('div');
+        container.id = 'notification-stack-container';
+        container.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          z-index: 2147483647;
+          font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+          pointer-events: none;
+        `;
+        document.body.appendChild(container);
+      }
+
+      const config = typesConfig[t] || typesConfig.info;
+      const notification = document.createElement('div');
+      const id = Date.now() + Math.random();
+
+      notification.style.cssText = `
+        position: relative;
+        padding: 14px 20px 18px 20px;
+        background: ${config.bg};
+        color: ${config.color || 'white'};
+        border-radius: 8px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        animation: slideIn 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+        pointer-events: auto;
+        width: 310px;
+        overflow: hidden;
+      `;
+      
+      notification.innerHTML = `
+        <div style="display: flex; align-items: center;">
+          <i class="fas ${config.icon}" style="margin-right: 10px; font-size: 1.1em;"></i>
+          <span style="font-size: 0.88rem; line-height: 1.4; font-weight: 500;">${msg}</span>
+        </div>
+        <div class="notification-progress-bar" style="
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          height: 4px;
+          width: 100%;
+          background: ${t === 'warning' ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.4)'};
+          transform-origin: left;
+          transform: scaleX(1);
+          transition: transform ${dur}ms linear;
+        "></div>
+      `;
+      
+      container.appendChild(notification);
+      showNotification.active.push({ id, element: notification });
+
+      // Activar animación de la barra de progreso
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          const bar = notification.querySelector('.notification-progress-bar');
+          if (bar) bar.style.transform = 'scaleX(0)';
+        }, 50);
+      });
+
+      // Manejar el tiempo de vida y la salida
+      setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards';
+        setTimeout(() => {
+          notification.remove();
+          showNotification.active = showNotification.active.filter(n => n.id !== id);
+          
+          // Si hay elementos esperando en la cola, procesamos el siguiente
+          if (showNotification.queue.length > 0) {
+            const next = showNotification.queue.shift();
+            render(next.message, next.type, next.duration);
+          }
+        }, 300);
+      }, dur);
+    };
+
+    // 3. Lógica de control de flujo (Pila / Cola)
+    if (showNotification.active.length < showNotification.maxVisible) {
+      render(message, type, duration);
+    } else {
+      showNotification.queue.push({ message, type, duration });
+    }
+  }
+</script>
+<script>
 // ===============================================================
 // CENTRALIZACIÓN DE CALENDARIOS POR TEMPORADA (LOCAL DISPOSITIVO)
 // ===============================================================
 const CONFIG_WIDGET = {
-  estadoHorario: 'verano', 
-
+  estadoHorario: 'vacaciones', 
+  infoEstado: "",
+  // 1 (lunes)... 6 (sábado) y 0 (domingo)
   horarios: {
     normal: {
-      0: [ { abre: "10:00", cierra: "14:00" } ],
-      1: [ { abre: "08:30", cierra: "14:00" }, { abre: "16:00", cierra: "20:00" } ],
-      2: [ { abre: "08:30", cierra: "14:00" }, { abre: "16:00", cierra: "20:00" } ],
-      3: [ { abre: "08:30", cierra: "14:00" }, { abre: "16:00", cierra: "20:00" } ],
-      4: [ { abre: "08:30", cierra: "14:00" }, { abre: "16:00", cierra: "20:00" } ],
-      5: [ { abre: "08:30", cierra: "20:00" } ],
-      6: [ { abre: "09:00", cierra: "14:00" } ]
+      1: [ { abre: "12:00", cierra: "14:30" }, { abre: "16:00", cierra: "20:00" } ],
+      2: [ { abre: "12:00", cierra: "14:30" }, { abre: "16:00", cierra: "20:00" } ],
+      3: [ { abre: "12:00", cierra: "14:30" }, { abre: "16:00", cierra: "20:00" } ],
+      4: [ { abre: "12:00", cierra: "14:30" }, { abre: "16:00", cierra: "20:00" } ],
+      5: [ { abre: "12:00", cierra: "14:30" }, { abre: "16:00", cierra: "20:00" } ],
+      6: [ { abre: "11:00", cierra: "14:00" }, { abre: "17:00", cierra: "20:00" } ],
+      0: [ { abre: "11:00", cierra: "14:00" }, { abre: "17:00", cierra: "20:00" } ],
     },
-    verano: {
-      0: [ { abre: "10:00", cierra: "14:00" } ],
-      1: [ { abre: "08:00", cierra: "14:00" }, { abre: "16:00", cierra: "20:30" } ],
-      2: [ { abre: "08:00", cierra: "14:00" }, { abre: "16:00", cierra: "20:30" } ],
-      3: [ { abre: "08:00", cierra: "14:00" }, { abre: "16:00", cierra: "20:30" } ],
-      4: [ { abre: "08:00", cierra: "14:00" }, { abre: "16:00", cierra: "20:30" } ],
-      5: [ { abre: "08:00", cierra: "21:00" } ],
-      6: [ { abre: "09:30", cierra: "13:30" } ]
+    vacaciones: {
+      1: [ { abre: "12:00", cierra: "14:00" }, { abre: "16:00", cierra: "20:00" } ],
+      2: [ { abre: "12:00", cierra: "14:00" }, { abre: "16:00", cierra: "20:00" } ],
+      3: [ { abre: "12:00", cierra: "14:00" }, { abre: "16:00", cierra: "20:00" } ],
+      4: [ { abre: "12:00", cierra: "14:00" }, { abre: "16:00", cierra: "20:00" } ],
+      5: [ { abre: "12:00", cierra: "14:00" }, { abre: "16:00", cierra: "20:00" } ],
+      6: [ { abre: "12:00", cierra: "13:00" }, { abre: "16:00", cierra: "20:30" } ],
+      0: [ { abre: "12:00", cierra: "13:00" }, { abre: "17:00", cierra: "20:30" } ],
     },
     sistemaGCO: {
-      0: [],
-      1: [ { abre: "07:30", cierra: "16:00" } ],
-      2: [ { abre: "07:30", cierra: "16:00" } ],
-      3: [ { abre: "07:30", cierra: "16:00" } ],
-      4: [ { abre: "07:30", cierra: "16:00" } ],
+      1: [ { abre: "7:30", cierra: "15:30" } ],
+      2: [ { abre: "7:30", cierra: "15:30" } ],
+      3: [ { abre: "7:30", cierra: "15:30" } ],
+      4: [ { abre: "7:30", cierra: "15:30" } ],
       5: [ { abre: "07:30", cierra: "14:30" } ],
-      6: []
+      6: [],
+      0: []
     },
     especial: {
-      0: [ { abre: "11:00", cierra: "17:00" } ],
       1: [ { abre: "09:00", cierra: "22:00" } ],
       2: [ { abre: "09:00", cierra: "22:00" } ],
       3: [ { abre: "09:00", cierra: "22:00" } ],
       4: [ { abre: "09:00", cierra: "22:00" } ],
       5: [ { abre: "09:00", cierra: "23:00" } ],
-      6: [ { abre: "10:00", cierra: "20:00" } ]
+      6: [ { abre: "10:00", cierra: "20:00" } ],
+      0: [ { abre: "11:00", cierra: "17:00" } ]
     }
   }
 };
-
-// ==========================================
-// TU FUNCIÓN DE NOTIFICACIONES (PRESERVADA)
-// ==========================================
-function showNotification(message, type = 'info', duration = 10000) {
-  const notification = document.createElement('div');
-  
-  const typesConfig = {
-    success: { bg: '#28a745', icon: 'fa-check-circle' },
-    error: { bg: '#dc3545', icon: 'fa-exclamation-circle' },
-    forbidden: { bg: '#a71d2a', icon: 'fa-ban' },
-    warning: { bg: '#ffc107', color: '#1f2d3d', icon: 'fa-exclamation-triangle' },
-    info: { bg: '#17a2b8', icon: 'fa-info-circle' },
-    primary: { bg: '#007bff', icon: 'fa-bell' },
-    question: { bg: '#6f42c1', icon: 'fa-question-circle' },
-    loading: { bg: '#6c757d', icon: 'fa-spinner fa-spin' }
-  };
-
-  const config = typesConfig[type] || typesConfig.info;
-
-  notification.style.cssText = `
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 12px 20px;
-    background: ${config.bg};
-    color: ${config.color || 'white'};
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    z-index: 10000;
-    animation: slideIn 0.3s ease;
-    font-family: sans-serif;
-  `;
-  
-  notification.innerHTML = `
-    <i class="fas ${config.icon}" style="margin-right: 8px;"></i>
-    <span>${message}</span>
-  `;
-  
-  document.body.appendChild(notification);
-  
-  setTimeout(() => {
-    notification.style.animation = 'slideOut 0.3s ease';
-    setTimeout(() => notification.remove(), 300);
-  }, duration);
-}
 
 const styleAnimaciones = document.createElement('style');
 styleAnimaciones.textContent = `
@@ -2581,16 +2646,16 @@ document.head.appendChild(styleAnimaciones);
 
 
 // ==========================================
-// INTERFAZ Y CONTROL DEL WIDGET RELOJ (CUADRANTE OPTIMIZADO)
+// INTERFAZ PROFESIONAL CON CONTROL DE FLUJO
 // ==========================================
 const aplicarEstilosProfesionales = () => {
   const style = document.createElement('style');
   style.textContent = `
     :root {
-      --bg-widget: rgba(18, 18, 20, 0.8);
-      --bg-hover: rgba(26, 26, 30, 0.9);
-      --border-widget: rgba(255, 255, 255, 0.08);
-      --border-inner: rgba(255, 255, 255, 0.03);
+      --bg-widget: rgba(18, 18, 20, 0.85);
+      --bg-hover: rgba(26, 26, 30, 0.95);
+      --border-widget: rgba(255, 255, 255, 0.1);
+      --border-inner: rgba(255, 255, 255, 0.04);
       --text-main: #f5f5f7;
       --text-muted: #8e8e93;
       --color-abierto: #30d158;
@@ -2598,12 +2663,17 @@ const aplicarEstilosProfesionales = () => {
       --color-tag-bg: rgba(41, 151, 255, 0.12); 
       --color-tag-text: #2997ff;
       --radius-main: 16px;
-      --fx-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 var(--border-inner);
+      --fx-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 var(--border-inner);
       
       --bg-row-card: rgba(255, 255, 255, 0.02);
-      --bg-row-today: rgba(41, 151, 255, 0.07);
-      --border-row-today: rgba(41, 151, 255, 0.25);
+      --bg-row-today: rgba(41, 151, 255, 0.04);
+      --border-row-today: rgba(41, 151, 255, 0.15);
       --bg-time-pill: rgba(255, 255, 255, 0.05);
+    }
+
+    #datetime-widget-container,
+    #datetime-widget-container * {
+      box-sizing: border-box !important;
     }
 
     #datetime-widget-container {
@@ -2621,16 +2691,22 @@ const aplicarEstilosProfesionales = () => {
       display: flex;
       flex-direction: column;
       gap: 12px;
-      z-index: 99999;
+      z-index: 2147483646;
       user-select: none;
-      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-      min-width: 290px;
-      max-width: 320px;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      width: 310px;
+      max-width: calc(100vw - 48px);
+      overflow: hidden;
     }
     
     #datetime-widget-container:hover { 
       background: var(--bg-hover);
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    #datetime-widget-container.is-compact {
+      padding: 12px 18px;
+      gap: 0px;
     }
 
     /* Cabecera */
@@ -2639,19 +2715,24 @@ const aplicarEstilosProfesionales = () => {
       align-items: center; 
       gap: 14px; 
       cursor: pointer; 
+      width: 100%;
+      overflow: hidden;
     }
     
     #datetime-widget-icon {
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
     }
 
     #datetime-widget-display { 
       font-size: 0.88rem; 
       font-weight: 400; 
       line-height: 1.4; 
-      text-align: left; 
+      text-align: left;
+      flex-grow: 1;
+      overflow: hidden;
     }
     
     .date-highlight { 
@@ -2659,6 +2740,9 @@ const aplicarEstilosProfesionales = () => {
       color: var(--text-main);
       letter-spacing: -0.01em;
       margin-bottom: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     
     .status-abierto { color: var(--color-abierto); }
@@ -2667,12 +2751,49 @@ const aplicarEstilosProfesionales = () => {
     .time-string {
       font-variant-numeric: tabular-nums;
       font-weight: 400;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .time-string.compact-style {
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .widget-info-estado {
+      font-size: 0.76rem;
+      color: var(--color-tag-text);
+      background: rgba(41, 151, 255, 0.08);
+      border-left: 2px solid var(--color-tag-text);
+      padding: 4px 8px;
+      border-radius: 0 4px 4px 0;
+      margin-top: 6px;
+      line-height: 1.3;
+    }
+
+    .widget-advertencia-estado {
+      font-size: 0.68rem;
+      color: var(--color-cerrado);
+      display: block;
+      margin-top: 2px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
     }
 
     .widget-divider { 
       height: 1px; 
       background: linear-gradient(90deg, var(--border-widget) 0%, rgba(255,255,255,0.02) 100%); 
       width: 100%; 
+      flex-shrink: 0;
+      transition: opacity 0.2s ease, margin 0.2s ease;
+    }
+
+    #datetime-widget-container.is-compact .widget-divider {
+      opacity: 0;
+      margin: 0;
+      height: 0;
     }
 
     /* Pie de la Sección Principal */
@@ -2681,6 +2802,16 @@ const aplicarEstilosProfesionales = () => {
       justify-content: space-between; 
       align-items: center; 
       font-size: 0.74rem; 
+      width: 100%;
+      overflow: hidden;
+      transition: opacity 0.2s ease, height 0.2s ease, margin 0.2s ease;
+    }
+
+    #datetime-widget-container.is-compact #datetime-widget-footer {
+      opacity: 0;
+      height: 0;
+      overflow: hidden;
+      margin: 0;
     }
     
     .schedule-tag { 
@@ -2692,12 +2823,14 @@ const aplicarEstilosProfesionales = () => {
       color: var(--color-tag-text); 
       font-weight: 600;
       font-size: 0.68rem;
+      flex-shrink: 0;
     }
     
     .legend-box { 
       display: flex; 
       align-items: center; 
       gap: 10px; 
+      flex-shrink: 0;
     }
     
     .legend-item { 
@@ -2708,15 +2841,25 @@ const aplicarEstilosProfesionales = () => {
       font-weight: 500;
     }
 
-    /* Desplegable de Horarios Rediseñado */
+    /* Desplegable de Horarios */
     #widget-schedule-details {
       width: 100%;
       border-top: 1px dashed rgba(255, 255, 255, 0.06);
       margin-top: 2px;
+      overflow: hidden;
+      transition: opacity 0.2s ease, height 0.2s ease;
+    }
+
+    #datetime-widget-container.is-compact #widget-schedule-details {
+      opacity: 0;
+      height: 0;
+      overflow: hidden;
+      border: none;
+      margin: 0;
     }
     
     #widget-schedule-details summary {
-      padding: 10px 2px 4px 2px;
+      padding: 8px 2px 2px 2px;
       cursor: pointer;
       font-weight: 600;
       color: var(--text-muted);
@@ -2725,8 +2868,8 @@ const aplicarEstilosProfesionales = () => {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.76rem;
-      transition: color 0.2s ease;
+      font-size: 0.74rem;
+      width: 100%;
     }
     
     #widget-schedule-details summary::-webkit-details-marker { display: none; }
@@ -2740,7 +2883,8 @@ const aplicarEstilosProfesionales = () => {
       border-right: 1.5px solid var(--text-muted);
       border-bottom: 1.5px solid var(--text-muted);
       transform: rotate(45deg) translate(-2px, -2px);
-      transition: transform 0.2s ease, border-color 0.2s;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
     }
     #widget-schedule-details[open] summary::after {
       transform: rotate(-135deg) translate(-1px, -1px);
@@ -2750,6 +2894,7 @@ const aplicarEstilosProfesionales = () => {
       display: grid;
       grid-template-rows: 0fr;
       transition: grid-template-rows 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 100%;
     }
     #widget-schedule-details[open] .details-animated-wrapper {
       grid-template-rows: 1fr;
@@ -2757,71 +2902,106 @@ const aplicarEstilosProfesionales = () => {
     
     .details-schedule-content {
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      padding: 6px 0 4px 0;
+      padding: 4px 0;
+      width: 100%;
     }
     
-    .details-schedule-row {
+    /* Contenedor del Navegador Diario */
+    .schedule-viewer-container {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 6px 10px;
+      justify-content: space-between;
       background: var(--bg-row-card);
-      border-radius: 8px;
       border: 1px solid rgba(255, 255, 255, 0.02);
-      transition: background 0.2s ease;
+      border-radius: 8px;
+      padding: 6px;
+      width: 100%;
+      gap: 4px;
     }
-    
-    .details-schedule-row.is-today {
+
+    .schedule-viewer-container.is-today-view {
       background: var(--bg-row-today);
       border-color: var(--border-row-today);
     }
-    
-    .details-day-box {
+
+    .nav-schedule-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
+      padding: 6px;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+    .nav-schedule-btn:hover {
+      color: var(--text-main);
+      background: rgba(255,255,255,0.05);
     }
 
-    .details-day { 
-      color: var(--text-muted); 
-      font-weight: 500; 
-      font-size: 0.76rem;
+    .day-view-data {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-grow: 1;
+      overflow: hidden;
+      gap: 8px;
     }
-    .is-today .details-day {
+
+    /* Layout cuando hay múltiples turnos */
+    .day-view-data.has-multiple-turns {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      padding: 2px 4px;
+    }
+
+    .day-view-title-box {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 4px;
+      overflow: hidden;
+    }
+
+    .day-view-name {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .is-today-view .day-view-name {
       color: var(--text-main);
       font-weight: 600;
     }
-    
-    .today-badge {
-      font-size: 0.58rem;
-      background: var(--color-tag-text);
-      color: #fff;
-      padding: 1px 4px;
-      border-radius: 4px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.02em;
+
+    .day-view-tag-hoy {
+      color: var(--color-tag-text);
+      font-size: 0.74rem;
+      font-weight: 600;
     }
-    
+
+    /* Contenedor de Turnos Horarios */
     .details-hours-container {
       display: flex;
-      flex-direction: column;
-      gap: 3px;
-      align-items: flex-end;
+      flex-direction: row;
+      gap: 4px;
+      align-items: center;
+      flex-wrap: wrap; 
     }
 
     .details-hours { 
       color: var(--text-main); 
       font-variant-numeric: tabular-nums; 
-      font-size: 0.74rem;
+      font-size: 0.7rem;
       font-weight: 500;
       background: var(--bg-time-pill);
-      padding: 2px 7px;
-      border-radius: 5px;
-      border: 1px solid rgba(255, 255, 255, 0.01);
+      padding: 2px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
     }
     
     .details-closed { 
@@ -2829,16 +3009,95 @@ const aplicarEstilosProfesionales = () => {
       background: rgba(255, 69, 58, 0.1);
       border: 1px solid rgba(255, 69, 58, 0.15);
       font-weight: 600;
-      font-size: 0.72rem;
-      padding: 2px 7px;
-      border-radius: 5px;
+      font-size: 0.68rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
     }
 
     .timezone-label {
       font-size: 0.65rem;
       opacity: 0.65;
       font-weight: 500;
-      letter-spacing: 0.02em;
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    /* Estilos añadidos para el sub-desplegable global */
+    .sub-details-all-days {
+      margin-top: 8px;
+      width: 100%;
+    }
+    .sub-details-all-days summary {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.7rem;
+      color: var(--color-tag-text) !important;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      padding: 4px 0;
+      outline: none;
+    }
+    .sub-details-all-days summary::-webkit-details-marker { display: none; }
+    .sub-details-all-days summary .text-toggle::before { content: 'desplegar'; font-size:10px}
+    .sub-details-all-days[open] summary .text-toggle::before { content: 'replegar'; font-size:10px}
+    
+    .sub-details-all-days summary::after { display: none !important; } /* Quitamos flecha por defecto */
+
+    .all-days-list-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 6px;
+      max-height: 190px;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+    /* Estilización fina del scroll para la lista completa */
+    .all-days-list-wrapper::-webkit-scrollbar { width: 4px; }
+    .all-days-list-wrapper::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+    .all-days-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid rgba(255, 255, 255, 0.01);
+      border-radius: 6px;
+      padding: 5px 8px;
+    }
+    .all-days-row.is-row-today {
+      background: var(--bg-row-today);
+      border-color: rgba(41, 151, 255, 0.1);
+    }
+    .all-days-row .day-name {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .all-days-row.is-row-today .day-name {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    @media (max-width: 480px) {
+      #datetime-widget-container {
+        bottom: 0 !important;
+        right: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: var(--radius-main) var(--radius-main) 0 0;
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
+        padding: 12px 20px;
+        box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+      }
     }
   `;
   document.head.appendChild(style);
@@ -2854,16 +3113,27 @@ class DateTimeWidget {
     this.detailsElement = null;
     this.timerId = null;
     this.notificacionesEnviadas = new Set();
-    this.diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    
+    this.ordenSemanas = [
+      { id: 1, nombre: 'Lunes' },
+      { id: 2, nombre: 'Martes' },
+      { id: 3, nombre: 'Miércoles' },
+      { id: 4, nombre: 'Jueves' },
+      { id: 5, nombre: 'Viernes' },
+      { id: 6, nombre: 'Sábado' },
+      { id: 0, nombre: 'Domingo' }
+    ];
 
-    // Detección dinámica de la zona horaria del dispositivo
+    this.indiceDiaVisualizado = 0;
     this.userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Local';
 
     this.icons = {
       calendar: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>`,
       clock: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>`,
       circleGreen: `<svg width="8" height="8" viewBox="0 0 24 24" fill="#30d158"><circle cx="12" cy="12" r="10"></circle></svg>`,
-      circleRed: `<svg width="8" height="8" viewBox="0 0 24 24" fill="#ff453a"><circle cx="12" cy="12" r="10"></circle></svg>`
+      circleRed: `<svg width="8" height="8" viewBox="0 0 24 24" fill="#ff453a"><circle cx="12" cy="12" r="10"></circle></svg>`,
+      chevronLeft: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>`,
+      chevronRight: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>`
     };
 
     this.init();
@@ -2871,9 +3141,16 @@ class DateTimeWidget {
 
   init() {
     aplicarEstilosProfesionales();
+    this.establecerDiaActualPorDefecto();
     this.buildDOM();
     this.startClock();
     this.addEventListeners();
+  }
+
+  establecerDiaActualPorDefecto() {
+    const diaActualLocal = new Date().getDay();
+    const index = this.ordenSemanas.findIndex(d => d.id === diaActualLocal);
+    this.indiceDiaVisualizado = index !== -1 ? index : 0;
   }
 
   buildDOM() {
@@ -2939,7 +3216,7 @@ class DateTimeWidget {
     
     const calendarioActivo = this.getCalendarioActivo();
     const turnosDelDia = calendarioActivo[diaSemana] || [];
-    const intervalosAviso = [0, 5, 10, 15, 30, 60];
+    const intervalosAviso = [0, 1, 5, 10, 15, 30, 60];
 
     turnosDelDia.forEach(turno => {
       const [hApertura, mApertura] = turno.abre.split(':').map(Number);
@@ -2956,8 +3233,8 @@ class DateTimeWidget {
           if (!this.notificacionesEnviadas.has(idAlertaApertura)) {
             const msg = antelacion === 0 
               ? `¡El sistema ya está ABIERTO! (Hora Local: ${turno.abre})` 
-              : `Apertura inminente: Quedan ${antelacion} minutos para abrir (${turno.abre}).`;
-            showNotification(msg, antelacion === 0 ? 'success' : 'info');
+              : `Apertura inminente: Quedan ${antelacion} minutes para abrir (${turno.abre}).`;
+            if (typeof showNotification === 'function') showNotification(msg, antelacion === 0 ? 'success' : 'info');
             this.notificacionesEnviadas.add(idAlertaApertura);
           }
         }
@@ -2966,8 +3243,8 @@ class DateTimeWidget {
           if (!this.notificacionesEnviadas.has(idAlertaCierre)) {
             const msg = antelacion === 0 
               ? `¡El sistema se ha CERRADO! (Hora Local: ${turno.cierra})` 
-              : `Atención: Quedan ${antelacion} minutos para el cierre (${turno.cierra}).`;
-            showNotification(msg, 'warning');
+              : `Atención: Quedan ${antelacion} minutes para el cierre (${turno.cierra}).`;
+            if (typeof showNotification === 'function') showNotification(msg, 'warning');
             this.notificacionesEnviadas.add(idAlertaCierre);
           }
         }
@@ -2977,44 +3254,87 @@ class DateTimeWidget {
     if (horas === 0 && minutos === 0) this.notificacionesEnviadas.clear();
   }
 
-  renderActiveScheduleInDetails() {
-    const calendarioActivo = this.getCalendarioActivo();
+  renderSelectedDaySchedule() {
     const contentDiv = this.detailsElement.querySelector('.details-schedule-content');
     if (!contentDiv) return;
 
-    const ahoraLocal = new Date();
-    const diaActualLocal = ahoraLocal.getDay();
+    const calendarioActivo = this.getCalendarioActivo();
+    const diaActualLocal = new Date().getDay();
 
-    let htmlRows = '';
-    this.diasSemana.forEach((nombreDia, indiceDia) => {
-      const turnos = calendarioActivo[indiceDia] || [];
-      const esHoy = indiceDia === diaActualLocal;
+    const diaObj = this.ordenSemanas[this.indiceDiaVisualizado];
+    const turnos = calendarioActivo[diaObj.id] || [];
+    const esHoy = diaObj.id === diaActualLocal;
+
+    let bloqueHorasHTML = '';
+    if (turnos.length === 0) {
+      bloqueHorasHTML = '<span class="details-closed">Cerrado</span>';
+    } else {
+      bloqueHorasHTML = `<div class="details-hours-container">` + 
+        turnos.map(t => `<span class="details-hours">${t.abre} - ${t.cierra}</span>`).join('') + 
+      `</div>`;
+    }
+
+    const textoHoy = esHoy ? '<span class="day-view-tag-hoy">(Hoy)</span>' : '';
+    const containerClasses = esHoy ? 'schedule-viewer-container is-today-view' : 'schedule-viewer-container';
+    const clasesDataLayout = turnos.length > 1 ? 'day-view-data has-multiple-turns' : 'day-view-data';
+
+    // Generar el bloque HTML de todos los días para el sub-desplegable
+    const todosLosDiasHTML = this.ordenSemanas.map(d => {
+      const turnosDia = calendarioActivo[d.id] || [];
+      const esDiaHoy = d.id === diaActualLocal;
+      let horasRowHTML = '';
       
-      let bloqueHorasHTML = '';
-
-      if (turnos.length === 0) {
-        bloqueHorasHTML = '<span class="details-closed">Cerrado</span>';
+      if (turnosDia.length === 0) {
+        horasRowHTML = '<span class="details-closed">Cerrado</span>';
       } else {
-        bloqueHorasHTML = `<div class="details-hours-container">` + 
-          turnos.map(t => `<span class="details-hours">${t.abre} - ${t.cierra}</span>`).join('') + 
+        horasRowHTML = `<div class="details-hours-container">` + 
+          turnosDia.map(t => `<span class="details-hours">${t.abre} - ${t.cierra}</span>`).join('') + 
         `</div>`;
       }
+      
+      return `
+        <div class="all-days-row ${esDiaHoy ? 'is-row-today' : ''}">
+          <span class="day-name">${d.nombre} ${esDiaHoy ? '(Hoy)' : ''}</span>
+          ${horasRowHTML}
+        </div>
+      `;
+    }).join('');
 
-      const clasesFila = esHoy ? 'details-schedule-row is-today' : 'details-schedule-row';
-      const badgeHoy = esHoy ? '<span class="today-badge">Hoy</span>' : '';
-
-      htmlRows += `
-        <div class="${clasesFila}">
-          <div class="details-day-box">
-            <span class="details-day">${nombreDia}</span>
-            ${badgeHoy}
+    contentDiv.innerHTML = `
+      <div class="${containerClasses}">
+        <button class="nav-schedule-btn" id="btn-widget-prev" title="Día anterior">${this.icons.chevronLeft}</button>
+        <div class="${clasesDataLayout}">
+          <div class="day-view-title-box">
+            <span class="day-view-name">${diaObj.nombre}</span>
+            ${textoHoy}
           </div>
           ${bloqueHorasHTML}
         </div>
-      `;
-    });
+        <button class="nav-schedule-btn" id="btn-widget-next" title="Día siguiente">${this.icons.chevronRight}</button>
+      </div>
 
-    contentDiv.innerHTML = htmlRows;
+      <!-- Sub-desplegable nativo para ver la semana completa -->
+      <details class="sub-details-all-days">
+        <summary><span class="text-toggle"></span></summary>
+        <div class="all-days-list-wrapper">
+          ${todosLosDiasHTML}
+        </div>
+      </details>
+    `;
+
+    document.getElementById('btn-widget-prev').addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.navegarDia(-1);
+    });
+    document.getElementById('btn-widget-next').addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.navegarDia(1);
+    });
+  }
+
+  navegarDia(direccion) {
+    this.indiceDiaVisualizado = (this.indiceDiaVisualizado + direccion + 7) % 7;
+    this.renderSelectedDaySchedule();
   }
 
   updateDisplay() {
@@ -3022,7 +3342,6 @@ class DateTimeWidget {
     this.checkProximosEventos(ahora);
 
     const dia = String(ahora.getDate()).padStart(2, '0');
-    const mesNumero = String(ahora.getMonth() + 1).padStart(2, '0');
     const año = ahora.getFullYear();
     
     const mesesTexto = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
@@ -3038,29 +3357,37 @@ class DateTimeWidget {
     const abiertoAhora = this.comprobarEstadoApertura(ahora);
     this.iconContainer.style.color = abiertoAhora ? 'var(--color-abierto)' : 'var(--color-cerrado)';
 
-    // Formateo limpio del nombre de la zona horaria quitando barras bajas si las hay
     const zonaFormateada = this.userTimezone.replace(/_/g, ' ');
+    const infoTexto = CONFIG_WIDGET.infoEstado || '';
 
     if (this.isExpanded) {
+      this.container.classList.remove('is-compact');
       this.iconContainer.innerHTML = this.icons.calendar;
       this.display.innerHTML = `
         <div class="date-highlight">${nombreDia}, ${dia} de ${nombreMes} de ${año}</div>
         <div class="time-string ${abiertoAhora ? 'status-abierto' : 'status-cerrado'}">${horas}:${minutos}:${segundos} <span class="timezone-label">(${zonaFormateada})</span></div>
+        ${infoTexto ? `<div class="widget-info-estado">${infoTexto}</div>` : ''}
+        <small style="color:var(--text-muted); font-size:10px; display:block; margin-top:4px;">Presione para ver menos información</small>
+      `;
+      
+      this.footer.innerHTML = `
+        <span class="schedule-tag">${CONFIG_WIDGET.estadoHorario}</span>
+        <div class="legend-box">
+          <div class="legend-item">${this.icons.circleGreen}<span>Abierto</span></div>
+          <div class="legend-item">${this.icons.circleRed}<span>Cerrado</span></div>
+        </div>
       `;
     } else {
+      this.container.classList.add('is-compact');
       this.iconContainer.innerHTML = this.icons.clock;
       this.display.innerHTML = `
-        <div class="time-string ${abiertoAhora ? 'status-abierto' : 'status-cerrado'}">${dia}/${mesNumero}/${año} - ${horas}:${minutos} <span class="timezone-label">(${zonaFormateada})</span></div>
+        <div class="time-string compact-style ${abiertoAhora ? 'status-abierto' : 'status-cerrado'}">
+          ${horas}:${minutos}:${segundos} <span class="timezone-label" style="font-size:0.75rem; font-weight:400;">(${zonaFormateada})</span>
+        </div>
+        ${infoTexto ? `<span class="widget-advertencia-estado">⚠️ Hay nueva información. ¡Expande para leer!</span>` : ''}
+        <small style="color:var(--text-muted); font-size:10px; display:block; margin-top:2px;">Presione para ver más información</small>
       `;
     }
-
-    this.footer.innerHTML = `
-      <span class="schedule-tag">${CONFIG_WIDGET.estadoHorario}</span>
-      <div class="legend-box">
-        <div class="legend-item">${this.icons.circleGreen}<span>Abierto</span></div>
-        <div class="legend-item">${this.icons.circleRed}<span>Cerrado</span></div>
-      </div>
-    `;
   }
 
   startClock() {
@@ -3076,7 +3403,7 @@ class DateTimeWidget {
 
     this.detailsElement.addEventListener('toggle', () => {
       if (this.detailsElement.open) {
-        this.renderActiveScheduleInDetails();
+        this.renderSelectedDaySchedule();
       }
     });
   }

@@ -2,16 +2,125 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Procesando API...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procesando API - Grouvex Studios</title>
+    <!-- Script oficial de Cloudflare Turnstile -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --border-color: #30363d;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --error: #f85149;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 1.25rem;
+            color: #ffffff;
+        }
+
+        p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 20px auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #error-container {
+            color: var(--error);
+            font-size: 0.9rem;
+            margin-top: 15px;
+        }
+
+        .captcha-box {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        footer {
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+    </style>
 </head>
 <body>
-    <p>Conectando con el servidor...</p>
+
+    <div class="card" id="main-card">
+        <h2 id="card-title">Verificación de Seguridad</h2>
+        <p id="card-desc">Por favor, completa la verificación para continuar con la solicitud de la API.</p>
+        
+        <!-- Widget de Cloudflare Turnstile -->
+        <!-- Reemplaza "TU_SITE_KEY_DE_CLOUDFLARE" por tu clave pública real de Turnstile -->
+        <div class="captcha-box">
+            <div class="cf-turnstile" data-sitekey="TU_SITE_KEY_DE_CLOUDFLARE" data-callback="onTurnstileSuccess"></div>
+        </div>
+
+        <div class="spinner" id="loading-spinner"></div>
+        <div id="error-container"></div>
+    </div>
+
+    <footer>
+        &copy; 2026 Grouvex Studios. Todos los derechos reservados.
+    </footer>
 
     <script>
-        window.onload = async function() {
-            const search = window.location.search;
+        // Esta función se ejecuta automáticamente cuando el usuario supera el captcha con éxito
+        async function onTurnstileSuccess(token) {
+            document.getElementById('card-title').innerText = "Conectando con el servidor...";
+            document.getElementById('card-desc').innerText = "Verificación exitosa. Obteniendo datos...";
             
-            // Tu URL base limpia de Google Apps Script (asegúrate de que NUNCA tenga /u/0/)
+            // Ocultar el captcha y mostrar el spinner de carga
+            document.querySelector('.captcha-box').style.display = 'none';
+            document.getElementById('loading-spinner').style.display = 'block';
+
+            const search = window.location.search;
             let googleBaseUrl = "https://script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec";
             
             if (search) {
@@ -20,10 +129,10 @@
                 
                 if (index !== -1) {
                     const restoDeParametros = search.substring(index + target.length);
-                    const targetUrl = `${googleBaseUrl}?api=true&endpoint=${restoDeParametros}`;
+                    // Opcionalmente puedes enviar el token de Cloudflare a Google si deseas validarlo en tu script backend
+                    const targetUrl = `${googleBaseUrl}?api=true&endpoint=${restoDeParametros}&cf_token=${token}`;
                     
                     try {
-                        // Usamos fetch desde GitHub Pages para saltarnos el conflicto de cookies de Chrome
                         const response = await fetch(targetUrl);
                         const data = await response.text();
                         
@@ -32,13 +141,15 @@
                         document.close();
                         return;
                     } catch (error) {
-                        document.body.innerText = "Error de comunicación con la API.";
+                        document.getElementById('loading-spinner').style.display = 'none';
+                        document.getElementById('error-container').innerText = "Error de comunicación con la API de Google.";
                         return;
                     }
                 }
             }
-            document.body.innerText = "Solicitud no válida.";
-        };
+            document.getElementById('loading-spinner').style.display = 'none';
+            document.getElementById('error-container').innerText = "Solicitud no válida o parámetros incompletos.";
+        }
     </script>
 </body>
 </html>

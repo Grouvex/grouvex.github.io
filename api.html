@@ -112,9 +112,9 @@
 
     <script>
         // Esta función se ejecuta automáticamente cuando el usuario supera el captcha con éxito
-        async function onTurnstileSuccess(token) {
+        function onTurnstileSuccess(token) {
             document.getElementById('card-title').innerText = "Conectando con el servidor...";
-            document.getElementById('card-desc').innerText = "Verificación exitosa. Obteniendo datos...";
+            document.getElementById('card-desc').innerText = "Verificación exitosa. Redirigiendo...";
             
             // Ocultar el captcha y mostrar el spinner de carga
             document.querySelector('.captcha-box').style.display = 'none';
@@ -129,24 +129,14 @@
                 
                 if (index !== -1) {
                     const restoDeParametros = search.substring(index + target.length);
-                    // Opcionalmente puedes enviar el token de Cloudflare a Google si deseas validarlo en tu script backend
-                    const targetUrl = `${googleBaseUrl}?api=true&endpoint=${restoDeParametros}&cf_token=${token}`;
                     
-                    try {
-                        const response = await fetch(targetUrl);
-                        const data = await response.text();
-                        
-                        document.open();
-                        document.write(data);
-                        document.close();
-                        return;
-                    } catch (error) {
-                        document.getElementById('loading-spinner').style.display = 'none';
-                        document.getElementById('error-container').innerText = "Error de comunicación con la API de Google.";
-                        return;
-                    }
+                    // Redirigir el navegador directamente a la URL de Google Apps Script con los parámetros y el token
+                    const targetUrl = `${googleBaseUrl}?api=true&endpoint=${restoDeParametros}&cf_token=${token}`;
+                    window.location.href = targetUrl;
+                    return;
                 }
             }
+            
             document.getElementById('loading-spinner').style.display = 'none';
             document.getElementById('error-container').innerText = "Solicitud no válida o parámetros incompletos.";
         }

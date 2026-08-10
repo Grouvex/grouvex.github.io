@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Redirigiendo...</title>
+    <script>
+        window.onload = function() {
+            // Captura todo lo que esté después del '?' (ej: ?api=true&endpoint=getArtistData&id=123)
+            const queryString = window.location.search;
+            
+            // Tu URL base de Google Apps Script
+            const googleScriptUrl = "https://script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec";
+            
+            let finalUrl = googleScriptUrl;
+            if (queryString) {
+                finalUrl += queryString;
+            }
+            
+            // Redirige de inmediato manteniendo todos los parámetros dinámicos
+            window.location.replace(finalUrl);
+        };
+    </script>
+</head>
+<body>
+    <p>Conectando...</p>
+</body>
+</html>

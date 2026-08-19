@@ -83,6 +83,1071 @@
                      <p class="cajetin-description">¿Quieres Ser Diseñador? ¡¡Pues entra aquí!!. </p>
                 </a>
             </div>
+            <details style="background: #0f172a; padding: 8px; border-radius: 12px; margin: 20px 0; color: #f8fafc; border: 1px solid #334155;">
+              <summary style="background: linear-gradient(45deg, #00e5ff, #affb0a); padding: 2px; border-radius: 8px; cursor: pointer; outline: none; list-style: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <h3 style="margin: 0; color: #0f172a; font-weight: 700;">
+                    <i class="fas fa-fire"></i> Centro de Documentos de Grouvex Studios
+                  </h3>
+                </div>
+              </summary>
+            <!-- ========================================== -->
+            <!-- SECCIÓN DE PLANTILLAS AVANZADAS GROUVEX    -->
+            <!-- ========================================== -->
+            <section class="grouvex-manager-section">
+              <div class="grouvex-wrapper">
+                <div class="section-header">
+                  <h2>Editor Dinámico de Documentos Grouvex</h2>
+                  <p>Vista previa fiel a PDF A4 real. Escribe libremente y actualiza cuando quieras.</p>
+                </div>
+            
+                <!-- ========================================== -->
+                <!-- PLANTILLA 1: COTIZACIÓN COMERCIAL          -->
+                <!-- ========================================== -->
+                <details class="grouvex-card" open>
+                  <summary>
+                    <span class="summary-title">📄 Plantilla 1: Cotización Comercial</span>
+                    <span class="summary-badge">Vista Previa Real A4 (PDF Ready)</span>
+                  </summary>
+            
+                  <!-- Barra de herramientas -->
+                  <div class="grouvex-toolbar" data-target="template-1">
+                    <div class="toolbar-group">
+                      <label>Fuente: 
+                        <input type="text" list="fuentes-disponibles" placeholder="Ej. Arial" style="width: 90px;" onchange="aplicarEstiloInline('template-1', 'fontFamily', this.value)">
+                        <datalist id="fuentes-disponibles">
+                          <option value="Arial">
+                          <option value="Courier New">
+                          <option value="Georgia">
+                          <option value="Segoe UI">
+                          <option value="Times New Roman">
+                          <option value="Verdana">
+                        </datalist>
+                      </label>
+                    </div>
+            
+                    <div class="toolbar-group">
+                      <label>Tamaño: 
+                        <input type="number" value="15" min="8" max="72" style="width: 50px;" oninput="aplicarEstiloInline('template-1', 'fontSize', this.value + 'px')"> px
+                      </label>
+                    </div>
+            
+                    <div class="toolbar-divider"></div>
+            
+                    <div class="toolbar-group">
+                      <button type="button" onclick="toggleEstiloInline('template-1', 'fontWeight', 'bold', 'normal')" title="Negrita"><b>B</b></button>
+                      <button type="button" onclick="toggleEstiloInline('template-1', 'fontStyle', 'italic', 'normal')" title="Cursiva"><i>I</i></button>
+                      <button type="button" onclick="toggleEstiloInline('template-1', 'textDecoration', 'underline', 'none')" title="Subrayado"><u>U</u></button>
+                    </div>
+            
+                    <div class="toolbar-divider"></div>
+            
+                    <div class="toolbar-group">
+                      <label title="Color de Texto">Texto: <input type="color" onchange="aplicarEstiloInline('template-1', 'color', this.value)"></label>
+                      <label title="Color de Fondo">Fondo: <input type="color" onchange="aplicarEstiloInline('template-1', 'backgroundColor', this.value)"></label>
+                    </div>
+            
+                    <div class="toolbar-divider"></div>
+            
+                    <div class="toolbar-group">
+                      <button type="button" onclick="insertarEnlaceInline('template-1')" title="Insertar Enlace">🔗 Enlace</button>
+                      <button type="button" onclick="insertarImagenInline('template-1')" title="Insertar Imagen por URL">🖼️ Imagen</button>
+                      <button type="button" onclick="limpiarEstilosInline('template-1')" title="Limpiar Formato">🧹 Limpiar</button>
+                    </div>
+            
+                    <div class="toolbar-divider"></div>
+            
+                    <div class="toolbar-group">
+                      <label class="toggle-time-label">
+                        <input type="checkbox" id="toggle-time-template-1" onchange="toggleModuloFecha('template-1', this.checked)"> Fecha UTC
+                      </label>
+                    </div>
+            
+                    <div class="toolbar-divider"></div>
+            
+                    <div class="toolbar-group">
+                      <label class="toggle-time-label">
+                        <input type="checkbox" id="toggle-pages-template-1" checked onchange="toggleNumeracionPaginas('template-1', this.checked)"> Numeración
+                      </label>
+                    </div>
+            
+                    <div class="toolbar-divider"></div>
+            
+                    <div class="toolbar-group">
+                      <button type="button" class="btn-actualizar" onclick="gestionarPaginacion('template-1')">
+                        🔄 ACTUALIZAR PÁGINAS
+                      </button>
+                    </div>
+                  </div>
+            
+                  <!-- Contenedor del Documento -->
+                  <div class="template-document" id="template-1">
+                    <!-- PÁGINA 1 -->
+                    <div class="a4-page" data-page="1">
+                      <div class="doc-header">
+                        <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png" alt="Logo Grouvex" class="doc-logo">
+                        <div class="doc-meta">
+                          <h3>GROUVEX CORP</h3>
+                          <span>Cotización Oficial</span>
+                        </div>
+                      </div>
+            
+                      <div class="doc-body" id="body-template-1">
+                        <p>Estimado/a <span class="modificable" contenteditable="true">Cliente Ejemplar S.A.</span>,</p>
+                        <p>Por medio de la presente, ponemos a su disposición la cotización de servicios por un monto de <span class="modificable highlight-price" contenteditable="true">$1,500.00 USD</span>.</p>
+                        <p>Detalles del proyecto y alcance comercial: <span class="modificable" contenteditable="true">Escribe texto de forma fluida. El ancho está estrictamente limitado a las medidas físicas de una hoja A4 (210mm x 297mm).</span></p>
+                        <p>Fecha límite de validez: <span class="modificable" contenteditable="true">31 de Diciembre, 2026</span>.</p>
+                        <p><span class="modificable" contenteditable="true">Escribe todo el texto que necesites. Cuando termines, haz clic en "Actualizar Páginas" para ver cómo se distribuye en varias hojas A4.</span></p>
+                        <p><span class="modificable" contenteditable="true">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></p>
+                        <p><span class="modificable" contenteditable="true">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</span></p>
+                      </div>
+            
+                      <div class="doc-footer">
+                        <div class="footer-left">
+                          <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png" alt="Logo Footer" class="footer-logo">
+                          <span class="modificable footer-text" contenteditable="true">Documento Confidencial - Grouvex Corp</span>
+                        </div>
+                        <div class="footer-right">
+                          <span class="doc-time-container" id="time-container-template-1" style="display: none;">
+                            <span id="time-text-template-1">--</span> | 
+                          </span>
+                          <span class="page-number-display" id="page-numbers-template-1">
+                            Pág. <span class="page-num">1</span> de <span class="pages-total">1</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            
+                  <div class="card-footer">
+                    <div class="filename-container">
+                      <label for="name-template-1">Nombre del PDF:</label>
+                      <input type="text" id="name-template-1" value="Cotizacion_Grouvex" placeholder="Escribe el nombre...">
+                      <span>.pdf</span>
+                    </div>
+                    <button class="btn-pdf" onclick="descargarPDFNativo('template-1', 'name-template-1')">📥 DESCARGAR PDF</button>
+                  </div>
+                </details>
+            
+                <!-- ========================================== -->
+                <!-- PLANTILLA 2: INFORME EJECUTIVO             -->
+                <!-- ========================================== -->
+                <details class="grouvex-card">
+                  <summary>
+                    <span class="summary-title">📊 Plantilla 2: Informe Ejecutivo</span>
+                    <span class="summary-badge">Vista Previa Real A4 (PDF Ready)</span>
+                  </summary>
+            
+                  <!-- Barra de herramientas -->
+                  <div class="grouvex-toolbar" data-target="template-2">
+                    <div class="toolbar-group">
+                      <label>Fuente: 
+                        <input type="text" list="fuentes-disponibles-2" placeholder="Ej. Arial" style="width: 90px;" onchange="aplicarEstiloInline('template-2', 'fontFamily', this.value)">
+                        <datalist id="fuentes-disponibles-2">
+                          <option value="Arial">
+                          <option value="Courier New">
+                          <option value="Georgia">
+                          <option value="Segoe UI">
+                          <option value="Times New Roman">
+                          <option value="Verdana">
+                        </datalist>
+                      </label>
+                    </div>
+            
+                    <div class="toolbar-group">
+                      <label>Tamaño: 
+                        <input type="number" value="15" min="8" max="72" style="width: 50px;" oninput="aplicarEstiloInline('template-2', 'fontSize', this.value + 'px')"> px
+                      </label>
+                    </div>
+            
+                    <div class="toolbar-divider"></div>
+            
+                    <div class="toolbar-group">
+                      <button type="button" onclick="toggleEstiloInline('template-2', 'fontWeight', 'bold', 'normal')" title="Negrita"><b>B</b></button>
+                      <button type="button" onclick="toggleEstiloInline('template-2', 'fontStyle', 'italic', 'normal')" title="Cursiva"><i>I</i></button>
+                      <button type="button" onclick="toggleEstiloInline('template-2', 'textDecoration', 'underline', 'none')" title="Subrayado"><u>U</u></button>
+                    </div>
+            
+                    <div class="toolbar-divider"></div>
+            
+                    <div class="toolbar-group">
+                      <label title="Color de Texto">Texto: <input type="color" onchange="aplicarEstiloInline('template-2', 'color', this.value)"></label>
+                      <label title="Color de Fondo">Fondo: <input type="color" onchange="aplicarEstiloInline('template-2', 'backgroundColor', this.value)"></label>
+                    </div>
+            
+                    <div class="toolbar-divider"></div>
+            
+                    <div class="toolbar-group">
+                      <button type="button" onclick="insertarEnlaceInline('template-2')" title="Insertar Enlace">🔗 Enlace</button>
+                      <button type="button" onclick="insertarImagenInline('template-2')" title="Insertar Imagen por URL">🖼️ Imagen</button>
+                      <button type="button" onclick="limpiarEstilosInline('template-2')" title="Limpiar Formato">🧹 Limpiar</button>
+                    </div>
+            
+                    <div class="toolbar-divider"></div>
+            
+                    <div class="toolbar-group">
+                      <label class="toggle-time-label">
+                        <input type="checkbox" id="toggle-time-template-2" onchange="toggleModuloFecha('template-2', this.checked)"> Fecha UTC
+                      </label>
+                    </div>
+            
+                    <div class="toolbar-divider"></div>
+            
+                    <div class="toolbar-group">
+                      <label class="toggle-time-label">
+                        <input type="checkbox" id="toggle-pages-template-2" checked onchange="toggleNumeracionPaginas('template-2', this.checked)"> Numeración
+                      </label>
+                    </div>
+            
+                    <div class="toolbar-divider"></div>
+            
+                    <div class="toolbar-group">
+                      <button type="button" class="btn-actualizar" onclick="gestionarPaginacion('template-2')">
+                        🔄 ACTUALIZAR PÁGINAS
+                      </button>
+                    </div>
+                  </div>
+            
+                  <!-- Contenedor del Documento -->
+                  <div class="template-document" id="template-2">
+                    <!-- PÁGINA 1 -->
+                    <div class="a4-page" data-page="1">
+                      <div class="doc-header">
+                        <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png" alt="Logo Grouvex" class="doc-logo">
+                        <div class="doc-meta">
+                          <h3>INFORME EJECUTIVO</h3>
+                          <span>Reporte de Gestión - 2026</span>
+                        </div>
+                      </div>
+            
+                      <div class="doc-body" id="body-template-2">
+                        <p><span class="modificable" contenteditable="true">Este informe presenta un análisis detallado de la gestión operativa y financiera de la empresa durante el período 2025-2026. Los resultados muestran un crecimiento sostenido en todas las áreas clave del negocio.</span></p>
+                        <p><span class="modificable" contenteditable="true">Los indicadores principales de desempeño (KPIs) reflejan una mejora significativa en la eficiencia operativa.</span></p>
+                      </div>
+            
+                      <div class="doc-footer">
+                        <div class="footer-left">
+                          <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png" alt="Logo Footer" class="footer-logo">
+                          <span class="modificable footer-text" contenteditable="true">Documento Confidencial - Grouvex Corp</span>
+                        </div>
+                        <div class="footer-right">
+                          <span class="doc-time-container" id="time-container-template-2" style="display: none;">
+                            <span id="time-text-template-2">--</span> | 
+                          </span>
+                          <span class="page-number-display" id="page-numbers-template-2">
+                            Pág. <span class="page-num">1</span> de <span class="pages-total">1</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            
+                  <div class="card-footer">
+                    <div class="filename-container">
+                      <label for="name-template-2">Nombre del PDF:</label>
+                      <input type="text" id="name-template-2" value="Informe_Ejecutivo" placeholder="Escribe el nombre...">
+                      <span>.pdf</span>
+                    </div>
+                    <button class="btn-pdf" onclick="descargarPDFNativo('template-2', 'name-template-2')">📥 DESCARGAR PDF</button>
+                  </div>
+                </details>
+            
+              </div>
+            </section>
+            
+            <!-- ========================================== -->
+            <!-- ESTILOS CSS                                -->
+            <!-- ========================================== -->
+            <style>
+              .grouvex-manager-section {
+                font-family: 'Inter', system-ui, -apple-system, sans-serif;
+                max-width: 950px;
+                margin: 40px auto;
+                padding: 0 20px;
+                color: #000000;
+              }
+              .section-header { margin-bottom: 24px; }
+              .section-header h2 { font-size: 1.5rem; color: #ffffff; margin-bottom: 4px; }
+              .section-header p { color: #ffffff; font-size: 0.95rem; }
+              
+              .grouvex-card {
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                border-radius: 10px;
+                margin-bottom: 16px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+                overflow: hidden;
+              }
+              .grouvex-card[open] { box-shadow: 0 8px 16px rgba(0,0,0,0.06); }
+              .grouvex-card summary {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 16px 20px;
+                font-weight: 600;
+                background: #ffffff;
+                cursor: pointer;
+                user-select: none;
+              }
+              .grouvex-card[open] summary { background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+              .summary-badge { font-size: 0.75rem; background: #edf2f7; color: #4a5568; padding: 3px 8px; border-radius: 12px; }
+            
+              .grouvex-toolbar {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 6px;
+                background: #f1f5f9;
+                padding: 6px 16px;
+                border-bottom: 1px solid #e2e8f0;
+                font-size: 0.8rem;
+              }
+              .toolbar-group { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+              .grouvex-toolbar button, .grouvex-toolbar input[type="text"] {
+                background: #ffffff;
+                border: 1px solid #cbd5e1;
+                border-radius: 4px;
+                padding: 3px 6px;
+                font-weight: 600;
+                color: #334155;
+                cursor: pointer;
+                font-size: 0.75rem;
+              }
+              .grouvex-toolbar button:hover { background: #e2e8f0; }
+              .toolbar-divider { width: 1px; height: 18px; background: #cbd5e1; }
+              .grouvex-toolbar label { display: flex; align-items: center; gap: 3px; font-size: 0.75rem; color: #475569; font-weight: 500; cursor: pointer; }
+              .grouvex-toolbar input[type="color"] { appearance: none; border: none; width: 18px; height: 18px; border-radius: 4px; cursor: pointer; background: transparent; padding: 0; }
+              .grouvex-toolbar input[type="number"] { border: 1px solid #cbd5e1; border-radius: 4px; padding: 2px 4px; text-align: center; font-weight: 600; width: 45px; font-size: 0.75rem; }
+              .toggle-time-label { font-weight: 600 !important; color: #1e293b !important; font-size: 0.7rem !important; }
+              .toggle-time-label input { margin: 0 2px 0 0; }
+            
+              .btn-actualizar {
+                background: #0f172a !important;
+                color: white !important;
+                padding: 4px 12px !important;
+                border-radius: 6px !important;
+                font-weight: 700 !important;
+                border: none !important;
+                font-size: 0.75rem !important;
+              }
+              .btn-actualizar:hover {
+                background: #1e293b !important;
+                transform: scale(1.02);
+              }
+            
+              .template-document { 
+                background: #525659;
+                padding: 30px 15px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 24px;
+                overflow-x: auto;
+                overflow-y: auto;
+                min-height: 350px;
+                max-height: 750px;
+              }
+            
+              .a4-page {
+                width: 210mm;
+                min-height: 297mm;
+                max-width: 210mm;
+                padding: 18mm;
+                background: #ffffff;
+                box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                position: relative;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                flex-shrink: 0;
+                max-height: 297mm;
+              }
+              
+              .doc-header { 
+                display: flex; 
+                align-items: center; 
+                gap: 14px; 
+                margin-bottom: 12px; 
+                padding-bottom: 10px; 
+                border-bottom: 2px solid #f1f5f9; 
+                width: 100%; 
+                box-sizing: border-box; 
+                flex-shrink: 0;
+                min-height: 50px;
+              }
+              .doc-logo { width: 150px; height: 40px; object-fit: contain; flex-shrink: 0; }
+              .doc-meta { overflow: hidden; }
+              .doc-meta h3 { margin: 0; font-size: 0.95rem; color: #1e293b; }
+              .doc-meta span { font-size: 0.75rem; color: #64748b; }
+              
+              .doc-body { 
+                flex: 1;
+                width: 100%; 
+                box-sizing: border-box;
+                min-height: 30px;
+                overflow: hidden;
+                max-height: 100%;
+              }
+              .doc-body p { 
+                line-height: 1.6; 
+                color: #334155; 
+                margin-bottom: 8px;
+                min-height: 1.5em;
+              }
+            
+              .modificable {
+                background-color: #ebf8ff;
+                border-bottom: 2px dashed #3182ce;
+                padding: 1px 5px;
+                border-radius: 4px;
+                color: #2b6cb0;
+                outline: none;
+                display: inline-block;
+                max-width: 100%;
+                box-sizing: border-box;
+                min-width: 15px;
+                min-height: 1.1em;
+              }
+              .modificable:focus {
+                background-color: #bee3f8;
+                border-bottom-color: #2b6cb0;
+              }
+              .modificable img { max-width: 100%; height: auto; vertical-align: middle; margin: 0 3px; border-radius: 4px; }
+              .modificable a { color: #2b6cb0; text-decoration: underline; word-break: break-all; }
+              .highlight-price { color: #2f855a; background-color: #f0fff4; border-bottom-color: #38a169; font-weight: 600; }
+            
+              .doc-footer {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 12px;
+                padding-top: 10px;
+                border-top: 1px solid #e2e8f0;
+                font-size: 0.7rem;
+                color: #64748b;
+                width: 100%;
+                box-sizing: border-box;
+                flex-shrink: 0;
+                min-height: 40px;
+              }
+              .footer-left { display: flex; align-items: center; gap: 6px; overflow: hidden; }
+              .footer-logo { width: 70px; height: 20px; object-fit: contain; flex-shrink: 0; }
+              .footer-text { font-size: 0.65rem !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+              .footer-right { text-align: right; flex-shrink: 0; }
+            
+              .card-footer {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 8px;
+                padding: 12px 16px;
+                background: #f8fafc;
+                border-top: 1px solid #e2e8f0;
+              }
+              .filename-container { display: flex; align-items: center; gap: 4px; font-size: 0.8rem; color: #475569; font-weight: 500; }
+              .filename-container input { border: 1px solid #cbd5e1; border-radius: 4px; padding: 4px 8px; font-size: 0.8rem; color: #1e293b; outline: none; width: 140px; }
+              .filename-container input:focus { border-color: #3182ce; box-shadow: 0 0 0 2px rgba(49,130,206,0.15); }
+              
+              .btn-pdf {
+                background-color: #0f172a;
+                color: #ffffff;
+                border: none;
+                border-radius: 6px;
+                padding: 7px 14px;
+                font-weight: 700;
+                font-size: 0.8rem;
+                cursor: pointer;
+                transition: background 0.2s;
+              }
+              .btn-pdf:hover { background-color: #1e293b; transform: scale(1.02); }
+            
+              .template-document::-webkit-scrollbar {
+                width: 6px;
+              }
+              .template-document::-webkit-scrollbar-track {
+                background: #2d2d2d;
+              }
+              .template-document::-webkit-scrollbar-thumb {
+                background: #888;
+                border-radius: 4px;
+              }
+              .template-document::-webkit-scrollbar-thumb:hover {
+                background: #555;
+              }
+            
+              .a4-page {
+                animation: fadeInPage 0.3s ease-in-out;
+              }
+              
+              @keyframes fadeInPage {
+                from {
+                  opacity: 0;
+                  transform: translateY(10px);
+                }
+                to {
+                  opacity: 1;
+                  transform: translateY(0);
+                }
+              }
+            
+              .a4-page:not(:last-child)::after {
+                content: '▼ Página ' attr(data-page) ' ▼';
+                position: absolute;
+                bottom: -18px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 9px;
+                color: #94a3b8;
+                background: #1e293b;
+                padding: 1px 12px;
+                border-radius: 10px;
+                opacity: 0.6;
+                pointer-events: none;
+                white-space: nowrap;
+                letter-spacing: 0.5px;
+              }
+            
+              .template-document:hover .a4-page:not(:last-child)::after {
+                opacity: 1;
+              }
+            
+              .page-number-display {
+                font-weight: 500;
+                color: #475569;
+              }
+            
+              .page-number-display.hidden {
+                display: none !important;
+              }
+            
+              @media (max-width: 800px) {
+                .a4-page {
+                  width: 100%;
+                  max-width: 100%;
+                  min-height: auto;
+                  padding: 12mm;
+                }
+                .grouvex-toolbar {
+                  gap: 4px;
+                  padding: 4px 10px;
+                }
+                .toolbar-divider {
+                  display: none;
+                }
+                .template-document {
+                  padding: 15px 10px;
+                  gap: 16px;
+                  max-height: 500px;
+                }
+              }
+            </style>
+            
+            <!-- ========================================== -->
+            <!-- SCRIPT JS - CON LÍMITES DE CABECERA Y PIE  -->
+            <!-- ========================================== -->
+            <script>
+              // ========== FUNCIONES DE ESTILO INLINE ==========
+              function obtenerRangoValido(templateId) {
+                const seleccion = window.getSelection();
+                if (!seleccion.rangeCount || seleccion.isCollapsed) return null;
+            
+                let nodo = seleccion.anchorNode;
+                let elemento = nodo.nodeType === 3 ? nodo.parentNode : nodo;
+                let campoModificable = elemento.closest(`#${templateId} .modificable`);
+            
+                if (!campoModificable) {
+                  alert("Por favor, selecciona primero un fragmento de texto dentro de un campo modificable.");
+                  return null;
+                }
+                return seleccion.getRangeAt(0);
+              }
+            
+              function aplicarEstiloInline(templateId, propiedad, valor) {
+                const rango = obtenerRangoValido(templateId);
+                if (!rango) return;
+            
+                const span = document.createElement('span');
+                span.style[propiedad] = valor;
+                span.appendChild(rango.extractContents());
+                rango.insertNode(span);
+                window.getSelection().removeAllRanges();
+              }
+            
+              function toggleEstiloInline(templateId, propiedad, valorActivo, valorNormal) {
+                const rango = obtenerRangoValido(templateId);
+                if (!rango) return;
+            
+                const span = document.createElement('span');
+                span.style[propiedad] = valorActivo;
+                span.appendChild(rango.extractContents());
+                rango.insertNode(span);
+                window.getSelection().removeAllRanges();
+              }
+            
+              function insertarEnlaceInline(templateId) {
+                const rango = obtenerRangoValido(templateId);
+                if (!rango) return;
+            
+                const url = prompt("Introduce el enlace web de destino:", "https://");
+                if (url) {
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.target = "_blank";
+                  a.appendChild(rango.extractContents());
+                  rango.insertNode(a);
+                }
+                window.getSelection().removeAllRanges();
+              }
+            
+              function insertarImagenInline(templateId) {
+                const seleccion = window.getSelection();
+                if (!seleccion.rangeCount) return;
+            
+                let nodo = seleccion.anchorNode;
+                let elemento = nodo.nodeType === 3 ? nodo.parentNode : nodo;
+                let campoModificable = elemento.closest(`#${templateId} .modificable`);
+            
+                if (campoModificable) {
+                  campoModificable.focus();
+                  const urlImg = prompt("Introduce la URL pública de la imagen:", "https://");
+                  if (urlImg) {
+                    const img = document.createElement('img');
+                    img.src = urlImg;
+                    img.alt = "Imagen incrustada";
+                    img.style.maxWidth = '100%';
+                    img.style.height = 'auto';
+                    
+                    const rango = seleccion.getRangeAt(0);
+                    rango.insertNode(img);
+                  }
+                } else {
+                  alert("Haz clic dentro de un campo modificable para insertar la imagen.");
+                }
+              }
+            
+              function limpiarEstilosInline(templateId) {
+                const rango = obtenerRangoValido(templateId);
+                if (!rango) return;
+            
+                const textoPlano = document.createTextNode(rango.toString());
+                rango.deleteContents();
+                rango.insertNode(textoPlano);
+                window.getSelection().removeAllRanges();
+              }
+            
+              // ========== FECHA UTC COMPLETA ==========
+              function obtenerFechaUTCCompleta() {
+                const ahora = new Date();
+                const opciones = {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit',
+                  timeZone: 'UTC',
+                  hour12: false
+                };
+                return ahora.toLocaleDateString('es-ES', opciones) + ' UTC';
+              }
+            
+              function toggleModuloFecha(templateId, mostrar) {
+                const contenedor = document.querySelector(`#${templateId} .doc-time-container`);
+                const texto = document.querySelector(`#${templateId} #time-text-${templateId}`);
+                
+                if (mostrar) {
+                  const fechaCompleta = obtenerFechaUTCCompleta();
+                  if (texto) texto.textContent = fechaCompleta;
+                  if (contenedor) contenedor.style.display = 'inline';
+                } else {
+                  if (contenedor) contenedor.style.display = 'none';
+                }
+              }
+            
+              function toggleNumeracionPaginas(templateId, mostrar) {
+                const contenedores = document.querySelectorAll(`#${templateId} .page-number-display`);
+                contenedores.forEach(el => {
+                  if (mostrar) {
+                    el.classList.remove('hidden');
+                  } else {
+                    el.classList.add('hidden');
+                  }
+                });
+              }
+            
+              // ========== DIVISIÓN INTELIGENTE DE TEXTO ==========
+              function dividirTextoInteligente(textoHTML, alturaDisponible, tempDiv) {
+                const temp = document.createElement('div');
+                temp.innerHTML = textoHTML;
+                const textoPlano = temp.textContent;
+                
+                if (textoPlano.length < 10) {
+                  return [textoHTML, ''];
+                }
+                
+                const palabras = textoPlano.split(' ');
+                let mejorDivision = 0;
+                let mejorAltura = 0;
+                
+                for (let i = Math.floor(palabras.length * 0.2); i < palabras.length - 1; i++) {
+                  const testParte1 = palabras.slice(0, i).join(' ');
+                  const testHTML = textoHTML.replace(textoPlano, testParte1);
+                  tempDiv.innerHTML = testHTML;
+                  const altura = tempDiv.scrollHeight;
+                  
+                  if (altura <= alturaDisponible && altura > mejorAltura) {
+                    mejorAltura = altura;
+                    mejorDivision = i;
+                  }
+                  
+                  if (altura > alturaDisponible * 1.05) break;
+                }
+                
+                if (mejorDivision === 0) {
+                  mejorDivision = Math.floor(palabras.length / 2);
+                }
+                
+                const parte1 = palabras.slice(0, mejorDivision).join(' ');
+                const parte2 = palabras.slice(mejorDivision).join(' ');
+                
+                return [textoHTML.replace(textoPlano, parte1), textoHTML.replace(textoPlano, parte2)];
+              }
+            
+              // ========== CALCULAR ALTURA DISPONIBLE ==========
+              function calcularAlturaDisponible(pagina) {
+                // Obtener alturas reales de los elementos
+                const header = pagina.querySelector('.doc-header');
+                const footer = pagina.querySelector('.doc-footer');
+                
+                // Altura total de la página en píxeles
+                const alturaTotalPX = 297 * 3.78;
+                
+                // Altura del header (incluyendo padding, border y margin)
+                let alturaHeader = 0;
+                if (header) {
+                  const style = window.getComputedStyle(header);
+                  alturaHeader = header.offsetHeight + 
+                    parseInt(style.marginTop) + parseInt(style.marginBottom);
+                }
+                if (alturaHeader < 50) alturaHeader = 60;
+                
+                // Altura del footer (incluyendo padding, border y margin)
+                let alturaFooter = 0;
+                if (footer) {
+                  const style = window.getComputedStyle(footer);
+                  alturaFooter = footer.offsetHeight + 
+                    parseInt(style.marginTop) + parseInt(style.marginBottom);
+                }
+                if (alturaFooter < 40) alturaFooter = 50;
+                
+                // Padding de la página
+                const paddingSuperior = 18 * 3.78;
+                const paddingInferior = 18 * 3.78;
+                
+                // Altura disponible para el body
+                let alturaDisponible = alturaTotalPX - paddingSuperior - paddingInferior - alturaHeader - alturaFooter;
+                
+                // Margen de seguridad
+                alturaDisponible = alturaDisponible - 15;
+                
+                return Math.max(alturaDisponible, 50);
+              }
+            
+              // ========== PAGINACIÓN CON LÍMITES ==========
+              function gestionarPaginacion(templateId) {
+                const contenedor = document.getElementById(templateId);
+                if (!contenedor) return;
+            
+                const todasLasPaginas = contenedor.querySelectorAll('.a4-page');
+                let elementosOriginales = [];
+                
+                // Recopilar TODO el contenido de TODAS las páginas
+                todasLasPaginas.forEach(pagina => {
+                  const body = pagina.querySelector('.doc-body');
+                  if (body) {
+                    const hijos = body.children;
+                    for (let child of hijos) {
+                      if (child.tagName === 'P') {
+                        elementosOriginales.push(child.outerHTML);
+                      }
+                    }
+                  }
+                });
+            
+                if (elementosOriginales.length === 0) {
+                  elementosOriginales = ['<p><span class="modificable" contenteditable="true">Escribe tu contenido aquí...</span></p>'];
+                }
+            
+                const tempDiv = document.createElement('div');
+                tempDiv.style.cssText = `
+                  width: ${210 - 40}mm;
+                  padding: 0;
+                  margin: 0;
+                  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+                  font-size: 15px;
+                  line-height: 1.6;
+                  visibility: hidden;
+                  position: absolute;
+                  top: -9999px;
+                  left: -9999px;
+                  background: white;
+                  box-sizing: border-box;
+                `;
+                document.body.appendChild(tempDiv);
+                
+                function medirElementos(html) {
+                  tempDiv.innerHTML = html;
+                  return tempDiv.scrollHeight;
+                }
+            
+                const primeraPagina = todasLasPaginas[0];
+                const alturaDisponiblePX = calcularAlturaDisponible(primeraPagina);
+            
+                let contenidoPorPagina = [];
+                let paginaActual = '';
+            
+                for (let i = 0; i < elementosOriginales.length; i++) {
+                  const elementoHTML = elementosOriginales[i];
+                  const pruebaCompleta = paginaActual + elementoHTML;
+                  
+                  if (medirElementos(pruebaCompleta) <= alturaDisponiblePX) {
+                    paginaActual = pruebaCompleta;
+                    continue;
+                  }
+                  
+                  const temp = document.createElement('div');
+                  temp.innerHTML = elementoHTML;
+                  const spanMod = temp.querySelector('.modificable');
+                  
+                  if (spanMod && spanMod.textContent.length > 50) {
+                    const [parte1, parte2] = dividirTextoInteligente(elementoHTML, alturaDisponiblePX - medirElementos(paginaActual), tempDiv);
+                    
+                    if (parte1.trim().length > 0) {
+                      if (medirElementos(paginaActual + parte1) <= alturaDisponiblePX) {
+                        paginaActual += parte1;
+                      } else {
+                        if (paginaActual.trim().length > 0) {
+                          contenidoPorPagina.push(paginaActual);
+                        }
+                        paginaActual = parte1;
+                      }
+                    }
+                    
+                    if (parte2.trim().length > 0) {
+                      if (medirElementos(paginaActual + parte2) <= alturaDisponiblePX) {
+                        paginaActual += parte2;
+                      } else {
+                        if (paginaActual.trim().length > 0) {
+                          contenidoPorPagina.push(paginaActual);
+                        }
+                        paginaActual = parte2;
+                      }
+                    }
+                  } else {
+                    if (paginaActual.trim().length > 0) {
+                      contenidoPorPagina.push(paginaActual);
+                    }
+                    paginaActual = elementoHTML;
+                  }
+                }
+                
+                if (paginaActual.trim().length > 0) {
+                  contenidoPorPagina.push(paginaActual);
+                }
+            
+                document.body.removeChild(tempDiv);
+            
+                if (contenidoPorPagina.length === 0) {
+                  contenidoPorPagina = ['<p><span class="modificable" contenteditable="true">Escribe tu contenido aquí...</span></p>'];
+                }
+            
+                // Eliminar todas las páginas excepto la primera
+                while (contenedor.querySelectorAll('.a4-page').length > 1) {
+                  const ultimaPagina = contenedor.querySelector('.a4-page:last-child');
+                  if (ultimaPagina) ultimaPagina.remove();
+                }
+            
+                // Actualizar primera página con el nuevo contenido
+                const bodyFirst = primeraPagina.querySelector('.doc-body');
+                bodyFirst.innerHTML = contenidoPorPagina[0];
+                bodyFirst.querySelectorAll('.modificable').forEach(el => {
+                  el.contentEditable = 'true';
+                });
+                primeraPagina.dataset.page = 1;
+            
+                // Crear páginas adicionales
+                for (let i = 1; i < contenidoPorPagina.length; i++) {
+                  const nuevaPagina = primeraPagina.cloneNode(true);
+                  nuevaPagina.dataset.page = i + 1;
+                  
+                  const body = nuevaPagina.querySelector('.doc-body');
+                  body.innerHTML = contenidoPorPagina[i];
+                  body.querySelectorAll('.modificable').forEach(el => {
+                    el.contentEditable = 'true';
+                  });
+                  
+                  // Restaurar imágenes del header y footer
+                  const header = nuevaPagina.querySelector('.doc-header');
+                  if (header) {
+                    const logo = header.querySelector('.doc-logo');
+                    if (logo) logo.src = 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png';
+                  }
+                  
+                  const footer = nuevaPagina.querySelector('.doc-footer');
+                  if (footer) {
+                    const footerLogo = footer.querySelector('.footer-logo');
+                    if (footerLogo) footerLogo.src = 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png';
+                    
+                    // Mantener estado de fecha
+                    const timeContainer = footer.querySelector('.doc-time-container');
+                    if (timeContainer) {
+                      const checkbox = document.getElementById(`toggle-time-${templateId}`);
+                      if (checkbox && checkbox.checked) {
+                        timeContainer.style.display = 'inline';
+                        const timeText = timeContainer.querySelector(`#time-text-${templateId}`);
+                        if (timeText) timeText.textContent = obtenerFechaUTCCompleta();
+                      } else {
+                        timeContainer.style.display = 'none';
+                      }
+                    }
+                  }
+                  
+                  contenedor.appendChild(nuevaPagina);
+                }
+            
+                // Actualizar numeración en TODAS las páginas
+                actualizarNumeracion(templateId);
+                
+                // Scroll al final
+                setTimeout(() => {
+                  contenedor.scrollTop = contenedor.scrollHeight;
+                }, 100);
+              }
+            
+              function actualizarNumeracion(templateId) {
+                const contenedor = document.getElementById(templateId);
+                const paginas = contenedor.querySelectorAll('.a4-page');
+                const totalPaginas = paginas.length;
+                
+                paginas.forEach((pagina, index) => {
+                  const numActual = index + 1;
+                  const numDisplay = pagina.querySelector('.page-num');
+                  const totalDisplay = pagina.querySelector('.pages-total');
+                  
+                  if (numDisplay) numDisplay.textContent = numActual;
+                  if (totalDisplay) totalDisplay.textContent = totalPaginas;
+                  pagina.dataset.page = numActual;
+                });
+              }
+            
+              // ========== DESCARGA PDF ==========
+              function descargarPDFNativo(elementId, inputNameId) {
+                const elemento = document.getElementById(elementId);
+                const inputNombre = document.getElementById(inputNameId);
+                
+                // Actualizar páginas antes de descargar
+                gestionarPaginacion(elementId);
+                
+                let nombrePersonalizado = inputNombre ? inputNombre.value.trim() : "Documento_Grouvex";
+                if (!nombrePersonalizado) nombrePersonalizado = "Documento_Grouvex";
+            
+                const ventanaImpresion = window.open('', '_blank', 'width=800,height=600');
+                if (!ventanaImpresion) {
+                  alert("Por favor, permite las ventanas emergentes para generar el PDF.");
+                  return;
+                }
+            
+                const todasPaginas = elemento.querySelectorAll('.a4-page');
+                let htmlPaginas = '';
+                
+                todasPaginas.forEach((pagina) => {
+                  const clone = pagina.cloneNode(true);
+                  clone.style.boxShadow = 'none';
+                  htmlPaginas += clone.outerHTML;
+                });
+            
+                const estilos = `
+                  <style>
+                    @page { size: A4 portrait; margin: 0 !important; }
+                    * { margin: 0; padding: 0; box-sizing: border-box; }
+                    body { background: white; display: block; margin: 0; padding: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+                    .a4-page {
+                      width: 210mm; height: 297mm; padding: 18mm; background: white;
+                      margin: 0 auto; display: flex; flex-direction: column;
+                      page-break-after: always; break-after: page;
+                      position: relative; box-sizing: border-box; overflow: hidden;
+                    }
+                    .doc-header { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 2px solid #f1f5f9; width: 100%; flex-shrink: 0; min-height: 50px; }
+                    .doc-logo { width: 40px; height: 40px; object-fit: contain; flex-shrink: 0; }
+                    .doc-meta { overflow: hidden; }
+                    .doc-meta h3 { margin: 0; font-size: 0.95rem; color: #1e293b; }
+                    .doc-meta span { font-size: 0.75rem; color: #64748b; }
+                    .doc-body { flex: 1; width: 100%; min-height: 30px; overflow: hidden; }
+                    .doc-body p { line-height: 1.6; color: #334155; margin-bottom: 8px; min-height: 1.5em; }
+                    .modificable { background-color: transparent !important; border-bottom: none !important; padding: 0 !important; color: inherit !important; display: inline !important; }
+                    .highlight-price { color: #2f855a !important; font-weight: 600 !important; }
+                    .doc-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 10px; border-top: 1px solid #e2e8f0; font-size: 0.7rem; color: #64748b; width: 100%; flex-shrink: 0; min-height: 40px; }
+                    .footer-left { display: flex; align-items: center; gap: 6px; overflow: hidden; }
+                    .footer-logo { width: 18px; height: 18px; object-fit: contain; flex-shrink: 0; }
+                    .footer-text { font-size: 0.65rem !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+                    .footer-right { text-align: right; flex-shrink: 0; }
+                    .page-number-display { font-weight: 500; color: #475569; }
+                    .page-number-display.hidden { display: none !important; }
+                    .doc-time-container { display: inline; }
+                    .a4-page:last-child { page-break-after: avoid; break-after: avoid; }
+                    .grouvex-toolbar, .card-footer, summary, .section-header { display: none !important; }
+                  </style>
+                `;
+            
+                const contenidoImpresion = `
+                  <!DOCTYPE html>
+                  <html>
+                  <head>
+                    <meta charset="UTF-8">
+                    <title>${nombrePersonalizado}</title>
+                    ${estilos}
+                  </head>
+                  <body>
+                    ${htmlPaginas}
+                    <script>
+                      window.onload = function() {
+                        setTimeout(function() {
+                          window.print();
+                          setTimeout(function() {
+                            window.close();
+                          }, 1000);
+                        }, 500);
+                      };
+                    <\/script>
+                  </body>
+                  </html>
+                `;
+            
+                ventanaImpresion.document.write(contenidoImpresion);
+                ventanaImpresion.document.close();
+              }
+            
+              // ========== INICIALIZACIÓN ==========
+              function initPaginacion() {
+                document.querySelectorAll('.template-document').forEach(el => {
+                  const id = el.id;
+                  if (id) {
+                    setTimeout(() => {
+                      gestionarPaginacion(id);
+                    }, 300);
+                  }
+                });
+              }
+            
+              document.addEventListener('DOMContentLoaded', initPaginacion);
+              window.addEventListener('load', function() {
+                setTimeout(initPaginacion, 400);
+              });
+            </script>
+            </details>
         </article>
         <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTZ6MG-IVoaKtRJKcf1t5oValyjPw7ZtDDpwZQn0UlW23GZV_80JGuZ0kvp6frtnIy5uZ3nXg_8MO90/pubhtml?gid=387403077&single=true"><h3>Status</h3></a>
         <article>

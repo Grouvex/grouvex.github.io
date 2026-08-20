@@ -83,7 +83,7 @@
                      <p class="cajetin-description">¿Quieres Ser Diseñador? ¡¡Pues entra aquí!!. </p>
                 </a>
             </div>
-<details style="background: #0f172a; padding: 20px; border-radius: 12px; margin: 20px 0; color: #f8fafc; border: 1px solid #334155;">
+<details style="background: #0f172a; padding: 20px; border-radius: 12px; margin: 20px 0; color: #f8fafc; border: 1px solid #334155;" disabled>
   <summary style="background: linear-gradient(45deg, #00e5ff, #affb0a); padding: 15px; border-radius: 8px; cursor: pointer; outline: none; list-style: none;">
     <div style="display: flex; justify-content: space-between; align-items: center;">
       <h3 style="margin: 0; color: #0f172a; font-weight: 700;">
@@ -125,11 +125,15 @@
             o difusión de información falsa</em>).
         </li>
         <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
-            <strong>Campos obligatorios:</strong> Los campos identificados con el formato <span class="highlight-field">[texto enmarcado]</span> 
+            <strong>Campos obligatorios:</strong> Los campos identificados con el formato <span class="highlight-field">[texto enmarcado en rojo]</span> 
             son de carácter obligatorio y deben ser cumplimentados en su totalidad. La omisión o modificación 
             no autorizada de estos campos podrá dar lugar a la <strong>invalidez del documento</strong> y a la 
             correspondiente responsabilidad disciplinaria, según lo previsto en el <strong>Artículo 13.3.b</strong> 
             (<em>Régimen de sanciones y debido proceso</em>).
+        </li>
+        <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
+            <strong>Campos opcionales:</strong> Los campos identificados con el formato <span class="highlight-field">[texto enmarcado en verde]</span> 
+            son de carácter opcional.
         </li>
         <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
             <strong>Limitación de modificaciones:</strong> Queda terminantemente prohibida la alteración de 
@@ -167,8 +171,8 @@
     </summary>
     <ul style="color:white; margin: 8px 0 8px 20px; padding-left: 8px; list-style: none;">
         <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
-            <strong>1. Edición de contenido:</strong> Haz clic directamente sobre cualquier texto con <span style="color: #ff6b6b; font-weight: 600;">borde rojo</span> 
-            y escribe tu contenido personalizado. Todos los campos con borde rojo son <strong>modificables</strong>.
+            <strong>1. Edición de contenido:</strong> Haz clic directamente sobre cualquier texto con <span style="color: #ff6b6b; font-weight: 600;">borde rojo (campo obligatorio)</span> o <span style="color: #38a169; font-weight: 600;">borde verde (campo opcional)</span> 
+            y escribe tu contenido personalizado. Todos los campos con borde son <strong>modificables</strong>.
         </li>
         <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
             <strong>2. Barra de herramientas:</strong> Selecciona un fragmento de texto dentro de un campo modificable 
@@ -205,86 +209,396 @@
 </p>
 </details>
     </div>
+<!-- ========================================== -->
+<!-- ÍNDICE AUTOMÁTICO DE PLANTILLAS           -->
+<!-- ========================================== -->
+<div id="indice-plantillas" style="
+    background: rgba(15, 23, 42, 0.85);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 16px 0 24px 0;
+    border: 1px solid #334155;
+">
+    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap;">
+        <span style="font-size: 1.5rem;">📑</span>
+        <h4 style="margin: 0; color: #f8fafc; font-weight: 700; font-size: 1.05rem; font-family: 'Inter', system-ui, sans-serif;">
+            Índice de Plantillas Disponibles
+        </h4>
+        <span style="font-size: 0.7rem; color: #94a3b8; background: #1e293b; padding: 2px 10px; border-radius: 12px;" id="contador-plantillas">0 plantillas</span>
+        <span style="font-size: 0.65rem; color: #64748b; margin-left: auto;" id="fecha-actualizacion">📅 --</span>
+    </div>
+    
+    <!-- ========== BUSCADOR ========== -->
+    <div style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px; background: #0f172a; border-radius: 8px; padding: 4px 12px; border: 1px solid #334155;">
+        <span style="font-size: 1rem;">🔍</span>
+        <input type="text" id="buscador-plantillas" placeholder="Buscar plantilla..." style="
+            background: transparent;
+            border: none;
+            color: #e2e8f0;
+            padding: 8px 4px;
+            font-size: 0.85rem;
+            font-family: 'Inter', system-ui, sans-serif;
+            outline: none;
+            width: 100%;
+        ">
+        <span id="resultados-busqueda" style="font-size: 0.7rem; color: #64748b; white-space: nowrap;">0 resultados</span>
+    </div>
+    
+    <div id="lista-plantillas" style="
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        min-height: 40px;
+    ">
+        <!-- Los botones se generan automáticamente con JavaScript -->
+    </div>
+    
+    <div style="margin-top: 12px; font-size: 0.65rem; color: #64748b; border-top: 1px solid #1e293b; padding-top: 10px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
+        <span>💡 Haz clic en cualquier plantilla para ir a ella y <strong style="color: #00e5ff;">abrirla (las demás se cerrarán)</strong></span>
+        <span style="color: #475569;" id="estado-plantillas">● Todas cerradas</span>
+    </div>
+</div>
 
+<script>
+(function() {
+    // ========== VARIABLES GLOBALES ==========
+    let mapaPlantillas = new Map();
+    
+    // ========== GENERAR ÍNDICE ==========
+    function generarIndicePlantillas() {
+        const lista = document.getElementById('lista-plantillas');
+        const contador = document.getElementById('contador-plantillas');
+        const fechaSpan = document.getElementById('fecha-actualizacion');
+        
+        if (!lista) return;
+        
+        // Obtener todas las plantillas
+        const plantillas = document.querySelectorAll('.grouvex-card');
+        const totalPlantillas = plantillas.length;
+        
+        if (totalPlantillas === 0) {
+            lista.innerHTML = `<span style="color: #94a3b8; font-size: 0.85rem; padding: 8px 0;">⚠️ No se encontraron plantillas disponibles.</span>`;
+            return;
+        }
+        
+        // Actualizar contador
+        if (contador) {
+            contador.textContent = `${totalPlantillas} plantilla${totalPlantillas !== 1 ? 's' : ''}`;
+        }
+        
+        // Actualizar fecha
+        if (fechaSpan) {
+            const ahora = new Date();
+            const opciones = { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+            fechaSpan.textContent = `📅 ${ahora.toLocaleDateString('es-ES', opciones)}`;
+        }
+        
+        // Limpiar lista y mapa
+        lista.innerHTML = '';
+        mapaPlantillas = new Map();
+        
+        // Procesar cada plantilla
+        plantillas.forEach((plantilla, index) => {
+            // Asignar ID único si no tiene
+            if (!plantilla.id) {
+                plantilla.id = `grouvex-card-${Date.now()}-${index}`;
+            }
+            
+            // Guardar referencia en el mapa
+            mapaPlantillas.set(plantilla.id, plantilla);
+            
+            // Obtener información del summary
+            const summary = plantilla.querySelector('summary');
+            let titulo = '';
+            let badge = '';
+            
+            if (summary) {
+                const titleSpan = summary.querySelector('.summary-title');
+                if (titleSpan) {
+                    titulo = titleSpan.textContent.trim();
+                } else {
+                    titulo = summary.textContent.trim();
+                    const badgeElement = summary.querySelector('.summary-badge');
+                    if (badgeElement) {
+                        titulo = titulo.replace(badgeElement.textContent, '').trim();
+                    }
+                }
+                
+                const badgeElement = summary.querySelector('.summary-badge');
+                if (badgeElement) {
+                    badge = badgeElement.textContent.trim();
+                }
+            }
+            
+            if (!titulo) {
+                titulo = `Plantilla ${index + 1}`;
+            }
+            
+            // Verificar si está abierta actualmente
+            const estaAbierta = plantilla.hasAttribute('open');
+            
+            // Crear botón
+            const boton = document.createElement('button');
+            boton.setAttribute('type', 'button');
+            boton.setAttribute('data-target', plantilla.id);
+            boton.className = 'btn-indice-plantilla';
+            boton.setAttribute('data-titulo', titulo.toLowerCase());
+            
+            boton.innerHTML = `
+                <span class="titulo-boton">${titulo}</span>
+                ${badge ? `<span style="font-size: 0.55rem; background: #0f172a; color: #94a3b8; padding: 1px 8px; border-radius: 10px; border: 1px solid #334155;">${badge}</span>` : ''}
+                <span class="indicador-estado" style="font-size: 0.5rem; margin-left: 2px; color: ${estaAbierta ? '#00e5ff' : '#475569'};">${estaAbierta ? '▾' : '▸'}</span>
+            `;
+            
+            boton.style.cssText = `
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 14px;
+                background: ${estaAbierta ? '#2d3748' : '#1e293b'};
+                color: ${estaAbierta ? '#ffffff' : '#e2e8f0'};
+                border-radius: 20px;
+                font-size: 0.8rem;
+                font-weight: 500;
+                font-family: 'Inter', system-ui, sans-serif;
+                border: 1px solid ${estaAbierta ? '#00e5ff' : '#334155'};
+                cursor: pointer;
+                box-shadow: ${estaAbierta ? '0 0 20px rgba(0,229,255,0.1)' : 'none'};
+                transition: all 0.2s ease;
+                user-select: none;
+                outline: none;
+                -webkit-tap-highlight-color: transparent;
+            `;
+            
+            // ========== EVENTO CLICK DEL BOTÓN ==========
+            boton.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const targetId = this.getAttribute('data-target');
+                const target = mapaPlantillas.get(targetId);
+                
+                if (!target) return;
+                
+                const estaAbierta = target.hasAttribute('open');
+                
+                // Cerrar TODAS las plantillas
+                document.querySelectorAll('.grouvex-card').forEach(el => {
+                    el.removeAttribute('open');
+                });
+                
+                // Si NO estaba abierta, la abrimos
+                if (!estaAbierta) {
+                    target.setAttribute('open', '');
+                }
+                
+                // Scroll a la plantilla
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                
+                // Efecto visual
+                target.style.transition = 'box-shadow 0.4s ease, border-color 0.4s ease';
+                target.style.boxShadow = '0 0 0 3px #00e5ff, 0 8px 24px rgba(0,229,255,0.25)';
+                target.style.borderColor = '#00e5ff';
+                setTimeout(() => {
+                    target.style.boxShadow = '0 8px 16px rgba(0,0,0,0.06)';
+                    target.style.borderColor = '#e2e8f0';
+                }, 1500);
+                
+                actualizarEstado();
+            });
+            
+            // Hover effects
+            boton.addEventListener('mouseenter', function() {
+                this.style.background = '#2d3748';
+                this.style.borderColor = '#00e5ff';
+                this.style.color = '#ffffff';
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 4px 16px rgba(0,229,255,0.15)';
+            });
+            
+            boton.addEventListener('mouseleave', function() {
+                const targetId = this.getAttribute('data-target');
+                const target = mapaPlantillas.get(targetId);
+                const isOpen = target && target.hasAttribute('open');
+                this.style.background = isOpen ? '#2d3748' : '#1e293b';
+                this.style.borderColor = isOpen ? '#00e5ff' : '#334155';
+                this.style.color = isOpen ? '#ffffff' : '#e2e8f0';
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = isOpen ? '0 0 20px rgba(0,229,255,0.1)' : 'none';
+            });
+            
+            lista.appendChild(boton);
+        });
+        
+        actualizarEstado();
+        configurarBuscador();
+    }
+    
+    // ========== BUSCADOR ==========
+    function configurarBuscador() {
+        const input = document.getElementById('buscador-plantillas');
+        const resultados = document.getElementById('resultados-busqueda');
+        const botones = document.querySelectorAll('.btn-indice-plantilla');
+        
+        if (!input) return;
+        
+        input.addEventListener('input', function() {
+            const busqueda = this.value.toLowerCase().trim();
+            let encontrados = 0;
+            
+            botones.forEach(boton => {
+                const titulo = boton.getAttribute('data-titulo') || '';
+                const textoCompleto = titulo + ' ' + boton.textContent.toLowerCase();
+                
+                if (busqueda === '' || textoCompleto.includes(busqueda)) {
+                    boton.style.display = 'inline-flex';
+                    encontrados++;
+                } else {
+                    boton.style.display = 'none';
+                }
+            });
+            
+            if (resultados) {
+                resultados.textContent = `${encontrados} resultado${encontrados !== 1 ? 's' : ''}`;
+            }
+        });
+    }
+    
+    // ========== ACTUALIZAR ESTADO ==========
+    function actualizarEstado() {
+        const estadoSpan = document.getElementById('estado-plantillas');
+        const abiertas = document.querySelectorAll('.grouvex-card[open]');
+        
+        if (estadoSpan) {
+            if (abiertas.length === 0) {
+                estadoSpan.textContent = '● Todas cerradas';
+                estadoSpan.style.color = '#64748b';
+            } else {
+                estadoSpan.textContent = `● ${abiertas.length} abierta${abiertas.length !== 1 ? 's' : ''}`;
+                estadoSpan.style.color = '#00e5ff';
+            }
+        }
+        
+        // Actualizar indicadores de los botones
+        document.querySelectorAll('.btn-indice-plantilla').forEach(btn => {
+            const targetId = btn.getAttribute('data-target');
+            const target = mapaPlantillas.get(targetId);
+            const isOpen = target && target.hasAttribute('open');
+            
+            const indicador = btn.querySelector('.indicador-estado');
+            if (indicador) {
+                indicador.textContent = isOpen ? '▾' : '▸';
+                indicador.style.color = isOpen ? '#00e5ff' : '#475569';
+            }
+            
+            btn.style.background = isOpen ? '#2d3748' : '#1e293b';
+            btn.style.borderColor = isOpen ? '#00e5ff' : '#334155';
+            btn.style.color = isOpen ? '#ffffff' : '#e2e8f0';
+            btn.style.boxShadow = isOpen ? '0 0 20px rgba(0,229,255,0.1)' : 'none';
+        });
+    }
+    
+    // ========== INICIALIZACIÓN ==========
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(generarIndicePlantillas, 400);
+        });
+    } else {
+        setTimeout(generarIndicePlantillas, 400);
+    }
+    
+    // Escuchar clics en summaries nativos para actualizar estado
+    document.addEventListener('click', function(e) {
+        const summary = e.target.closest('.grouvex-card summary');
+        if (summary) {
+            setTimeout(actualizarEstado, 250);
+        }
+    });
+})();
+</script>
     <!-- ========================================== -->
-    <!-- PLANTILLA 1: COTIZACIÓN COMERCIAL          -->
+    <!-- PLANTILLA 1: CONTRATO DE ADHESIÓN Y LICENCIA -->
     <!-- ========================================== -->
-    <details class="grouvex-card" open>
+    <details class="grouvex-card" id="grouvex-card-1">
       <summary>
-        <span class="summary-title">📄 Plantilla 1: Cotización Comercial</span>
-        <span class="summary-badge">Vista Previa Real A4 (PDF Ready)</span>
+        <span class="summary-title">CONTRATO DE ADHESIÓN Y LICENCIA DE DISTRIBUCIÓN FONOGRÁFICA</span>
+        <span class="summary-badge">Centro de GSRecords</span>
       </summary>
 
       <!-- Barra de herramientas -->
-      <div class="grouvex-toolbar" data-target="template-1">
-        <div class="toolbar-group">
-          <label>Fuente: 
-            <input type="text" list="fuentes-disponibles" placeholder="Ej. Arial" style="width: 90px;" onchange="aplicarEstiloInline('template-1', 'fontFamily', this.value)">
-            <datalist id="fuentes-disponibles">
-              <option value="Arial">
-              <option value="Courier New">
-              <option value="Georgia">
-              <option value="Segoe UI">
-              <option value="Times New Roman">
-              <option value="Verdana">
-            </datalist>
-          </label>
-        </div>
+<!-- Barra de herramientas -->
+<div class="grouvex-toolbar" data-target="template-1">
+  <div class="toolbar-group">
+    <label>Fuente: 
+      <select onchange="aplicarEstiloInline('template-1', 'fontName', this.value)">
+        <option value="Arial">Arial</option>
+        <option value="'Courier New', monospace">Courier New</option>
+        <option value="Georgia">Georgia</option>
+        <option value="'Segoe UI', sans-serif">Segoe UI</option>
+        <option value="'Times New Roman', serif">Times New Roman</option>
+        <option value="Verdana">Verdana</option>
+      </select>
+    </label>
+  </div>
 
-        <div class="toolbar-group">
-          <label>Tamaño: 
-            <input type="number" value="15" min="8" max="72" style="width: 50px;" oninput="aplicarEstiloInline('template-1', 'fontSize', this.value + 'px')"> px
-          </label>
-        </div>
+  <div class="toolbar-divider"></div>
 
-        <div class="toolbar-divider"></div>
+  <div class="toolbar-group" style="display: flex; gap: 2px;">
+    <button type="button" onclick="toggleEstiloInline('template-1', 'bold')" title="Negrita"><b>B</b></button>
+    <button type="button" onclick="toggleEstiloInline('template-1', 'italic')" title="Cursiva"><i>I</i></button>
+    <button type="button" onclick="toggleEstiloInline('template-1', 'underline')" title="Subrayado"><u>U</u></button>
+  </div>
 
-        <div class="toolbar-group">
-          <button type="button" onclick="toggleEstiloInline('template-1', 'fontWeight', 'bold', 'normal')" title="Negrita"><b>B</b></button>
-          <button type="button" onclick="toggleEstiloInline('template-1', 'fontStyle', 'italic', 'normal')" title="Cursiva"><i>I</i></button>
-          <button type="button" onclick="toggleEstiloInline('template-1', 'textDecoration', 'underline', 'none')" title="Subrayado"><u>U</u></button>
-        </div>
+  <div class="toolbar-divider"></div>
 
-        <div class="toolbar-divider"></div>
+  <div class="toolbar-group">
+    <label title="Color de Texto">
+      <input type="color" value="#000000" style="width:28px;height:28px;padding:0;border:1px solid #cbd5e1;border-radius:4px;cursor:pointer;" 
+             onchange="aplicarEstiloInline('template-1', 'foreColor', this.value)">
+    </label>
+    <label title="Color de Fondo">
+      <input type="color" value="#ffffff" style="width:28px;height:28px;padding:0;border:1px solid #cbd5e1;border-radius:4px;cursor:pointer;" 
+             onchange="aplicarEstiloInline('template-1', 'hiliteColor', this.value)">
+    </label>
+  </div>
 
-        <div class="toolbar-group">
-          <label title="Color de Texto">Texto: <input type="color" onchange="aplicarEstiloInline('template-1', 'color', this.value)"></label>
-          <label title="Color de Fondo">Fondo: <input type="color" onchange="aplicarEstiloInline('template-1', 'backgroundColor', this.value)"></label>
-        </div>
+  <div class="toolbar-divider"></div>
 
-        <div class="toolbar-divider"></div>
+  <div class="toolbar-group" style="display: flex; gap: 2px;">
+    <button type="button" onclick="insertarEnlaceInline('template-1')" title="Insertar Enlace">🔗</button>
+    <button type="button" onclick="insertarImagenInline('template-1')" title="Insertar Imagen">🖼️</button>
+    <button type="button" onclick="limpiarEstilosInline('template-1')" title="Limpiar Formato">🧹</button>
+  </div>
 
-        <div class="toolbar-group">
-          <button type="button" onclick="insertarEnlaceInline('template-1')" title="Insertar Enlace">🔗 Enlace</button>
-          <button type="button" onclick="insertarImagenInline('template-1')" title="Insertar Imagen por URL">🖼️ Imagen</button>
-          <button type="button" onclick="limpiarEstilosInline('template-1')" title="Limpiar Formato">🧹 Limpiar</button>
-        </div>
+  <div class="toolbar-divider"></div>
 
-        <div class="toolbar-divider"></div>
+  <div class="toolbar-group">
+    <label class="toggle-time-label">
+      <input type="checkbox" id="toggle-time-template-1" onchange="toggleModuloFecha('template-1', this.checked)"> Fecha
+    </label>
+  </div>
 
-        <div class="toolbar-group">
-          <label class="toggle-time-label">
-            <input type="checkbox" id="toggle-time-template-1" onchange="toggleModuloFecha('template-1', this.checked)"> Fecha UTC
-          </label>
-        </div>
+  <div class="toolbar-divider"></div>
 
-        <div class="toolbar-divider"></div>
+  <div class="toolbar-group">
+    <label class="toggle-time-label">
+      <input type="checkbox" id="toggle-pages-template-1" checked onchange="toggleNumeracionPaginas('template-1', this.checked)"> Pág.
+    </label>
+  </div>
 
-        <div class="toolbar-group">
-          <label class="toggle-time-label">
-            <input type="checkbox" id="toggle-pages-template-1" checked onchange="toggleNumeracionPaginas('template-1', this.checked)"> Numeración
-          </label>
-        </div>
+  <div class="toolbar-divider"></div>
 
-        <div class="toolbar-divider"></div>
-
-        <div class="toolbar-group">
-          <button type="button" class="btn-actualizar" onclick="gestionarPaginacion('template-1')">
-            🔄 ACTUALIZAR PÁGINAS
-          </button>
-        </div>
-      </div>
-
+  <div class="toolbar-group">
+    <button type="button" class="btn-actualizar" onclick="gestionarPaginacion('template-1')">
+      🔄 ACTUALIZAR
+    </button>
+  </div>
+</div>
+      <span style="color: #ff6b6b; font-weight: 600;">Borde ROJO (campo obligatorio)</span> y <span style="color: #38a169; font-weight: 600;">Borde VERDE (campo opcional)</span>
+      <hr>
       <!-- Contenedor del Documento -->
       <div class="template-document" id="template-1">
         <!-- PÁGINA 1 -->
@@ -292,25 +606,56 @@
           <div class="doc-header">
             <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png" alt="Logo Grouvex" class="doc-logo">
             <div class="doc-meta">
-              <h3>GROUVEX CORP</h3>
-              <span>Cotización Oficial</span>
+              <h3>GROUVEX STUDIOS RECORDS</h3>
+              <span>CONTRATO DE ADHESIÓN Y LICENCIA DE DISTRIBUCIÓN FONOGRÁFICA</span>
             </div>
           </div>
 
           <div class="doc-body" id="body-template-1">
-            <p>Estimado/a <span class="modificable" contenteditable="true">Cliente Ejemplar S.A.</span>,</p>
-            <p>Por medio de la presente, ponemos a su disposición la cotización de servicios por un monto de <span class="modificable highlight-price" contenteditable="true">$1,500.00 USD</span>.</p>
-            <p>Detalles del proyecto y alcance comercial: <span class="modificable" contenteditable="true">Escribe texto de forma fluida. El ancho está estrictamente limitado a las medidas físicas de una hoja A4 (210mm x 297mm).</span></p>
-            <p>Fecha límite de validez: <span class="modificable" contenteditable="true">31 de Diciembre, 2026</span>.</p>
-            <p><span class="modificable" contenteditable="true">Escribe todo el texto que necesites. Cuando termines, haz clic en "Actualizar Páginas" para ver cómo se distribuye en varias hojas A4.</span></p>
-            <p><span class="modificable" contenteditable="true">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></p>
-            <p><span class="modificable" contenteditable="true">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</span></p>
+            <!-- Cada párrafo es un elemento separado para permitir paginación -->
+            <p><strong>OFICIAL DE GROUVEX STUDIOS RECORDS REFERENCIA</strong>: BOGS/2025/002 / ToS&PP-GSR</p>
+            <p>ID DE EXPEDIENTE: <span class="modificable" contenteditable="true" maxcaracteres="6" mincaracteres="5"></span></p>
+            
+            <p style="font-size:10px; font-weight:700;">1. DECLARACIONES Y COMPARECENCIA</p>
+            <p>De una parte, Grouvex Studios Records (GSRecords), en adelante EL SELLO.</p>
+            <p>De otra parte, el usuario identificado de forma unívoca mediante su Grouvex Studios UserID (GSUserID): <span class="modificable" contenteditable="true" maxcaracteres="16" mincaracteres="5">[INSERTAR GSUserID]</span>, en adelante EL ARTISTA.</p>
+            <p>Ambas partes reconocen que el GSUserID es personal e intransferible y actúa como el vínculo legal que asocia al Artista con su información de registro, proyectos y este contrato, conforme a lo establecido en el Reglamento de Documentación Corporativa.</p>
+            
+            <p style="font-size:10px; font-weight:700;">2. OBJETO DEL ACUERDO</p>
+            <p>EL ARTISTA acepta formalmente la oferta de servicios discográficos de GSRecords para la producción, distribución y promoción de sus obras musicales. Este acuerdo marco regula todos los proyectos (Singles, EPs o Álbumes) que el Artista cree bajo el amparo del Sello.</p>
+            
+            <p style="font-size:10px; font-weight:700;">3. CONDICIONES ESPECÍFICAS (PLAN GRATIS)</p>
+            <p>Según el Artículo 4 del Capítulo III (BOGS/2025/002), este contrato se acoge al "Plan Gratis":</p>
+            <p><strong>Comisión de Gestión:</strong> El Sello retiene el 15%. EL ARTISTA percibe el 85% de las regalías netas.</p>
+            <p><strong>Propiedad Intelectual:</strong> En esta modalidad, el Copyright y Sound Copyright (℗) de las grabaciones pertenecen a Grouvex Studios Records. EL ARTISTA retiene los derechos de autor sobre las composiciones (letras/melodías).</p>
+            <p><strong>Distribución Técnica:</strong> Se utilizarán las plataformas de gestión de RouteNote (ID de cuenta artística de GSRecords: 2692381). El pago se realizará vía PayPal.</p>
+            
+            <p style="font-size:10px; font-weight:700;">4. DERECHOS Y COMPROMISOS (DDOO.ToS&PP)</p>
+            <p style="font-size:10px; font-weight:700;">A. Derechos del Artista:</p>
+            <p><strong>Derechos Morales:</strong> Reconocimiento de autoría y respeto a la integridad de la obra (Art. 14 y 15 LPI).</p>
+            <p><strong>Transparencia:</strong> Rendición de cuentas y acceso a información verificable de explotación (Art. 51 LPI).</p>
+            <p><strong>Derechos ARCO:</strong> Gestión de datos personales (Acceso, Rectificación, Cancelación y Oposición) mediante <a href="mailto:legal@grouvex.com">legal@grouvex.com</a>.</p>
+            
+            <p style="font-size:10px; font-weight:700;">B. Compromisos del Artista:</p>
+            <p><strong>Garantía de Originalidad:</strong> El Artista garantiza que las obras no infringen derechos de terceros (samples, propiedad intelectual ajena).</p>
+            <p><strong>Plazos de Entrega:</strong> Los masters y arte gráfico deben entregarse con una antelación mínima de 2 semanas y 5 días antes del lanzamiento.</p>
+            <p><strong>Antelación de Venta:</strong> Para tramitación de códigos UPC/ISRC, se requiere una ventana de 4 semanas.</p>
+            
+            <p style="font-size:10px; font-weight:700;">5. FACULTADES DEL SELLO</p>
+            <p>GSRecords se reserva el derecho de gestión operativa y control de calidad, pudiendo rechazar contenido que no cumpla los estándares técnicos o legales. Asimismo, el Sello ejercerá la defensa de los intereses de las obras ante terceros.</p>
+            
+            <p style="font-size:10px; font-weight:700;">6. VARIACIÓN DE NORMATIVA Y DISPUTAS</p>
+            <p><strong>Variabilidad:</strong> Las condiciones de este contrato pueden variar según las actualizaciones del Boletín Oficial. Los cambios se notificarán con 2 semanas de antelación en la web oficial y 3 días por contacto directo para cambios críticos.</p>
+            <p><strong>Resolución de Disputas:</strong> Cualquier conflicto se resolverá inicialmente mediante Mediación, conforme a lo aceptado en el formulario de solicitud de contrato.</p>
+            
+            <p style="font-size:10px; font-weight:700;">7. ACEPTACIÓN Y CIERRE</p>
+            <p>La aprobación de este contrato mediante el GSUserID implica la plena aceptación de los Términos de Servicio y la Política de Privacidad de Grouvex Studios.</p>
           </div>
 
           <div class="doc-footer">
             <div class="footer-left">
               <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png" alt="Logo Footer" class="footer-logo">
-              <span class="modificable footer-text" contenteditable="true">Documento Confidencial - Grouvex Corp</span>
+              <span class="modificable footer-text" contenteditable="true" maxcaracteres="10" mincaracteres="1"> Confidencial - Grouvex Corp</span>
             </div>
             <div class="footer-right">
               <span class="doc-time-container" id="time-container-template-1" style="display: none;">
@@ -338,11 +683,10 @@
       <div class="card-footer">
           <div class="filename-container">
               <label for="name-template-1">Nombre del PDF:</label>
-              <input type="text" id="name-template-1" value="Cotizacion_Grouvex" placeholder="Escribe el nombre...">
+              <input type="text" id="name-template-1" value="Contrato_Grouvex" placeholder="Escribe el nombre...">
               <span>.pdf</span>
           </div>
           
-          <!-- NUEVOS BOTONES JSON -->
           <div style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
               <button class="btn-json" onclick="exportarJSONConNombre('template-1', 'name-template-1')" 
                       style="background: #2d3748; color: white; border: none; border-radius: 6px; padding: 7px 14px; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: background 0.2s;">
@@ -363,62 +707,61 @@
     <!-- ========================================== -->
     <!-- PLANTILLA 2: INFORME EJECUTIVO             -->
     <!-- ========================================== -->
-    <details class="grouvex-card">
+    <details class="grouvex-card" id="grouvex-card-2">
       <summary>
         <span class="summary-title">📊 Plantilla 2: Informe Ejecutivo</span>
         <span class="summary-badge">Vista Previa Real A4 (PDF Ready)</span>
       </summary>
 
-      <!-- Barra de herramientas -->
+      <!-- Barra de herramientas SIMPLIFICADA -->
       <div class="grouvex-toolbar" data-target="template-2">
         <div class="toolbar-group">
           <label>Fuente: 
-            <input type="text" list="fuentes-disponibles-2" placeholder="Ej. Arial" style="width: 90px;" onchange="aplicarEstiloInline('template-2', 'fontFamily', this.value)">
-            <datalist id="fuentes-disponibles-2">
-              <option value="Arial">
-              <option value="Courier New">
-              <option value="Georgia">
-              <option value="Segoe UI">
-              <option value="Times New Roman">
-              <option value="Verdana">
-            </datalist>
-          </label>
-        </div>
-
-        <div class="toolbar-group">
-          <label>Tamaño: 
-            <input type="number" value="15" min="8" max="72" style="width: 50px;" oninput="aplicarEstiloInline('template-2', 'fontSize', this.value + 'px')"> px
+            <select onchange="aplicarEstiloInline('template-2', 'fontName', this.value)">
+              <option value="Arial">Arial</option>
+              <option value="'Courier New', monospace">Courier New</option>
+              <option value="Georgia">Georgia</option>
+              <option value="'Segoe UI', sans-serif">Segoe UI</option>
+              <option value="'Times New Roman', serif">Times New Roman</option>
+              <option value="Verdana">Verdana</option>
+            </select>
           </label>
         </div>
 
         <div class="toolbar-divider"></div>
 
-        <div class="toolbar-group">
-          <button type="button" onclick="toggleEstiloInline('template-2', 'fontWeight', 'bold', 'normal')" title="Negrita"><b>B</b></button>
-          <button type="button" onclick="toggleEstiloInline('template-2', 'fontStyle', 'italic', 'normal')" title="Cursiva"><i>I</i></button>
-          <button type="button" onclick="toggleEstiloInline('template-2', 'textDecoration', 'underline', 'none')" title="Subrayado"><u>U</u></button>
+        <div class="toolbar-group" style="display: flex; gap: 2px;">
+          <button type="button" onclick="toggleEstiloInline('template-2', 'bold')" title="Negrita"><b>B</b></button>
+          <button type="button" onclick="toggleEstiloInline('template-2', 'italic')" title="Cursiva"><i>I</i></button>
+          <button type="button" onclick="toggleEstiloInline('template-2', 'underline')" title="Subrayado"><u>U</u></button>
         </div>
 
         <div class="toolbar-divider"></div>
 
         <div class="toolbar-group">
-          <label title="Color de Texto">Texto: <input type="color" onchange="aplicarEstiloInline('template-2', 'color', this.value)"></label>
-          <label title="Color de Fondo">Fondo: <input type="color" onchange="aplicarEstiloInline('template-2', 'backgroundColor', this.value)"></label>
+          <label title="Color de Texto">
+            <input type="color" value="#000000" style="width:28px;height:28px;padding:0;border:1px solid #cbd5e1;border-radius:4px;cursor:pointer;" 
+                  onchange="aplicarEstiloInline('template-2', 'foreColor', this.value)">
+          </label>
+          <label title="Color de Fondo">
+            <input type="color" value="#ffffff" style="width:28px;height:28px;padding:0;border:1px solid #cbd5e1;border-radius:4px;cursor:pointer;" 
+                  onchange="aplicarEstiloInline('template-2', 'hiliteColor', this.value)">
+          </label>
         </div>
 
         <div class="toolbar-divider"></div>
 
-        <div class="toolbar-group">
-          <button type="button" onclick="insertarEnlaceInline('template-2')" title="Insertar Enlace">🔗 Enlace</button>
-          <button type="button" onclick="insertarImagenInline('template-2')" title="Insertar Imagen por URL">🖼️ Imagen</button>
-          <button type="button" onclick="limpiarEstilosInline('template-2')" title="Limpiar Formato">🧹 Limpiar</button>
+        <div class="toolbar-group" style="display: flex; gap: 2px;">
+          <button type="button" onclick="insertarEnlaceInline('template-2')" title="Insertar Enlace">🔗</button>
+          <button type="button" onclick="insertarImagenInline('template-2')" title="Insertar Imagen">🖼️</button>
+          <button type="button" onclick="limpiarEstilosInline('template-2')" title="Limpiar Formato">🧹</button>
         </div>
 
         <div class="toolbar-divider"></div>
 
         <div class="toolbar-group">
           <label class="toggle-time-label">
-            <input type="checkbox" id="toggle-time-template-2" onchange="toggleModuloFecha('template-2', this.checked)"> Fecha UTC
+            <input type="checkbox" id="toggle-time-template-2" onchange="toggleModuloFecha('template-2', this.checked)"> Fecha
           </label>
         </div>
 
@@ -426,7 +769,7 @@
 
         <div class="toolbar-group">
           <label class="toggle-time-label">
-            <input type="checkbox" id="toggle-pages-template-2" checked onchange="toggleNumeracionPaginas('template-2', this.checked)"> Numeración
+            <input type="checkbox" id="toggle-pages-template-2" checked onchange="toggleNumeracionPaginas('template-2', this.checked)"> Pág.
           </label>
         </div>
 
@@ -434,11 +777,12 @@
 
         <div class="toolbar-group">
           <button type="button" class="btn-actualizar" onclick="gestionarPaginacion('template-2')">
-            🔄 ACTUALIZAR PÁGINAS
+            🔄 ACTUALIZAR
           </button>
         </div>
       </div>
-
+      <span style="color: #ff6b6b; font-weight: 600;">Borde ROJO (campo obligatorio)</span> y <span style="color: #38a169; font-weight: 600;">Borde VERDE (campo opcional)</span>
+      <hr>
       <!-- Contenedor del Documento -->
       <div class="template-document" id="template-2">
         <!-- PÁGINA 1 -->
@@ -459,7 +803,7 @@
           <div class="doc-footer">
             <div class="footer-left">
               <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png" alt="Logo Footer" class="footer-logo">
-              <span class="modificable footer-text" contenteditable="true">Documento Confidencial - Grouvex Corp</span>
+              <span class="modificable footer-text" contenteditable="true" maxcaracteres="50" mincaracteres="5">Documento Confidencial - Grouvex Corp</span>
             </div>
             <div class="footer-right">
               <span class="doc-time-container" id="time-container-template-2" style="display: none;">
@@ -671,7 +1015,7 @@
   }
   .modificable img { max-width: 100%; height: auto; vertical-align: middle; margin: 0 3px; border-radius: 4px; }
   .modificable a { color: #2b6cb0; text-decoration: underline; word-break: break-all; }
-  .highlight-price { color: #2f855a; background-color: #f0fff4; border-bottom-color: #38a169; font-weight: 600; }
+  .modificable-opcional {border-color: #38a169; font-weight: 600; }
 
   .doc-footer {
     display: flex;
@@ -1011,70 +1355,716 @@
     }
   }
 </style>
-
 <!-- ========================================== -->
-<!-- SCRIPT JS COMPLETO                        -->
+<!-- SCRIPT JS - DIVISIÓN SIMPLE v10 FINAL     -->
 <!-- ========================================== -->
 <script>
-// ========== ACTUALIZAR AÑO AUTOMÁTICAMENTE ==========
-function actualizarAnioLegal() {
-  const anioActual = new Date().getFullYear();
-  document.querySelectorAll('.year-actual').forEach(el => {
-    el.textContent = anioActual;
-  });
+// ========== CONFIGURACIÓN GLOBAL ==========
+const CONFIG = {
+  TIEMPO_ESPERA: 5000,
+  ALTURA_HEADER_MIN: 60,
+  ALTURA_FOOTER_MIN: 75,
+  PADDING_PAGINA: 18 * 3.78,
+  MARGEN_SEGURIDAD: 15
+};
+
+// ========== TOOLTIP FLOTANTE ==========
+let tooltipContador = null;
+let tooltipTimeout = null;
+
+function crearTooltipContador() {
+  if (tooltipContador) return tooltipContador;
+  
+  tooltipContador = document.createElement('div');
+  tooltipContador.className = 'tooltip-contador';
+  tooltipContador.style.cssText = `
+    position: fixed;
+    bottom: auto;
+    right: auto;
+    font-size: 9px;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: rgba(255, 255, 255, 0.97);
+    padding: 2px 10px;
+    border-radius: 6px;
+    pointer-events: none;
+    z-index: 99999;
+    white-space: nowrap;
+    letter-spacing: 0.2px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    line-height: 1.6;
+    font-weight: 500;
+    transition: all 0.15s ease;
+    opacity: 0;
+    transform: translateY(4px);
+    backdrop-filter: blur(8px);
+    display: none;
+  `;
+  
+  if (!document.getElementById('tooltip-contador-styles')) {
+    const styleAnim = document.createElement('style');
+    styleAnim.id = 'tooltip-contador-styles';
+    styleAnim.textContent = `
+      @keyframes pulse-tooltip {
+        from { opacity: 0.7; transform: translateY(4px) scale(0.98); }
+        to { opacity: 1; transform: translateY(0) scale(1.02); }
+      }
+      .tooltip-contador.visible {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+        display: block !important;
+      }
+      .tooltip-contador.pulsing {
+        animation: pulse-tooltip 0.8s ease-in-out infinite alternate;
+      }
+    `;
+    document.head.appendChild(styleAnim);
+  }
+  
+  document.body.appendChild(tooltipContador);
+  return tooltipContador;
 }
 
-// ========== FUNCIONES DE ESTILO INLINE ==========
-function obtenerRangoValido(templateId) {
+function mostrarTooltip(elemento, texto, estilo) {
+  const tooltip = crearTooltipContador();
+  
+  const rect = elemento.getBoundingClientRect();
+  
+  let top = rect.bottom + 6;
+  let left = rect.right - 10;
+  
+  const tooltipWidth = Math.max(texto.length * 6, 60);
+  if (left + tooltipWidth > window.innerWidth - 10) {
+    left = rect.right - tooltipWidth - 10;
+  }
+  if (left < 10) left = 10;
+  if (top + 25 > window.innerHeight - 10) {
+    top = rect.top - 25;
+  }
+  
+  tooltip.style.top = top + 'px';
+  tooltip.style.left = left + 'px';
+  tooltip.textContent = texto;
+  tooltip.style.color = estilo.color;
+  tooltip.style.background = estilo.bg;
+  tooltip.style.borderColor = estilo.border;
+  
+  tooltip.className = 'tooltip-contador visible';
+  if (estilo.icon === '⚠️') {
+    tooltip.classList.add('pulsing');
+  } else {
+    tooltip.classList.remove('pulsing');
+  }
+  
+  if (tooltipTimeout) {
+    clearTimeout(tooltipTimeout);
+    tooltipTimeout = null;
+  }
+}
+
+function ocultarTooltip() {
+  if (tooltipContador) {
+    tooltipContador.className = 'tooltip-contador';
+    tooltipContador.style.display = 'none';
+  }
+  if (tooltipTimeout) {
+    clearTimeout(tooltipTimeout);
+    tooltipTimeout = null;
+  }
+}
+
+// ========== GUARDAR Y RESTAURAR POSICIÓN ==========
+function guardarPosicionScroll(contenedor) {
+  if (!contenedor) return;
+  try {
+    const scrollTop = contenedor.scrollTop;
+    const scrollLeft = contenedor.scrollLeft;
+    sessionStorage.setItem(`scroll_pos_${contenedor.id}`, JSON.stringify({
+      top: scrollTop,
+      left: scrollLeft,
+      timestamp: Date.now()
+    }));
+  } catch(e) {}
+}
+
+function restaurarPosicionScroll(contenedor) {
+  if (!contenedor) return;
+  try {
+    const data = sessionStorage.getItem(`scroll_pos_${contenedor.id}`);
+    if (data) {
+      const { top, left, timestamp } = JSON.parse(data);
+      if (Date.now() - timestamp < 10000) {
+        setTimeout(() => {
+          contenedor.scrollTop = top;
+          contenedor.scrollLeft = left;
+        }, 100);
+      }
+    }
+  } catch(e) {}
+}
+
+// ========== GUARDAR ELEMENTO EN EDICIÓN ==========
+function guardarElementoEnEdicion(elemento) {
+  if (!elemento) return;
+  try {
+    const id = elemento.closest('.template-document')?.id;
+    if (id) {
+      const data = {
+        elementId: elemento.id || '',
+        elementClass: elemento.className,
+        textContent: elemento.textContent?.substring(0, 50) || '',
+        templateId: id,
+        timestamp: Date.now()
+      };
+      sessionStorage.setItem(`editando_en_${id}`, JSON.stringify(data));
+    }
+  } catch(e) {}
+}
+
+function restaurarElementoEnEdicion(contenedor) {
+  if (!contenedor) return;
+  try {
+    const id = contenedor.id;
+    const data = sessionStorage.getItem(`editando_en_${id}`);
+    if (data) {
+      const { elementId, elementClass, textContent, timestamp } = JSON.parse(data);
+      if (Date.now() - timestamp < 10000) {
+        let elemento = null;
+        if (elementId) {
+          elemento = contenedor.querySelector(`#${elementId}`);
+        }
+        if (!elemento && elementClass) {
+          const modificables = contenedor.querySelectorAll(`.${elementClass}`);
+          for (let el of modificables) {
+            if (el.textContent?.includes(textContent?.substring(0, 20) || '')) {
+              elemento = el;
+              break;
+            }
+          }
+        }
+        if (elemento) {
+          setTimeout(() => {
+            elemento.focus();
+            const range = document.createRange();
+            const sel = window.getSelection();
+            if (elemento.firstChild) {
+              range.setStart(elemento.firstChild, elemento.textContent.length);
+            } else {
+              range.setStart(elemento, 0);
+            }
+            range.collapse(true);
+            sel.removeAllRanges();
+            sel.addRange(range);
+            elemento.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 200);
+        }
+      }
+    }
+  } catch(e) {}
+}
+
+// ========== FUNCIÓN PARA CALCULAR COLOR ==========
+function calcularColorTooltip(longitud, min, max) {
+  if (min === 0 && max !== null) {
+    const porcentaje = max > 0 ? (longitud / max) * 100 : 0;
+    if (porcentaje >= 100) return { color: '#e53e3e', bg: 'rgba(255, 245, 245, 0.97)', border: '#feb2b2', icon: '⚠️' };
+    if (porcentaje > 85) return { color: '#ed8936', bg: 'rgba(255, 255, 245, 0.97)', border: '#fbd38d', icon: '' };
+    if (porcentaje > 70) return { color: '#d69e2e', bg: 'rgba(255, 255, 245, 0.97)', border: '#ecc94b', icon: '' };
+    return { color: '#38a169', bg: 'rgba(240, 255, 244, 0.97)', border: '#9ae6b4', icon: '' };
+  }
+
+  if (min > 0 && max === null) {
+    if (longitud < min) {
+      const falta = min - longitud;
+      const porcentajeFalta = min > 0 ? (falta / min) * 100 : 0;
+      if (porcentajeFalta > 70) return { color: '#e53e3e', bg: 'rgba(255, 245, 245, 0.97)', border: '#feb2b2', icon: '⚠️' };
+      if (porcentajeFalta > 40) return { color: '#ed8936', bg: 'rgba(255, 255, 245, 0.97)', border: '#fbd38d', icon: '⚠️' };
+      return { color: '#d69e2e', bg: 'rgba(255, 255, 245, 0.97)', border: '#ecc94b', icon: '⚠️' };
+    }
+    return { color: '#38a169', bg: 'rgba(240, 255, 244, 0.97)', border: '#9ae6b4', icon: '✅' };
+  }
+
+  if (min > 0 && max !== null) {
+    if (longitud < min) {
+      const falta = min - longitud;
+      const porcentajeFalta = min > 0 ? (falta / min) * 100 : 0;
+      if (porcentajeFalta > 70) return { color: '#e53e3e', bg: 'rgba(255, 245, 245, 0.97)', border: '#feb2b2', icon: '⚠️' };
+      if (porcentajeFalta > 40) return { color: '#ed8936', bg: 'rgba(255, 255, 245, 0.97)', border: '#fbd38d', icon: '⚠️' };
+      return { color: '#d69e2e', bg: 'rgba(255, 255, 245, 0.97)', border: '#ecc94b', icon: '⚠️' };
+    }
+    
+    if (longitud > max) {
+      const exceso = longitud - max;
+      const porcentajeExceso = max > 0 ? (exceso / max) * 100 : 0;
+      if (porcentajeExceso > 70) return { color: '#e53e3e', bg: 'rgba(255, 245, 245, 0.97)', border: '#feb2b2', icon: '⚠️' };
+      if (porcentajeExceso > 40) return { color: '#ed8936', bg: 'rgba(255, 255, 245, 0.97)', border: '#fbd38d', icon: '⚠️' };
+      return { color: '#d69e2e', bg: 'rgba(255, 255, 245, 0.97)', border: '#ecc94b', icon: '⚠️' };
+    }
+    
+    const rango = max - min;
+    const posicion = longitud - min;
+    const porcentajeRango = rango > 0 ? (posicion / rango) * 100 : 50;
+    
+    if (porcentajeRango < 20) {
+      const p = porcentajeRango / 20;
+      const r = Math.round(229 - (229 - 56) * p);
+      const g = Math.round(62 - (62 - 161) * p);
+      const b = Math.round(62 - (62 - 161) * p);
+      return { color: `rgb(${r}, ${g}, ${b})`, bg: 'rgba(255, 255, 245, 0.97)', border: '#fbd38d', icon: '' };
+    } else if (porcentajeRango > 80) {
+      const p = (porcentajeRango - 80) / 20;
+      const r = Math.round(56 + (229 - 56) * p);
+      const g = Math.round(161 - (161 - 62) * p);
+      const b = Math.round(161 - (161 - 62) * p);
+      return { color: `rgb(${r}, ${g}, ${b})`, bg: 'rgba(255, 255, 245, 0.97)', border: '#fbd38d', icon: '' };
+    } else {
+      return { color: '#38a169', bg: 'rgba(240, 255, 244, 0.97)', border: '#9ae6b4', icon: '' };
+    }
+  }
+
+  return { color: '#94a3b8', bg: 'rgba(255, 255, 255, 0.97)', border: 'rgba(226, 232, 240, 0.6)', icon: '' };
+}
+
+// ========== OBTENER LONGITUD REAL ==========
+function obtenerLongitudReal(elemento) {
+  const html = elemento.innerHTML || '';
+  const texto = elemento.textContent || '';
+  let longitud = texto.length;
+  
+  const brMatches = html.match(/<br\s*\/?>/gi);
+  if (brMatches) {
+    longitud += brMatches.length;
+  }
+  
+  return longitud;
+}
+
+// ========== CONTADOR DE CARACTERES ==========
+function crearContadorCaracteres(elemento) {
+  const maxAttr = elemento.getAttribute('maxcaracteres');
+  const minAttr = elemento.getAttribute('mincaracteres');
+  
+  if (maxAttr === null && minAttr === null) {
+    if (elemento._contadorListeners) {
+      elemento.removeEventListener('focus', elemento._contadorListeners.focus);
+      elemento.removeEventListener('blur', elemento._contadorListeners.blur);
+      elemento.removeEventListener('click', elemento._contadorListeners.click);
+      elemento.removeEventListener('keyup', elemento._contadorListeners.keyup);
+      elemento.removeEventListener('input', elemento._contadorListeners.input);
+      elemento._contadorListeners = null;
+    }
+    return;
+  }
+
+  const max = maxAttr !== null ? parseInt(maxAttr, 10) : null;
+  const min = minAttr !== null ? parseInt(minAttr, 10) : 0;
+
+  function actualizarTooltip() {
+    const longitud = obtenerLongitudReal(elemento);
+    
+    let textoContador = '';
+    let estilo = { color: '#94a3b8', bg: 'rgba(255, 255, 255, 0.97)', border: 'rgba(226, 232, 240, 0.6)', icon: '' };
+
+    if (max !== null && min === 0) {
+      textoContador = `${longitud} <= ${max}`;
+      estilo = calcularColorTooltip(longitud, 0, max);
+    } else if (max === null && min > 0) {
+      textoContador = `${min} <= ${longitud}`;
+      estilo = calcularColorTooltip(longitud, min, null);
+    } else if (max !== null && min > 0) {
+      textoContador = `${min} <= ${longitud} <= ${max}`;
+      estilo = calcularColorTooltip(longitud, min, max);
+    }
+
+    const textoFinal = estilo.icon ? `${estilo.icon} ${textoContador}` : textoContador;
+    mostrarTooltip(elemento, textoFinal, estilo);
+  }
+
+  function ocultarTooltipElemento() {
+    ocultarTooltip();
+  }
+
+  if (elemento._contadorListeners) {
+    elemento.removeEventListener('focus', elemento._contadorListeners.focus);
+    elemento.removeEventListener('blur', elemento._contadorListeners.blur);
+    elemento.removeEventListener('click', elemento._contadorListeners.click);
+    elemento.removeEventListener('keyup', elemento._contadorListeners.keyup);
+    elemento.removeEventListener('input', elemento._contadorListeners.input);
+  }
+
+  const listeners = {
+    focus: function() {
+      setTimeout(actualizarTooltip, 50);
+    },
+    blur: function() {
+      setTimeout(ocultarTooltipElemento, 100);
+    },
+    click: function() {
+      setTimeout(actualizarTooltip, 50);
+    },
+    keyup: function(e) {
+      actualizarTooltip();
+    },
+    input: function() {
+      actualizarTooltip();
+    }
+  };
+
+  elemento._contadorListeners = listeners;
+
+  elemento.addEventListener('focus', listeners.focus);
+  elemento.addEventListener('blur', listeners.blur);
+  elemento.addEventListener('click', listeners.click);
+  elemento.addEventListener('keyup', listeners.keyup);
+  elemento.addEventListener('input', listeners.input);
+
+  if (document.activeElement === elemento) {
+    setTimeout(actualizarTooltip, 100);
+  }
+
+  elemento._actualizarTooltip = actualizarTooltip;
+}
+
+// ========== VALIDACIÓN Y CONTROL DE CARACTERES ==========
+function validarYControlarCaracteres(elemento) {
+  if (!elemento || !elemento.classList.contains('modificable')) return true;
+
+  const maxAttr = elemento.getAttribute('maxcaracteres');
+  const minAttr = elemento.getAttribute('mincaracteres');
+  
+  let texto = elemento.textContent || '';
+  let longitud = texto.length;
+  let esValido = true;
+
+  if (maxAttr !== null) {
+    const max = parseInt(maxAttr, 10);
+    if (!isNaN(max) && longitud > max) {
+      const textoRecortado = texto.substring(0, max);
+      elemento.textContent = textoRecortado;
+      
+      const seleccion = window.getSelection();
+      if (seleccion && seleccion.anchorNode === elemento) {
+        const rango = document.createRange();
+        if (elemento.firstChild) {
+          rango.setStart(elemento.firstChild, textoRecortado.length);
+        } else {
+          rango.setStart(elemento, 0);
+        }
+        rango.collapse(true);
+        seleccion.removeAllRanges();
+        seleccion.addRange(rango);
+      }
+      
+      longitud = textoRecortado.length;
+      esValido = true;
+    }
+  }
+
+  if (minAttr !== null) {
+    const min = parseInt(minAttr, 10);
+    if (!isNaN(min) && min > 0 && longitud < min) {
+      esValido = false;
+    }
+  }
+
+  if (elemento._actualizarTooltip && document.activeElement === elemento) {
+    setTimeout(elemento._actualizarTooltip, 50);
+  }
+
+  return esValido;
+}
+
+// ========== VALIDACIÓN PARA DESCARGA ==========
+function validarDocumentoParaDescarga(contenedor) {
+  const modificables = contenedor.querySelectorAll('.modificable');
+  
+  if (modificables.length === 0) {
+    return {
+      valido: false,
+      mensaje: '❌ El documento no contiene ningún campo modificable.',
+      camposInvalidos: []
+    };
+  }
+
+  const obligatorios = contenedor.querySelectorAll('.modificable:not(.modificable-opcional)');
+  
+  if (obligatorios.length === 0) {
+    return {
+      valido: true,
+      mensaje: '✅ Todos los campos opcionales están completos',
+      camposInvalidos: []
+    };
+  }
+
+  const camposInvalidos = [];
+  let todosValidos = true;
+
+  obligatorios.forEach(el => {
+    const valido = validarYControlarCaracteres(el);
+    if (!valido) {
+      todosValidos = false;
+      camposInvalidos.push(el);
+    }
+  });
+
+  return {
+    valido: todosValidos,
+    mensaje: todosValidos 
+      ? '✅ Todos los campos obligatorios cumplen con los límites' 
+      : `❌ Hay ${camposInvalidos.length} campo(s) obligatorio(s) que no cumplen con el mínimo.`,
+    camposInvalidos: camposInvalidos
+  };
+}
+
+function enfocarCampoInvalido(campo) {
+  if (!campo) return;
+  
+  document.querySelectorAll('.campo-invalido-destacado').forEach(el => {
+    el.classList.remove('campo-invalido-destacado');
+    el.style.outline = '';
+    el.style.outlineOffset = '';
+    el.style.boxShadow = '';
+    el.style.transition = '';
+  });
+
+  campo.classList.add('campo-invalido-destacado');
+  campo.style.outline = '3px solid #e53e3e';
+  campo.style.outlineOffset = '2px';
+  campo.style.boxShadow = '0 0 20px rgba(229, 62, 62, 0.4)';
+  campo.style.transition = 'all 0.3s ease';
+  
+  campo.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  
+  setTimeout(() => {
+    campo.focus();
+    const range = document.createRange();
+    const sel = window.getSelection();
+    if (campo.firstChild) {
+      range.setStart(campo.firstChild, 0);
+      range.setEnd(campo.firstChild, campo.textContent.length);
+    } else {
+      range.selectNodeContents(campo);
+    }
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }, 300);
+
+  const removeHighlight = () => {
+    campo.classList.remove('campo-invalido-destacado');
+    campo.style.outline = '';
+    campo.style.outlineOffset = '';
+    campo.style.boxShadow = '';
+    campo.style.transition = '';
+    document.removeEventListener('click', removeHighlight);
+    setTimeout(() => {
+      if (campo.classList.contains('campo-invalido-destacado')) {
+        campo.classList.remove('campo-invalido-destacado');
+        campo.style.outline = '';
+        campo.style.outlineOffset = '';
+        campo.style.boxShadow = '';
+        campo.style.transition = '';
+      }
+    }, 5000);
+  };
+  
+  document.addEventListener('click', removeHighlight);
+  setTimeout(removeHighlight, 5000);
+}
+
+function verificarDescarga(elemento) {
+  const resultado = validarDocumentoParaDescarga(elemento);
+  
+  if (!resultado.valido) {
+    let mensaje = resultado.mensaje;
+    const camposInvalidos = resultado.camposInvalidos || [];
+    
+    if (camposInvalidos.length > 0) {
+      mensaje += '\n\n📝 Campos que requieren atención:\n';
+      
+      camposInvalidos.forEach((campo, index) => {
+        const minAttr = campo.getAttribute('mincaracteres');
+        const min = minAttr ? parseInt(minAttr, 10) : 0;
+        const longitud = obtenerLongitudReal(campo);
+        const textoPreview = (campo.textContent || '').trim() || '(vacío)';
+        const preview = textoPreview.length > 30 ? textoPreview.substring(0, 30) + '...' : textoPreview;
+        mensaje += `\n${index + 1}. Mínimo ${min} caracteres (actual: ${longitud}) → "${preview}"`;
+      });
+      
+      mensaje += '\n\n⚠️ Haz clic en "Aceptar" para ir al primer campo que requiere atención.';
+    }
+    
+    alert(mensaje);
+    
+    if (camposInvalidos.length > 0) {
+      enfocarCampoInvalido(camposInvalidos[0]);
+    }
+    return false;
+  }
+  
+  return true;
+}
+
+// ========== FUNCIONES DE ESTILO SIMPLIFICADAS (SIN TAMAÑO) ==========
+
+function toggleEstiloInline(templateId, comando) {
   const seleccion = window.getSelection();
-  if (!seleccion.rangeCount || seleccion.isCollapsed) return null;
+  if (!seleccion.rangeCount || seleccion.isCollapsed) {
+    alert("Selecciona un texto primero.");
+    return;
+  }
 
   let nodo = seleccion.anchorNode;
   let elemento = nodo.nodeType === 3 ? nodo.parentNode : nodo;
   let campoModificable = elemento.closest(`#${templateId} .modificable`);
 
   if (!campoModificable) {
-    alert("Por favor, selecciona primero un fragmento de texto dentro de un campo modificable.");
-    return null;
+    alert("Selecciona un texto dentro de un campo modificable.");
+    return;
   }
-  return seleccion.getRangeAt(0);
+
+  campoModificable.focus();
+
+  try {
+    document.execCommand(comando, false, null);
+  } catch(e) {
+    const rango = seleccion.getRangeAt(0);
+    const contenido = rango.extractContents();
+    const span = document.createElement('span');
+    span.className = 'modificable';
+    span.contentEditable = 'true';
+    
+    if (comando === 'bold') {
+      span.style.fontWeight = 'bold';
+    } else if (comando === 'italic') {
+      span.style.fontStyle = 'italic';
+    } else if (comando === 'underline') {
+      span.style.textDecoration = 'underline';
+    }
+    
+    span.appendChild(contenido);
+    rango.insertNode(span);
+  }
+
+  seleccion.removeAllRanges();
+
+  setTimeout(() => {
+    gestionarPaginacion(templateId);
+  }, CONFIG.TIEMPO_ESPERA);
 }
 
-function aplicarEstiloInline(templateId, propiedad, valor) {
-  const rango = obtenerRangoValido(templateId);
-  if (!rango) return;
+function aplicarEstiloInline(templateId, comando, valor) {
+  const seleccion = window.getSelection();
+  if (!seleccion.rangeCount || seleccion.isCollapsed) {
+    alert("Selecciona un texto primero.");
+    return;
+  }
 
-  const span = document.createElement('span');
-  span.style[propiedad] = valor;
-  span.appendChild(rango.extractContents());
-  rango.insertNode(span);
-  window.getSelection().removeAllRanges();
+  let nodo = seleccion.anchorNode;
+  let elemento = nodo.nodeType === 3 ? nodo.parentNode : nodo;
+  let campoModificable = elemento.closest(`#${templateId} .modificable`);
+
+  if (!campoModificable) {
+    alert("Selecciona un texto dentro de un campo modificable.");
+    return;
+  }
+
+  campoModificable.focus();
+
+  try {
+    if (comando === 'foreColor') {
+      document.execCommand('foreColor', false, valor);
+    } else if (comando === 'hiliteColor') {
+      document.execCommand('hiliteColor', false, valor);
+    } else if (comando === 'fontName') {
+      document.execCommand('fontName', false, valor);
+    }
+  } catch(e) {
+    const rango = seleccion.getRangeAt(0);
+    const contenido = rango.extractContents();
+    const span = document.createElement('span');
+    span.className = 'modificable';
+    span.contentEditable = 'true';
+    
+    if (comando === 'fontName') {
+      span.style.fontFamily = valor;
+    } else if (comando === 'foreColor') {
+      span.style.color = valor;
+    } else if (comando === 'hiliteColor') {
+      span.style.backgroundColor = valor;
+    }
+    
+    span.appendChild(contenido);
+    rango.insertNode(span);
+  }
+
+  seleccion.removeAllRanges();
+
+  setTimeout(() => {
+    gestionarPaginacion(templateId);
+  }, CONFIG.TIEMPO_ESPERA);
 }
 
-function toggleEstiloInline(templateId, propiedad, valorActivo, valorNormal) {
-  const rango = obtenerRangoValido(templateId);
-  if (!rango) return;
+function limpiarEstilosInline(templateId) {
+  const seleccion = window.getSelection();
+  if (!seleccion.rangeCount || seleccion.isCollapsed) {
+    alert("Selecciona un texto para limpiar su formato.");
+    return;
+  }
 
-  const span = document.createElement('span');
-  span.style[propiedad] = valorActivo;
-  span.appendChild(rango.extractContents());
-  rango.insertNode(span);
-  window.getSelection().removeAllRanges();
+  let nodo = seleccion.anchorNode;
+  let elemento = nodo.nodeType === 3 ? nodo.parentNode : nodo;
+  let campoModificable = elemento.closest(`#${templateId} .modificable`);
+
+  if (!campoModificable) {
+    alert("Selecciona un texto dentro de un campo modificable.");
+    return;
+  }
+
+  try {
+    document.execCommand('removeFormat', false, null);
+  } catch(e) {
+    const rango = seleccion.getRangeAt(0);
+    const texto = rango.extractContents();
+    const textoPlano = document.createTextNode(texto.textContent);
+    rango.insertNode(textoPlano);
+  }
+
+  seleccion.removeAllRanges();
+
+  setTimeout(() => {
+    gestionarPaginacion(templateId);
+  }, CONFIG.TIEMPO_ESPERA);
 }
+
+// ========== ENLACE E IMAGEN ==========
 
 function insertarEnlaceInline(templateId) {
-  const rango = obtenerRangoValido(templateId);
-  if (!rango) return;
-
-  const url = prompt("Introduce el enlace web de destino:", "https://");
-  if (url) {
-    const a = document.createElement('a');
-    a.href = url;
-    a.target = "_blank";
-    a.appendChild(rango.extractContents());
-    rango.insertNode(a);
+  const seleccion = window.getSelection();
+  if (!seleccion.rangeCount || seleccion.isCollapsed) {
+    alert("Selecciona un texto para insertar el enlace.");
+    return;
   }
-  window.getSelection().removeAllRanges();
+
+  let nodo = seleccion.anchorNode;
+  let elemento = nodo.nodeType === 3 ? nodo.parentNode : nodo;
+  let campoModificable = elemento.closest(`#${templateId} .modificable`);
+
+  if (!campoModificable) {
+    alert("Selecciona un texto dentro de un campo modificable.");
+    return;
+  }
+
+  const url = prompt("Introduce la URL:", "https://");
+  if (url) {
+    campoModificable.focus();
+    document.execCommand('createLink', false, url);
+  }
+
+  seleccion.removeAllRanges();
+
+  setTimeout(() => {
+    gestionarPaginacion(templateId);
+  }, CONFIG.TIEMPO_ESPERA);
 }
 
 function insertarImagenInline(templateId) {
@@ -1087,33 +2077,76 @@ function insertarImagenInline(templateId) {
 
   if (campoModificable) {
     campoModificable.focus();
-    const urlImg = prompt("Introduce la URL pública de la imagen:", "https://");
+    const urlImg = prompt("Introduce la URL de la imagen:", "https://");
     if (urlImg) {
+      let ancho = prompt("Introduce el ancho (ej: 100, 200):", "100");
+      let alto = prompt("Introduce el alto (deja vacío para automático):", "");
+      
       const img = document.createElement('img');
       img.src = urlImg;
-      img.alt = "Imagen incrustada";
+      img.alt = "Imagen";
       img.style.maxWidth = '100%';
       img.style.height = 'auto';
       
+      if (ancho && ancho.trim() !== '') {
+        if (!isNaN(ancho) && ancho.trim() !== '') {
+          img.style.width = ancho + 'px';
+        } else {
+          img.style.width = ancho;
+        }
+      }
+      
+      if (alto && alto.trim() !== '') {
+        if (!isNaN(alto) && alto.trim() !== '') {
+          img.style.height = alto + 'px';
+        } else {
+          img.style.height = alto;
+        }
+      }
+      
+      img.contentEditable = 'false';
+      img.style.cursor = 'pointer';
+      
+      img.addEventListener('dblclick', function(e) {
+        e.stopPropagation();
+        const nuevoAncho = prompt("Nuevo ancho:", this.style.width || 'auto');
+        if (nuevoAncho !== null && nuevoAncho.trim() !== '') {
+          if (!isNaN(nuevoAncho) && nuevoAncho.trim() !== '') {
+            this.style.width = nuevoAncho + 'px';
+          } else {
+            this.style.width = nuevoAncho;
+          }
+        }
+        const nuevoAlto = prompt("Nuevo alto (deja vacío para automático):", this.style.height || 'auto');
+        if (nuevoAlto !== null && nuevoAlto.trim() !== '') {
+          if (!isNaN(nuevoAlto) && nuevoAlto.trim() !== '') {
+            this.style.height = nuevoAlto + 'px';
+          } else {
+            this.style.height = nuevoAlto;
+          }
+        } else if (nuevoAlto !== null) {
+          this.style.height = 'auto';
+        }
+        setTimeout(() => gestionarPaginacion(templateId), CONFIG.TIEMPO_ESPERA);
+      });
+      
       const rango = seleccion.getRangeAt(0);
       rango.insertNode(img);
+      
+      seleccion.removeAllRanges();
+      const newRange = document.createRange();
+      newRange.selectNode(img);
+      seleccion.addRange(newRange);
+      
+      setTimeout(() => gestionarPaginacion(templateId), CONFIG.TIEMPO_ESPERA);
     }
   } else {
     alert("Haz clic dentro de un campo modificable para insertar la imagen.");
   }
 }
 
-function limpiarEstilosInline(templateId) {
-  const rango = obtenerRangoValido(templateId);
-  if (!rango) return;
+// ========== FECHA Y NUMERACIÓN ==========
 
-  const textoPlano = document.createTextNode(rango.toString());
-  rango.deleteContents();
-  rango.insertNode(textoPlano);
-  window.getSelection().removeAllRanges();
-}
-
-// ========== FECHA UTC COMPLETA ==========
 function obtenerFechaUTCCompleta() {
   const ahora = new Date();
   const opciones = {
@@ -1153,7 +2186,8 @@ function toggleNumeracionPaginas(templateId, mostrar) {
   });
 }
 
-// ========== DIVISIÓN INTELIGENTE DE TEXTO ==========
+// ========== PAGINACIÓN ==========
+
 function dividirTextoInteligente(textoHTML, alturaDisponible, tempDiv) {
   const temp = document.createElement('div');
   temp.innerHTML = textoHTML;
@@ -1191,7 +2225,6 @@ function dividirTextoInteligente(textoHTML, alturaDisponible, tempDiv) {
   return [textoHTML.replace(textoPlano, parte1), textoHTML.replace(textoPlano, parte2)];
 }
 
-// ========== CALCULAR ALTURA DISPONIBLE ==========
 function calcularAlturaDisponible(pagina) {
   const header = pagina.querySelector('.doc-header');
   const footer = pagina.querySelector('.doc-footer');
@@ -1204,7 +2237,7 @@ function calcularAlturaDisponible(pagina) {
     alturaHeader = header.offsetHeight + 
       parseInt(style.marginTop) + parseInt(style.marginBottom);
   }
-  if (alturaHeader < 50) alturaHeader = 60;
+  if (alturaHeader < CONFIG.ALTURA_HEADER_MIN) alturaHeader = CONFIG.ALTURA_HEADER_MIN;
   
   let alturaFooter = 0;
   if (footer) {
@@ -1212,22 +2245,86 @@ function calcularAlturaDisponible(pagina) {
     alturaFooter = footer.offsetHeight + 
       parseInt(style.marginTop) + parseInt(style.marginBottom);
   }
-  if (alturaFooter < 60) alturaFooter = 75;
+  if (alturaFooter < CONFIG.ALTURA_FOOTER_MIN) alturaFooter = CONFIG.ALTURA_FOOTER_MIN;
   
-  const paddingSuperior = 18 * 3.78;
-  const paddingInferior = 18 * 3.78;
-  
-  let alturaDisponible = alturaTotalPX - paddingSuperior - paddingInferior - alturaHeader - alturaFooter;
-  
-  alturaDisponible = alturaDisponible - 15;
+  let alturaDisponible = alturaTotalPX - CONFIG.PADDING_PAGINA * 2 - alturaHeader - alturaFooter;
+  alturaDisponible = alturaDisponible - CONFIG.MARGEN_SEGURIDAD;
   
   return Math.max(alturaDisponible, 50);
 }
 
-// ========== PAGINACIÓN CON LÍMITES ==========
-function gestionarPaginacion(templateId) {
+function sincronizarHeaderFooter(templateId) {
   const contenedor = document.getElementById(templateId);
   if (!contenedor) return;
+  
+  const paginas = contenedor.querySelectorAll('.a4-page');
+  if (paginas.length < 2) return;
+  
+  let headerHTML = null;
+  let footerHTML = null;
+  
+  for (let i = paginas.length - 1; i >= 0; i--) {
+    const header = paginas[i].querySelector('.doc-header');
+    if (header && header.innerHTML.trim() && !headerHTML) {
+      headerHTML = header.innerHTML;
+    }
+    const footer = paginas[i].querySelector('.doc-footer');
+    if (footer && footer.innerHTML.trim() && !footerHTML) {
+      footerHTML = footer.innerHTML;
+    }
+    if (headerHTML && footerHTML) break;
+  }
+  
+  if (!headerHTML) {
+    const headerRef = paginas[0].querySelector('.doc-header');
+    if (headerRef) headerHTML = headerRef.innerHTML;
+  }
+  if (!footerHTML) {
+    const footerRef = paginas[0].querySelector('.doc-footer');
+    if (footerRef) footerHTML = footerRef.innerHTML;
+  }
+  
+  if (headerHTML) {
+    for (let i = 0; i < paginas.length; i++) {
+      const header = paginas[i].querySelector('.doc-header');
+      if (header && header.innerHTML !== headerHTML) {
+        header.innerHTML = headerHTML;
+        header.querySelectorAll('.modificable').forEach(el => {
+          el.contentEditable = 'true';
+          validarYControlarCaracteres(el);
+          crearContadorCaracteres(el);
+        });
+      }
+    }
+  }
+  
+  if (footerHTML) {
+    for (let i = 0; i < paginas.length; i++) {
+      const footer = paginas[i].querySelector('.doc-footer');
+      if (footer && footer.innerHTML !== footerHTML) {
+        footer.innerHTML = footerHTML;
+        footer.querySelectorAll('.modificable').forEach(el => {
+          el.contentEditable = 'true';
+          validarYControlarCaracteres(el);
+          crearContadorCaracteres(el);
+        });
+      }
+    }
+  }
+}
+
+function gestionarPaginacion(templateId, mantenerScroll = true) {
+  const contenedor = document.getElementById(templateId);
+  if (!contenedor) return;
+
+  if (mantenerScroll) {
+    guardarPosicionScroll(contenedor);
+  }
+
+  const todosModificables = contenedor.querySelectorAll('.modificable');
+  todosModificables.forEach(el => {
+    el.contentEditable = 'false';
+  });
 
   const todasLasPaginas = contenedor.querySelectorAll('.a4-page');
   let elementosOriginales = [];
@@ -1338,9 +2435,6 @@ function gestionarPaginacion(templateId) {
 
   const bodyFirst = primeraPagina.querySelector('.doc-body');
   bodyFirst.innerHTML = contenidoPorPagina[0];
-  bodyFirst.querySelectorAll('.modificable').forEach(el => {
-    el.contentEditable = 'true';
-  });
   primeraPagina.dataset.page = 1;
 
   for (let i = 1; i < contenidoPorPagina.length; i++) {
@@ -1349,43 +2443,47 @@ function gestionarPaginacion(templateId) {
     
     const body = nuevaPagina.querySelector('.doc-body');
     body.innerHTML = contenidoPorPagina[i];
+    
     body.querySelectorAll('.modificable').forEach(el => {
       el.contentEditable = 'true';
     });
     
-    const header = nuevaPagina.querySelector('.doc-header');
-    if (header) {
-      const logo = header.querySelector('.doc-logo');
-      if (logo) logo.src = 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png';
-    }
-    
-    const footer = nuevaPagina.querySelector('.doc-footer');
-    if (footer) {
-      const footerLogo = footer.querySelector('.footer-logo');
-      if (footerLogo) footerLogo.src = 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/Grouvex1.png';
-      
-      const timeContainer = footer.querySelector('.doc-time-container');
-      if (timeContainer) {
-        const checkbox = document.getElementById(`toggle-time-${templateId}`);
-        if (checkbox && checkbox.checked) {
-          timeContainer.style.display = 'inline';
-          const timeText = timeContainer.querySelector(`#time-text-${templateId}`);
-          if (timeText) timeText.textContent = obtenerFechaUTCCompleta();
-        } else {
-          timeContainer.style.display = 'none';
-        }
-      }
-    }
-    
     contenedor.appendChild(nuevaPagina);
   }
 
+  setTimeout(() => {
+    contenedor.querySelectorAll('.modificable').forEach(el => {
+      el.contentEditable = 'true';
+      validarYControlarCaracteres(el);
+      crearContadorCaracteres(el);
+    });
+  }, 50);
+
+  setTimeout(() => {
+    sincronizarHeaderFooter(templateId);
+    
+    const resultado = validarDocumentoParaDescarga(contenedor);
+    if (!resultado.valido) {
+      resultado.camposInvalidos.forEach(campo => {
+        campo.style.outline = '2px solid #e53e3e';
+        campo.style.outlineOffset = '1px';
+        campo.style.boxShadow = '0 0 10px rgba(229, 62, 62, 0.2)';
+      });
+    } else {
+      contenedor.querySelectorAll('.modificable').forEach(el => {
+        el.style.outline = '';
+        el.style.outlineOffset = '';
+        el.style.boxShadow = '';
+      });
+    }
+    
+    if (mantenerScroll) {
+      restaurarPosicionScroll(contenedor);
+    }
+  }, CONFIG.TIEMPO_ESPERA);
+
   actualizarNumeracion(templateId);
   actualizarAnioLegal();
-  
-  setTimeout(() => {
-    contenedor.scrollTop = contenedor.scrollHeight;
-  }, 100);
 }
 
 function actualizarNumeracion(templateId) {
@@ -1404,10 +2502,20 @@ function actualizarNumeracion(templateId) {
   });
 }
 
+function actualizarAnioLegal() {
+  const anioActual = new Date().getFullYear();
+  document.querySelectorAll('.year-actual').forEach(el => {
+    el.textContent = anioActual;
+  });
+}
+
 // ========== DESCARGA PDF ==========
+
 function descargarPDFNativo(elementId, inputNameId) {
   const elemento = document.getElementById(elementId);
   const inputNombre = document.getElementById(inputNameId);
+  
+  if (!verificarDescarga(elemento)) return;
   
   gestionarPaginacion(elementId);
   
@@ -1447,7 +2555,14 @@ function descargarPDFNativo(elementId, inputNameId) {
       .doc-meta span { font-size: 0.75rem; color: #64748b; }
       .doc-body { flex: 1; width: 100%; min-height: 30px; overflow: hidden; }
       .doc-body p { line-height: 1.6; color: #334155; margin-bottom: 8px; min-height: 1.5em; }
-      .modificable { background-color: transparent !important; border-bottom: none !important; padding: 0 !important; color: inherit !important; display: inline !important; }
+      .modificable { 
+        background-color: transparent !important; 
+        border-bottom: none !important; 
+        padding: 0 !important; 
+        color: inherit !important; 
+        display: inline !important; 
+      }
+      a { color: #2b6cb0 !important; text-decoration: underline !important; }
       .highlight-price { color: #2f855a !important; font-weight: 600 !important; }
       .doc-footer { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 10px; border-top: 1px solid #e2e8f0; font-size: 0.6rem; color: #64748b; width: 100%; flex-shrink: 0; min-height: 40px; gap: 2px; }
       .footer-left { display: flex; align-items: center; gap: 6px; overflow: hidden; }
@@ -1474,6 +2589,8 @@ function descargarPDFNativo(elementId, inputNameId) {
       .legal-compact p { margin: 0; padding: 0; }
       .legal-compact a { color: #1e40af !important; text-decoration: underline !important; }
       .legal-compact .year-actual { color: #0f172a !important; font-weight: 700 !important; }
+      .tooltip-contador { display: none !important; }
+      .campo-invalido-destacado { outline: none !important; box-shadow: none !important; }
     </style>
   `;
 
@@ -1512,13 +2629,308 @@ function descargarPDFNativo(elementId, inputNameId) {
   ventanaImpresion.document.close();
 }
 
-// ============================================================
-// ========== EXPORTAR / IMPORTAR JSON MEJORADO ===============
-// ============================================================
+function descargarPDFAvanzado(elementId, inputNameId, config) {
+  const elemento = document.getElementById(elementId);
+  const inputNombre = document.getElementById(inputNameId);
+  
+  if (!verificarDescarga(elemento)) return;
+  
+  gestionarPaginacion(elementId);
+  
+  let nombrePersonalizado = inputNombre ? inputNombre.value.trim() : "Documento_Grouvex";
+  if (!nombrePersonalizado) nombrePersonalizado = "Documento_Grouvex";
 
-/**
- * Recopila todo el contenido modificable de un documento
- */
+  const cfg = {
+    orientacion: config?.orientacion || 'portrait',
+    tamaño: config?.tamaño || 'A4',
+    margen: config?.margen || '18mm',
+    mostrarTiempo: config?.mostrarTiempo !== undefined ? config.mostrarTiempo : true,
+    mostrarNumeracion: config?.mostrarNumeracion !== undefined ? config.mostrarNumeracion : true,
+    ...config
+  };
+
+  const tamaños = {
+    'A4': { width: '210mm', height: '297mm' },
+    'A3': { width: '297mm', height: '420mm' },
+    'Letter': { width: '215.9mm', height: '279.4mm' },
+    'Legal': { width: '215.9mm', height: '355.6mm' }
+  };
+
+  const tamañoPagina = tamaños[cfg.tamaño] || tamaños['A4'];
+  const ancho = cfg.orientacion === 'landscape' ? tamañoPagina.height : tamañoPagina.width;
+  const alto = cfg.orientacion === 'landscape' ? tamañoPagina.width : tamañoPagina.height;
+
+  const ventanaImpresion = window.open('', '_blank', 'width=800,height=600');
+  if (!ventanaImpresion) {
+    alert("Por favor, permite las ventanas emergentes para generar el PDF.");
+    return;
+  }
+
+  const todasPaginas = elemento.querySelectorAll('.a4-page');
+  let htmlPaginas = '';
+  
+  todasPaginas.forEach((pagina) => {
+    const clone = pagina.cloneNode(true);
+    clone.style.boxShadow = 'none';
+    clone.style.width = ancho;
+    clone.style.height = alto;
+    clone.style.padding = cfg.margen;
+    
+    if (!cfg.mostrarTiempo) {
+      const timeContainer = clone.querySelector('.doc-time-container');
+      if (timeContainer) timeContainer.style.display = 'none';
+    }
+    
+    if (!cfg.mostrarNumeracion) {
+      const pageDisplay = clone.querySelector('.page-number-display');
+      if (pageDisplay) pageDisplay.classList.add('hidden');
+    }
+    
+    htmlPaginas += clone.outerHTML;
+  });
+
+  const estilosPersonalizados = `
+    <style>
+      @page { 
+        size: ${cfg.orientacion === 'landscape' ? 'landscape' : 'portrait'}; 
+        margin: 0 !important; 
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { background: white; display: block; margin: 0; padding: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+      .a4-page {
+        width: ${ancho}; height: ${alto}; padding: ${cfg.margen}; background: white;
+        margin: 0 auto; display: flex; flex-direction: column;
+        page-break-after: always; break-after: page;
+        position: relative; box-sizing: border-box; overflow: hidden;
+      }
+      .doc-header { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 2px solid #f1f5f9; width: 100%; flex-shrink: 0; min-height: 50px; }
+      .doc-logo { width: 150px; height: 40px; object-fit: contain; flex-shrink: 0; }
+      .doc-meta { overflow: hidden; }
+      .doc-meta h3 { margin: 0; font-size: 0.95rem; color: #1e293b; }
+      .doc-meta span { font-size: 0.75rem; color: #64748b; }
+      .doc-body { flex: 1; width: 100%; min-height: 30px; overflow: hidden; }
+      .doc-body p { line-height: 1.6; color: #334155; margin-bottom: 8px; min-height: 1.5em; }
+      .modificable { 
+        background-color: transparent !important; 
+        border-bottom: none !important; 
+        padding: 0 !important; 
+        color: inherit !important; 
+        display: inline !important; 
+      }
+      a { color: #2b6cb0 !important; text-decoration: underline !important; }
+      .highlight-price { color: #2f855a !important; font-weight: 600 !important; }
+      .doc-footer { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 10px; border-top: 1px solid #e2e8f0; font-size: 0.6rem; color: #64748b; width: 100%; flex-shrink: 0; min-height: 40px; gap: 2px; }
+      .footer-left { display: flex; align-items: center; gap: 6px; overflow: hidden; }
+      .footer-logo { width: 70px; height: 20px; object-fit: contain; flex-shrink: 0; }
+      .footer-text { font-size: 0.55rem !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .footer-right { text-align: right; flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+      .page-number-display { font-weight: 500; color: #475569; font-size: 0.55rem; }
+      .page-number-display.hidden { display: none !important; }
+      .doc-time-container { display: inline; }
+      .a4-page:last-child { page-break-after: avoid; break-after: avoid; }
+      .grouvex-toolbar, .card-footer, summary, .section-header { display: none !important; }
+      .legal-compact {
+        background: #f8fafc !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 4px !important;
+        padding: 3px 6px !important;
+        font-size: 0.45rem !important;
+        line-height: 1.3 !important;
+        color: #475569 !important;
+        max-width: 280px !important;
+        text-align: center !important;
+        margin-bottom: 2px !important;
+      }
+      .legal-compact p { margin: 0; padding: 0; }
+      .legal-compact a { color: #1e40af !important; text-decoration: underline !important; }
+      .legal-compact .year-actual { color: #0f172a !important; font-weight: 700 !important; }
+      .tooltip-contador { display: none !important; }
+      .campo-invalido-destacado { outline: none !important; box-shadow: none !important; }
+    </style>
+  `;
+
+  const contenidoImpresion = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <title>${nombrePersonalizado}</title>
+      ${estilosPersonalizados}
+      <script>
+        function actualizarAnio() {
+          const anio = new Date().getFullYear();
+          document.querySelectorAll('.year-actual').forEach(el => {
+            el.textContent = anio;
+          });
+        }
+        window.onload = function() {
+          actualizarAnio();
+          setTimeout(function() {
+            window.print();
+            setTimeout(function() {
+              window.close();
+            }, 1000);
+          }, 500);
+        };
+      <\/script>
+    </head>
+    <body>
+      ${htmlPaginas}
+    </body>
+    </html>
+  `;
+
+  ventanaImpresion.document.write(contenidoImpresion);
+  ventanaImpresion.document.close();
+}
+
+function descargarDOCX(elementId, inputNameId) {
+  const elemento = document.getElementById(elementId);
+  const inputNombre = document.getElementById(inputNameId);
+  
+  if (!verificarDescarga(elemento)) return;
+  
+  gestionarPaginacion(elementId);
+  
+  let nombrePersonalizado = inputNombre ? inputNombre.value.trim() : "Documento_Grouvex";
+  if (!nombrePersonalizado) nombrePersonalizado = "Documento_Grouvex";
+
+  const todasPaginas = elemento.querySelectorAll('.a4-page');
+  let contenidoHTML = '';
+  
+  todasPaginas.forEach(pagina => {
+    const body = pagina.querySelector('.doc-body');
+    if (body) {
+      const cloneBody = body.cloneNode(true);
+      contenidoHTML += cloneBody.innerHTML;
+    }
+  });
+
+  if (!contenidoHTML || contenidoHTML.trim() === '') {
+    contenidoHTML = '<p>Escribe tu contenido aquí...</p>';
+  }
+
+  const htmlWord = `
+    <!DOCTYPE html>
+    <html xmlns:o='urn:schemas-microsoft-com:office:office' 
+          xmlns:w='urn:schemas-microsoft-com:office:word' 
+          xmlns='http://www.w3.org/TR/REC-html40'>
+    <head>
+      <meta charset="UTF-8">
+      <title>${nombrePersonalizado}</title>
+      <style>
+        body { font-family: 'Inter', 'Segoe UI', Arial, sans-serif; font-size: 12pt; line-height: 1.6; color: #334155; padding: 40px; }
+        p { margin-bottom: 8pt; }
+        .modificable { background: transparent !important; }
+        .highlight-price { color: #2f855a !important; font-weight: 600 !important; }
+        a { color: #2b6cb0 !important; text-decoration: underline !important; }
+        h1 { font-size: 24pt; color: #0f172a; margin-top: 20pt; margin-bottom: 10pt; }
+        h2 { font-size: 20pt; color: #0f172a; margin-top: 16pt; margin-bottom: 8pt; }
+        h3 { font-size: 16pt; color: #0f172a; margin-top: 12pt; margin-bottom: 6pt; }
+        table { border-collapse: collapse; width: 100%; margin: 10pt 0; }
+        th, td { border: 1px solid #e2e8f0; padding: 6pt 8pt; text-align: left; }
+        img { max-width: 100%; height: auto; }
+        .legal-compact { 
+          background: #f8fafc; 
+          border: 1px solid #cbd5e1; 
+          border-radius: 4px; 
+          padding: 4px 8px; 
+          font-size: 8pt;
+          color: #475569;
+          margin-top: 10pt;
+        }
+        .year-actual { font-weight: 700; color: #0f172a; }
+        .tooltip-contador { display: none !important; }
+      </style>
+    </head>
+    <body>
+      ${contenidoHTML}
+      
+      <div class="legal-compact">
+        <p>© <span class="year-actual">${new Date().getFullYear()}</span> Grouvex Studios. Todos los derechos reservados.</p>
+        <p>Documento generado con Grouvex Platform</p>
+      </div>
+    </body>
+    </html>
+  `;
+
+  try {
+    const blob = new Blob([htmlWord], { 
+      type: 'application/msword;charset=utf-8' 
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${nombrePersonalizado}.doc`;
+    document.body.appendChild(link);
+    link.click();
+    setTimeout(() => {
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }, 1000);
+    alert(`✅ Documento Word descargado: ${nombrePersonalizado}.doc`);
+  } catch(e) {
+    alert('❌ Error al descargar DOCX: ' + e.message);
+  }
+}
+
+function descargarTXT(elementId, inputNameId) {
+  const elemento = document.getElementById(elementId);
+  const inputNombre = document.getElementById(inputNameId);
+  
+  if (!verificarDescarga(elemento)) return;
+  
+  gestionarPaginacion(elementId);
+  
+  let nombrePersonalizado = inputNombre ? inputNombre.value.trim() : "Documento_Grouvex";
+  if (!nombrePersonalizado) nombrePersonalizado = "Documento_Grouvex";
+
+  const todasPaginas = elemento.querySelectorAll('.a4-page');
+  let textoPlano = '';
+  
+  todasPaginas.forEach(pagina => {
+    const body = pagina.querySelector('.doc-body');
+    if (body) {
+      const cloneBody = body.cloneNode(true);
+      const temp = document.createElement('div');
+      temp.innerHTML = cloneBody.innerHTML;
+      const text = temp.textContent || '';
+      textoPlano += text + '\n\n';
+    }
+  });
+
+  if (!textoPlano || textoPlano.trim() === '') {
+    textoPlano = 'Escribe tu contenido aquí...';
+  }
+
+  textoPlano = textoPlano
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+
+  textoPlano += '\n\n---\n';
+  textoPlano += `© ${new Date().getFullYear()} Grouvex Studios. Todos los derechos reservados.\n`;
+  textoPlano += `Documento generado con Grouvex Platform\n`;
+
+  try {
+    const blob = new Blob([textoPlano], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${nombrePersonalizado}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    setTimeout(() => {
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }, 1000);
+    alert(`✅ Documento TXT descargado: ${nombrePersonalizado}.txt`);
+  } catch(e) {
+    alert('❌ Error al descargar TXT: ' + e.message);
+  }
+}
+
+// ========== FUNCIONES JSON ==========
+
 function recopilarContenidoModificable(templateId) {
   const contenedor = document.getElementById(templateId);
   if (!contenedor) return null;
@@ -1543,6 +2955,11 @@ function recopilarContenidoModificable(templateId) {
         clases: Array.from(el.classList).join(' ')
       };
 
+      const maxAttr = el.getAttribute('maxcaracteres');
+      const minAttr = el.getAttribute('mincaracteres');
+      if (maxAttr !== null) campo.maxcaracteres = maxAttr;
+      if (minAttr !== null) campo.mincaracteres = minAttr;
+
       if (el.classList.contains('highlight-price')) {
         campo.destacado = true;
       }
@@ -1556,35 +2973,35 @@ function recopilarContenidoModificable(templateId) {
   return contenido;
 }
 
-/**
- * Exporta JSON usando iframe de forma más confiable
- */
 function exportarJSONConNombre(templateId, inputNameId) {
-  // Actualizar paginación
+  const elemento = document.getElementById(templateId);
+  if (!elemento) {
+    alert('❌ No se encontró el documento.');
+    return;
+  }
+  
+  if (!verificarDescarga(elemento)) return;
+  
   gestionarPaginacion(templateId);
 
-  // Recopilar contenido
   const contenido = recopilarContenidoModificable(templateId);
   if (!contenido) {
     alert('❌ No se pudo recopilar el contenido del documento.');
     return;
   }
 
-  // Verificar que hay contenido
   let totalCampos = 0;
   contenido.paginas.forEach(p => totalCampos += p.campos.length);
   if (totalCampos === 0) {
-    alert('❌ No hay contenido modificable para exportar. Escribe algo en los campos con borde rojo.');
+    alert('❌ No hay contenido modificable para exportar.');
     return;
   }
 
-  // Obtener nombre del archivo
   const inputNombre = document.getElementById(inputNameId);
   let nombreBase = inputNombre ? inputNombre.value.trim() : 'documento';
   if (!nombreBase) nombreBase = 'documento';
   nombreBase = nombreBase.replace(/[^a-zA-Z0-9_\-]/g, '_');
 
-  // Crear JSON
   const ahora = new Date();
   const fechaStr = 
     ahora.getFullYear() +
@@ -1596,17 +3013,15 @@ function exportarJSONConNombre(templateId, inputNameId) {
   const nombreArchivo = `${nombreBase}_${fechaStr}.json`;
   const jsonStr = JSON.stringify(contenido, null, 2);
 
-  // MÉTODO 1: msSaveBlob (IE/Edge)
   if (navigator.msSaveBlob) {
     try {
       const blob = new Blob([jsonStr], { type: 'application/json;charset=utf-8' });
       navigator.msSaveBlob(blob, nombreArchivo);
-      mostrarNotificacion('✅', `JSON exportado: ${nombreArchivo}`, '#2d3748');
+      console.log(`✅ JSON exportado: ${nombreArchivo}`);
       return;
     } catch(e) {}
   }
 
-  // MÉTODO 2: Usar iframe con descarga directa (MÁS CONFIABLE)
   try {
     const iframe = document.createElement('iframe');
     iframe.style.cssText = 'position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;border:none;';
@@ -1637,7 +3052,6 @@ function exportarJSONConNombre(templateId, inputNameId) {
                 setTimeout(function() {
                   document.body.removeChild(link);
                   URL.revokeObjectURL(url);
-                  // Avisar al padre que ya se descargó
                   window.parent.postMessage({ type: 'download-complete', filename: nombre }, '*');
                 }, 500);
               } catch(e) {
@@ -1645,7 +3059,6 @@ function exportarJSONConNombre(templateId, inputNameId) {
               }
             }
             
-            // Intentar descarga automática
             setTimeout(descargar, 100);
           })();
         <\/script>
@@ -1654,10 +3067,9 @@ function exportarJSONConNombre(templateId, inputNameId) {
     `);
     iframeDoc.close();
     
-    // Escuchar mensajes del iframe
     const handler = function(event) {
       if (event.data && event.data.type === 'download-complete') {
-        mostrarNotificacion('✅', `JSON exportado: ${event.data.filename}`, '#2d3748');
+        console.log(`✅ JSON exportado: ${event.data.filename}`);
         if (iframe.parentNode) document.body.removeChild(iframe);
         window.removeEventListener('message', handler);
       } else if (event.data && event.data.type === 'download-error') {
@@ -1668,12 +3080,10 @@ function exportarJSONConNombre(templateId, inputNameId) {
     };
     window.addEventListener('message', handler);
     
-    // Timeout por si el iframe no responde
     setTimeout(function() {
       if (iframe.parentNode) {
         document.body.removeChild(iframe);
         window.removeEventListener('message', handler);
-        // Si aún no descargó, intentar método alternativo
         exportarJSONAlternativo(jsonStr, nombreArchivo);
       }
     }, 5000);
@@ -1681,13 +3091,9 @@ function exportarJSONConNombre(templateId, inputNameId) {
     return;
   } catch(e) {}
 
-  // MÉTODO 3: Ventana emergente (fallback)
   exportarJSONAlternativo(jsonStr, nombreArchivo);
 }
 
-/**
- * Método alternativo de exportación (ventana emergente)
- */
 function exportarJSONAlternativo(jsonStr, nombreArchivo) {
   try {
     const ventana = window.open('', '_blank', 'width=700,height=500,scrollbars=yes');
@@ -1809,12 +3215,11 @@ function exportarJSONAlternativo(jsonStr, nombreArchivo) {
         </html>
       `);
       ventana.document.close();
-      mostrarNotificacion('📋', `JSON abierto en ventana: ${nombreArchivo}`, '#2b6cb0');
+      console.log(`📋 JSON abierto en ventana: ${nombreArchivo}`);
       return;
     }
   } catch(e) {}
 
-  // Último recurso: copiar al portapapeles
   try {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(jsonStr).then(() => {
@@ -1842,81 +3247,6 @@ function exportarJSONAlternativo(jsonStr, nombreArchivo) {
   }
 }
 
-/**
- * Muestra una notificación visual
- */
-function mostrarNotificacion(icono, mensaje, colorFondo = '#2d3748') {
-  const notificacionesAnteriores = document.querySelectorAll('.notificacion-flotante');
-  notificacionesAnteriores.forEach(el => el.remove());
-  
-  const notificacion = document.createElement('div');
-  notificacion.className = 'notificacion-flotante';
-  notificacion.innerHTML = `
-    <div style="
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background: ${colorFondo};
-      color: white;
-      padding: 15px 25px;
-      border-radius: 12px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      font-weight: 600;
-      font-size: 0.9rem;
-      z-index: 99999;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      max-width: 400px;
-      border-left: 4px solid #48bb78;
-      animation: slideUp 0.3s ease-out;
-      cursor: pointer;
-      backdrop-filter: blur(10px);
-    ">
-      <span style="font-size: 1.8rem;">${icono}</span>
-      <span style="word-break: break-word;">${mensaje}</span>
-    </div>
-  `;
-  
-  if (!document.getElementById('notificacion-styles')) {
-    const styleAnim = document.createElement('style');
-    styleAnim.id = 'notificacion-styles';
-    styleAnim.textContent = `
-      @keyframes slideUp {
-        from { opacity: 0; transform: translateY(40px) scale(0.95); }
-        to { opacity: 1; transform: translateY(0) scale(1); }
-      }
-      .notificacion-flotante:hover {
-        transform: scale(1.02);
-        transition: transform 0.2s;
-      }
-    `;
-    document.head.appendChild(styleAnim);
-  }
-  
-  document.body.appendChild(notificacion);
-  
-  notificacion.addEventListener('click', function() {
-    this.remove();
-  });
-  
-  setTimeout(() => {
-    if (notificacion.parentNode) {
-      notificacion.style.opacity = '0';
-      notificacion.style.transition = 'opacity 0.5s ease';
-      setTimeout(() => {
-        if (notificacion.parentNode) {
-          notificacion.remove();
-        }
-      }, 500);
-    }
-  }, 5000);
-}
-
-/**
- * Importa contenido desde un archivo JSON
- */
 function importarJSON(templateId, file) {
   const reader = new FileReader();
 
@@ -1925,7 +3255,7 @@ function importarJSON(templateId, file) {
       const contenido = JSON.parse(e.target.result);
       
       if (!contenido.paginas || !Array.isArray(contenido.paginas)) {
-        alert('❌ El archivo JSON no tiene un formato válido. Debe contener "paginas" como array.');
+        alert('❌ El archivo JSON no tiene un formato válido.');
         return;
       }
 
@@ -1944,7 +3274,7 @@ function importarJSON(templateId, file) {
       let paginasExistentes = contenedor.querySelectorAll('.a4-page');
       
       if (contenido.paginas.length > paginasExistentes.length) {
-        if (!confirm(`⚠️ El archivo tiene ${contenido.paginas.length} páginas pero el documento actual tiene ${paginasExistentes.length}.\n¿Deseas expandir el documento para acomodar todas las páginas?`)) {
+        if (!confirm(`⚠️ El archivo tiene ${contenido.paginas.length} páginas pero el documento actual tiene ${paginasExistentes.length}.\n¿Deseas expandir el documento?`)) {
           return;
         }
       }
@@ -1973,7 +3303,7 @@ function importarJSON(templateId, file) {
             } else {
               el.classList.add('modificable');
               if (campoData.destacado) {
-                el.classList.add('highlight-price');
+                el.classList.add('modificable-opcional');
               }
             }
             camposTotales++;
@@ -1993,15 +3323,12 @@ function importarJSON(templateId, file) {
   };
 
   reader.onerror = function() {
-    alert('❌ Error al leer el archivo. Por favor, inténtalo de nuevo.');
+    alert('❌ Error al leer el archivo.');
   };
 
   reader.readAsText(file);
 }
 
-/**
- * Crea un input oculto para seleccionar archivo JSON
- */
 function seleccionarArchivoJSON(templateId) {
   const input = document.createElement('input');
   input.type = 'file';
@@ -2030,18 +3357,228 @@ function initPaginacion() {
   document.querySelectorAll('.template-document').forEach(el => {
     const id = el.id;
     if (id) {
+      el.querySelectorAll('.modificable').forEach(mod => {
+        crearContadorCaracteres(mod);
+      });
       setTimeout(() => {
-        gestionarPaginacion(id);
-      }, 300);
+        gestionarPaginacion(id, true);
+        restaurarElementoEnEdicion(el);
+      }, CONFIG.TIEMPO_ESPERA);
     }
   });
 }
 
+// ========== EVENTOS ==========
+let timeoutSincronizacion = null;
+let timeoutPaginacion = null;
+
+function actualizarContadorModificable(elemento) {
+  if (!elemento) return;
+  
+  // Si el elemento tiene una función para actualizar tooltip, ejecutarla
+  if (elemento._actualizarTooltip && document.activeElement === elemento) {
+    setTimeout(elemento._actualizarTooltip, 50);
+  }
+}
+
+document.addEventListener('input', function(e) {
+  const modificable = e.target.closest('.modificable');
+  if (!modificable) return;
+  
+  guardarElementoEnEdicion(modificable);
+  validarYControlarCaracteres(modificable);
+  actualizarContadorModificable(modificable);
+  
+  const templateDoc = modificable.closest('.template-document');
+  if (!templateDoc) return;
+  
+  const id = templateDoc.id;
+  if (!id) return;
+  
+  guardarPosicionScroll(templateDoc);
+  
+  const esHeader = modificable.closest('.doc-header') !== null;
+  const esFooter = modificable.closest('.doc-footer') !== null;
+  
+  clearTimeout(timeoutSincronizacion);
+  clearTimeout(timeoutPaginacion);
+  
+  if (esHeader || esFooter) {
+    timeoutSincronizacion = setTimeout(() => {
+      sincronizarHeaderFooter(id);
+      const contenedor = document.getElementById(id);
+      if (contenedor) {
+        const resultado = validarDocumentoParaDescarga(contenedor);
+        if (!resultado.valido) {
+          resultado.camposInvalidos.forEach(campo => {
+            campo.style.outline = '2px solid #e53e3e';
+            campo.style.outlineOffset = '1px';
+            campo.style.boxShadow = '0 0 10px rgba(229, 62, 62, 0.2)';
+          });
+        } else {
+          contenedor.querySelectorAll('.modificable').forEach(el => {
+            el.style.outline = '';
+            el.style.outlineOffset = '';
+            el.style.boxShadow = '';
+          });
+        }
+        restaurarPosicionScroll(contenedor);
+      }
+    }, CONFIG.TIEMPO_ESPERA);
+  }
+  
+  timeoutPaginacion = setTimeout(() => {
+    gestionarPaginacion(id, true);
+  }, CONFIG.TIEMPO_ESPERA);
+});
+
+document.addEventListener('paste', function(e) {
+  const modificable = e.target.closest('.modificable');
+  if (!modificable) return;
+  
+  guardarElementoEnEdicion(modificable);
+  
+  setTimeout(() => {
+    validarYControlarCaracteres(modificable);
+    actualizarContadorModificable(modificable);
+    
+    const templateDoc = modificable.closest('.template-document');
+    if (templateDoc) {
+      const id = templateDoc.id;
+      clearTimeout(timeoutPaginacion);
+      timeoutPaginacion = setTimeout(() => {
+        gestionarPaginacion(id, true);
+      }, CONFIG.TIEMPO_ESPERA);
+    }
+  }, 10);
+});
+
+document.addEventListener('keydown', function(e) {
+  const modificable = e.target.closest('.modificable');
+  if (!modificable) return;
+  
+  const maxAttr = modificable.getAttribute('maxcaracteres');
+  const minAttr = modificable.getAttribute('mincaracteres');
+  
+  const longitud = obtenerLongitudReal(modificable);
+  
+  const teclasPermitidas = [
+    'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
+    'Home', 'End', 'Tab', 'Escape', 'Enter'
+  ];
+  
+  if (e.ctrlKey || e.metaKey) {
+    return;
+  }
+  
+  if (maxAttr !== null) {
+    const max = parseInt(maxAttr, 10);
+    if (!isNaN(max) && longitud >= max && !teclasPermitidas.includes(e.key) && e.key.length === 1) {
+      e.preventDefault();
+      alert(`⚠️ Límite máximo de ${max} caracteres alcanzado`);
+      return;
+    }
+  }
+  
+  if (minAttr !== null) {
+    const min = parseInt(minAttr, 10);
+    if (!isNaN(min) && min > 0) {
+      const teclasEliminar = ['Backspace', 'Delete'];
+      
+      if (teclasEliminar.includes(e.key)) {
+        if (longitud <= min) {
+          const seleccion = window.getSelection();
+          const tieneSeleccion = seleccion && !seleccion.isCollapsed && seleccion.anchorNode?.parentElement?.closest?.('.modificable') === modificable;
+          
+          if (tieneSeleccion) {
+            const textoSeleccionado = seleccion.toString();
+            const brEnSeleccion = (textoSeleccionado.match(/\n/g) || []).length;
+            const longitudSeleccion = textoSeleccionado.length + brEnSeleccion;
+            const nuevaLongitud = longitud - longitudSeleccion;
+            
+            if (nuevaLongitud < min) {
+              e.preventDefault();
+              alert(`⚠️ No puedes eliminar esa selección porque el campo requiere un mínimo de ${min} caracteres.`);
+              return;
+            }
+          } else {
+            e.preventDefault();
+            alert(`⚠️ El campo requiere un mínimo de ${min} caracteres. No puedes eliminar más.`);
+            return;
+          }
+        } else {
+          const seleccion = window.getSelection();
+          if (seleccion && !seleccion.isCollapsed) {
+            const textoSeleccionado = seleccion.toString();
+            const brEnSeleccion = (textoSeleccionado.match(/\n/g) || []).length;
+            const longitudSeleccion = textoSeleccionado.length + brEnSeleccion;
+            const nuevaLongitud = longitud - longitudSeleccion;
+            
+            if (nuevaLongitud < min) {
+              e.preventDefault();
+              alert(`⚠️ No puedes eliminar esa selección porque el campo requiere un mínimo de ${min} caracteres.`);
+              return;
+            }
+          }
+        }
+      }
+    }
+  }
+});
+
+// ========== EVENTOS DE CIERRE ==========
+window.addEventListener('beforeunload', function() {
+  ocultarTooltip();
+  document.querySelectorAll('.template-document').forEach(el => {
+    guardarPosicionScroll(el);
+    const activo = document.activeElement;
+    if (activo && activo.closest('.modificable')) {
+      guardarElementoEnEdicion(activo);
+    }
+  });
+});
+
 document.addEventListener('DOMContentLoaded', initPaginacion);
 window.addEventListener('load', function() {
-  setTimeout(initPaginacion, 400);
+  setTimeout(initPaginacion, CONFIG.TIEMPO_ESPERA);
+});
+
+document.addEventListener('scroll', function() {
+  ocultarTooltip();
+}, true);
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.modificable')) {
+    ocultarTooltip();
+  }
 });
 </script>
+
+<button onclick="document.getElementById('indice-plantillas').scrollIntoView({ behavior: 'smooth', block: 'start' });" style="
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: linear-gradient(45deg, #00e5ff, #affb0a);
+    color: #0f172a;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    font-size: 2rem;
+    font-weight: 700;
+    box-shadow: 0 4px 20px rgba(0,229,255,0.4);
+    transition: all 0.3s ease;
+    z-index: 9999;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+" 
+onmouseenter="this.style.transform='scale(1.15)'; this.style.boxShadow='0 8px 30px rgba(0,229,255,0.6)';"
+onmouseleave="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 20px rgba(0,229,255,0.4)';"
+title="Ir al índice de plantillas">
+    ⬆
+</button>
 </details>
 
         </article>

@@ -3416,3 +3416,526 @@ if (document.readyState === 'loading') {
   new DateTimeWidget();
 }
 </script>
+
+
+<!-- Menu General -->
+<!-- Librería de iconos opcional -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+<!-- Contenedor único para el menú flotante -->
+<div id="floating-menu-container"></div>
+
+<script>
+(function() {
+  const menuConfig = {
+    mainIcon: 'https://picsum.photos/id/1025/80/80', 
+    mainDisabled: false,
+    mainDisabledTooltip: 'Menú bloqueado temporalmente',
+    items: [
+      { icon: 'https://picsum.photos/id/1062/80/80', label: 'Imagen Web', type: 'link', url: 'https://google.com' },
+      { icon: 'fa-solid fa-house', label: 'Inicio', type: 'link', url: '#', disabled: false },
+      { 
+        icon: '📁', 
+        label: 'Archivos', 
+        type: 'modal', 
+        title: 'Gestor de Archivos', 
+        html: `
+          <div class="custom-card">
+            <h3>Lista de Archivos</h3>
+            <p>Selecciona un archivo cargado desde los datos JSON:</p>
+            <ul id="file-list"></ul>
+            <button id="btn-action">Procesar Archivos</button>
+            <div id="output"></div>
+          </div>
+        `,
+        css: `
+          .custom-card { background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd; }
+          .custom-card h3 { margin-top: 0; color: #007bff; }
+          #file-list { list-style: square; padding-left: 20px; }
+          #btn-action { background: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; }
+          #btn-action:hover { background: #0056b3; }
+          #output { margin-top: 10px; font-weight: bold; color: #28a745; }
+        `,
+        json: {
+          files: ['Documento.pdf', 'Proyecto.docx', 'Imagen.png'],
+          userRole: 'Admin'
+        },
+        js: function(bodyContainer, data) {
+          const fileList = bodyContainer.querySelector('#file-list');
+          const btn = bodyContainer.querySelector('#btn-action');
+          const output = bodyContainer.querySelector('#output');
+
+          // Renderizar lista leyendo el JSON
+          if (data && data.files) {
+            fileList.innerHTML = data.files.map(f => `<li>${f}</li>`).join('');
+          }
+
+          btn.addEventListener('click', () => {
+            output.textContent = `Acción ejecutada como ${data.userRole} a las ${new Date().toLocaleTimeString()}`;
+          });
+        }
+      },
+{ 
+  icon: 'fa-solid fa-circle-info', 
+  label: 'Guía de uso', 
+  type: 'modal', 
+  title: 'Centro de Ayuda y Guía del Menú', 
+  html: `
+    <div class="guide-box">
+      <!-- Módulo de Reloj en Tiempo Real -->
+      <div id="info-clock" class="clock-display">
+        <i class="fa-solid fa-clock"></i> <span id="clock-text">Cargando fecha y hora...</span>
+      </div>
+      
+      <!-- Acordeón interactivo con la documentación -->
+      <details class="usage-details" open>
+        <summary><i class="fa-solid fa-compass"></i> ¿Cómo usar el menú flotante?</summary>
+        <div class="details-content">
+          
+          <div class="guide-section">
+            <h4><i class="fa-solid fa-bullseye"></i> Propósito y Objetivo Principal</h4>
+            <p>
+              El objetivo de este menú interactivo es <strong>centralizar la navegación y optimizar tu experiencia en la plataforma</strong>. Diseñado como un asistente flotante omnipresente, elimina la necesidad de desplazarte de nuevo a la parte superior de la página o navegar por múltiples menús tradicionales para encontrar lo que necesitas.
+            </p>
+          </div>
+
+          <div class="guide-section">
+            <h4><i class="fa-solid fa-hand-pointer"></i> Funcionalidades y Modo de Uso</h4>
+            <ul>
+              <li>
+                <strong>Apertura y Cierre Desplegable:</strong> Haz un clic en el botón circular principal para abrir el abanico con todas las herramientas disponibles. Vuelve a hacer clic para ocultarlas cuando quieras una pantalla limpia.
+              </li>
+              <li>
+                <strong>Libertad de Movimiento (Drag & Drop Adaptativo):</strong> Haz clic (o mantén pulsado en pantallas táctiles) y arrastra el menú a cualquier esquina o posición de tu pantalla. Si abres el menú cerca de los bordes, las opciones se reorganizarán inteligentemente para no salir del área visible.
+              </li>
+              <li>
+                <strong>Accesos Directos y Modales Informativos:</strong> Los iconos desplegados te permiten navegar instantáneamente a otras páginas de la plataforma o abrir paneles emergentes con información detallada en tiempo real sin cambiar de vista.
+              </li>
+              <li>
+                <strong>Ahorro de Tiempo e Inactividad:</strong> El menú está optimizado con un temporizador automático para evitar distracciones visuales. Si no lo usas durante 15 segundos, se recogerá automáticamente para no obstruir tu lectura.
+              </li>
+            </ul>
+          </div>
+
+          <div class="guide-section">
+            <h4><i class="fa-solid fa-lightbulb"></i> Consejos de Experiencia de Usuario</h4>
+            <p class="tip-box">
+              <i class="fa-solid fa-star"></i> <strong>Tip:</strong> Puedes mover el menú a la zona inferior derecha si trabajas desde un ordenador, o situarlo en la parte inferior central si navegas desde tu teléfono móvil para un uso cómodo a una sola mano.
+            </p>
+          </div>
+
+        </div>
+      </details>
+    </div>
+  `,
+  css: `
+    .guide-box { background: #fdfdfd; color: #2c3e50; padding: 18px; border-radius: 12px; border: 1px solid #eaedd0; font-family: system-ui, -apple-system, sans-serif; }
+    
+    .clock-display { 
+      background: linear-gradient(135deg, #007bff, #0056b3); 
+      color: #ffffff; 
+      padding: 12px 16px; 
+      border-radius: 8px; 
+      font-weight: 600; 
+      font-family: monospace; 
+      font-size: 10px; 
+      text-align: center; 
+      margin-bottom: 16px; 
+      box-shadow: 0 4px 10px rgba(0,123,255,0.25); 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .usage-details { 
+      background: #ffffff; 
+      border: 1px solid #e2e8f0; 
+      border-radius: 8px; 
+      padding: 12px 14px; 
+      cursor: pointer; 
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      transition: border-color 0.2s ease;
+    }
+    .usage-details[open] { border-color: #007bff; }
+    
+    .usage-details summary { 
+      font-weight: 700; 
+      color: #007bff; 
+      outline: none; 
+      font-size: 15px; 
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .details-content { 
+      margin-top: 14px; 
+      font-size: 13px; 
+      line-height: 1.6; 
+      color: #4a5568; 
+      border-top: 1px dashed #e2e8f0; 
+      padding-top: 14px; 
+    }
+
+    .guide-section { margin-bottom: 14px; }
+    .guide-section:last-child { margin-bottom: 0; }
+    
+    .guide-section h4 { 
+      margin: 0 0 6px 0; 
+      color: #1a202c; 
+      font-size: 14px; 
+      font-weight: 600; 
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .details-content ul { padding-left: 18px; margin: 6px 0; }
+    .details-content li { margin-bottom: 8px; }
+
+    .tip-box { 
+      background: #eef6ff; 
+      border-left: 4px solid #007bff; 
+      padding: 10px 12px; 
+      border-radius: 4px; 
+      margin: 8px 0 0 0; 
+      font-size: 12px;
+      color: #1e40af;
+    }
+  `,
+  json: null,
+  js: `
+    const clockText = bodyContainer.querySelector('#clock-text');
+
+    // Función para actualizar fecha y hora automáticamente en directo
+    function updateClock() {
+      const now = new Date();
+      clockText.textContent = "Fecha y hora: " + now.toLocaleDateString('es-ES', { 
+        weekday: 'short', 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric' 
+      }) + " - " + now.toLocaleTimeString('es-ES');
+    }
+
+    // Inicializar reloj
+    updateClock();
+    const clockInterval = setInterval(updateClock, 1000);
+
+    // Cancelar temporizador cuando el modal se cierra para evitar fugas de rendimiento
+    const closeModalBtn = bodyContainer.closest('.modal-content')?.querySelector('.close-modal');
+    if (closeModalBtn) {
+      closeModalBtn.addEventListener('click', () => clearInterval(clockInterval), { once: true });
+    }
+  `
+},
+      { icon: 'https://picsum.photos/id/1025/80/80', label: 'Mascota', type: 'link', url: '#' },
+      { icon: 'fa-solid fa-bell', label: 'Avisos', type: 'link', url: '#' },
+      { icon: 'fa-solid fa-chart-line', label: 'Stats', type: 'link', url: '#' },
+      { icon: 'fa-solid fa-palette', label: 'Diseño', type: 'link', url: '#' },
+      { icon: 'fa-solid fa-wrench', label: 'Ajustes', type: 'link', url: '#' },
+      { icon: 'fa-solid fa-camera', label: 'Cámara', type: 'link', url: '#' },
+      { icon: 'fa-solid fa-magnifying-glass', label: 'Buscar', type: 'link', url: '#' },
+      { icon: '🚀', label: 'Lanzar', type: 'link', url: '#' },
+      { icon: 'fa-solid fa-database', label: 'BD 13', type: 'link', url: '#' },
+      { icon: 'https://picsum.photos/id/237/80/80', label: 'Perro 14', type: 'link', url: '#', disabled: true, disabledTooltip: 'Próximamente' }
+    ]
+  };
+
+  const container = document.getElementById('floating-menu-container');
+  const shadow = container.attachShadow({ mode: 'open' });
+
+  const style = document.createElement('style');
+  style.textContent = `
+    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
+
+    :host { all: initial; font-family: system-ui, -apple-system, sans-serif; position: relative; z-index: 2147483647 !important; }
+    .wrapper { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 2147483647 !important; isolation: isolate; touch-action: none; user-select: none; }
+    .btn { border-radius: 50%; border: none; background: #007bff; color: #fff; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; outline: none; overflow: visible; padding: 0; position: relative; }
+    .btn img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; pointer-events: none; }
+    .btn.is-disabled { background: #cccccc !important; color: #666666 !important; cursor: not-allowed !important; box-shadow: none !important; filter: grayscale(100%); opacity: 0.7; }
+    .btn.is-disabled:hover { z-index: 999999 !important; }
+    .btn.is-disabled::after { content: attr(data-tooltip); position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%) translateY(4px); background: rgba(33, 37, 41, 0.95); color: #ffffff; padding: 6px 12px; border-radius: 6px; font-size: 12px; white-space: nowrap; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.2s; z-index: 1000000 !important; }
+    .btn.is-disabled:hover::after { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    .main-btn { width: 56px; height: 56px; font-size: 22px; position: relative; z-index: 2; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease; }
+    .main-btn.active { transform: rotate(135deg); background: #dc3545; }
+    .sub-buttons { position: absolute; top: 0; left: 0; width: 56px; height: 56px; pointer-events: none; }
+    .sub-btn { width: 40px; height: 40px; font-size: 16px; position: absolute; top: 8px; left: 8px; opacity: 0; transform: translate(0, 0) scale(0); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.27), opacity 0.3s; background: #ffffff; color: #333; border: 1px solid rgba(0,0,0,0.12); }
+    .wrapper.open .sub-btn { opacity: 1; pointer-events: auto; }
+    
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.3s ease, visibility 0.3s ease; z-index: 2147483647 !important; }
+    .modal-overlay.open { opacity: 1; visibility: visible; pointer-events: auto; }
+    .modal-content { background: #fff; padding: 24px; border-radius: 16px; max-width: 400px; width: 85%; max-height: 80vh; display: flex; flex-direction: column; box-shadow: 0 12px 32px rgba(0,0,0,0.2); transform: scale(0.8) translateY(20px); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .modal-overlay.open .modal-content { transform: scale(1) translateY(0); }
+    .modal-body { overflow-y: auto; flex-grow: 1; margin-top: 10px; padding-right: 5px; }
+    .modal-header { font-size: 18px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+    .close-modal { background: none; border: none; font-size: 24px; cursor: pointer; color: #666; }
+  `;
+
+  function renderIconContent(element, iconStr) {
+    element.innerHTML = '';
+    const isImage = /\.(jpg|jpeg|png|webp|avif|gif|svg)$/i.test(iconStr) || iconStr.startsWith('http') || iconStr.startsWith('/') || iconStr.startsWith('data:image/');
+    if (isImage) { const img = document.createElement('img'); img.src = iconStr; element.appendChild(img); }
+    else if (iconStr.includes(' ')) { element.innerHTML = `<i class="${iconStr}"></i>`; }
+    else { element.textContent = iconStr; }
+  }
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'wrapper';
+  const mainBtn = document.createElement('button');
+  mainBtn.className = 'btn main-btn';
+  renderIconContent(mainBtn, menuConfig.mainIcon);
+
+  if (menuConfig.mainDisabled) {
+    mainBtn.classList.add('is-disabled');
+    mainBtn.setAttribute('data-tooltip', menuConfig.mainDisabledTooltip || 'No disponible');
+  }
+
+  const modalOverlay = document.createElement('div');
+  modalOverlay.className = 'modal-overlay';
+  modalOverlay.innerHTML = `
+    <div class="modal-content">
+      <style id="modal-custom-styles"></style>
+      <div class="modal-header">
+        <span id="modal-title-text"></span>
+        <button class="close-modal">&times;</button>
+      </div>
+      <div id="modal-body-content" class="modal-body"></div>
+    </div>
+  `;
+
+  function openDynamicModal(item) {
+    const titleText = item.title || '';
+    const htmlContent = item.html || item.content || '';
+    const cssContent = item.css || '';
+    const jsContent = item.js || item.action || null;
+    let jsonData = item.json || null;
+
+    if (typeof jsonData === 'string') {
+      try { jsonData = JSON.parse(jsonData); } catch(e) { console.warn("Error al parsear el parametro 'json':", e); }
+    }
+
+    shadow.getElementById('modal-title-text').textContent = titleText;
+    shadow.getElementById('modal-custom-styles').textContent = cssContent;
+    
+    const bodyElem = shadow.getElementById('modal-body-content');
+    bodyElem.innerHTML = htmlContent;
+
+    const embeddedScripts = bodyElem.querySelectorAll('script');
+    embeddedScripts.forEach(oldScript => {
+      const newScript = document.createElement('script');
+      Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+      newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+      oldScript.parentNode.replaceChild(newScript, oldScript);
+    });
+
+    if (jsContent) {
+      if (typeof jsContent === 'function') {
+        jsContent(bodyElem, jsonData);
+      } else if (typeof jsContent === 'string') {
+        try {
+          const dynamicFn = new Function('bodyContainer', 'data', jsContent);
+          dynamicFn(bodyElem, jsonData);
+        } catch (err) {
+          console.error("Error al ejecutar el string 'js' del modal:", err);
+        }
+      }
+    }
+
+    modalOverlay.classList.add('open');
+  }
+
+  modalOverlay.querySelector('.close-modal').addEventListener('click', () => modalOverlay.classList.remove('open'));
+
+  const subContainer = document.createElement('div');
+  subContainer.className = 'sub-buttons';
+
+  function getStartAngleDegrees(rect, vW, vH) {
+    const threshold = 140;
+    if (rect.top < threshold && rect.left < threshold) return 0;
+    if (rect.top < threshold && rect.right > vW - threshold) return 90;
+    if (rect.bottom > vH - threshold && rect.right > vW - threshold) return 180;
+    if (rect.bottom > vH - threshold && rect.left < threshold) return 270;
+    if (rect.top < threshold) return 0;
+    if (rect.bottom > vH - threshold) return 180;
+    if (rect.right > vW - threshold) return 90;
+    if (rect.left < threshold) return 270;
+    return 180; 
+  }
+
+  function calculatePositions() {
+    const rect = wrapper.getBoundingClientRect();
+    const vW = window.innerWidth, vH = window.innerHeight;
+    const startAngleRad = (getStartAngleDegrees(rect, vW, vH) * Math.PI) / 180;
+    subContainer.innerHTML = '';
+    const baseRadius = 90, ringDistance = 55, maxPerRing = 12;
+
+    menuConfig.items.forEach((item, index) => {
+      const subBtn = document.createElement('button');
+      subBtn.className = 'btn sub-btn';
+      renderIconContent(subBtn, item.icon);
+      if (item.disabled) { 
+        subBtn.classList.add('is-disabled'); 
+        subBtn.setAttribute('data-tooltip', item.disabledTooltip || 'No disponible'); 
+      }
+      
+      const ringIndex = Math.floor(index / maxPerRing);
+      const indexInRing = index % maxPerRing;
+      const itemsInThisRing = Math.min(menuConfig.items.length - (ringIndex * maxPerRing), maxPerRing);
+      const currentRadius = baseRadius + (ringIndex * ringDistance);
+      const angleStep = itemsInThisRing > 5 ? (2 * Math.PI) / itemsInThisRing : (Math.PI / (itemsInThisRing - 1 || 1));
+      const currentAngle = startAngleRad + (indexInRing * angleStep);
+
+      subBtn.dataset.x = Math.round(currentRadius * Math.cos(currentAngle));
+      subBtn.dataset.y = Math.round(currentRadius * Math.sin(currentAngle));
+
+      subBtn.addEventListener('click', (e) => {
+        if (item.disabled) return;
+        e.stopPropagation();
+        toggleMenu(false);
+        if (item.type === 'link') window.location.href = item.url;
+        else if (item.type === 'modal') openDynamicModal(item);
+      });
+      subContainer.appendChild(subBtn);
+    });
+  }
+
+  function updateSubButtonsPosition() {
+    calculatePositions();
+    const subBtns = subContainer.querySelectorAll('.sub-btn');
+    subBtns.forEach((btn) => {
+      btn.style.transitionDelay = '0ms';
+      btn.style.transform = `translate(${btn.dataset.x}px, ${btn.dataset.y}px) scale(1)`;
+    });
+  }
+
+  let isOpen = false;
+  let autoCloseTimer = null;
+
+  function resetAutoCloseTimer() {
+    clearTimeout(autoCloseTimer);
+    if (isOpen) {
+      autoCloseTimer = setTimeout(() => {
+        toggleMenu(false);
+      }, 15000);
+    }
+  }
+
+  function toggleMenu(forceState) {
+    if (menuConfig.mainDisabled) return;
+    isOpen = forceState !== undefined ? forceState : !isOpen;
+    if (isOpen) calculatePositions();
+    mainBtn.classList.toggle('active', isOpen);
+    wrapper.classList.toggle('open', isOpen);
+    const subBtns = subContainer.querySelectorAll('.sub-btn');
+    subBtns.forEach((btn, i) => {
+      btn.style.transitionDelay = isOpen ? `${i * 20}ms` : '0ms';
+      btn.style.transform = isOpen ? `translate(${btn.dataset.x}px, ${btn.dataset.y}px) scale(1)` : 'translate(0, 0) scale(0)';
+    });
+
+    resetAutoCloseTimer();
+  }
+
+  // --- ARRASTRE CON REQUESTANIMATIONFRAME ---
+  let isDragging = false;
+  let startX, startY, initialLeft, initialTop;
+  let rafId = null;
+  let pendingClampedPos = null;
+
+  function clampPosition(left, top) {
+    const btnSize = 56;
+    const margin = 12;
+    return {
+      x: Math.min(Math.max(left, margin), window.innerWidth - btnSize - margin),
+      y: Math.min(Math.max(top, margin), window.innerHeight - btnSize - margin)
+    };
+  }
+
+  function onPointerDown(e) {
+    if (menuConfig.mainDisabled) return;
+
+    resetAutoCloseTimer();
+
+    const rect = wrapper.getBoundingClientRect();
+    startX = e.clientX || e.touches?.[0].clientX;
+    startY = e.clientY || e.touches?.[0].clientY;
+    initialLeft = rect.left;
+    initialTop = rect.top;
+
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+  }
+
+  function renderMove() {
+    if (pendingClampedPos) {
+      wrapper.style.left = `${pendingClampedPos.x}px`;
+      wrapper.style.top = `${pendingClampedPos.y}px`;
+      wrapper.style.bottom = 'auto';
+      wrapper.style.transform = 'none';
+
+      if (isOpen) {
+        updateSubButtonsPosition();
+      }
+    }
+    rafId = null;
+  }
+
+  function onPointerMove(e) {
+    const currentX = e.clientX || e.touches?.[0].clientX;
+    const currentY = e.clientY || e.touches?.[0].clientY;
+    const moveX = currentX - startX;
+    const moveY = currentY - startY;
+
+    if (Math.hypot(moveX, moveY) > 5) {
+      isDragging = true;
+      resetAutoCloseTimer();
+
+      pendingClampedPos = clampPosition(initialLeft + moveX, initialTop + moveY);
+
+      if (!rafId) {
+        rafId = requestAnimationFrame(renderMove);
+      }
+    }
+  }
+
+  function onPointerUp() {
+    window.removeEventListener('pointermove', onPointerMove);
+    window.removeEventListener('pointerup', onPointerUp);
+
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+
+    if (!isDragging) {
+      toggleMenu();
+    }
+    isDragging = false;
+  }
+
+  mainBtn.addEventListener('pointerdown', onPointerDown);
+
+  // --- RE-RENDERIZADO Y CLAMPING AL REDIMENSIONAR LA PANTALLA ---
+  window.addEventListener('resize', () => {
+    const rect = wrapper.getBoundingClientRect();
+    const clamped = clampPosition(rect.left, rect.top);
+    
+    wrapper.style.left = `${clamped.x}px`;
+    wrapper.style.top = `${clamped.y}px`;
+    wrapper.style.bottom = 'auto';
+    wrapper.style.transform = 'none';
+    
+    if (isOpen) {
+      updateSubButtonsPosition();
+    }
+  });
+
+  wrapper.appendChild(mainBtn);
+  wrapper.appendChild(subContainer);
+  shadow.appendChild(style);
+  shadow.appendChild(wrapper);
+  shadow.appendChild(modalOverlay);
+})();
+</script>
+<!-- Cierre Menu General -->

@@ -3428,19 +3428,19 @@ if (document.readyState === 'loading') {
 <script>
 (function() {
   const menuConfig = {
-    // Configuración del botón principal (unificada)
+    // Configuración del botón principal
     main: {
       icon: 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/priv/arch/imagen/isede/GStudios%20Logo.png',
       disabled: false,
       disabledTooltip: 'Menú bloqueado temporalmente',
-      background: 'grey',    // Color de fondo (opcional)
+      background: 'grey',
     },
     items: [
-      { icon: 'https://picsum.photos/id/1062/80/80', label: 'Imagen Web', type: 'link', url: 'https://google.com' },
-      { icon: 'fa-solid fa-house', label: 'Inicio', type: 'link', url: '#', disabled: false },
-      { icon: 'fa-solid fa-calendar', label: 'Calendario', type: 'link', url: 'https://grouvex.com/calendario.html', background: '#00ffff'},
+      { icon: 'https://picsum.photos/id/1062/80/80', label: 'Imagen Web', type: 'link', url: 'https://google.com', disabled: true, disabledTooltip: 'Próximamente'},
+      { icon: 'fa-solid fa-house', label: 'Inicio', type: 'link', url: 'https://grouvex.com' },
+      { icon: 'fa-solid fa-calendar', label: 'Calendario', type: 'link', url: 'https://grouvex.com/calendario.html', target: '_blank', background: '#00ffff'},
       { 
-        icon: 'fa-solid fa-circle-info', 
+        icon: 'fa-solid fa-circle-info',
         label: 'Guía de uso', 
         type: 'modal', 
         title: 'Centro de Ayuda y Guía del Menú', 
@@ -3452,8 +3452,8 @@ if (document.readyState === 'loading') {
             </div>
             
             <!-- Acordeón interactivo con la documentación -->
-            <details class="usage-details" open>
-              <summary><i class="fa-solid fa-compass"></i> ¿Cómo usar el menú flotante?</summary>
+            <details class="usage-details">
+              <summary style="color: 007bff"><i class="fa-solid fa-compass"></i> ¿Cómo usar el menú flotante?</summary>
               <div class="details-content">
                 
                 <div class="guide-section">
@@ -3490,6 +3490,47 @@ if (document.readyState === 'loading') {
 
               </div>
             </details>
+            <details class="usage-details">
+              <summary><i class="fa-solid fa-magnifying-glass-location"></i> Significado y Uso de las Herramiemtas</summary>
+              <div class="details-content">
+                <details class="usage-details">
+                  <summary style="color: #00ffff"><i class="fa-solid fa-calendar"></i> Calendario</summary>
+                <div class="guide-section">
+                  <h4><i class="fa-solid fa-bullseye"></i> Propósito y Objetivo Principal</h4>
+                  <p>
+                    El objetivo de esta herramienta es <strong>dirigirte a la página del Calendario Oficial.</strong>
+                  </p>
+                </div>
+
+                <div class="guide-section">
+                  <h4><i class="fa-solid fa-hand-pointer"></i> Funcionalidades y Modo de Uso</h4>
+                  <p>Una vez que acceda, este calendario tiene las siguientes funcionalidades y modos de uso:</p>
+                  <ul>
+                    <li>
+                      <strong>Conexión con Calendario Google:</strong> todos los calendarios que se encuentran en esta página se han creado con <<a href="https://calendar.google.com/" target="_blank">Google Calendar</a>, lo que te permitirá recibir notificaciones de dicho calendario.
+                    </li>
+                    <li>
+                      <strong>Nivel de Acceso:</strong> Para mejorar la privacidad, algunos calendarios requieren tener una cuenta en <<a href="https://grouvex.com/login">Grouvex Studios</a>. Una vez que inicie sesión, podrá disfrutar, en caso de tener los permisos necesarios, de el calendario que desea acceder.
+                    </li>
+                    <li>
+                      <strong>Experiencia Visual:</strong> El sistema de calendario tiene implementada un visualizador de movimiento, en el que el "ratón", se visualiza como un dragón al cual se le ha denominado Hakayru. Por otro lado, podrá ver todos los calendarios que hay, aunque no tenga permisos para acceder a la información de el.
+                    </li>
+                    <li>
+                      <strong>Ahorro de Tiempo e Inactividad:</strong> Este calendario se encontrá disponible en la mayoria de las páginas oficiales de Grouvex Studios.
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="guide-section">
+                  <h4><i class="fa-solid fa-lightbulb"></i> Consejos de Experiencia de Usuario</h4>
+                  <p class="tip-box">
+                    <i class="fa-solid fa-star"></i> <strong>Tip:</strong> Puedes mover el menú a la zona inferior derecha si trabajas desde un ordenador, o situarlo en la parte inferior central si navegas desde tu teléfono móvil para un uso cómodo a una sola mano.
+                  </p>
+                </div>
+
+              </div>
+              </details>
+            </details>
           </div>
         `,
         css: `
@@ -3515,6 +3556,7 @@ if (document.readyState === 'loading') {
           .usage-details { 
             background: #ffffff; 
             border: 1px solid #e2e8f0; 
+            margin-bottom: 3px;
             border-radius: 8px; 
             padding: 12px 14px; 
             cursor: pointer; 
@@ -3525,7 +3567,6 @@ if (document.readyState === 'loading') {
           
           .usage-details summary { 
             font-weight: 700; 
-            color: #007bff; 
             outline: none; 
             font-size: 15px; 
             display: flex;
@@ -3594,16 +3635,14 @@ if (document.readyState === 'loading') {
           }
         `
       },
-      { icon: 'https://picsum.photos/id/1025/80/80', label: 'Mascota', type: 'link', url: '#' },
-      { icon: 'fa-solid fa-bell', label: 'Avisos', type: 'link', url: '#' },
-      { icon: 'fa-solid fa-chart-line', label: 'Stats', type: 'link', url: '#' },
-      { icon: 'fa-solid fa-palette', label: 'Diseño', type: 'link', url: '#' },
-      { icon: 'fa-solid fa-wrench', label: 'Ajustes', type: 'link', url: '#' },
-      { icon: 'fa-solid fa-camera', label: 'Cámara', type: 'link', url: '#' },
-      { icon: 'fa-solid fa-magnifying-glass', label: 'Buscar', type: 'link', url: '#' },
-      { icon: '🚀', label: 'Lanzar', type: 'link', url: '#' },
-      { icon: 'fa-solid fa-database', label: 'BD 13', type: 'link', url: '#' },
-      { icon: 'https://picsum.photos/id/237/80/80', label: 'Perro 14', type: 'link', url: '#', disabled: true, disabledTooltip: 'Próximamente' }
+      { icon: 'https://picsum.photos/id/1025/80/80', label: 'Mascota', type: 'link', url: '#' , disabled: true, disabledTooltip: 'Próximamente'},
+      { icon: 'fa-solid fa-bell', label: 'Avisos', type: 'link', url: '#' , disabled: true, disabledTooltip: 'Próximamente'},
+      { icon: 'fa-solid fa-chart-line', label: 'Stats', type: 'link', url: '#' , disabled: true, disabledTooltip: 'Próximamente'},
+      { icon: 'fa-solid fa-palette', label: 'Diseño', type: 'link', url: '#' , disabled: true, disabledTooltip: 'Próximamente'},
+      { icon: 'fa-solid fa-wrench', label: 'Ajustes', type: 'link', url: '#' , disabled: true, disabledTooltip: 'Próximamente'},
+      { icon: 'fa-solid fa-camera', label: 'Cámara', type: 'link', url: '#' , disabled: true, disabledTooltip: 'Próximamente'},
+      { icon: 'fa-solid fa-magnifying-glass', label: 'Buscar', type: 'link', url: '#', disabled: true, disabledTooltip: 'Próximamente' },
+      { icon: 'fa-solid fa-database', label: 'Portal de Miembros', type: 'link', url: 'https://script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec' , disabled: true, disabledTooltip: 'Próximamente'},
     ]
   };
 
@@ -3774,10 +3813,16 @@ if (document.readyState === 'loading') {
 
       subBtn.addEventListener('click', (e) => {
         if (item.disabled) return;
-        e.stopPropagation();
-        toggleMenu(false);
-        if (item.type === 'link') window.location.href = item.url;
-        else if (item.type === 'modal') openDynamicModal(item);
+        e.stopPropagation(); toggleMenu(false);
+        if (item.type === 'link') {
+          if (item.target) {
+            window.open(item.url, item.target);
+          } else {
+            window.location.href = item.url;
+          }
+        } else if (item.type === 'modal') {
+          openDynamicModal(item);
+        }
       });
       subContainer.appendChild(subBtn);
     });

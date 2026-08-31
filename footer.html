@@ -3417,7 +3417,6 @@ if (document.readyState === 'loading') {
 }
 </script>
 
-
 <!-- Menu General -->
 <!-- Librería de iconos opcional -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
@@ -3427,13 +3426,111 @@ if (document.readyState === 'loading') {
 
 <script>
 (function() {
+  // --- FUNCIÓN SEGURA PARA localStorage ---
+  function getStorageItem(key, defaultValue) {
+    try {
+      // Intentar usar localStorage
+      const value = localStorage.getItem(key);
+      if (value !== null) {
+        // Si es boolean, convertirlo
+        if (value === 'true') return true;
+        if (value === 'false') return false;
+        // Si es número, convertirlo
+        if (!isNaN(value) && value !== '') return Number(value);
+        return value;
+      }
+      return defaultValue;
+    } catch (e) {
+      // Si falla localStorage, usar sessionStorage como fallback
+      try {
+        const value = sessionStorage.getItem(key);
+        if (value !== null) {
+          if (value === 'true') return true;
+          if (value === 'false') return false;
+          if (!isNaN(value) && value !== '') return Number(value);
+          return value;
+        }
+        return defaultValue;
+      } catch (e2) {
+        // Si todo falla, usar memoria
+        return defaultValue;
+      }
+    }
+  }
+
+  function setStorageItem(key, value) {
+    try {
+      // Convertir a string para almacenar
+      const stringValue = typeof value === 'string' ? value : JSON.stringify(value);
+      localStorage.setItem(key, stringValue);
+    } catch (e) {
+      try {
+        // Fallback a sessionStorage
+        const stringValue = typeof value === 'string' ? value : JSON.stringify(value);
+        sessionStorage.setItem(key, stringValue);
+      } catch (e2) {
+        // Si todo falla, guardar en memoria (no persistente)
+        window._menuSettings = window._menuSettings || {};
+        window._menuSettings[key] = value;
+      }
+    }
+  }
+
+  function getStorageValue(key, defaultValue) {
+    try {
+      // Primero intentar localStorage
+      const value = localStorage.getItem(key);
+      if (value !== null) {
+        if (value === 'true') return true;
+        if (value === 'false') return false;
+        if (!isNaN(value) && value !== '') return Number(value);
+        return value;
+      }
+    } catch (e) {
+      // Si falla, intentar sessionStorage
+      try {
+        const value = sessionStorage.getItem(key);
+        if (value !== null) {
+          if (value === 'true') return true;
+          if (value === 'false') return false;
+          if (!isNaN(value) && value !== '') return Number(value);
+          return value;
+        }
+      } catch (e2) {
+        // Si todo falla, usar memoria
+        if (window._menuSettings && window._menuSettings[key] !== undefined) {
+          return window._menuSettings[key];
+        }
+      }
+    }
+    return defaultValue;
+  }
+
+  // --- LEER CONFIGURACIÓN GUARDADA ---
+  const savedDrag = getStorageValue('dragEnabled', true);
+  const savedShadow = getStorageValue('shadowEnabled', true);
+  const savedAnimation = getStorageValue('animationEnabled', true);
+  const savedAutoClose = getStorageValue('autoCloseEnabled', true);
+  const savedAutoCloseTimeout = getStorageValue('autoCloseTimeout', 15);
+  const savedPosition = getStorageValue('menuPosition', 'bottom-center');
+  const savedMainSize = getStorageValue('mainSize', 56);
+  const savedSubSize = getStorageValue('subSize', 40);
+  const savedMainBg = getStorageValue('mainBg', '#007bff');
+  const savedSubBg = getStorageValue('subBg', '#ffffff');
+  const savedIconColor = getStorageValue('iconColor', '#333333');
+  const savedOpenBg = getStorageValue('openBg', '#d7b4b7');
+  const savedRadius = getStorageValue('menuRadius', 90);
+
+  // --- EXPONER funciones de storage globalmente ---
+  window.setStorageItem = setStorageItem;
+  window.getStorageValue = getStorageValue;
+
   const menuConfig = {
-    // Configuración del botón principal
     main: {
       icon: 'https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/priv/arch/imagen/isede/GStudios%20Logo.png',
       disabled: false,
       disabledTooltip: 'Menú bloqueado temporalmente',
-      background: 'grey',
+      background: savedMainBg,
     },
     items: [
       { icon: 'https://picsum.photos/id/1062/80/80', label: 'Imagen Web', type: 'link', url: 'https://google.com', disabled: true, disabledTooltip: 'Próximamente'},
@@ -3446,16 +3543,13 @@ if (document.readyState === 'loading') {
         title: 'Centro de Ayuda y Guía del Menú', 
         html: `
           <div class="guide-box">
-            <!-- Módulo de Reloj en Tiempo Real -->
             <div id="info-clock" class="clock-display">
               <i class="fa-solid fa-clock"></i> <span id="clock-text">Cargando fecha y hora...</span>
             </div>
             
-            <!-- Acordeón interactivo con la documentación -->
             <details class="usage-details">
               <summary style="color: 007bff"><i class="fa-solid fa-compass"></i> ¿Cómo usar el menú flotante?</summary>
               <div class="details-content">
-                
                 <div class="guide-section">
                   <h4><i class="fa-solid fa-bullseye"></i> Propósito y Objetivo Principal</h4>
                   <p>
@@ -3487,7 +3581,6 @@ if (document.readyState === 'loading') {
                     <i class="fa-solid fa-star"></i> <strong>Tip:</strong> Puedes mover el menú a la zona inferior derecha si trabajas desde un ordenador, o situarlo en la parte inferior central si navegas desde tu teléfono móvil para un uso cómodo a una sola mano.
                   </p>
                 </div>
-
               </div>
             </details>
             <details class="usage-details">
@@ -3495,47 +3588,78 @@ if (document.readyState === 'loading') {
               <div class="details-content">
                 <details class="usage-details">
                   <summary style="color: #00ffff"><i class="fa-solid fa-calendar"></i> Calendario</summary>
-                <div class="guide-section">
-                  <h4><i class="fa-solid fa-bullseye"></i> Propósito y Objetivo Principal</h4>
-                  <p>
-                    El objetivo de esta herramienta es <strong>dirigirte a la página del Calendario Oficial.</strong>
-                  </p>
-                </div>
-
-                <div class="guide-section">
-                  <h4><i class="fa-solid fa-hand-pointer"></i> Funcionalidades y Modo de Uso</h4>
-                  <p>Una vez que acceda, este calendario tiene las siguientes funcionalidades y modos de uso:</p>
-                  <ul>
-                    <li>
-                      <strong>Conexión con Calendario Google:</strong> todos los calendarios que se encuentran en esta página se han creado con <<a href="https://calendar.google.com/" target="_blank">Google Calendar</a>, lo que te permitirá recibir notificaciones de dicho calendario.
-                    </li>
-                    <li>
-                      <strong>Nivel de Acceso:</strong> Para mejorar la privacidad, algunos calendarios requieren tener una cuenta en <<a href="https://grouvex.com/login">Grouvex Studios</a>. Una vez que inicie sesión, podrá disfrutar, en caso de tener los permisos necesarios, de el calendario que desea acceder.
-                    </li>
-                    <li>
-                      <strong>Experiencia Visual:</strong> El sistema de calendario tiene implementada un visualizador de movimiento, en el que el "ratón", se visualiza como un dragón al cual se le ha denominado Hakayru. Por otro lado, podrá ver todos los calendarios que hay, aunque no tenga permisos para acceder a la información de el.
-                    </li>
-                    <li>
-                      <strong>Ahorro de Tiempo e Inactividad:</strong> Este calendario se encontrá disponible en la mayoria de las páginas oficiales de Grouvex Studios.
-                    </li>
-                  </ul>
-                </div>
-
-                <div class="guide-section">
-                  <h4><i class="fa-solid fa-lightbulb"></i> Consejos de Experiencia de Usuario</h4>
-                  <p class="tip-box">
-                    <i class="fa-solid fa-star"></i> <strong>Tip:</strong> Puedes mover el menú a la zona inferior derecha si trabajas desde un ordenador, o situarlo en la parte inferior central si navegas desde tu teléfono móvil para un uso cómodo a una sola mano.
-                  </p>
-                </div>
-
+                  <div class="guide-section">
+                    <h4><i class="fa-solid fa-bullseye"></i> Propósito y Objetivo Principal</h4>
+                    <p>
+                      El objetivo de esta herramienta es <strong>dirigirte a la página del Calendario Oficial.</strong>
+                    </p>
+                  </div>
+                  <div class="guide-section">
+                    <h4><i class="fa-solid fa-hand-pointer"></i> Funcionalidades y Modo de Uso</h4>
+                    <p>Una vez que acceda, este calendario tiene las siguientes funcionalidades y modos de uso:</p>
+                    <ul>
+                      <li>
+                        <strong>Conexión con Calendario Google:</strong> todos los calendarios que se encuentran en esta página se han creado con <<a href="https://calendar.google.com/" target="_blank">Google Calendar</a>, lo que te permitirá recibir notificaciones de dicho calendario.
+                      </li>
+                      <li>
+                        <strong>Nivel de Acceso:</strong> Para mejorar la privacidad, algunos calendarios requieren tener una cuenta en <<a href="https://grouvex.com/login">Grouvex Studios</a>. Una vez que inicie sesión, podrá disfrutar, en caso de tener los permisos necesarios, de el calendario que desea acceder.
+                      </li>
+                      <li>
+                        <strong>Experiencia Visual:</strong> El sistema de calendario tiene implementada un visualizador de movimiento, en el que el "ratón", se visualiza como un dragón al cual se le ha denominado Hakayru. Por otro lado, podrá ver todos los calendarios que hay, aunque no tenga permisos para acceder a la información de el.
+                      </li>
+                      <li>
+                        <strong>Ahorro de Tiempo e Inactividad:</strong> Este calendario se encontrá disponible en la mayoria de las páginas oficiales de Grouvex Studios.
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="guide-section">
+                    <h4><i class="fa-solid fa-lightbulb"></i> Consejos de Experiencia de Usuario</h4>
+                    <p class="tip-box">
+                      <i class="fa-solid fa-star"></i> <strong>Tip:</strong> Puedes mover el menú a la zona inferior derecha si trabajas desde un ordenador, o situarlo en la parte inferior central si navegas desde tu teléfono móvil para un uso cómodo a una sola mano.
+                    </p>
+                  </div>
+                </details>
+                <details class="usage-details">
+                  <summary style="color: brown"><i class="fa-solid fa-wrench"></i> Ajustes</summary>
+                  <div class="guide-section">
+                    <h4><i class="fa-solid fa-bullseye"></i> Propósito y Objetivo Principal</h4>
+                    <p>
+                      El objetivo de esta herramienta es <strong>personalizar la apariencia y comportamiento del menú flotante.</strong>
+                    </p>
+                  </div>
+                  <div class="guide-section">
+                    <h4><i class="fa-solid fa-hand-pointer"></i> Funcionalidades y Modo de Uso</h4>
+                    <ul>
+                      <li>
+                        <strong>Posición:</strong> Puedes mover el menú a cualquier esquina o posición de la pantalla.
+                      </li>
+                      <li>
+                        <strong>Tamaño:</strong> Ajusta el tamaño del botón principal y los sub-botones.
+                      </li>
+                      <li>
+                        <strong>Colores:</strong> Personaliza los colores del menú a tu gusto.
+                      </li>
+                      <li>
+                        <strong>Autocierre:</strong> Activa o desactiva el cierre automático y ajusta el tiempo.
+                      </li>
+                      <li>
+                        <strong>Opciones adicionales:</strong> Controla el arrastre, sombras y animaciones.
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="guide-section">
+                    <h4><i class="fa-solid fa-lightbulb"></i> Consejos de Experiencia de Usuario</h4>
+                    <p class="tip-box">
+                      <i class="fa-solid fa-star"></i> <strong>Tip:</strong> Todas las configuraciones se guardan automáticamente y persisten entre sesiones.
+                    </p>
+                  </div>
+                </details>
               </div>
-              </details>
             </details>
           </div>
         `,
         css: `
           .guide-box { background: #fdfdfd; color: #2c3e50; padding: 18px; border-radius: 12px; border: 1px solid #eaedd0; font-family: system-ui, -apple-system, sans-serif; }
-          
           .clock-display { 
             background: linear-gradient(135deg, #007bff, #0056b3); 
             color: #ffffff; 
@@ -3552,7 +3676,6 @@ if (document.readyState === 'loading') {
             justify-content: center;
             gap: 8px;
           }
-
           .usage-details { 
             background: #ffffff; 
             border: 1px solid #e2e8f0; 
@@ -3564,7 +3687,6 @@ if (document.readyState === 'loading') {
             transition: border-color 0.2s ease;
           }
           .usage-details[open] { border-color: #007bff; }
-          
           .usage-details summary { 
             font-weight: 700; 
             outline: none; 
@@ -3573,7 +3695,6 @@ if (document.readyState === 'loading') {
             align-items: center;
             gap: 8px;
           }
-
           .details-content { 
             margin-top: 14px; 
             font-size: 13px; 
@@ -3582,10 +3703,8 @@ if (document.readyState === 'loading') {
             border-top: 1px dashed #e2e8f0; 
             padding-top: 14px; 
           }
-
           .guide-section { margin-bottom: 14px; }
           .guide-section:last-child { margin-bottom: 0; }
-          
           .guide-section h4 { 
             margin: 0 0 6px 0; 
             color: #1a202c; 
@@ -3595,10 +3714,8 @@ if (document.readyState === 'loading') {
             align-items: center;
             gap: 6px;
           }
-
           .details-content ul { padding-left: 18px; margin: 6px 0; }
           .details-content li { margin-bottom: 8px; }
-
           .tip-box { 
             background: #eef6ff; 
             border-left: 4px solid #007bff; 
@@ -3612,8 +3729,6 @@ if (document.readyState === 'loading') {
         json: null,
         js: `
           const clockText = bodyContainer.querySelector('#clock-text');
-
-          // Función para actualizar fecha y hora automáticamente en directo
           function updateClock() {
             const now = new Date();
             clockText.textContent = "Fecha y hora: " + now.toLocaleDateString('es-ES', { 
@@ -3623,23 +3738,1182 @@ if (document.readyState === 'loading') {
               day: 'numeric' 
             }) + " - " + now.toLocaleTimeString('es-ES');
           }
-
-          // Inicializar reloj
           updateClock();
           const clockInterval = setInterval(updateClock, 1000);
-
-          // Cancelar temporizador cuando el modal se cierra para evitar fugas de rendimiento
           const closeModalBtn = bodyContainer.closest('.modal-content')?.querySelector('.close-modal');
           if (closeModalBtn) {
             closeModalBtn.addEventListener('click', () => clearInterval(clockInterval), { once: true });
           }
         `
       },
+      {
+        icon: 'fa-solid fa-wrench',
+        label: 'Ajustes del Menú',
+        type: 'modal',
+        title: '⚙️ Configuración del Menú Flotante',
+        html: `
+          <div id="showToastMenuFlotante"></div>
+          <div class="settings-panel">
+            <!-- POSICIÓN -->
+            <div class="setting-group">
+              <h4><i class="fa-solid fa-location-dot"></i> Posición</h4>
+              <div class="position-grid">
+                <button class="pos-btn" data-pos="top-left">↖</button>
+                <button class="pos-btn" data-pos="top-center">↑</button>
+                <button class="pos-btn" data-pos="top-right">↗</button>
+                <button class="pos-btn" data-pos="middle-left">←</button>
+                <button class="pos-btn" data-pos="middle-center">●</button>
+                <button class="pos-btn" data-pos="middle-right">→</button>
+                <button class="pos-btn" data-pos="bottom-left">↙</button>
+                <button class="pos-btn" data-pos="bottom-center">↓</button>
+                <button class="pos-btn" data-pos="bottom-right">↘</button>
+              </div>
+            </div>
+
+            <!-- TAMAÑO -->
+            <div class="setting-group">
+              <h4><i class="fa-solid fa-expand"></i> Tamaño</h4>
+              <div class="size-control">
+                <label>Botón principal: <span id="main-size-value">56</span>px</label>
+                <input type="range" id="main-size" min="40" max="80" value="56">
+                <label>Sub-botones: <span id="sub-size-value">40</span>px</label>
+                <input type="range" id="sub-size" min="30" max="60" value="40">
+                <label>Radio de apertura: <span id="radius-value">90</span>px</label>
+                <input type="range" id="radius-control" min="80" max="200" value="90">
+              </div>
+            </div>
+
+            <!-- COLORES -->
+            <div class="setting-group">
+              <h4><i class="fa-solid fa-palette"></i> Colores</h4>
+              <div class="color-controls">
+                <div>
+                  <label>Fondo principal</label>
+                  <input type="color" id="main-bg-color" value="#007bff">
+                </div>
+                <div>
+                  <label>Fondo al abrir</label>
+                  <input type="color" id="open-bg-color" value="#d7b4b7">
+                </div>
+                <div>
+                  <label>Fondo sub-botones</label>
+                  <input type="color" id="sub-bg-color" value="#ffffff">
+                </div>
+                <div>
+                  <label>Color iconos</label>
+                  <input type="color" id="icon-color" value="#333333">
+                </div>
+              </div>
+            </div>
+
+            <!-- AUTOCIERRE -->
+            <div class="setting-group">
+              <h4><i class="fa-solid fa-clock"></i> Autocierre</h4>
+              <div class="toggle-control">
+                <label>
+                  <input type="checkbox" id="auto-close-toggle" checked>
+                  Activar autocierre
+                </label>
+                <div id="auto-close-settings" style="margin-top: 8px;">
+                  <label>Tiempo: <span id="timeout-value">15</span> segundos</label>
+                  <input type="range" id="timeout-control" min="5" max="60" value="15">
+                </div>
+              </div>
+            </div>
+
+            <!-- OPCIONES ADICIONALES -->
+            <div class="setting-group">
+              <h4><i class="fa-solid fa-sliders"></i> Opciones adicionales</h4>
+              <div class="toggle-control">
+                <label>
+                  <input type="checkbox" id="drag-toggle" checked>
+                  Permitir arrastre
+                </label>
+                <label>
+                  <input type="checkbox" id="shadow-toggle" checked>
+                  Mostrar sombra
+                </label>
+                <label>
+                  <input type="checkbox" id="animation-toggle" checked>
+                  Animaciones suaves
+                </label>
+              </div>
+            </div>
+
+            <!-- BOTONES DE ACCIÓN -->
+            <div class="action-buttons">
+              <button id="reset-settings" class="reset-btn">🔄 Restaurar predeterminados</button>
+              <button id="close-settings" class="close-btn">✓ Aplicar y cerrar</button>
+            </div>
+          </div>
+        `,
+        css: `
+          .settings-panel {
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 4px;
+          }
+          .setting-group {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 14px;
+            border: 1px solid #e9ecef;
+          }
+          .setting-group h4 {
+            margin: 0 0 12px 0;
+            color: #2c3e50;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+          }
+          .position-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            max-width: 200px;
+            margin: 0 auto;
+          }
+          .pos-btn {
+            padding: 8px;
+            border: 2px solid #dee2e6;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+            font-weight: bold;
+          }
+          .pos-btn:hover {
+            border-color: #007bff;
+            background: #e7f1ff;
+          }
+          .pos-btn.active {
+            border-color: #007bff;
+            background: #007bff;
+            color: white;
+          }
+          .size-control {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+          }
+          .size-control label {
+            font-size: 13px;
+            color: #495057;
+            display: flex;
+            justify-content: space-between;
+          }
+          .size-control input[type="range"] {
+            width: 100%;
+            height: 4px;
+            background: #dee2e6;
+            border-radius: 2px;
+            outline: none;
+            -webkit-appearance: none;
+          }
+          .size-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #007bff;
+            border-radius: 50%;
+            cursor: pointer;
+          }
+          .color-controls {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            align-items: end;
+          }
+          .color-controls div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+          }
+          .color-controls label {
+            font-size: 11px;
+            color: #495057;
+            text-align: center;
+          }
+          .color-controls input[type="color"] {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #dee2e6;
+            border-radius: 6px;
+            cursor: pointer;
+            padding: 2px;
+            background: white;
+          }
+          .toggle-control {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+          }
+          .toggle-control label {
+            font-size: 13px;
+            color: #495057;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+          }
+          .toggle-control input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+          }
+          .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+          }
+          .action-buttons button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+          }
+          .reset-btn {
+            background: #ffc107;
+            color: #212529;
+          }
+          .reset-btn:hover {
+            background: #e0a800;
+          }
+          .close-btn {
+            background: #28a745;
+            color: white;
+          }
+          .close-btn:hover {
+            background: #218838;
+          }
+        `,
+        js: function(bodyContainer, data) {
+          setTimeout(function() {
+            const menuContainer = document.getElementById('floating-menu-container');
+            if (!menuContainer) return;
+            
+            const shadowRoot = menuContainer.shadowRoot;
+            if (!shadowRoot) return;
+            
+            const wrapper = shadowRoot.querySelector('.wrapper');
+            if (!wrapper) return;
+
+            const modalOverlay = shadowRoot.querySelector('.modal-overlay');
+            if (!modalOverlay) return;
+
+            // --- FUNCIONES DE CONFIGURACIÓN CON STORAGE SEGURO ---
+
+            function setStorageItem(key, value) {
+              try {
+                const stringValue = typeof value === 'string' ? value : JSON.stringify(value);
+                localStorage.setItem(key, stringValue);
+              } catch (e) {
+                try {
+                  sessionStorage.setItem(key, JSON.stringify(value));
+                } catch (e2) {
+                  window._menuSettings = window._menuSettings || {};
+                  window._menuSettings[key] = value;
+                }
+              }
+            }
+
+            function getStorageValue(key, defaultValue) {
+              try {
+                const value = localStorage.getItem(key);
+                if (value !== null) {
+                  if (value === 'true') return true;
+                  if (value === 'false') return false;
+                  if (!isNaN(value) && value !== '') return Number(value);
+                  return value;
+                }
+              } catch (e) {
+                try {
+                  const value = sessionStorage.getItem(key);
+                  if (value !== null) {
+                    try { return JSON.parse(value); } catch(e2) { return value; }
+                  }
+                } catch (e2) {
+                  if (window._menuSettings && window._menuSettings[key] !== undefined) {
+                    return window._menuSettings[key];
+                  }
+                }
+              }
+              return defaultValue;
+            }
+
+            function setPosition(pos) {
+              wrapper.style.bottom = 'auto';
+              wrapper.style.left = 'auto';
+              wrapper.style.right = 'auto';
+              wrapper.style.top = 'auto';
+              wrapper.style.transform = 'none';
+              
+              const margin = 20;
+              switch(pos) {
+                case 'bottom-left':
+                  wrapper.style.bottom = margin + 'px';
+                  wrapper.style.left = margin + 'px';
+                  break;
+                case 'bottom-center':
+                  wrapper.style.bottom = margin + 'px';
+                  wrapper.style.left = '50%';
+                  wrapper.style.transform = 'translateX(-50%)';
+                  break;
+                case 'bottom-right':
+                  wrapper.style.bottom = margin + 'px';
+                  wrapper.style.right = margin + 'px';
+                  break;
+                case 'middle-left':
+                  wrapper.style.top = '50%';
+                  wrapper.style.left = margin + 'px';
+                  wrapper.style.transform = 'translateY(-50%)';
+                  break;
+                case 'middle-center':
+                  wrapper.style.top = '50%';
+                  wrapper.style.left = '50%';
+                  wrapper.style.transform = 'translate(-50%, -50%)';
+                  break;
+                case 'middle-right':
+                  wrapper.style.top = '50%';
+                  wrapper.style.right = margin + 'px';
+                  wrapper.style.transform = 'translateY(-50%)';
+                  break;
+                case 'top-left':
+                  wrapper.style.top = margin + 'px';
+                  wrapper.style.left = margin + 'px';
+                  break;
+                case 'top-center':
+                  wrapper.style.top = margin + 'px';
+                  wrapper.style.left = '50%';
+                  wrapper.style.transform = 'translateX(-50%)';
+                  break;
+                case 'top-right':
+                  wrapper.style.top = margin + 'px';
+                  wrapper.style.right = margin + 'px';
+                  break;
+              }
+              
+              setStorageItem('menuPosition', pos);
+              
+              bodyContainer.querySelectorAll('.pos-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.pos === pos);
+              });
+            }
+
+            function setMainSize(size) {
+              const mainBtn = wrapper.querySelector('.main-btn');
+              if (mainBtn) {
+                mainBtn.style.width = size + 'px';
+                mainBtn.style.height = size + 'px';
+                mainBtn.style.fontSize = (size * 0.4) + 'px';
+                const valueSpan = bodyContainer.querySelector('#main-size-value');
+                if (valueSpan) valueSpan.textContent = size;
+                setStorageItem('mainSize', size);
+              }
+            }
+
+            function setSubSize(size) {
+              const subBtns = wrapper.querySelectorAll('.sub-btn');
+              subBtns.forEach(btn => {
+                btn.style.width = size + 'px';
+                btn.style.height = size + 'px';
+                btn.style.fontSize = (size * 0.4) + 'px';
+              });
+              const valueSpan = bodyContainer.querySelector('#sub-size-value');
+              if (valueSpan) valueSpan.textContent = size;
+              setStorageItem('subSize', size);
+            }
+
+            function setColors(mainBg, subBg, iconColor, openBg) {
+              const mainBtn = wrapper.querySelector('.main-btn');
+              const subBtns = wrapper.querySelectorAll('.sub-btn');
+              
+              if (mainBtn) {
+                // ✅ Guardar en localStorage
+                setStorageItem('mainBg', mainBg);
+                setStorageItem('subBg', subBg);
+                setStorageItem('iconColor', iconColor);
+                setStorageItem('openBg', openBg || '#d7b4b7');
+                
+                // ✅ Solo cambiar el color si NO está abierto
+                if (!wrapper.classList.contains('open')) {
+                  mainBtn.style.background = mainBg;
+                }
+                // Si está abierto, NO cambiar, mantener el openBg actual
+              }
+              
+              subBtns.forEach(btn => {
+                btn.style.background = subBg;
+                btn.style.color = iconColor;
+              });
+            }
+
+            function setRadius(radius) {
+              const valueSpan = bodyContainer.querySelector('#radius-value');
+              if (valueSpan) valueSpan.textContent = radius;
+              setStorageItem('menuRadius', radius);
+              
+              const subBtns = wrapper.querySelectorAll('.sub-btn');
+              const baseRadius = parseInt(radius);
+              const ringDistance = 55;
+              const maxPerRing = 12;
+              
+              const rect = wrapper.getBoundingClientRect();
+              const vW = window.innerWidth;
+              const vH = window.innerHeight;
+              
+              function getStartAngleDegrees(rect, vW, vH) {
+                // --- CALCULAR UMBRAL DE FORMA DINÁMICA ---
+                const mainSize = getStorageValue('mainSize', 56);
+                const radius = getStorageValue('menuRadius', 90);
+                const threshold = mainSize + radius + 40;
+                const safeZone = threshold * 1.5; // 50% más que el umbral
+                
+                const centerX = rect.left + (rect.width / 2);
+                const centerY = rect.top + (rect.height / 2);
+                
+                // Distancias a cada borde
+                const distTop = centerY;
+                const distBottom = vH - centerY;
+                const distLeft = centerX;
+                const distRight = vW - centerX;
+                
+                // Verificar si está en la zona segura (lejos de todos los bordes)
+                const isInSafeZone = distTop > safeZone && 
+                                    distBottom > safeZone && 
+                                    distLeft > safeZone && 
+                                    distRight > safeZone;
+                
+                // Si está en la zona segura, mantener el ángulo actual
+                if (isInSafeZone) {
+                  return getStorageValue('menuAngle', 180);
+                }
+                
+                // --- CALCULAR MEJOR ÁNGULO SEGÚN LA POSICIÓN ---
+                
+                // Determinar el borde más cercano
+                const minDist = Math.min(distTop, distBottom, distLeft, distRight);
+                
+                // Si está en el centro pero fuera de la zona segura
+                if (minDist > threshold) {
+                  const angle = Math.atan2(
+                    (vH / 2) - centerY,
+                    (vW / 2) - centerX
+                  ) * (180 / Math.PI);
+                  
+                  let finalAngle = Math.round(angle / 45) * 45;
+                  if (finalAngle < 0) finalAngle += 360;
+                  const result = finalAngle % 360;
+                  
+                  setStorageItem('menuAngle', result);
+                  return result;
+                }
+                
+                // Determinar la región exacta con ángulos de 45°
+                const isTop = distTop < threshold;
+                const isBottom = distBottom < threshold;
+                const isLeft = distLeft < threshold;
+                const isRight = distRight < threshold;
+                
+                let newAngle = 180;
+                
+                // Esquinas (45°)
+                if (isTop && isLeft) newAngle = 315;
+                else if (isTop && isRight) newAngle = 45;
+                else if (isBottom && isRight) newAngle = 135;
+                else if (isBottom && isLeft) newAngle = 225;
+                
+                // Bordes (90°)
+                else if (isTop) {
+                  newAngle = 0;
+                } else if (isBottom) {
+                  newAngle = 180;
+                } else if (isLeft) {
+                  newAngle = 270;
+                } else if (isRight) {
+                  newAngle = 90;
+                }
+                
+                setStorageItem('menuAngle', newAngle);
+                return newAngle;
+              }
+              
+              const startAngleRad = (getStartAngleDegrees(rect, vW, vH) * Math.PI) / 180;
+              
+              const menuConfig = window.menuConfig || { items: [] };
+              
+              subBtns.forEach((btn, index) => {
+                const ringIndex = Math.floor(index / maxPerRing);
+                const indexInRing = index % maxPerRing;
+                const itemsInThisRing = Math.min(menuConfig.items.length - (ringIndex * maxPerRing), maxPerRing);
+                const currentRadius = baseRadius + (ringIndex * ringDistance);
+                const angleStep = itemsInThisRing > 5 ? (2 * Math.PI) / itemsInThisRing : (Math.PI / (itemsInThisRing - 1 || 1));
+                const currentAngle = startAngleRad + (indexInRing * angleStep);
+                
+                const x = Math.round(currentRadius * Math.cos(currentAngle));
+                const y = Math.round(currentRadius * Math.sin(currentAngle));
+                
+                btn.dataset.x = x;
+                btn.dataset.y = y;
+                
+                if (wrapper.classList.contains('open')) {
+                  btn.style.transform = `translate(${x}px, ${y}px) scale(1)`;
+                }
+              });
+            }
+
+            function setAutoClose(enabled, timeout) {
+              setStorageItem('autoCloseEnabled', enabled);
+              setStorageItem('autoCloseTimeout', timeout);
+              const valueSpan = bodyContainer.querySelector('#timeout-value');
+              if (valueSpan) valueSpan.textContent = timeout;
+              
+              const event = new CustomEvent('autoCloseUpdate', { 
+                detail: { enabled, timeout } 
+              });
+              document.dispatchEvent(event);
+            }
+
+            function setDrag(enabled) {
+              setStorageItem('dragEnabled', enabled);
+              if (enabled) {
+                wrapper.style.touchAction = 'none';
+                wrapper.style.userSelect = 'none';
+              } else {
+                wrapper.style.touchAction = 'auto';
+                wrapper.style.userSelect = 'auto';
+              }
+            }
+
+            function setShadow(enabled) {
+              setStorageItem('shadowEnabled', enabled);
+              const mainBtn = wrapper.querySelector('.main-btn');
+              const subBtns = wrapper.querySelectorAll('.sub-btn');
+              
+              if (enabled) {
+                if (mainBtn) mainBtn.style.boxShadow = '0 4px 12px rgba(0,0,0,0.25)';
+                subBtns.forEach(btn => {
+                  btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+                });
+              } else {
+                if (mainBtn) mainBtn.style.boxShadow = 'none';
+                subBtns.forEach(btn => {
+                  btn.style.boxShadow = 'none';
+                });
+              }
+            }
+
+            function setAnimation(enabled) {
+              setStorageItem('animationEnabled', enabled);
+              const mainBtn = wrapper.querySelector('.main-btn');
+              const subBtns = wrapper.querySelectorAll('.sub-btn');
+              
+              if (enabled) {
+                if (mainBtn) {
+                  mainBtn.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease, color 0.3s ease';
+                }
+                subBtns.forEach(btn => {
+                  btn.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.27), opacity 0.3s, background 0.3s ease, color 0.3s ease';
+                });
+              } else {
+                if (mainBtn) mainBtn.style.transition = 'none';
+                subBtns.forEach(btn => {
+                  btn.style.transition = 'none';
+                });
+              }
+            }
+
+            function resetDefaults() {
+              const defaults = {
+                position: 'bottom-center',
+                mainSize: 56,
+                subSize: 40,
+                mainBg: '#007bff',
+                subBg: '#ffffff',
+                iconColor: '#333333',
+                openBg: '#d7b4b7',
+                radius: 90,
+                autoClose: true,
+                timeout: 15,
+                drag: true,
+                shadow: true,
+                animation: true
+              };
+              
+              setPosition(defaults.position);
+              setMainSize(defaults.mainSize);
+              setSubSize(defaults.subSize);
+              setColors(defaults.mainBg, defaults.subBg, defaults.iconColor, defaults.openBg);
+              setRadius(defaults.radius);
+              setAutoClose(defaults.autoClose, defaults.timeout);
+              setDrag(defaults.drag);
+              setShadow(defaults.shadow);
+              setAnimation(defaults.animation);
+              
+              const controls = {
+                'main-size': defaults.mainSize,
+                'sub-size': defaults.subSize,
+                'radius-control': defaults.radius,
+                'main-bg-color': defaults.mainBg,
+                'sub-bg-color': defaults.subBg,
+                'icon-color': defaults.iconColor,
+                'open-bg-color': defaults.openBg,
+                'timeout-control': defaults.timeout
+              };
+              
+              Object.keys(controls).forEach(id => {
+                const el = bodyContainer.querySelector('#' + id);
+                if (el) el.value = controls[id];
+              });
+              
+              const toggles = {
+                'auto-close-toggle': defaults.autoClose,
+                'drag-toggle': defaults.drag,
+                'shadow-toggle': defaults.shadow,
+                'animation-toggle': defaults.animation
+              };
+              
+              Object.keys(toggles).forEach(id => {
+                const el = bodyContainer.querySelector('#' + id);
+                if (el) el.checked = toggles[id];
+              });
+              
+              showToast('✅ Configuración restaurada');
+            }
+
+            function showToast(message) {
+              // Buscar el contenedor dentro del modal
+              let container = document.getElementById('showToastMenuFlotante');
+              
+              // Si no existe, crearlo dentro del modal
+              if (!container) {
+                container = document.createElement('div');
+                container.id = 'showToastMenuFlotante';
+                
+                // Insertar al inicio del settings-panel
+                const settingsPanel = document.querySelector('.settings-panel');
+                if (settingsPanel && settingsPanel.parentNode) {
+                  settingsPanel.parentNode.insertBefore(container, settingsPanel);
+                } else {
+                  // Fallback: insertar en el body
+                  document.body.appendChild(container);
+                }
+              }
+
+              // Limpiar timeout anterior
+              if (container.dataset.timeoutId) {
+                clearTimeout(Number(container.dataset.timeoutId));
+                delete container.dataset.timeoutId;
+              }
+
+              // Mostrar el mensaje como texto dentro del modal
+              container.textContent = message;
+              container.style.cssText = `
+                display: block !important;
+                background: #28a745;
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 500;
+                font-family: system-ui, -apple-system, sans-serif;
+                margin-bottom: 15px;
+                text-align: center;
+                animation: slideDown 0.3s ease;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                border: 1px solid rgba(255,255,255,0.2);
+                opacity: 1;
+                transition: opacity 0.5s ease;
+              `;
+
+              // Agregar animación si no existe
+              if (!document.getElementById('toast-animations')) {
+                const style = document.createElement('style');
+                style.id = 'toast-animations';
+                style.textContent = `
+                  @keyframes slideDown {
+                    from {
+                      opacity: 0;
+                      transform: translateY(-10px);
+                    }
+                    to {
+                      opacity: 1;
+                      transform: translateY(0);
+                    }
+                  }
+                `;
+                document.head.appendChild(style);
+              }
+
+              // Auto-ocultar después de 2.5 segundos
+              const timeoutId = setTimeout(() => {
+                container.style.opacity = '0';
+                setTimeout(() => {
+                  container.style.display = 'none';
+                  container.textContent = '';
+                }, 500);
+              }, 2500);
+
+              container.dataset.timeoutId = timeoutId;
+            }
+
+            // --- CONFIGURAR EVENTOS ---
+
+            bodyContainer.querySelectorAll('.pos-btn').forEach(btn => {
+              btn.addEventListener('click', function() {
+                setPosition(this.dataset.pos);
+                showToast('📍 Posición: ' + this.dataset.pos.replace('-', ' '));
+              });
+            });
+
+            const mainSizeInput = bodyContainer.querySelector('#main-size');
+            const subSizeInput = bodyContainer.querySelector('#sub-size');
+            
+            if (mainSizeInput) {
+              mainSizeInput.addEventListener('input', function() {
+                setMainSize(parseInt(this.value));
+              });
+            }
+            
+            if (subSizeInput) {
+              subSizeInput.addEventListener('input', function() {
+                setSubSize(parseInt(this.value));
+              });
+            }
+
+            const mainBgInput = bodyContainer.querySelector('#main-bg-color');
+            const subBgInput = bodyContainer.querySelector('#sub-bg-color');
+            const iconColorInput = bodyContainer.querySelector('#icon-color');
+            const openBgInput = bodyContainer.querySelector('#open-bg-color');
+            
+            if (mainBgInput) {
+              mainBgInput.addEventListener('input', function() {
+                const subBg = subBgInput ? subBgInput.value : '#ffffff';
+                const iconColor = iconColorInput ? iconColorInput.value : '#333333';
+                const openBg = openBgInput ? openBgInput.value : '#d7b4b7';
+                setColors(this.value, subBg, iconColor, openBg);
+              });
+            }
+            
+            if (subBgInput) {
+              subBgInput.addEventListener('input', function() {
+                const mainBg = mainBgInput ? mainBgInput.value : '#007bff';
+                const iconColor = iconColorInput ? iconColorInput.value : '#333333';
+                const openBg = openBgInput ? openBgInput.value : '#d7b4b7';
+                setColors(mainBg, this.value, iconColor, openBg);
+              });
+            }
+            
+            if (iconColorInput) {
+              iconColorInput.addEventListener('input', function() {
+                const mainBg = mainBgInput ? mainBgInput.value : '#007bff';
+                const subBg = subBgInput ? subBgInput.value : '#ffffff';
+                const openBg = openBgInput ? openBgInput.value : '#d7b4b7';
+                setColors(mainBg, subBg, this.value, openBg);
+              });
+            }
+
+            if (openBgInput) {
+              openBgInput.addEventListener('input', function() {
+                const mainBtn = wrapper.querySelector('.main-btn');
+                if (mainBtn) {
+                  // Guardar en localStorage
+                  setStorageItem('openBg', this.value);
+                  // Si el menú está abierto, aplicar el color inmediatamente
+                  if (wrapper.classList.contains('open')) {
+                    mainBtn.style.background = this.value;
+                  }
+                }
+              });
+            }
+
+            const radiusControl = bodyContainer.querySelector('#radius-control');
+            if (radiusControl) {
+              radiusControl.addEventListener('input', function() {
+                setRadius(parseInt(this.value));
+              });
+            }
+
+            const autoCloseToggle = bodyContainer.querySelector('#auto-close-toggle');
+            const timeoutControl = bodyContainer.querySelector('#timeout-control');
+            
+            if (autoCloseToggle) {
+              autoCloseToggle.addEventListener('change', function() {
+                const settingsDiv = bodyContainer.querySelector('#auto-close-settings');
+                if (settingsDiv) {
+                  settingsDiv.style.display = this.checked ? 'block' : 'none';
+                }
+                const timeout = timeoutControl ? parseInt(timeoutControl.value) : 15;
+                setAutoClose(this.checked, timeout);
+                showToast(this.checked ? '⏱️ Autocierre activado' : '⏸️ Autocierre desactivado');
+              });
+            }
+            
+            if (timeoutControl) {
+              timeoutControl.addEventListener('input', function() {
+                const enabled = autoCloseToggle ? autoCloseToggle.checked : true;
+                setAutoClose(enabled, parseInt(this.value));
+              });
+            }
+
+            const dragToggle = bodyContainer.querySelector('#drag-toggle');
+            const shadowToggle = bodyContainer.querySelector('#shadow-toggle');
+            const animationToggle = bodyContainer.querySelector('#animation-toggle');
+            
+            if (dragToggle) {
+              dragToggle.addEventListener('change', function() {
+                setDrag(this.checked);
+                showToast(this.checked ? '🔄 Arrastre activado' : '🔒 Arrastre desactivado');
+              });
+            }
+            
+            if (shadowToggle) {
+              shadowToggle.addEventListener('change', function() {
+                setShadow(this.checked);
+                showToast(this.checked ? '💡 Sombras activadas' : '💡 Sombras desactivadas');
+              });
+            }
+            
+            if (animationToggle) {
+              animationToggle.addEventListener('change', function() {
+                setAnimation(this.checked);
+                showToast(this.checked ? '✨ Animaciones activadas' : '⏩ Animaciones desactivadas');
+              });
+            }
+
+            const resetBtn = bodyContainer.querySelector('#reset-settings');
+            const closeBtn = bodyContainer.querySelector('#close-settings');
+            
+            if (resetBtn) {
+              resetBtn.addEventListener('click', function() {
+                if (confirm('¿Restaurar todos los valores predeterminados?')) {
+                  resetDefaults();
+                }
+              });
+            }
+            
+            if (closeBtn) {
+              closeBtn.addEventListener('click', function() {
+                const modalOverlay = shadowRoot.querySelector('.modal-overlay');
+                if (modalOverlay) {
+                  modalOverlay.classList.remove('open');
+                  showToast('✅ Configuración aplicada');
+                }
+              });
+            }
+
+            // --- CARGAR CONFIGURACIÓN GUARDADA ---
+
+            function getStorageValueSafe(key, defaultValue) {
+              try {
+                const value = localStorage.getItem(key);
+                if (value !== null) {
+                  if (value === 'true') return true;
+                  if (value === 'false') return false;
+                  if (!isNaN(value) && value !== '') return Number(value);
+                  return value;
+                }
+              } catch (e) {
+                try {
+                  const value = sessionStorage.getItem(key);
+                  if (value !== null) {
+                    try { return JSON.parse(value); } catch(e2) { return value; }
+                  }
+                } catch (e2) {
+                  if (window._menuSettings && window._menuSettings[key] !== undefined) {
+                    return window._menuSettings[key];
+                  }
+                }
+              }
+              return defaultValue;
+            }
+
+            const savedPos = getStorageValueSafe('menuPosition');
+            if (savedPos) {
+              setPosition(savedPos);
+              const activeBtn = bodyContainer.querySelector(`[data-pos="${savedPos}"]`);
+              if (activeBtn) activeBtn.classList.add('active');
+            }
+
+            const savedMainSize = getStorageValueSafe('mainSize');
+            if (savedMainSize && mainSizeInput) {
+              mainSizeInput.value = savedMainSize;
+              setMainSize(parseInt(savedMainSize));
+            }
+
+            const savedSubSize = getStorageValueSafe('subSize');
+            if (savedSubSize && subSizeInput) {
+              subSizeInput.value = savedSubSize;
+              setSubSize(parseInt(savedSubSize));
+            }
+
+            const savedMainBg = getStorageValueSafe('mainBg');
+            const savedSubBg = getStorageValueSafe('subBg');
+            const savedIconColor = getStorageValueSafe('iconColor');
+            const savedOpenBg = getStorageValueSafe('openBg');
+            
+            if (savedMainBg && mainBgInput) {
+              mainBgInput.value = savedMainBg;
+            }
+            if (savedSubBg && subBgInput) {
+              subBgInput.value = savedSubBg;
+            }
+            if (savedIconColor && iconColorInput) {
+              iconColorInput.value = savedIconColor;
+            }
+            if (savedOpenBg && openBgInput) {
+              openBgInput.value = savedOpenBg;
+            }
+
+            const savedRadius = getStorageValueSafe('menuRadius');
+            if (savedRadius && radiusControl) {
+              radiusControl.value = savedRadius;
+              const valueSpan = bodyContainer.querySelector('#radius-value');
+              if (valueSpan) valueSpan.textContent = savedRadius;
+              setRadius(parseInt(savedRadius));
+            }
+
+            const savedAutoClose = getStorageValueSafe('autoCloseEnabled');
+            const savedTimeout = getStorageValueSafe('autoCloseTimeout');
+            
+            if (savedAutoClose !== null && autoCloseToggle) {
+              autoCloseToggle.checked = savedAutoClose === true;
+              const settingsDiv = bodyContainer.querySelector('#auto-close-settings');
+              if (settingsDiv) {
+                settingsDiv.style.display = savedAutoClose ? 'block' : 'none';
+              }
+            }
+            if (savedTimeout && timeoutControl) {
+              timeoutControl.value = savedTimeout;
+              const valueSpan = bodyContainer.querySelector('#timeout-value');
+              if (valueSpan) valueSpan.textContent = savedTimeout;
+            }
+
+            const savedDrag = getStorageValueSafe('dragEnabled');
+            const savedShadow = getStorageValueSafe('shadowEnabled');
+            const savedAnimation = getStorageValueSafe('animationEnabled');
+            
+            if (savedDrag !== null && dragToggle) {
+              dragToggle.checked = savedDrag === true;
+              setDrag(savedDrag === true);
+            }
+            if (savedShadow !== null && shadowToggle) {
+              shadowToggle.checked = savedShadow === true;
+              setShadow(savedShadow === true);
+            }
+            if (savedAnimation !== null && animationToggle) {
+              animationToggle.checked = savedAnimation === true;
+              setAnimation(savedAnimation === true);
+            }
+
+            const style = document.createElement('style');
+            style.textContent = `
+              @keyframes fadeInUp {
+                from {
+                  opacity: 0;
+                  transform: translateX(-50%) translateY(20px);
+                }
+                to {
+                  opacity: 1;
+                  transform: translateX(-50%) translateY(0);
+                }
+              }
+            `;
+            document.head.appendChild(style);
+
+          }, 150);
+        }
+      },
+      { icon: 'fa-solid fa-globe', label: 'Links Oficiales', type: 'modal', title: 'Links Oficiales (LO)' , disabled: false, disabledTooltip: 'Próximamente', background: 'red',
+        html: `
+          <div class="guide-box">     
+            <p>Aquí dispoines de varios links de interes según tus necesidades.</p>       
+            <details class="usage-details">
+              <summary style="color: 007bff"><i class="fa-solid fa-bullsey"></i> LO de Grouvex Studios</summary>
+              <div class="details-content">
+                
+                <div class="guide-section">
+                  <h4>Documentos Oficiales</h4>
+                  <ul>
+                    <li><a href="https://drive.google.com/drive/folders/1d9RgDnoGOU9ce2bf9gvUxByZtgzQOBnT?usp=drive_link" target="_blank" rel="noopener noreferrer">Carpeta General de los Documentos Oficiales de Grouvex Studios (DDOO)</a></li>
+                    <li><a href="https://drive.google.com/drive/folders/1mArQVxQNJjADnY2x3BNA227hGUfl7FSj?usp=sharing" target="_blank" rel="noopener noreferrer">Carpeta General de la Clasificación de Contenidos y Protección de Menores</a></li>
+                  </ul>
+                </div>
+
+                <div class="guide-section">
+                  <h4>Pagina Web - Grouvex Studios</h4>
+                  <ul>
+                    <li><a href="https://grouvex.github.io/">Inicio</a></li>
+                    <li><a href="https://grouvex.com/faqs">Preguntas Frecuentes</a></li>
+                    <li><a href="https://grouvex.com/buscar">Buscador Web</a></li>
+                    <li><a href="https://grouvex.com/login">Iniciar Sesión</a></li>
+                    <li><a href="https://grouvex.com/comunidad">Comunidad</a></li>
+                  </ul>
+                </div>
+
+                <div class="guide-section">
+                  <h4><i class="fa-solid fa-lightbulb"></i> Consejos de Experiencia de Usuario</h4>
+                  <p class="tip-box">
+                    <i class="fa-solid fa-star"></i> <strong>Tip:</strong> Puedes mover el menú a la zona inferior derecha si trabajas desde un ordenador, o situarlo en la parte inferior central si navegas desde tu teléfono móvil para un uso cómodo a una sola mano.
+                  </p>
+                </div>
+              </div>
+            </details>
+            <details class="usage-details">
+              <summary><i class="fa-solid fa-magnifying-glass-location"></i> Significado y Uso de las Herramiemtas</summary>
+              <div class="details-content">
+                <details class="usage-details">
+                  <summary style="color: #00ffff"><i class="fa-solid fa-calendar"></i> Calendario</summary>
+                  <div class="guide-section">
+                    <h4><i class="fa-solid fa-bullseye"></i> Propósito y Objetivo Principal</h4>
+                    <p>
+                      El objetivo de esta herramienta es <strong>dirigirte a la página del Calendario Oficial.</strong>
+                    </p>
+                  </div>
+                  <div class="guide-section">
+                    <h4><i class="fa-solid fa-hand-pointer"></i> Funcionalidades y Modo de Uso</h4>
+                    <p>Una vez que acceda, este calendario tiene las siguientes funcionalidades y modos de uso:</p>
+                    <ul>
+                      <li>
+                        <strong>Conexión con Calendario Google:</strong> todos los calendarios que se encuentran en esta página se han creado con <<a href="https://calendar.google.com/" target="_blank">Google Calendar</a>, lo que te permitirá recibir notificaciones de dicho calendario.
+                      </li>
+                      <li>
+                        <strong>Nivel de Acceso:</strong> Para mejorar la privacidad, algunos calendarios requieren tener una cuenta en <<a href="https://grouvex.com/login">Grouvex Studios</a>. Una vez que inicie sesión, podrá disfrutar, en caso de tener los permisos necesarios, de el calendario que desea acceder.
+                      </li>
+                      <li>
+                        <strong>Experiencia Visual:</strong> El sistema de calendario tiene implementada un visualizador de movimiento, en el que el "ratón", se visualiza como un dragón al cual se le ha denominado Hakayru. Por otro lado, podrá ver todos los calendarios que hay, aunque no tenga permisos para acceder a la información de el.
+                      </li>
+                      <li>
+                        <strong>Ahorro de Tiempo e Inactividad:</strong> Este calendario se encontrá disponible en la mayoria de las páginas oficiales de Grouvex Studios.
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="guide-section">
+                    <h4><i class="fa-solid fa-lightbulb"></i> Consejos de Experiencia de Usuario</h4>
+                    <p class="tip-box">
+                      <i class="fa-solid fa-star"></i> <strong>Tip:</strong> Puedes mover el menú a la zona inferior derecha si trabajas desde un ordenador, o situarlo en la parte inferior central si navegas desde tu teléfono móvil para un uso cómodo a una sola mano.
+                    </p>
+                  </div>
+                </details>
+                <details class="usage-details">
+                  <summary style="color: brown"><i class="fa-solid fa-wrench"></i> Ajustes</summary>
+                  <div class="guide-section">
+                    <h4><i class="fa-solid fa-bullseye"></i> Propósito y Objetivo Principal</h4>
+                    <p>
+                      El objetivo de esta herramienta es <strong>personalizar la apariencia y comportamiento del menú flotante.</strong>
+                    </p>
+                  </div>
+                  <div class="guide-section">
+                    <h4><i class="fa-solid fa-hand-pointer"></i> Funcionalidades y Modo de Uso</h4>
+                    <ul>
+                      <li>
+                        <strong>Posición:</strong> Puedes mover el menú a cualquier esquina o posición de la pantalla.
+                      </li>
+                      <li>
+                        <strong>Tamaño:</strong> Ajusta el tamaño del botón principal y los sub-botones.
+                      </li>
+                      <li>
+                        <strong>Colores:</strong> Personaliza los colores del menú a tu gusto.
+                      </li>
+                      <li>
+                        <strong>Autocierre:</strong> Activa o desactiva el cierre automático y ajusta el tiempo.
+                      </li>
+                      <li>
+                        <strong>Opciones adicionales:</strong> Controla el arrastre, sombras y animaciones.
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="guide-section">
+                    <h4><i class="fa-solid fa-lightbulb"></i> Consejos de Experiencia de Usuario</h4>
+                    <p class="tip-box">
+                      <i class="fa-solid fa-star"></i> <strong>Tip:</strong> Todas las configuraciones se guardan automáticamente y persisten entre sesiones.
+                    </p>
+                  </div>
+                </details>
+              </div>
+            </details>
+          </div>
+        `,
+        css: `
+          .guide-box { background: #fdfdfd; color: #2c3e50; padding: 18px; border-radius: 12px; border: 1px solid #eaedd0; font-family: system-ui, -apple-system, sans-serif; }
+          .clock-display { 
+            background: linear-gradient(135deg, #007bff, #0056b3); 
+            color: #ffffff; 
+            padding: 12px 16px; 
+            border-radius: 8px; 
+            font-weight: 600; 
+            font-family: monospace; 
+            font-size: 10px; 
+            text-align: center; 
+            margin-bottom: 16px; 
+            box-shadow: 0 4px 10px rgba(0,123,255,0.25); 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+          }
+          .usage-details { 
+            background: #ffffff; 
+            border: 1px solid #e2e8f0; 
+            margin-bottom: 3px;
+            border-radius: 8px; 
+            padding: 12px 14px; 
+            cursor: pointer; 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            transition: border-color 0.2s ease;
+          }
+          .usage-details[open] { border-color: #007bff; }
+          .usage-details summary { 
+            font-weight: 700; 
+            outline: none; 
+            font-size: 15px; 
+            display: flex;
+            align-items: center;
+            gap: 8px;
+          }
+          .details-content { 
+            margin-top: 14px; 
+            font-size: 13px; 
+            line-height: 1.6; 
+            color: #4a5568; 
+            border-top: 1px dashed #e2e8f0; 
+            padding-top: 14px; 
+          }
+          .guide-section { margin-bottom: 14px; }
+          .guide-section:last-child { margin-bottom: 0; }
+          .guide-section h4 { 
+            margin: 0 0 6px 0; 
+            color: #1a202c; 
+            font-size: 14px; 
+            font-weight: 600; 
+            display: flex;
+            align-items: center;
+            gap: 6px;
+          }
+          .details-content ul { padding-left: 18px; margin: 6px 0; }
+          .details-content li { margin-bottom: 8px; }
+          .tip-box { 
+            background: #eef6ff; 
+            border-left: 4px solid #007bff; 
+            padding: 10px 12px; 
+            border-radius: 4px; 
+            margin: 8px 0 0 0; 
+            font-size: 12px;
+            color: #1e40af;
+          }
+        `,
+        json: null,
+        js: null
+      },
       { icon: 'https://picsum.photos/id/1025/80/80', label: 'Mascota', type: 'link', url: '#' , disabled: true, disabledTooltip: 'Próximamente'},
-      { icon: 'fa-solid fa-bell', label: 'Avisos', type: 'link', url: '#' , disabled: true, disabledTooltip: 'Próximamente'},
       { icon: 'fa-solid fa-chart-line', label: 'Stats', type: 'link', url: '#' , disabled: true, disabledTooltip: 'Próximamente'},
       { icon: 'fa-solid fa-palette', label: 'Diseño', type: 'link', url: '#' , disabled: true, disabledTooltip: 'Próximamente'},
-      { icon: 'fa-solid fa-wrench', label: 'Ajustes', type: 'link', url: '#' , disabled: true, disabledTooltip: 'Próximamente'},
       { icon: 'fa-solid fa-camera', label: 'Cámara', type: 'link', url: '#' , disabled: true, disabledTooltip: 'Próximamente'},
       { icon: 'fa-solid fa-magnifying-glass', label: 'Buscar', type: 'link', url: '#', disabled: true, disabledTooltip: 'Próximamente' },
       { icon: 'fa-solid fa-database', label: 'Portal de Miembros', type: 'link', url: 'https://script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec' , disabled: true, disabledTooltip: 'Próximamente'},
@@ -3663,7 +4937,7 @@ if (document.readyState === 'loading') {
     .btn.is-disabled::after { content: attr(data-tooltip); position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%) translateY(4px); background: rgba(33, 37, 41, 0.95); color: #ffffff; padding: 6px 12px; border-radius: 6px; font-size: 12px; white-space: nowrap; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.2s; z-index: 1000000 !important; }
     .btn.is-disabled:hover::after { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
     .main-btn { width: 56px; height: 56px; font-size: 22px; position: relative; z-index: 2; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease, color 0.3s ease; }
-    .main-btn.active { transform: rotate(135deg); background: #d7b4b7 !important; color: #ffffff !important; }
+    .main-btn.active { transform: rotate(135deg); background: #d7b4b7 }
     .sub-buttons { position: absolute; top: 0; left: 0; width: 56px; height: 56px; pointer-events: none; }
     .sub-btn { width: 40px; height: 40px; font-size: 16px; position: absolute; top: 8px; left: 8px; opacity: 0; transform: translate(0, 0) scale(0); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.27), opacity 0.3s, background 0.3s ease, color 0.3s ease; background: #ffffff; color: #333; border: 1px solid rgba(0,0,0,0.12); }
     .wrapper.open .sub-btn { opacity: 1; pointer-events: auto; }
@@ -3693,10 +4967,65 @@ if (document.readyState === 'loading') {
 
   const wrapper = document.createElement('div');
   wrapper.className = 'wrapper';
+  
+  // --- FUNCIÓN PARA APLICAR POSICIÓN ---
+  function applySavedPosition(pos) {
+    wrapper.style.bottom = 'auto';
+    wrapper.style.left = 'auto';
+    wrapper.style.right = 'auto';
+    wrapper.style.top = 'auto';
+    wrapper.style.transform = 'none';
+    
+    const margin = 20;
+    switch(pos) {
+      case 'bottom-left':
+        wrapper.style.bottom = margin + 'px';
+        wrapper.style.left = margin + 'px';
+        break;
+      case 'bottom-center':
+        wrapper.style.bottom = margin + 'px';
+        wrapper.style.left = '50%';
+        wrapper.style.transform = 'translateX(-50%)';
+        break;
+      case 'bottom-right':
+        wrapper.style.bottom = margin + 'px';
+        wrapper.style.right = margin + 'px';
+        break;
+      case 'middle-left':
+        wrapper.style.top = '50%';
+        wrapper.style.left = margin + 'px';
+        wrapper.style.transform = 'translateY(-50%)';
+        break;
+      case 'middle-center':
+        wrapper.style.top = '50%';
+        wrapper.style.left = '50%';
+        wrapper.style.transform = 'translate(-50%, -50%)';
+        break;
+      case 'middle-right':
+        wrapper.style.top = '50%';
+        wrapper.style.right = margin + 'px';
+        wrapper.style.transform = 'translateY(-50%)';
+        break;
+      case 'top-left':
+        wrapper.style.top = margin + 'px';
+        wrapper.style.left = margin + 'px';
+        break;
+      case 'top-center':
+        wrapper.style.top = margin + 'px';
+        wrapper.style.left = '50%';
+        wrapper.style.transform = 'translateX(-50%)';
+        break;
+      case 'top-right':
+        wrapper.style.top = margin + 'px';
+        wrapper.style.right = margin + 'px';
+        break;
+    }
+  }
+  applySavedPosition(savedPosition);
+
   const mainBtn = document.createElement('button');
   mainBtn.className = 'btn main-btn';
   
-  // Aplicar colores del botón principal
   const mainConfig = menuConfig.main || {};
   if (mainConfig.background) mainBtn.style.background = mainConfig.background;
   if (mainConfig.color) mainBtn.style.color = mainConfig.color;
@@ -3706,6 +5035,28 @@ if (document.readyState === 'loading') {
   if (mainConfig.disabled) {
     mainBtn.classList.add('is-disabled');
     mainBtn.setAttribute('data-tooltip', mainConfig.disabledTooltip || 'No disponible');
+  }
+
+  // --- APLICAR CONFIGURACIONES GUARDADAS ---
+  mainBtn.style.width = savedMainSize + 'px';
+  mainBtn.style.height = savedMainSize + 'px';
+  mainBtn.style.fontSize = (savedMainSize * 0.4) + 'px';
+  mainBtn.style.background = savedMainBg;
+  mainBtn.dataset.openBg = savedOpenBg;
+
+  if (savedShadow) {
+    mainBtn.style.boxShadow = '0 4px 12px rgba(0,0,0,0.25)';
+  } else {
+    mainBtn.style.boxShadow = 'none';
+  }
+
+  if (!savedAnimation) {
+    mainBtn.style.transition = 'none';
+  }
+
+  if (!savedDrag) {
+    wrapper.style.touchAction = 'auto';
+    wrapper.style.userSelect = 'auto';
   }
 
   const modalOverlay = document.createElement('div');
@@ -3768,16 +5119,79 @@ if (document.readyState === 'loading') {
   subContainer.className = 'sub-buttons';
 
   function getStartAngleDegrees(rect, vW, vH) {
-    const threshold = 140;
-    if (rect.top < threshold && rect.left < threshold) return 0;
-    if (rect.top < threshold && rect.right > vW - threshold) return 90;
-    if (rect.bottom > vH - threshold && rect.right > vW - threshold) return 180;
-    if (rect.bottom > vH - threshold && rect.left < threshold) return 270;
-    if (rect.top < threshold) return 0;
-    if (rect.bottom > vH - threshold) return 180;
-    if (rect.right > vW - threshold) return 90;
-    if (rect.left < threshold) return 270;
-    return 180; 
+    // --- CALCULAR UMBRAL DE FORMA DINÁMICA ---
+    const mainSize = getStorageValue('mainSize', 56);
+    const radius = getStorageValue('menuRadius', 90);
+    const threshold = mainSize + radius + 40;
+    const safeZone = threshold * 1.5; // 50% más que el umbral
+    
+    const centerX = rect.left + (rect.width / 2);
+    const centerY = rect.top + (rect.height / 2);
+    
+    // Distancias a cada borde
+    const distTop = centerY;
+    const distBottom = vH - centerY;
+    const distLeft = centerX;
+    const distRight = vW - centerX;
+    
+    // Verificar si está en la zona segura (lejos de todos los bordes)
+    const isInSafeZone = distTop > safeZone && 
+                        distBottom > safeZone && 
+                        distLeft > safeZone && 
+                        distRight > safeZone;
+    
+    // Si está en la zona segura, mantener el ángulo actual
+    if (isInSafeZone) {
+      return getStorageValue('menuAngle', 180);
+    }
+    
+    // --- CALCULAR MEJOR ÁNGULO SEGÚN LA POSICIÓN ---
+    
+    // Determinar el borde más cercano
+    const minDist = Math.min(distTop, distBottom, distLeft, distRight);
+    
+    // Si está en el centro pero fuera de la zona segura
+    if (minDist > threshold) {
+      const angle = Math.atan2(
+        (vH / 2) - centerY,
+        (vW / 2) - centerX
+      ) * (180 / Math.PI);
+      
+      let finalAngle = Math.round(angle / 45) * 45;
+      if (finalAngle < 0) finalAngle += 360;
+      const result = finalAngle % 360;
+      
+      setStorageItem('menuAngle', result);
+      return result;
+    }
+    
+    // Determinar la región exacta con ángulos de 45°
+    const isTop = distTop < threshold;
+    const isBottom = distBottom < threshold;
+    const isLeft = distLeft < threshold;
+    const isRight = distRight < threshold;
+    
+    let newAngle = 180;
+    
+    // Esquinas (45°)
+    if (isTop && isLeft) newAngle = 315;
+    else if (isTop && isRight) newAngle = 45;
+    else if (isBottom && isRight) newAngle = 135;
+    else if (isBottom && isLeft) newAngle = 225;
+    
+    // Bordes (90°)
+    else if (isTop) {
+      newAngle = 0;
+    } else if (isBottom) {
+      newAngle = 180;
+    } else if (isLeft) {
+      newAngle = 270;
+    } else if (isRight) {
+      newAngle = 90;
+    }
+    
+    setStorageItem('menuAngle', newAngle);
+    return newAngle;
   }
 
   function calculatePositions() {
@@ -3785,15 +5199,42 @@ if (document.readyState === 'loading') {
     const vW = window.innerWidth, vH = window.innerHeight;
     const startAngleRad = (getStartAngleDegrees(rect, vW, vH) * Math.PI) / 180;
     subContainer.innerHTML = '';
-    const baseRadius = 90, ringDistance = 55, maxPerRing = 12;
+    
+    // LEER EL RADIO GUARDADO
+    const subBg = getStorageValue('subBg', '#ffffff');
+    const iconColor = getStorageValue('iconColor', '#333333');
+    const savedShadow = getStorageValue('shadowEnabled', true);
+    const savedAnimation = getStorageValue('animationEnabled', true);
+    const savedRadius = getStorageValue('menuRadius', 90);
+    const baseRadius = savedRadius;
+    const ringDistance = 55;
+    const maxPerRing = 12;
 
     menuConfig.items.forEach((item, index) => {
       const subBtn = document.createElement('button');
       subBtn.className = 'btn sub-btn';
       subBtn.title = item.label;
-      // Aplicar colores personalizados al subbotón
       if (item.background) subBtn.style.background = item.background;
       if (item.color) subBtn.style.color = item.color;
+      
+      // Aplicar colores guardados
+      subBtn.style.background = item.background || subBg;
+      subBtn.style.color = item.color || iconColor;
+      
+      // Aplicar tamaño guardado
+      subBtn.style.width = savedSubSize + 'px';
+      subBtn.style.height = savedSubSize + 'px';
+      subBtn.style.fontSize = (savedSubSize * 0.4) + 'px';
+      
+      // Aplicar sombra guardada
+      if (!savedShadow) {
+        subBtn.style.boxShadow = 'none !important';
+      }
+      
+      // Aplicar animaciones guardadas
+      if (!savedAnimation) {
+        subBtn.style.transition = 'none';
+      }
       
       renderIconContent(subBtn, item.icon);
       if (item.disabled) { 
@@ -3807,9 +5248,10 @@ if (document.readyState === 'loading') {
       const currentRadius = baseRadius + (ringIndex * ringDistance);
       const angleStep = itemsInThisRing > 5 ? (2 * Math.PI) / itemsInThisRing : (Math.PI / (itemsInThisRing - 1 || 1));
       const currentAngle = startAngleRad + (indexInRing * angleStep);
-
-      subBtn.dataset.x = Math.round(currentRadius * Math.cos(currentAngle));
-      subBtn.dataset.y = Math.round(currentRadius * Math.sin(currentAngle));
+      const x = Math.round(currentRadius * Math.cos(currentAngle));
+      const y = Math.round(currentRadius * Math.sin(currentAngle));
+      subBtn.dataset.x = x;
+      subBtn.dataset.y = y;
 
       subBtn.addEventListener('click', (e) => {
         if (item.disabled) return;
@@ -3842,36 +5284,69 @@ if (document.readyState === 'loading') {
 
   function resetAutoCloseTimer() {
     clearTimeout(autoCloseTimer);
-    if (isOpen) {
+    
+    const enabled = getStorageValue('autoCloseEnabled', true);
+    const timeout = getStorageValue('autoCloseTimeout', 15);
+    
+    if (isOpen && enabled) {
       autoCloseTimer = setTimeout(() => {
         toggleMenu(false);
-      }, 15000);
+      }, timeout * 1000);
     }
   }
 
-  function toggleMenu(forceState) {
-    if (menuConfig.main?.disabled) return;
-    isOpen = forceState !== undefined ? forceState : !isOpen;
-    if (isOpen) calculatePositions();
-    mainBtn.classList.toggle('active', isOpen);
-    wrapper.classList.toggle('open', isOpen);
-    const subBtns = subContainer.querySelectorAll('.sub-btn');
-    subBtns.forEach((btn, i) => {
-      btn.style.transitionDelay = isOpen ? `${i * 20}ms` : '0ms';
-      btn.style.transform = isOpen ? `translate(${btn.dataset.x}px, ${btn.dataset.y}px) scale(1)` : 'translate(0, 0) scale(0)';
-    });
+  document.addEventListener('autoCloseUpdate', function(e) {
+    if (isOpen) {
+      resetAutoCloseTimer();
+    }
+  });
 
-    resetAutoCloseTimer();
+function toggleMenu(forceState) {
+  if (menuConfig.main?.disabled) return;
+  isOpen = forceState !== undefined ? forceState : !isOpen;
+  
+  if (isOpen) {
+    calculatePositions();
   }
+  
+  mainBtn.classList.toggle('active', isOpen);
+  wrapper.classList.toggle('open', isOpen);
+  
+  // ✅ CORREGIDO: Aplicar colores correctamente
+  if (isOpen) {
+    const openBg = getStorageValue('openBg', '#d7b4b7');
+    mainBtn.style.background = openBg;
+  } else {
+    const mainBg = getStorageValue('mainBg', '#007bff');
+    mainBtn.style.background = mainBg;
+  }
+  
+  const subBtns = subContainer.querySelectorAll('.sub-btn');
+  subBtns.forEach((btn, i) => {
+    btn.style.transitionDelay = isOpen ? `${i * 20}ms` : '0ms';
+    btn.style.transform = isOpen ? `translate(${btn.dataset.x}px, ${btn.dataset.y}px) scale(1)` : 'translate(0, 0) scale(0)';
+    
+    const shadowEnabled = getStorageValue('shadowEnabled', true);
+    if (shadowEnabled) {
+      btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+    } else {
+      btn.style.boxShadow = 'none';
+    }
+  });
 
-  // --- ARRASTRE CON REQUESTANIMATIONFRAME ---
+  resetAutoCloseTimer();
+}
+
+  // --- ARRASTRE Y APERTURA DEL MENÚ ---
   let isDragging = false;
   let startX, startY, initialLeft, initialTop;
   let rafId = null;
   let pendingClampedPos = null;
+  let pointerDownTime = 0;
+  let hasToggled = false;
 
   function clampPosition(left, top) {
-    const btnSize = 56;
+    const btnSize = savedMainSize;
     const margin = 12;
     return {
       x: Math.min(Math.max(left, margin), window.innerWidth - btnSize - margin),
@@ -3879,17 +5354,46 @@ if (document.readyState === 'loading') {
     };
   }
 
+  // --- FUNCIÓN PARA ABRIR/CERRAR EL MENÚ ---
+  function handleMenuToggle() {
+    if (menuConfig.main?.disabled) return;
+    if (!hasToggled) {
+      hasToggled = true;
+      toggleMenu();
+      // Resetear después de un pequeño delay para evitar doble toggle
+      setTimeout(() => {
+        hasToggled = false;
+      }, 300);
+    }
+  }
+
+  // --- FUNCIÓN PARA INICIAR ARRASTRE ---
   function onPointerDown(e) {
     if (menuConfig.main?.disabled) return;
-
-    resetAutoCloseTimer();
-
+    
+    // Guardar tiempo para detectar click vs arrastre
+    pointerDownTime = Date.now();
+    
+    // Verificar si el arrastre está habilitado
+    const dragEnabled = getStorageValue('dragEnabled', true);
+    
+    // Guardar posición inicial para detectar arrastre
     const rect = wrapper.getBoundingClientRect();
     startX = e.clientX || e.touches?.[0].clientX;
     startY = e.clientY || e.touches?.[0].clientY;
     initialLeft = rect.left;
     initialTop = rect.top;
+    
+    // Resetear estado de arrastre
+    isDragging = false;
 
+    // Si el arrastre está desactivado, abrir/cerrar el menú
+    if (!dragEnabled) {
+      handleMenuToggle();
+      return;
+    }
+
+    // Si el arrastre está activado, escuchar movimientos
     window.addEventListener('pointermove', onPointerMove);
     window.addEventListener('pointerup', onPointerUp);
   }
@@ -3914,6 +5418,7 @@ if (document.readyState === 'loading') {
     const moveX = currentX - startX;
     const moveY = currentY - startY;
 
+    // Si se movió más de 5px, considerar como arrastre
     if (Math.hypot(moveX, moveY) > 5) {
       isDragging = true;
       resetAutoCloseTimer();
@@ -3926,7 +5431,7 @@ if (document.readyState === 'loading') {
     }
   }
 
-  function onPointerUp() {
+  function onPointerUp(e) {
     window.removeEventListener('pointermove', onPointerMove);
     window.removeEventListener('pointerup', onPointerUp);
 
@@ -3935,15 +5440,39 @@ if (document.readyState === 'loading') {
       rafId = null;
     }
 
-    if (!isDragging) {
-      toggleMenu();
+    // Calcular tiempo del clic
+    const clickDuration = Date.now() - pointerDownTime;
+    
+    // Si no hubo arrastre y fue un clic rápido (< 200ms), abrir/cerrar el menú
+    if (!isDragging && clickDuration < 200) {
+      handleMenuToggle();
     }
-    isDragging = false;
+    
+    // Resetear estado después de un pequeño delay
+    setTimeout(() => {
+      isDragging = false;
+    }, 50);
   }
 
+  // --- EVENTO CLICK COMO FALLBACK ---
+  mainBtn.addEventListener('click', function(e) {
+    // Si el arrastre está desactivado, abrir/cerrar el menú
+    const dragEnabled = getStorageValue('dragEnabled', true);
+    if (!dragEnabled) {
+      e.stopPropagation();
+      handleMenuToggle();
+    }
+  });
+
+  // --- REGISTRAR EVENTO PRINCIPAL ---
   mainBtn.addEventListener('pointerdown', onPointerDown);
 
-  // --- RE-RENDERIZADO Y CLAMPING AL REDIMENSIONAR LA PANTALLA ---
+  const dragEnabled = getStorageValue('dragEnabled', true);
+  if (dragEnabled) {
+    mainBtn.addEventListener('pointerdown', onPointerDown);
+  }
+
+  // --- RE-RENDERIZADO AL REDIMENSIONAR ---
   window.addEventListener('resize', () => {
     const rect = wrapper.getBoundingClientRect();
     const clamped = clampPosition(rect.left, rect.top);
@@ -3963,6 +5492,12 @@ if (document.readyState === 'loading') {
   shadow.appendChild(style);
   shadow.appendChild(wrapper);
   shadow.appendChild(modalOverlay);
+
+  // --- INICIALIZAR MENÚ ---
+  setTimeout(function() {
+    calculatePositions();
+  }, 10);
+
 })();
 </script>
 <!-- Cierre Menu General -->

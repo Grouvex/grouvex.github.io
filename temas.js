@@ -1,138 +1,246 @@
 (function() {
-    const themeSelect = document.getElementById('themeSelect');
-    const defaultTheme = 'gstudios8'; // Define aquí el tema predeterminado
-    const currentUrl = window.location.href;
+    'use strict';
 
-    // Deshabilitar el botón al inicio
-    themeSelect.disabled = true;
+    // ============================================
+    // CONFIGURACIÓN
+    // ============================================
+    const CONFIG = {
+        defaultTheme: 'theme-gstudios8',
+        animationDuration: 500,
+        storageKey: 'selectedTheme',
+        selectId: 'themeSelect',
+        resetId: 'predeterminado'
+    };
 
-    // Cuando se carga la página
-    window.addEventListener('load', () => {
-        checkThemes();
-        loadSelectedTheme();
-        themeSelect.disabled = false;
-    });
-
-    // Función para restablecer el tema predeterminado
-    document.getElementById('predeterminado').addEventListener('click', () => {
-        localStorage.removeItem('selectedTheme'); // Elimina el tema guardado
-        changeTheme(defaultTheme); // Cambia al tema predeterminado
-        themeSelect.value = defaultTheme; // Actualiza el selector
-    });
-
-    function checkThemes() {
-        const date = new Date();
-        const month = date.getMonth();
-
-        const themes = {
-            superheroes: month !== 0,
-            naturaleza1: month !== 1,
-            naturaleza2: month !== 2,
-            naturaleza3: month !== 3,
-            naturaleza4: month !== 4,
-            gstudios1: month !== 8,
-            gstudios2: month !== 0,
-            gstudios3: !(date >= new Date(date.getFullYear(), 11, 1) && date <= new Date(date.getFullYear(), 0, 7)),
-            gstudios4: month !== 10,
-            gstudios5: month !== 9,
-            gstudios6: month !== 6,
-            gstudios7: !(date >= new Date(date.getFullYear(), 5, 1) && date <= new Date(date.getFullYear(), 9, 31)),
-            gstudios8: !(date >= new Date(date.getFullYear(), 4, 1) && date <= new Date(date.getFullYear(), 6, 31)),
-            starwars: !(date >= new Date(date.getFullYear(), 4, 4) && date <= new Date(date.getFullYear(), 4, 14)),
-            httyd: !(date >= new Date(date.getFullYear(), 2, 25) && date <= new Date(date.getFullYear(), 3, 1)),
-            jurassicworld: !(date >= new Date(date.getFullYear(), 5, 10) && date <= new Date(date.getFullYear(), 5, 20)),
-            taylorswift: !(date >= new Date(date.getFullYear(), 11, 13) && date <= new Date(date.getFullYear(), 11, 23)),
-            pokemon: !(date >= new Date(date.getFullYear(), 1, 21) && date <= new Date(date.getFullYear(), 1, 27)),
-            thewildrobot: !(date >= new Date(date.getFullYear(), 8, 27) && date <= new Date(date.getFullYear(), 9, 18)),
-            wicked: !(date >= new Date(date.getFullYear(), 10, 20) && date <= new Date(date.getFullYear(), 10, 31))
-        };
-
-        Object.keys(themes).forEach(theme => toggleThemeOption(theme, themes[theme]));
-    }
-
-    function toggleThemeOption(theme, hide) {
-        const option = document.querySelector(`#themeSelect option[value="${theme}"]`);
-        if (option) {
-            option.classList.toggle('hiddenOption', hide);
+    // ============================================
+    // DEFINICIÓN DE TEMAS
+    // ============================================
+    const TEMAS = {
+        // Temas por mes (disponibles todo el año)
+        mensuales: {
+            'theme-superheroes': 0,   // Enero
+            'theme-naturaleza1': 1,   // Febrero
+            'theme-naturaleza2': 2,   // Marzo
+            'theme-naturaleza3': 3,   // Abril
+            'theme-naturaleza4': 4,   // Mayo
+            'theme-gstudios1': 8,     // Septiembre
+            'theme-gstudios2': 0,     // Enero
+            'theme-gstudios4': 10,    // Noviembre
+            'theme-gstudios5': 9,     // Octubre
+            'theme-gstudios6': 6      // Julio
+        },
+        
+        // Temas por rango de fechas
+        rangos: {
+            'theme-gstudios3': { start: [11, 1], end: [0, 7] },        // 1 Dic - 7 Ene
+            'theme-gstudios7': { start: [5, 1], end: [9, 31] },        // 1 Jun - 31 Oct
+            'theme-gstudios8': { start: [4, 1], end: [6, 31] },        // 1 May - 31 Jul
+            'theme-starwars': { start: [4, 4], end: [4, 14] },         // 4-14 May
+            'theme-httyd': { start: [2, 25], end: [3, 1] },            // 25 Mar - 1 Abr
+            'theme-jurassicworld': { start: [5, 10], end: [5, 20] },   // 10-20 Jun
+            'theme-taylorswift': { start: [11, 13], end: [11, 23] },   // 13-23 Dic
+            'theme-pokemon': { start: [1, 21], end: [1, 27] },         // 21-27 Feb
+            'theme-thewildrobot': { start: [8, 27], end: [9, 18] },    // 27 Sep - 18 Oct
+            'theme-wicked': { start: [10, 20], end: [10, 31] }         // 20-31 Nov
         }
-    }
+    };
 
-    themeSelect.addEventListener('change', function() {
-        changeTheme(this.value);
-        localStorage.setItem('selectedTheme', this.value);
-    });
-
-function changeTheme(theme) {
-    const elements = document.querySelectorAll('p, body, main, mainTop, h1, h2, h3, h4, h5, h6, article, section, aside, panel, hr');
-    const themeClasses = [
-        'theme1', 'theme2',
-        'space', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4',
-        'taylorswift',
-        'pokemon', 'thewildrobot', 'httyd','starwars', 'jurassicworld', 'superheroes', 'wicked',
-        'gstudios1', 'gstudios2', 'gstudios3', 'gstudios4', 'gstudios5', 'gstudios6', 'gstudios7', 'gstudios8'
+    // ============================================
+    // LISTA COMPLETA DE TEMAS (para limpieza)
+    // ============================================
+    const ALL_THEMES = [
+        'theme-theme1', 'theme-theme2', 'theme-space',
+        ...Object.keys(TEMAS.mensuales),
+        ...Object.keys(TEMAS.rangos)
     ];
 
-    // Aplicar la clase de animación
-    elements.forEach(element => {
-        element.classList.add('fade-effect');
-    });
-
-    // Eliminar las clases de tema anteriores y aplicar la nueva
-    elements.forEach(element => {
-        themeClasses.forEach(cls => element.classList.remove(cls));
-        if (theme !== defaultTheme) {
-            element.classList.add(theme);
-        } else {
-            element.classList.add(theme);
-        }
-    });
-
-    // Eliminar la clase de animación después de que termine
-    setTimeout(() => {
-        elements.forEach(element => {
-            element.classList.remove('fade-effect');
-        });
-    }, 500); // Duración de la animación (0.5s)
-}
-
-    function loadSelectedTheme() {
-        const selectedTheme = localStorage.getItem('selectedTheme');
-        const themesAvailability = checkThemesAvailability();
+    // ============================================
+    // UTILIDADES
+    // ============================================
+    const Utils = {
+        // Obtener fecha actual
+        getNow: () => new Date(),
         
-        // Si no hay tema seleccionado o el tema seleccionado no está disponible, usa el predeterminado
-        if (!selectedTheme || !themesAvailability[selectedTheme]) {
-            changeTheme(defaultTheme);
-            themeSelect.value = defaultTheme;
-        } else {
-            changeTheme(selectedTheme);
-            themeSelect.value = selectedTheme;
+        // Crear fecha con año actual
+        getDate: (month, day) => {
+            const now = new Date();
+            return new Date(now.getFullYear(), month, day);
+        },
+
+        // Verificar si fecha está en rango
+        isDateInRange: (startMonth, startDay, endMonth, endDay) => {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), startMonth, startDay);
+            const end = new Date(now.getFullYear(), endMonth, endDay);
+            
+            // Manejar rangos que cruzan año nuevo
+            if (start > end) {
+                return now >= start || now <= end;
+            }
+            return now >= start && now <= end;
+        },
+
+        // Obtener elementos afectados por el tema
+        getTargetElements: () => {
+            const selectors = [
+                'p', 'body', 'main', 'mainTop',
+                'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+                'article', 'section', 'aside', 'panel', 'hr'
+            ];
+            return document.querySelectorAll(selectors.join(','));
+        },
+
+        // Aplicar animación fade
+        applyFadeEffect: (elements, duration) => {
+            elements.forEach(el => el.classList.add('fade-effect'));
+            
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    elements.forEach(el => el.classList.remove('fade-effect'));
+                    resolve();
+                }, duration);
+            });
         }
+    };
+
+    // ============================================
+    // GESTOR DE TEMAS
+    // ============================================
+    const ThemeManager = {
+        // Verificar disponibilidad de temas
+        getAvailableThemes: () => {
+            const available = {};
+            const now = Utils.getNow();
+            const month = now.getMonth();
+
+            // Temas mensuales
+            Object.entries(TEMAS.mensuales).forEach(([theme, mes]) => {
+                available[theme] = month !== mes;
+            });
+
+            // Temas por rango
+            Object.entries(TEMAS.rangos).forEach(([theme, range]) => {
+                const [startMonth, startDay] = range.start;
+                const [endMonth, endDay] = range.end;
+                available[theme] = !Utils.isDateInRange(startMonth, startDay, endMonth, endDay);
+            });
+
+            return available;
+        },
+
+        // Cambiar tema
+        changeTheme: (theme) => {
+            const elements = Utils.getTargetElements();
+            
+            // Aplicar animación
+            Utils.applyFadeEffect(elements, CONFIG.animationDuration);
+
+            // Limpiar temas anteriores y aplicar nuevo
+            elements.forEach(element => {
+                ALL_THEMES.forEach(cls => element.classList.remove(cls));
+                element.classList.add(theme);
+            });
+        },
+
+        // Guardar tema seleccionado
+        saveTheme: (theme) => {
+            localStorage.setItem(CONFIG.storageKey, theme);
+        },
+
+        // Obtener tema guardado
+        getSavedTheme: () => {
+            return localStorage.getItem(CONFIG.storageKey);
+        },
+
+        // Cargar tema
+        loadTheme: (theme) => {
+            const available = ThemeManager.getAvailableThemes();
+            
+            if (!theme || !available[theme]) {
+                theme = CONFIG.defaultTheme;
+            }
+            
+            ThemeManager.changeTheme(theme);
+            return theme;
+        }
+    };
+
+    // ============================================
+    // INTERFAZ DE USUARIO
+    // ============================================
+    const UI = {
+        // Elementos
+        select: null,
+        resetBtn: null,
+
+        // Inicializar
+        init: () => {
+            UI.select = document.getElementById(CONFIG.selectId);
+            UI.resetBtn = document.getElementById(CONFIG.resetId);
+            
+            if (!UI.select || !UI.resetBtn) {
+                console.error('Elementos UI no encontrados');
+                return;
+            }
+
+            // Deshabilitar select mientras carga
+            UI.select.disabled = true;
+
+            // Event listeners
+            UI.select.addEventListener('change', UI.handleThemeChange);
+            UI.resetBtn.addEventListener('click', UI.handleReset);
+
+            // Cargar temas iniciales
+            window.addEventListener('DOMContentLoaded', UI.loadInitialThemes);
+        },
+
+        // Cargar temas iniciales
+        loadInitialThemes: () => {
+            const available = ThemeManager.getAvailableThemes();
+            
+            // Ocultar/mostrar opciones
+            Object.entries(available).forEach(([theme, isAvailable]) => {
+                UI.toggleOption(theme, !isAvailable);
+            });
+
+            // Cargar tema guardado o predeterminado
+            const savedTheme = ThemeManager.getSavedTheme();
+            const themeToLoad = ThemeManager.loadTheme(savedTheme);
+            UI.select.value = themeToLoad;
+            UI.select.disabled = false;
+        },
+
+        // Mostrar/ocultar opción
+        toggleOption: (theme, hide) => {
+            const option = UI.select?.querySelector(`option[value="${theme}"]`);
+            if (option) {
+                option.classList.toggle('hiddenOption', hide);
+            }
+        },
+
+        // Manejar cambio de tema
+        handleThemeChange: (event) => {
+            const theme = event.target.value;
+            ThemeManager.changeTheme(theme);
+            ThemeManager.saveTheme(theme);
+        },
+
+        // Manejar reset
+        handleReset: () => {
+            localStorage.removeItem(CONFIG.storageKey);
+            ThemeManager.changeTheme(CONFIG.defaultTheme);
+            UI.select.value = CONFIG.defaultTheme;
+        }
+    };
+
+    // ============================================
+    // INICIALIZACIÓN
+    // ============================================
+    // Esperar a que el DOM esté listo
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', UI.init);
+    } else {
+        UI.init();
     }
 
-    function checkThemesAvailability() {
-        const date = new Date();
-        const month = date.getMonth();
-        return {
-            superheroes: month !== 0,
-            naturaleza1: month !== 1,
-            naturaleza2: month !== 2,
-            naturaleza3: month !== 3,
-            naturaleza4: month !== 4,
-            gstudios1: month !== 8,
-            gstudios2: month !== 0,
-            gstudios3: !(date >= new Date(date.getFullYear(), 11, 1) && date <= new Date(date.getFullYear(), 0, 7)),
-            gstudios4: month !== 10,
-            gstudios5: month !== 9,
-            gstudios6: month !== 6,
-            gstudios7: !(date >= new Date(date.getFullYear(), 5, 1) && date <= new Date(date.getFullYear(), 9, 31)),
-            gstudios8: !(date >= new Date(date.getFullYear(), 4, 1) && date <= new Date(date.getFullYear(), 6, 31)),
-            starwars: !(date >= new Date(date.getFullYear(), 4, 4) && date <= new Date(date.getFullYear(), 4, 14)),
-            httyd: !(date >= new Date(date.getFullYear(), 2, 25) && date <= new Date(date.getFullYear(), 3, 1)),
-            jurassicworld: !(date >= new Date(date.getFullYear(), 5, 10) && date <= new Date(date.getFullYear(), 5, 20)),
-            taylorswift: !(date >= new Date(date.getFullYear(), 11, 12) && date <= new Date(date.getFullYear(), 11, 23)),
-            pokemon: !(date >= new Date(date.getFullYear(), 1, 11) && date <= new Date(date.getFullYear(), 1, 27)),
-            thewildrobot: !(date >= new Date(date.getFullYear(), 8, 27) && date <= new Date(date.getFullYear(), 9, 18)),
-            wicked: !(date >= new Date(date.getFullYear(), 10, 20) && date <= new Date(date.getFullYear(), 10, 31))
-        };
-    }
 })();

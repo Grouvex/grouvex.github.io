@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirección - Grouvex Studios</title>
+    <!-- Script oficial de Cloudflare Turnstile -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <!-- Librería de compresión LZ-String -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --border-color: #30363d;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --error: #f85149;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 1.25rem;
+            color: #ffffff;
+        }
+
+        p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 20px auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #error-container {
+            color: var(--error);
+            font-size: 0.9rem;
+            margin-top: 15px;
+        }
+
+        .captcha-box {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        footer {
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="main-card">
+        <h2 id="card-title">Verificación de Seguridad</h2>
+        <p id="card-desc">Por favor, completa la verificación para continuar hacia tu destino.</p>
+        
+        <!-- Widget de Cloudflare Turnstile -->
+        <div class="captcha-box">
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAAEMV4uFC1swA-tku" data-callback="onTurnstileSuccess"></div>
+        </div>
+
+        <div class="spinner" id="loading-spinner"></div>
+        <div id="error-container"></div>
+    </div>
+
+    <footer>
+        &copy; 2026 Grouvex Studios. Todos los derechos reservados.
+    </footer>
+
+    <script>
+        function onTurnstileSuccess(token) {
+            document.getElementById('card-title').innerText = "Redirigiendo...";
+            document.getElementById('card-desc').innerText = "Verificación exitosa. Descomprimiendo enlace...";
+            
+            document.querySelector('.captcha-box').style.display = 'none';
+            document.getElementById('loading-spinner').style.display = 'block';
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const compressedId = urlParams.get('id');
+
+            if (compressedId) {
+                try {
+                    // Descompresión automática del ID corto
+                    const decodedUrl = LZString.decompressFromEncodedURIComponent(compressedId);
+
+                    if (decodedUrl && (decodedUrl.startsWith('http://') || decodedUrl.startsWith('https://'))) {
+                        setTimeout(() => {
+                            window.location.href = decodedUrl;
+                        }, 800);
+                        return;
+                    } else {
+                        throw new Error("URL inválida.");
+                    }
+                } catch (e) {
+                    document.getElementById('loading-spinner').style.display = 'none';
+                    document.getElementById('error-container').innerText = "El código del enlace está corrupto o incompleto.";
+                    return;
+                }
+            }
+            
+            document.getElementById('loading-spinner').style.display = 'none';
+            document.getElementById('error-container').innerText = "No se ha proporcionado ningún enlace de destino.";
+        }
+    </script>
+</body>
+</html>

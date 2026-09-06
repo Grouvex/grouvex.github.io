@@ -6,24 +6,114 @@
 // ============================================
 // CONFIGURACIÓN DE FIREBASE
 // ============================================
-const firebaseConfig = {
-    apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
-    authDomain: "grouvex-studios.firebaseapp.com",
-    databaseURL: "https://grouvex-studios-default-rtdb.firebaseio.com",
-    projectId: "grouvex-studios",
-    storageBucket: "grouvex-studios.appspot.com",
-    messagingSenderId: "1070842606062",
-    appId: "1:1070842606062:web:5d887863048fd100b49eff",
-    measurementId: "G-75BR8D2CR3"
-};
+// Función para cargar scripts de Firebase si no existen
+function cargarFirebaseSiNoExiste() {
+    return new Promise((resolve, reject) => {
+        // Verificar si Firebase ya está disponible
+        if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
+            console.log('Firebase ya está cargado e inicializado');
+            resolve();
+            return;
+        }
 
-// Inicializar Firebase
-if (typeof firebase !== 'undefined' && !firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
+        // Verificar si los scripts ya están en el HTML
+        const scriptsExistentes = document.querySelectorAll('script[src*="firebase"]');
+        if (scriptsExistentes.length >= 3) {
+            console.log('Scripts de Firebase ya están en el HTML');
+            // Esperar a que se carguen
+            const checkFirebase = setInterval(() => {
+                if (typeof firebase !== 'undefined') {
+                    clearInterval(checkFirebase);
+                    resolve();
+                }
+            }, 100);
+            return;
+        }
+
+        console.log('Cargando scripts de Firebase...');
+        const scripts = [
+            'https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js',
+            'https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js',
+            'https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js'
+        ];
+
+        let cargados = 0;
+
+        scripts.forEach((src, index) => {
+            // Verificar si este script específico ya existe
+            const existe = document.querySelector(`script[src="${src}"]`);
+            if (existe) {
+                cargados++;
+                if (cargados === scripts.length) {
+                    resolve();
+                }
+                return;
+            }
+
+            const script = document.createElement('script');
+            script.src = src;
+            script.async = true;
+            
+            script.onload = () => {
+                cargados++;
+                if (cargados === scripts.length) {
+                    console.log('Todos los scripts de Firebase cargados');
+                    resolve();
+                }
+            };
+            
+            script.onerror = () => {
+                reject(new Error(`Error al cargar: ${src}`));
+            };
+            
+            document.head.appendChild(script);
+        });
+    });
 }
 
-const auth = firebase.auth();
-const database = firebase.database();
+// Inicializar Firebase
+async function inicializarFirebase() {
+    try {
+        await cargarFirebaseSiNoExiste();
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
+            authDomain: "grouvex-studios.firebaseapp.com",
+            databaseURL: "https://grouvex-studios-default-rtdb.firebaseio.com",
+            projectId: "grouvex-studios",
+            storageBucket: "grouvex-studios.appspot.com",
+            messagingSenderId: "1070842606062",
+            appId: "1:1070842606062:web:5d887863048fd100b49eff",
+            measurementId: "G-75BR8D2CR3"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+            console.log('Firebase inicializado correctamente');
+        } else {
+            console.log('Firebase ya estaba inicializado');
+        }
+
+        const auth = firebase.auth();
+        const database = firebase.database();
+        
+        return { auth, database };
+        
+    } catch (error) {
+        console.error('Error al inicializar Firebase:', error);
+        throw error;
+    }
+}
+
+// Uso
+inicializarFirebase()
+    .then(({ auth, database }) => {
+        console.log('Firebase listo para usar');
+        // Aquí tu código con auth y database
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 
 // ============================================
 // CONFIGURACIÓN INSIGNIAS

@@ -1,27 +1,27 @@
-                <html><span><select id="themeSelect" style="width:100%; background: rgba(0, 0, 0, 0.3">
-  <option value="default">Temas</option>
-  <option value="theme1">Tema 1: Color</option>
-  <option value="theme2">Tema 2: Color</option>
-  <option value="space">Tema: Espacio</option>
-  <option value="starwars">Tema Star Wars</option>
-  <option value="jurassicworld">Tema: Jurassic World</option>
-  <option value="taylorswift">Tema: Taylor Swift</option>
-  <option value="superheroes">Tema: Super Héroes</option>
-  <option value="naturaleza1">Tema Natulareza: Amanecer/Atardecer</option>
-  <option value="naturaleza2">Tema Naturaleza: Polos</option>
-  <option value="naturaleza3">Tema Naturaleza: Mar</option>
-  <option value="naturaleza4">Tema Naturaleza: Selva</option>
-<option value="httyd">Tema: Cómo Entrenar A Tu Dragón</option>
-  <option value="pokemon">Tema: Pokémon</option>
-  <option value="thewildrobot">Tema: The Wild Robot</option>
-  <option value="wicked">Tema: Wicked</option>
-<option value="gstudios1">Tema G.Studios: Si Fuera</option>
-  <option value="gstudios2">Tema G.Studios: The Night Sky</option>
-    <option value="gstudios3">Tema G.Studios: La Magia de la Estrella Polar</option>
-  <option value="gstudios4">Tema G.Studios: Unstoppable Friendship</option>
-  <option value="gstudios5">Tema G.Studios: Libra</option>
-  <option value="gstudios6">Tema G.Studios: The Treasure</option>
-  <option value="gstudios7">Tema G.Studios: Yo Quiero - A New World</option>
+<html><span><select id="themeSelect" style="width:100%; background: rgba(0, 0, 0, 0.3">
+  <option value="theme-default">Temas</option>
+  <option value="theme-theme1">Tema 1: Color</option>
+  <option value="theme-theme2">Tema 2: Color</option>
+  <option value="theme-space">Tema: Espacio</option>
+  <option value="theme-starwars">Tema Star Wars</option>
+  <option value="theme-jurassicworld">Tema: Jurassic World</option>
+  <option value="theme-taylorswift">Tema: Taylor Swift</option>
+  <option value="theme-superheroes">Tema: Super Héroes</option>
+  <option value="theme-naturaleza1">Tema Natulareza: Amanecer/Atardecer</option>
+  <option value="theme-naturaleza2">Tema Naturaleza: Polos</option>
+  <option value="theme-naturaleza3">Tema Naturaleza: Mar</option>
+  <option value="theme-naturaleza4">Tema Naturaleza: Selva</option>
+<option value="theme-httyd">Tema: Cómo Entrenar A Tu Dragón</option>
+  <option value="theme-pokemon">Tema: Pokémon</option>
+  <option value="theme-thewildrobot">Tema: The Wild Robot</option>
+  <option value="theme-wicked">Tema: Wicked</option>
+<option value="theme-gstudios1">Tema G.Studios: Si Fuera</option>
+  <option value="theme-gstudios2">Tema G.Studios: The Night Sky</option>
+    <option value="theme-gstudios3">Tema G.Studios: La Magia de la Estrella Polar</option>
+  <option value="theme-gstudios4">Tema G.Studios: Unstoppable Friendship</option>
+  <option value="theme-gstudios5">Tema G.Studios: Libra</option>
+  <option value="theme-gstudios6">Tema G.Studios: The Treasure</option>
+  <option value="theme-gstudios7">Tema G.Studios: Yo Quiero - A New World</option>
   <!-- Añade tantas opciones como diseños tengas -->
 </select></span>
 </html>
@@ -34,7 +34,7 @@ themeSelect.addEventListener('change', function() {
 
     // Elimina las clases de las opciones antiguas
     elements.forEach(function(element) {
-        element.classList.remove('theme1', 'theme2', 'space', 'starwars', 'jurassicworld', 'taylorswift', 'superheroes', 'naturaleza1', 'naturaleza2', 'naturaleza3', 'naturaleza4', 'pokemon', 'thewildrobot', 'httyd', 'gstudios1', 'gstudios2', 'gstudios3', 'gstudios4', 'gstudios5', 'gstudios6', 'gstudios7', 'wicked');
+        element.classList.remove('theme-theme1', 'theme-theme2', 'theme-space', 'theme-starwars', 'theme-jurassicworld', 'theme-taylorswift', 'theme-superheroes', 'theme-naturaleza1', 'theme-naturaleza2', 'theme-naturaleza3', 'theme-naturaleza4', 'theme-pokemon', 'theme-thewildrobot', 'theme-httyd', 'theme-gstudios1', 'theme-gstudios2', 'theme-gstudios3', 'theme-gstudios4', 'theme-gstudios5', 'theme-gstudios6', 'theme-gstudios7', 'theme-wicked');
     });
 
     // Si la opción seleccionada no es "default", añade la clase de la opción seleccionada

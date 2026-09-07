@@ -2589,833 +2589,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 </script>
-<script>
-// ===============================================================
-// CENTRALIZACIÓN DE CALENDARIOS POR TEMPORADA (LOCAL DISPOSITIVO)
-// ===============================================================
-const CONFIG_WIDGET = {
-  estadoHorario: 'vacaciones', 
-  infoEstado: "",
-  // 1 (lunes)... 6 (sábado) y 0 (domingo)
-  horarios: {
-    normal: {
-      1: [ { abre: "12:00", cierra: "14:30" }, { abre: "16:00", cierra: "20:00" } ],
-      2: [ { abre: "12:00", cierra: "14:30" }, { abre: "16:00", cierra: "20:00" } ],
-      3: [ { abre: "12:00", cierra: "14:30" }, { abre: "16:00", cierra: "20:00" } ],
-      4: [ { abre: "12:00", cierra: "14:30" }, { abre: "16:00", cierra: "20:00" } ],
-      5: [ { abre: "12:00", cierra: "14:30" }, { abre: "16:00", cierra: "20:00" } ],
-      6: [ { abre: "11:00", cierra: "14:00" }, { abre: "17:00", cierra: "20:00" } ],
-      0: [ { abre: "11:00", cierra: "14:00" }, { abre: "17:00", cierra: "20:00" } ],
-    },
-    vacaciones: {
-      1: [ { abre: "12:00", cierra: "14:00" }, { abre: "16:00", cierra: "20:00" } ],
-      2: [ { abre: "12:00", cierra: "14:00" }, { abre: "16:00", cierra: "20:00" } ],
-      3: [ { abre: "12:00", cierra: "14:00" }, { abre: "16:00", cierra: "20:00" } ],
-      4: [ { abre: "12:00", cierra: "14:00" }, { abre: "16:00", cierra: "20:00" } ],
-      5: [ { abre: "12:00", cierra: "14:00" }, { abre: "16:00", cierra: "20:00" } ],
-      6: [ { abre: "12:00", cierra: "13:00" }, { abre: "16:00", cierra: "20:30" } ],
-      0: [ { abre: "12:00", cierra: "13:00" }, { abre: "17:00", cierra: "20:30" } ],
-    },
-    sistemaGCO: {
-      1: [ { abre: "7:30", cierra: "15:30" } ],
-      2: [ { abre: "7:30", cierra: "15:30" } ],
-      3: [ { abre: "7:30", cierra: "15:30" } ],
-      4: [ { abre: "7:30", cierra: "15:30" } ],
-      5: [ { abre: "07:30", cierra: "14:30" } ],
-      6: [],
-      0: []
-    },
-    especial: {
-      1: [ { abre: "09:00", cierra: "22:00" } ],
-      2: [ { abre: "09:00", cierra: "22:00" } ],
-      3: [ { abre: "09:00", cierra: "22:00" } ],
-      4: [ { abre: "09:00", cierra: "22:00" } ],
-      5: [ { abre: "09:00", cierra: "23:00" } ],
-      6: [ { abre: "10:00", cierra: "20:00" } ],
-      0: [ { abre: "11:00", cierra: "17:00" } ]
-    }
-  }
-};
-
-const styleAnimaciones = document.createElement('style');
-styleAnimaciones.textContent = `
-  @keyframes slideIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-  @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(120%); opacity: 0; } }
-`;
-document.head.appendChild(styleAnimaciones);
-
-
-// ==========================================
-// INTERFAZ PROFESIONAL CON CONTROL DE FLUJO
-// ==========================================
-const aplicarEstilosProfesionales = () => {
-  const style = document.createElement('style');
-  style.textContent = `
-    :root {
-      --bg-widget: rgba(18, 18, 20, 0.85);
-      --bg-hover: rgba(26, 26, 30, 0.95);
-      --border-widget: rgba(255, 255, 255, 0.1);
-      --border-inner: rgba(255, 255, 255, 0.04);
-      --text-main: #f5f5f7;
-      --text-muted: #8e8e93;
-      --color-abierto: #30d158;
-      --color-cerrado: #ff453a;
-      --color-tag-bg: rgba(41, 151, 255, 0.12); 
-      --color-tag-text: #2997ff;
-      --radius-main: 16px;
-      --fx-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 var(--border-inner);
-      
-      --bg-row-card: rgba(255, 255, 255, 0.02);
-      --bg-row-today: rgba(41, 151, 255, 0.04);
-      --border-row-today: rgba(41, 151, 255, 0.15);
-      --bg-time-pill: rgba(255, 255, 255, 0.05);
-    }
-
-    #datetime-widget-container,
-    #datetime-widget-container * {
-      box-sizing: border-box !important;
-    }
-
-    #datetime-widget-container {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, sans-serif;
-      background: var(--bg-widget);
-      backdrop-filter: blur(24px) saturate(190%);
-      -webkit-backdrop-filter: blur(24px) saturate(190%);
-      border: 1px solid var(--border-widget);
-      padding: 16px 20px;
-      border-radius: var(--radius-main);
-      box-shadow: var(--fx-shadow);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      z-index: 2147483646;
-      user-select: none;
-      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-      width: 310px;
-      max-width: calc(100vw - 48px);
-      overflow: hidden;
-    }
-    
-    #datetime-widget-container:hover { 
-      background: var(--bg-hover);
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    }
-
-    #datetime-widget-container.is-compact {
-      padding: 12px 18px;
-      gap: 0px;
-    }
-
-    /* Cabecera */
-    #datetime-widget-main { 
-      display: flex; 
-      align-items: center; 
-      gap: 14px; 
-      cursor: pointer; 
-      width: 100%;
-      overflow: hidden;
-    }
-    
-    #datetime-widget-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    #datetime-widget-display { 
-      font-size: 0.88rem; 
-      font-weight: 400; 
-      line-height: 1.4; 
-      text-align: left;
-      flex-grow: 1;
-      overflow: hidden;
-    }
-    
-    .date-highlight { 
-      font-weight: 600; 
-      color: var(--text-main);
-      letter-spacing: -0.01em;
-      margin-bottom: 1px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    
-    .status-abierto { color: var(--color-abierto); }
-    .status-cerrado { color: var(--color-cerrado); }
-    
-    .time-string {
-      font-variant-numeric: tabular-nums;
-      font-weight: 400;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .time-string.compact-style {
-      font-size: 1.15rem;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-    }
-
-    .widget-info-estado {
-      font-size: 0.76rem;
-      color: var(--color-tag-text);
-      background: rgba(41, 151, 255, 0.08);
-      border-left: 2px solid var(--color-tag-text);
-      padding: 4px 8px;
-      border-radius: 0 4px 4px 0;
-      margin-top: 6px;
-      line-height: 1.3;
-    }
-
-    .widget-advertencia-estado {
-      font-size: 0.68rem;
-      color: var(--color-cerrado);
-      display: block;
-      margin-top: 2px;
-      font-weight: 500;
-      letter-spacing: 0.01em;
-    }
-
-    .widget-divider { 
-      height: 1px; 
-      background: linear-gradient(90deg, var(--border-widget) 0%, rgba(255,255,255,0.02) 100%); 
-      width: 100%; 
-      flex-shrink: 0;
-      transition: opacity 0.2s ease, margin 0.2s ease;
-    }
-
-    #datetime-widget-container.is-compact .widget-divider {
-      opacity: 0;
-      margin: 0;
-      height: 0;
-    }
-
-    /* Pie de la Sección Principal */
-    #datetime-widget-footer { 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      font-size: 0.74rem; 
-      width: 100%;
-      overflow: hidden;
-      transition: opacity 0.2s ease, height 0.2s ease, margin 0.2s ease;
-    }
-
-    #datetime-widget-container.is-compact #datetime-widget-footer {
-      opacity: 0;
-      height: 0;
-      overflow: hidden;
-      margin: 0;
-    }
-    
-    .schedule-tag { 
-      text-transform: uppercase; 
-      letter-spacing: 0.06em; 
-      background: var(--color-tag-bg); 
-      padding: 3px 8px; 
-      border-radius: 6px; 
-      color: var(--color-tag-text); 
-      font-weight: 600;
-      font-size: 0.68rem;
-      flex-shrink: 0;
-    }
-    
-    .legend-box { 
-      display: flex; 
-      align-items: center; 
-      gap: 10px; 
-      flex-shrink: 0;
-    }
-    
-    .legend-item { 
-      display: flex; 
-      align-items: center; 
-      gap: 5px; 
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    /* Desplegable de Horarios */
-    #widget-schedule-details {
-      width: 100%;
-      border-top: 1px dashed rgba(255, 255, 255, 0.06);
-      margin-top: 2px;
-      overflow: hidden;
-      transition: opacity 0.2s ease, height 0.2s ease;
-    }
-
-    #datetime-widget-container.is-compact #widget-schedule-details {
-      opacity: 0;
-      height: 0;
-      overflow: hidden;
-      border: none;
-      margin: 0;
-    }
-    
-    #widget-schedule-details summary {
-      padding: 8px 2px 2px 2px;
-      cursor: pointer;
-      font-weight: 600;
-      color: var(--text-muted);
-      outline: none;
-      list-style: none;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.74rem;
-      width: 100%;
-    }
-    
-    #widget-schedule-details summary::-webkit-details-marker { display: none; }
-    #widget-schedule-details summary:hover { color: var(--text-main); }
-    
-    #widget-schedule-details summary::after {
-      content: '';
-      display: inline-block;
-      width: 5px;
-      height: 5px;
-      border-right: 1.5px solid var(--text-muted);
-      border-bottom: 1.5px solid var(--text-muted);
-      transform: rotate(45deg) translate(-2px, -2px);
-      transition: transform 0.2s ease;
-      flex-shrink: 0;
-    }
-    #widget-schedule-details[open] summary::after {
-      transform: rotate(-135deg) translate(-1px, -1px);
-    }
-
-    .details-animated-wrapper {
-      display: grid;
-      grid-template-rows: 0fr;
-      transition: grid-template-rows 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      width: 100%;
-    }
-    #widget-schedule-details[open] .details-animated-wrapper {
-      grid-template-rows: 1fr;
-    }
-    
-    .details-schedule-content {
-      overflow: hidden;
-      padding: 4px 0;
-      width: 100%;
-    }
-    
-    /* Contenedor del Navegador Diario */
-    .schedule-viewer-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--bg-row-card);
-      border: 1px solid rgba(255, 255, 255, 0.02);
-      border-radius: 8px;
-      padding: 6px;
-      width: 100%;
-      gap: 4px;
-    }
-
-    .schedule-viewer-container.is-today-view {
-      background: var(--bg-row-today);
-      border-color: var(--border-row-today);
-    }
-
-    .nav-schedule-btn {
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 6px;
-      border-radius: 4px;
-      transition: all 0.2s ease;
-      flex-shrink: 0;
-    }
-    .nav-schedule-btn:hover {
-      color: var(--text-main);
-      background: rgba(255,255,255,0.05);
-    }
-
-    .day-view-data {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-grow: 1;
-      overflow: hidden;
-      gap: 8px;
-    }
-
-    /* Layout cuando hay múltiples turnos */
-    .day-view-data.has-multiple-turns {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 6px;
-      padding: 2px 4px;
-    }
-
-    .day-view-title-box {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 4px;
-      overflow: hidden;
-    }
-
-    .day-view-name {
-      color: var(--text-muted);
-      font-size: 0.78rem;
-      font-weight: 500;
-      white-space: nowrap;
-    }
-    .is-today-view .day-view-name {
-      color: var(--text-main);
-      font-weight: 600;
-    }
-
-    .day-view-tag-hoy {
-      color: var(--color-tag-text);
-      font-size: 0.74rem;
-      font-weight: 600;
-    }
-
-    /* Contenedor de Turnos Horarios */
-    .details-hours-container {
-      display: flex;
-      flex-direction: row;
-      gap: 4px;
-      align-items: center;
-      flex-wrap: wrap; 
-    }
-
-    .details-hours { 
-      color: var(--text-main); 
-      font-variant-numeric: tabular-nums; 
-      font-size: 0.7rem;
-      font-weight: 500;
-      background: var(--bg-time-pill);
-      padding: 2px 6px;
-      border-radius: 4px;
-      white-space: nowrap;
-    }
-    
-    .details-closed { 
-      color: var(--color-cerrado); 
-      background: rgba(255, 69, 58, 0.1);
-      border: 1px solid rgba(255, 69, 58, 0.15);
-      font-weight: 600;
-      font-size: 0.68rem;
-      padding: 2px 6px;
-      border-radius: 4px;
-      white-space: nowrap;
-    }
-
-    .timezone-label {
-      font-size: 0.65rem;
-      opacity: 0.65;
-      font-weight: 500;
-      display: inline-block;
-      white-space: nowrap;
-    }
-
-    /* Estilos añadidos para el sub-desplegable global */
-    .sub-details-all-days {
-      margin-top: 8px;
-      width: 100%;
-    }
-    .sub-details-all-days summary {
-      list-style: none;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 0.7rem;
-      color: var(--color-tag-text) !important;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      cursor: pointer;
-      padding: 4px 0;
-      outline: none;
-    }
-    .sub-details-all-days summary::-webkit-details-marker { display: none; }
-    .sub-details-all-days summary .text-toggle::before { content: 'desplegar'; font-size:10px}
-    .sub-details-all-days[open] summary .text-toggle::before { content: 'replegar'; font-size:10px}
-    
-    .sub-details-all-days summary::after { display: none !important; } /* Quitamos flecha por defecto */
-
-    .all-days-list-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-top: 6px;
-      max-height: 190px;
-      overflow-y: auto;
-      padding-right: 2px;
-    }
-    /* Estilización fina del scroll para la lista completa */
-    .all-days-list-wrapper::-webkit-scrollbar { width: 4px; }
-    .all-days-list-wrapper::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
-
-    .all-days-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.01);
-      border: 1px solid rgba(255, 255, 255, 0.01);
-      border-radius: 6px;
-      padding: 5px 8px;
-    }
-    .all-days-row.is-row-today {
-      background: var(--bg-row-today);
-      border-color: rgba(41, 151, 255, 0.1);
-    }
-    .all-days-row .day-name {
-      font-size: 0.74rem;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-    .all-days-row.is-row-today .day-name {
-      color: var(--text-main);
-      font-weight: 600;
-    }
-
-    @media (max-width: 480px) {
-      #datetime-widget-container {
-        bottom: 0 !important;
-        right: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        border-radius: var(--radius-main) var(--radius-main) 0 0;
-        border-left: none;
-        border-right: none;
-        border-bottom: none;
-        padding: 12px 20px;
-        box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
-      }
-    }
-  `;
-  document.head.appendChild(style);
-};
-
-class DateTimeWidget {
-  constructor() {
-    this.isExpanded = true; 
-    this.container = null;
-    this.display = null;
-    this.iconContainer = null;
-    this.footer = null;
-    this.detailsElement = null;
-    this.timerId = null;
-    this.notificacionesEnviadas = new Set();
-    
-    this.ordenSemanas = [
-      { id: 1, nombre: 'Lunes' },
-      { id: 2, nombre: 'Martes' },
-      { id: 3, nombre: 'Miércoles' },
-      { id: 4, nombre: 'Jueves' },
-      { id: 5, nombre: 'Viernes' },
-      { id: 6, nombre: 'Sábado' },
-      { id: 0, nombre: 'Domingo' }
-    ];
-
-    this.indiceDiaVisualizado = 0;
-    this.userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Local';
-
-    this.icons = {
-      calendar: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>`,
-      clock: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>`,
-      circleGreen: `<svg width="8" height="8" viewBox="0 0 24 24" fill="#30d158"><circle cx="12" cy="12" r="10"></circle></svg>`,
-      circleRed: `<svg width="8" height="8" viewBox="0 0 24 24" fill="#ff453a"><circle cx="12" cy="12" r="10"></circle></svg>`,
-      chevronLeft: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>`,
-      chevronRight: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>`
-    };
-
-    this.init();
-  }
-
-  init() {
-    aplicarEstilosProfesionales();
-    this.establecerDiaActualPorDefecto();
-    this.buildDOM();
-    this.startClock();
-    this.addEventListeners();
-  }
-
-  establecerDiaActualPorDefecto() {
-    const diaActualLocal = new Date().getDay();
-    const index = this.ordenSemanas.findIndex(d => d.id === diaActualLocal);
-    this.indiceDiaVisualizado = index !== -1 ? index : 0;
-  }
-
-  buildDOM() {
-    this.container = document.createElement('div');
-    this.container.id = 'datetime-widget-container';
-
-    const mainSection = document.createElement('div');
-    mainSection.id = 'datetime-widget-main';
-    this.iconContainer = document.createElement('div');
-    this.iconContainer.id = 'datetime-widget-icon';
-    this.display = document.createElement('div');
-    this.display.id = 'datetime-widget-display';
-    mainSection.appendChild(this.iconContainer);
-    mainSection.appendChild(this.display);
-
-    const divider1 = document.createElement('div');
-    divider1.className = 'widget-divider';
-
-    this.footer = document.createElement('div');
-    this.footer.id = 'datetime-widget-footer';
-
-    this.detailsElement = document.createElement('details');
-    this.detailsElement.id = 'widget-schedule-details';
-    
-    this.detailsElement.innerHTML = `
-      <summary>Cuadrante semanal</summary>
-      <div class="details-animated-wrapper">
-        <div class="details-schedule-content"></div>
-      </div>
-    `;
-
-    this.container.appendChild(mainSection);
-    this.container.appendChild(divider1);
-    this.container.appendChild(this.footer);
-    this.container.appendChild(this.detailsElement);
-
-    document.body.appendChild(this.container);
-  }
-
-  getCalendarioActivo() {
-    const tipo = CONFIG_WIDGET.estadoHorario;
-    return CONFIG_WIDGET.horarios[tipo] || CONFIG_WIDGET.horarios.normal;
-  }
-
-  comprobarEstadoApertura(fechaLocal) {
-    const diaSemana = fechaLocal.getDay(); 
-    const tiempoActualEnMinutos = (fechaLocal.getHours() * 60) + fechaLocal.getMinutes();
-    const calendarioActivo = this.getCalendarioActivo();
-    const turnosDelDia = calendarioActivo[diaSemana] || [];
-
-    return turnosDelDia.some(turno => {
-      const [hApertura, mApertura] = turno.abre.split(':').map(Number);
-      const [hCierre, mCierre] = turno.cierra.split(':').map(Number);
-      return tiempoActualEnMinutos >= ((hApertura * 60) + mApertura) && tiempoActualEnMinutos < ((hCierre * 60) + mCierre);
-    });
-  }
-
-  checkProximosEventos(fechaLocal) {
-    const diaSemana = fechaLocal.getDay();
-    const horas = fechaLocal.getHours();
-    const minutos = fechaLocal.getMinutes();
-    const tiempoActualEnMinutos = (horas * 60) + minutos;
-    
-    const calendarioActivo = this.getCalendarioActivo();
-    const turnosDelDia = calendarioActivo[diaSemana] || [];
-    const intervalosAviso = [0, 1, 5, 10, 15, 30, 60];
-
-    turnosDelDia.forEach(turno => {
-      const [hApertura, mApertura] = turno.abre.split(':').map(Number);
-      const [hCierre, mCierre] = turno.cierra.split(':').map(Number);
-      
-      const minutesApertura = (hApertura * 60) + mApertura;
-      const minutesCierre = (hCierre * 60) + mCierre;
-
-      intervalosAviso.forEach(antelacion => {
-        const idAlertaApertura = `A-${CONFIG_WIDGET.estadoHorario}-${diaSemana}-${minutesApertura}-${antelacion}-${horas}:${minutos}`;
-        const idAlertaCierre = `C-${CONFIG_WIDGET.estadoHorario}-${diaSemana}-${minutesCierre}-${antelacion}-${horas}:${minutos}`;
-
-        if (tiempoActualEnMinutos === (minutesApertura - antelacion)) {
-          if (!this.notificacionesEnviadas.has(idAlertaApertura)) {
-            const msg = antelacion === 0 
-              ? `¡El sistema ya está ABIERTO! (Hora Local: ${turno.abre})` 
-              : `Apertura inminente: Quedan ${antelacion} minutes para abrir (${turno.abre}).`;
-            if (typeof showNotification === 'function') showNotification(msg, antelacion === 0 ? 'success' : 'info');
-            this.notificacionesEnviadas.add(idAlertaApertura);
-          }
-        }
-
-        if (tiempoActualEnMinutos === (minutesCierre - antelacion)) {
-          if (!this.notificacionesEnviadas.has(idAlertaCierre)) {
-            const msg = antelacion === 0 
-              ? `¡El sistema se ha CERRADO! (Hora Local: ${turno.cierra})` 
-              : `Atención: Quedan ${antelacion} minutes para el cierre (${turno.cierra}).`;
-            if (typeof showNotification === 'function') showNotification(msg, 'warning');
-            this.notificacionesEnviadas.add(idAlertaCierre);
-          }
-        }
-      });
-    });
-
-    if (horas === 0 && minutos === 0) this.notificacionesEnviadas.clear();
-  }
-
-  renderSelectedDaySchedule() {
-    const contentDiv = this.detailsElement.querySelector('.details-schedule-content');
-    if (!contentDiv) return;
-
-    const calendarioActivo = this.getCalendarioActivo();
-    const diaActualLocal = new Date().getDay();
-
-    const diaObj = this.ordenSemanas[this.indiceDiaVisualizado];
-    const turnos = calendarioActivo[diaObj.id] || [];
-    const esHoy = diaObj.id === diaActualLocal;
-
-    let bloqueHorasHTML = '';
-    if (turnos.length === 0) {
-      bloqueHorasHTML = '<span class="details-closed">Cerrado</span>';
-    } else {
-      bloqueHorasHTML = `<div class="details-hours-container">` + 
-        turnos.map(t => `<span class="details-hours">${t.abre} - ${t.cierra}</span>`).join('') + 
-      `</div>`;
-    }
-
-    const textoHoy = esHoy ? '<span class="day-view-tag-hoy">(Hoy)</span>' : '';
-    const containerClasses = esHoy ? 'schedule-viewer-container is-today-view' : 'schedule-viewer-container';
-    const clasesDataLayout = turnos.length > 1 ? 'day-view-data has-multiple-turns' : 'day-view-data';
-
-    // Generar el bloque HTML de todos los días para el sub-desplegable
-    const todosLosDiasHTML = this.ordenSemanas.map(d => {
-      const turnosDia = calendarioActivo[d.id] || [];
-      const esDiaHoy = d.id === diaActualLocal;
-      let horasRowHTML = '';
-      
-      if (turnosDia.length === 0) {
-        horasRowHTML = '<span class="details-closed">Cerrado</span>';
-      } else {
-        horasRowHTML = `<div class="details-hours-container">` + 
-          turnosDia.map(t => `<span class="details-hours">${t.abre} - ${t.cierra}</span>`).join('') + 
-        `</div>`;
-      }
-      
-      return `
-        <div class="all-days-row ${esDiaHoy ? 'is-row-today' : ''}">
-          <span class="day-name">${d.nombre} ${esDiaHoy ? '(Hoy)' : ''}</span>
-          ${horasRowHTML}
-        </div>
-      `;
-    }).join('');
-
-    contentDiv.innerHTML = `
-      <div class="${containerClasses}">
-        <button class="nav-schedule-btn" id="btn-widget-prev" title="Día anterior">${this.icons.chevronLeft}</button>
-        <div class="${clasesDataLayout}">
-          <div class="day-view-title-box">
-            <span class="day-view-name">${diaObj.nombre}</span>
-            ${textoHoy}
-          </div>
-          ${bloqueHorasHTML}
-        </div>
-        <button class="nav-schedule-btn" id="btn-widget-next" title="Día siguiente">${this.icons.chevronRight}</button>
-      </div>
-
-      <!-- Sub-desplegable nativo para ver la semana completa -->
-      <details class="sub-details-all-days">
-        <summary><span class="text-toggle"></span></summary>
-        <div class="all-days-list-wrapper">
-          ${todosLosDiasHTML}
-        </div>
-      </details>
-    `;
-
-    document.getElementById('btn-widget-prev').addEventListener('click', (e) => {
-      e.stopPropagation();
-      this.navegarDia(-1);
-    });
-    document.getElementById('btn-widget-next').addEventListener('click', (e) => {
-      e.stopPropagation();
-      this.navegarDia(1);
-    });
-  }
-
-  navegarDia(direccion) {
-    this.indiceDiaVisualizado = (this.indiceDiaVisualizado + direccion + 7) % 7;
-    this.renderSelectedDaySchedule();
-  }
-
-  updateDisplay() {
-    const ahora = new Date();
-    this.checkProximosEventos(ahora);
-
-    const dia = String(ahora.getDate()).padStart(2, '0');
-    const año = ahora.getFullYear();
-    
-    const mesesTexto = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-    const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-    
-    const nombreDia = diasSemana[ahora.getDay()];
-    const nombreMes = mesesTexto[ahora.getMonth()];
-
-    const horas = String(ahora.getHours()).padStart(2, '0');
-    const minutos = String(ahora.getMinutes()).padStart(2, '0');
-    const segundos = String(ahora.getSeconds()).padStart(2, '0');
-
-    const abiertoAhora = this.comprobarEstadoApertura(ahora);
-    this.iconContainer.style.color = abiertoAhora ? 'var(--color-abierto)' : 'var(--color-cerrado)';
-
-    const zonaFormateada = this.userTimezone.replace(/_/g, ' ');
-    const infoTexto = CONFIG_WIDGET.infoEstado || '';
-
-    if (this.isExpanded) {
-      this.container.classList.remove('is-compact');
-      this.iconContainer.innerHTML = this.icons.calendar;
-      this.display.innerHTML = `
-        <div class="date-highlight">${nombreDia}, ${dia} de ${nombreMes} de ${año}</div>
-        <div class="time-string ${abiertoAhora ? 'status-abierto' : 'status-cerrado'}">${horas}:${minutos}:${segundos} <span class="timezone-label">(${zonaFormateada})</span></div>
-        ${infoTexto ? `<div class="widget-info-estado">${infoTexto}</div>` : ''}
-        <small style="color:var(--text-muted); font-size:10px; display:block; margin-top:4px;">Presione para ver menos información</small>
-      `;
-      
-      this.footer.innerHTML = `
-        <span class="schedule-tag">${CONFIG_WIDGET.estadoHorario}</span>
-        <div class="legend-box">
-          <div class="legend-item">${this.icons.circleGreen}<span>Abierto</span></div>
-          <div class="legend-item">${this.icons.circleRed}<span>Cerrado</span></div>
-        </div>
-      `;
-    } else {
-      this.container.classList.add('is-compact');
-      this.iconContainer.innerHTML = this.icons.clock;
-      this.display.innerHTML = `
-        <div class="time-string compact-style ${abiertoAhora ? 'status-abierto' : 'status-cerrado'}">
-          ${horas}:${minutos}:${segundos} <span class="timezone-label" style="font-size:0.75rem; font-weight:400;">(${zonaFormateada})</span>
-        </div>
-        ${infoTexto ? `<span class="widget-advertencia-estado">⚠️ Hay nueva información. ¡Expande para leer!</span>` : ''}
-        <small style="color:var(--text-muted); font-size:10px; display:block; margin-top:2px;">Presione para ver más información</small>
-      `;
-    }
-  }
-
-  startClock() {
-    this.updateDisplay();
-    this.timerId = setInterval(() => this.updateDisplay(), 1000);
-  }
-
-  addEventListeners() {
-    document.getElementById('datetime-widget-main').addEventListener('click', () => {
-      this.isExpanded = !this.isExpanded;
-      this.updateDisplay();
-    });
-
-    this.detailsElement.addEventListener('toggle', () => {
-      if (this.detailsElement.open) {
-        this.renderSelectedDaySchedule();
-      }
-    });
-  }
-}
-
-// Inicialización del script
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => new DateTimeWidget());
-} else {
-  new DateTimeWidget();
-}
-</script>
 
 <!-- Menu General -->
 <!-- Librería de iconos opcional -->
@@ -4913,7 +4086,1599 @@ if (document.readyState === 'loading') {
       },
       { icon: 'https://picsum.photos/id/1025/80/80', label: 'Mascota', type: 'link', url: '#' , disabled: true, disabledTooltip: 'Próximamente'},
       { icon: 'fa-solid fa-chart-line', label: 'Stats', type: 'link', url: '#' , disabled: true, disabledTooltip: 'Próximamente'},
-      { icon: 'fa-solid fa-palette', label: 'Diseño', type: 'link', url: '#' , disabled: true, disabledTooltip: 'Próximamente'},
+      { icon: 'fa-solid fa-clock', label: 'Diseño', type: 'modal', title: 'Horario de Servicio' , disabled: false, disabledTooltip: 'Próximamente',
+      html: `<main class="widget-docs">
+    <!-- ========================================================== -->
+    <!-- ENCABEZADO PRINCIPAL                                        -->
+    <!-- ========================================================== -->
+    <header class="widget-docs-header">
+        <h1>⏰ Widget de Horario</h1>
+        <p class="widget-docs-subtitle">
+            Consulta en tiempo real si el establecimiento está <strong>abierto</strong> o <strong>cerrado</strong>,
+            y revisa los horarios de toda la semana.
+        </p>
+    </header>
+
+    <!-- ========================================================== -->
+    <!-- SECCIÓN: ¿CÓMO SABE SI ESTÁ ABIERTO O CERRADO?            -->
+    <!-- ========================================================== -->
+    <section class="widget-docs-section">
+        <h2>🔍 ¿Cómo sabe si está abierto o cerrado?</h2>
+        
+        <article class="widget-docs-article">
+            <p>
+                El widget compara la <strong>hora actual de tu dispositivo</strong> con los horarios 
+                configurados para el día de hoy. Si la hora actual está dentro de algún turno, 
+                te mostrará <span class="status-badge open">● Abierto</span>; 
+                si no, <span class="status-badge closed">● Cerrado</span>.
+            </p>
+        </article>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- SECCIÓN: LOS 4 TIPOS DE HORARIO                            -->
+    <!-- ========================================================== -->
+    <section class="widget-docs-section">
+        <h2>📅 Los 4 tipos de horario</h2>
+        
+        <p>
+            El widget puede alternar entre <strong>4 calendarios diferentes</strong> según la temporada 
+            o situación. Cada uno tiene sus propios horarios por día.
+        </p>
+        <aside class="widget-docs-notificacion">
+          <p>Debe tener en cuenta que estos horarios son de ejemplo.</p>
+        </aside>
+        <div class="widget-docs-grid">
+            <!-- Tarjeta 1: Normal -->
+            <article class="schedule-card">
+                <div class="schedule-card-header">
+                    <span class="schedule-card-icon">📋</span>
+                    <h3>Normal</h3>
+                    <span class="schedule-card-tag">Estándar</span>
+                </div>
+                <div class="schedule-card-body">
+                    <p>Horario habitual de atención al público.</p>
+                    <div class="schedule-preview">
+                        <span class="preview-day">Lun-Vie:</span>
+                        <span class="preview-hours">12:00 - 14:30 / 16:00 - 20:00</span>
+                    </div>
+                    <div class="schedule-preview">
+                        <span class="preview-day">Sáb-Dom:</span>
+                        <span class="preview-hours">11:00 - 14:00 / 17:00 - 20:00</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Tarjeta 2: Vacaciones -->
+            <article class="schedule-card">
+                <div class="schedule-card-header">
+                    <span class="schedule-card-icon">🏖️</span>
+                    <h3>Vacaciones</h3>
+                    <span class="schedule-card-tag tag-orange">Temporada</span>
+                </div>
+                <div class="schedule-card-body">
+                    <p>Horario reducido durante periodos vacacionales.</p>
+                    <div class="schedule-preview">
+                        <span class="preview-day">Lun-Vie:</span>
+                        <span class="preview-hours">12:00 - 14:00 / 16:00 - 20:00</span>
+                    </div>
+                    <div class="schedule-preview">
+                        <span class="preview-day">Sábado:</span>
+                        <span class="preview-hours">12:00 - 13:00 / 16:00 - 20:30</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Tarjeta 3: Sistema GCO -->
+            <article class="schedule-card">
+                <div class="schedule-card-header">
+                    <span class="schedule-card-icon">⚙️</span>
+                    <h3>Sistema GCO</h3>
+                    <span class="schedule-card-tag tag-blue">Técnico</span>
+                </div>
+                <div class="schedule-card-body">
+                    <p>Horario de operaciones del sistema interno.</p>
+                    <div class="schedule-preview">
+                        <span class="preview-day">Lun-Jue:</span>
+                        <span class="preview-hours">7:30 - 15:30</span>
+                    </div>
+                    <div class="schedule-preview">
+                        <span class="preview-day">Viernes:</span>
+                        <span class="preview-hours">7:30 - 14:30</span>
+                    </div>
+                    <div class="schedule-preview">
+                        <span class="preview-day">Fin de semana:</span>
+                        <span class="preview-hours closed-text">Cerrado</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Tarjeta 4: Especial -->
+            <article class="schedule-card">
+                <div class="schedule-card-header">
+                    <span class="schedule-card-icon">⭐</span>
+                    <h3>Especial</h3>
+                    <span class="schedule-card-tag tag-purple">Evento</span>
+                </div>
+                <div class="schedule-card-body">
+                    <p>Horario extendido para eventos o fechas señaladas.</p>
+                    <div class="schedule-preview">
+                        <span class="preview-day">Lun-Jue:</span>
+                        <span class="preview-hours">09:00 - 22:00</span>
+                    </div>
+                    <div class="schedule-preview">
+                        <span class="preview-day">Viernes:</span>
+                        <span class="preview-hours">09:00 - 23:00</span>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <!-- Aside explicativo -->
+        <aside class="widget-docs-aside">
+            <span class="aside-icon">💡</span>
+            <div>
+                <strong>¿Cómo se cambia el tipo?</strong>
+                <p>
+                    Dependiendo del momento en el que nos encontremos, el equipo decidirá que horario poner. 
+                    Puede ser: <kbd>normal</kbd>, <kbd>vacaciones</kbd>, <kbd>sistemaGCO</kbd> o <kbd>especial</kbd>.
+                </p>
+            </div>
+        </aside>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- SECCIÓN: ¿QUÉ MÁS PUEDE HACER?                             -->
+    <!-- ========================================================== -->
+    <section class="widget-docs-section">
+        <h2>⚡ ¿Qué más puede hacer?</h2>
+
+        <div class="features-grid">
+            <article class="feature-item">
+                <div class="feature-icon">🔔</div>
+                <div>
+                    <h4>Avisos de apertura/cierre</h4>
+                    <p>
+                        Te avisa <strong>1, 5, 10, 15, 30 y 60 minutos</strong> antes de que 
+                        abra o cierre el servicio.
+                    </p>
+                    <p>
+                      Debe tener en cuenta que cuando cierre el servicio, es posible que algunas funciones no funcione hasta que vuelva a abrirse el servicio. Esto se realiza para mantener la seguridad y por otro lado, controlar los tiempos de trabajo de nuestros empleados.
+                    </p>
+                </div>
+            </article>
+
+            <article class="feature-item">
+                <div class="feature-icon">📊</div>
+                <div>
+                    <h4>Cuadrante semanal</h4>
+                    <p>
+                        Puedes <strong>desplegar el horario de toda la semana</strong> para 
+                        planificar tu visita con antelación.
+                    </p>
+                </div>
+            </article>
+
+            <article class="feature-item">
+                <div class="feature-icon">🔄</div>
+                <div>
+                    <h4>Modo compacto</h4>
+                    <p>
+                        Al hacer clic en el widget, se <strong>reduce para ocupar menos espacio</strong>, 
+                        mostrando solo la hora y el estado. Debe tener en cuenta que <strong>el widget no puede eliminarse de la pantalla</strong> a menos que recarge la página web.
+                    </p>
+                </div>
+            </article>
+
+            <article class="feature-item">
+                <div class="feature-icon">🌍</div>
+                <div>
+                    <h4>Hora local</h4>
+                    <p>
+                        Usa la <strong>zona horaria de tu dispositivo</strong>, así que siempre 
+                        ves la hora correcta donde estés.
+                    </p>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- SECCIÓN: PREGUNTAS FRECUENTES                              -->
+    <!-- ========================================================== -->
+    <section class="widget-docs-section">
+        <h2>❓ Preguntas frecuentes</h2>
+
+        <details class="faq-item">
+            <summary>¿Qué significa el punto verde o rojo?</summary>
+            <div class="faq-answer">
+                <p>
+                    <span class="status-badge open">● Verde</span> significa que el establecimiento 
+                    está <strong>abierto ahora mismo</strong>. 
+                    <span class="status-badge closed">● Rojo</span> significa que está 
+                    <strong>cerrado</strong> en este momento.
+                </p>
+            </div>
+        </details>
+
+        <details class="faq-item">
+            <summary>¿El widget se actualiza automáticamente?</summary>
+            <div class="faq-answer">
+                <p>
+                    Sí. El widget <strong>actualiza la hora y el estado cada segundo</strong> 
+                    en tiempo real. No necesitas recargar la página.
+                </p>
+            </div>
+        </details>
+
+        <details class="faq-item">
+            <summary>¿Cómo sé qué horario está activo?</summary>
+            <div class="faq-answer">
+                <p>
+                    En la parte inferior del widget aparece una etiqueta con el nombre 
+                    del calendario activo: <kbd>normal</kbd>, <kbd>vacaciones</kbd>, 
+                    <kbd>sistemaGCO</kbd> o <kbd>especial</kbd>.
+                </p>
+            </div>
+        </details>
+
+        <details class="faq-item">
+            <summary>¿Puedo ver los horarios de otros días?</summary>
+            <div class="faq-answer">
+                <p>
+                    Sí. Despliega el <strong>cuadrante semanal</strong> y usa las flechas 
+                    ◀ ▶ para navegar entre los días. También puedes ver la semana completa 
+                    en la lista inferior.
+                </p>
+            </div>
+        </details>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- PIE DE PÁGINA                                              -->
+    <!-- ========================================================== -->
+    <footer class="widget-docs-footer">
+        <p>
+            <span class="footer-dot"></span>
+            Widget actualizado en tiempo real · Usa la hora de tu dispositivo
+        </p>
+    </footer>
+</main>`,
+      js: function(bodyContainer, data) {
+        setTimeout(function() {
+          // ===============================================================
+          // CENTRALIZACIÓN DE CALENDARIOS POR TEMPORADA (LOCAL DISPOSITIVO)
+          // ===============================================================
+          var CONFIG_WIDGET = {
+            estadoHorario: 'vacaciones',
+            infoEstado: "",
+            horarios: {
+              normal: {
+                1: [ { abre: "12:00", cierra: "14:30" }, { abre: "16:00", cierra: "20:00" } ],
+                2: [ { abre: "12:00", cierra: "14:30" }, { abre: "16:00", cierra: "20:00" } ],
+                3: [ { abre: "12:00", cierra: "14:30" }, { abre: "16:00", cierra: "20:00" } ],
+                4: [ { abre: "12:00", cierra: "14:30" }, { abre: "16:00", cierra: "20:00" } ],
+                5: [ { abre: "12:00", cierra: "14:30" }, { abre: "16:00", cierra: "20:00" } ],
+                6: [ { abre: "11:00", cierra: "14:00" }, { abre: "17:00", cierra: "20:00" } ],
+                0: [ { abre: "11:00", cierra: "14:00" }, { abre: "17:00", cierra: "20:00" } ]
+              },
+              vacaciones: {
+                1: [ { abre: "12:00", cierra: "14:00" }, { abre: "16:00", cierra: "20:00" } ],
+                2: [ { abre: "12:00", cierra: "14:00" }, { abre: "16:00", cierra: "20:00" } ],
+                3: [ { abre: "12:00", cierra: "14:00" }, { abre: "16:00", cierra: "20:00" } ],
+                4: [ { abre: "12:00", cierra: "14:00" }, { abre: "16:00", cierra: "20:00" } ],
+                5: [ { abre: "12:00", cierra: "14:00" }, { abre: "16:00", cierra: "20:00" } ],
+                6: [ { abre: "12:00", cierra: "13:00" }, { abre: "16:00", cierra: "20:30" } ],
+                0: [ { abre: "12:00", cierra: "13:00" }, { abre: "17:00", cierra: "20:30" } ]
+              },
+              sistemaGCO: {
+                1: [ { abre: "7:30", cierra: "15:30" } ],
+                2: [ { abre: "7:30", cierra: "15:30" } ],
+                3: [ { abre: "7:30", cierra: "15:30" } ],
+                4: [ { abre: "7:30", cierra: "15:30" } ],
+                5: [ { abre: "07:30", cierra: "14:30" } ],
+                6: [],
+                0: []
+              },
+              especial: {
+                1: [ { abre: "09:00", cierra: "22:00" } ],
+                2: [ { abre: "09:00", cierra: "22:00" } ],
+                3: [ { abre: "09:00", cierra: "22:00" } ],
+                4: [ { abre: "09:00", cierra: "22:00" } ],
+                5: [ { abre: "09:00", cierra: "23:00" } ],
+                6: [ { abre: "10:00", cierra: "20:00" } ],
+                0: [ { abre: "11:00", cierra: "17:00" } ]
+              }
+            }
+          };
+
+          // Estilos del widget
+          function aplicarEstilosWidget() {
+            var style = document.createElement('style');
+            style.textContent =
+              ':root {' +
+                '--bg-widget: rgba(18, 18, 20, 0.85);' +
+                '--bg-hover: rgba(26, 26, 30, 0.95);' +
+                '--border-widget: rgba(255, 255, 255, 0.1);' +
+                '--border-inner: rgba(255, 255, 255, 0.04);' +
+                '--text-main: #f5f5f7;' +
+                '--text-muted: #8e8e93;' +
+                '--color-abierto: #30d158;' +
+                '--color-cerrado: #ff453a;' +
+                '--color-tag-bg: rgba(41, 151, 255, 0.12);' +
+                '--color-tag-text: #2997ff;' +
+                '--radius-main: 16px;' +
+                '--fx-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 1px 0 var(--border-inner);' +
+                '--bg-row-card: rgba(255,255,255,0.02);' +
+                '--bg-row-today: rgba(41,151,255,0.04);' +
+                '--border-row-today: rgba(41,151,255,0.15);' +
+                '--bg-time-pill: rgba(255,255,255,0.05);' +
+              '}' +
+
+              '#datetime-widget-container,' +
+              '#datetime-widget-container * {' +
+                'box-sizing: border-box !important;' +
+              '}' +
+
+              '#datetime-widget-container {' +
+                'position: fixed;' +
+                'bottom: 24px;' +
+                'right: 24px;' +
+                'font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, sans-serif;' +
+                'background: var(--bg-widget);' +
+                'backdrop-filter: blur(24px) saturate(190%);' +
+                '-webkit-backdrop-filter: blur(24px) saturate(190%);' +
+                'border: 1px solid var(--border-widget);' +
+                'padding: 16px 20px;' +
+                'border-radius: var(--radius-main);' +
+                'box-shadow: var(--fx-shadow);' +
+                'display: flex;' +
+                'flex-direction: column;' +
+                'gap: 12px;' +
+                'z-index: 2147483646;' +
+                'user-select: none;' +
+                'transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);' +
+                'width: 310px;' +
+                'max-width: calc(100vw - 48px);' +
+                'overflow: hidden;' +
+              '}' +
+
+              '#datetime-widget-container:hover {' +
+                'background: var(--bg-hover);' +
+                'box-shadow: 0 24px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08);' +
+              '}' +
+
+              '#datetime-widget-container.is-compact {' +
+                'padding: 12px 18px;' +
+                'gap: 0px;' +
+              '}' +
+
+              '#datetime-widget-main {' +
+                'display: flex;' +
+                'align-items: center;' +
+                'gap: 14px;' +
+                'cursor: pointer;' +
+                'width: 100%;' +
+                'overflow: hidden;' +
+              '}' +
+
+              '#datetime-widget-icon {' +
+                'display: flex;' +
+                'align-items: center;' +
+                'justify-content: center;' +
+                'flex-shrink: 0;' +
+              '}' +
+
+              '#datetime-widget-display {' +
+                'font-size: 0.88rem;' +
+                'font-weight: 400;' +
+                'line-height: 1.4;' +
+                'text-align: left;' +
+                'flex-grow: 1;' +
+                'overflow: hidden;' +
+              '}' +
+
+              '.date-highlight {' +
+                'font-weight: 600;' +
+                'color: var(--text-main);' +
+                'letter-spacing: -0.01em;' +
+                'margin-bottom: 1px;' +
+                'white-space: nowrap;' +
+                'overflow: hidden;' +
+                'text-overflow: ellipsis;' +
+              '}' +
+
+              '.status-abierto { color: var(--color-abierto); }' +
+              '.status-cerrado { color: var(--color-cerrado); }' +
+
+              '.time-string {' +
+                'font-variant-numeric: tabular-nums;' +
+                'font-weight: 400;' +
+                'white-space: nowrap;' +
+                'overflow: hidden;' +
+                'text-overflow: ellipsis;' +
+              '}' +
+
+              '.time-string.compact-style {' +
+                'font-size: 1.15rem;' +
+                'font-weight: 600;' +
+                'letter-spacing: -0.01em;' +
+              '}' +
+
+              '.widget-info-estado {' +
+                'font-size: 0.76rem;' +
+                'color: var(--color-tag-text);' +
+                'background: rgba(41,151,255,0.08);' +
+                'border-left: 2px solid var(--color-tag-text);' +
+                'padding: 4px 8px;' +
+                'border-radius: 0 4px 4px 0;' +
+                'margin-top: 6px;' +
+                'line-height: 1.3;' +
+              '}' +
+
+              '.widget-advertencia-estado {' +
+                'font-size: 0.68rem;' +
+                'color: var(--color-cerrado);' +
+                'display: block;' +
+                'margin-top: 2px;' +
+                'font-weight: 500;' +
+                'letter-spacing: 0.01em;' +
+              '}' +
+
+              '.widget-divider {' +
+                'height: 1px;' +
+                'background: linear-gradient(90deg, var(--border-widget) 0%, rgba(255,255,255,0.02) 100%);' +
+                'width: 100%;' +
+                'flex-shrink: 0;' +
+                'transition: opacity 0.2s ease, margin 0.2s ease;' +
+              '}' +
+
+              '#datetime-widget-container.is-compact .widget-divider {' +
+                'opacity: 0;' +
+                'margin: 0;' +
+                'height: 0;' +
+              '}' +
+
+              '#datetime-widget-footer {' +
+                'display: flex;' +
+                'justify-content: space-between;' +
+                'align-items: center;' +
+                'font-size: 0.74rem;' +
+                'width: 100%;' +
+                'overflow: hidden;' +
+                'transition: opacity 0.2s ease, height 0.2s ease, margin 0.2s ease;' +
+              '}' +
+
+              '#datetime-widget-container.is-compact #datetime-widget-footer {' +
+                'opacity: 0;' +
+                'height: 0;' +
+                'overflow: hidden;' +
+                'margin: 0;' +
+              '}' +
+
+              '.schedule-tag {' +
+                'text-transform: uppercase;' +
+                'letter-spacing: 0.06em;' +
+                'background: var(--color-tag-bg);' +
+                'padding: 3px 8px;' +
+                'border-radius: 6px;' +
+                'color: var(--color-tag-text);' +
+                'font-weight: 600;' +
+                'font-size: 0.68rem;' +
+                'flex-shrink: 0;' +
+              '}' +
+
+              '.legend-box {' +
+                'display: flex;' +
+                'align-items: center;' +
+                'gap: 10px;' +
+                'flex-shrink: 0;' +
+              '}' +
+
+              '.legend-item {' +
+                'display: flex;' +
+                'align-items: center;' +
+                'gap: 5px;' +
+                'color: var(--text-muted);' +
+                'font-weight: 500;' +
+              '}' +
+
+              '#widget-schedule-details {' +
+                'width: 100%;' +
+                'border-top: 1px dashed rgba(255,255,255,0.06);' +
+                'margin-top: 2px;' +
+                'overflow: hidden;' +
+                'transition: opacity 0.2s ease, height 0.2s ease;' +
+              '}' +
+
+              '#datetime-widget-container.is-compact #widget-schedule-details {' +
+                'opacity: 0;' +
+                'height: 0;' +
+                'overflow: hidden;' +
+                'border: none;' +
+                'margin: 0;' +
+              '}' +
+
+              '#widget-schedule-details summary {' +
+                'padding: 8px 2px 2px 2px;' +
+                'cursor: pointer;' +
+                'font-weight: 600;' +
+                'color: var(--text-muted);' +
+                'outline: none;' +
+                'list-style: none;' +
+                'display: flex;' +
+                'justify-content: space-between;' +
+                'align-items: center;' +
+                'font-size: 0.74rem;' +
+                'width: 100%;' +
+              '}' +
+
+              '#widget-schedule-details summary::-webkit-details-marker { display: none; }' +
+              '#widget-schedule-details summary:hover { color: var(--text-main); }' +
+
+              '#widget-schedule-details summary::after {' +
+                'content: "";' +
+                'display: inline-block;' +
+                'width: 5px;' +
+                'height: 5px;' +
+                'border-right: 1.5px solid var(--text-muted);' +
+                'border-bottom: 1.5px solid var(--text-muted);' +
+                'transform: rotate(45deg) translate(-2px, -2px);' +
+                'transition: transform 0.2s ease;' +
+                'flex-shrink: 0;' +
+              '}' +
+
+              '#widget-schedule-details[open] summary::after {' +
+                'transform: rotate(-135deg) translate(-1px, -1px);' +
+              '}' +
+
+              '.details-animated-wrapper {' +
+                'display: grid;' +
+                'grid-template-rows: 0fr;' +
+                'transition: grid-template-rows 0.25s cubic-bezier(0.4, 0, 0.2, 1);' +
+                'width: 100%;' +
+              '}' +
+
+              '#widget-schedule-details[open] .details-animated-wrapper {' +
+                'grid-template-rows: 1fr;' +
+              '}' +
+
+              '.details-schedule-content {' +
+                'overflow: hidden;' +
+                'padding: 4px 0;' +
+                'width: 100%;' +
+              '}' +
+
+              '.schedule-viewer-container {' +
+                'display: flex;' +
+                'align-items: center;' +
+                'justify-content: space-between;' +
+                'background: var(--bg-row-card);' +
+                'border: 1px solid rgba(255,255,255,0.02);' +
+                'border-radius: 8px;' +
+                'padding: 6px;' +
+                'width: 100%;' +
+                'gap: 4px;' +
+              '}' +
+
+              '.schedule-viewer-container.is-today-view {' +
+                'background: var(--bg-row-today);' +
+                'border-color: var(--border-row-today);' +
+              '}' +
+
+              '.nav-schedule-btn {' +
+                'background: none;' +
+                'border: none;' +
+                'color: var(--text-muted);' +
+                'cursor: pointer;' +
+                'display: flex;' +
+                'align-items: center;' +
+                'justify-content: center;' +
+                'padding: 6px;' +
+                'border-radius: 4px;' +
+                'transition: all 0.2s ease;' +
+                'flex-shrink: 0;' +
+              '}' +
+
+              '.nav-schedule-btn:hover {' +
+                'color: var(--text-main);' +
+                'background: rgba(255,255,255,0.05);' +
+              '}' +
+
+              '.day-view-data {' +
+                'display: flex;' +
+                'justify-content: space-between;' +
+                'align-items: center;' +
+                'flex-grow: 1;' +
+                'overflow: hidden;' +
+                'gap: 8px;' +
+              '}' +
+
+              '.day-view-data.has-multiple-turns {' +
+                'flex-direction: column;' +
+                'align-items: flex-start;' +
+                'gap: 6px;' +
+                'padding: 2px 4px;' +
+              '}' +
+
+              '.day-view-title-box {' +
+                'display: flex;' +
+                'flex-direction: row;' +
+                'align-items: center;' +
+                'gap: 4px;' +
+                'overflow: hidden;' +
+              '}' +
+
+              '.day-view-name {' +
+                'color: var(--text-muted);' +
+                'font-size: 0.78rem;' +
+                'font-weight: 500;' +
+                'white-space: nowrap;' +
+              '}' +
+
+              '.is-today-view .day-view-name {' +
+                'color: var(--text-main);' +
+                'font-weight: 600;' +
+              '}' +
+
+              '.day-view-tag-hoy {' +
+                'color: var(--color-tag-text);' +
+                'font-size: 0.74rem;' +
+                'font-weight: 600;' +
+              '}' +
+
+              '.details-hours-container {' +
+                'display: flex;' +
+                'flex-direction: row;' +
+                'gap: 4px;' +
+                'align-items: center;' +
+                'flex-wrap: wrap;' +
+              '}' +
+
+              '.details-hours {' +
+                'color: var(--text-main);' +
+                'font-variant-numeric: tabular-nums;' +
+                'font-size: 0.7rem;' +
+                'font-weight: 500;' +
+                'background: var(--bg-time-pill);' +
+                'padding: 2px 6px;' +
+                'border-radius: 4px;' +
+                'white-space: nowrap;' +
+              '}' +
+
+              '.details-closed {' +
+                'color: var(--color-cerrado);' +
+                'background: rgba(255,69,58,0.1);' +
+                'border: 1px solid rgba(255,69,58,0.15);' +
+                'font-weight: 600;' +
+                'font-size: 0.68rem;' +
+                'padding: 2px 6px;' +
+                'border-radius: 4px;' +
+                'white-space: nowrap;' +
+              '}' +
+
+              '.timezone-label {' +
+                'font-size: 0.65rem;' +
+                'opacity: 0.65;' +
+                'font-weight: 500;' +
+                'display: inline-block;' +
+                'white-space: nowrap;' +
+              '}' +
+
+              '.sub-details-all-days {' +
+                'margin-top: 8px;' +
+                'width: 100%;' +
+              '}' +
+
+              '.sub-details-all-days summary {' +
+                'list-style: none;' +
+                'display: flex;' +
+                'justify-content: center;' +
+                'align-items: center;' +
+                'font-size: 0.7rem;' +
+                'color: var(--color-tag-text) !important;' +
+                'font-weight: 600;' +
+                'text-transform: uppercase;' +
+                'letter-spacing: 0.04em;' +
+                'cursor: pointer;' +
+                'padding: 4px 0;' +
+                'outline: none;' +
+              '}' +
+
+              '.sub-details-all-days summary::-webkit-details-marker { display: none; }' +
+              '.sub-details-all-days summary .text-toggle::before { content: "desplegar"; font-size:10px; }' +
+              '.sub-details-all-days[open] summary .text-toggle::before { content: "replegar"; font-size:10px; }' +
+              '.sub-details-all-days summary::after { display: none !important; }' +
+
+              '.all-days-list-wrapper {' +
+                'display: flex;' +
+                'flex-direction: column;' +
+                'gap: 6px;' +
+                'margin-top: 6px;' +
+                'max-height: 190px;' +
+                'overflow-y: auto;' +
+                'padding-right: 2px;' +
+              '}' +
+
+              '.all-days-list-wrapper::-webkit-scrollbar { width: 4px; }' +
+              '.all-days-list-wrapper::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }' +
+
+              '.all-days-row {' +
+                'display: flex;' +
+                'justify-content: space-between;' +
+                'align-items: center;' +
+                'background: rgba(255,255,255,0.01);' +
+                'border: 1px solid rgba(255,255,255,0.01);' +
+                'border-radius: 6px;' +
+                'padding: 5px 8px;' +
+              '}' +
+
+              '.all-days-row.is-row-today {' +
+                'background: var(--bg-row-today);' +
+                'border-color: rgba(41,151,255,0.1);' +
+              '}' +
+
+              '.all-days-row .day-name {' +
+                'font-size: 0.74rem;' +
+                'color: var(--text-muted);' +
+                'font-weight: 500;' +
+              '}' +
+
+              '.all-days-row.is-row-today .day-name {' +
+                'color: var(--text-main);' +
+                'font-weight: 600;' +
+              '}' +
+
+              '@media (max-width: 480px) {' +
+                '#datetime-widget-container {' +
+                  'bottom: 0 !important;' +
+                  'right: 0 !important;' +
+                  'left: 0 !important;' +
+                  'width: 100% !important;' +
+                  'max-width: 100% !important;' +
+                  'border-radius: var(--radius-main) var(--radius-main) 0 0;' +
+                  'border-left: none;' +
+                  'border-right: none;' +
+                  'border-bottom: none;' +
+                  'padding: 12px 20px;' +
+                  'box-shadow: 0 -10px 40px rgba(0,0,0,0.5);' +
+                '}' +
+              '}';
+            document.head.appendChild(style);
+          }
+
+          // Clase principal del widget
+          function DateTimeWidget() {
+            this.isExpanded = true;
+            this.container = null;
+            this.display = null;
+            this.iconContainer = null;
+            this.footer = null;
+            this.detailsElement = null;
+            this.timerId = null;
+            this.notificacionesEnviadas = new Set();
+
+            this.ordenSemanas = [
+              { id: 1, nombre: 'Lunes' },
+              { id: 2, nombre: 'Martes' },
+              { id: 3, nombre: 'Miércoles' },
+              { id: 4, nombre: 'Jueves' },
+              { id: 5, nombre: 'Viernes' },
+              { id: 6, nombre: 'Sábado' },
+              { id: 0, nombre: 'Domingo' }
+            ];
+
+            this.indiceDiaVisualizado = 0;
+            this.userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Local';
+
+            this.icons = {
+              calendar: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>',
+              clock: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>',
+              circleGreen: '<svg width="8" height="8" viewBox="0 0 24 24" fill="#30d158"><circle cx="12" cy="12" r="10"></circle></svg>',
+              circleRed: '<svg width="8" height="8" viewBox="0 0 24 24" fill="#ff453a"><circle cx="12" cy="12" r="10"></circle></svg>',
+              chevronLeft: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>',
+              chevronRight: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>'
+            };
+
+            this.init = function() {
+              aplicarEstilosWidget();
+              this.establecerDiaActualPorDefecto();
+              this.buildDOM();
+              this.startClock();
+              this.addEventListeners();
+            };
+
+            this.establecerDiaActualPorDefecto = function() {
+              var diaActualLocal = new Date().getDay();
+              var index = -1;
+              for (var i = 0; i < this.ordenSemanas.length; i++) {
+                if (this.ordenSemanas[i].id === diaActualLocal) {
+                  index = i;
+                  break;
+                }
+              }
+              this.indiceDiaVisualizado = index !== -1 ? index : 0;
+            };
+
+            this.buildDOM = function() {
+              this.container = document.createElement('div');
+              this.container.id = 'datetime-widget-container';
+
+              var mainSection = document.createElement('div');
+              mainSection.id = 'datetime-widget-main';
+              this.iconContainer = document.createElement('div');
+              this.iconContainer.id = 'datetime-widget-icon';
+              this.display = document.createElement('div');
+              this.display.id = 'datetime-widget-display';
+              mainSection.appendChild(this.iconContainer);
+              mainSection.appendChild(this.display);
+
+              var divider1 = document.createElement('div');
+              divider1.className = 'widget-divider';
+
+              this.footer = document.createElement('div');
+              this.footer.id = 'datetime-widget-footer';
+
+              this.detailsElement = document.createElement('details');
+              this.detailsElement.id = 'widget-schedule-details';
+
+              this.detailsElement.innerHTML =
+                '<summary>Cuadrante semanal</summary>' +
+                '<div class="details-animated-wrapper">' +
+                  '<div class="details-schedule-content"></div>' +
+                '</div>';
+
+              this.container.appendChild(mainSection);
+              this.container.appendChild(divider1);
+              this.container.appendChild(this.footer);
+              this.container.appendChild(this.detailsElement);
+
+              document.body.appendChild(this.container);
+            };
+
+            this.getCalendarioActivo = function() {
+              var tipo = CONFIG_WIDGET.estadoHorario;
+              return CONFIG_WIDGET.horarios[tipo] || CONFIG_WIDGET.horarios.normal;
+            };
+
+            this.comprobarEstadoApertura = function(fechaLocal) {
+              var diaSemana = fechaLocal.getDay();
+              var tiempoActualEnMinutos = (fechaLocal.getHours() * 60) + fechaLocal.getMinutes();
+              var calendarioActivo = this.getCalendarioActivo();
+              var turnosDelDia = calendarioActivo[diaSemana] || [];
+
+              for (var i = 0; i < turnosDelDia.length; i++) {
+                var turno = turnosDelDia[i];
+                var partesAbre = turno.abre.split(':').map(Number);
+                var partesCierra = turno.cierra.split(':').map(Number);
+                var hApertura = partesAbre[0];
+                var mApertura = partesAbre[1];
+                var hCierre = partesCierra[0];
+                var mCierre = partesCierra[1];
+                if (tiempoActualEnMinutos >= ((hApertura * 60) + mApertura) &&
+                    tiempoActualEnMinutos < ((hCierre * 60) + mCierre)) {
+                  return true;
+                }
+              }
+              return false;
+            };
+
+            this.checkProximosEventos = function(fechaLocal) {
+              var diaSemana = fechaLocal.getDay();
+              var horas = fechaLocal.getHours();
+              var minutos = fechaLocal.getMinutes();
+              var tiempoActualEnMinutos = (horas * 60) + minutos;
+
+              var calendarioActivo = this.getCalendarioActivo();
+              var turnosDelDia = calendarioActivo[diaSemana] || [];
+              var intervalosAviso = [0, 1, 5, 10, 15, 30, 60];
+
+              for (var i = 0; i < turnosDelDia.length; i++) {
+                var turno = turnosDelDia[i];
+                var partesAbre = turno.abre.split(':').map(Number);
+                var partesCierra = turno.cierra.split(':').map(Number);
+                var hApertura = partesAbre[0];
+                var mApertura = partesAbre[1];
+                var hCierre = partesCierra[0];
+                var mCierre = partesCierra[1];
+
+                var minutesApertura = (hApertura * 60) + mApertura;
+                var minutesCierre = (hCierre * 60) + mCierre;
+
+                for (var j = 0; j < intervalosAviso.length; j++) {
+                  var antelacion = intervalosAviso[j];
+                  var idAlertaApertura = 'A-' + CONFIG_WIDGET.estadoHorario + '-' + diaSemana + '-' + minutesApertura + '-' + antelacion + '-' + horas + ':' + minutos;
+                  var idAlertaCierre = 'C-' + CONFIG_WIDGET.estadoHorario + '-' + diaSemana + '-' + minutesCierre + '-' + antelacion + '-' + horas + ':' + minutos;
+
+                  if (tiempoActualEnMinutos === (minutesApertura - antelacion)) {
+                    if (!this.notificacionesEnviadas.has(idAlertaApertura)) {
+                      var msg = antelacion === 0
+                        ? '¡El sistema ya está ABIERTO! (Hora Local: ' + turno.abre + ')'
+                        : 'Apertura inminente: Quedan ' + antelacion + ' minutes para abrir (' + turno.abre + ').';
+                      if (typeof showNotification === 'function') showNotification(msg, antelacion === 0 ? 'success' : 'info');
+                      this.notificacionesEnviadas.add(idAlertaApertura);
+                    }
+                  }
+
+                  if (tiempoActualEnMinutos === (minutesCierre - antelacion)) {
+                    if (!this.notificacionesEnviadas.has(idAlertaCierre)) {
+                      var msg = antelacion === 0
+                        ? '¡El sistema se ha CERRADO! (Hora Local: ' + turno.cierra + ')'
+                        : 'Atención: Quedan ' + antelacion + ' minutes para el cierre (' + turno.cierra + ').';
+                      if (typeof showNotification === 'function') showNotification(msg, 'warning');
+                      this.notificacionesEnviadas.add(idAlertaCierre);
+                    }
+                  }
+                }
+              }
+
+              if (horas === 0 && minutos === 0) this.notificacionesEnviadas.clear();
+            };
+
+            this.renderSelectedDaySchedule = function() {
+              var contentDiv = this.detailsElement.querySelector('.details-schedule-content');
+              if (!contentDiv) return;
+
+              var calendarioActivo = this.getCalendarioActivo();
+              var diaActualLocal = new Date().getDay();
+
+              var diaObj = this.ordenSemanas[this.indiceDiaVisualizado];
+              var turnos = calendarioActivo[diaObj.id] || [];
+              var esHoy = diaObj.id === diaActualLocal;
+
+              var bloqueHorasHTML = '';
+              if (turnos.length === 0) {
+                bloqueHorasHTML = '<span class="details-closed">Cerrado</span>';
+              } else {
+                var horasHTML = '';
+                for (var i = 0; i < turnos.length; i++) {
+                  horasHTML += '<span class="details-hours">' + turnos[i].abre + ' - ' + turnos[i].cierra + '</span>';
+                }
+                bloqueHorasHTML = '<div class="details-hours-container">' + horasHTML + '</div>';
+              }
+
+              var textoHoy = esHoy ? '<span class="day-view-tag-hoy">(Hoy)</span>' : '';
+              var containerClasses = esHoy ? 'schedule-viewer-container is-today-view' : 'schedule-viewer-container';
+              var clasesDataLayout = turnos.length > 1 ? 'day-view-data has-multiple-turns' : 'day-view-data';
+
+              var todosLosDiasHTML = '';
+              for (var i = 0; i < this.ordenSemanas.length; i++) {
+                var d = this.ordenSemanas[i];
+                var turnosDia = calendarioActivo[d.id] || [];
+                var esDiaHoy = d.id === diaActualLocal;
+                var horasRowHTML = '';
+
+                if (turnosDia.length === 0) {
+                  horasRowHTML = '<span class="details-closed">Cerrado</span>';
+                } else {
+                  var horasRow = '';
+                  for (var j = 0; j < turnosDia.length; j++) {
+                    horasRow += '<span class="details-hours">' + turnosDia[j].abre + ' - ' + turnosDia[j].cierra + '</span>';
+                  }
+                  horasRowHTML = '<div class="details-hours-container">' + horasRow + '</div>';
+                }
+
+                todosLosDiasHTML +=
+                  '<div class="all-days-row ' + (esDiaHoy ? 'is-row-today' : '') + '">' +
+                    '<span class="day-name">' + d.nombre + (esDiaHoy ? ' (Hoy)' : '') + '</span>' +
+                    horasRowHTML +
+                  '</div>';
+              }
+
+              contentDiv.innerHTML =
+                '<div class="' + containerClasses + '">' +
+                  '<button class="nav-schedule-btn" id="btn-widget-prev" title="Día anterior">' + this.icons.chevronLeft + '</button>' +
+                  '<div class="' + clasesDataLayout + '">' +
+                    '<div class="day-view-title-box">' +
+                      '<span class="day-view-name">' + diaObj.nombre + '</span>' +
+                      textoHoy +
+                    '</div>' +
+                    bloqueHorasHTML +
+                  '</div>' +
+                  '<button class="nav-schedule-btn" id="btn-widget-next" title="Día siguiente">' + this.icons.chevronRight + '</button>' +
+                '</div>' +
+                '<details class="sub-details-all-days">' +
+                  '<summary><span class="text-toggle"></span></summary>' +
+                  '<div class="all-days-list-wrapper">' +
+                    todosLosDiasHTML +
+                  '</div>' +
+                '</details>';
+
+              var prevBtn = document.getElementById('btn-widget-prev');
+              var nextBtn = document.getElementById('btn-widget-next');
+
+              if (prevBtn) {
+                prevBtn.addEventListener('click', function(e) {
+                  e.stopPropagation();
+                  this.navegarDia(-1);
+                }.bind(this));
+              }
+
+              if (nextBtn) {
+                nextBtn.addEventListener('click', function(e) {
+                  e.stopPropagation();
+                  this.navegarDia(1);
+                }.bind(this));
+              }
+            };
+
+            this.navegarDia = function(direccion) {
+              this.indiceDiaVisualizado = (this.indiceDiaVisualizado + direccion + 7) % 7;
+              this.renderSelectedDaySchedule();
+            };
+
+            this.updateDisplay = function() {
+              var ahora = new Date();
+              this.checkProximosEventos(ahora);
+
+              var dia = String(ahora.getDate()).padStart(2, '0');
+              var año = ahora.getFullYear();
+
+              var mesesTexto = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+              var diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+
+              var nombreDia = diasSemana[ahora.getDay()];
+              var nombreMes = mesesTexto[ahora.getMonth()];
+
+              var horas = String(ahora.getHours()).padStart(2, '0');
+              var minutos = String(ahora.getMinutes()).padStart(2, '0');
+              var segundos = String(ahora.getSeconds()).padStart(2, '0');
+
+              var abiertoAhora = this.comprobarEstadoApertura(ahora);
+              this.iconContainer.style.color = abiertoAhora ? 'var(--color-abierto)' : 'var(--color-cerrado)';
+
+              var zonaFormateada = this.userTimezone.replace(/_/g, ' ');
+              var infoTexto = CONFIG_WIDGET.infoEstado || '';
+
+              if (this.isExpanded) {
+                this.container.classList.remove('is-compact');
+                this.iconContainer.innerHTML = this.icons.calendar;
+                this.display.innerHTML =
+                  '<div class="date-highlight">' + nombreDia + ', ' + dia + ' de ' + nombreMes + ' de ' + año + '</div>' +
+                  '<div class="time-string ' + (abiertoAhora ? 'status-abierto' : 'status-cerrado') + '">' + horas + ':' + minutos + ':' + segundos + ' <span class="timezone-label">(' + zonaFormateada + ')</span></div>' +
+                  (infoTexto ? '<div class="widget-info-estado">' + infoTexto + '</div>' : '') +
+                  '<small style="color:var(--text-muted); font-size:10px; display:block; margin-top:4px;">Presione para ver menos información</small>';
+
+                this.footer.innerHTML =
+                  '<span class="schedule-tag">' + CONFIG_WIDGET.estadoHorario + '</span>' +
+                  '<div class="legend-box">' +
+                    '<div class="legend-item">' + this.icons.circleGreen + '<span>Abierto</span></div>' +
+                    '<div class="legend-item">' + this.icons.circleRed + '<span>Cerrado</span></div>' +
+                  '</div>';
+              } else {
+                this.container.classList.add('is-compact');
+                this.iconContainer.innerHTML = this.icons.clock;
+                this.display.innerHTML =
+                  '<div class="time-string compact-style ' + (abiertoAhora ? 'status-abierto' : 'status-cerrado') + '">' +
+                    horas + ':' + minutos + ':' + segundos + ' <span class="timezone-label" style="font-size:0.75rem; font-weight:400;">(' + zonaFormateada + ')</span>' +
+                  '</div>' +
+                  (infoTexto ? '<span class="widget-advertencia-estado">⚠️ Hay nueva información. ¡Expande para leer!</span>' : '') +
+                  '<small style="color:var(--text-muted); font-size:10px; display:block; margin-top:2px;">Presione para ver más información</small>';
+              }
+            };
+
+            this.startClock = function() {
+              this.updateDisplay();
+              if (this.timerId) {
+                clearInterval(this.timerId);
+              }
+              this.timerId = setInterval(function() { this.updateDisplay(); }.bind(this), 1000);
+            };
+
+            this.addEventListeners = function() {
+              var mainElement = document.getElementById('datetime-widget-main');
+              if (mainElement) {
+                mainElement.addEventListener('click', function() {
+                  this.isExpanded = !this.isExpanded;
+                  this.updateDisplay();
+                }.bind(this));
+              }
+
+              if (this.detailsElement) {
+                this.detailsElement.addEventListener('toggle', function() {
+                  if (this.detailsElement.open) {
+                    this.renderSelectedDaySchedule();
+                  }
+                }.bind(this));
+              }
+            };
+
+            this.init();
+          }
+
+          // Inicializar el widget
+          new DateTimeWidget();
+
+        }, 150);
+      },
+      css: `    /* ============================================================
+       CONTENEDOR PRINCIPAL
+       ============================================================ */
+    .widget-docs {
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 32px 24px;
+        background: black;
+        backdrop-filter: blur(12px);
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        color: #e8e8ed;
+        line-height: 1.6;
+    }
+
+    /* ============================================================
+       ENCABEZADO
+       ============================================================ */
+    .widget-docs-header {
+        margin-bottom: 40px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .widget-docs-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: #f5f5f7;
+        margin: 0 0 6px 0;
+    }
+
+    .widget-docs-subtitle {
+        font-size: 1.05rem;
+        color: #8e8e93;
+        margin: 0;
+    }
+
+    .widget-docs-subtitle strong {
+        color: #f5f5f7;
+        font-weight: 600;
+    }
+
+    /* ============================================================
+       SECCIONES
+       ============================================================ */
+    .widget-docs-section {
+        margin-bottom: 44px;
+    }
+
+    .widget-docs-section h2 {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #f5f5f7;
+        margin: 0 0 12px 0;
+        letter-spacing: -0.01em;
+    }
+
+    .widget-docs-section > p {
+        color: #b0b0b5;
+        margin: 0 0 16px 0;
+        font-size: 0.95rem;
+    }
+
+    /* ============================================================
+       ARTÍCULOS
+       ============================================================ */
+    .widget-docs-article {
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 14px;
+        padding: 20px 24px;
+        border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .widget-docs-article p {
+        color: #c8c8cd;
+        margin: 0 0 12px 0;
+    }
+
+    /* ============================================================
+       EJEMPLO EN VIVO
+       ============================================================ */
+    .widget-docs-example {
+        display: flex;
+        gap: 32px;
+        padding: 14px 18px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        flex-wrap: wrap;
+    }
+
+    .example-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .example-label {
+        color: #8e8e93;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+
+    .example-value {
+        color: #f5f5f7;
+        font-weight: 600;
+        font-size: 0.95rem;
+        font-variant-numeric: tabular-nums;
+    }
+
+    /* ============================================================
+       BADGES DE ESTADO
+       ============================================================ */
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 2px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .status-badge.open {
+        color: #30d158;
+        background: rgba(48, 209, 88, 0.12);
+    }
+
+    .status-badge.closed {
+        color: #ff453a;
+        background: rgba(255, 69, 58, 0.12);
+    }
+
+    /* ============================================================
+       GRID DE TARJETAS DE HORARIO
+       ============================================================ */
+    .widget-docs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+        margin: 16px 0;
+    }
+
+    .schedule-card {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 14px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .schedule-card:hover {
+        background: rgba(255, 255, 255, 0.04);
+        border-color: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .schedule-card-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 14px 16px 8px 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .schedule-card-icon {
+        font-size: 1.2rem;
+    }
+
+    .schedule-card-header h3 {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #f5f5f7;
+        margin: 0;
+        flex: 1;
+    }
+
+    .schedule-card-tag {
+        font-size: 0.6rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        padding: 2px 10px;
+        border-radius: 20px;
+        background: rgba(41, 151, 255, 0.12);
+        color: #2997ff;
+    }
+
+    .schedule-card-tag.tag-orange {
+        background: rgba(255, 159, 10, 0.12);
+        color: #ff9f0a;
+    }
+
+    .schedule-card-tag.tag-blue {
+        background: rgba(41, 151, 255, 0.12);
+        color: #2997ff;
+    }
+
+    .schedule-card-tag.tag-purple {
+        background: rgba(191, 90, 242, 0.12);
+        color: #bf5af2;
+    }
+
+    .schedule-card-body {
+        padding: 12px 16px 16px 16px;
+    }
+
+    .schedule-card-body p {
+        font-size: 0.82rem;
+        color: #8e8e93;
+        margin: 0 0 10px 0;
+    }
+
+    .schedule-preview {
+        display: flex;
+        justify-content: space-between;
+        padding: 3px 0;
+        font-size: 0.78rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+    }
+
+    .schedule-preview:last-child {
+        border-bottom: none;
+    }
+
+    .preview-day {
+        color: #8e8e93;
+        font-weight: 500;
+    }
+
+    .preview-hours {
+        color: #d4d4d8;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .preview-hours.closed-text {
+        color: #ff453a;
+        font-weight: 600;
+    }
+
+    /* ============================================================
+       ASIDE INFORMATIVO
+       ============================================================ */
+    .widget-docs-aside {
+        display: flex;
+        gap: 14px;
+        padding: 16px 20px;
+        background: rgba(41, 151, 255, 0.04);
+        border: 1px solid rgba(41, 151, 255, 0.08);
+        border-radius: 12px;
+        margin-top: 16px;
+        align-items: flex-start;
+    }
+
+    .aside-icon {
+        font-size: 1.3rem;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .widget-docs-aside strong {
+        color: #f5f5f7;
+        display: block;
+        font-size: 0.9rem;
+    }
+
+    .widget-docs-aside p {
+        color: #b0b0b5;
+        margin: 2px 0 0 0;
+        font-size: 0.85rem;
+    }
+
+    .widget-docs-aside code,
+    .widget-docs-aside kbd {
+        background: rgba(255, 255, 255, 0.06);
+        padding: 1px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        color: #d4d4d8;
+        font-family: 'JetBrains Mono', monospace;
+    }
+
+    .widget-docs-notificacion {
+        margin: 24px 0 8px 0;
+        padding: 14px 20px;
+        background: rgba(255, 159, 10, 0.06);
+        border: 1px solid rgba(255, 159, 10, 0.12);
+        border-left: 4px solid #ff9f0a;
+        border-radius: 10px;
+    }
+
+    .widget-docs-notificacion p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: #d4d4d8;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .widget-docs-notificacion p::before {
+        content: "ℹ️";
+        font-size: 1.1rem;
+        flex-shrink: 0;
+    }
+
+    /* ============================================================
+       FEATURES GRID
+       ============================================================ */
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 14px;
+        margin: 12px 0;
+    }
+
+    .feature-item {
+        display: flex;
+        gap: 12px;
+        padding: 14px 16px;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.03);
+        align-items: flex-start;
+    }
+
+    .feature-icon {
+        font-size: 1.4rem;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .feature-item h4 {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #f5f5f7;
+        margin: 0 0 2px 0;
+    }
+
+    .feature-item p {
+        font-size: 0.8rem;
+        color: #8e8e93;
+        margin: 0;
+    }
+
+    .feature-item p strong {
+        color: #c8c8cd;
+        font-weight: 500;
+    }
+
+    /* ============================================================
+       FAQ
+       ============================================================ */
+    .faq-item {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        border-radius: 10px;
+        margin-bottom: 8px;
+        overflow: hidden;
+    }
+
+    .faq-item summary {
+        padding: 14px 18px;
+        cursor: pointer;
+        font-weight: 500;
+        color: #d4d4d8;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: background 0.2s ease;
+    }
+
+    .faq-item summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .faq-item summary::before {
+        content: "▶";
+        font-size: 0.7rem;
+        color: #8e8e93;
+        transition: transform 0.2s ease;
+    }
+
+    .faq-item[open] summary::before {
+        transform: rotate(90deg);
+    }
+
+    .faq-item summary:hover {
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+    .faq-answer {
+        padding: 0 18px 16px 18px;
+    }
+
+    .faq-answer p {
+        color: #b0b0b5;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    .faq-answer strong {
+        color: #e8e8ed;
+        font-weight: 500;
+    }
+
+    .faq-answer kbd {
+        background: rgba(255, 255, 255, 0.06);
+        padding: 1px 8px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        color: #d4d4d8;
+        font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .widget-docs-footer {
+        margin-top: 32px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.04);
+        display: flex;
+        justify-content: center;
+    }
+
+    .widget-docs-footer p {
+        color: #6a6a70;
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0;
+    }
+
+    .footer-dot {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        background: #30d158;
+        border-radius: 50%;
+        animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 640px) {
+        .widget-docs {
+            padding: 20px 16px;
+            border-radius: 16px;
+        }
+
+        .widget-docs-header h1 {
+            font-size: 1.5rem;
+        }
+
+        .widget-docs-section h2 {
+            font-size: 1.2rem;
+        }
+
+        .widget-docs-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .features-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .widget-docs-example {
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .widget-docs-aside {
+            flex-direction: column;
+            gap: 6px;
+        }
+    }
+`},
       { icon: 'fa-solid fa-camera', label: 'Cámara', type: 'link', url: '#' , disabled: true, disabledTooltip: 'Próximamente'},
       { icon: 'fa-solid fa-magnifying-glass', label: 'Buscar', type: 'link', url: '#', disabled: true, disabledTooltip: 'Próximamente' },
       { icon: 'fa-solid fa-database', label: 'Portal de Miembros', type: 'link', url: 'https://script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec' , disabled: true, disabledTooltip: 'Próximamente'},

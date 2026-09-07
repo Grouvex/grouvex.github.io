@@ -4,19 +4,7 @@
 //!function(){'use strict';document.addEventListener('keydown',e=>{((e.ctrlKey&&e.shiftKey&&['I','J','C','K'].includes(e.key))||['F12','F8'].includes(e.key)||(e.ctrlKey&&['U','S'].includes(e.key.toUpperCase())))&&(e.preventDefault(),e.stopImmediatePropagation())},!0),document.addEventListener('contextmenu',e=>{e.preventDefault(),e.stopImmediatePropagation()},!0),document.addEventListener('selectstart',e=>e.preventDefault(),!0),setInterval(()=>{(window.outerWidth-window.innerWidth>100||window.outerHeight-window.innerHeight>100)},1e3)}();
 
 // ============================================
-// AUTO-CARGA DE SCRIPTS DE FIREBASE
-// ============================================
-(function() {
-    const scripts = ['https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js', 'https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js', 'https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js'];
-    const existentes = document.querySelectorAll('script[src*="firebase"]');
-    const faltantes = scripts.filter(s => !Array.from(existentes).some(e => e.src === s));
-    if (faltantes.length === 0) { return; }
-    let c = 0;
-    faltantes.forEach(s => { const e = document.createElement('script'); e.src = s; e.async = true; e.onload = () => { c++; if (c === faltantes.length) { location.reload(); } }; document.head.appendChild(e); });
-})();
-
-// ============================================
-// CONFIGURACIÓN DE FIREBASE (totalmente intacto)
+// CONFIGURACIÓN DE FIREBASE
 // ============================================
 const firebaseConfig = {
     apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",

@@ -4881,6 +4881,10 @@ document.addEventListener("DOMContentLoaded", function () {
             };
 
             this.init = function() {
+            var existingContainer = document.getElementById('datetime-widget-container');
+              if (existingContainer) {
+                return; // Salir silenciosamente si ya existe
+              }
               aplicarEstilosWidget();
               this.establecerDiaActualPorDefecto();
               this.buildDOM();

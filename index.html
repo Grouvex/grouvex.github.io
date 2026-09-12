@@ -95,7 +95,8 @@
 
               <!-- Font Awesome 6.4.0 -->
               <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
               <!-- Scoped Styles -->
               <style>
                 /* Scope Base Setup */
@@ -381,7 +382,7 @@
                 .grouvex-scope .modificable,
                 .grouvex-scope input.input-editable,
                 .grouvex-scope select.select-editable {
-                  background: rgba(0, 229, 255, 0.08) !important;
+                  background: rgba(255, 0, 0, 0.08) !important;
                   border: 1px dashed #00e5ff !important;
                   color: #0f172a !important;
                   border-radius: 4px;
@@ -400,7 +401,7 @@
                 }
                 .grouvex-scope .modificable[data-empty="true"]::before {
                   content: "[Editar Obligatorio]";
-                  color: #00e5ff;
+                  color: #000000;
                   font-style: italic;
                   font-size: 0.85em;
                 }
@@ -421,7 +422,7 @@
                 .grouvex-scope select.select-editableopcional {
                   background: rgba(175, 251, 10, 0.08) !important;
                   border: 1px dashed #affb0a !important;
-                  color: #0f172a !important;
+                  color: #000000 !important;
                   border-radius: 4px;
                   padding: 2px 6px;
                   font-family: inherit;
@@ -469,6 +470,33 @@
                   vertical-align: middle;
                   display: inline-block;
                 }
+                
+                /* Botón disparador para el modal de selección múltiple */
+                .grouvex-scope .select-trigger-btn {
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 6px;
+                  cursor: pointer;
+                  font-family: inherit;
+                  font-size: 0.9em;
+                  border-radius: 4px;
+                  padding: 3px 8px;
+                  vertical-align: middle;
+                  user-select: none;
+                }
+                .grouvex-scope .select-trigger-btn.select-editable {
+                  background: rgba(0, 229, 255, 0.08) !important;
+                  border: 1px dashed #00e5ff !important;
+                  color: #0f172a !important;
+                }
+                .grouvex-scope .select-trigger-btn.select-editableopcional {
+                  background: rgba(175, 251, 10, 0.08) !important;
+                  border: 1px dashed #affb0a !important;
+                  color: #0f172a !important;
+                }
+                .grouvex-scope .select-trigger-btn:hover {
+                  border-style: solid !important;
+                }
 
                 /* Span que muestra las opciones seleccionadas al lado en tiempo real */
                 .grouvex-scope .select-live-preview {
@@ -477,6 +505,11 @@
                   font-weight: 600;
                   color: #0f172a;
                   vertical-align: middle;
+                }
+
+                /* Ocultar el tag select múltiple nativo pero mantenerlo sincronizado en DOM */
+                .grouvex-scope select[multiple] {
+                  display: none !important;
                 }
 
                 /* Inputs Checkbox y Radio Excepción */
@@ -549,6 +582,64 @@
                 }
                 .grouvex-scope .modal-close:hover {
                   color: #f8fafc;
+                }
+
+                /* Estilos Específicos para el Mini Modal de Selección Múltiple */
+                .grouvex-scope .multi-select-options-list {
+                  display: flex;
+                  flex-direction: column;
+                  gap: 12px;
+                  max-height: 280px;
+                  overflow-y: auto;
+                  padding: 10px;
+                  background: #0f172a;
+                  border: 1px solid #334155;
+                  border-radius: 8px;
+                }
+                .grouvex-scope .multi-select-group-title {
+                  font-size: 0.8rem;
+                  font-weight: 700;
+                  color: #00e5ff;
+                  text-transform: uppercase;
+                  letter-spacing: 0.5px;
+                  margin-top: 6px;
+                  margin-bottom: 4px;
+                  border-bottom: 1px dashed #334155;
+                  padding-bottom: 4px;
+                }
+                .grouvex-scope .multi-select-item-label {
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  background: #1e293b;
+                  padding: 8px 12px;
+                  border-radius: 6px;
+                  cursor: pointer;
+                  user-select: none;
+                  border: 1px solid transparent;
+                  transition: all 0.2s ease;
+                }
+                .grouvex-scope .multi-select-item-label:hover {
+                  border-color: #00e5ff;
+                  background: rgba(0, 229, 255, 0.05);
+                }
+                .grouvex-scope .multi-select-item-label input[type="checkbox"] {
+                  accent-color: #00e5ff;
+                  width: 16px;
+                  height: 16px;
+                  cursor: pointer;
+                }
+                .grouvex-scope .multi-select-live-box {
+                  margin-top: 12px;
+                  padding: 10px;
+                  background: rgba(0, 229, 255, 0.05);
+                  border: 1px dashed #00e5ff;
+                  border-radius: 6px;
+                  font-size: 0.85rem;
+                  color: #f8fafc;
+                }
+                .grouvex-scope .multi-select-live-box strong {
+                  color: #00e5ff;
                 }
 
                 /* Modal Rich Text Editor Toolbar */
@@ -675,130 +766,274 @@
                   display: none;
                 }
 
-                /* --- PRINT STYLES --- */
-                @media print {
-                  @page {
-                    size: A4 portrait;
-                    margin: 0mm !important;
-                  }
-                  
-                  html, body {
-                    width: 210mm !important;
-                    height: 100% !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                    background: #ffffff !important;
-                    overflow: visible !important;
-                    -webkit-print-color-adjust: exact !important;
-                    print-color-adjust: exact !important;
-                  }
+                .ddoo-header-text {
+                    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+                    font-size: 0.95rem;
+                    line-height: 1.7;
+                    color: #f8fafc;
+                    margin-bottom: 16px;
+                    padding: 16px 20px;
+                    background: rgba(15, 23, 42, 0.85);
+                    border-left: 4px solid #00e5ff;
+                    border-radius: 8px;
+                    backdrop-filter: blur(4px);
+                    -webkit-backdrop-filter: blur(4px);
+                }
 
-                  body * {
-                    display: none !important;
-                  }
+                .ddoo-header-text strong {
+                    color: #ffffff;
+                    font-weight: 700;
+                }
 
-                  body, 
-                  body .grouvex-scope,
-                  body .grouvex-scope #grouvex-templates-container,
-                  body .grouvex-scope .template-details {
-                    display: contents !important;
-                  }
+                .ddoo-header-text .highlight-field {
+                    display: inline-block;
+                    background: rgba(0, 229, 255, 0.15);
+                    border: 1px dashed #00e5ff;
+                    border-radius: 4px;
+                    padding: 0 6px;
+                    color: #affb0a;
+                    font-weight: 600;
+                }
 
-                  body .grouvex-scope .action-bar {
-                    display: none !important;
-                  }
+                .ddoo-header-text ul {
+                    margin: 10px 0 10px 20px;
+                    padding-left: 8px;
+                    list-style: none;
+                }
 
-                  body .grouvex-scope .template-document.print-active-target {
-                    display: contents !important;
-                  }
+                .ddoo-header-text ul li {
+                    position: relative;
+                    padding-left: 20px;
+                    margin-bottom: 8px;
+                    color: #e2e8f0;
+                    font-size: 0.88rem;
+                    line-height: 1.6;
+                }
 
-                  body .grouvex-scope .template-document.print-active-target * {
-                    display: revert !important;
-                  }
+                .ddoo-header-text ul li::before {
+                    content: "▸";
+                    position: absolute;
+                    left: 0;
+                    color: #00e5ff;
+                    font-weight: 700;
+                }
 
-                  body .grouvex-scope .template-document.print-active-target .a4-page {
-                    display: flex !important;
-                    flex-direction: column !important;
-                    width: 210mm !important;
-                    height: 297mm !important;
-                    max-height: 297mm !important;
-                    margin: 0 !important;
-                    padding: 15mm 15mm !important;
-                    background: #ffffff !important;
-                    box-shadow: none !important;
-                    border: none !important;
-                    position: relative !important;
-                    page-break-after: always !important;
-                    break-after: page !important;
-                    page-break-inside: avoid !important;
-                    break-inside: avoid !important;
-                    overflow: hidden !important;
-                    box-sizing: border-box !important;
-                  }
+                .ddoo-header-text ul li strong {
+                    color: #ffffff;
+                }
 
-                  body .grouvex-scope .template-document.print-active-target .a4-page:last-child {
-                    page-break-after: auto !important;
-                    break-after: auto !important;
-                  }
+                .ddoo-header-text ul li .highlight-field {
+                    background: rgba(0, 229, 255, 0.12);
+                    border: 1px dashed #00e5ff;
+                    border-radius: 3px;
+                    padding: 0 5px;
+                    color: #affb0a;
+                    font-weight: 600;
+                }
 
-                  .grouvex-scope .page-split-indicator,
-                  body .grouvex-scope .template-document.print-active-target .page-split-indicator {
-                    display: none !important;
-                  }
-
-                  /* REQUISITO: MARCO GRIS ALREDEDOR DE TODOS LOS CAMPOS MODIFICABLES AL IMPRIMIR */
-                  .grouvex-scope .modificable,
-                  .grouvex-scope .modificable-opcional,
-                  .grouvex-scope input.input-editable,
-                  .grouvex-scope input.input-editableopcional,
-                  .grouvex-scope select.select-editable,
-                  .grouvex-scope select.select-editableopcional,
-                  .grouvex-scope .select-live-preview {
-                    border: 1px solid #cbd5e1 !important;
-                    background: transparent !important;
-                    padding: 2px 6px !important;
-                    border-radius: 4px !important;
-                    color: #0f172a !important;
-                  }
-
-                  .grouvex-scope .modificable[data-empty="true"]::before,
-                  .grouvex-scope .modificable-opcional[data-empty="true"]::before {
-                    content: "" !important;
-                  }
-
-                  /* Oculta los controles nativos de selects simples y múltiples en la impresión */
-                  .grouvex-scope select.select-editable,
-                  .grouvex-scope select.select-editableopcional {
-                    display: none !important;
-                  }
-
-                  /* Muestra el span generado dinámicamente con las opciones en el documento impreso */
-                  .grouvex-scope .select-live-preview {
-                    display: inline-block !important;
-                  }
-
-                  .grouvex-scope input::-webkit-calendar-picker-indicator,
-                  .grouvex-scope input::-webkit-inner-spin-button,
-                  .grouvex-scope input::-webkit-outer-spin-button,
-                  .grouvex-scope input::-webkit-search-cancel-button,
-                  .grouvex-scope input::-webkit-clear-button {
-                    display: none !important;
-                    -webkit-appearance: none !important;
-                  }
-
-                  .grouvex-scope input[type="checkbox"].input-editable,
-                  .grouvex-scope input[type="checkbox"].input-editableopcional,
-                  .grouvex-scope input[type="radio"].input-editable,
-                  .grouvex-scope input[type="radio"].input-editableopcional {
-                    border: none !important;
-                    background: transparent !important;
-                    appearance: auto !important;
-                    -webkit-appearance: auto !important;
-                    width: 14px !important;
-                    height: 14px !important;
-                  }
+                .ddoo-header-text em {
+                    display: block;
+                    margin-top: 14px;
+                    padding-top: 14px;
+                    border-top: 1px solid rgba(255, 255, 255, 0.1);
+                    color: #94a3b8;
+                    font-size: 0.85rem;
+                    font-style: italic;
+                    text-align: center;
+                    letter-spacing: 0.3px;
                 }
               </style>
+
+              <details><summary style="color: white">Información Importante</summary>
+                  <p class="ddoo-header-text">
+                      <strong>Bienvenido al Centro de Documentos de Grouvex Studios (DDOO).</strong>
+                  </p>
+
+                  <p>
+                      El presente espacio constituye el repositorio oficial para la generación y gestión de documentos corporativos, 
+                      los cuales, una vez descargados y formalizados, adquieren plena validez y eficacia jurídica dentro del marco 
+                      normativo de Grouvex Studios, en virtud de lo dispuesto en el <strong>Artículo 20 del Reglamento de 
+                      Documentación Corporativa</strong> (<em>B.O. Grouvex Studios, Tít. I, Cap. III, Sec. II</em>).
+                  </p>
+
+                  <!-- ========================================== -->
+                  <!-- SUB-DETAIL 1: REQUISITOS NORMATIVOS        -->
+                  <!-- ========================================== -->
+                  <details style="margin: 12px 0 12px 0; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-left: 3px solid #00e5ff; padding: 4px 12px;">
+                      <summary style="color: #00e5ff; font-weight: 700; font-size: 0.95rem; cursor: pointer; padding: 6px 0;">
+                          ⚖️ Requisitos y advertencias de cumplimiento normativo
+                      </summary>
+                      <ul style="color:white; margin: 8px 0 8px 20px; padding-left: 8px; list-style: none;">
+                          <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
+                              <strong>Obligación de veracidad:</strong> Toda la información consignada en el presente documento 
+                              deberá ser veraz, completa y ajustada a la realidad, conforme a lo establecido en el 
+                              <strong>Artículo 13.2.b</strong> del Boletín Oficial (<em>Prohibición de suplantación de identidad 
+                              o difusión de información falsa</em>).
+                          </li>
+                          <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
+                              <strong>Campos obligatorios:</strong> Los campos identificados con el formato <span class="highlight-field">[texto enmarcado en rojo]</span> 
+                              son de carácter obligatorio y deben ser cumplimentados en su totalidad. La omisión o modificación 
+                              no autorizada de estos campos podrá dar lugar a la <strong>invalidez del documento</strong> y a la 
+                              correspondiente responsabilidad disciplinaria, según lo previsto en el <strong>Artículo 13.3.b</strong> 
+                              (<em>Régimen de sanciones y debido proceso</em>).
+                          </li>
+                          <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
+                              <strong>Campos opcionales:</strong> Los campos identificados con el formato <span class="highlight-field">[texto enmarcado en verde]</span> 
+                              son de carácter opcional.
+                          </li>
+                          <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
+                              <strong>Limitación de modificaciones:</strong> Queda terminantemente prohibida la alteración de 
+                              cualquier elemento que no esté expresamente designado como modificable. La manipulación indebida 
+                              de la estructura documental, el encabezado, el pie de página o cualquier otro elemento fijo 
+                              se considerará una <strong>infracción grave</strong> conforme al régimen disciplinario de Grouvex Studios.
+                          </li>
+                          <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
+                              <strong>Inclusión de anexos gráficos:</strong> Se permite la inclusión de imágenes o elementos 
+                              gráficos complementarios, siempre que dicha inclusión se realice dentro de los campos designados 
+                              al efecto y que el contenido gráfico no contravenga las <strong>Políticas de Privacidad</strong> 
+                              (Anexo I) ni los <strong>Términos de Servicio</strong> (Cap. II) de Grouvex Studios.
+                          </li>
+                          <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
+                              <strong>Aceptación de términos:</strong> La descarga y uso del presente documento implica la 
+                              aceptación expresa e incondicional de todos los Términos de Servicio y Políticas de Privacidad 
+                              de Grouvex Studios, así como del <strong>Reglamento de Documentación Corporativa</strong> 
+                              en su totalidad.
+                          </li>
+                          <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
+                              <strong>Vigencia documental:</strong> El documento generado tendrá la vigencia establecida en 
+                              su cláusula de entrada en vigor. En ausencia de dicha cláusula, se entenderá vigente desde la 
+                              fecha de su descarga y publicación, conforme al <strong>Art. 20.2</strong> (<em>Proceso de 
+                              Revisión y Renovación Periódica</em>).
+                          </li>
+                      </ul>
+                  </details>
+
+                  <!-- ========================================== -->
+                  <!-- SUB-DETAIL 2: FUNCIONES PARA EL USUARIO    -->
+                  <!-- ========================================== -->
+                  <details style="margin: 12px 0 12px 0; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-left: 3px solid #affb0a; padding: 4px 12px;">
+                      <summary style="color: #affb0a; font-weight: 700; font-size: 0.95rem; cursor: pointer; padding: 6px 0;">
+                          📖 Funciones del Centro de Documentos (DDOO): qué puedes hacer y cómo
+                      </summary>
+                      <ul style="color:white; margin: 8px 0 8px 20px; padding-left: 8px; list-style: none;">
+
+                          <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
+                              <strong>1. Buscar entre todas las plantillas.</strong> En la parte superior tienes una barra de búsqueda. 
+                              Escribe cualquier palabra y el sistema resaltará en amarillo las coincidencias, mostrará únicamente 
+                              las plantillas que contengan ese texto y ocultará el resto. Si no hay resultados, verás un aviso 
+                              de <em>"Sin resultados"</em>. Puedes borrar la búsqueda con la tecla <strong>Escape</strong> y todo 
+                              volverá a su estado normal.
+                          </li>
+
+                          <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
+                              <strong>2. Filtrar por plantilla.</strong> Justo debajo del buscador hay una fila de botones, uno por 
+                              cada plantilla disponible, más un botón <strong>"Todas"</strong>. Al pulsar uno, solo se mostrará esa 
+                              plantilla. Si la fila es más ancha que el espacio disponible, se puede desplazar horizontalmente 
+                              arrastrando o con la rueda del ratón.
+                          </li>
+
+                          <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
+                              <strong>3. Editar el contenido.</strong> Cada plantilla tiene un documento en formato A4 con campos 
+                              modificables. Haz clic sobre cualquier texto con 
+                              <span style="color: #ff6b6b; font-weight: 600;">borde rojo punteado (campo obligatorio)</span> o 
+                              <span style="color: #38a169; font-weight: 600;">borde verde punteado (campo opcional)</span>. 
+                              Se abrirá un editor donde podrás escribir tu contenido con total libertad, exactamente igual que 
+                              en un procesador de textos.
+                          </li>
+
+                          <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
+                              <strong>4. Dar formato al texto.</strong> Dentro del editor dispones de una barra de herramientas con: 
+                              <strong>negrita</strong>, <u>subrayado</u>, color de texto y color de fondo. Puedes aplicar formato 
+                              a un fragmento ya escrito o activarlo antes de escribir. También puedes insertar imágenes desde tu 
+                              dispositivo con el botón <em>"Subir Imagen"</em>. Al hacer doble clic sobre una imagen ya insertada, 
+                              se abre un panel para ajustar su ancho, alto, alineación y bordes redondeados.
+                          </li>
+
+                          <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
+                              <strong>5. Contador de caracteres en vivo.</strong> Mientras escribes, justo debajo del editor, verás 
+                              cuántos caracteres llevas y, si el campo tiene límites, el mínimo y el máximo permitidos. El número 
+                              cuenta también los espacios y los saltos de línea. Si te pasas del máximo, el contador se pone en rojo. 
+                              Si no llegas al mínimo y ya hay texto, se pone en ámbar.
+                          </li>
+
+                          <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
+                              <strong>6. Guardar los cambios.</strong> Cuando termines de editar un campo, pulsa <strong>Guardar</strong>. 
+                              El contenido se aplica inmediatamente al documento y la paginación se recalcula al momento: si tu texto 
+                              ya no cabe en la hoja actual, se reparte automáticamente en nuevas hojas A4. Si pulsas <strong>Cancelar</strong>, 
+                              no se guarda nada y el documento queda tal y como estaba.
+                          </li>
+
+                          <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
+                              <strong>7. Paginación visual en hojas A4.</strong> Cada plantilla muestra una o varias hojas A4 apiladas 
+                              verticalmente, igual que en la vista previa de impresión de un procesador de textos. Cada hoja tiene 
+                              su encabezado arriba y, solo la última, el pie de página abajo. Una línea discontinua cian marca 
+                              exactamente por dónde se cortará el contenido al imprimir. El sistema <strong>rellena cada hoja 
+                              completamente antes de pasar a la siguiente</strong>, nunca deja huecos a medias.
+                          </li>
+
+                          <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
+                              <strong>8. Controles interactivos dentro del documento.</strong> Algunas plantillas incluyen casillas 
+                              de verificación, campos de texto, listas desplegables o seleccionables de varias opciones directamente 
+                              dentro del documento. Estos controles se pueden marcar, escribir o seleccionar con total normalidad. 
+                              No abren ningún editor: se comportan como los de un formulario real. Su estado se conserva aunque 
+                              el documento se repagine.
+                          </li>
+
+                          <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
+                              <strong>⚠️ 9. Muy recomendable: rellenar los seleccionables de varias opciones al final del todo.</strong> 
+                              Cuando la plantilla incluya seleccionables que permitan marcar varias opciones (checkboxes múltiples, 
+                              selects de varias opciones, etc.), es <strong>muy recomendable rellenarlos al final del todo</strong>, 
+                              una vez que ya hayas terminado de editar todos los campos de texto. El motivo es que, cada vez que 
+                              guardas un campo de texto, el documento se vuelve a paginar y reconstruir, lo que <strong>elimina 
+                              la selección marcada previamente</strong> en esos controles. Si los marcas al principio y luego 
+                              sigues editando, perderás esas marcas. Si los marcas al final, cuando ya no vayas a guardar más 
+                              campos, la selección se mantendrá intacta hasta generar el PDF.
+                          </li>
+
+                          <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
+                              <strong>10. Exportar e importar tu trabajo (JSON).</strong> En la parte superior de cada plantilla, 
+                              justo debajo del título, tienes una barra con tres botones: 
+                              <span style="background: #2d3748; color: white; padding: 2px 10px; border-radius: 4px; font-weight: 600;">💾 EXPORTAR JSON</span>, 
+                              <span style="background: #2b6cb0; color: white; padding: 2px 10px; border-radius: 4px; font-weight: 600;">📂 IMPORTAR JSON</span> y 
+                              <span style="background: #00e5ff; color: #0f172a; padding: 2px 10px; border-radius: 4px; font-weight: 600;">🖨️ GENERAR PDF</span>. 
+                              <strong>Exportar JSON</strong> descarga un archivo con todo el contenido que hayas escrito en esa 
+                              plantilla (textos, formato, imágenes y controles). <strong>Importar JSON</strong> te permite recuperar 
+                              ese archivo más tarde para seguir editando donde lo dejaste. Al lado de los botones hay un campo 
+                              de texto donde puedes escribir el nombre que tendrá el PDF descargado.
+                          </li>
+
+                          <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
+                              <strong>11. Generar el PDF final.</strong> Cuando la plantilla esté completa, pulsa 
+                              <span style="background: #00e5ff; color: #0f172a; padding: 2px 10px; border-radius: 4px; font-weight: 600;">🖨️ GENERAR PDF</span>. 
+                              Antes de imprimir, el sistema comprueba que todos los campos obligatorios estén rellenos: si alguno 
+                              falta, te avisa con una notificación y abre ese campo para que lo completes. Si todo está correcto, 
+                              se abre el diálogo de impresión del navegador y puedes guardar el documento como PDF. <strong>El PDF 
+                              resultante es exactamente igual a lo que veías en pantalla</strong>: mismas hojas, mismos cortes, 
+                              mismo encabezado en cada página y mismo pie de página solo en la última. Solo se imprime el documento, 
+                              nunca la interfaz de la web.
+                          </li>
+
+                          <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
+                              <strong>12. Avisos y notificaciones.</strong> Cuando ocurre algo importante (un campo obligatorio sin 
+                              rellenar, un texto demasiado corto o largo, un problema al cargar una imagen, etc.), aparece una 
+                              notificación flotante en la parte inferior central de la pantalla. Desaparece sola a los pocos segundos.
+                          </li>
+
+                          <li style="position: relative; padding-left: 20px; margin-bottom: 8px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.6;">
+                              <strong>💡 Consejo:</strong> El documento está diseñado con las medidas exactas de una hoja A4 
+                              (210mm × 297mm). Lo que veas en la vista previa será idéntico al PDF generado. Si el espacio donde 
+                              se muestra el documento en la web es más estrecho que una hoja A4, la vista previa se escala para 
+                              que quepa, pero el PDF siempre se genera al tamaño real.
+                          </li>
+
+                      </ul>
+                  </details>
+
+                  <p style="margin-top: 16px;">
+                      <em>"El presente documento forma parte del archivo oficial de Documentos Oficiales de Grouvex Studios 
+                      y debe conservarse según lo establecido en el Artículo 20 del Reglamento de Documentación Corporativa."</em>
+                  </p>
+              </details>
 
               <!-- HTML Controls -->
               <div class="search-bar-container">
@@ -814,6 +1049,23 @@
               <div id="grouvex-no-results" class="no-results">
                 <i class="fas fa-folder-open" style="font-size: 2rem; margin-bottom: 10px;"></i>
                 <p>No se encontraron documentos que coincidan con la búsqueda.</p>
+              </div>
+
+              <!-- Mini Modal de Selección Múltiple -->
+              <div class="modal-overlay" id="multi-select-modal">
+                <div class="modal-box" style="max-width: 480px;">
+                  <div class="modal-header">
+                    <h4><i class="fas fa-list-check"></i> Seleccionar Opciones</h4>
+                    <button class="modal-close" id="btn-close-multi-modal">&times;</button>
+                  </div>
+                  <div class="multi-select-options-list" id="multi-modal-options"></div>
+                  <div class="multi-select-live-box">
+                    <strong>Seleccionados:</strong> <span id="multi-modal-live-text">Ninguna opción</span>
+                  </div>
+                  <div class="modal-actions">
+                    <button class="btn-action btn-primary" id="btn-save-multi-modal">Aceptar y Cerrar</button>
+                  </div>
+                </div>
               </div>
 
               <!-- Editor Modal -->
@@ -943,7 +1195,7 @@
                         {
                           pag: "1",
                           type: "p",
-                          content: 'Región de Explotación (Selección Múltiple Opcional): <select class="select-editableopcional" multiple size="3"><optgroup label="Europa"><option value="es" selected>España</option><option value="fr">Francia</option><option value="de">Alemania</option></optgroup><optgroup label="América"><option value="mx" selected>México</option><option value="us">Estados Unidos</option><option value="co">Colombia</option></optgroup></select>'
+                          content: 'Región de Explotación (Selección Múltiple Opcional): <select class="select-trigger-btn select-editableopcional" multiple size="3"><optgroup label="Europa"><option value="España" selected>España</option><option value="Francia">Francia</option><option value="Alemania">Alemania</option></optgroup><optgroup label="América"><option value="México" selected>México</option><option value="Estados Unidos">Estados Unidos</option><option value="Colombia">Colombia</option></optgroup></select>'
                         },
                         {
                           pag: "1",
@@ -1059,6 +1311,13 @@
                   const btnCloseErrorModal = document.getElementById('btn-close-error-modal');
                   const btnOkError = document.getElementById('btn-ok-error');
 
+                  // Mini Modal de Selección Múltiple
+                  const multiSelectModal = document.getElementById('multi-select-modal');
+                  const multiModalOptions = document.getElementById('multi-modal-options');
+                  const multiModalLiveText = document.getElementById('multi-modal-live-text');
+                  const btnCloseMultiModal = document.getElementById('btn-close-multi-modal');
+                  const btnSaveMultiModal = document.getElementById('btn-save-multi-modal');
+                  
                   // State variables
                   let currentEditingElement = null;
                   let currentEditingImgInEditor = null;
@@ -1114,9 +1373,15 @@
                   }
 
                   function getSelectSelectedValues(select) {
+                    if (!select || !select.options) return select?.multiple ? [] : '';
+
                     if (select.multiple) {
-                      return Array.from(select.selectedOptions).map(opt => opt.value);
+                      // Retorna SIEMPRE un Array con los valores seleccionados
+                      return Array.from(select.options)
+                        .filter(opt => opt.selected)
+                        .map(opt => opt.value);
                     }
+
                     return select.value;
                   }
 
@@ -1149,6 +1414,9 @@
 
                   /* Función que sincroniza las opciones seleccionadas en un span al lado del select en pantalla e impresión */
                   function syncSelectLivePreview(select) {
+                    if (!select || !select.parentNode) return;
+
+                    // 1. Buscar o crear el span de vista previa
                     let previewSpan = select.nextElementSibling;
                     if (!previewSpan || !previewSpan.classList.contains('select-live-preview')) {
                       previewSpan = document.createElement('span');
@@ -1156,153 +1424,439 @@
                       select.parentNode.insertBefore(previewSpan, select.nextSibling);
                     }
 
-                    const selectedTexts = getSelectSelectedTexts(select);
-                    if (selectedTexts.length > 0) {
-                      previewSpan.textContent = selectedTexts.join(', ');
-                      previewSpan.style.display = 'inline-block';
+                    // 2. Extraer opciones seleccionadas (por propiedad JS o por el atributo del HTML)
+                    const selectedOpts = Array.from(select.options || []).filter(opt => opt.selected || opt.hasAttribute('selected'));
+
+                    // 3. Escribir el texto directamente en el SPAN visual
+                    if (selectedOpts.length > 0) {
+                      previewSpan.textContent = selectedOpts.map(opt => opt.text.trim() || opt.value.trim()).join(', ');
+                    } else if (select.options && select.options.length > 0) {
+                      // Fallback: Si no hay atributos 'selected', tomar el valor que tenga asignado por default
+                      previewSpan.textContent = select.options[select.selectedIndex >= 0 ? select.selectedIndex : 0].text.trim();
                     } else {
-                      previewSpan.textContent = '';
-                      previewSpan.style.display = 'none';
+                      previewSpan.textContent = 'Seleccionar...';
+                    }
+
+                    previewSpan.style.display = 'inline-block';
+                  }
+
+                  /* Apertura y gestión del Mini Modal de Selección Múltiple */
+                  function openMultiSelectModal(select) {
+                    activeMultiSelect = select;
+                    multiModalOptions.innerHTML = '';
+
+                    const children = Array.from(select.children);
+
+                    children.forEach(child => {
+                      if (child.tagName === 'OPTGROUP') {
+                        const groupTitle = document.createElement('div');
+                        groupTitle.className = 'multi-select-group-title';
+                        groupTitle.textContent = child.label;
+                        multiModalOptions.appendChild(groupTitle);
+
+                        Array.from(child.children).forEach(opt => {
+                          createOptionCheckbox(opt);
+                        });
+                      } else if (child.tagName === 'OPTION') {
+                        createOptionCheckbox(child);
+                      }
+                    });
+
+                    updateMultiModalLiveText();
+                    multiSelectModal.classList.add('active');
+                  }
+
+                  function createOptionCheckbox(opt) {
+                    const label = document.createElement('label');
+                    label.className = 'multi-select-item-label';
+
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.value = opt.value;
+                    checkbox.checked = opt.selected;
+
+                    checkbox.addEventListener('change', () => {
+                      opt.selected = checkbox.checked;
+                      if (checkbox.checked) opt.setAttribute('selected', 'selected');
+                      else opt.removeAttribute('selected');
+
+                      syncSelectLivePreview(activeMultiSelect);
+                      updateMultiModalLiveText();
+                    });
+
+                    label.appendChild(checkbox);
+                    label.appendChild(document.createTextNode(opt.text));
+                    multiModalOptions.appendChild(label);
+                  }
+
+                  function updateMultiModalLiveText() {
+                    if (!activeMultiSelect) return;
+                    const selectedTexts = getSelectSelectedTexts(activeMultiSelect);
+                    if (selectedTexts.length > 0) {
+                      multiModalLiveText.textContent = selectedTexts.join(', ');
+                    } else {
+                      multiModalLiveText.textContent = 'Ninguna opción';
                     }
                   }
 
-                  function recalcularPaginacion(index) {
-                    const tData = templatesData[index];
-                    const docWrapper = document.getElementById(`plantilla-${index}`);
-                    if (!docWrapper) return;
+                  btnCloseMultiModal.addEventListener('click', () => multiSelectModal.classList.remove('active'));
+                  btnSaveMultiModal.addEventListener('click', () => multiSelectModal.classList.remove('active'));
+                  
+        function recalcularPaginacion(index) {
+          const tData = templatesData[index];
+          const docWrapper = document.getElementById(`plantilla-${index}`);
+          if (!docWrapper) return;
 
-                    const savedInputStates = [];
-                    docWrapper.querySelectorAll('.input-editable, .input-editableopcional').forEach((input, idx) => {
-                      if (input.type === 'checkbox' || input.type === 'radio') {
-                        savedInputStates[idx] = input.checked;
-                      } else {
-                        savedInputStates[idx] = input.value;
-                      }
-                    });
+          // -----------------------------------------------------------------------
+          // 1. EXTRAER ESTADOS ACTUALES DE INPUTS Y SELECTS MAPEADOS POR DATA-ID
+          // -----------------------------------------------------------------------
+          const savedInputStates = {};
+          docWrapper.querySelectorAll('.input-editable, .input-editableopcional').forEach((input) => {
+            const container = input.closest('[data-id]');
+            const fId = container ? container.getAttribute('data-id') : null;
+            if (!fId) return;
 
-                    const savedSelectStates = [];
-                    docWrapper.querySelectorAll('.select-editable, .select-editableopcional').forEach((select, idx) => {
-                      savedSelectStates[idx] = getSelectSelectedValues(select);
-                    });
+            if (input.type === 'checkbox' || input.type === 'radio') {
+              savedInputStates[fId] = input.checked;
+            } else {
+              savedInputStates[fId] = input.value;
+            }
+          });
 
-                    const blocks = [...tData.body].sort((a, b) => {
-                      return parseInt(a.pag || "1", 10) - parseInt(b.pag || "1", 10);
-                    });
+          const savedSelectStates = {};
+          docWrapper.querySelectorAll('.select-editable, .select-editableopcional').forEach((select) => {
+            if (!select || !select.options) return;
 
-                    docWrapper.innerHTML = '';
-                    let currentPageNum = 1;
+            const container = select.closest('[data-id]');
+            const fId = container ? container.getAttribute('data-id') : null;
 
-                    function createNewPage() {
-                      const page = document.createElement('div');
-                      page.className = 'a4-page';
-                      
-                      const header = document.createElement('div');
-                      header.className = 'doc-header';
-                      header.innerHTML = `
-                        <img src="${tData.logoUrl || LOGO_URL}" class="doc-header-logo" alt="Logo">
-                        <div class="doc-header-meta">
-                          <strong>${tData.meta.issuer}</strong><br>${tData.meta.type}
-                        </div>
-                      `;
-                      page.appendChild(header);
+            if (fId && savedSelectStates[fId] !== undefined) {
+              const savedValues = savedSelectStates[fId];
 
-                      if (currentPageNum === 1 && tData.head && tData.head.content) {
-                        const headBox = document.createElement('div');
-                        headBox.className = 'doc-head';
-                        headBox.textContent = tData.head.content;
-                        page.appendChild(headBox);
-                      }
+              if (typeof setSelectSelectedValues === 'function') {
+                setSelectSelectedValues(select, savedValues);
+              }
 
-                      const bodyContainer = document.createElement('div');
-                      bodyContainer.className = 'doc-body';
-                      page.appendChild(bodyContainer);
+              const valArray = Array.isArray(savedValues) ? savedValues : [savedValues];
 
-                      const footer = document.createElement('div');
-                      footer.className = 'doc-footer';
-                      footer.innerHTML = `
-                        <div class="doc-footer-left">
-                          <div class="doc-footer-legal">${tData.footer.legalText}</div>
-                          <div class="doc-footer-copy">${tData.footer.copyright}</div>
-                        </div>
-                        <img src="${tData.logoUrl || LOGO_URL}" class="doc-footer-logo" alt="Logo Footer">
-                      `;
-                      page.appendChild(footer);
+              // Marcamos los atributos físicos y la propiedad JS
+              Array.from(select.options).forEach(opt => {
+                const isSelected = valArray.includes(opt.value);
+                opt.selected = isSelected;
+                if (isSelected) {
+                  opt.setAttribute('selected', 'selected');
+                } else {
+                  opt.removeAttribute('selected');
+                }
+              });
+            }
 
-                      const pNum = document.createElement('div');
-                      pNum.className = 'page-number';
-                      pNum.textContent = `Página ${currentPageNum}`;
-                      page.appendChild(pNum);
+            // -------------------------------------------------------------------
+            // FORZADO DE TEXTO EN EL LIVE PREVIEW (Evita depender de funciones externas)
+            // -------------------------------------------------------------------
+            const selectedOptions = Array.from(select.options).filter(opt => opt.selected || opt.hasAttribute('selected'));
+            const selectedTexts = selectedOptions.map(opt => opt.text.trim() || opt.value.trim());
 
-                      docWrapper.appendChild(page);
-                      return { page, bodyContainer };
+            // Texto final a mostrar en el documento
+            const displayText = selectedTexts.length > 0 ? selectedTexts.join(', ') : 'Seleccionar...';
+
+            // A. Si existe un span de vista previa (.select-live-preview), actualizamos su HTML directo
+            const livePreviewSpan = select.parentNode ? select.parentNode.querySelector('.select-live-preview') : null;
+            if (livePreviewSpan) {
+              livePreviewSpan.textContent = displayText;
+            }
+
+            // B. Si es múltiple y usa un botón (.select-trigger-btn)
+            if (select.multiple) {
+              let triggerBtn = select.previousElementSibling;
+              if (!triggerBtn || !triggerBtn.classList.contains('select-trigger-btn')) {
+                triggerBtn = document.createElement('button');
+                triggerBtn.type = 'button';
+                const isOptional = select.classList.contains('select-editableopcional');
+                triggerBtn.className = `select-trigger-btn ${isOptional ? 'select-editableopcional' : 'select-editable'}`;
+                select.parentNode.insertBefore(triggerBtn, select);
+              }
+
+              triggerBtn.innerHTML = `<i class="fas fa-list-check"></i> ${displayText}`;
+
+              triggerBtn.onclick = (e) => {
+                e.preventDefault();
+                if (typeof openMultiSelectModal === 'function') {
+                  openMultiSelectModal(select);
+                }
+              };
+            } else {
+              // C. Select simple
+              select.onchange = (e) => {
+                const sel = e.target;
+                if (!sel || !sel.options) return;
+
+                const currentVal = sel.value;
+                Array.from(sel.options).forEach(opt => {
+                  const isSel = opt.value === currentVal;
+                  opt.selected = isSel;
+                  if (isSel) opt.setAttribute('selected', 'selected');
+                  else opt.removeAttribute('selected');
+                });
+
+                // Actualizar visualmente al instante
+                const newText = sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text : sel.value;
+                if (livePreviewSpan) livePreviewSpan.textContent = newText;
+              };
+            }
+          });
+
+          // -----------------------------------------------------------------------
+          // 2. PERSISTIR ATRIBUTOS HTML EN templatesData[index].body
+          // -----------------------------------------------------------------------
+          if (tData && tData.body) {
+            tData.body.forEach(block => {
+              const tempDiv = document.createElement('div');
+              tempDiv.innerHTML = block.content;
+              let blockWasUpdated = false;
+
+              // Actualizar selects en la fuente HTML
+              Object.keys(savedSelectStates).forEach(fId => {
+                if (block.content.includes(`data-id="${fId}"`)) {
+                  const fieldBox = tempDiv.querySelector(`[data-id="${fId}"]`);
+                  if (fieldBox) {
+                    const selInBlock = fieldBox.querySelector('.select-editable, .select-editableopcional');
+                    if (selInBlock && selInBlock.options) {
+                      const targetValues = savedSelectStates[fId];
+                      Array.from(selInBlock.options).forEach(opt => {
+                        const isMatch = targetValues.includes(opt.value);
+                        opt.selected = isMatch;
+                        if (isMatch) {
+                          opt.setAttribute('selected', 'selected');
+                        } else {
+                          opt.removeAttribute('selected');
+                        }
+                      });
+                      blockWasUpdated = true;
                     }
-
-                    let currentObj = createNewPage();
-
-                    blocks.forEach((block) => {
-                      const tempBlock = document.createElement(block.type);
-                      tempBlock.innerHTML = block.content;
-
-                      currentObj.bodyContainer.appendChild(tempBlock);
-
-                      if (currentObj.bodyContainer.scrollHeight > currentObj.bodyContainer.clientHeight) {
-                        currentObj.bodyContainer.removeChild(tempBlock);
-                        currentPageNum++;
-                        currentObj = createNewPage();
-                        currentObj.bodyContainer.appendChild(tempBlock);
-                      }
-                    });
-
-                    const pages = docWrapper.querySelectorAll('.a4-page');
-                    pages.forEach((p, idx) => {
-                      if (idx < pages.length - 1) {
-                        const splitInd = document.createElement('div');
-                        splitInd.className = 'page-split-indicator';
-                        p.appendChild(splitInd);
-                      }
-                    });
-
-                    docWrapper.querySelectorAll('.input-editable, .input-editableopcional').forEach((input, idx) => {
-                      if (savedInputStates[idx] !== undefined) {
-                        if (input.type === 'checkbox' || input.type === 'radio') {
-                          input.checked = savedInputStates[idx];
-                          if (input.checked) input.setAttribute('checked', 'checked');
-                          else input.removeAttribute('checked');
-                        } else {
-                          input.value = savedInputStates[idx];
-                          input.setAttribute('value', savedInputStates[idx]);
-                        }
-                      }
-
-                      input.addEventListener('input', (e) => {
-                        e.target.setAttribute('value', e.target.value);
-                      });
-                      input.addEventListener('change', (e) => {
-                        if (e.target.type === 'checkbox' || e.target.type === 'radio') {
-                          if (e.target.checked) e.target.setAttribute('checked', 'checked');
-                          else e.target.removeAttribute('checked');
-                        } else {
-                          e.target.setAttribute('value', e.target.value);
-                        }
-                      });
-                    });
-
-                    docWrapper.querySelectorAll('.select-editable, .select-editableopcional').forEach((select, idx) => {
-                      if (savedSelectStates[idx] !== undefined) {
-                        setSelectSelectedValues(select, savedSelectStates[idx]);
-                      } else {
-                        syncSelectLivePreview(select);
-                      }
-
-                      select.addEventListener('change', (e) => {
-                        const sel = e.target;
-                        const currentVal = getSelectSelectedValues(sel);
-                        setSelectSelectedValues(sel, currentVal);
-                      });
-                    });
-
-                    docWrapper.querySelectorAll('.modificable, .modificable-opcional').forEach(validateFieldElement);
                   }
+                }
+              });
+
+              // Actualizar inputs en la fuente HTML
+              Object.keys(savedInputStates).forEach(fId => {
+                if (block.content.includes(`data-id="${fId}"`)) {
+                  const fieldBox = tempDiv.querySelector(`[data-id="${fId}"]`);
+                  if (fieldBox) {
+                    const inputInBlock = fieldBox.querySelector('.input-editable, .input-editableopcional');
+                    if (inputInBlock) {
+                      const val = savedInputStates[fId];
+                      if (inputInBlock.type === 'checkbox' || inputInBlock.type === 'radio') {
+                        inputInBlock.checked = !!val;
+                        if (val) inputInBlock.setAttribute('checked', 'checked');
+                        else inputInBlock.removeAttribute('checked');
+                      } else {
+                        inputInBlock.value = val || '';
+                        inputInBlock.setAttribute('value', val || '');
+                      }
+                      blockWasUpdated = true;
+                    }
+                  }
+                }
+              });
+
+              if (blockWasUpdated) {
+                block.content = tempDiv.innerHTML;
+              }
+            });
+          }
+
+          const blocks = [...tData.body].sort((a, b) => {
+            return parseInt(a.pag || "1", 10) - parseInt(b.pag || "1", 10);
+          });
+
+          // -----------------------------------------------------------------------
+          // 3. VACIAR DOM Y CONSTRUIR PÁGINAS A4
+          // -----------------------------------------------------------------------
+          docWrapper.innerHTML = '';
+          let currentPageNum = 1;
+
+          function createNewPage() {
+            const page = document.createElement('div');
+            page.className = 'a4-page';
+
+            const header = document.createElement('div');
+            header.className = 'doc-header';
+            header.innerHTML = `
+              <img src="${tData.logoUrl || LOGO_URL}" class="doc-header-logo" alt="Logo">
+              <div class="doc-header-meta">
+                <strong>${tData.meta.issuer}</strong><br>${tData.meta.type}
+              </div>
+            `;
+            page.appendChild(header);
+
+            if (currentPageNum === 1 && tData.head && tData.head.content) {
+              const headBox = document.createElement('div');
+              headBox.className = 'doc-head';
+              headBox.textContent = tData.head.content;
+              page.appendChild(headBox);
+            }
+
+            const bodyContainer = document.createElement('div');
+            bodyContainer.className = 'doc-body';
+            page.appendChild(bodyContainer);
+
+            const footer = document.createElement('div');
+            footer.className = 'doc-footer';
+            footer.innerHTML = `
+              <div class="doc-footer-left">
+                <div class="doc-footer-legal">${tData.footer.legalText}</div>
+                <div class="doc-footer-copy">${tData.footer.copyright}</div>
+              </div>
+              <img src="${tData.logoUrl || LOGO_URL}" class="doc-footer-logo" alt="Logo Footer">
+            `;
+            page.appendChild(footer);
+
+            const pNum = document.createElement('div');
+            pNum.className = 'page-number';
+            pNum.textContent = `Página ${currentPageNum}`;
+            page.appendChild(pNum);
+
+            docWrapper.appendChild(page);
+            return { page, bodyContainer };
+          }
+
+          let currentObj = createNewPage();
+
+          blocks.forEach((block) => {
+            const tempBlock = document.createElement(block.type);
+            tempBlock.innerHTML = block.content;
+
+            currentObj.bodyContainer.appendChild(tempBlock);
+
+            if (currentObj.bodyContainer.scrollHeight > currentObj.bodyContainer.clientHeight) {
+              currentObj.bodyContainer.removeChild(tempBlock);
+              currentPageNum++;
+              currentObj = createNewPage();
+              currentObj.bodyContainer.appendChild(tempBlock);
+            }
+          });
+
+          const pages = docWrapper.querySelectorAll('.a4-page');
+          pages.forEach((p, idx) => {
+            if (idx < pages.length - 1) {
+              const splitInd = document.createElement('div');
+              splitInd.className = 'page-split-indicator';
+              p.appendChild(splitInd);
+            }
+          });
+
+          // -----------------------------------------------------------------------
+          // 4. RESTAURAR ESTADO Y ATRIBUTOS DE INPUTS
+          // -----------------------------------------------------------------------
+          docWrapper.querySelectorAll('.input-editable, .input-editableopcional').forEach((input) => {
+            const container = input.closest('[data-id]');
+            const fId = container ? container.getAttribute('data-id') : null;
+
+            if (fId && savedInputStates[fId] !== undefined) {
+              const val = savedInputStates[fId];
+              if (input.type === 'checkbox' || input.type === 'radio') {
+                input.checked = !!val;
+                if (input.checked) input.setAttribute('checked', 'checked');
+                else input.removeAttribute('checked');
+              } else {
+                input.value = val;
+                input.setAttribute('value', val);
+              }
+            }
+
+            input.addEventListener('input', (e) => {
+              e.target.setAttribute('value', e.target.value);
+            });
+            input.addEventListener('change', (e) => {
+              if (e.target.type === 'checkbox' || e.target.type === 'radio') {
+                if (e.target.checked) e.target.setAttribute('checked', 'checked');
+                else e.target.removeAttribute('checked');
+              } else {
+                e.target.setAttribute('value', e.target.value);
+              }
+            });
+          });
+
+          // -----------------------------------------------------------------------
+          // 5. RESTAURAR Y VINCULAR EVENTOS EN SELECTS
+          // -----------------------------------------------------------------------
+          docWrapper.querySelectorAll('.select-editable, .select-editableopcional').forEach((select) => {
+            if (!select || !select.options) return;
+
+            const container = select.closest('[data-id]');
+            const fId = container ? container.getAttribute('data-id') : null;
+
+            if (fId && savedSelectStates[fId] !== undefined) {
+              const savedValues = savedSelectStates[fId];
+
+              if (typeof setSelectSelectedValues === 'function') {
+                setSelectSelectedValues(select, savedValues);
+              }
+
+              const valArray = Array.isArray(savedValues) ? savedValues : [savedValues];
+
+              Array.from(select.options).forEach(opt => {
+                const isSelected = valArray.includes(opt.value);
+                opt.selected = isSelected;
+                if (isSelected) {
+                  opt.setAttribute('selected', 'selected');
+                } else {
+                  opt.removeAttribute('selected');
+                }
+              });
+            }
+
+            // Actualizar vista previa
+            if (typeof syncSelectLivePreview === 'function') {
+              syncSelectLivePreview(select);
+            }
+
+            // Asignación de Listeners
+            if (select.multiple) {
+              let triggerBtn = select.previousElementSibling;
+              if (!triggerBtn || !triggerBtn.classList.contains('select-trigger-btn')) {
+                triggerBtn = document.createElement('button');
+                triggerBtn.type = 'button';
+                const isOptional = select.classList.contains('select-editableopcional');
+                triggerBtn.className = `select-trigger-btn ${isOptional ? 'select-editableopcional' : 'select-editable'}`;
+                triggerBtn.innerHTML = '<i class="fas fa-list-check"></i> Seleccionar...';
+                select.parentNode.insertBefore(triggerBtn, select);
+              }
+
+              triggerBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (typeof openMultiSelectModal === 'function') {
+                  openMultiSelectModal(select);
+                }
+              });
+            } else {
+              select.addEventListener('change', (e) => {
+                const sel = e.target;
+                if (!sel || !sel.options) return;
+
+                const currentVal = typeof getSelectSelectedValues === 'function' ? getSelectSelectedValues(sel) : sel.value;
+                if (typeof setSelectSelectedValues === 'function') {
+                  setSelectSelectedValues(sel, currentVal);
+                }
+
+                const valArr = Array.isArray(currentVal) ? currentVal : [currentVal];
+                Array.from(sel.options).forEach(opt => {
+                  const isSel = valArr.includes(opt.value);
+                  opt.selected = isSel;
+                  if (isSel) opt.setAttribute('selected', 'selected');
+                  else opt.removeAttribute('selected');
+                });
+
+                if (typeof syncSelectLivePreview === 'function') {
+                  syncSelectLivePreview(sel);
+                }
+              });
+            }
+          });
+
+          docWrapper.querySelectorAll('.modificable, .modificable-opcional').forEach(validateFieldElement);
+        }
 
                   function renderComponent() {
                     templatesContainer.innerHTML = '';
@@ -1332,7 +1886,7 @@
                             <i class="fas fa-upload"></i> Importar JSON
                             <input type="file" class="btn-imp-json" data-index="${idx}" accept=".json" style="display:none;">
                           </label>
-                          <button class="btn-action btn-primary btn-print-pdf" data-index="${idx}"><i class="fas fa-print"></i> Imprimir / PDF</button>
+                          <button class="btn-action btn-primary btn-print-pdf" data-index="${idx}"><i class="fas fa-print"></i> GENERAR PDF</button>
                         </div>
                         <div class="template-document" id="plantilla-${idx}"></div>
                       `;
@@ -1478,60 +2032,118 @@
                   btnCloseImgModal.addEventListener('click', () => imageModal.classList.remove('active'));
                   btnCancelImg.addEventListener('click', () => imageModal.classList.remove('active'));
 
-                  btnSaveField.addEventListener('click', () => {
-                    if (!currentEditingElement) return;
+        btnSaveField.addEventListener('click', () => {
+          if (!currentEditingElement) return;
 
-                    const textContentClean = (modalEditor.textContent || "").trim();
-                    const hasImg = modalEditor.querySelector('img') !== null;
-                    const isMandatory = currentEditingElement.classList.contains('modificable');
-                    const min = parseInt(currentEditingElement.getAttribute('mincaracteres') || "0", 10);
-                    const max = parseInt(currentEditingElement.getAttribute('maxcaracteres') || "999999", 10);
-                    const len = getCleanCharCount(modalEditor.innerHTML);
+          const textContentClean = (modalEditor.textContent || "").trim();
+          const hasImg = modalEditor.querySelector('img') !== null;
+          const isMandatory = currentEditingElement.classList.contains('modificable');
+          const min = parseInt(currentEditingElement.getAttribute('mincaracteres') || "0", 10);
+          const max = parseInt(currentEditingElement.getAttribute('maxcaracteres') || "999999", 10);
+          const len = getCleanCharCount(modalEditor.innerHTML);
 
-                    if (isMandatory && textContentClean === "" && !hasImg) {
-                      mostrarToast("Este campo es obligatorio");
-                      return;
-                    }
+          if (isMandatory && textContentClean === "" && !hasImg) {
+            mostrarToast("Este campo es obligatorio");
+            return;
+          }
 
-                    if (textContentClean !== "" || hasImg) {
-                      if (len < min) {
-                        mostrarToast(`Texto demasiado corto. Mínimo: ${min}`);
-                        return;
-                      }
-                      if (len > max) {
-                        mostrarToast(`Texto excede el máximo permitido: ${max}`);
-                        return;
-                      }
-                    }
+          if (textContentClean !== "" || hasImg) {
+            if (len < min) {
+              mostrarToast(`Texto demasiado corto. Mínimo: ${min}`);
+              return;
+            }
+            if (len > max) {
+              mostrarToast(`Texto excede el máximo permitido: ${max}`);
+              return;
+            }
+          }
 
-                    currentEditingElement.innerHTML = modalEditor.innerHTML;
-                    validateFieldElement(currentEditingElement);
+          // Guardar en el DOM visible activo
+          currentEditingElement.innerHTML = modalEditor.innerHTML;
+          validateFieldElement(currentEditingElement);
 
-                    const docWrapper = currentEditingElement.closest('.template-document');
-                    if (docWrapper) {
-                      const idx = parseInt(docWrapper.id.replace('plantilla-', ''), 10);
-                      const fieldId = currentEditingElement.getAttribute('data-id');
+          const docWrapper = currentEditingElement.closest('.template-document');
 
-                      if (fieldId && templatesData[idx]) {
-                        templatesData[idx].body.forEach(block => {
-                          if (block.content.includes(`data-id="${fieldId}"`)) {
-                            const tempDiv = document.createElement('div');
-                            tempDiv.innerHTML = block.content;
-                            const targetInBlock = tempDiv.querySelector(`[data-id="${fieldId}"]`);
-                            if (targetInBlock) {
-                              targetInBlock.innerHTML = modalEditor.innerHTML;
-                              block.content = tempDiv.innerHTML;
-                            }
+          if (docWrapper) {
+            const idx = parseInt(docWrapper.id.replace('plantilla-', ''), 10);
+            const fieldId = currentEditingElement.getAttribute('data-id');
+
+            // -------------------------------------------------------------------
+            // PASO A: RECOLECTAR ESTADOS REALES DE TODOS LOS CAMPOS DEL DOCUMENTO
+            // -------------------------------------------------------------------
+            const selectsState = {};
+            docWrapper.querySelectorAll('.select-editable, .select-editableopcional').forEach(select => {
+              const container = select.closest('[data-id]');
+              const fId = container ? container.getAttribute('data-id') : null;
+              if (!fId) return;
+
+              // Leer de las opciones activas en el DOM en vivo
+              const selectedOpts = Array.from(select.options)
+                .filter(opt => opt.selected || opt.hasAttribute('selected'))
+                .map(opt => opt.value);
+
+              selectsState[fId] = selectedOpts;
+            });
+
+            // -------------------------------------------------------------------
+            // PASO B: REESCRIBIR FÍSICAMENTE EL HTML EN templatesData[idx].body
+            // -------------------------------------------------------------------
+            if (templatesData[idx] && templatesData[idx].body) {
+              templatesData[idx].body.forEach(block => {
+                // Si el bloque contiene la tarjeta editada en el modal
+                if (fieldId && block.content.includes(`data-id="${fieldId}"`)) {
+                  const tempDiv = document.createElement('div');
+                  tempDiv.innerHTML = block.content;
+                  const target = tempDiv.querySelector(`[data-id="${fieldId}"]`);
+                  if (target) {
+                    target.innerHTML = modalEditor.innerHTML;
+                    block.content = tempDiv.innerHTML;
+                  }
+                }
+
+                // Modificar quirúrgicamente los <select> dentro de las cadenas HTML
+                Object.keys(selectsState).forEach(fId => {
+                  if (block.content.includes(`data-id="${fId}"`)) {
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = block.content;
+                    const container = tempDiv.querySelector(`[data-id="${fId}"]`);
+                    
+                    if (container) {
+                      const sel = container.querySelector('.select-editable, .select-editableopcional');
+                      if (sel && sel.options) {
+                        const targetValues = selectsState[fId];
+
+                        // Forzar modificación del marcado HTML estático
+                        Array.from(sel.options).forEach(opt => {
+                          if (targetValues.includes(opt.value)) {
+                            opt.setAttribute('selected', 'selected');
+                          } else {
+                            opt.removeAttribute('selected');
                           }
                         });
-                      }
 
-                      fieldModal.classList.remove('active');
-                      recalcularPaginacion(idx);
-                    } else {
-                      fieldModal.classList.remove('active');
+                        // Actualizar la vista previa dentro del HTML guardado
+                        const previewSpan = container.querySelector('.select-live-preview');
+                        if (previewSpan && targetValues.length > 0) {
+                          previewSpan.textContent = targetValues.join(', ');
+                        }
+
+                        block.content = tempDiv.innerHTML;
+                      }
                     }
-                  });
+                  }
+                });
+              });
+            }
+
+            fieldModal.classList.remove('active');
+            
+            // Disparar la repaginación asegurando que templatesData ya tiene las marcas 'selected' impresas
+            recalcularPaginacion(idx);
+          } else {
+            fieldModal.classList.remove('active');
+          }
+        });
 
                   btnCloseFieldModal.addEventListener('click', () => fieldModal.classList.remove('active'));
                   btnCancelField.addEventListener('click', () => fieldModal.classList.remove('active'));
@@ -1669,74 +2281,295 @@
                     inputEl.value = '';
                   }
 
-                  function ejecutarImpresion(idx) {
-                    recalcularPaginacion(idx);
+        async function ejecutarImpresion(idx) {
+          const docWrapper = document.getElementById(`plantilla-${idx}`);
+          if (!docWrapper) return;
 
-                    const docWrapper = document.getElementById(`plantilla-${idx}`);
-                    let allValid = true;
-                    let firstInvalid = null;
+          // =========================================================================
+          // PASO A: GUARDAR EL ESTADO REAL DE LOS SELECTS E INPUTS EN MEMORIA Y ATRIBUTOS
+          // =========================================================================
+          const selectStatesMap = new Map();
 
-                    docWrapper.querySelectorAll('.modificable, .modificable-opcional').forEach(el => {
-                      const valid = validateFieldElement(el);
-                      if (!valid) {
-                        allValid = false;
-                        if (!firstInvalid) firstInvalid = el;
-                      }
-                    });
+          docWrapper.querySelectorAll('select.select-editable, select.select-editableopcional').forEach((select, index) => {
+            const selectedValues = getSelectSelectedValues(select);
+            selectStatesMap.set(index, selectedValues);
 
-                    docWrapper.querySelectorAll('input.input-editable').forEach(input => {
-                      if (input.hasAttribute('required') && !input.value.trim()) {
-                        allValid = false;
-                        input.classList.add('invalid');
-                      } else {
-                        input.classList.remove('invalid');
-                      }
-                    });
+            // Marcar físicamente el HTML en el DOM real para que el clon conserve los atributos
+            Array.from(select.options).forEach(opt => {
+              const isSelected = Array.isArray(selectedValues) 
+                ? selectedValues.includes(opt.value) 
+                : opt.value === selectedValues;
 
-                    docWrapper.querySelectorAll('select.select-editable').forEach(select => {
-                      const val = getSelectSelectedValues(select);
-                      const isEmpty = Array.isArray(val) ? val.length === 0 : (!val || val === "");
-                      if (select.hasAttribute('required') && isEmpty) {
-                        allValid = false;
-                        select.classList.add('invalid');
-                      } else {
-                        select.classList.remove('invalid');
-                      }
-                    });
+              opt.selected = isSelected;
+              if (isSelected) {
+                opt.setAttribute('selected', 'selected');
+              } else {
+                opt.removeAttribute('selected');
+              }
+            });
 
-                    if (!allValid) {
-                      mostrarToast("Existen campos obligatorios sin completar o inválidos");
-                      if (firstInvalid) openFieldEditor(firstInvalid);
-                      return;
+            // Asegurar que la vista previa en pantalla esté al día
+            syncSelectLivePreview(select);
+          });
+
+          docWrapper.querySelectorAll('.input-editable, .input-editableopcional').forEach(input => {
+            if (input.type === 'checkbox' || input.type === 'radio') {
+              if (input.checked) input.setAttribute('checked', 'checked');
+              else input.removeAttribute('checked');
+            } else {
+              input.setAttribute('value', input.value);
+            }
+          });
+
+          // =========================================================================
+          // PASO B: RECALCULAR PAGINACIÓN
+          // =========================================================================
+          recalcularPaginacion(idx);
+
+          // =========================================================================
+          // PASO C: RESTAURAR SELECCIONES Y VISTA PREVIA TRAS LA PAGINACIÓN EN PANTALLA
+          // =========================================================================
+          const postRecalcWrapper = document.getElementById(`plantilla-${idx}`) || docWrapper;
+
+          postRecalcWrapper.querySelectorAll('select.select-editable, select.select-editableopcional').forEach((select, index) => {
+            const savedValues = selectStatesMap.get(index);
+            if (savedValues !== undefined) {
+              setSelectSelectedValues(select, savedValues);
+              
+              // Volver a forzar los atributosselected en las opciones del nuevo DOM
+              Array.from(select.options).forEach(opt => {
+                const isSelected = Array.isArray(savedValues) 
+                  ? savedValues.includes(opt.value) 
+                  : opt.value === savedValues;
+                opt.selected = isSelected;
+                if (isSelected) opt.setAttribute('selected', 'selected');
+                else opt.removeAttribute('selected');
+              });
+            }
+            syncSelectLivePreview(select);
+          });
+
+          // =========================================================================
+          // PASO D: VALIDACIONES (Usando selectStatesMap para mayor confiabilidad)
+          // =========================================================================
+          let allValid = true;
+          let firstInvalid = null;
+
+          postRecalcWrapper.querySelectorAll('.modificable, .modificable-opcional').forEach(el => {
+            const valid = validateFieldElement(el);
+            if (!valid) {
+              allValid = false;
+              if (!firstInvalid) firstInvalid = el;
+            }
+          });
+
+          postRecalcWrapper.querySelectorAll('input.input-editable').forEach(input => {
+            if (input.hasAttribute('required') && !input.value.trim()) {
+              allValid = false;
+              input.classList.add('invalid');
+              if (!firstInvalid) firstInvalid = input;
+            } else {
+              input.classList.remove('invalid');
+            }
+          });
+
+          postRecalcWrapper.querySelectorAll('select.select-editable, select.select-editableopcional').forEach((select, index) => {
+            // Consultar primero el valor respaldado en memoria RAM
+            const savedVal = selectStatesMap.get(index);
+            const currentVal = getSelectSelectedValues(select);
+            const val = (savedVal !== undefined && (!currentVal || currentVal.length === 0)) ? savedVal : currentVal;
+
+            const isEmpty = Array.isArray(val) ? val.length === 0 : (!val || val === "");
+            if (select.hasAttribute('required') && isEmpty) {
+              allValid = false;
+              select.classList.add('invalid');
+              if (!firstInvalid) firstInvalid = select;
+            } else {
+              select.classList.remove('invalid');
+            }
+          });
+
+          if (!allValid) {
+            mostrarToast("Existen campos obligatorios sin completar o inválidos");
+            if (firstInvalid) openFieldEditor(firstInvalid);
+            return;
+          }
+
+          const filenameInput = document.getElementById(`filename-${idx}`);
+          const pdfName = (filenameInput && filenameInput.value) ? `${filenameInput.value}.pdf` : `documento-${idx}.pdf`;
+
+          // =========================================================================
+          // PASO E: ESTILOS DE IMPRESIÓN
+          // =========================================================================
+          const printStyles = `
+            .page-split-indicator {
+              display: none !important;
+            }
+            .a4-page {
+              display: flex !important;
+              flex-direction: column !important;
+              width: 210mm !important;
+              height: 297mm !important;
+              max-height: 297mm !important;
+              margin: 0 !important;
+              padding: 15mm 15mm !important;
+              background: #ffffff !important;
+              box-shadow: none !important;
+              border: none !important;
+              position: relative !important;
+              overflow: hidden !important;
+              box-sizing: border-box !important;
+            }
+            .modificable,
+            .modificable-opcional,
+            input.input-editable,
+            input.input-editableopcional,
+            select.select-editable,
+            select.select-editableopcional,
+            .select-live-preview {
+              border: 1px solid #cbd5e1 !important;
+              background: transparent !important;
+              padding: 2px 6px !important;
+              border-radius: 4px !important;
+              color: #0f172a !important;
+              box-sizing: border-box !important;
+            }
+            select.select-editable,
+            select.select-editableopcional {
+              display: none !important;
+            }
+            .select-live-preview {
+              display: inline-block !important;
+            }
+            input::-webkit-calendar-picker-indicator,
+            input::-webkit-inner-spin-button,
+            input::-webkit-outer-spin-button,
+            input::-webkit-search-cancel-button,
+            input::-webkit-clear-button {
+              display: none !important;
+              -webkit-appearance: none !important;
+            }
+            input[type="checkbox"].input-editable,
+            input[type="checkbox"].input-editableopcional,
+            input[type="radio"].input-editable,
+            input[type="radio"].input-editableopcional {
+              border: none !important;
+              background: transparent !important;
+              appearance: auto !important;
+              -webkit-appearance: auto !important;
+              width: 14px !important;
+              height: 14px !important;
+            }
+          `;
+
+          // =========================================================================
+          // PASO F: GENERACIÓN DEL PDF CON HTML2CANVAS
+          // =========================================================================
+          try {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            
+            let pages = postRecalcWrapper.querySelectorAll('.a4-page');
+            if (pages.length === 0) {
+              pages = [postRecalcWrapper];
+            }
+
+            const totalPages = pages.length;
+            mostrarToast(`Iniciando exportación (1/${totalPages})...`);
+
+            const startTime = Date.now();
+
+            for (let i = 0; i < totalPages; i++) {
+              const pageNum = i + 1;
+              
+              if (i > 0) {
+                const elapsedTime = (Date.now() - startTime) / 1000;
+                const avgTimePerPage = elapsedTime / i;
+                const remainingPages = totalPages - i;
+                const estimatedSeconds = Math.ceil(avgTimePerPage * remainingPages);
+
+                mostrarToast(`Procesando página ${pageNum} de ${totalPages} (Tiempo estimado: ~${estimatedSeconds}s)`);
+              } else {
+                mostrarToast(`Procesando página 1 de ${totalPages}...`);
+              }
+
+              await new Promise(resolve => setTimeout(resolve, 50));
+
+              const pageEl = pages[i];
+
+              const canvas = await html2canvas(pageEl, {
+                scale: 2,
+                useCORS: true,
+                logging: false,
+                onclone: (clonedDoc) => {
+                  const styleTag = clonedDoc.createElement('style');
+                  styleTag.innerHTML = printStyles;
+                  clonedDoc.head.appendChild(styleTag);
+
+                  // 1. RE-SINCRONIZAR VISTA PREVIA DIRECTAMENTE EN EL CLON
+                  clonedDoc.querySelectorAll('select.select-editable, select.select-editableopcional').forEach((sel, index) => {
+                    sel.style.display = 'none';
+
+                    let previewSpan = sel.nextElementSibling;
+                    if (!previewSpan || !previewSpan.classList.contains('select-live-preview')) {
+                      previewSpan = sel.parentNode.querySelector('.select-live-preview');
                     }
 
-                    docWrapper.querySelectorAll('.input-editable, .input-editableopcional').forEach(input => {
-                      if (input.type === 'checkbox' || input.type === 'radio') {
-                        if (input.checked) input.setAttribute('checked', 'checked');
-                        else input.removeAttribute('checked');
-                      } else {
-                        input.setAttribute('value', input.value);
+                    if (previewSpan) {
+                      // Buscar opciones seleccionadas por atributos HTML o propiedad selected
+                      const selectedOpts = Array.from(sel.options).filter(opt => opt.hasAttribute('selected') || opt.selected);
+                      let selectedTexts = selectedOpts.map(opt => opt.text.trim());
+
+                      // Fallback: Si el clon perdió la marca, recuperar el valor guardado previamente
+                      if (selectedTexts.length === 0 && selectStatesMap.has(index)) {
+                        const savedVal = selectStatesMap.get(index);
+                        const savedArr = Array.isArray(savedVal) ? savedVal : [savedVal];
+                        selectedTexts = Array.from(sel.options)
+                          .filter(opt => savedArr.includes(opt.value))
+                          .map(opt => opt.text.trim());
                       }
-                    });
 
-                    docWrapper.querySelectorAll('.select-editable, .select-editableopcional').forEach(select => {
-                      const currentVal = getSelectSelectedValues(select);
-                      setSelectSelectedValues(select, currentVal);
-                    });
+                      if (sel.multiple) {
+                        previewSpan.textContent = selectedTexts.length > 0 
+                          ? selectedTexts.join(', ') 
+                          : 'Ninguna selección';
+                      } else {
+                        previewSpan.textContent = selectedTexts.length > 0 ? selectedTexts[0] : '';
+                      }
 
-                    const filenameInput = document.getElementById(`filename-${idx}`);
-                    const oldTitle = document.title;
-                    if (filenameInput && filenameInput.value) {
-                      document.title = filenameInput.value;
+                      previewSpan.style.display = 'inline-block';
+                      previewSpan.style.border = '1px solid #cbd5e1';
+                      previewSpan.style.padding = '2px 6px';
+                      previewSpan.style.borderRadius = '4px';
+                      previewSpan.style.color = '#0f172a';
                     }
+                  });
 
-                    docWrapper.classList.add('print-active-target');
+                  // 2. Ocultar indicadores de corte
+                  clonedDoc.querySelectorAll('.page-split-indicator').forEach(ind => {
+                    ind.style.display = 'none';
+                  });
+                }
+              });
 
-                    window.print();
+              const imgData = canvas.toDataURL('image/png');
 
-                    docWrapper.classList.remove('print-active-target');
-                    document.title = oldTitle;
-                  }
+              if (i > 0) {
+                pdf.addPage('a4', 'p');
+              }
+
+              pdf.addImage(imgData, 'PNG', 0, 0, 210, 297);
+            }
+
+            mostrarToast("Generando archivo PDF...");
+            pdf.save(pdfName);
+            mostrarToast("Descarga completada con éxito");
+
+          } catch (error) {
+            console.error("Error al generar el PDF:", error);
+            mostrarToast("Ocurrió un error al generar el archivo PDF");
+          }
+        }
 
                   filterBar.addEventListener('click', (e) => {
                     if (!e.target.classList.contains('btn-filter')) return;

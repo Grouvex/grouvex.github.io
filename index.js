@@ -149,129 +149,85 @@ const INSIGNIAS_MAP = {
 // FUNCIONES PARA OBTENER DATOS DE GOOGLE SHEETS
 // ============================================
 
+/**
+ * Obtiene todos los artistas desde Apps Script invocando `getAllArtists`.
+ * @returns {Promise<Object>} Mapa de usuarios listo para ser procesado.
+ */
 async function obtenerUsuariosDesdeSheets() {
-    try {
-        console.log('📥 Obteniendo datos de usuarios desde Google Sheets...');
-        
-        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
-        
-        const response = await fetch(url);
-        
-        if (!response.ok) {
-            throw new Error(`Error HTTP: ${response.status}`);
-        }
-        
-        const text = await response.text();
-        
-        // Parsear respuesta JSON de Google Sheets
-        const jsonMatch = text.match(/google\.visualization\.Query\.setResponse\((.+)\);/);
-        
-        if (!jsonMatch) {
-            console.error('❌ No se pudo parsear JSON');
-            return {};
-        }
-        
-        const jsonData = JSON.parse(jsonMatch[1]);
-        
-        if (!jsonData.table || !jsonData.table.rows) {
-            console.error('❌ No hay datos en la hoja');
-            return {};
-        }
-        
-        // Obtener encabezados
-        const headers = jsonData.table.cols.map(col => col.label || '');
-        
-        // Buscar índices de las columnas
-        const nombreIndex = encontrarIndiceColumna(headers, ['nombre', 'name', 'usuario', 'user']);
-        const insigniasIndex = encontrarIndiceColumna(headers, ['insignia', 'badge']);
-        
-        if (nombreIndex === -1 || insigniasIndex === -1) {
-            console.error('❌ Faltan columnas necesarias');
-            return {};
-        }
-        
-        const usuarios = {};
-        
-        // Procesar cada fila
-        for (let i = 0; i < jsonData.table.rows.length; i++) {
-            const row = jsonData.table.rows[i];
-            const nombreCell = row.c && row.c[nombreIndex];
-            
-            if (nombreCell && nombreCell.v) {
-                const nombreUsuario = nombreCell.v.toString().trim();
-                
-                if (nombreUsuario && nombreUsuario !== '') {
-                    // Obtener las insignias
-                    const insigniasCell = row.c[insigniasIndex];
-                    let insigniasTexto = '';
-                    
-                    if (insigniasCell && insigniasCell.v) {
-                        insigniasTexto = insigniasCell.v.toString().trim();
-                    }
-                    
-                    // Procesar las insignias
-                    const insigniasArray = procesarTextoInsignias(insigniasTexto);
-                    
-                    // Agrupar insignias por tipo (para compatibilidad con el código existente)
-                    const insigniasAgrupadas = agruparInsignias(insigniasArray);
-                    
-                    // Crear objeto de usuario con la misma estructura que antes
-                    usuarios[nombreUsuario] = {
-                        principales: insigniasAgrupadas.principales,
-                        GSRecording: insigniasAgrupadas.gsRecording,
-                        GSAnimation: insigniasAgrupadas.gsAnimation,
-                        GSDesign: insigniasAgrupadas.gsDesign,
-                        todasInsignias: insigniasArray
-                    };
+    console.log('📥 Obteniendo lista completa de artistas desde Apps Script...');
+
+    return new Promise((resolve) => {
+        google.script.run
+            .withSuccessHandler((artistas) => {
+                if (!Array.isArray(artistas) || artistas.length === 0) {
+                    console.warn('⚠️ No se obtuvieron artistas desde la hoja');
+                    resolve({});
+                    return;
                 }
-            }
-        }
-        
-        console.log(`📊 Usuarios cargados desde Google Sheets: ${Object.keys(usuarios).length}`);
-        return usuarios;
-        
-    } catch (error) {
-        console.error('❌ Error obteniendo datos de usuarios:', error);
-        // Retornar objeto vacío en caso de error
-        return {};
-    }
+
+                const usuarios = {};
+
+                artistas.forEach((artista) => {
+                    const nombreUsuario = artista.name || artista.id;
+
+                    if (nombreUsuario) {
+                        const insigniasArray = artista.insignias || [];
+                        const insigniasAgrupadas = typeof agruparInsignias === 'function' 
+                            ? agruparInsignias(insigniasArray) 
+                            : {};
+
+                        usuarios[nombreUsuario] = {
+                            principales: insigniasAgrupadas.principales || [],
+                            GSRecording: insigniasAgrupadas.gsRecording || [],
+                            GSAnimation: insigniasAgrupadas.gsAnimation || [],
+                            GSDesign: insigniasAgrupadas.gsDesign || [],
+                            todasInsignias: insigniasArray,
+                            isStaff: artista.isStaff || false,
+                            id: artista.id,
+                            datosRaw: artista.rowData
+                        };
+                    }
+                });
+
+                console.log(`📊 Artistas cargados desde Sheets: ${Object.keys(usuarios).length}`);
+                resolve(usuarios);
+            })
+            .withFailureHandler((error) => {
+                console.error('❌ Error al ejecutar google.script.run.getAllArtists:', error);
+                resolve({});
+            })
+            .getAllArtists();
+    });
 }
 
-function encontrarIndiceColumna(headers, palabrasClave) {
-    for (let i = 0; i < headers.length; i++) {
-        const header = headers[i].toLowerCase();
-        for (const palabra of palabrasClave) {
-            if (header.includes(palabra.toLowerCase())) {
-                return i;
-            }
-        }
-    }
-    return -1;
-}
-
-function procesarTextoInsignias(textoInsignias) {
-    if (!textoInsignias || textoInsignias.trim() === '') {
-        return [];
-    }
-    
-    // Separar por diferentes delimitadores
-    const delimitadores = /[,;|/\\\n\t]+/;
-    return textoInsignias.split(delimitadores)
-        .map(insignia => insignia.trim())
-        .filter(insignia => insignia && insignia.length > 0);
-}
-
-function agruparInsignias(insigniasArray) {
+/**
+ * Agrupa las insignias según su categoría/tipo.
+ * Compatible tanto con arreglos de objetos ({ url, name, ... }) como con arreglos de strings.
+ * @param {Array<Object|string>} insigniasArray - Lista de insignias a clasificar.
+ * @returns {Object} Objeto con las insignias agrupadas por categoría.
+ */
+function agruparInsignias(insigniasArray = []) {
     const grupos = {
         principales: [],
         gsRecording: [],
         gsAnimation: [],
         gsDesign: []
     };
-    
+
+    if (!Array.isArray(insigniasArray)) return grupos;
+
     insigniasArray.forEach(insignia => {
-        const insigniaLower = insignia.toLowerCase();
-        
+        // Extraer la cadena de texto para hacer la evaluación:
+        // Si es un objeto usa .name o .url; si es un string usa directamente el valor.
+        let textoEvaluacion = '';
+        if (typeof insignia === 'string') {
+            textoEvaluacion = insignia;
+        } else if (insignia && typeof insignia === 'object') {
+            textoEvaluacion = insignia.name || insignia.url || '';
+        }
+
+        const insigniaLower = textoEvaluacion.toLowerCase();
+
         // Clasificar insignias según su tipo
         if (insigniaLower.includes('recording') || 
             insigniaLower.includes('grabacion') || 
@@ -279,19 +235,19 @@ function agruparInsignias(insigniasArray) {
             insigniaLower.includes('owner-recording')) {
             grupos.gsRecording.push(insignia);
         } else if (insigniaLower.includes('animation') || 
-                  insigniaLower.includes('animacion') || 
-                  insigniaLower.includes('animador')) {
+                   insigniaLower.includes('animacion') || 
+                   insigniaLower.includes('animador')) {
             grupos.gsAnimation.push(insignia);
         } else if (insigniaLower.includes('design') || 
-                  insigniaLower.includes('diseño') || 
-                  insigniaLower.includes('diseñador') ||
-                  insigniaLower.includes('owner-designs')) {
+                   insigniaLower.includes('diseño') || 
+                   insigniaLower.includes('diseñador') ||
+                   insigniaLower.includes('owner-designs')) {
             grupos.gsDesign.push(insignia);
         } else {
             grupos.principales.push(insignia);
         }
     });
-    
+
     return grupos;
 }
 
@@ -299,75 +255,114 @@ function agruparInsignias(insigniasArray) {
 // FUNCIÓN PARA MOSTRAR USUARIOS E INSIGNIAS
 // ============================================
 
+/**
+ * Helper para renderizar un elemento de insignia individual.
+ * Soporta tanto objetos de insignia ({ url, name, ... }) como strings (clases o URLs).
+ */
+function crearElementoInsignia(insignia) {
+    if (!insignia) return null;
+
+    // Si la insignia contiene una URL directa de imagen
+    const url = typeof insignia === 'object' ? insignia.url : (insignia.startsWith('http') ? insignia : null);
+    const nombre = typeof insignia === 'object' ? insignia.name : insignia;
+
+    if (url) {
+        const img = document.createElement("img");
+        img.src = url;
+        img.alt = nombre || "Insignia";
+        img.title = nombre || "Insignia";
+        img.classList.add("insignia-img");
+        img.style.height = '20px';
+        img.style.verticalAlign = 'middle';
+        img.style.margin = '0 2px';
+        return img;
+    } else {
+        const span = document.createElement("span");
+        span.classList.add("insignia", nombre.toString().toLowerCase().replace(/\s+/g, '-'));
+        span.title = nombre;
+        span.style.marginLeft = '2px';
+        return span;
+    }
+}
+
+/**
+ * Helper para crear el componente extensible <details> de una categoría.
+ */
+function crearDetallesInsignias(titulo, insigniasArray) {
+    if (!Array.isArray(insigniasArray) || insigniasArray.length === 0) return null;
+
+    const details = document.createElement("details");
+    details.style.marginLeft = '10px';
+    details.style.display = 'inline-block';
+
+    const summary = document.createElement("summary");
+    summary.textContent = titulo;
+    summary.style.fontSize = "10px";
+    summary.style.cursor = 'pointer';
+    details.appendChild(summary);
+
+    const divInsignias = document.createElement("div");
+    divInsignias.style.display = 'flex';
+    divInsignias.style.flexWrap = 'wrap';
+    divInsignias.style.gap = '2px';
+    divInsignias.style.marginTop = '5px';
+
+    insigniasArray.forEach(insignia => {
+        const elInsignia = crearElementoInsignia(insignia);
+        if (elInsignia) divInsignias.appendChild(elInsignia);
+    });
+
+    details.appendChild(divInsignias);
+    return details;
+}
+
+/**
+ * Muestra el usuario y sus insignias en los elementos DOM dados.
+ */
 function mostrarUsuarioYInsignias(nombreUsuario, usuarioData, elements) {
+    if (!elements || elements.length === 0) return;
+
     elements.forEach(element => {
-        // Limpiar el elemento antes de agregar contenido
-        element.innerHTML = '';
-        
-        // Mostrar nombre de usuario
+        // Limpiar el contenido anterior
+        element.textContent = '';
+
+        // Usamos DocumentFragment para evitar re-renderizados múltiples en el DOM
+        const fragment = document.createDocumentFragment();
+
+        // 1. Nombre de usuario
         const spanNombre = document.createElement("span");
         spanNombre.textContent = nombreUsuario;
         spanNombre.style.fontWeight = 'bold';
         spanNombre.style.marginRight = '10px';
-        element.appendChild(spanNombre);
+        fragment.appendChild(spanNombre);
 
-        // Mostrar insignias principales
-        const divPrincipales = document.createElement("div");
-        divPrincipales.style.display = 'inline-block';
-        
-        if (usuarioData.principales && usuarioData.principales.length > 0) {
+        // 2. Insignias principales
+        if (Array.isArray(usuarioData.principales) && usuarioData.principales.length > 0) {
+            const divPrincipales = document.createElement("div");
+            divPrincipales.style.display = 'inline-block';
+
             usuarioData.principales.forEach(insignia => {
-                if (insignia) {
-                    const spanInsignia = document.createElement("span");
-                    spanInsignia.classList.add("insignia", insignia);
-                    spanInsignia.style.marginLeft = '2px';
-                    divPrincipales.appendChild(spanInsignia);
-                }
+                const elInsignia = crearElementoInsignia(insignia);
+                if (elInsignia) divPrincipales.appendChild(elInsignia);
             });
-        }
-        element.appendChild(divPrincipales);
 
-        // Función para crear detalles de insignias
-        function crearDetallesInsignias(titulo, insigniasArray) {
-            if (insigniasArray && insigniasArray.length > 0) {
-                const details = document.createElement("details");
-                details.style.marginLeft = '10px';
-                details.style.display = 'inline-block';
-                
-                const summary = document.createElement("summary");
-                summary.textContent = titulo;
-                summary.style.fontSize = "10px";
-                summary.style.cursor = 'pointer';
-
-                details.appendChild(summary);
-                const divInsignias = document.createElement("div");
-                divInsignias.style.display = 'flex';
-                divInsignias.style.flexWrap = 'wrap';
-                divInsignias.style.gap = '2px';
-                divInsignias.style.marginTop = '5px';
-                
-                insigniasArray.forEach(insignia => {
-                    if (insignia) {
-                        const spanInsignia = document.createElement("span");
-                        spanInsignia.classList.add("insignia", insignia);
-                        divInsignias.appendChild(spanInsignia);
-                    }
-                });
-                details.appendChild(divInsignias);
-                return details;
-            }
-            return null;
+            fragment.appendChild(divPrincipales);
         }
 
-        // Mostrar detalles de cada categoría si existen
-        const gsRecordingDetails = crearDetallesInsignias("GSRecording", usuarioData.GSRecording);
-        if (gsRecordingDetails) element.appendChild(gsRecordingDetails);
+        // 3. Renderizado en bucle de las categorías secundarias
+        const categorias = [
+            { titulo: 'GSRecording', data: usuarioData.GSRecording },
+            { titulo: 'GSAnimation', data: usuarioData.GSAnimation },
+            { titulo: 'GSDesign', data: usuarioData.GSDesign }
+        ];
 
-        const gsAnimationDetails = crearDetallesInsignias("GSAnimation", usuarioData.GSAnimation);
-        if (gsAnimationDetails) element.appendChild(gsAnimationDetails);
+        categorias.forEach(({ titulo, data }) => {
+            const detailsEl = crearDetallesInsignias(titulo, data);
+            if (detailsEl) fragment.appendChild(detailsEl);
+        });
 
-        const gsDesignDetails = crearDetallesInsignias("GSDesign", usuarioData.GSDesign);
-        if (gsDesignDetails) element.appendChild(gsDesignDetails);
+        // Insertar todo de una sola vez al DOM
+        element.appendChild(fragment);
     });
 }
 
@@ -375,30 +370,59 @@ function mostrarUsuarioYInsignias(nombreUsuario, usuarioData, elements) {
 // CÓDIGO PRINCIPAL PARA INSIGNIAS
 // ============================================
 
+/**
+ * Normaliza un texto para usarlo de forma segura como clase CSS.
+ * Reemplaza espacios por guiones y escapa caracteres especiales para querySelector.
+ */
+function normalizarClaseUsuario(nombre) {
+    if (!nombre) return '';
+    // Reemplaza secuencias de espacios por guiones
+    const nombreLimpio = nombre.trim().replace(/\s+/g, '-');
+    // Escapa caracteres especiales válidos para selectores CSS
+    return window.CSS && CSS.escape ? CSS.escape(nombreLimpio) : nombreLimpio;
+}
+
+/**
+ * Inicializa la renderización de insignias para los usuarios encontrados en el DOM.
+ */
 async function inicializarInsigniasUsuarios() {
     console.log('🚀 Inicializando sistema de insignias...');
     
-    // Obtener datos de Google Sheets
-    const usuarios = await obtenerUsuariosDesdeSheets();
-    
-    if (Object.keys(usuarios).length === 0) {
-        console.log('⚠️ No se encontraron usuarios en Google Sheets');
-        return;
-    }
-    
-    console.log('✅ Datos de usuarios cargados:', Object.keys(usuarios));
-    
-    // Buscar elementos con clases que coincidan con nombres de usuario
-    Object.keys(usuarios).forEach(usuario => {
-        // Convertir el nombre de usuario a formato de clase (reemplazar espacios con guiones)
-        const nombreClase = usuario.replace(/\s+/g, '-');
-        const elements = document.querySelectorAll(`.${nombreClase}`);
+    try {
+        // Obtener datos de Google Sheets
+        const usuarios = await obtenerUsuariosDesdeSheets();
         
-        if (elements.length > 0) {
-            console.log(`👤 Mostrando insignias para: ${usuario}`);
-            mostrarUsuarioYInsignias(usuario, usuarios[usuario], elements);
+        const nombresUsuarios = Object.keys(usuarios);
+
+        if (nombresUsuarios.length === 0) {
+            console.warn('⚠️ No se encontraron usuarios en Google Sheets');
+            return;
         }
-    });
+        
+        console.log(`✅ Datos cargados de ${nombresUsuarios.length} usuarios.`);
+
+        let usuariosRenderizados = 0;
+
+        // Recorrer los usuarios obtenidos de Sheets
+        nombresUsuarios.forEach(usuario => {
+            const nombreClase = normalizarClaseUsuario(usuario);
+            if (!nombreClase) return;
+
+            // Búsqueda segura en el DOM
+            const elements = document.querySelectorAll(`.${nombreClase}`);
+            
+            if (elements.length > 0) {
+                console.log(`👤 Mostrando insignias para: ${usuario} (${elements.length} elemento(s) encontrado(s))`);
+                mostrarUsuarioYInsignias(usuario, usuarios[usuario], elements);
+                usuariosRenderizados++;
+            }
+        });
+
+        console.log(`✨ Finalizado. Se actualizaron ${usuariosRenderizados} usuarios en el DOM.`);
+
+    } catch (error) {
+        console.error('❌ Error general al inicializar las insignias de usuarios:', error);
+    }
 }
 
 // ============================================

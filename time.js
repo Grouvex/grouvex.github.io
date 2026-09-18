@@ -1,6 +1,7 @@
-function actualizarFechas(uTParam, elementoId, opciones = {}) {
+(function () {
     // 1. Inyección de estilos CSS encapsulados
-    if (!document.getElementById('gs-timeafechas-styles')) {
+    function inyectarEstilos() {
+        if (document.getElementById('gs-timeafechas-styles')) return;
         const styleTag = document.createElement('style');
         styleTag.id = 'gs-timeafechas-styles';
         styleTag.textContent = `
@@ -54,37 +55,27 @@ function actualizarFechas(uTParam, elementoId, opciones = {}) {
         document.head.appendChild(styleTag);
     }
 
-    try {
-        // Obtener el elemento DOM
-        const elemento = typeof elementoId === 'string' 
-            ? document.getElementById(elementoId) 
-            : elementoId;
+    // 2. Función lógica principal por cada elemento
+    function procesarElemento(elemento) {
+        if (elemento._gsIniciado) return; // Evita duplicar intervalos
+        elemento._gsIniciado = true;
 
-        if (!elemento) throw new Error(`Elemento "${elementoId}" no encontrado.`);
+        const tipo = elemento.getAttribute('tipo') || 'evento';
+        const rawUt = elemento.getAttribute('ut');
+        const rawUtFin = elemento.getAttribute('ut-fin');
+        const locale = elemento.getAttribute('locale') || 'es-ES';
+        const timeZone = elemento.getAttribute('timezone') || 'UTC';
+        const formato = elemento.getAttribute('formato') || 'compact';
+        const autoRefresh = elemento.getAttribute('auto-refresh') !== 'false';
 
-        // LECTURA DE ATRIBUTOS HTML CON FALLBACK A LAS OPCIONES JS
-        const tipo = elemento.getAttribute('tipo') || opciones.tipo || 'evento';
-        const rawUt = elemento.getAttribute('ut') || uTParam;
-        const rawUtFin = elemento.getAttribute('ut-fin') || opciones.uTFin || null;
-        const locale = elemento.getAttribute('locale') || opciones.locale || 'es-ES';
-        const timeZone = elemento.getAttribute('timezone') || opciones.timeZone || 'UTC';
-        const formato = elemento.getAttribute('formato') || opciones.formato || 'compact';
+        const txtF = elemento.getAttribute('text-time-f') || 'Faltan {tiempo}';
+        const txtA = elemento.getAttribute('text-time-a') || 'En curso ({tiempo} restantes)';
+        const txtP = elemento.getAttribute('text-time-p') || 'Finalizado hace {tiempo}';
 
-        // Auto-refresh por defecto a TRUE salvo que explícitamente se configure en false
-        const autoRefresh = elemento.hasAttribute('auto-refresh') 
-            ? elemento.getAttribute('auto-refresh') !== 'false' 
-            : (opciones.autoRefresh ?? true);
-
-        const txtF = elemento.getAttribute('text-time-f') || opciones.textTimeF || 'Faltan {tiempo}';
-        const txtA = elemento.getAttribute('text-time-a') || opciones.textTimeA || 'En curso ({tiempo} restantes)';
-        const txtP = elemento.getAttribute('text-time-p') || opciones.textTimeP || 'Finalizado hace {tiempo}';
-
-        // ACCESIBILIDAD
         elemento.classList.add('gs-timeafechas-base');
         elemento.setAttribute('role', 'timer');
         elemento.setAttribute('aria-live', 'polite');
 
-        // Normalizador de timestamps
         const normalizarMs = (val) => {
             if (!val) return null;
             if (val instanceof Date) return val.getTime();
@@ -96,10 +87,8 @@ function actualizarFechas(uTParam, elementoId, opciones = {}) {
         const uTInicioMs = normalizarMs(rawUt);
         const uTFinMs = normalizarMs(rawUtFin);
 
-        if (isNaN(uTInicioMs)) throw new Error('Timestamp de inicio inválido.');
-        if (uTFinMs && isNaN(uTFinMs)) throw new Error('Timestamp de fin inválido.');
+        if (isNaN(uTInicioMs)) return;
 
-        // Desglose de tiempo
         const desglosarTiempo = (ms) => {
             const difSeg = Math.floor(Math.abs(ms) / 1000);
             const seg = difSeg % 60;
@@ -125,37 +114,34 @@ function actualizarFechas(uTParam, elementoId, opciones = {}) {
             }
         };
 
-        // Formateador nativo de fecha legible
         const formatearFechaNativa = (timestamp) => {
-            const fecha = new Date(timestamp);
             return new Intl.DateTimeFormat(locale, {
                 dateStyle: 'medium',
                 timeStyle: 'medium',
                 timeZone
-            }).format(fecha);
+            }).format(new Date(timestamp));
         };
 
-        // Renderizado principal
         const render = () => {
             const ahoraMs = Date.now();
 
             if (tipo === 'fecha') {
                 elemento.textContent = formatearFechaNativa(uTInicioMs);
                 elemento.title = `Fecha: ${new Date(uTInicioMs).toISOString()} (${timeZone})`;
-                return true; // Continúa activo para refresco si autoRefresh está activo
+                return true;
             }
 
             const timestampReferenciaFin = uTFinMs || uTInicioMs;
             const difDiasFin = (timestampReferenciaFin - ahoraMs) / (1000 * 60 * 60 * 24);
 
-            // REGLA DE OCULTACIÓN Y ELIMINACIÓN PARA EVENTOS DE MÁS DE 2 DÍAS DE VENCIDOS
+            // Regla de ocultación para eventos caducados hace más de 2 días
             if (tipo === 'evento' && difDiasFin <= -2) {
                 if (!elemento.classList.contains('gs-timeafechas-ocultar')) {
                     elemento.classList.add('gs-timeafechas-ocultar');
                     setTimeout(() => { elemento.style.display = 'none'; }, 800);
                 }
                 if (elemento._fechaInterval) clearInterval(elemento._fechaInterval);
-                return false; // Cancela el intervalo definitivamente
+                return false;
             }
 
             elemento.classList.remove(
@@ -196,26 +182,49 @@ function actualizarFechas(uTParam, elementoId, opciones = {}) {
             if (tipo === 'evento') elemento.classList.add('gs-timeafechas-expirada');
 
             elemento.textContent = `${fechaInicioStr} ¦ ${txtP.replace('{tiempo}', desglosarTiempo(ahoraMs - timestampReferenciaFin))}`;
-
-            if (opciones.onExpire && !elemento.dataset.expired) {
-                elemento.dataset.expired = "true";
-                opciones.onExpire(elemento);
-            }
-
             return true;
         };
 
         const activo = render();
 
         if (autoRefresh && activo) {
-            if (elemento._fechaInterval) clearInterval(elemento._fechaInterval);
             elemento._fechaInterval = setInterval(() => {
                 const continua = render();
                 if (!continua) clearInterval(elemento._fechaInterval);
             }, 1000);
         }
-
-    } catch (error) {
-        console.error('Error en actualizarFechas:', error);
     }
-}
+
+    // 3. Escáner automático de elementos en la página
+    function escanear() {
+        inyectarEstilos();
+        // Selecciona todos los spans que tengan atributo 'ut' o la clase 'gs-fecha'
+        const elementos = document.querySelectorAll('span[ut], .gs-fecha');
+        elementos.forEach(procesarElemento);
+    }
+
+    // Auto-ejecución al cargar el DOM
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', escanear);
+    } else {
+        escanear();
+    }
+
+    // Observer para procesar elementos que se añadan dinámicamente más tarde
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+                if (node.nodeType === 1) {
+                    if (node.matches && (node.matches('span[ut]') || node.matches('.gs-fecha'))) {
+                        procesarElemento(node);
+                    }
+                    if (node.querySelectorAll) {
+                        node.querySelectorAll('span[ut], .gs-fecha').forEach(procesarElemento);
+                    }
+                }
+            });
+        });
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+})();

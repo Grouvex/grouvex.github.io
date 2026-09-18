@@ -69,9 +69,11 @@ function actualizarFechas(uTParam, elementoId, opciones = {}) {
         const locale = elemento.getAttribute('locale') || opciones.locale || 'es-ES';
         const timeZone = elemento.getAttribute('timezone') || opciones.timeZone || 'UTC';
         const formato = elemento.getAttribute('formato') || opciones.formato || 'compact';
+
+        // Auto-refresh por defecto a TRUE salvo que explícitamente se configure en false
         const autoRefresh = elemento.hasAttribute('auto-refresh') 
             ? elemento.getAttribute('auto-refresh') !== 'false' 
-            : (opciones.autoRefresh ?? false);
+            : (opciones.autoRefresh ?? true);
 
         const txtF = elemento.getAttribute('text-time-f') || opciones.textTimeF || 'Faltan {tiempo}';
         const txtA = elemento.getAttribute('text-time-a') || opciones.textTimeA || 'En curso ({tiempo} restantes)';
@@ -140,19 +142,20 @@ function actualizarFechas(uTParam, elementoId, opciones = {}) {
             if (tipo === 'fecha') {
                 elemento.textContent = formatearFechaNativa(uTInicioMs);
                 elemento.title = `Fecha: ${new Date(uTInicioMs).toISOString()} (${timeZone})`;
-                return false;
+                return true; // Continúa activo para refresco si autoRefresh está activo
             }
 
             const timestampReferenciaFin = uTFinMs || uTInicioMs;
             const difDiasFin = (timestampReferenciaFin - ahoraMs) / (1000 * 60 * 60 * 24);
 
+            // REGLA DE OCULTACIÓN Y ELIMINACIÓN PARA EVENTOS DE MÁS DE 2 DÍAS DE VENCIDOS
             if (tipo === 'evento' && difDiasFin <= -2) {
                 if (!elemento.classList.contains('gs-timeafechas-ocultar')) {
                     elemento.classList.add('gs-timeafechas-ocultar');
                     setTimeout(() => { elemento.style.display = 'none'; }, 800);
                 }
                 if (elemento._fechaInterval) clearInterval(elemento._fechaInterval);
-                return false;
+                return false; // Cancela el intervalo definitivamente
             }
 
             elemento.classList.remove(
